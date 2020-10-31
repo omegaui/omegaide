@@ -12,19 +12,19 @@ It includes,
 **Lots more to be added**
 It runs faster if you have debian and gnome as the default system operator.
 
-#important, please read
+# important, please read
 If you want to edit the source code then, for completing the src and res folders you need to extract the file named
 **"rsyntaxtextarea_modified_sources.zip"**. After extraction, you will find two folders "src" and "res" inside the extracted directory.
 What you need to do is to add the contents of "src" and "res" folders to the project's "src" and "res" folder.
 Thats all. The Project is now ready for editing, compiling or running.
 
-#Editing
+# Editing
 Well, you can either use Eclipse IDE or even Omega IDE for managing the project.
 There is a **"Omega IDE.jar"** file included in the out directory of the project.
 You can either run it directly or you can install it in your system by your own.
 There is **debian installer** included in the out folder for debian based distros.
 
-#Compiling and Running
+# Compiling and Running
 For compiling, open terminal in the project directory.
 create a directory **bin**.
 and run **javac -d bin -cp res/*:lib/*:. @.sources**
