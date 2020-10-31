@@ -32,8 +32,9 @@ There is **debian installer** included in the out folder for debian based distro
 For compiling, open terminal in the project directory.
 create a directory **bin**.
 and run 
-**javac -d bin -cp res/*:lib/*:. @.sources**
+**javac -d bin -cp res/asterisk:lib/asterisk:. @.sources**
 
 For running, open terminal in the bin directory created previously.
 and run 
-**java -cp res/*:lib/*:. ide.Screen**
+**java -cp res/asterisk:lib/asterisk:. ide.Screen**
+replace **asterisk** by its symbol (*).
