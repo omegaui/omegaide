@@ -21,4 +21,4 @@ I made it public.
 
 # Hope you liked it.
 
-![Image](src)
+![Image](https://github.com/omegaui/omegaide/main/res/splash.png)
