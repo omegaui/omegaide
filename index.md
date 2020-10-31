@@ -5,11 +5,11 @@ Omega IDE is a lightweight program which is a super fast java ide designed for l
 
 ### Screenshots
 
-![Splash Screen](/main/images/startup_splash.png)
+![Splash Screen](/images/startup_splash.png)
 
-![Project Window](https://github.com/omegaui/omegaide/tree/main/images/view_list.png)
+![Project Window](images/view_list.png)
 
-![Main Window](https://github.com/omegaui/omegaide/tree/main/images/main_window.png)
+![Main Window](/images/main_window.png)
 
 
 ### About
