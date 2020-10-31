@@ -3,6 +3,12 @@
 Omega UI is a software company to provide lightweight and resource efficient programs for development purposes.
 Omega IDE is a lightweight program which is a super fast java ide designed for linux to speed up development in java.
 
+### Screenshots
+
+![Splash Screen](https://github.com/omegaui/omegaide/tree/main/images/startup_splash.png)
+![Project Window](https://github.com/omegaui/omegaide/tree/main/images/view_list.png)
+![Main Window](https://github.com/omegaui/omegaide/tree/main/images/main_window.png)
+
 ### About
 
 **My journey to create Omega UI.**
@@ -20,5 +26,3 @@ And after it **just works**.
 I made it public.
 
 # Hope you liked it.
-
-![Image](https://github.com/omegaui/omegaide/tree/main/res/splash.png)
