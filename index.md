@@ -21,4 +21,4 @@ I made it public.
 
 # Hope you liked it.
 
-[Link](url) and ![Image](src)
+![Image](src)
