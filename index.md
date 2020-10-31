@@ -31,3 +31,5 @@ And after it **just works**.
 I made it public.
 
 # Hope you liked it.
+
+[Donate](https://paypal.me/imarham)
