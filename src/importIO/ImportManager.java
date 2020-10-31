@@ -118,13 +118,15 @@ public class ImportManager{
 
 		files.forEach(file->{
 			String name = file.getName();
-			name = name.substring(0, name.length() - 5);
-			Import n = new Import(getPackagePathOfSource(file), name);
-			if(n != null) {
-				try {
-					sources.add(n);
-				}catch(Exception e) {System.err.println("No Project SDK found!");}
-			}
+				try{
+				name = name.substring(0, name.length() - 5);
+				Import n = new Import(getPackagePathOfSource(file), name);
+				if(n != null) {
+					try {
+						sources.add(n);
+					}catch(Exception e) {System.err.println("No Project SDK found!");}
+				}
+			}catch(Exception exc){}
 		});
 		try {
 			for(Import im : sources){
