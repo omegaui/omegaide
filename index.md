@@ -7,7 +7,9 @@ Omega IDE is a lightweight program which is a super fast java ide designed for l
 
 ![Splash Screen](/images/startup_splash.png)
 
+
 ![Project Window](images/view_list.png)
+
 
 ![Main Window](/images/main_window.png)
 
