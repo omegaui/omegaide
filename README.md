@@ -37,7 +37,7 @@ Thats all. The Project is now ready for editing, compiling or running.
 Well, you can either use Eclipse IDE or even Omega IDE for managing the project.
 There is **debian installer** included in the out folder for debian based distros.
 There is a **"Omega IDE.jar"** file included in the debian installer in the out directory of the project.
-Extract the installer and run Omega IDE.jar located inside **extracted-directory/usr/bin**
+Extract the installer and run Omega IDE.jar located inside **extracted-directory/usr/bin**.
 You can either run it directly or you can install it in your system by your own.
 
 # Compiling and Running
