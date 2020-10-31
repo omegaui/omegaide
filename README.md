@@ -1,15 +1,15 @@
 # omegaide
 A extremely lightweight and super fast java ide for linux.
 It includes,
-**Class-Path Manager**
-**Module-Path Manager**
-**Snippet Manager -add your own and just press TAB key**
-**Content Assist**
-**Auto Import -press Ctrl + SHIFT + O** 
-**Click Editor Image**
-**Jar Creation**
-**Elegant Design**
-**Lots more to be added**
+**Class-Path Manager**,
+**Module-Path Manager**,
+**Snippet Manager -add your own and just press TAB key**,
+**Content Assist**,
+**Auto Import -press Ctrl + SHIFT + O** ,
+**Click Editor Image**,
+**Jar Creation**,
+**Elegant Design**,
+**Lots more to be added**, 
 It runs faster if you have debian and gnome as the default system operator.
 
 # important, please read
