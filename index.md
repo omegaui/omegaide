@@ -1,37 +1,24 @@
-## Welcome to GitHub Pages
+## Welcome to Omega UI
 
-You can use the [editor on GitHub](https://github.com/omegaui/omegaide/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Omega UI is a software company to provide lightweight and resource efficient programs for development purposes.
+Omega IDE is a lightweight program which is a super fast java ide designed for linux to speed up development in java.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### About
 
-### Markdown
+**My journey to create Omega UI.**
+I was a newbie when I was searching the right ide to learn and program in java.
+I founded IntelliJ and started working with it.
+But the problem was it was too slow and resource hungry for my system.
+So, I started searching for another IDE and founded **Eclipse IDE**.
+It took me a while to know how to install it.
+When I installed and ran it, it was super fast.
+But after coding too much on it in a day, I gradually knew that it had also started consuming much memory.
+So, in order to boost up the performance of my system, I moved to **Linux**.
+But, the result was same.
+So, I started creating my own IDE.
+And after it **just works**.
+I made it public.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
+# Hope you liked it.
 
 [Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/omegaui/omegaide/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
