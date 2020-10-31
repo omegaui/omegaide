@@ -30,6 +30,8 @@ So, I started creating my own IDE.
 And after it **just works**.
 I made it public.
 
+# Follow
+Instagram @i_am_arham_92
 # Hope you liked it.
 
 [Donate](https://paypal.me/imarham)
