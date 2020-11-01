@@ -1,4 +1,4 @@
-## Welcome to Omega UI
+## Omega UI
 
 Omega UI is a software company to provide lightweight and resource efficient programs for development purposes.
 Omega IDE is a lightweight program which is a super fast java ide designed for linux to speed up development in java.
