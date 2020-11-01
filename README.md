@@ -40,7 +40,7 @@ There is a **"Omega IDE.jar"** file included in the debian installer in the out 
 Extract the installer and run Omega IDE.jar located inside **extracted-directory/usr/bin**.
 You can either run it directly or you can install it in your system by your own.
 
-# Compiling and Running
+# Compiling and Running (Terminal)
 
 For compiling, open terminal in the project directory.
 create a directory **bin**.
