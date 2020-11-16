@@ -23,15 +23,6 @@ It includes,
 
 **Lots more to be added**, 
 
-It runs faster if you have debian and gnome as the default system operator.
-
-# important, please read
-Please read the LICENSE before reading further.
-If you want to edit the source code then, for completing the src and res folders you need to extract the file named
-**"rsyntaxtextarea_modified_sources.zip"**. After extraction, you will find two folders "src" and "res" inside the extracted directory.
-What you need to do is to add the contents of "src" and "res" folders to the project's "src" and "res" folder.
-Thats all. The Project is now ready for editing, compiling or running.
-
 # Editing
 
 Well, you can either use Eclipse IDE or even Omega IDE for managing the project.
