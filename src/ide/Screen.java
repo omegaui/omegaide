@@ -1,13 +1,4 @@
 package ide;
-//bug list
-//editor changes its font when switched or a project is launched --Fixed at RTextAreaBase.getDefaultFont()
-//sometimes the content assist does not show hints even after recording them --Fixed at contentui.Assemly.add()
-//speeding up the jdk reading process -- interlinked id 0 ---Finally the IDE has gained insane reading speed before debugging 3 minutes and after its 2 seconds 
-//Deassembler needs ProcessBuilder X --Fixed
-//operation panel fixed divider locale --
-//The Project Wizard --Fixed
-//Configuring the content assist --done
-//...
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -31,14 +21,17 @@ import ide.utils.DataManager;
 import ide.utils.Editor;
 import ide.utils.RecentsManager;
 import ide.utils.ToolMenu;
-import ide.utils.ToolPane;
 import ide.utils.UIManager;
 import ide.utils.systems.BuildView;
+import ide.utils.systems.EditorTools;
 import ide.utils.systems.FileView;
 import ide.utils.systems.OperationPane;
 import ide.utils.systems.ProjectView;
 import ide.utils.systems.RunView;
 import launcher.Launcher;
+import plugin.PluginManager;
+import plugin.PluginView;
+import plugin.PluginStore;
 import snippet.SnippetBase;
 import snippet.SnippetView;
 import startup.Startup;
@@ -47,6 +40,7 @@ import tabPane.TabPanel;
 import tree.FileTree;
 import ui.View;
 import uiPool.Notification;
+import update.Updater;
 
 public class Screen extends JFrame {
 	private static Accessories accessories;
@@ -54,7 +48,7 @@ public class Screen extends JFrame {
 	public JSplitPane compilancePane;
 	private OperationPane operationPane;
 	private TabPanel tabPanel;
-	private ToolPane toolPane;
+	public EditorTools tools;
 	private ToolMenu toolMenu;
 	private UIManager uiManager;
 	private DataManager dataManager;
@@ -64,11 +58,9 @@ public class Screen extends JFrame {
 	private static RunView runView;
 	private static ProjectView projectView;
 	private static View settings;
-	public static final String VERSION = "v1.0";
-	public static final String PLUG_PATH = "plugs";
+	public static final String VERSION = "v1.1";
 	private SplashScreen splash;
 	private Robot robot;
-	private static Loading progressBar;
 	public volatile boolean screenHasProjectView = true;
 	private static Notification notif;
 	private static ErrorHighlighter errorHighlighter;
@@ -76,8 +68,12 @@ public class Screen extends JFrame {
 	public volatile boolean active = true;
 	public static Launcher launcher;
 	public static SnippetView snippetView; 
+	private static PluginManager pluginManager;
+	private static PluginView pluginView;
+     private static PluginStore pluginStore;
+	private static Updater updater;
 
-	private Screen() {
+	public Screen() {
 		String l$F = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
 		if(System.getProperty("os.name").contains("indows"))
 			l$F = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
@@ -85,26 +81,19 @@ public class Screen extends JFrame {
 			javax.swing.UIManager.setLookAndFeel(l$F);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
-
-			System.setProperty("--illegal-access", "permit");
-               
-			Toolkit toolkit = Toolkit.getDefaultToolkit();
-			java.lang.reflect.Field field = toolkit.getClass().getDeclaredField("awtAppClassName");
-			field.setAccessible(true);
-			field.set(toolkit, "Omega IDE");
-			
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
 		} catch (Exception e1) {
 			System.out.println(e1);
 		}
 		Startup.checkStartup(this);
-          UIManager.loadHighlight();
+		UIManager.loadHighlight();
 		uiManager = new UIManager(this);
 		UIManager.setData(this);
-          splash = new SplashScreen();
-          splash.setProgress(10);
+		splash = new SplashScreen();
+		splash.setProgress(10, "welcome");
 		notif = new Notification(this);
-		splash.setProgress(37);
-		
+		splash.setProgress(37, "welcome");
+
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
 		setTitle("Omega Integrated Development Environment "+VERSION);
 		setLayout(new BorderLayout());
@@ -131,13 +120,14 @@ public class Screen extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		splash.setProgress(60);
+		splash.setProgress(60, "initializing");
 		init();
 	}
 
 	private void init() {
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
+		updater = new Updater(this);
 		errorHighlighter = new ErrorHighlighter();
 		basicHighlight = new BasicHighlight();
 
@@ -153,10 +143,6 @@ public class Screen extends JFrame {
 		add(compilancePane, BorderLayout.CENTER);
 		UIManager.setData(compilancePane);
 
-		progressBar = new Loading("");
-		progressBar.setVisible(false);
-		add(progressBar, BorderLayout.SOUTH);
-
 		tabPanel = new TabPanel(this);
 		splitPane.setRightComponent(tabPanel);
 		splitPane.setDividerSize(2);
@@ -165,10 +151,10 @@ public class Screen extends JFrame {
 
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
-		toolPane = new ToolPane();
+		
 		recentsManager = new RecentsManager(this);
 
-		splash.setProgress(77);
+		splash.setProgress(77, "initializing");
 
 		fileView = new FileView("File", this);
 		settings = new View(this);
@@ -180,13 +166,19 @@ public class Screen extends JFrame {
 			DataManager.setEditorColoringScheme("dark");
 		else DataManager.setEditorColoringScheme("idea");
 
-		splash.setProgress(89);
+
+		tools = new EditorTools();
 		
-		splash.setVisible(false);
 		splitPane.setLeftComponent(projectView.getProjectView());
 		splitPane.setDividerLocation(300);
 
-		splash.setProgress(100);
+		splash.setProgress(83, "plugging in");
+		
+		pluginManager = new PluginManager();
+		pluginView = new PluginView(this);
+          pluginStore = new PluginStore();
+
+		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
@@ -259,16 +251,10 @@ public class Screen extends JFrame {
 	}
 
 	public static void setStatus(String status, int value) {
-		progressBar.setText(status);
-		progressBar.setProgress(value);
-		if(value == 100)
-		{
-			progressBar.setVisible(false);
-		}
-		else {
-			if(!progressBar.isVisible())
-				progressBar.setVisible(true);
-		}
+		if(value != 100)
+			Screen.getScreen().getToolMenu().setMsg(status + " " + value + "%");
+		else
+			Screen.getScreen().getToolMenu().setMsg(null);
 	}
 
 	@Override
@@ -290,7 +276,7 @@ public class Screen extends JFrame {
 		setTitle(projectName+" -Omega IDE "+VERSION);
 		splitPane.setDividerLocation(300);
 	}
-	
+
 	public static void openInDesktop(File file) {
 		try {
 			new Thread(()->{
@@ -309,7 +295,6 @@ public class Screen extends JFrame {
 			return null;
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
-		editor.toolPane = toolPane;
 		editor.loadFile(file);
 		tabPanel.addTab(file.getName(), editor, getPackName(file));
 		return editor;
@@ -359,7 +344,7 @@ public class Screen extends JFrame {
 			res = res.substring(0,res.length() - 1);
 		return res;
 	}
-	
+
 	public static final Screen getScreen() {
 		return Screen.getFileView().getScreen();
 	}
@@ -431,11 +416,7 @@ public class Screen extends JFrame {
 			robot.mouseMove(x, y);
 		}catch(Exception e) {}
 	}
-
-	public ToolPane getToolPane() {
-		return toolPane;
-	}
-
+	
 	public UIManager getUIManager() {
 		return uiManager;
 	}
@@ -465,6 +446,22 @@ public class Screen extends JFrame {
 	public TabPanel getTabPanel() {
 		return tabPanel;
 	}
+	
+	public static void updateIDE() {
+		updater.setVisible(true);
+	}
+	
+	public static PluginManager getPluginManager() {
+		return pluginManager;
+	}
+	
+     public static PluginView getPluginView() {
+          return pluginView;
+     }
+     
+     public static PluginStore getPluginStore() {
+          return pluginStore;
+     }
 
 	public void saveEssential() {
 		uiManager.save();
@@ -473,17 +470,4 @@ public class Screen extends JFrame {
 		saveAllEditors();
 		hideNotif();
 	}
-	
-	public static void main(String[] args) {
-		new Screen();
-	}
-
-	public class IDE_INSTANCE_MANAGER {
-		protected Screen getCurrent()
-		{
-			return Screen.this;
-		}
-	}
-
-
 }

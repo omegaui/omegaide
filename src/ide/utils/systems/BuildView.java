@@ -321,14 +321,23 @@ public class BuildView extends View {
 	
 	public static void optimizeProjectOutputs(){
 		File outputDir = new File(Screen.getFileView().getProjectPath() + "/bin");
-		File[] outFiles = outputDir.listFiles();
-		for(File file : outFiles) {
-			if(!file.isDirectory() && file.getName().endsWith(".class"))
+		LinkedList<File> files = new LinkedList<>();
+		loadClassFiles(outputDir, files);
+		if(files.isEmpty()) return;
+		for(File file : files) {
 				file.delete();
 		}
 		FileView.checkDir(outputDir);
 	}
 	
+	public static void loadClassFiles(File out, LinkedList<File> files) {
+		File[] F = out.listFiles();
+		if(F == null || F.length == 0) return;
+		for(File f : F) {
+			if(f.isDirectory()) loadClassFiles(f, files);
+			else if(f.getName().endsWith(".class")) files.add(f);
+		}
+	}
 	
 	public void deleteDir(File file)
 	{

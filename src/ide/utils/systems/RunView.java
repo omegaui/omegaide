@@ -460,7 +460,7 @@ public class RunView extends View{
 				Scanner inputReader = new Scanner(runProcess.getInputStream());
 				Scanner errorReader = new Scanner(runProcess.getErrorStream());
 				terminal.setVisible(true);
-				Screen.setStatus("Running Project", 86);
+				Screen.setStatus("Running Project", 100);
 
 				new Thread(()->{
 					String status = "No Errors";
@@ -476,7 +476,6 @@ public class RunView extends View{
 					errorReader.close();
 				}).start();
 
-				Screen.setStatus("Running Project", 100);
 				getScreen().getToolMenu().runBtn.setEnabled(true);
 				while(runProcess.isAlive())
 				{

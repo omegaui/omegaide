@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 
 public class IconManager {
 
-	public static final LinkedList<BufferedImage> icons = new LinkedList<>();
 	public static final ImageIcon methodIcon = getImageIcon("/function_icon.png");
 	public static final ImageIcon variableIcon = getImageIcon("/var_icon.png");
 	public static final Icon runSingleIcon = getIcon("/run.png");
@@ -47,6 +46,7 @@ public class IconManager {
 	public static final Icon saveAllIcon = saveAsIcon;
 	public static final Icon toolsIcon = getIcon("/tools.png");
 	public static final Icon settingsIcon = getIcon("/settings.png");
+	public static final Icon ideIcon = getIcon("/omega_ide_icon16.png");
 	//File Icons
 	public static final Icon javaIcon = getIcon("/java_icon.png");
 	public static final Icon jvmIcon = getIcon("/jvm_icon.png");
@@ -74,7 +74,6 @@ public class IconManager {
 		}
 		try {
 			BufferedImage image = ImageIO.read(IconManager.class.getResource(path));
-			icons.add(image);
 			return new ImageIcon(image);
 		}catch(Exception e) {e.printStackTrace();}
 		return null;

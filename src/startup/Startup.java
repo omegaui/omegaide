@@ -124,6 +124,6 @@ public class Startup extends JDialog {
 
 	public static void checkStartup(Screen screen) {
 		if(!new File(".firststartup").exists())
-			new Startup(screen);
+			new Startup(screen).repaint();
 	}
 }

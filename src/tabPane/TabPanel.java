@@ -63,9 +63,9 @@ public class TabPanel extends JPanel{
 			remove(editor);
 		}, ()->{
 			tabPane.setSelectedIndex(editors.indexOf(editor));
-		},toolTip, getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.'))), createMenu(editor)));
+		},toolTip, getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.') >= 0 ? editor.currentFile.getName().lastIndexOf('.') : 0)), createMenu(editor)));
 		tabPane.setSelectedIndex(names.indexOf(name));
-		Icon icon = getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.')));
+		Icon icon = getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.') >= 0 ? editor.currentFile.getName().lastIndexOf('.') : 0));
 		if(icon == IconManager.unknownIcon
 				|| icon == IconManager.txtIcon) {
 			editor.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NONE);
@@ -109,7 +109,7 @@ public class TabPanel extends JPanel{
 				return PopupManager.createPopup(PopupManager.SOURCE_FILE, editor, screen, IconManager.javaIcon);
 			else
 				return PopupManager.createPopup(PopupManager.NON_SOURCE_FILE, editor, screen,
-						getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.'))));
+						getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.') >= 0 ? editor.currentFile.getName().lastIndexOf('.') : 0)));
 		}
 		return null;
 	}

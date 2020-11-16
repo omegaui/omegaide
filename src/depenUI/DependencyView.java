@@ -40,7 +40,7 @@ public class DependencyView extends JDialog{
 			nat.read();
 		}
 		else {
-			Screen.getScreen().getToolPane().initEditorTools();
+			Screen.getScreen().tools.initTools();
 		}
 		super.setVisible(value);
 	}

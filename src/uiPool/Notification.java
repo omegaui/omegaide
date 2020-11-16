@@ -25,7 +25,7 @@ public class Notification extends Window {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				setVisible(true);
+				setVisible(false);
 			}
 		});
 		if(((Color)(javax.swing.UIManager.getDefaults().get("Button.background"))).getRed() <= 53) {

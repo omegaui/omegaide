@@ -24,7 +24,6 @@ public class UIManager extends DataBase{
           if(((Color)(javax.swing.UIManager.getDefaults().get("Button.background"))).getRed() <= 53)
                glow = Color.decode("#ffffff");
           else glow = Color.BLUE;
-          System.out.println(glow);
      }
 
 	public void loadData()

@@ -69,7 +69,7 @@ public class ProjectDataBase extends DataBase{
 	public void readJDK(boolean internal) {
 		try {
 			JDKReader.read(jdkPath);
-			Screen.getFileView().getScreen().getToolPane().initEditorTools();
+			Screen.getScreen().tools.initTools();
 			Assembly.deassemble();
 		}catch(Exception e) {System.out.println(e.getMessage());}
 	}

@@ -33,7 +33,6 @@ public class RefractionManager extends View {
 
 	private void init() {
 		nameField = new JTextField();
-		nameField.setCaretColor(Color.YELLOW);
 		nameField.addActionListener((e)->{
 			setVisible(false);
 			task.run();
@@ -42,6 +41,7 @@ public class RefractionManager extends View {
 		});
 		add(nameField, BorderLayout.CENTER);
 		comps.add(nameField);
+		nameField.setFont(new java.awt.Font("Ubuntu Mono", java.awt.Font.BOLD, 14));
 	}
 
 	public static void copy(File oriF, File target) {
@@ -57,7 +57,7 @@ public class RefractionManager extends View {
 			}
 			in.close();
 			out.close();
-		}catch(Exception e) {e.printStackTrace();}
+		}catch(Exception e) {System.err.println(e);}
 	}
 
 	public void rename(File file, String title, Runnable externalTask) {
@@ -68,18 +68,15 @@ public class RefractionManager extends View {
 			String dir = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('/'));
 			String newName = nameField.getText();
 			try {
-				Scanner reader = new Scanner(file);
-				String text = "";
-				while(reader.hasNextLine()) {
-					text += reader.nextLine() + "\n"; 
-				}
-				reader.close();
+				InputStream in = new FileInputStream(file);
+				OutputStream out = new FileOutputStream(dir + "/" + newName);
+				while(in.available() > 0)
+					out.write(in.read());
+				in.close();
+				out.close();
 				file.delete();
-				PrintWriter writer = new PrintWriter(new FileOutputStream(dir+"/"+newName));
-				writer.print(text);
-				writer.close();
 				lastFile = new File(dir+"/"+newName);
-			}catch(Exception e) {e.printStackTrace();}
+			}catch(Exception e) {System.err.println(e);}
 		};
 		setVisible(true);
 	}

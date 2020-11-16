@@ -169,6 +169,11 @@ public class ToolMenu extends JPanel {
 		taskMenu.setText(task);
 		taskMenu.repaint();
 	}
+	
+	public void setMsg(String msg) {
+		taskMenu.setMsg(msg);
+		taskMenu.repaint();
+	}
 
 	public void reshape() {
 		int x = screen.getWidth()/2 - 300/2;
@@ -217,6 +222,18 @@ public class ToolMenu extends JPanel {
 	}
 
 	private void initHelpMenu(JPopupMenu popup) {
+          JMenuItem ps = new JMenuItem("Plugin Store", IconManager.ideIcon);
+          ps.addActionListener(e->Screen.getPluginStore().setVisible(true));
+          popup.add(ps);
+          
+          JMenuItem pv = new JMenuItem("Plugin Manager", IconManager.ideIcon);
+          pv.addActionListener(e->Screen.getPluginView().setVisible(true));
+          popup.add(pv);
+		
+		JMenuItem update = new JMenuItem("Check for Update", IconManager.ideIcon);
+		update.addActionListener(e->Screen.updateIDE());
+		popup.add(update);
+		
 		JMenuItem dev = new JMenuItem("About", IconManager.info);
 		dev.addActionListener(e->{
 			if(infoScreen == null)
@@ -612,8 +629,9 @@ public class ToolMenu extends JPanel {
 		}
 	}
 
-	private class LabelMenu extends JComponent {
+	public class LabelMenu extends JComponent {
 		private String text;
+		private String msg;
 		private volatile boolean enter;
 		public LabelMenu(String text, Runnable r, Runnable x) {
 			this.text = "";
@@ -643,7 +661,18 @@ public class ToolMenu extends JPanel {
 		}
 
 		public void setText(String text) {
-			this.text = text;
+			if(this.msg == null)
+				this.text = text;
+			repaint();
+		}
+		
+		public void setMsg(String msg) {
+			this.msg = msg;
+			if(msg != null)
+				this.text = msg;
+			else
+				this.text = "Hover to see Memory Statistics";
+			repaint();
 		}
 
 		@Override
@@ -653,7 +682,7 @@ public class ToolMenu extends JPanel {
 			setSize(100, ToolMenu.this.getHeight());
 			setPreferredSize(getSize());
 		}
-
+		
 		@Override
 		public void paint(Graphics g2D) {
 			Graphics2D g = (Graphics2D)g2D;
@@ -682,7 +711,7 @@ public class ToolMenu extends JPanel {
 		}
 	}
 
-	private class Menu extends JComponent {
+	public class Menu extends JComponent {
 		private String text;
 		private volatile boolean enter;
 		public Menu(JPopupMenu popup, String text) {

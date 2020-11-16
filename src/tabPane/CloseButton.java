@@ -63,7 +63,7 @@ public class CloseButton extends JComponent {
 
 	@Override
 	public void paint(Graphics g2D) {
-		Graphics2D g = (Graphics2D)g2D;			
+		Graphics2D g = (Graphics2D)g2D;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -71,14 +71,14 @@ public class CloseButton extends JComponent {
 		g.setFont(getFont());
 		g.drawString("X", 4, getFont().getSize()-3);
 	}
-	
+
 	@Override
 	public void setFont(Font f) {
 		super.setFont(f);
 		setPreferredSize(new Dimension(16, 16));
 		setSize(getPreferredSize());
 	}
-	
+
 	public interface CloseAction {
 		void onClose();
 	}
@@ -90,7 +90,7 @@ public class CloseButton extends JComponent {
 	public static JPanel create(Component c, String name, CloseAction closeAction, FocusAction focusAction, String toolTip, Icon icon, JPopupMenu popUp) {
 		CloseButton closeButton = new CloseButton().setOnClose(closeAction);
 		closeButton.setFont(new Font("Ubuntu", Font.BOLD, 14));
-        
+
 		JTextArea textField = new JTextArea(name);
 		UIManager.setData(textField);
 		final Color FORE = textField.getForeground();

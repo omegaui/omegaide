@@ -55,7 +55,8 @@ public class SnippetView extends JDialog{
 	private void init(){
 		//Door System
 		try {
-			image = (BufferedImage)ImageIO.read(getClass().getResourceAsStream("/scp.png"));
+			String name = ((Color)javax.swing.UIManager.get("Button.background")).getRed() > 53 ? "/scp.png" : "/scp_dark.png";
+			image = (BufferedImage)ImageIO.read(getClass().getResourceAsStream(name));
 		}catch(Exception e) {}
 		leftPanel = new JPanel(null);
 		pane = new JScrollPane(leftPanel);

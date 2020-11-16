@@ -56,9 +56,9 @@ public class IDEPanel extends JPanel{
 		changeFontBox.setBounds(1, sdkField.getY() + sdkField.getHeight() + 1, view.getWidth() - view.getWidth() / 3 - 2, 30);
 		add(changeFontBox);
 
-		Box plug = new Box("Plugins -Under Development", ()->{
+		Box plug = new Box("Plugin Manager", ()->{
+			ide.Screen.getPluginView().setVisible(true);
 		});
-		plug.disabled = true;
 		plug.setBounds(1, changeFontBox.getY() + changeFontBox.getHeight() + 1, view.getWidth() - view.getWidth() / 3 - 2, 30);
 		add(plug);
 

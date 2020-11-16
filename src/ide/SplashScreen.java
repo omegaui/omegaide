@@ -10,8 +10,8 @@ import java.awt.event.*;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
-	private static final String VERSION = "v1.0";
-	private static final String ENCOURAGE = "lets code";
+	private static final String VERSION = "v1.1";
+	private static String ENCOURAGE = "lets code";
 	private static final Color ALPHA = new Color(0, 0, 0, 0);
 	private static final Font PX40 = new Font("Ubuntu Mono", Font.BOLD, 40);
 	private static final Font PX26 = new Font("Ubuntu Mono", Font.BOLD, 26);
@@ -124,8 +124,12 @@ public class SplashScreen extends JFrame{
 		graphics.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 	}
 
-	public void setProgress(int progress){
+	public void setProgress(int progress, String status){
 		this.progress = progress;
+		if(progress < 85)
+			SplashScreen.ENCOURAGE = status;
+		else
+			SplashScreen.ENCOURAGE = "lets code";
 		repaint();
 	}
 }

@@ -110,7 +110,7 @@ public class ProjectPanel extends JPanel{
 				Screen.getFileView().getDependencyManager().loadFile();
 				Screen.getFileView().getNativesManager().loadFile();
 				Screen.setStatus("Reading Libraries", 40);
-				Screen.getFileView().getScreen().getToolPane().initEditorTools();
+				Screen.getScreen().tools.initTools();
 				Screen.getProjectView().getProjectView().setVisible(true);
 			}
 		});

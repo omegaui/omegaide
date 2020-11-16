@@ -148,7 +148,7 @@ public class ModuleView extends JDialog{
 		}
 		Screen.getFileView().getModuleManager().save();
 		Screen.getFileView().getDependencyManager().saveFile();
-		Screen.getScreen().getToolPane().initEditorTools();
+		Screen.getScreen().tools.initTools();
 		read();
 	}
 
@@ -175,7 +175,7 @@ public class ModuleView extends JDialog{
 			}
 		}
 		Screen.getFileView().getDependencyManager().saveFile();
-		Screen.getScreen().getToolPane().initEditorTools();
+		Screen.getScreen().tools.initTools();
 	}
 
 	private void init(){

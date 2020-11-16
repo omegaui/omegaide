@@ -48,7 +48,6 @@ import snippet.SnippetBase;
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener {
 
 	private static Screen screen;
-	public ToolPane toolPane;
 	private RTextScrollPane scrollPane;
 	public volatile File currentFile;
 	private static volatile PrintArea printArea;
@@ -292,7 +291,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			return;
 		if(currentFile == null)
 		{
-			int res = JOptionPane.showConfirmDialog(screen, "Data in the editor does not corresponds to any existing file. Do you want to save it as a type?", "Save or not?", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);;
+			int res = JOptionPane.showConfirmDialog(screen, "Data in the editor does not corresponds to any existing file. Do you want to save it as a type?", "Save or not?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);;
 			if(res == JOptionPane.OK_OPTION)
 				saveFileAs();
 			return;	

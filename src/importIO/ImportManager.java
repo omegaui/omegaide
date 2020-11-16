@@ -63,7 +63,7 @@ public class ImportManager{
 			while(index > 0) {
 				try {
 					imports.remove(imports.size() - index--);
-				}catch(Exception e) {System.out.println("Exception while removing "+index + 1);}
+				}catch(Exception e) {System.err.println("Exception while removing "+index + 1);}
 			}
 			return;
 		}
@@ -118,7 +118,7 @@ public class ImportManager{
 
 		files.forEach(file->{
 			String name = file.getName();
-				try{
+			try {
 				name = name.substring(0, name.length() - 5);
 				Import n = new Import(getPackagePathOfSource(file), name);
 				if(n != null) {
@@ -126,7 +126,7 @@ public class ImportManager{
 						sources.add(n);
 					}catch(Exception e) {System.err.println("No Project SDK found!");}
 				}
-			}catch(Exception exc){}
+			}catch(Exception exc) {}
 		});
 		try {
 			for(Import im : sources){
@@ -158,12 +158,10 @@ public class ImportManager{
 			Screen.setStatus("Reading Libraries "+jarFile.getName()+"("+(jarFiles.indexOf(jarFile)+1)+" of "+size+")", ((jarFiles.indexOf(jarFile)) * 100)/size);
 			try{
 				JarFile jar = new JarFile(jarFile.getAbsolutePath());
-				for(Enumeration<JarEntry> enums = jar.entries(); enums.hasMoreElements();)
-				{
+				for(Enumeration<JarEntry> enums = jar.entries(); enums.hasMoreElements();) {
 					JarEntry jarEntry = enums.nextElement();
 					String name = jarEntry.getName();
-					if(!name.endsWith("/") && name.contains(".class"))
-					{
+					if(!name.endsWith("/") && name.contains(".class")) {
 						Import n = getImportOfByte(name);
 						if(n != null) {
 							n.jarPath = jarFile.getAbsolutePath();
@@ -174,7 +172,6 @@ public class ImportManager{
 				}
 			}catch(Exception e){e.printStackTrace();}
 		});
-		//Sort Hints
 	}
 
 	public synchronized void addImport(Import im) {
