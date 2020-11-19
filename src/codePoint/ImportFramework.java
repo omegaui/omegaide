@@ -1,12 +1,13 @@
 package codePoint;
-import java.io.File;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import javax.swing.text.Document;
+
+import deassembler.CodeFramework;
 import deassembler.SourceReader;
 import ide.utils.DataManager;
 import ide.utils.Editor;
-import ide.utils.UIManager;
 import importIO.Import;
 import importIO.ImportManager;
 import ui.ImportResolver;
@@ -29,7 +30,7 @@ public class ImportFramework{
 		}
 		return cls;
 	}
-	
+
 	public static synchronized String removeUsuals(String text) {
 		boolean commentStarts = false;
 		StringTokenizer tok = new StringTokenizer(text, "\n");
@@ -68,145 +69,140 @@ public class ImportFramework{
 
 	public static synchronized void addImports(LinkedList<String> classess, Editor editor){
 		if(ImportManager.reading) return;
-		String pack = "";
-		final String text = removeUsuals(editor.getText());
-		if(text.trim().startsWith("package ") && text.trim().contains(";")) {
-			pack = text.trim().substring(text.trim().indexOf("package ") + 8, text.trim().indexOf(';'));
+		String PACK = "";
+		if(editor.getText().startsWith("package")) {
+			PACK = editor.getText().substring(editor.getText().indexOf(" ") + 1, editor.getText().indexOf(';'));
 		}
-		String className = "";
-		String path = "";
-		if(editor.currentFile != null) {
-			className = editor.currentFile.getName();
-			className = className.substring(0, className.indexOf('.'));
-			path = editor.currentFile.getAbsolutePath();
-			path = path.substring(0, path.lastIndexOf('/'));
+		LinkedList<String> unimported = new LinkedList<>();
+		//Removing Java Lang Classess
+		for(String classX : classess) {
+			boolean found = false;
+			for(String langClass : ImportManager.javaLangPack) {
+				String className = langClass.substring(langClass.lastIndexOf('.') + 1);
+				if(className.equals(classX)) {
+					found = true;
+					break;
+				}
+			}
+			if(!found)
+				unimported.add(classX);
 		}
-		try {
-			//Managing single locale imports
-			LinkedList<String> counted = new LinkedList<>();
-			LinkedList<Import> single_locales = new LinkedList<>();
-			for(String cl : classess) {
-				if(new File(path+"/"+cl+".java").exists() || ImportManager.getJavaLangPack().contains("java.lang."+cl) || counted.contains(cl)) continue;
-				Import i = null;
-				int c = 0;
-				for(Import im : ImportManager.getAllImports()) {
-					if(im.getClassName().equals(cl)) {
-						i = im;
-						c++;
-					}
-				}
-				counted.add(cl);
-				if(c == 1) {
-					if(!text.contains("import "+i.getPackage()+".*;") &&
-							!text.contains("import "+i.getImport()+";")) {
-						single_locales.add(i);
-					}
+		classess.clear();
+		//Managing Classess with Same Name but different Package
+		LinkedList<LinkedList<String>> coexistingClassess = new LinkedList<>();
+		for(String classX : unimported) {
+			LinkedList<String> bases = new LinkedList<>();
+			inner:
+			for(Import im : ImportManager.getAllImports()) {
+				if(im.getClassName().equals(classX)) {
+					if(im.getPackage().equals(PACK) || CodeFramework.isSource(PACK + "." + im.getClassName())) continue;
+					try {
+						for(String baseX : bases)
+							if(baseX.equals(im.getImport())) continue inner;
+						if(!CodeFramework.isSource(im.getImport()))
+							ClassLoader.getSystemClassLoader().loadClass(im.getImport());
+						bases.add(im.getImport());
+					}catch(Exception e) { }
 				}
 			}
-			for(Import im : single_locales) {
-				String packageName = im.getPackage();
-				if(!packageName.equals("java.lang") && !packageName.equals(pack)) {
-					if(!editor.getText().contains("import "+packageName+".*;") && 
-							!editor.getText().contains("import "+im.getImport()+";")) {
-						if(editor.getText().startsWith("package")) {
-							int index = editor.getText().indexOf(';');
-							editor.getAttachment().getVerticalScrollBar().setValue(editor.getAttachment().getVerticalScrollBar()
-									.getValue() + UIManager.fontSize);
-							if(DataManager.isUsingStarImports())					
-								editor.insert("\nimport "+packageName+".*;", index+1);
-							else
-								editor.insert("\nimport "+im.getImport()+";", index+1);
-
-						}
-						else{
-							if(DataManager.isUsingStarImports())					
-								editor.insert("import "+packageName+".*;\n", 0);
-							else
-								editor.insert("\nimport "+im.getImport()+";\n", 0);
-							editor.getAttachment().getVerticalScrollBar().setValue(editor.getAttachment().getVerticalScrollBar()
-									.getValue() + UIManager.fontSize);
-						}
-
-					}
+			if(!bases.isEmpty())
+				coexistingClassess.add(bases);
+		}
+		//Removing Multiple Existence
+		for(LinkedList<String> bases : coexistingClassess) {
+			if(bases.size() == 1) continue;
+			for(int i = 0; i < bases.size(); i++) {
+				for(int j = 0; j < bases.size() - i - 1; j++) {
+					if(bases.get(j).equals(bases.get(j + 1)))
+						bases.remove(j);
 				}
-				classess.remove(im.getClassName());
 			}
-			//Managing multiple locale classes
-			SourceReader reader = new SourceReader(editor.getText(), true);
-			LinkedList<Import> ims = new LinkedList<>();
-			for(String cl : classess) {
-				if(new File(path+"/"+cl+".java").exists() || ImportManager.getJavaLangPack().contains("java.lang."+cl)) continue;
-				for(Import im : ImportManager.getAllImports()) {
-					if(!im.getPackage().equals(pack) && !im.getPackage().equals("java.lang") && im.getClassName().equals(cl) && !im.getClassName().equals(className) && reader.getPackage(cl) == null) {
-						if(!editor.getText().contains("import "+im.getPackage()+".*;") && !editor.getText().contains("import "+im.getImport()+";")) {
-							boolean x = false;
-							for(Import ix : ims) {
-								if(ix.getImport().equals(im.getImport())){
-									x = true;
-									break;
+		}
+		//Managing Classess with Multi and Single Base Package
+		//Inserting the single bases and storing the multi bases classess
+		LinkedList<Import> multiBases = new LinkedList<>();
+		main:
+			for(LinkedList<String> bases : coexistingClassess) {
+				for(String pack : bases) {
+					String base = pack.substring(0, pack.lastIndexOf('.'));
+					if(base.equals(PACK)) {
+						bases.clear();
+						continue main;
+					}
+					if(bases.size() == 1) {
+						String className = pack.substring(pack.lastIndexOf('.') + 1);
+						if(!contains(editor, base, className)) {
+							insertImport(editor, base, className);
+						}
+						bases.clear();
+					}
+					else {
+						outer:
+							for(String classX : bases) {
+								String packName = classX.substring(0, classX.lastIndexOf('.'));
+								String className = classX.substring(classX.lastIndexOf('.') + 1);
+								if(contains(editor, packName, className)) break;
+								Import im = new Import(packName, className);
+								for(Import x : multiBases) {
+									if(x.getImport().equals(im.getImport()))
+										continue outer;
 								}
+								multiBases.add(im);
 							}
-							for(SourceReader.Import i : reader.imports) {
-								if(i.get().equals(im.getImport())) {
-									x = false;
-									break;
-								}
-							}
-							if(!x)
-								ims.add(im);
-						}
 					}
 				}
 			}
-			if(ims.isEmpty()) return;
-			Import[] imsx = new Import[ims.size()];
-			int k = 0;
-			for(Import im : ims)
-				imsx[k++] = im;
-			for(int i = 0; i < imsx.length; i++) {
-				for(int j = 0; j < imsx.length - 1 - i; j++) {
-					Import ix = imsx[j];
-					Import jx = imsx[j + 1];
-					if(ix.getPackage().compareTo(jx.getPackage()) > 0) {
-						imsx[j] = imsx[j+1];
-						imsx[j + 1] = ix;
-					}
-				}
+		LinkedList<Import> selectedPackages = imR.resolveImports(multiBases);
+		for(Import im : selectedPackages) {
+			if(!contains(editor, im.getPackage(), im.getClassName())) {
+				insertImport(editor, im.getPackage(), im.getClassName());
 			}
-			ims.clear();
-			for(Import im : imsx) {
-				ims.add(im);
-			}
-			LinkedList<Import> imports = imR.resolveImports(ims);
-			for(Import im : imports) {
-				String packageName = im.getPackage();
-				if(!packageName.equals("java.lang") && !packageName.equals(pack)) {
-					if(!editor.getText().contains("import "+packageName+".*;") && 
-							!editor.getText().contains("import "+im.getImport()+";")) {
-						if(editor.getText().startsWith("package")) {
-							int index = editor.getText().indexOf(';');
-							editor.getAttachment().getVerticalScrollBar().setValue(editor.getAttachment().getVerticalScrollBar()
-									.getValue() + UIManager.fontSize);
-							if(DataManager.isUsingStarImports())					
-								editor.insert("\nimport "+packageName+".*;", index+1);
-							else
-								editor.insert("\nimport "+im.getImport()+";", index+1);
-
-						}
-						else{
-							if(DataManager.isUsingStarImports())					
-								editor.insert("import "+packageName+".*;\n", 0);
-							else
-								editor.insert("\nimport "+im.getImport()+";\n", 0);
-							editor.getAttachment().getVerticalScrollBar().setValue(editor.getAttachment().getVerticalScrollBar()
-									.getValue() + UIManager.fontSize);
-						}
-					}
-				}
-			}
-			imports.clear();
-		}catch(Exception e) {System.err.println("Concurrent Modification Detected...");}
+		}
 	}
-	//editor.getAttachment().getVerticalScrollBar().setValue(editor.getAttachment().getVerticalScrollBar()
-		//	.getValue() + UIManager.fontSize);
+
+	public static boolean contains(Editor editor, String packName, String className) {
+		return editor.getText().contains("import " + packName + ".*;") || 
+				editor.getText().contains("import " + packName + "." + className + ";");
+	}
+
+	public static void insertImport(Editor editor, String pack, String className) {
+		try {
+			if(editor.getText().startsWith("package")) {
+				String text = editor.getText();
+				Document d = editor.getDocument();
+				int start = text.indexOf(';') + 1;
+				if(DataManager.isUsingStarImports())
+					d.insertString(start, "\nimport " + pack + ".*;", null);
+				else
+					d.insertString(start, "\nimport " + pack + "." + className + ";", null);
+			}
+			else {
+				Document d = editor.getDocument();
+				if(DataManager.isUsingStarImports())
+					d.insertString(0, "import " + pack + ".*;\n", null);
+				else
+					d.insertString(0, "import " + pack + "." + className + ";\n", null);
+			}
+			editor.getAttachment().getVerticalScrollBar().setValue(editor.getAttachment().getVerticalScrollBar().getValue() - 1);
+		}catch(Exception e) { System.err.println(e); }
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

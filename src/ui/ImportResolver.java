@@ -24,7 +24,7 @@ public class ImportResolver extends JDialog {
 	private int y;
 	public ImportResolver() {
 		super(Screen.getFileView().getScreen(), true);
-        ide.utils.UIManager.setData(this);
+		ide.utils.UIManager.setData(this);
 		setTitle("Choose a Type to import");
 		setSize(600, 300);
 		setLocationRelativeTo(null);
@@ -35,7 +35,7 @@ public class ImportResolver extends JDialog {
 		UIManager.setData(panel);
 		dimension = new Dimension(getWidth(), 30);
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		panel.setPreferredSize(new Dimension(getWidth(), y));
@@ -57,40 +57,22 @@ public class ImportResolver extends JDialog {
 		boxs.clear();
 		y = 0;
 		LinkedList<Import> selections = new LinkedList<>();
-		boolean allAlone = true;
 		for(Import im : imports) {
-			boolean isAlone = true;
-			inner:
-			for(Import imx : imports) {
-				if(im.getClassName().equals(imx.getClassName())) {
-					if(!im.getPackage().equals(imx.getPackage())) {
-						isAlone = false;
-						break inner;
-					}
+			ToggleBox box = new ToggleBox(im.getClassName() + " -"+im.getImport(), (selected)->{
+				if(selected) {
+					selections.add(im);
+				}else {
+					selections.remove(im);
 				}
-			}
-			if(isAlone) {
-				selections.add(im);
-			}
-			else {
-				allAlone = false;
-				ToggleBox box = new ToggleBox(im.getClassName() + " -"+im.getImport(), (selected)->{
-					if(selected) {
-						selections.add(im);
-					}else {
-						selections.remove(im);
-					}
-				});
-				box.setBounds(0, y, panel.getWidth(), 30);
-				box.setPreferredSize(dimension);
-				box.setMinimumSize(box.getPreferredSize());
-				panel.add(box);
-				boxs.add(box);
-				y += 30;
-			}
+			});
+			box.setBounds(0, y, panel.getWidth(), 30);
+			box.setPreferredSize(dimension);
+			box.setMinimumSize(box.getPreferredSize());
+			panel.add(box);
+			boxs.add(box);
+			y += 30;
+
 		}
-		if(allAlone)
-			return selections;
 		panel.setPreferredSize(new Dimension(getWidth() - 20, y));
 		setVisible(true);
 		setSize(getWidth(),getHeight() - 1);

@@ -211,6 +211,8 @@ public class RunView extends View{
 					if(jdkPath != null && new File(jdkPath).exists())
 						jdkPath = String.copyValueOf(jdkPath.toCharArray()) + "/bin/";
 
+					System.out.println("Compiling");
+					
 					String cmd = "";
 					String depenPath = "";
 					if(!Screen.getFileView().getDependencyManager().dependencies.isEmpty()) {
@@ -323,6 +325,7 @@ public class RunView extends View{
 					Screen.getErrorHighlighter().removeAllHighlights();
 				}catch(Exception e2) {e2.printStackTrace();}
 
+				System.out.println("Compilation Completed");
 				getScreen().getOperationPanel().removeTab("Compilation");
 				if(mainClass == null)
 				{
@@ -341,7 +344,8 @@ public class RunView extends View{
 				System.gc();
 
 				Screen.setStatus("Running Project", 23);
-				
+
+				System.out.println("Running");
 				NATIVE_PATH = "";
 				for(String d : Screen.getFileView().getNativesManager().natives) {
 					NATIVE_PATH += d + ":";

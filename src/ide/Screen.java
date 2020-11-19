@@ -58,7 +58,7 @@ public class Screen extends JFrame {
 	private static RunView runView;
 	private static ProjectView projectView;
 	private static View settings;
-	public static final String VERSION = "v1.1";
+	public static final String VERSION = "v1.2";
 	private SplashScreen splash;
 	private Robot robot;
 	public volatile boolean screenHasProjectView = true;
@@ -70,7 +70,7 @@ public class Screen extends JFrame {
 	public static SnippetView snippetView; 
 	private static PluginManager pluginManager;
 	private static PluginView pluginView;
-     private static PluginStore pluginStore;
+	private static PluginStore pluginStore;
 	private static Updater updater;
 
 	public Screen() {
@@ -151,7 +151,7 @@ public class Screen extends JFrame {
 
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
-		
+
 		recentsManager = new RecentsManager(this);
 
 		splash.setProgress(77, "initializing");
@@ -168,15 +168,15 @@ public class Screen extends JFrame {
 
 
 		tools = new EditorTools();
-		
+
 		splitPane.setLeftComponent(projectView.getProjectView());
 		splitPane.setDividerLocation(300);
 
 		splash.setProgress(83, "plugging in");
-		
+
 		pluginManager = new PluginManager();
 		pluginView = new PluginView(this);
-          pluginStore = new PluginStore();
+		pluginStore = new PluginStore();
 
 		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
@@ -416,7 +416,7 @@ public class Screen extends JFrame {
 			robot.mouseMove(x, y);
 		}catch(Exception e) {}
 	}
-	
+
 	public UIManager getUIManager() {
 		return uiManager;
 	}
@@ -446,22 +446,22 @@ public class Screen extends JFrame {
 	public TabPanel getTabPanel() {
 		return tabPanel;
 	}
-	
+
 	public static void updateIDE() {
 		updater.setVisible(true);
 	}
-	
+
 	public static PluginManager getPluginManager() {
 		return pluginManager;
 	}
-	
-     public static PluginView getPluginView() {
-          return pluginView;
-     }
-     
-     public static PluginStore getPluginStore() {
-          return pluginStore;
-     }
+
+	public static PluginView getPluginView() {
+		return pluginView;
+	}
+
+	public static PluginStore getPluginStore() {
+		return pluginStore;
+	}
 
 	public void saveEssential() {
 		uiManager.save();

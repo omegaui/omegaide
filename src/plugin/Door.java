@@ -37,8 +37,7 @@ public class Door extends JComponent{
                     if(plugin.PluginView.plugin.getName().equals(plug.name)) {
                          plug.enabled = !plug.enabled;
                          if(plug.enabled) {
-                        	 ide.Screen.getPluginManager().initPlug(plug.name);
-                        	 plugin.PluginView.plugin.enable();
+                        	     ide.Screen.getPluginManager().initPlug(plug.name);
                          }
                          else
                         	 plugin.PluginView.plugin.disable();

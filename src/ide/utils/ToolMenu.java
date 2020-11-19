@@ -35,6 +35,12 @@ import tabPane.IconManager;
 public class ToolMenu extends JPanel {
 
 	private Screen screen;
+	public JPopupMenu filePopup;
+	public JPopupMenu projectPopup;
+	public JPopupMenu toolsPopup;
+	public JPopupMenu viewPopup;
+	public JPopupMenu setPopup;
+	public JPopupMenu helpPopup;
 	public JMenuItem buildPro;
 	public JMenuItem compilePro;
 	public MenuButton runBtn;
@@ -52,10 +58,10 @@ public class ToolMenu extends JPanel {
 	public volatile boolean oPHidden;
 	public static JMenu openFileMenu;
 	public static JMenu openProjectMenu;
-	private static info.Screen infoScreen;
+	public static info.Screen infoScreen;
 	public boolean hidden;
-	private static final Font font = new Font(UIManager.fontName, Font.BOLD, 14);
 	public static ProjectWizard projectWizard;
+	private static final Font font = new Font(UIManager.fontName, Font.BOLD, 14);
 	public static final Color HIGHLIGHT = (((Color)javax.swing.UIManager.get("Button.background")).getRed() > 53) ? Color.decode("#000080") : Color.decode("#93C763");
 
 	public ToolMenu(Screen screen) {
@@ -70,37 +76,37 @@ public class ToolMenu extends JPanel {
 	}
 
 	private void init() {
-		JPopupMenu filePopup = new JPopupMenu("File");
+		filePopup = new JPopupMenu("File");
 		initFilePopup(filePopup);
 		Menu fileMenu = new Menu(filePopup, "File");
 		fileMenu.setBounds(0, 0, 60, 20);
 		addComp(fileMenu);
 
-		JPopupMenu projectPopup = new JPopupMenu("Project");
+		projectPopup = new JPopupMenu("Project");
 		initProjectPopup(projectPopup);
 		Menu projectMenu = new Menu(projectPopup, "Project");
 		projectMenu.setBounds(60, 0, 60, 20);
 		addComp(projectMenu);
 
-		JPopupMenu toolsPopup = new JPopupMenu("Tools");
+		toolsPopup = new JPopupMenu("Tools");
 		initToolMenu(toolsPopup);
 		Menu toolsMenu = new Menu(toolsPopup, "Tools");
 		toolsMenu.setBounds(120, 0, 60, 20);
 		addComp(toolsMenu);
 
-		JPopupMenu viewPopup = new JPopupMenu("View");
+		viewPopup = new JPopupMenu("View");
 		initViewMenu(viewPopup);
 		Menu viewMenu = new Menu(viewPopup, "View ");
 		viewMenu.setBounds(180, 0, 60, 20);
 		addComp(viewMenu);
 
-		JPopupMenu setPopup = new JPopupMenu("Settings");
+		setPopup = new JPopupMenu("Settings");
 		initSetMenu(setPopup);
 		Menu setMenu = new Menu(setPopup, "Settings");
 		setMenu.setBounds(240, 0, 60, 20);
 		addComp(setMenu);
 
-		JPopupMenu helpPopup = new JPopupMenu("Help");
+		helpPopup = new JPopupMenu("Help");
 		initHelpMenu(helpPopup);
 		Menu helpMenu = new Menu(helpPopup, "Help");
 		helpMenu.setBounds(300, 0, 60, 20);

@@ -55,6 +55,7 @@ public class PluginManager {
 				if(p.enabled && getPlugin(p.name) != null) {
 					Plugin plugin = getPlugin(p.name);
 					plugin.init();
+					plugin.enable();
 					init_plugs.add(p);
 				}
 				return;
@@ -69,6 +70,7 @@ public class PluginManager {
 		Plugin plugin = getPlugin(name);
 		if(plugin == null) return;
 		plugin.init();
+		plugin.enable();
 		init_plugs.add(getPlug(name));
 	}
 

@@ -10,7 +10,7 @@ import java.awt.event.*;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
-	private static final String VERSION = "v1.1";
+	private static final String VERSION = "v1.2";
 	private static String ENCOURAGE = "lets code";
 	private static final Color ALPHA = new Color(0, 0, 0, 0);
 	private static final Font PX40 = new Font("Ubuntu Mono", Font.BOLD, 40);
@@ -90,7 +90,6 @@ public class SplashScreen extends JFrame{
 		g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
 		g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
 		g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
-		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, this);
 		g.setFont(PX40);
 		g.setColor(DG);
 		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 190);
@@ -115,6 +114,7 @@ public class SplashScreen extends JFrame{
 		int[] _X = {getWidth() - x - 1, getWidth() - x - 15 - 1 + 20, getWidth() - x - 1, getWidth() - x + 15 - 1, getWidth() - x - 1};
 		int[] _Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(_X, _Y, X.length);
+          g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
 	}
 

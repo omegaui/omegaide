@@ -13,7 +13,7 @@ public class Screen extends JDialog{
 	private BufferedImage image;
 	private static final String TITLE = "Omega IDE";
 	private static final String EDITION = "Community";
-	private static final String VERSION = "v1.1";
+	private static final String VERSION = "v1.2";
 	private static final String WARRANTY = "This program comes with absolutely no warranty";
 	private static final String COMPANY = "Omega UI";
 	private static final String CREDIT = "Created by : Arham";
@@ -102,12 +102,12 @@ public class Screen extends JDialog{
                g.setFont(PX20);
                g.drawString("BUGS FIXED IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("BUGS FIXED IN THIS RELEASE")/2, 21);
                g.setFont(PX12);
-               g.drawString("TabPane glitch fixed", getWidth()/2 - g.getFontMetrics().stringWidth("TabPane glitch fixed")/2, 21 + 21);
+               g.drawString("ImportFramework has been rewritten", getWidth()/2 - g.getFontMetrics().stringWidth("ImportFramework has been rewritten")/2, 21 + 21);
                
                g.setFont(PX20);
                g.drawString("NEW FEATURES IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("NEW FEATURES IN THIS RELEASE")/2, 21 + 21 + 21 + 21 + 51);
                g.setFont(PX12);
-               g.drawString("New Plugin Management System", getWidth()/2 - g.getFontMetrics().stringWidth("New Plugin Management System")/2, 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("Added Support for Extra Menu Items", getWidth()/2 - g.getFontMetrics().stringWidth("Added Support for Extra Menu Items")/2, 21 + 21 + 21 + 21 + 21 + 51);
                g.drawString("Performance Improvements", getWidth()/2 - g.getFontMetrics().stringWidth("Performance Improvements")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
                g.drawImage(image, getWidth()/2 - 32, getHeight() - 110, 64, 64, this);
           }

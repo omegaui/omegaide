@@ -138,7 +138,7 @@ public class BuildView extends View {
 		return files;
 	}
 
-	private void extractJar(String destinationDir, String jarPath)
+	public void extractJar(String destinationDir, String jarPath)
 	{
 		try {
 
