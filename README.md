@@ -42,3 +42,5 @@ For running, open terminal in the bin directory created previously.
 and run 
 **java -cp res:lib/asterisk:. ide.Screen**
 replace **asterisk** by its symbol (*).
+
+# For getting the daily builds of omega ide email me at omegaui22@gmail.com or message me or see daily build previews on instagram posts at @i_am_arham_92 
