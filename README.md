@@ -42,7 +42,7 @@ It manages the theme on its own like other GTK applications.
 There are lot more features to explore. Give it a try.
 
 ## Installing
-
+Dependency : JDK 11 or above
 For installation on Debain or its derivatives use the .deb installer in the release section.
 For Other Distros download the Omega IDE.zip file from the release section. 
 It contains three files (**one shell script, one desktop entry, one image-icon and a runnable jar file**) and I think you know what to do with them.
