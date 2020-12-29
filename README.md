@@ -13,7 +13,7 @@ It uses the native `GTKLookAndFeel` and it has its own set of custom components.
 
 It offers dependency managers from classpath to module path.
 
-![](/images/content_assist.png)
+![](/images/code_assist.png)
 It has a (**beta state**) content assist that just works.
 It has Auto Import feature (Press **Ctrl + Shift + O**).
 
