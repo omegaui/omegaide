@@ -28,6 +28,7 @@ import ide.utils.Editor;
 import ide.utils.ResourceManager;
 import ide.utils.UIManager;
 import ide.utils.systems.creators.RefractionManager;
+import importIO.JDKReader;
 
 public class BuildView extends View {
 
@@ -45,8 +46,7 @@ public class BuildView extends View {
 		setLocationRelativeTo(null);
 	}
 
-	public void createJar()
-	{
+	public void createJar() {
 		new Thread(()->{
 
 			try {
@@ -187,27 +187,28 @@ public class BuildView extends View {
 
 	}
 
-	public void compileProject()
-	{
+	public void compileProject() {
 		if(compileProcess != null) {
 			if(compileProcess.isAlive())
 				return;
 		}
 		new Thread(()->{
 
-			try 
-			{
+			try  {
 				getScreen().saveAllEditors();
 				createClassList();
 				if(classess.isEmpty())
 					return;
+				Screen.getErrorHighlighter().removeAllHighlights();
 				optimizeProjectOutputs();
-				getScreen().getToolMenu().buildPro.setEnabled(false);
-				getScreen().getToolMenu().compilePro.setEnabled(false);
-				getScreen().getToolMenu().compileBtn.setEnabled(false);
+				getScreen().getToolMenu().buildComp.setClickable(false);
+				getScreen().getToolMenu().runComp.setClickable(false);
 				String status = " Successfully";
 				printArea.setVisible(true);
 				printArea.print("Building Project....");
+				if(Screen.getFileView().getProjectManager().jdkPath == null) {
+					printArea.print("No JDK Defined for this Project!\nSelect a JDK from the Project Tab in Settings.");
+				}
 				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 				if(jdkPath != null && new File(jdkPath).exists())
 					jdkPath = String.copyValueOf(jdkPath.toCharArray()) + "/bin/";
@@ -286,14 +287,13 @@ public class BuildView extends View {
 						}
 					}
 				}
-				printArea.setProcess(compileProcess);
-				printArea.print(cmd);
 				getScreen().getOperationPanel().addTab("Compilation", printArea, ()->{printArea.stopProcess();});
+				printArea.setProcess(compileProcess);
+				printArea.print("Using \"" + cmd + "\"");
 				String errorlog = "";
 				Scanner inputReader = new Scanner(compileProcess.getInputStream());
 				Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-				while(compileProcess.isAlive())
-				{
+				while(compileProcess.isAlive()) {
 					while(inputReader.hasNextLine())
 						printArea.print(inputReader.nextLine());
 					while(errorReader.hasNextLine()) {
@@ -310,9 +310,8 @@ public class BuildView extends View {
 				}
 				printArea.print("Compilation Completed"+status);
 				compileProcess = null;
-				getScreen().getToolMenu().buildPro.setEnabled(true);
-				getScreen().getToolMenu().compilePro.setEnabled(true);
-				getScreen().getToolMenu().compileBtn.setEnabled(true);
+				getScreen().getToolMenu().buildComp.setClickable(true);
+				getScreen().getToolMenu().runComp.setClickable(true);
 				Screen.getProjectView().reload();
 			}catch(Exception e) {e.printStackTrace();}
 
@@ -579,9 +578,9 @@ public class BuildView extends View {
 			comps.add(textArea);
 		}
 
-		public void setProcess(Process p)
-		{
+		public void setProcess(Process p) {
 			process = p;
+			textArea.setText("Building Project with JDK v" + JDKReader.version);
 		}
 
 		public void stopProcess() {
@@ -594,10 +593,9 @@ public class BuildView extends View {
 
 		public void print(String text)
 		{
-			textArea.append("\n"+text);
-			try {
-				p.getVerticalScrollBar().setValue(p.getVerticalScrollBar().getMaximum());
-			}catch(Exception e) {}
+			textArea.append("\n" + text);
+			p.repaint();
+			p.getVerticalScrollBar().setValue(p.getVerticalScrollBar().getMaximum());
 		}
 
 		public void clear() {

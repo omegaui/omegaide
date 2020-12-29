@@ -143,7 +143,7 @@ public class FileView extends View {
 			resourceManager.saveData();
 	}
 
-	public void open(String type) {
+	public boolean open(String type) {
 		JFileChooser ch = new JFileChooser();
 		UIManager.setData(ch);
 		Screen.getAccessories().addDeleteButton(ch);
@@ -154,8 +154,7 @@ public class FileView extends View {
 			ch.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			ch.setMultiSelectionEnabled(false);
 			int res = ch.showOpenDialog(getScreen());
-			if(res == JFileChooser.APPROVE_OPTION)
-			{
+			if(res == JFileChooser.APPROVE_OPTION) {
 				if(Screen.launcher != null)
 					Screen.launcher.setVisible(false);
 				Screen.getScreen().setVisible(true);
@@ -167,6 +166,7 @@ public class FileView extends View {
 				checkDir(new File(projectPath+"/out"));
 				checkDir(new File(projectPath+"/bin"));
 				checkDir(new File(projectPath+"/res"));
+				return true;
 			}
 		}
 		else
@@ -183,6 +183,7 @@ public class FileView extends View {
 				}
 			}
 		}
+		return false;
 	}
 
 	public void closeProject() {

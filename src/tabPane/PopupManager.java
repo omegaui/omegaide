@@ -1,10 +1,11 @@
 package tabPane;
-
+import popup.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.nio.file.Path;
+
 import java.io.File;
 
-import javax.swing.Icon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -18,149 +19,72 @@ import importIO.ImportManager;
 public class PopupManager {
 	public static final byte SOURCE_FILE = 0;
 	public static final byte NON_SOURCE_FILE = 1;
-	public static JPopupMenu createPopup(byte type, Editor editor, Screen screen, Icon icon) {
-		JPopupMenu popUp = new JPopupMenu();
-		popUp.setInvoker(editor);
-		JMenuItem nameItem = new JMenuItem(editor.currentFile.getName(), icon);
-		nameItem.setDisabledIcon(icon);
-		nameItem.setEnabled(false);
-		popUp.add(nameItem);
+	public static OPopupWindow createPopup(byte type, Editor editor, Screen screen) {
+		OPopupWindow popup = new OPopupWindow("Tab Menu", ide.Screen.getScreen(), 0, false);
 		
 		if(type == SOURCE_FILE) {
-			JMenuItem runSingleItem = new JMenuItem("Run as Singlet", IconManager.runSingleIcon);
-			JMenuItem runThisItem = new JMenuItem("Run as Main Class", IconManager.runAsMainIcon);
-			JMenuItem runProjectItem = new JMenuItem("Run Project", IconManager.runProjectIcon);
-			JMenuItem compileProjectItem = new JMenuItem("Build Project", IconManager.compileProjectIcon);
-			JMenuItem saveItem = new JMenuItem("Save", IconManager.saveIcon);
-			JMenuItem saveAsItem = new JMenuItem("Save As", IconManager.saveAsIcon);
-			JMenuItem discardItem = new JMenuItem("Discard", IconManager.discardIcon);
-			JMenuItem reloadItem = new JMenuItem("Reload", IconManager.reloadIcon);
-			
-			runSingleItem.addActionListener(e->{
-				Screen.getRunView().runSinglet(editor.currentFile);
-			});
-			runThisItem.addActionListener(e->{
-				Screen.getRunView().setMainClassPath(editor.currentFile.getAbsolutePath());
-				Screen.getRunView().run();
-			});
-			runProjectItem.addActionListener(e->{
-				Screen.getRunView().run();
-			});
-			compileProjectItem.addActionListener(e->{
-				Screen.getBuildView().compileProject();
-			});
-			saveItem.addActionListener(e->{
-				editor.saveCurrentFile();
-			});
-			saveAsItem.addActionListener(e->{
-				editor.saveFileAs();
-				Screen.getProjectView().reload();
-			});
-			discardItem.addActionListener(e->{
-				editor.reloadFile();
-				screen.getTabPanel().remove(editor);
-			});
-			reloadItem.addActionListener(e->{editor.reloadFile();});
-			
-			popUp.add(runSingleItem);
-			popUp.add(runThisItem);
-			popUp.add(runProjectItem);
-			popUp.add(compileProjectItem);
-			popUp.add(saveItem);
-			popUp.add(saveAsItem);
-			popUp.add(discardItem);
-			popUp.add(reloadItem);
+               popup.createItem("Run as Main Class", IconManager.runImage, ()->{
+                    Screen.getRunView().setMainClassPath(editor.currentFile.getAbsolutePath());
+                    Screen.getRunView().run();
+               })
+               .createItem("Run Project", IconManager.runImage, ()->Screen.getRunView().run())
+               .createItem("Build Project", IconManager.buildImage, ()->Screen.getBuildView().compileProject())
+               .createItem("Save", IconManager.fileImage, ()->editor.saveCurrentFile())
+               .createItem("Save As", IconManager.fileImage, ()->{
+                    editor.saveFileAs();
+                    Screen.getProjectView().reload();
+               })
+               .createItem("Discard", IconManager.closeImage, ()->{
+                    editor.reloadFile();
+                    screen.getTabPanel().remove(editor);
+               })
+               .createItem("Reload", null, ()->editor.reloadFile()).width(300);
 		}
 		else {
-			JMenuItem saveItem = new JMenuItem("Save", IconManager.saveIcon);
-			JMenuItem saveAsItem = new JMenuItem("Save As", IconManager.saveAsIcon);
-			JMenuItem discardItem = new JMenuItem("Discard", IconManager.discardIcon);
-			JMenuItem reloadItem = new JMenuItem("Reload", IconManager.reloadIcon);
-
-			saveItem.addActionListener(e->{
-				editor.saveCurrentFile();
-			});
-			saveAsItem.addActionListener(e->{
-				editor.saveFileAs();
-				Screen.getProjectView().reload();
-			});
-			discardItem.addActionListener(e->{
-				editor.reloadFile();
-				screen.getTabPanel().remove(editor);
-			});
-			reloadItem.addActionListener(e->{editor.reloadFile();});
-
-			popUp.add(saveItem);
-			popUp.add(saveAsItem);
-			popUp.add(discardItem);
-			popUp.add(reloadItem);
+			popup.createItem("Save", IconManager.fileImage, ()->editor.saveCurrentFile())
+               .createItem("Save As", IconManager.fileImage, ()->{
+                    editor.saveFileAs();
+                    Screen.getProjectView().reload();
+               })
+               .createItem("Discard", IconManager.closeImage, ()->{
+                    editor.reloadFile();
+                    screen.getTabPanel().remove(editor);
+               })
+               .createItem("Reload", null, ()->editor.reloadFile()).width(300);
 		}
-		JMenuItem copyFullPath = new JMenuItem("Copy Path (\"path\")", IconManager.fileIcon);
-		copyFullPath.addActionListener((e)->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
-		popUp.add(copyFullPath);
-		
-		JMenuItem copyRelative = new JMenuItem("Copy Path", IconManager.fileIcon);
-		copyRelative.addActionListener((e)->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
-		popUp.add(copyRelative);
-		UIManager.setData(popUp);
-		return popUp;
+          popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
+          popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
+		return popup;
 	}
 
-	public static void createTreePopup(JPopupMenu popUp, File file) {
-		JMenuItem deleteItem = new JMenuItem("Delete", IconManager.deleteIcon);
-		JMenuItem refreshItem = new JMenuItem("Refresh", IconManager.refreshIcon);
-		JMenuItem renameItem = new JMenuItem("Rename", IconManager.renameIcon);
-		JMenuItem packageItem = new JMenuItem("New Package", IconManager.java_20px);
-		JMenuItem classItem = new JMenuItem("New Class", IconManager.class_20px);
-		JMenuItem annotationItem = new JMenuItem("New Annotation", IconManager.annotation_20px);
-		JMenuItem interfaceItem = new JMenuItem("New Interface", IconManager.interface_20px);
-		JMenuItem enumItem = new JMenuItem("New Enum", IconManager.enum_20px);
-		JMenuItem customItem = new JMenuItem("New File", IconManager.file_20px);
-		final Screen screen = Screen.getScreen();
-		packageItem.addActionListener(e->Screen.getFileView().getFileCreator().show("Class"));
-		classItem.addActionListener(e->Screen.getFileView().getFileCreator().show("Class"));
-		interfaceItem.addActionListener(e->Screen.getFileView().getFileCreator().show("interface"));
-		enumItem.addActionListener(e->Screen.getFileView().getFileCreator().show("enum"));
-		annotationItem.addActionListener(e->Screen.getFileView().getFileCreator().show("@interface"));
-		customItem.addActionListener(e->Screen.getFileView().getFileCreator().show("Custom File"));
-		refreshItem.addActionListener(e->{
-			Screen.getProjectView().reload();
-		});
-		renameItem.addActionListener(e->{
-			Editor editor = screen.getTabPanel().findEditor(file);
-			if(editor != null) screen.getTabPanel().remove(editor);
-			Screen.getProjectView().getRefractor().rename(file, "Rename -"+file.getName(), ()->{
-				Screen.getProjectView().getScreen().loadFile(RefractionManager.lastFile);
-			});
-			Screen.getProjectView().reload();
-			ImportManager.readSource(EditorTools.importManager);
-		});
-		deleteItem.addActionListener(e->{
-			Editor editor = screen.getTabPanel().findEditor(file);
-			if(editor != null) {
-				screen.getTabPanel().remove(editor);
-			}
-			Editor.deleteFile(file);
-			Screen.getProjectView().reload();
-			ImportManager.readSource(EditorTools.importManager);
-		});
-
-		popUp.add(packageItem);
-		popUp.add(classItem);
-		popUp.add(interfaceItem);
-		popUp.add(enumItem);
-		popUp.add(annotationItem);
-		popUp.add(customItem);
-		popUp.add(refreshItem);
-		popUp.add(renameItem);
-		popUp.add(deleteItem);
+	public static void createTreePopup(OPopupWindow popup, File file) {
+          popup.createItem("New Package", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().show("Class"))
+          .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("Class"))
+          .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().show("interface"))
+          .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
+          .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
+          .createItem("Create Custom File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().show("Custom File"))
+          .createItem("Delete", IconManager.closeImage, ()->{
+              Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
+               if(editor != null) {
+                    ide.Screen.getScreen().getTabPanel().remove(editor);
+               }
+               Editor.deleteFile(file);
+               Screen.getProjectView().reload();
+               ImportManager.readSource(EditorTools.importManager);
+          })
+          .createItem("Refresh", null, ()->Screen.getProjectView().reload())
+          .createItem("Rename", IconManager.fileImage, ()->{
+               Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
+               if(editor != null) ide.Screen.getScreen().getTabPanel().remove(editor);
+               Screen.getProjectView().getRefractor().rename(file, "Rename -"+file.getName(), ()->{
+                    Screen.getProjectView().getScreen().loadFile(RefractionManager.lastFile);
+               });
+               Screen.getProjectView().reload();
+               ImportManager.readSource(EditorTools.importManager);
+          });
 		
-		JMenuItem copyFullPath = new JMenuItem("Copy Path (\"path\")", IconManager.fileIcon);
-		copyFullPath.addActionListener((e)->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+file.getAbsolutePath()+"\""), null));
-		popUp.add(copyFullPath);
-		
-		JMenuItem copyRelative = new JMenuItem("Copy Path", IconManager.fileIcon);
-		copyRelative.addActionListener((e)->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));
-		popUp.add(copyRelative);
+          popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+file.getAbsolutePath()+"\""), null));
+          popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));
 	}
 }

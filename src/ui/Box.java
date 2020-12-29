@@ -10,7 +10,7 @@ public class Box extends JComponent{
 
 	public Box(String text, Runnable r){
 		this.text = text;
-		setFont(CodeAssistPanel.font);
+		setFont(settings.Screen.PX14);
 		ide.utils.UIManager.setData(this);
 		addMouseListener(new MouseAdapter(){
 			@Override

@@ -14,6 +14,7 @@ import ui.ImportResolver;
 public class ImportFramework{
 	private static ImportResolver imR = new ImportResolver();
 	public static LinkedList<String> findClasses(String text){
+          text = removeUsuals(text);
 		LinkedList<String> cls = new LinkedList<>();
 		try {
 			text = text.substring(text.indexOf("public"));
@@ -90,12 +91,13 @@ public class ImportFramework{
 		classess.clear();
 		//Managing Classess with Same Name but different Package
 		LinkedList<LinkedList<String>> coexistingClassess = new LinkedList<>();
+          main:
 		for(String classX : unimported) {
 			LinkedList<String> bases = new LinkedList<>();
 			inner:
 			for(Import im : ImportManager.getAllImports()) {
 				if(im.getClassName().equals(classX)) {
-					if(im.getPackage().equals(PACK) || CodeFramework.isSource(PACK + "." + im.getClassName())) continue;
+					if(im.getPackage().equals(PACK) || contains(editor, im.getPackage(), im.getClassName()) || CodeFramework.isSource(PACK + "." + im.getClassName())) continue main;
 					try {
 						for(String baseX : bases)
 							if(baseX.equals(im.getImport())) continue inner;
@@ -125,7 +127,7 @@ public class ImportFramework{
 			for(LinkedList<String> bases : coexistingClassess) {
 				for(String pack : bases) {
 					String base = pack.substring(0, pack.lastIndexOf('.'));
-					if(base.equals(PACK)) {
+					if(base.equals(PACK) || contains(editor, base, pack.substring(pack.lastIndexOf('.') + 1))) {
 						bases.clear();
 						continue main;
 					}

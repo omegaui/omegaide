@@ -1,16 +1,21 @@
 package ide;
-import javax.imageio.*;
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
-import tabPane.IconManager;
-
-import java.awt.event.*;
+import javax.swing.JFrame;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
-	private static final String VERSION = "v1.2";
+	private static final String VERSION = Screen.VERSION;
 	private static String ENCOURAGE = "lets code";
 	private static final Color ALPHA = new Color(0, 0, 0, 0);
 	private static final Font PX40 = new Font("Ubuntu Mono", Font.BOLD, 40);
@@ -20,21 +25,15 @@ public class SplashScreen extends JFrame{
 	private static Color BACK;
 	private static Color BLU;
 	private static Color DG;
-	private static BufferedImage image;
+	private static BufferedImage image = (BufferedImage)tabPane.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
 	private volatile boolean ground = false;
 
 	public SplashScreen(){
-		boolean isDarkMode = ((Color)javax.swing.UIManager.get("Button.background")).getRed() <= 53;
-		BACK = isDarkMode ? Color.BLACK : Color.WHITE;
-		BLU = isDarkMode ? Color.GREEN : Color.BLUE;
-		DG = isDarkMode ? Color.WHITE : Color.DARK_GRAY;
-		try{
-			final String NAME = isDarkMode ? "/omega_ide_icon128_dark.png" : "/omega_ide_icon128.png";
-			image = ImageIO.read(getClass().getResourceAsStream(NAME));
-			setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
-		}catch(Exception e){}
+		BACK = ide.utils.UIManager.c2;
+		BLU = ide.utils.UIManager.c3;
+		DG = ide.utils.UIManager.isDarkMode() ? ide.utils.UIManager.c1 : BLU;
 		setUndecorated(true);
 		pack();
 		createBufferStrategy(3);
@@ -58,10 +57,10 @@ public class SplashScreen extends JFrame{
 		new Thread(()->{
 			while(progress < 100 && isVisible()){
 				render();
+				paint(getGraphics());
 			}
 			setVisible(false);
 		}).start();
-		render();
 	}
 
 	public void render(){
@@ -114,14 +113,17 @@ public class SplashScreen extends JFrame{
 		int[] _X = {getWidth() - x - 1, getWidth() - x - 15 - 1 + 20, getWidth() - x - 1, getWidth() - x + 15 - 1, getWidth() - x - 1};
 		int[] _Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(_X, _Y, X.length);
-          g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
+          g.setColor(BACK);
+          g.fillRect(getWidth()/2 - 64, 20, 128, 128);
+		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
 	}
 
 	@Override
-	public void paint(Graphics graphics){
-		graphics.drawImage(image, getWidth()/2 - 64, 20, 128, 128, this);
-		graphics.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
+	public void paint(Graphics g){
+          g.setColor(BACK);
+          g.fillRect(getWidth()/2 - 64, 20, 128, 128);
+		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 	}
 
 	public void setProgress(int progress, String status){

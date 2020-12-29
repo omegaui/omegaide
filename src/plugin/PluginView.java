@@ -1,4 +1,5 @@
 package plugin;
+import settings.comp.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.imageio.*;
@@ -15,7 +16,7 @@ public class PluginView extends JDialog{
 	public static final int LEFT_OFFSET = 300;
 	private BufferedImage image;
 	public static Plugin plugin;
-	private static JButton closeBtn;
+	private static TextComp closeBtn;
 
 	//Information View
 	private static JButton iconBtn;
@@ -25,13 +26,14 @@ public class PluginView extends JDialog{
 	private static JScrollPane scrollPane = null;
 	private static JTextField authorField;
 	private static JTextField copyrightField;
-	private static JButton mRBtn;
-	private static JButton mLBtn;
+	private static TextComp mRBtn;
+	private static TextComp mLBtn;
 	private static int index = 0;
 
 	public PluginView(ide.Screen screen){
 		super(screen);
 		setTitle("Plugin Manager");
+		setIconImage(screen.getIconImage());
 		setModal(false);
 		setUndecorated(true);
 		setSize(1000, 600);
@@ -46,13 +48,16 @@ public class PluginView extends JDialog{
 			}
 		});
 		try{
-			image = (BufferedImage) ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon32.png"));
+			image = (BufferedImage) ImageIO.read(getClass().getResourceAsStream(ide.utils.UIManager.isDarkMode() ? "/omega_ide_icon32_dark.png" : "/omega_ide_icon32.png"));
 		}catch(Exception e){ System.err.println(e); }
 		init();
 	}
 
 	public void init(){
-		closeBtn = new JButton("X");
+		closeBtn = new TextComp("X", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               setVisible(false);
+               dispose();
+	     });
 		closeBtn.setFont(PX16);
 		closeBtn.setBounds(0, 0, 40, 40);
 		closeBtn.addMouseMotionListener(new MouseAdapter(){
@@ -61,28 +66,26 @@ public class PluginView extends JDialog{
 				setLocation(e.getXOnScreen() - 50, e.getYOnScreen() - 20);
 			}
 		});
-		closeBtn.addActionListener((e)->{
-			setVisible(false);
-			dispose();
-		});
 		add(closeBtn);
 
 		JTextField title = new JTextField("       Plugin Manager");
 		title.setBounds(40, 0, LEFT_OFFSET - 40, 40);
 		title.setEditable(false);
 		title.setFont(PX16);
+          title.setBackground(ide.utils.UIManager.c2);
+          title.setForeground(ide.utils.UIManager.c3);
 		add(title);
 
 		leftPane.setBounds(0, 40, LEFT_OFFSET, getHeight());
 		add(leftPane);
 
-		if(((Color)javax.swing.UIManager.get("Button.background")).getRed() <= 53) {
+		if(ide.utils.UIManager.isDarkMode()) {
 			ide.utils.UIManager.setData(leftPane);
 		}
-		else {
+		else
 			leftPane.setBackground(Color.WHITE);
-		}
 		leftPanel.setBackground(leftPane.getBackground());
+          
 		//Initializing the View
 		iconBtn = new JButton();
 		iconBtn.setBounds(LEFT_OFFSET, 0, 40, 40);
@@ -92,13 +95,30 @@ public class PluginView extends JDialog{
 		nameField.setFont(PX16);
 		nameField.setEditable(false);
 		nameField.setBounds(iconBtn.getX() + 40, 0, getWidth() - iconBtn.getX() - 40 - 140, 40);
+          nameField.setBackground(ide.utils.UIManager.c2);
+          nameField.setForeground(ide.utils.UIManager.c3);
 		add(nameField);
 
 		versionField = new JTextField();
 		versionField.setFont(PX16);
 		versionField.setEditable(false);
-		versionField.setBounds(nameField.getX() + nameField.getWidth(), 0, 140, 40);
+		versionField.setBounds(nameField.getX() + nameField.getWidth(), 0, 100, 40);
+          versionField.setBackground(ide.utils.UIManager.c2);
+          versionField.setForeground(ide.utils.UIManager.c3);
 		add(versionField);
+		
+		TextComp removeBtn = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{
+               if(plugin == null) return;
+               String fileName = ide.Screen.getPluginManager().getPlug(plugin.getName()).fileName;
+               int res = JOptionPane.showConfirmDialog(PluginView.this, "Do you want to uninstall " + plugin.getName() + "?\nThis Operation requires IDE restart!", "Plugin Manager", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+               if(res == JOptionPane.OK_OPTION) {
+                    new java.io.File("omega-ide-plugins/" + fileName).delete();
+               }
+	     });
+		removeBtn.setToolTipText("Click to Uninstall this Plugin");
+		removeBtn.setFont(PX16);
+		removeBtn.setBounds(getWidth() - 40, 0, 40, 40);
+		add(removeBtn);
 
 		descriptionArea = new JTextArea() {
 			@Override
@@ -110,6 +130,8 @@ public class PluginView extends JDialog{
 		scrollPane = new JScrollPane(descriptionArea);
 		descriptionArea.setFont(PX14);
 		descriptionArea.setEditable(false);
+          descriptionArea.setBackground(ide.utils.UIManager.c3);
+          descriptionArea.setForeground(ide.utils.UIManager.c2);
 		scrollPane.setBounds(LEFT_OFFSET, 40, getWidth() - LEFT_OFFSET, 100);
 		add(scrollPane);
 
@@ -117,38 +139,40 @@ public class PluginView extends JDialog{
 		authorField.setFont(PX14);
 		authorField.setEditable(false);
 		authorField.setBounds(LEFT_OFFSET, 140, 100, 40);
+          authorField.setBackground(ide.utils.UIManager.c2);
+          authorField.setForeground(ide.utils.UIManager.c3);
 		add(authorField);
 
 		copyrightField = new JTextField();
 		copyrightField.setFont(PX14);
 		copyrightField.setEditable(false);
 		copyrightField.setBounds(authorField.getX() + authorField.getWidth(), 140, getWidth() - 80 - LEFT_OFFSET - authorField.getWidth(), 40);
+          copyrightField.setBackground(ide.utils.UIManager.c2);
+          copyrightField.setForeground(ide.utils.UIManager.c3);
 		add(copyrightField);
 
-		mRBtn = new JButton(">");
+		mRBtn = new TextComp(">", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               if(plugin == null || plugin.getImages() == null) return;
+               if(!plugin.getImages().isEmpty()){
+                    if(index < plugin.getImages().size() - 1) index++;
+                    else if(index == plugin.getImages().size() - 1) index = 0;
+               }
+               repaint();
+	     });
 		mRBtn.setFont(PX14);
 		mRBtn.setBounds(getWidth() - 40, 140, 40, 40);
-		mRBtn.addActionListener((e)->{
-			if(plugin == null || plugin.getImages() == null) return;
-			if(!plugin.getImages().isEmpty()){
-				if(index < plugin.getImages().size() - 1) index++;
-				else if(index == plugin.getImages().size() - 1) index = 0;
-			}
-			repaint();
-		});
 		add(mRBtn);
 
-		mLBtn = new JButton("<");
+		mLBtn = new TextComp("<", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               if(plugin == null || plugin.getImages() == null) return;
+               if(!plugin.getImages().isEmpty()){
+                    if(index > 0) index--;
+                    else if(index == 0) index = plugin.getImages().size() - 1;
+               }
+               repaint();
+	     });
 		mLBtn.setFont(PX14);
 		mLBtn.setBounds(getWidth() - 80, 140, 40, 40);
-		mLBtn.addActionListener((e)->{
-			if(plugin == null || plugin.getImages() == null) return;
-			if(!plugin.getImages().isEmpty()){
-				if(index > 0) index--;
-				else if(index == 0) index = plugin.getImages().size() - 1;
-			}
-			repaint();
-		});
 		add(mLBtn);
 	}
 
@@ -185,6 +209,8 @@ public class PluginView extends JDialog{
 		descriptionArea.setCaretPosition(0);
 		authorField.setText(plugin.getAuthor());
 		copyrightField.setText(plugin.getCopyright());
+		index = 0;
+		repaint();
 	}
 
 	@Override

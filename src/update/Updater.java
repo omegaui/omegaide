@@ -1,4 +1,6 @@
 package update;
+import settings.comp.*;
+import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.io.File;
@@ -12,11 +14,11 @@ import javax.swing.JScrollPane;
 import org.fife.ui.rtextarea.RTextArea;
 
 import ide.Screen;
-public class Updater extends JDialog{
+public class Updater extends JDialog {
 	private File releaseFile;
-	private JLabel label;
+	private TextComp label;
 	private RTextArea terminalArea;
-	private JButton downBtn;
+	private Comp downBtn;
 	private String version = null;
 	private JScrollPane scrollPane;
 	private static Font font = new Font("Ubuntu Mono", Font.BOLD, 16);
@@ -31,39 +33,45 @@ public class Updater extends JDialog{
 	}
 
 	public void init(){
-		label = new JLabel("Checking for Update");
-		label.setFont(font);
+		label = new TextComp("Checking for Update", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{});
+		label.setClickable(false);
+          label.setFont(font);
+          label.setPreferredSize(new Dimension(200, 40));
 		add(label, BorderLayout.NORTH);
 
-		terminalArea = new RTextArea("Downloading release file");
+		terminalArea = new RTextArea("Downloading Release Information");
 		terminalArea.setFont(font);
 		terminalArea.setEditable(false);
+          terminalArea.setBackground(ide.utils.UIManager.c3);
+          terminalArea.setForeground(ide.utils.UIManager.c2);
+          terminalArea.setHighlightCurrentLine(false);
 		add(scrollPane = new JScrollPane(terminalArea), BorderLayout.CENTER);
 
-		downBtn = new JButton("Install Update");
-		downBtn.addActionListener((e)->{
-			new Thread(()->{
-				clean();
-				terminalArea.setText("");
-				downBtn.setVisible(false);
-				label.setText("Downloading Update");
-				File debFile = download("out/omega-ide_" + version + "_all.deb");
-				if(debFile == null){
-					label.setText("Problem Receiving installation File from server' end");
-					return;
-				}
-				terminalArea.setText("Update Downloaded\n");
-				print("Make user you have gdebi installed if you are using debian");
-				label.setText("Installing....");
-				print("Before installing close the IDE else your opened project may get corrupted!");
-				print("Running ... \"" + "java.awt.Desktop.getDesktop().open(debFile)\"");
-				try{
-					System.out.println(debFile);
-					java.awt.Desktop.getDesktop().open(debFile);
-				}catch(Exception ex){ print(ex.toString()); }
-			}).start();
-		});
+		downBtn = new Comp("Install Update", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               new Thread(()->{
+                    clean();
+                    terminalArea.setText("");
+                    downBtn.setVisible(false);
+                    label.setText("Downloading Update");
+                    File debFile = download("out/omega-ide_" + version + "_all.deb");
+                    if(debFile == null){
+                         label.setText("Problem Receiving installation File from server' end");
+                         return;
+                    }
+                    terminalArea.setText("Update Downloaded\n");
+                    print("Make user you have gdebi installed if you are using debian");
+                    label.setText("Installing....");
+                    print("The Downloaded setup is in the \"out\" directory of the current project.");
+                    print("Before installing close the IDE else your opened project may get corrupted!");
+                    print("Running ... \"" + "java.awt.Desktop.getDesktop().open(debFile)\"");
+                    try{
+                         System.out.println(debFile);
+                         java.awt.Desktop.getDesktop().open(debFile);
+                    }catch(Exception ex){ print(ex.toString()); }
+               }).start();
+	     });
 		downBtn.setFont(font);
+          downBtn.setPreferredSize(new Dimension(200, 40));
 		downBtn.setVisible(false);
 		add(downBtn, BorderLayout.SOUTH);
 	}
@@ -99,7 +107,9 @@ public class Updater extends JDialog{
 			Scanner reader = new Scanner(releaseFile);
 			version = reader.nextLine();
 			label.setText("Terminal");
-			if(("v" + version).equals(ide.Screen.VERSION)){
+               double v = Double.valueOf(version.substring(1));
+               double myv = Double.valueOf(ide.Screen.VERSION.substring(1));
+			if(v <= myv){
 				clean();
 				print("No updates avaliable, ");
 				print("The latest version is already installed.");

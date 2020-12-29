@@ -1,11 +1,12 @@
 package plugin;
+import settings.comp.TextComp;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
 public class Bucket extends JComponent{
      public String name;
      public String size;
-     public JButton nameField;
+     public TextComp nameField;
      public JTextArea description;
      public String desc;
      public Bucket(String name, String size, String sum, ActionListener a){
@@ -13,7 +14,9 @@ public class Bucket extends JComponent{
           this.size = size;
           this.desc = sum;
           setLayout(new BorderLayout());
-          nameField = new JButton(name + " -" + size);
+          nameField = new TextComp(name + " -" + size, ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               a.actionPerformed(null);
+          });
           nameField.addMouseListener(new MouseAdapter(){
                @Override
                public void mouseEntered(MouseEvent e){
@@ -27,12 +30,14 @@ public class Bucket extends JComponent{
                }
           });
           nameField.setFont(PluginStore.FONT);
-          nameField.addActionListener(a);
+          nameField.setPreferredSize(new Dimension(600, 40));
           add(nameField, BorderLayout.NORTH);
 
           description = new JTextArea(sum);
           description.setEditable(false);
           description.setFont(PluginStore.FONT14);
+          description.setBackground(ide.utils.UIManager.c3);
+          description.setForeground(ide.utils.UIManager.c2);
           add(new JScrollPane(description), BorderLayout.CENTER);
      }
 

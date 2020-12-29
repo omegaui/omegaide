@@ -1,4 +1,5 @@
 package tabPane;
+import popup.*;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -19,6 +20,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 
 import ide.utils.UIManager;
+import settings.comp.TextComp;
 
 public class CloseButton extends JComponent {
 
@@ -86,8 +88,10 @@ public class CloseButton extends JComponent {
 	public interface FocusAction {
 		void onFocus();
 	}
+
 	private static LinkedList<JTextArea> areas = new LinkedList<>();
-	public static JPanel create(Component c, String name, CloseAction closeAction, FocusAction focusAction, String toolTip, Icon icon, JPopupMenu popUp) {
+
+	public static JPanel create(Component c, String name, CloseAction closeAction, FocusAction focusAction, String toolTip, OPopupWindow popUp) {
 		CloseButton closeButton = new CloseButton().setOnClose(closeAction);
 		closeButton.setFont(new Font("Ubuntu", Font.BOLD, 14));
 
@@ -113,7 +117,16 @@ public class CloseButton extends JComponent {
 		textField.setFont(closeButton.getFont());
 		textField.addMouseListener(mouseAdapter);
 		areas.add(textField);
-		IconButton iconButton = new IconButton(icon);
+		
+		String baseName = getBaseName(name);
+          TextComp iconButton = null;
+          if(UIManager.isDarkMode())
+               iconButton = new TextComp(baseName, UIManager.c1, UIManager.c2, UIManager.c3, ()->{});
+          else
+               iconButton = new TextComp(baseName, UIManager.c2, UIManager.c1, UIManager.c3, ()->{});
+		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 25) : 20, 16));
+		iconButton.setFont(settings.Screen.PX16);
+		
 		if(popUp != null) {
 			iconButton.addMouseListener(new MouseAdapter() {
 				@Override
@@ -140,6 +153,42 @@ public class CloseButton extends JComponent {
 			a.repaint();
 		});
 		return panel;
+	}
+	
+	public static String getBaseName(String ext) {
+		if(ext.equals("Compilation"))
+				return "JVM";
+          else if(ext.equals("Terminal"))
+               return "Shell";
+		if(ext.contains("Run("))
+			return "JVM";
+
+          if(!ext.contains("."))
+               return "?";
+		
+		ext = ext.substring(ext.lastIndexOf('.'));
+		
+		if(ext.equals(".java") || ext.equals(".class"))
+			return "J";
+		else if(ext.equals(".py"))
+			return "Py";
+		else if(ext.equals(".js") || ext.equals(".html"))
+			return "Web";
+		else if(ext.equals(".rs"))
+			return "R";
+		else if(ext.equals(".txt"))
+			return "T";
+		else if(ext.equals(".exe") || ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".dll"))
+			return "Win";
+		else if(ext.equals(".xml") || ext.equals(".fxml"))
+			return "Xml";
+		else if(ext.equals(".dmg"))
+			return "Mac";
+		else if(ext.equals(".projectInfo") || ext.equals(".sources") || ext.equals(".natives") || ext.equals(".dependencies") || ext.equals(".modules") || ext.equals(".ui") || ext.equals(".content") || ext.equals(".resources"))
+			return "IDE";
+		else if(ext.equals(".sh") || ext.equals(".run"))
+			return "Linux";
+		return "?";
 	}
 
 }

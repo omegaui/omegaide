@@ -25,7 +25,7 @@ public class Door extends JComponent{
 		this.name = path.substring(path.lastIndexOf('/') + 1);
 		this.parent = path.substring(0, path.lastIndexOf('/'));
 		this.parent = "<"+this.parent.substring(parent.lastIndexOf('/') + 1)+">";
-		if(((Color)javax.swing.UIManager.get("Button.background")).getRed() > 53) {
+		if(!ide.utils.UIManager.isDarkMode()) {
 			setBackground(Color.WHITE);
 			setForeground(Color.decode("#4063BF"));
 		}

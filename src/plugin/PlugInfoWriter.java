@@ -56,12 +56,6 @@ public class PlugInfoWriter {
      }
 
      public static void main(String[] args){
-     	LinkedList<PlugInfo> infos = read(new File(".plugset"));
-          infos.forEach(i->{
-               System.out.println(i.name);
-               System.out.println(i.fileName);
-               System.out.println(i.size);
-               System.out.println(i.desc);
-          });
+     	write("/home/arham/omega-ide-plugins");
      }
 }

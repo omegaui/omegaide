@@ -1,4 +1,6 @@
 package ide.utils;
+import settings.comp.*;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -27,19 +29,18 @@ public class ModuleView extends JDialog{
 		protected Dock(){
 			setLayout(null);
 			setPreferredSize(new Dimension(600, 40));
-			JButton iconBtn = new JButton("X");
+			TextComp iconBtn = new TextComp("x", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->ModuleView.this.setVisible(false));
 			iconBtn.setFocusable(false);
 			iconBtn.setBounds(0, 0, 40, 40);
 			UIManager.setData(iconBtn);
 			iconBtn.setFont(font);
-			iconBtn.addActionListener((e)->ModuleView.this.setVisible(false));
 			add(iconBtn);
 
-			JButton title = new JButton("Module Manager -Manage Project Modules");
+			TextComp title = new TextComp("Module Manager -Manage Project Modules", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 			title.setBounds(40, 0, 440, 40);
 			UIManager.setData(title);
 			title.setFont(font);
-			title.setEnabled(false);
+			title.setClickable(false);
 			title.addMouseMotionListener(new MouseAdapter(){
 				@Override
 				public void mouseDragged(MouseEvent e){
@@ -48,18 +49,16 @@ public class ModuleView extends JDialog{
 			});
 			add(title);
 
-			JButton addBtn = new JButton("+");
+			TextComp addBtn = new TextComp("+", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->addPath());
 			addBtn.setBounds(480, 0, 40, 40);
 			UIManager.setData(addBtn);
 			addBtn.setFont(font);
-			addBtn.addActionListener((e)->addPath());
 			add(addBtn);
 
-			JButton rmBtn = new JButton("-");
+			TextComp rmBtn = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->removePath(textArea.getCaretLineNumber()));
 			rmBtn.setBounds(520, 0, 40, 40);
 			UIManager.setData(rmBtn);
 			rmBtn.setFont(font);
-			rmBtn.addActionListener((e)->removePath(textArea.getCaretLineNumber()));
 			add(rmBtn);
 
 
@@ -84,6 +83,7 @@ public class ModuleView extends JDialog{
 					UIManager.setData(ins);
 					ins.setFont(font);
 					ins.setEditable(false);
+                         ins.setCurrentLineHighlightColor(ide.utils.UIManager.c1);
 					add(ins, BorderLayout.CENTER);
 				}
 
@@ -97,7 +97,7 @@ public class ModuleView extends JDialog{
 
 			final Help help = new Help();
 
-			JButton howBtn = new JButton("?");
+			TextComp howBtn = new TextComp("?", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{});
 			howBtn.setBounds(560, 0, 40, 40);
 			UIManager.setData(howBtn);
 			howBtn.setFont(font);
@@ -200,6 +200,7 @@ public class ModuleView extends JDialog{
 		textArea.setEditable(false);
 		UIManager.setData(textArea);
 		textArea.setFont(fontX);
+          textArea.setCurrentLineHighlightColor(ide.utils.UIManager.c1);
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
 
 		add(new Dock(), BorderLayout.NORTH);

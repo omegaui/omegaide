@@ -38,6 +38,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			}
 		});
 		panel = new JPanel(null);
+          panel.setBackground(ide.utils.UIManager.c2);
 		add(scrollPane = new JScrollPane(panel), BorderLayout.CENTER);
 		ide.utils.UIManager.setData(panel);
 		hints.forEach(h->{
@@ -66,7 +67,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			hints.clear();
 			block = 0;
 			pointer = 0;
-			final boolean isDarkMode = ((Color)javax.swing.UIManager.get("Button.background")).getRed() <= 53;
+			final boolean isDarkMode = ide.utils.UIManager.isDarkMode();
 			final Font font = new Font(UIManager.fontName, Font.BOLD, Hint.OPTIMAL_FONT_HEIGHT);
 			Font xf = Screen.getScreen().getFont();
 			Screen.getScreen().getGraphics().setFont(font);

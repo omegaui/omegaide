@@ -12,7 +12,7 @@ public class Switch extends JComponent{
      public Switch(String text, Runnable r){
           switches.add(this);
           this.text = text;
-          setFont(View.font);
+          setFont(settings.Screen.PX14);
           ide.utils.UIManager.setData(this);
           addMouseListener(new MouseAdapter(){
                @Override

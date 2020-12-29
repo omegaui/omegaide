@@ -1,4 +1,7 @@
 package ide;
+import terminal.TerminalComp;
+import java.awt.Desktop;
+import Omega.IDE;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -30,48 +33,47 @@ import ide.utils.systems.ProjectView;
 import ide.utils.systems.RunView;
 import launcher.Launcher;
 import plugin.PluginManager;
-import plugin.PluginView;
 import plugin.PluginStore;
+import plugin.PluginView;
 import snippet.SnippetBase;
 import snippet.SnippetView;
 import startup.Startup;
 import tabPane.IconManager;
 import tabPane.TabPanel;
 import tree.FileTree;
-import ui.View;
-import uiPool.Notification;
 import update.Updater;
 
 public class Screen extends JFrame {
-	private static Accessories accessories;
-	public JSplitPane splitPane;
-	public JSplitPane compilancePane;
+     public EditorTools tools;
+     public JSplitPane splitPane;
+     public JSplitPane compilancePane;
+     public static Launcher launcher;
+     public static SnippetView snippetView; 
+     public static final String VERSION = "v1.4";
+     public volatile boolean active = true;
+     public volatile boolean screenHasProjectView = true;
+    
+     private Robot robot;
+     private SplashScreen splash;
 	private OperationPane operationPane;
 	private TabPanel tabPanel;
-	public EditorTools tools;
 	private ToolMenu toolMenu;
 	private UIManager uiManager;
 	private DataManager dataManager;
+     private static RunView runView;
+     private static FileView fileView;
+     private static BuildView buildView;
+     private static Accessories accessories;
+     private static BasicHighlight basicHighlight;
 	private static RecentsManager recentsManager;
-	private static FileView fileView;
-	private static BuildView buildView;
-	private static RunView runView;
+     private static ErrorHighlighter errorHighlighter;
 	private static ProjectView projectView;
-	private static View settings;
-	public static final String VERSION = "v1.2";
-	private SplashScreen splash;
-	private Robot robot;
-	public volatile boolean screenHasProjectView = true;
-	private static Notification notif;
-	private static ErrorHighlighter errorHighlighter;
-	private static BasicHighlight basicHighlight;
-	public volatile boolean active = true;
-	public static Launcher launcher;
-	public static SnippetView snippetView; 
+	private static settings.Screen settings;
 	private static PluginManager pluginManager;
 	private static PluginView pluginView;
 	private static PluginStore pluginStore;
 	private static Updater updater;
+     private static TerminalComp terminal;
 
 	public Screen() {
 		String l$F = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
@@ -85,13 +87,12 @@ public class Screen extends JFrame {
 		} catch (Exception e1) {
 			System.out.println(e1);
 		}
-		Startup.checkStartup(this);
+          Startup.checkStartup(this);
 		UIManager.loadHighlight();
 		uiManager = new UIManager(this);
 		UIManager.setData(this);
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
-		notif = new Notification(this);
 		splash.setProgress(37, "welcome");
 
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
@@ -133,6 +134,8 @@ public class Screen extends JFrame {
 
 		operationPane = new OperationPane(this);
 
+          terminal = new TerminalComp();
+
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		UIManager.setData(splitPane);
 		compilancePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -157,12 +160,12 @@ public class Screen extends JFrame {
 		splash.setProgress(77, "initializing");
 
 		fileView = new FileView("File", this);
-		settings = new View(this);
+		settings = new settings.Screen(this);
 		buildView = new BuildView("Build", this);
 		runView = new RunView("Run", this, true);
 		projectView = new ProjectView("Project", this);
 		dataManager = new DataManager(this);
-		if(((Color)(javax.swing.UIManager.getDefaults().get("Button.background"))).getRed() <= 53)
+		if(UIManager.isDarkMode())
 			DataManager.setEditorColoringScheme("dark");
 		else DataManager.setEditorColoringScheme("idea");
 
@@ -224,8 +227,9 @@ public class Screen extends JFrame {
 	}
 
 	public void setToView() {
+		int x = splitPane.getDividerLocation();
 		splitPane.setLeftComponent(projectView.getProjectView());
-		splitPane.setDividerLocation(300);
+		splitPane.setDividerLocation(x <= 300 ? 300 : x);
 	}
 
 	public void setToNull() {
@@ -233,18 +237,18 @@ public class Screen extends JFrame {
 	}
 
 	public static void notify(String text) {
-		notif.setText(text);
+		getScreen().setTitle(text);
 	}
 
 	public static void hideNotif() {
-		notif.setVisible(false);
+		getScreen().loadTitle(getFileView().getProjectName());
 	}
 
 	public static void notify(String text, long time, Runnable task) {
-		notif.setText(text);
+		getScreen().setTitle(text);
 		new Thread(()->{
 			try{Thread.sleep(time);}catch(Exception e) {System.out.println(e.getMessage());}
-			notif.setVisible(false);
+			getScreen().loadTitle(getFileView().getProjectName());
 			if(task != null)
 				task.run();
 		}).start();
@@ -271,9 +275,12 @@ public class Screen extends JFrame {
 		c.setForeground(l);
 	}
 
-	public void setProject(String projectName)
-	{
+	public void loadTitle(String projectName) {
 		setTitle(projectName+" -Omega IDE "+VERSION);
+	}
+	
+	public void setProject(String projectName) {
+		loadTitle(projectName);
 		splitPane.setDividerLocation(300);
 	}
 
@@ -381,15 +388,17 @@ public class Screen extends JFrame {
 		return basicHighlight;
 	}
 
-	public static View getSettingsView()
-	{
+	public static settings.Screen getSettingsView() {
 		return settings;
 	}
 
-	public static Accessories getAccessories()
-	{
+	public static Accessories getAccessories(){
 		return accessories;
 	}
+
+     public static TerminalComp getTerminalComp(){
+          return terminal;
+     }
 
 	public ToolMenu getToolMenu() {
 		return toolMenu;

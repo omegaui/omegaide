@@ -35,33 +35,41 @@ public class RecentsManager {
 				token = reader.readLine();
 			}
 			reader.close();
-			ToolMenu.openFileMenu.removeAll();
-			ToolMenu.openProjectMenu.removeAll();
-			ToolMenu.openFileMenu.setIcon(IconManager.open_file);
+               
+			ToolMenu.recentFilePopup.trash();
 			RECENTS.forEach((r)->{
 				File fileX = new File(r);
 				if(fileX.isFile()) {
-					JMenuItem fileItem = new JMenuItem(r.substring(r.lastIndexOf('/')+1), IconManager.open_file);
-					fileItem.addActionListener(e->screen.loadFile(new File(r)));
-					ToolMenu.openFileMenu.add(fileItem);
+                         ToolMenu.recentFilePopup.createItem(r.substring(r.lastIndexOf('/')+1), IconManager.fileImage, ()->{
+                              ToolMenu.recentFilePopup.setVisible(false);
+                              Screen.getScreen().getToolMenu().filePopup.setVisible(false);
+                              screen.loadFile(fileX);
+                         });
 				}
 			});
-			JMenuItem fileItem = new JMenuItem("Clear Recent Files list", IconManager.hide);
-			fileItem.addActionListener(e->removeAllFiles());
-			ToolMenu.openFileMenu.add(fileItem);
-			
-			ToolMenu.openProjectMenu.setIcon(IconManager.project);
+
+               ToolMenu.recentFilePopup.createItem("Clear Recent Files list", IconManager.hideImage, ()->{
+                    ToolMenu.recentFilePopup.setVisible(false);
+                    removeAllFiles();
+               });
+               
+			ToolMenu.recentProjectPopup.trash();
 			RECENTS.forEach((r)->{
 				File fileX = new File(r);
 				if(fileX.isDirectory()) {
-					JMenuItem projectItem = new JMenuItem(r.substring(r.lastIndexOf('/')+1), IconManager.project);
-					projectItem.addActionListener(e->screen.loadProject(new File(r)));
-					ToolMenu.openProjectMenu.add(projectItem);
+                         ToolMenu.recentProjectPopup.createItem(r.substring(r.lastIndexOf('/')+1), IconManager.projectImage, ()->{
+                              ToolMenu.recentProjectPopup.setVisible(false);
+                              Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
+                              screen.loadProject(fileX);
+                         });
 				}
 			});
-			JMenuItem projectItem = new JMenuItem("Clear Recent Projects list", IconManager.hide);
-			projectItem.addActionListener(e->removeAllProjects());
-			ToolMenu.openProjectMenu.add(projectItem);
+
+               ToolMenu.recentProjectPopup.createItem("Clear Recent Projects list", IconManager.hideImage, ()->{
+                    ToolMenu.recentProjectPopup.setVisible(false);
+                    removeAllProjects();
+               });
+               
 		}catch(Exception e) {e.printStackTrace();}
 	}
 	

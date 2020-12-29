@@ -29,10 +29,7 @@ public class FileTree extends JComponent{
 			this.root = new File(root);
 			setLayout(new BorderLayout());
 			scrollPane = new JScrollPane(panel = new JPanel(null));
-			if(((Color)javax.swing.UIManager.getDefaults().get("Button.background")).getRed() <= 53)
-				panel.setBackground(Color.decode("#101820"));
-			else
-				panel.setBackground(Color.WHITE);
+               panel.setBackground(ide.utils.UIManager.c2);
 			add(scrollPane, BorderLayout.CENTER);
 		}
 	}
@@ -173,42 +170,44 @@ public class FileTree extends JComponent{
 	}
 
 	public static synchronized void sort(LinkedList<File> files){
-		final LinkedList<File> tempFiles = new LinkedList<>();
-		final LinkedList<File> tempDirs = new LinkedList<>();
-		files.forEach(f->{
-			if(f.isDirectory()) tempDirs.add(f);
-			else tempFiles.add(f);
-		});
-		files.clear();
-		File[] F = new File[tempFiles.size()];
-		int k = -1;
-		for(File fx : tempFiles)
-			F[++k] = fx;
-		File[] D = new File[tempDirs.size()];
-		k = -1;
-		for(File fx : tempDirs)
-			D[++k] = fx;
-		sort(F);
-		sort(D);
-		LinkedList<File> dots = new LinkedList<>();
-		for(File f : D){
-			if(f.getName().startsWith(".")) dots.add(f);
-			else files.add(f);
-		}
-		for(File f : dots){
-			files.add(f);
-		}
-		dots.clear();
-		for(File f : F){
-			if(f.getName().startsWith(".")) dots.add(f);
-			else files.add(f);
-		}
-		for(File f : dots){
-			files.add(f);
-		}
-		tempFiles.clear();
-		tempDirs.clear();
-		dots.clear();
+          try{
+          	final LinkedList<File> tempFiles = new LinkedList<>();
+          	final LinkedList<File> tempDirs = new LinkedList<>();
+          	files.forEach(f->{
+          		if(f.isDirectory()) tempDirs.add(f);
+          		else tempFiles.add(f);
+          	});
+          	files.clear();
+          	File[] F = new File[tempFiles.size()];
+          	int k = -1;
+          	for(File fx : tempFiles)
+          		F[++k] = fx;
+          	File[] D = new File[tempDirs.size()];
+          	k = -1;
+          	for(File fx : tempDirs)
+          		D[++k] = fx;
+          	sort(F);
+          	sort(D);
+          	LinkedList<File> dots = new LinkedList<>();
+          	for(File f : D){
+          		if(f.getName().startsWith(".")) dots.add(f);
+          		else files.add(f);
+          	}
+          	for(File f : dots){
+          		files.add(f);
+          	}
+          	dots.clear();
+          	for(File f : F){
+          		if(f.getName().startsWith(".")) dots.add(f);
+          		else files.add(f);
+          	}
+          	for(File f : dots){
+          		files.add(f);
+          	}
+          	tempFiles.clear();
+          	tempDirs.clear();
+          	dots.clear();
+          }catch(Exception exception){}
 	}
 	
 	@Override
@@ -252,10 +251,11 @@ public class FileTree extends JComponent{
 	
 	public void relocate() {
 		if(!ide.Screen.getScreen().screenHasProjectView)
-		branches.get(pointer).set(true);
+		     branches.get(pointer).set(true);
 	}
 
 	public FileTree reload() {
+		int value = scrollPane.getVerticalScrollBar().getValue();
 		FileTree fileTree = new FileTree(root.getAbsolutePath());
 		LinkedList<File> expandedRoots = new LinkedList<>();
 		for(File f : this.expandedRoots)
@@ -265,6 +265,7 @@ public class FileTree extends JComponent{
 			expandedRoots.forEach(fileTree::genBranch);
 			fileTree.relocate();
 		}catch(Exception e) {}
+		scrollPane.getVerticalScrollBar().setValue(value);
 		return fileTree;
 	}
 	

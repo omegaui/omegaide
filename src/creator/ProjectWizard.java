@@ -1,4 +1,10 @@
 package creator;
+import settings.comp.TextComp;
+import settings.comp.Comp;
+import popup.*;
+
+import java.awt.Color;
+import java.awt.Panel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
@@ -41,7 +47,7 @@ public class ProjectWizard extends JDialog{
 		super(f, true);
 		setLayout(null);
 		setTitle("Project Wizard -Omega IDE");
-		setSize(500, 620);
+		setSize(700, 640);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setUndecorated(true);
@@ -56,65 +62,70 @@ public class ProjectWizard extends JDialog{
 		JTextField projectNameField = new JTextField();
 		addHoverEffect(projectNameField, "Enter Project Name (including path is optional)");
 		projectNameField.setBounds(0, 0, getWidth() - 40, 40);
+          projectNameField.setBackground(ide.utils.UIManager.c2);
+          projectNameField.setForeground(ide.utils.UIManager.c3);
 		add(projectNameField);
 
-		JButton rootBtn = new JButton(":");
+		TextComp rootBtn = new TextComp(":", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		rootBtn.setBounds(projectNameField.getWidth(), 0, 40, 40);
-		rootBtn.setToolTipText("Choose Project Parent Folder e.g: ~Documents/Omega Projects");
-		rootBtn.addActionListener((e)->{
-			fileC.setDialogTitle("Select the folder in which the project will be created");
-			fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fileC.setApproveButtonText("Select");
-			int res = fileC.showOpenDialog(this);
-			if(res == JFileChooser.APPROVE_OPTION)
-				rootBtn.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
-		});
+		rootBtn.setToolTipText("Choose Project Parent Folder e.g: ~/Documents/Omega Projects");
+          rootBtn.setRunnable(()->{
+               fileC.setDialogTitle("Select the folder in which the project will be created");
+               fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+               fileC.setApproveButtonText("Select");
+               int res = fileC.showOpenDialog(this);
+               if(res == JFileChooser.APPROVE_OPTION)
+                    rootBtn.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
+          });
 		add(rootBtn);
 
 		JTextField jdkPath = new JTextField("Choose Java SE Environment");
 		jdkPath.setBounds(0, projectNameField.getHeight(), projectNameField.getWidth(), 40);
 		jdkPath.setEditable(false);
+          jdkPath.setBackground(ide.utils.UIManager.c2);
+          jdkPath.setForeground(ide.utils.UIManager.c3);
 		add(jdkPath);
 
-		JButton javaRoot = new JButton(":");
+		TextComp javaRoot = new TextComp(":", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{
+               String javaPath = DataManager.getPathToJava();
+               if(javaPath == null || javaPath.equals("")) {
+                    fileC.setDialogTitle("Select the folder containing the jdks");
+                    fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    fileC.setApproveButtonText("Select");
+                    int res = fileC.showOpenDialog(this);
+                    if(res == JFileChooser.APPROVE_OPTION)
+                         DataManager.setPathToJava(fileC.getSelectedFile().getAbsolutePath());
+               }
+               sdkSel.setVisible(true);
+               String path = sdkSel.getSelection();
+               if(path == null) return;
+               jdkPath.setToolTipText(path);
+               jdkPath.setText(path.substring(path.lastIndexOf('/') + 1));
+	     });
 		javaRoot.setBounds(projectNameField.getWidth(), projectNameField.getHeight(), 40, 40);
 		javaRoot.setToolTipText("Choose Java Development Kit");
-		javaRoot.addActionListener((e)->{
-			String javaPath = DataManager.getPathToJava();
-			if(javaPath == null || javaPath.equals("")) {
-				fileC.setDialogTitle("Select the folder containing the jdks");
-				fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				fileC.setApproveButtonText("Select");
-				int res = fileC.showOpenDialog(this);
-				if(res == JFileChooser.APPROVE_OPTION) 
-					DataManager.setPathToJava(fileC.getSelectedFile().getAbsolutePath());
-			}
-			sdkSel.setVisible(true);
-			String path = sdkSel.getSelection();
-			if(path == null) return;
-			jdkPath.setToolTipText(path);
-			jdkPath.setText(path.substring(path.lastIndexOf('/') + 1));
-		});
 		add(javaRoot);
 
-		JButton packLabel = new JButton("project source(s)");
+		TextComp packLabel = new TextComp("Source Files", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		packLabel.setBounds(0, jdkPath.getY() + jdkPath.getHeight(), getWidth(), 30);
-		packLabel.setEnabled(false);
+		packLabel.setClickable(false);
 		add(packLabel);
 
 		JPanel memberPanel = new JPanel();
 		memberPanel.setLayout(new BorderLayout());
 		memberPanel.setBounds(0, packLabel.getY() + packLabel.getHeight(), getWidth(), 200);
 		JTextArea packArea = new JTextArea();
-		addHoverEffect(packArea, "type a source name with or "+"\n"+"without package (according to the java convections) "+"\n"+"e.g: package.MyClass -type"+"\n"+"separated by new line "+"\n"+"e.g: anima.Animation -@interface"+"\n"+"ide.Screen -class");
+		addHoverEffect(packArea, "type a source name with or "+"\n"+"without package (according to the java convections) "+"\n"+"e.g: package.MySourceFile -type"+"\n"+"separated by new line "+"\n"+"e.g: anima.Animation -@interface"+"\n"+"ide.Screen -class");
 		setData(packArea);
+          packArea.setBackground(ide.utils.UIManager.c2);
+          packArea.setForeground(ide.utils.UIManager.c3);
 
 		memberPanel.add(new JScrollPane(packArea), BorderLayout.CENTER);
 		add(memberPanel);
 
 		//Dependency Panel
 
-		JButton addDepenLabel = new JButton("Add Dependencies and Resources Roots");
+		TextComp addDepenLabel = new TextComp("Dependencies and Resources Roots", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		addDepenLabel.setBounds(0, memberPanel.getY() + memberPanel.getHeight(), getWidth() - 60, 30);
 		addDepenLabel.setEnabled(false);
 		add(addDepenLabel);
@@ -124,11 +135,9 @@ public class ProjectWizard extends JDialog{
 		depenPanel.setBounds(0, addDepenLabel.getY() + addDepenLabel.getHeight(), getWidth(), 200);
 		RTextArea depenArea = new RTextArea();
 		setData(depenArea);
-		if(((java.awt.Color)javax.swing.UIManager.getDefaults().get("TextArea.background")).getRed() <= 53) {
-			depenArea.setBackground((java.awt.Color)javax.swing.UIManager.getDefaults().get("TextArea.background"));
-			depenArea.setForeground((java.awt.Color)javax.swing.UIManager.getDefaults().get("TextArea.foreground"));
-			depenArea.setCurrentLineHighlightColor(java.awt.Color.decode("#F25801"));
-		}
+          depenArea.setBackground(ide.utils.UIManager.c2);
+          depenArea.setForeground(ide.utils.UIManager.c3);
+          depenArea.setCurrentLineHighlightColor(ide.utils.UIManager.c1);
 		depenArea.setEditable(false);
 		depenPanel.add(new JScrollPane(depenArea), BorderLayout.CENTER);
 		add(depenPanel);
@@ -161,29 +170,26 @@ public class ProjectWizard extends JDialog{
 			}
 		};
 
-		final JPopupMenu optionMenu = new JPopupMenu();
-		final JMenuItem addJarItem = new JMenuItem("Add Java Archive (Jar File)", IconManager.javaIcon);
-		addJarItem.addActionListener((e)->{
-			fileCX.setFileFilter(jarFilter);
-			fileCX.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileCX.setApproveButtonText("Select");
-			fileCX.setMultiSelectionEnabled(true);
-			fileCX.setDialogTitle("Select Jar File(s)");
-			int res = fileCX.showOpenDialog(this);
-			if(res == JFileChooser.APPROVE_OPTION) {
-				for(File f : fileCX.getSelectedFiles())
-					offer(depenRoots, "Jar      |"+f.getAbsolutePath());
-			}
-			String text = "";
-			for(String root : depenRoots) 
-				text += root + "\n";
-			if(text.endsWith("\n"))
-				text = text.substring(0, text.length() - 1);
-			depenArea.setText(text);
-		});
-		optionMenu.add(addJarItem);
-		final JMenuItem addNativeItem = new JMenuItem("Add Native Library Root", IconManager.info);
-		addNativeItem.addActionListener((e)->{
+		final OPopupWindow optionMenu = OPopupWindow.gen("Wizard Menu", this, 0, false).width(300);
+		optionMenu.createItem("Add Java Archive (Jar File)", IconManager.projectImage, ()->{
+               fileCX.setFileFilter(jarFilter);
+               fileCX.setFileSelectionMode(JFileChooser.FILES_ONLY);
+               fileCX.setApproveButtonText("Select");
+               fileCX.setMultiSelectionEnabled(true);
+               fileCX.setDialogTitle("Select Jar File(s)");
+               int res = fileCX.showOpenDialog(this);
+               if(res == JFileChooser.APPROVE_OPTION) {
+                    for(File f : fileCX.getSelectedFiles())
+                         offer(depenRoots, "Jar      |"+f.getAbsolutePath());
+               }
+               String text = "";
+               for(String root : depenRoots) 
+                    text += root + "\n";
+               if(text.endsWith("\n"))
+                    text = text.substring(0, text.length() - 1);
+               depenArea.setText(text);
+	     })
+		.createItem("Add Native Library Root", IconManager.projectImage,	 ()->{
 			fileCX.setFileFilter(dirFilter);
 			fileCX.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fileCX.setApproveButtonText("Select");
@@ -200,10 +206,8 @@ public class ProjectWizard extends JDialog{
 			if(text.endsWith("\n"))
 				text = text.substring(0, text.length() - 1);
 			depenArea.setText(text);
-		});
-		optionMenu.add(addNativeItem);
-		final JMenuItem addResItem = new JMenuItem("Add Resource Root", IconManager.addLib);
-		addResItem.addActionListener((e)->{
+		})
+		.createItem("Add Resource Root", IconManager.projectImage, ()->{
 			fileCX.setFileFilter(dirFilter);
 			fileCX.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fileCX.setApproveButtonText("Select");
@@ -215,14 +219,13 @@ public class ProjectWizard extends JDialog{
 					offer(depenRoots, "Resource |"+f.getAbsolutePath());
 			}
 			String text = "";
-			for(String root : depenRoots) 
+			for(String root : depenRoots)
 				text += root + "\n";
 			if(text.endsWith("\n"))
 				text = text.substring(0, text.length() - 1);
 			depenArea.setText(text);
 		});
-		optionMenu.add(addResItem);
-		JButton addRootBtn = new JButton("+");
+		TextComp addRootBtn = new TextComp("+", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		addRootBtn.setBounds(getWidth() - 60, addDepenLabel.getY(), 30, 30);
 		addRootBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -231,92 +234,88 @@ public class ProjectWizard extends JDialog{
 				optionMenu.setVisible(true);
 			}
 		});
-		optionMenu.setInvoker(addRootBtn);
 		setData(addRootBtn);
 		add(addRootBtn);
 
-		JButton remRootBtn = new JButton("-");
+		TextComp remRootBtn = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{
+	          int n = depenArea.getCaretLineNumber();
+               String text = depenArea.getText();
+               StringTokenizer tokenizer = new StringTokenizer(text, "\n");
+               int i = -1;
+               text = "";
+               depenRoots.clear();
+               while(tokenizer.hasMoreTokens()) {
+                    i++;
+                    String token = tokenizer.nextToken();
+                    if(n != i) {
+                         text += token + '\n';
+                         depenRoots.add(token);
+                    }
+               }
+               if(text.endsWith("\n"))
+                    text = text.substring(0, text.length() - 1);
+               depenArea.setText(text);
+	     });
 		remRootBtn.setBounds(getWidth() - 30, addDepenLabel.getY(), 30, 30);
-		remRootBtn.addActionListener((e)->{
-			int n = depenArea.getCaretLineNumber();
-			String text = depenArea.getText();
-			StringTokenizer tokenizer = new StringTokenizer(text, "\n");
-			int i = -1;
-			text = "";
-			depenRoots.clear();
-			while(tokenizer.hasMoreTokens()) {
-				i++;
-				String token = tokenizer.nextToken();
-				if(n != i) {
-					text += token + '\n';
-					depenRoots.add(token);
-				}
-			}
-			if(text.endsWith("\n"))
-				text = text.substring(0, text.length() - 1);
-			depenArea.setText(text);
-		});
 		setData(remRootBtn);
 		add(remRootBtn);
 
-		JButton cancelBtn = new JButton("Cancel");
-		cancelBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
-		cancelBtn.addActionListener((e)->setVisible(false));
+		Comp cancelBtn = new Comp("Cancel", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->setVisible(false));
+		cancelBtn.setBounds(0, getHeight() - 60, getWidth()/2, 60);
 		setData(cancelBtn);
 		add(cancelBtn);
 
-		JButton createBtn = new JButton("Create");
-		createBtn.setBounds(getWidth()/2, getHeight() - 40, getWidth()/2, 40);
-		createBtn.addActionListener((e)->{
-			setVisible(false);
-			String proRoot = projectNameField.getText();
-			String proRootX = rootBtn.getToolTipText();
-			String metaProRoot = "";
-			if(proRoot.startsWith("/"))
-				proRoot = proRoot.substring(1);
-			if(proRoot.contains("/") && new File(proRoot).exists())
-				metaProRoot = proRoot;
-			else
-				metaProRoot = proRootX + "/" + proRoot;
-			final String jdkRoot = jdkPath.getToolTipText();
-			final String memberList = packArea.getText();
-			LinkedList<Member> members = new LinkedList<>();
-			if(!memberList.contains(":")) {
-				final StringTokenizer tokenizer = new StringTokenizer(memberList, "\n");
-				while(tokenizer.hasMoreTokens()){
-					try {
-						String token = tokenizer.nextToken();
-						String path = token.substring(0, token.lastIndexOf(' '));
-						String type = token.substring(token.indexOf('-') + 1);
-						members.add(new Member(path, type));
-					}catch(Exception ex) {
-						packArea.setText("Enter As Descripted in the toolTip!");
-					}
-				}
-			}
-			LinkedList<Member> dependencies = new LinkedList<>();
-			final String roots = depenArea.getText();
-			if(!roots.equals("")) {
-				final StringTokenizer tokenizer = new StringTokenizer(roots, "\n");
-				while(tokenizer.hasMoreTokens()){
-					String token = tokenizer.nextToken();
-					String path = token.substring(token.lastIndexOf('|') + 1).trim();
-					String type = token.substring(0, token.indexOf('|'));
-					dependencies.add(new Member(path, type));
-				}
-			}
-			
-			boolean res = create(metaProRoot, jdkRoot, members, dependencies);
-			if(res) {
-				if(Screen.launcher != null)
-					Screen.launcher.setVisible(false);
-				Screen.getScreen().setVisible(true);
-			}
-			setVisible(!res);
-			if(!res) {
-				projectNameField.setText("This Project Already Exists");
-			}
-		});
+		Comp createBtn = new Comp("Create", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{
+               setVisible(false);
+               String proRoot = projectNameField.getText();
+               String proRootX = rootBtn.getToolTipText();
+               String metaProRoot = "";
+               if(proRoot.startsWith("/"))
+                    proRoot = proRoot.substring(1);
+               if(proRoot.contains("/") && new File(proRoot).exists())
+                    metaProRoot = proRoot;
+               else
+                    metaProRoot = proRootX + "/" + proRoot;
+               final String jdkRoot = jdkPath.getToolTipText();
+               final String memberList = packArea.getText();
+               LinkedList<Member> members = new LinkedList<>();
+               if(!memberList.contains(":")) {
+                    final StringTokenizer tokenizer = new StringTokenizer(memberList, "\n");
+                    while(tokenizer.hasMoreTokens()){
+                         try {
+                              String token = tokenizer.nextToken();
+                              String path = token.substring(0, token.lastIndexOf(' '));
+                              String type = token.substring(token.indexOf('-') + 1);
+                              members.add(new Member(path, type));
+                         }catch(Exception ex) {
+                              packArea.setText("Enter As Descripted in the toolTip!");
+                         }
+                    }
+               }
+               LinkedList<Member> dependencies = new LinkedList<>();
+               final String roots = depenArea.getText();
+               if(!roots.equals("")) {
+                    final StringTokenizer tokenizer = new StringTokenizer(roots, "\n");
+                    while(tokenizer.hasMoreTokens()){
+                         String token = tokenizer.nextToken();
+                         String path = token.substring(token.lastIndexOf('|') + 1).trim();
+                         String type = token.substring(0, token.indexOf('|'));
+                         dependencies.add(new Member(path, type));
+                    }
+               }
+               
+               boolean res = create(metaProRoot, jdkRoot, members, dependencies);
+               if(res) {
+                    if(Screen.launcher != null)
+                         Screen.launcher.setVisible(false);
+                    Screen.getScreen().setVisible(true);
+               }
+               setVisible(!res);
+               if(!res) {
+                    projectNameField.setText("This Project Already Exists");
+               }
+	     });
+		createBtn.setBounds(getWidth()/2, getHeight() - 60, getWidth()/2, 60);
 		setData(createBtn);
 		add(createBtn);
 	}

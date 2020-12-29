@@ -19,7 +19,8 @@ import ide.Screen;
 import ide.utils.RecentsManager;
 import ide.utils.ToolMenu;
 public class Launcher extends JFrame{
-	protected static final BufferedImage icon = getImage("/omega_ide_icon32.png");
+     protected static final BufferedImage icon = getImage("/omega_ide_icon32.png");
+     protected static final BufferedImage drawIcon = getImage("/omega_ide_icon128.png");
 	protected final JPanel panel = new JPanel(null);
 	protected final JScrollPane scrollPane = new JScrollPane(panel);
 	protected CloseButton c;
@@ -67,9 +68,9 @@ public class Launcher extends JFrame{
 		setSize(600, 500);
 		setLocationRelativeTo(null);
 		setResizable(false);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+          setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setIconImage(icon);
-		if(((Color)(javax.swing.UIManager.getDefaults().get("Button.background"))).getRed() <= 53) {
+		if(ide.utils.UIManager.isDarkMode()) {
 			ide.utils.UIManager.setData(this);
 		}else {
 			setBackground(Color.WHITE);
@@ -90,14 +91,14 @@ public class Launcher extends JFrame{
 		c.setBounds(getWidth() - 40, 0, 40, 40);
 		add(c);
 		
-		Door openDoor = new Door("/ide/Project/Open", getImage("/project.png"), ()->{
-			Screen.getFileView().open("Project");
-			setVisible(false);
+		Door openDoor = new Door("/ide/Project/Open", icon, ()->{
+			if(Screen.getFileView().open("Project"))
+				setVisible(false);
 		});
 		openDoor.setBounds(0, 0, getWidth(), 40);
 		panel.add(openDoor);
 		
-		Door newDoor = new Door("/ide/Project/New", getImage("/project.png"), ()->{
+		Door newDoor = new Door("/ide/Project/New", icon, ()->{
 			ToolMenu.projectWizard.setVisible(true);
 			Screen.hideNotif();
 		});
@@ -131,7 +132,7 @@ public class Launcher extends JFrame{
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(icon, getWidth()/2 - 128/2, 10, 128, 128, this);
+		g.drawImage(drawIcon, getWidth()/2 - 128/2, 10, 128, 128, this);
 		String text = "Omega IDE Community Edition";
 		int size = g.getFontMetrics().stringWidth(text);
 		g.setColor(getForeground());

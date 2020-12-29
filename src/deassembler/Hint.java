@@ -28,7 +28,7 @@ public class Hint extends JComponent{
 		this.repValue = repValue;
 		this.d = d;
 		this.i = i;
-		typeImage = d.parameters != null ?(BufferedImage)IconManager.methodIcon.getImage() : (BufferedImage)IconManager.variableIcon.getImage();
+		typeImage = d.parameters != null ? IconManager.methImage : IconManager.varImage;
 		setBackground(Color.WHITE);
 		setForeground(CYAN);
 		addMouseListener(new MouseAdapter(){

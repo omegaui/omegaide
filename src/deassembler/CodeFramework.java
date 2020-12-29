@@ -1,5 +1,5 @@
 package deassembler;
-//Debugging Completed
+//Debugging Completed - I wish I could say that :-(, it never completes some or the other thing always interfere.
 
 import static deassembler.Assembly.getReader;
 import static deassembler.Assembly.has;
@@ -44,18 +44,13 @@ public class CodeFramework{
 
 	public static boolean createHints(String code){
 		boolean var = false;
-		System.out.println(code);
 		if(Character.isLowerCase(code.charAt(0))){
-			System.out.println("Full Path Hints");
 			if(!(var = genFullPathHints(code))){
-				System.out.println("Instance Path Hints");
 				var = genInstanceHints(code);
 			}
 		}
 		else if(Character.isUpperCase(code.charAt(0))){
-			System.out.println("Class Path Hints");
 			if(!(var = genClassHints(code))) {
-				System.out.println("Instance Path Hints");
 				var = genInstanceHints(code);
 			}
 		}

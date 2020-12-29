@@ -6,6 +6,7 @@ public class PluginManager {
 	public class Plug {
 		public String name;
 		public boolean enabled;
+		public String fileName;
 		public Plug(String name, boolean enabled){
 			this.name = name;
 			this.enabled = enabled;
@@ -83,11 +84,13 @@ public class PluginManager {
 		}catch(Exception e){ System.err.println(e); }
 	}
 
-	public void offer(Plugin p){
+	public void offer(Plugin p, String fileName){
 		for(Plug px : plugs){
 			if(px.name.equals(p.getName())) return;
 		}
-		plugs.add(new Plug(p.getName(), false));
+		Plug plug = new Plug(p.getName(), false);
+		plug.fileName = fileName;
+		plugs.add(plug);
 	}
 
 	public Plug getPlug(String name){
@@ -128,7 +131,7 @@ public class PluginManager {
 					ClassLoader loader = URLClassLoader.newInstance(new URL[]{ f.toURL() });
 					Plugin p = (Plugin)loader.loadClass(className).newInstance();
 					plugins.add(p);
-					offer(p);
+					offer(p, f.getName());
 				}
 			}
 		}catch(Exception e){System.err.println(e);}

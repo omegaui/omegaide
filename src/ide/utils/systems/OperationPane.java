@@ -1,5 +1,7 @@
 package ide.utils.systems;
 
+import popup.*;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -44,7 +46,7 @@ public class OperationPane extends JPanel{
 					removeTab(name);
 				}, ()->{
 					tabPane.setSelectedIndex(names.indexOf(name));
-				}, "", IconManager.javaIcon, null));
+				}, "", null));
 		try {
 			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
 		}catch(Exception e) {}
@@ -53,7 +55,7 @@ public class OperationPane extends JPanel{
 		setVisible(true);
 	}
 	
-	public void addTab(String name, Component c, Runnable r, JPopupMenu popup) {
+	public void addTab(String name, Component c, Runnable r, OPopupWindow popup) {
 		if(names.indexOf(name) >= 0) {
 			removeTab(name);
 		}
@@ -65,7 +67,7 @@ public class OperationPane extends JPanel{
 					removeTab(name);
 				}, ()->{
 					tabPane.setSelectedIndex(names.indexOf(name));
-				}, "", IconManager.javaIcon, popup));
+				}, "", popup));
 
 		try {
 			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
@@ -90,15 +92,10 @@ public class OperationPane extends JPanel{
 			super.setVisible(false);
 		try {
 			if(value) {
-				screen.getToolMenu().operateItem.setText("Hide Operation Panel");
-				screen.getToolMenu().operateItem.setIcon(IconManager.hide);
-				screen.getToolMenu().oPHidden = false;
 				screen.compilancePane.setDividerLocation(screen.getHeight() - 400);
 				setPreferredSize(new Dimension(screen.getWidth(), 450));
 			}
 			else {
-				screen.getToolMenu().operateItem.setText("Show Operation Panel");
-				screen.getToolMenu().operateItem.setIcon(IconManager.show);
 				screen.getToolMenu().oPHidden = true;
 			}
 		}catch(Exception e) {}

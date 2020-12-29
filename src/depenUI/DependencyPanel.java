@@ -1,4 +1,5 @@
 package depenUI;
+import settings.comp.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,22 +26,21 @@ public class DependencyPanel extends JPanel{
 		public ActionPanel(String head, Runnable addAction, Runnable rmAction){
 			setLayout(null);
 			setPreferredSize(new Dimension(600, 40));
-			JButton headBtn = new JButton(head);
+			TextComp headBtn = new TextComp(head, ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 			headBtn.setBounds(0, 0, 520, 40);
 			headBtn.setEnabled(false);
 			ide.utils.UIManager.setData(headBtn);
 			headBtn.setFont(font);
+               headBtn.setClickable(false);
 			add(headBtn);
 
-			JButton addBtn = new JButton("+");
-			addBtn.addActionListener((e)->addAction.run());
+			TextComp addBtn = new TextComp("+", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, addAction);
 			addBtn.setBounds(520, 0, 30, 40);
 			ide.utils.UIManager.setData(addBtn);
 			addBtn.setFont(font);
 			add(addBtn);
 
-			JButton rmBtn = new JButton("-");
-			rmBtn.addActionListener((e)->rmAction.run());
+			TextComp rmBtn = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, rmAction);
 			rmBtn.setBounds(550, 0, 30, 40);
 			ide.utils.UIManager.setData(rmBtn);
 			rmBtn.setFont(font);
@@ -179,6 +179,7 @@ public class DependencyPanel extends JPanel{
 		ide.utils.UIManager.setData(pathArea);
 		pathArea.setEditable(false);
 		pathArea.setFont(font);
+          pathArea.setCurrentLineHighlightColor(ide.utils.UIManager.c1);
 		add(new JScrollPane(pathArea), BorderLayout.CENTER);
 	}
 	

@@ -22,9 +22,9 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import ide.Screen;
 import ide.utils.Editor;
-import ide.utils.ResourceManager;
 import ide.utils.UIManager;
-import tabPane.IconButton;
+import importIO.JDKReader;
+import settings.comp.TextComp;
 import tabPane.IconManager;
 
 public class RunView extends View{
@@ -101,87 +101,6 @@ public class RunView extends View{
 		Screen.getProjectView().setTitleMainClass();
 	}
 
-	public void runSinglet(File file) {
-		if(file == null)
-			return;
-		new Thread(()->{
-			try {
-				String className = file.getName().substring(0, file.getName().lastIndexOf('.'));
-				PrintArea printArea0 = new PrintArea("Compile-Time Errors", getScreen());
-				printArea0.printText("compiling \""+className+"\"");
-				printArea0.setVisible(true);
-				Process compileProcess = Runtime.getRuntime().exec("javac \""+file.getAbsolutePath()+"\"");
-				runningApps.add(compileProcess);
-				printArea0.setRunProcess(compileProcess);
-				getScreen().getOperationPanel().addTab("Singlet(compile)", printArea0, ()->{printArea0.stopProcess();});
-				Scanner errorStream = new Scanner(compileProcess.getErrorStream());
-				while(compileProcess.isAlive()) {
-					while(errorStream.hasNextLine())
-						printArea0.printText(errorStream.nextLine());
-				}
-				errorStream.close();
-				if(compileProcess.exitValue() != 0) {
-					runningApps.remove(compileProcess);
-					return;
-				}
-				getScreen().getOperationPanel().removeTab("Singlet(compile)");
-				runningApps.remove(compileProcess);
-				System.gc();
-				//Run Process
-				String workFolder = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('/'));
-				Process runProcess = Runtime.getRuntime().exec("java "+className, null, new File(workFolder));
-				runningApps.add(runProcess);
-				PrintArea printArea = new PrintArea("Terminal "+className+"-Closing This Conlose will terminate Execution", getScreen());
-				printArea.printText("running \""+className+"\"..............");
-				printArea.printText("");
-				printArea.printText("---<>--------------------------------------<>---");
-				printArea.launchAsTerminal();
-				printArea.setRunProcess(runProcess);
-				ActionPanel actionPanel = new ActionPanel(()->{
-					printArea.stopProcess();
-					getScreen().getOperationPanel().removeTab("Singlet(run)");
-					runSinglet(file);
-				}, ()->{
-					runProcess.destroyForcibly();
-				});
-				actionPanel.setInvoker(printArea);
-				getScreen().getOperationPanel().addTab("Singlet(run)", printArea, ()->{
-					printArea.stopProcess();
-					actionPanel.setVisible(false);
-				}, actionPanel);
-				Scanner inputReader = new Scanner(runProcess.getInputStream());
-				Scanner errorReader = new Scanner(runProcess.getErrorStream());
-
-				new Thread(()->{
-					String status = "No Errors";
-					while(runProcess.isAlive())
-					{
-						while(errorReader.hasNextLine())
-						{
-							if(!status.equals("Errors")) status = "Errors";
-							printArea.printText(errorReader.nextLine());
-						}
-					}
-					printArea.printText("Program Execution finished with "+status);
-					errorReader.close();
-				}).start();
-
-				while(runProcess.isAlive())
-				{
-					while(inputReader.hasNextLine())
-					{
-						String data = inputReader.nextLine();
-						printArea.printText(data);
-					}
-				}
-				inputReader.close();
-				runningApps.remove(runProcess);
-				actionPanel.terminate();
-				printArea.printText("---<>--------------------------------------<>---");
-			}catch(Exception e) {e.printStackTrace();}
-		}).start();
-	}
-
 	public void run() {
 		new Thread(()->{
 			String mainClass = this.mainClass;
@@ -197,11 +116,10 @@ public class RunView extends View{
 					Screen.getBuildView().createClassList();
 					if(Screen.getBuildView().classess.isEmpty())
 						return;
+					Screen.getErrorHighlighter().removeAllHighlights();
 					BuildView.optimizeProjectOutputs();
-					getScreen().getToolMenu().buildPro.setEnabled(false);
-					getScreen().getToolMenu().compilePro.setEnabled(false);
-					getScreen().getToolMenu().compileBtn.setEnabled(false);
-					getScreen().getToolMenu().runBtn.setEnabled(false);
+					getScreen().getToolMenu().buildComp.setClickable(false);
+					getScreen().getToolMenu().runComp.setClickable(false);
 					PrintArea printArea = new PrintArea("Compile-Time Errors", getScreen());
 					printA = printArea;
 					errorlog = "";
@@ -210,8 +128,6 @@ public class RunView extends View{
 					String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 					if(jdkPath != null && new File(jdkPath).exists())
 						jdkPath = String.copyValueOf(jdkPath.toCharArray()) + "/bin/";
-
-					System.out.println("Compiling");
 					
 					String cmd = "";
 					String depenPath = "";
@@ -310,14 +226,12 @@ public class RunView extends View{
 					}
 					inputReader.close();
 					Screen.setStatus("Building Project", 90);
-					getScreen().getToolMenu().buildPro.setEnabled(true);
-					getScreen().getToolMenu().compilePro.setEnabled(true);
-					getScreen().getToolMenu().compileBtn.setEnabled(true);
+					getScreen().getToolMenu().buildComp.setClickable(true);
 					Screen.getProjectView().reload();
 					if(compileProcess.exitValue() != 0) {
 						Screen.setStatus("Building Project Failed", 100);
 						runningApps.remove(compileProcess);
-						getScreen().getToolMenu().runBtn.setEnabled(true);
+						getScreen().getToolMenu().runComp.setClickable(true);
 						Screen.getErrorHighlighter().loadErrors(errorlog);
 						getScreen().getOperationPanel().addTab("Compilation", printArea, ()->{printArea.stopProcess();});
 						return;
@@ -325,7 +239,6 @@ public class RunView extends View{
 					Screen.getErrorHighlighter().removeAllHighlights();
 				}catch(Exception e2) {e2.printStackTrace();}
 
-				System.out.println("Compilation Completed");
 				getScreen().getOperationPanel().removeTab("Compilation");
 				if(mainClass == null)
 				{
@@ -335,7 +248,7 @@ public class RunView extends View{
 					if(mainClassPath.equals(Screen.getFileView().getProjectPath() + "/src.java"))
 						p.printText("\"No Main Class Defined for the Project!\" \n\tor\n \"Defined Main Class does not exits!\"");
 					Screen.setStatus("Running Project Failed", 100);
-					getScreen().getToolMenu().runBtn.setEnabled(true);
+					getScreen().getToolMenu().runComp.setClickable(true);
 					return;
 				}
 
@@ -345,7 +258,6 @@ public class RunView extends View{
 
 				Screen.setStatus("Running Project", 23);
 
-				System.out.println("Running");
 				NATIVE_PATH = "";
 				for(String d : Screen.getFileView().getNativesManager().natives) {
 					NATIVE_PATH += d + ":";
@@ -365,7 +277,7 @@ public class RunView extends View{
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
 				PrintArea terminal = new PrintArea("Terminal "+mainClass+"-Closing This Conlose will terminate Execution", getScreen());
-				terminal.printText("running \""+mainClass+"\"..............");
+				terminal.printText("running \""+mainClass+"\" with JDK v" + JDKReader.version);
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 				terminal.launchAsTerminal();
@@ -441,25 +353,13 @@ public class RunView extends View{
 					}
 				}
 				runningApps.add(runProcess);
-				ActionPanel actionPanel = new ActionPanel(()->{
-					terminal.stopProcess();
-					setMainClass(mainClass);
-					getScreen().getOperationPanel().removeTab("Run("+mainClass+")");
-					run();
-				}, ()->{
-					runProcess.destroyForcibly();
-				});
-				actionPanel.setInvoker(terminal);
 				String name = "Run("+mainClass;
 				int count = OperationPane.count(name);
 				if(count > -1) {
 					name = name + " " + count;
 				}
 				name =  name + ")";
-				getScreen().getOperationPanel().addTab(name, terminal, ()->{
-					terminal.stopProcess();
-					actionPanel.setVisible(false);
-				}, actionPanel);
+				getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
 				terminal.setRunProcess(runProcess);
 				Scanner inputReader = new Scanner(runProcess.getInputStream());
 				Scanner errorReader = new Scanner(runProcess.getErrorStream());
@@ -480,7 +380,7 @@ public class RunView extends View{
 					errorReader.close();
 				}).start();
 
-				getScreen().getToolMenu().runBtn.setEnabled(true);
+				getScreen().getToolMenu().runComp.setClickable(true);
 				while(runProcess.isAlive())
 				{
 					while(inputReader.hasNextLine())
@@ -491,30 +391,11 @@ public class RunView extends View{
 				}
 				inputReader.close();
 				runningApps.remove(runProcess);
-				actionPanel.terminate();
-				terminal.printText("---<>--------------------------------------<>---");
 				Screen.getProjectView().reload();
+				terminal.printText("---<>--------------------------------------<>---");
 			}
 			catch(Exception e) {e.printStackTrace();}
 		}).start();
-	}
-
-	public class ActionPanel extends JPopupMenu{
-		private JMenuItem terminateButton;
-		public ActionPanel(Runnable r, Runnable t) {
-			JMenuItem rerunButton = new JMenuItem("Re-run the program");
-			rerunButton.addActionListener((e)->r.run());
-			rerunButton.setIcon(IconManager.runIcon);
-			add(rerunButton);
-			terminateButton = new JMenuItem("Terminate Execution");
-			terminateButton.addActionListener((e)->{t.run(); terminateButton.setEnabled(false);});
-			terminateButton.setIcon(IconManager.discardIcon);
-			add(terminateButton);
-		}
-
-		public void terminate() {
-			terminateButton.setEnabled(false);
-		}
 	}
 
 	public class PrintArea extends JPanel {
@@ -596,6 +477,7 @@ public class RunView extends View{
 			});
 			inputField.setCaretColor(java.awt.Color.YELLOW);
 			UIManager.setData(inputField);
+               inputField.setFont(settings.Screen.PX18);
 			add(inputField, BorderLayout.SOUTH);
 			comps.add(inputField);
 
@@ -604,31 +486,31 @@ public class RunView extends View{
 			comps.add(actionCenter);
 		}
 
-		public void printText(String text)
-		{
+		public void printText(String text) {
 			if(textArea.getText().equals(""))
 				textArea.append(text);
 			else
 				textArea.append("\n"+text);
-			p.getVerticalScrollBar().setValue(p.getVerticalScrollBar().getMaximum());
+               textArea.setCaretPosition(textArea.getText().length());
 		}
 
 		private class ActionCenter extends JComponent{
 			protected ActionCenter(Runnable r, Runnable r0) {
 				setLayout(new FlowLayout());
 				UIManager.setData(this);
-				setPreferredSize(new Dimension(32, 100));
+				setPreferredSize(new Dimension(40, 100));
+				Dimension size = new Dimension(30, 30);
 
-				IconButton runBtn = new IconButton(IconManager.runIcon);
-				runBtn.setAction(r);
-				add(runBtn);
-
-				IconButton terBtn = new IconButton(IconManager.discardIcon);
-				terBtn.setAction(r0);
-				add(terBtn);
+				TextComp runComp = new TextComp(">", UIManager.c2, UIManager.c1, UIManager.c3, r);
+				runComp.setFont(settings.Screen.PX18);
+				runComp.setPreferredSize(size);
+				add(runComp);
+				
+				TextComp terComp = new TextComp("x", UIManager.c2, UIManager.c1, UIManager.c3, r0);
+				terComp.setFont(settings.Screen.PX18);
+				terComp.setPreferredSize(size);
+				add(terComp);
 			}
 		}
-
 	}
-
 }

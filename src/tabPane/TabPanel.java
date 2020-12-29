@@ -1,5 +1,7 @@
 package tabPane;
 
+import popup.*;
+
 import java.awt.BorderLayout;
 import java.io.File;
 import java.util.LinkedList;
@@ -56,20 +58,15 @@ public class TabPanel extends JPanel{
 				remove(editor);
 			}, ()->{
 				tabPane.setSelectedIndex(editors.indexOf(editor));
-			},toolTip, IconManager.unknownIcon, createMenu(editor)));
+			},toolTip, createMenu(editor)));
 			return;
 		}
 		tabPane.setTabComponentAt(editors.indexOf(editor), CloseButton.create(editor, name, ()->{
 			remove(editor);
 		}, ()->{
 			tabPane.setSelectedIndex(editors.indexOf(editor));
-		},toolTip, getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.') >= 0 ? editor.currentFile.getName().lastIndexOf('.') : 0)), createMenu(editor)));
+		},toolTip, createMenu(editor)));
 		tabPane.setSelectedIndex(names.indexOf(name));
-		Icon icon = getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.') >= 0 ? editor.currentFile.getName().lastIndexOf('.') : 0));
-		if(icon == IconManager.unknownIcon
-				|| icon == IconManager.txtIcon) {
-			editor.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NONE);
-		}
 	}
 	
 	public boolean viewImage(File file) {
@@ -103,49 +100,14 @@ public class TabPanel extends JPanel{
 		return false;
 	}
 	
-	private static JPopupMenu createMenu(Editor editor) {
+	public static OPopupWindow createMenu(Editor editor) {
 		if(editor.currentFile != null) {
 			if(editor.currentFile.getName().endsWith(".java"))
-				return PopupManager.createPopup(PopupManager.SOURCE_FILE, editor, screen, IconManager.javaIcon);
+				return PopupManager.createPopup(PopupManager.SOURCE_FILE, editor, screen);
 			else
-				return PopupManager.createPopup(PopupManager.NON_SOURCE_FILE, editor, screen,
-						getIconFor(editor.currentFile.getName().substring(editor.currentFile.getName().lastIndexOf('.') >= 0 ? editor.currentFile.getName().lastIndexOf('.') : 0)));
+				return PopupManager.createPopup(PopupManager.NON_SOURCE_FILE, editor, screen);
 		}
 		return null;
-	}
-	
-	public static Icon getIconFor(String ext) {
-		if(ext == null)
-			return IconManager.unknownIcon;
-		if(ext.equals(".java"))
-			return IconManager.javaIcon;
-		else if(ext.equals(".class"))
-			return IconManager.jvmIcon;
-		else if(ext.equals(".txt"))
-			return IconManager.txtIcon;
-		else if(ext.equals(".exe") || ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".dll"))
-			return IconManager.windowsIcon;
-		else if(ext.equals(".py"))
-			return IconManager.pythonIcon;
-		else if(ext.equals(".html"))
-			return IconManager.htmlIcon;
-		else if(ext.equals(".js"))
-			return IconManager.javaScriptIcon;
-		else if(ext.equals(".xml"))
-			return IconManager.xmlIcon;
-		else if(ext.equals(".fxml"))
-			return IconManager.fxmlIcon;
-		else if(ext.equals(".exe"))
-			return IconManager.exeIcon;
-		else if(ext.equals(".zip") || ext.equals(".rar") || ext.equals(".iso") || ext.equals(".img"))
-			return IconManager.zipIcon;
-		else if(ext.equals(".png") || ext.equals(".bmp") || ext.equals(".jpg") || ext.equals(".gif") || ext.equals(".jpeg"))
-			return IconManager.imgIcon;
-		else if(ext.equals(".dmg"))
-			return IconManager.dmgIcon;
-		else if(ext.equals(".ico"))
-			return IconManager.icoIcon;
-		return IconManager.unknownIcon;
 	}
 	
 	public Editor findEditor(File file) {

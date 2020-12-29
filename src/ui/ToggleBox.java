@@ -15,7 +15,7 @@ public class ToggleBox extends JComponent{
 
      public ToggleBox(String text, Runnable r){
           this.text = text;
-          setFont(CodeAssistPanel.font);
+          setFont(settings.Screen.PX14);
           ide.utils.UIManager.setData(this);
           addMouseListener(new MouseAdapter(){
                @Override

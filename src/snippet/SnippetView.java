@@ -1,4 +1,6 @@
 package snippet;
+import Omega.IDE;
+import settings.comp.TextComp;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -54,10 +56,7 @@ public class SnippetView extends JDialog{
 
 	private void init(){
 		//Door System
-		try {
-			String name = ((Color)javax.swing.UIManager.get("Button.background")).getRed() > 53 ? "/scp.png" : "/scp_dark.png";
-			image = (BufferedImage)ImageIO.read(getClass().getResourceAsStream(name));
-		}catch(Exception e) {}
+          image = tabPane.IconManager.buildImage;
 		leftPanel = new JPanel(null);
 		pane = new JScrollPane(leftPanel);
 		pane.setBounds(0, 0, 250, getHeight());
@@ -67,42 +66,38 @@ public class SnippetView extends JDialog{
 
 		textField = new JTextField();
 		textField.setBounds(250, 0, getWidth() - 250 - 120, 40);
-		textField.setToolTipText("Enter Snippet Name with alphabets, numbers and symbols(except \';\') without space");
+		textField.setToolTipText("Enter Snippet Name with alphabets, numbers and symbols(except \';\') without whitespaces");
 		add(textField);
 
-		JButton add = new JButton("+");
+		TextComp add = new TextComp("+", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               if(textField.getText().contains(" ") || textField.getText().equals("")) {
+                    textField.setText("See Tooltip for Naming the Snippets");
+                    return;
+               }
+               SnippetBase.add(textField.getText(), textArea.getText(), textArea.getCaretPosition(), textArea.getCaretLineNumber());
+               setView(SnippetBase.getAll().getLast());
+               loadDoors();
+	     });
 		add.setBounds(getWidth() - 120, 0, 40, 40);
-		add.addActionListener((e)->{
-			if(textField.getText().contains(" ") || textField.getText().equals("")) {
-				textField.setText("See Tooltip for Naming the Snippets");
-				return;
-			}
-			SnippetBase.add(textField.getText(), textArea.getText(), textArea.getCaretPosition(), textArea.getCaretLineNumber());
-			setView(SnippetBase.getAll().getLast());
-			loadDoors();
-		});
 		add.setFont(FONT);
 		add(add);
 
-		JButton rem = new JButton("-");
+		TextComp rem = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               SnippetBase.remove(textField.getText());
+               loadDoors();
+               textField.setText("");
+               textArea.setText("");
+               this.snip = null;
+	     });
 		rem.setBounds(getWidth() - 80, 0, 40, 40);
-		rem.addActionListener((e)->{
-			SnippetBase.remove(textField.getText());
-			loadDoors();
-			textField.setText("");
-			textArea.setText("");
-			this.snip = null;
-		});
 		rem.setFont(FONT);
 		add(rem);
 
-		JButton close = new JButton("x");
-		close.setDefaultCapable(true);
+		TextComp close = new TextComp("x", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               dispose();
+               saveView();
+	     });
 		close.setBounds(getWidth() - 40, 0, 40, 40);
-		close.addActionListener((e)->{
-			dispose();
-			saveView();
-		});
 		close.setFont(FONT);
 		add(close);
 
@@ -114,19 +109,19 @@ public class SnippetView extends JDialog{
 				saveView();
 			}
 		});
-		if(((Color)javax.swing.UIManager.get("Button.background")).getRed() > 53) {
+		if(!ide.utils.UIManager.isDarkMode()) {
 			textField.setBackground(Color.WHITE);
 			textField.setForeground(Color.BLACK);
 			leftPanel.setBackground(Color.WHITE);
 			try {
-			Theme.load(Editor.class.getResourceAsStream("/idea.xml")).apply(textArea);
+			     Theme.load(Editor.class.getResourceAsStream("/idea.xml")).apply(textArea);
 			}catch(Exception e) {}
 		}
 		else {
 			ide.utils.UIManager.setData(textField);
 			ide.utils.UIManager.setData(leftPanel);
 			try {
-			Theme.load(Editor.class.getResourceAsStream("/dark.xml")).apply(textArea);
+			     Theme.load(Editor.class.getResourceAsStream("/dark.xml")).apply(textArea);
 			}catch(Exception e) {}
 		}
 		textField.setFont(FONT);
@@ -159,7 +154,7 @@ public class SnippetView extends JDialog{
 		doors.clear();
 		block = -40;
 		for(Snippet snip : SnippetBase.getAll()) {
-			Door door = new Door("/IDE/" + snip.base, image, ()->setView(snip));
+			Door door = new Door("/\\/" + snip.base, image, ()->setView(snip));
 			door.setBounds(0, block += 40, 250, 40);
 			doors.add(door);
 			leftPanel.add(door);

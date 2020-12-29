@@ -1,4 +1,9 @@
 package ide.utils;
+import popup.*;
+
+import java.nio.file.Files;
+import java.awt.Panel;
+import java.awt.Menu;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -6,14 +11,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -21,130 +24,113 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import creator.ProjectWizard;
 import deassembler.CodeFramework;
 import ide.Screen;
 import ide.utils.systems.EditorTools;
+import static ide.utils.UIManager.*;
 import importIO.ImportManager;
 import say.swing.JFontChooser;
+import settings.comp.TextComp;
 import tabPane.IconManager;
 
 public class ToolMenu extends JPanel {
 
 	private Screen screen;
-	public JPopupMenu filePopup;
-	public JPopupMenu projectPopup;
-	public JPopupMenu toolsPopup;
-	public JPopupMenu viewPopup;
-	public JPopupMenu setPopup;
-	public JPopupMenu helpPopup;
-	public JMenuItem buildPro;
-	public JMenuItem compilePro;
-	public MenuButton runBtn;
-	public MenuButton compileBtn;
-	public MenuButton packBtn;
-	public MenuButton classBtn;
-	public MenuButton interfaceBtn;
-	public MenuButton annotationBtn;
-	public MenuButton enumBtn;
-	public MenuButton fileBtn;
-	public MenuButton searchBtn;
-	public JMenuItem visCheckbox;
-	public JMenuItem operateItem;
+	public OPopupWindow filePopup;
+	public OPopupWindow projectPopup;
+	public OPopupWindow toolsPopup;
+	public OPopupWindow viewPopup;
+	public OPopupWindow setPopup;
+	public OPopupWindow helpPopup;
+
+     public static OPopupWindow recentFilePopup;
+     public static OPopupItem fileMenu;
+     public static OPopupWindow recentProjectPopup;
+     public static OPopupItem projectMenu;
+
+	public TextComp openProjectComp;
+	public TextComp openFileComp;
+	public TextComp newProjectComp;
+	public TextComp sep0;
+	public TextComp runComp;
+	public TextComp buildComp;
+	public TextComp sep1;
+	public TextComp classComp;
+	public TextComp intComp;
+	public TextComp annComp;
+	public TextComp enComp;
+	public TextComp fileComp;
+	public TextComp sep2;
+	public TextComp contentComp;
+	public TextComp asteriskComp;
+	public TextComp structureComp;
+	public TextComp operateComp;
+     public TextComp sep3;
+     public TextComp shellComp;
+	public TextComp searchComp;
+
 	public LabelMenu taskMenu;
-	public volatile boolean oPHidden;
+	public volatile boolean oPHidden = true;
 	public static JMenu openFileMenu;
 	public static JMenu openProjectMenu;
 	public static info.Screen infoScreen;
 	public boolean hidden;
 	public static ProjectWizard projectWizard;
-	private static final Font font = new Font(UIManager.fontName, Font.BOLD, 14);
-	public static final Color HIGHLIGHT = (((Color)javax.swing.UIManager.get("Button.background")).getRed() > 53) ? Color.decode("#000080") : Color.decode("#93C763");
+     private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 14);
 
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
-		if(projectWizard == null)
+		if(projectWizard == null){
 			projectWizard = new ProjectWizard(screen);
+               infoScreen = new info.Screen(screen);
+	     }
 		setLayout(null);
-		setSize(screen.getWidth(), 20);
+		setSize(screen.getWidth(), 60);
 		setPreferredSize(getSize());
 		UIManager.setData(this);
 		init();
 	}
 
 	private void init() {
-		filePopup = new JPopupMenu("File");
-		initFilePopup(filePopup);
-		Menu fileMenu = new Menu(filePopup, "File");
+		filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(600);
+          initFilePopup();
+          Menu fileMenu = new Menu(filePopup, "File");
 		fileMenu.setBounds(0, 0, 60, 20);
 		addComp(fileMenu);
 
-		projectPopup = new JPopupMenu("Project");
-		initProjectPopup(projectPopup);
+          projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(400);
+		initProjectPopup();
 		Menu projectMenu = new Menu(projectPopup, "Project");
 		projectMenu.setBounds(60, 0, 60, 20);
 		addComp(projectMenu);
 
-		toolsPopup = new JPopupMenu("Tools");
-		initToolMenu(toolsPopup);
+		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
+		initToolMenu();
 		Menu toolsMenu = new Menu(toolsPopup, "Tools");
 		toolsMenu.setBounds(120, 0, 60, 20);
 		addComp(toolsMenu);
 
-		viewPopup = new JPopupMenu("View");
-		initViewMenu(viewPopup);
+		viewPopup = OPopupWindow.gen("View Menu", screen, 0, false).width(300);
+		initViewMenu();
 		Menu viewMenu = new Menu(viewPopup, "View ");
 		viewMenu.setBounds(180, 0, 60, 20);
 		addComp(viewMenu);
 
-		setPopup = new JPopupMenu("Settings");
-		initSetMenu(setPopup);
+		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(300);
+		initSetMenu();
 		Menu setMenu = new Menu(setPopup, "Settings");
 		setMenu.setBounds(240, 0, 60, 20);
 		addComp(setMenu);
 
-		helpPopup = new JPopupMenu("Help");
-		initHelpMenu(helpPopup);
+		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
+		initHelpMenu();
 		Menu helpMenu = new Menu(helpPopup, "Help");
 		helpMenu.setBounds(300, 0, 60, 20);
 		addComp(helpMenu);
-
-		runBtn = new MenuButton("Run Project", IconManager.run_20px, ()->{
-			if(runBtn.isEnabled() && compileBtn.isEnabled())
-				Screen.getRunView().run();
-		});
-
-		compileBtn = new MenuButton("Compile Project", IconManager.compile_20px, ()->{
-			if(runBtn.isEnabled() && compileBtn.isEnabled())
-				Screen.getBuildView().compileProject();
-		});
-
-		packBtn = new MenuButton("Create Java Package", IconManager.java_20px, ()->{
-			Screen.getFileView().getFileCreator().show("class");
-		});
-
-		classBtn = new MenuButton("Create Class", IconManager.class_20px, ()->{
-			Screen.getFileView().getFileCreator().show("class");
-		});
-
-		interfaceBtn = new MenuButton("Create Interface", IconManager.interface_20px, ()->{
-			Screen.getFileView().getFileCreator().show("interface");
-		});
-
-		annotationBtn = new MenuButton("Create Annotation", IconManager.annotation_20px, ()->{
-			Screen.getFileView().getFileCreator().show("@interface");
-		});
-
-		enumBtn = new MenuButton("Create Enum", IconManager.enum_20px, ()->{
-			Screen.getFileView().getFileCreator().show("enum");
-		});
-
-		fileBtn = new MenuButton("Create Custom File", IconManager.file_20px, ()->{
-			Screen.getFileView().getFileCreator().show("Custom File");
-		});
+		
 		taskMenu = new LabelMenu("Click to Run Garbage Collector", ()->{
 			if(CodeFramework.resolving) return;
 			setTask("Running Java Garbage Collector");
@@ -153,21 +139,250 @@ public class ToolMenu extends JPanel {
 			if(!CodeFramework.resolving) {
 				long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 				ram = (long)(ram / 1000000);
-				setTask("Using "+(ram) + " MB of Physical Memory Excluding JVM");
+				setTask("Using " + (ram) + " MB of Physical Memory Excluding JVM");
 			}
 		}, ()->{
 			if(!CodeFramework.resolving) {
 				long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 				ram = (long)(ram / 1000000);
-				setTask("Using "+(ram) + " MB of Physical Memory Excluding JVM");
+				setTask("Using " + (ram) + " MB of Physical Memory Excluding JVM");
 			}
 		});
+          taskMenu.setFont(font);
 		setTask("Hover to see Memory Statistics");
-		
-		searchBtn = new MenuButton("Click to search Files", IconManager.search_20px, ()->{
-			Screen.getFileView().getSearchWindow().setVisible(true);
+
+		openProjectComp = new TextComp("", "Open Project", c1, c2, c3, ()->Screen.getFileView().open("Project")) {
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillRoundRect(7, 10, 16, 13, 5, 5);
+				g.drawRect(7, 6, 8, 4);
+				g.drawRect(7, 7, 8, 1);
+			}
+		};
+		openProjectComp.setBounds(0, 25, 30, 30);
+		openProjectComp.setFont(settings.Screen.PX14);
+		addComp(openProjectComp);
+
+		openFileComp = new TextComp("", "Open File", c1, c2, c3, ()->Screen.getFileView().open("File")) {
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillRoundRect(7, 7, 16, 16, 5, 5);
+				g.setColor(color2);
+				g.fillRect(10, 10, 3, 1);
+				g.fillRect(14, 10, 3, 1);
+				g.fillRect(12, 14, 3, 1);
+				g.fillRect(16, 14, 3, 1);
+				g.fillRect(10, 18, 3, 1);
+				g.fillRect(14, 18, 3, 1);
+			}
+		};
+		openFileComp.setBounds(32, 25, 30, 30);
+		openFileComp.setFont(settings.Screen.PX14);
+		addComp(openFileComp);
+
+		newProjectComp = new TextComp("", "Create New Project", c1, c2, c3, ()->projectWizard.setVisible(true)) {
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillRoundRect(7, 10, 16, 13, 5, 5);
+				g.drawRect(7, 6, 8, 4);
+				g.drawRect(7, 7, 8, 1);
+				g.setColor(color2);
+				g.fillRect(18 - 3, 12, 1, 8);
+				g.fillRect(14 - 3, 16, 9, 1);
+			}
+		};
+		newProjectComp.setBounds(64, 25, 30, 30);
+		newProjectComp.setFont(settings.Screen.PX14);
+		addComp(newProjectComp);
+
+		sep0 = new TextComp("", c1, c3, c3, ()->{});
+		sep0.setBounds(100, 20, 2, 40);
+		addComp(sep0);
+
+		runComp = new TextComp(">", "Lets Run", c1, c2, c3, ()->{
+			if(runComp.isClickable() && buildComp.isClickable())
+				Screen.getRunView().run();
 		});
-		
+		runComp.setBounds(110, 25, 30, 30);
+		runComp.setFont(settings.Screen.PX28);
+		add(runComp);
+
+		buildComp = new TextComp("", "Time to Build", c1, c2, c3, ()->{
+			if(runComp.isClickable() && buildComp.isClickable())
+				Screen.getBuildView().compileProject();
+		}) {
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillOval(12, 5, 14, 14);
+				g.drawLine(13, 15, 5, 24);
+				g.drawLine(13, 16, 5, 25);
+				g.setColor(color2);
+				g.fillOval(20, 5, 8, 8);
+			}
+		};
+		buildComp.setBounds(142, 25, 30, 30);
+		buildComp.setFont(settings.Screen.PX18);
+		add(buildComp);
+
+		sep1 = new TextComp("", c1, c3, c3, ()->{});
+		sep1.setBounds(177, 20, 2, 40);
+		addComp(sep1);
+
+		classComp = new TextComp("C", "Create Class", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("class"));
+		classComp.setBounds(187, 25, 30, 30);
+		classComp.setFont(settings.Screen.PX18);
+		addComp(classComp);
+
+		intComp = new TextComp("I", "Create Interface", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("interface"));
+		intComp.setBounds(219, 25, 30, 30);
+		intComp.setFont(settings.Screen.PX18);
+		addComp(intComp);
+
+		annComp = new TextComp("A", "Create Annotation", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("@interface"));
+		annComp.setBounds(251, 25, 30, 30);
+		annComp.setFont(settings.Screen.PX18);
+		addComp(annComp);
+
+		enComp = new TextComp("E", "Create Enum", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("enum"));
+		enComp.setBounds(283, 25, 30, 30);
+		enComp.setFont(settings.Screen.PX18);
+		addComp(enComp);
+
+		fileComp = new TextComp("+", "Create Custom File", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("Custom File"));
+		fileComp.setBounds(315, 25, 30, 30);
+		fileComp.setFont(settings.Screen.PX18);
+		addComp(fileComp);
+
+		sep2 = new TextComp("", c1, c3, c3, ()->{});
+		sep2.setBounds(350, 20, 2, 40);
+		addComp(sep2);
+
+		contentComp = new TextComp("", c1, c2, c3, ()->{
+			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
+			contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
+			contentComp.repaint();
+		}){
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillOval(7, 7, 16, 16);
+				if(DataManager.isContentAssistRealTime()) {
+					g.setColor(color2);
+					g.fillOval(10, 10, 10, 10);
+					g.setColor(color1);
+					g.fillOval(10, 10, 10, 10);
+				}
+			}
+		};
+		contentComp.setBounds(360, 25, 30, 30);
+		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
+		addComp(contentComp);
+
+		asteriskComp = new TextComp("", c1, c2, c3, ()->{
+			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
+			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
+			asteriskComp.repaint();
+		}){
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillOval(7, 7, 16, 16);
+				if(!DataManager.isUsingStarImports()) {
+					g.setColor(color2);
+					g.fillOval(10, 10, 10, 10);
+					g.setColor(color1);
+					g.fillOval(10, 10, 10, 10);
+				}
+			}
+		};
+		asteriskComp.setBounds(392, 25, 30, 30);
+		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
+		addComp(asteriskComp);
+
+		structureComp = new TextComp("", c1, c2, c3, ()->{
+			hidden = !hidden;
+			screen.screenHasProjectView = !screen.screenHasProjectView;
+			Screen.getProjectView().organizeProjectViewDefaults();
+			screen.doLayout();
+			screen.revoke();
+			Screen.getProjectView().setVisible(false);
+			structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
+			structureComp.repaint();
+		}){
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillOval(7, 7, 16, 16);
+				if(hidden) {
+					g.setColor(color2);
+					g.fillOval(10, 10, 10, 10);
+					g.setColor(color1);
+					g.fillOval(10, 10, 10, 10);
+				}
+			}
+		};
+		structureComp.setBounds(424, 25, 30, 30);
+		structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
+		addComp(structureComp);
+
+		operateComp = new TextComp("", c1, c2, c3, ()->{
+			if(!oPHidden) {
+				screen.getOperationPanel().setVisible(false);
+				oPHidden = true;
+			}
+			else {
+				screen.getOperationPanel().setVisible(true);
+				oPHidden = false;
+			}
+			operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
+			operateComp.repaint();
+		}){
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.fillOval(7, 7, 16, 16);
+				if(oPHidden) {
+					g.setColor(color2);
+					g.fillOval(10, 10, 10, 10);
+					g.setColor(color1);
+					g.fillOval(10, 10, 10, 10);
+				}
+			}
+		};
+		operateComp.setBounds(456, 25, 30, 30);
+		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
+		addComp(operateComp);
+
+		searchComp = new TextComp("", "Search and Open File", c1, c2, c3, ()->Screen.getFileView().getSearchWindow().setVisible(true)) {
+			@Override
+			public void draw(Graphics2D g) {
+				g.setColor(color3);
+				g.drawLine(16, 15, 25, 23);
+				g.drawLine(16, 16, 25, 24);
+				g.fillOval(5, 4, 14, 14);
+				g.setColor(color2);
+				g.fillOval(8, 7, 8, 8);
+				g.setColor(color1);
+				g.fillOval(8, 7, 8, 8);
+			}
+		};
+		addComp(searchComp);
+
+          sep3 = new TextComp("", c1, c3, c3, ()->{});
+          sep3.setBounds(500, 20, 2, 40);
+          addComp(sep3);
+
+          shellComp = new TextComp("</>", "Click to open a non-root terminal inside the IDE", c1, c2, c3, ()->{
+               ide.Screen.getTerminalComp().showTerminal(true);
+          });
+          shellComp.setFont(settings.Screen.PX16);
+          shellComp.setBounds(510, 25, 60, 30);
+          add(shellComp);
+          
 		reshape();
 	}
 
@@ -175,143 +390,61 @@ public class ToolMenu extends JPanel {
 		taskMenu.setText(task);
 		taskMenu.repaint();
 	}
-	
+
 	public void setMsg(String msg) {
 		taskMenu.setMsg(msg);
 		taskMenu.repaint();
 	}
 
 	public void reshape() {
-		int x = screen.getWidth()/2 - 300/2;
-		if(x < 450)
-			x = 450;
-		packBtn.setLocation(x, 0);
-		classBtn.setLocation(packBtn.getX() + 20 + 1, 0);
-		interfaceBtn.setLocation(classBtn.getX() + 20 + 1, 0);
-		enumBtn.setLocation(interfaceBtn.getX() + 20 + 1, 0);
-		annotationBtn.setLocation(enumBtn.getX() + 20 + 1, 0);
-		fileBtn.setLocation(annotationBtn.getX() + 20 + 1, 0);
-
-		runBtn.setLocation(fileBtn.getX() + 20 + 20, 0);
-		compileBtn.setLocation(runBtn.getX() + 20 + 1, 0);
-		searchBtn.setLocation(screen.getWidth() - 20, 0);
 		reshapeTask();
 	}
 
 	private void reshapeTask() {
-		taskMenu.setLocation(compileBtn.getX() + 20 + 10, 0);
+		searchComp.setBounds(getWidth() - 30, 25, 30, 30);
+		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 0);
 	}
 
-	private void initSetMenu(JPopupMenu popup) {
+	private void initSetMenu() {
 		JFontChooser fontC = new JFontChooser();
-		JMenuItem changeFont = new JMenuItem("Change Font", IconManager.show);
-		changeFont.addActionListener((e)->{
-			UIManager.setData(fontC);
-			fontC.setSelectedFontStyle(Font.BOLD);
-			fontC.setSelectedFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
-			int res = fontC.showDialog(screen);
-			if(res ==JFontChooser.OK_OPTION) {
-				Font font = fontC.getSelectedFont();
-				UIManager.fontName = font.getName();
-				UIManager.fontSize = font.getSize();
-				screen.getUIManager().save();
-				screen.loadThemes();
-			}
-		});
-		popup.add(changeFont);
-
-		JMenuItem all = new JMenuItem("All Settings", IconManager.settingsIcon);
-		all.addActionListener((e)->{
-			Screen.getSettingsView().setVisible(true);
-		});
-		popup.add(all);
+          setPopup.createItem("Change Font", IconManager.settingsImage, ()->{
+               UIManager.setData(fontC);
+               fontC.setSelectedFontStyle(Font.BOLD);
+               fontC.setSelectedFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
+               int res = fontC.showDialog(screen);
+               if(res ==JFontChooser.OK_OPTION) {
+                    Font font = fontC.getSelectedFont();
+                    UIManager.fontName = font.getName();
+                    UIManager.fontSize = font.getSize();
+                    screen.getUIManager().save();
+                    screen.loadThemes();
+               }
+          })
+          .createItem("All Settings", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true));
 	}
 
-	private void initHelpMenu(JPopupMenu popup) {
-          JMenuItem ps = new JMenuItem("Plugin Store", IconManager.ideIcon);
-          ps.addActionListener(e->Screen.getPluginStore().setVisible(true));
-          popup.add(ps);
-          
-          JMenuItem pv = new JMenuItem("Plugin Manager", IconManager.ideIcon);
-          pv.addActionListener(e->Screen.getPluginView().setVisible(true));
-          popup.add(pv);
-		
-		JMenuItem update = new JMenuItem("Check for Update", IconManager.ideIcon);
-		update.addActionListener(e->Screen.updateIDE());
-		popup.add(update);
-		
-		JMenuItem dev = new JMenuItem("About", IconManager.info);
-		dev.addActionListener(e->{
-			if(infoScreen == null)
-				infoScreen = new info.Screen(Screen.getScreen());
-			infoScreen.setVisible(true);
-		});
-		popup.add(dev);
+	private void initHelpMenu() {
+          helpPopup.createItem("Plugin Store", IconManager.ideImage, ()->Screen.getPluginStore().setVisible(true))
+          .createItem("Plugin Manager", IconManager.ideImage, ()->Screen.getPluginView().setVisible(true))
+          .createItem("Check for Update", IconManager.ideImage, ()->Screen.updateIDE())
+          .createItem("About", IconManager.ideImage, ()->{
+               infoScreen.setVisible(true);
+          });
 	}
 
-	private void initViewMenu(JPopupMenu popup) {
-		operateItem = new JMenuItem("Show Operation Panel", IconManager.show);
-		operateItem.addActionListener((e)->{
-			if(!oPHidden) {
-				screen.getOperationPanel().setVisible(false);
-				operateItem.setText("Show Operation Panel");
-				operateItem.setIcon(IconManager.show);
-				oPHidden = true;
-			}
-			else {
-				screen.getOperationPanel().setVisible(true);
-				operateItem.setText("Hide Operation Panel");
-				operateItem.setIcon(IconManager.hide);
-				oPHidden = false;
-			}
-		});
-		popup.add(operateItem);
-
-		JMenuItem projMenu = new JMenuItem("Show Project Menu", IconManager.project);
-		projMenu.addActionListener((e)->{
-			if(!screen.screenHasProjectView)
-				Screen.getProjectView().setVisible(true);
-		});
-		popup.add(projMenu);
-
-		visCheckbox = new JMenuItem("Hide Project Structure", IconManager.hide);
-		visCheckbox.addActionListener((e)->{
-			if(!hidden) {
-				hidden = true;
-				visCheckbox.setText("Show Project Structure");
-				visCheckbox.setIcon(IconManager.show);
-				screen.screenHasProjectView = false;
-				Screen.getProjectView().organizeProjectViewDefaults();
-				screen.doLayout();
-				screen.revoke();
-				Screen.getProjectView().setVisible(false);
-			}
-			else {
-				visCheckbox.setText("Hide Project Structure");
-				visCheckbox.setIcon(IconManager.hide);
-				hidden = false;
-				screen.screenHasProjectView = true;
-				Screen.getProjectView().organizeProjectViewDefaults();
-				screen.doLayout();
-				screen.revoke();
-				Screen.getProjectView().setVisible(false);
-			}
-
-		});
-		popup.add(visCheckbox);
+	private void initViewMenu() {
+          viewPopup.createItem("Show Project Panel", IconManager.projectImage, ()->{
+                if(!screen.screenHasProjectView)
+                         Screen.getProjectView().setVisible(true);
+          });
 	}
 
-	private void initToolMenu(JPopupMenu popup) {
-		JMenuItem is = new JMenuItem("Import Picker", IconManager.is);
-		is.addActionListener(e->EditorTools.showIS());
-		popup.add(is);
-		
-		JMenuItem ss = new JMenuItem("Snippet Manager", IconManager.scp);
-		ss.addActionListener(e->Screen.snippetView.setVisible(true));
-		popup.add(ss);
+	private void initToolMenu() {
+          toolsPopup.createItem("Import Picker", IconManager.buildImage, ()->EditorTools.showIS())
+          .createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true));
 	}
 
-	private void initProjectPopup(JPopupMenu popup) {
+	private void initProjectPopup() {
 		FileFilter allFileFilter = new FileFilter() {
 
 			@Override
@@ -327,204 +460,141 @@ public class ToolMenu extends JPanel {
 
 		JFileChooser fileC = new JFileChooser();
 
-		JMenuItem libView = new JMenuItem("Manage Class-Path", IconManager.scp);
-		libView.addActionListener((e)->Screen.getFileView().getDependencyView().setVisible(true));
-
-		JMenuItem modView = new JMenuItem("Manage Module-Path", IconManager.scp);
-		modView.addActionListener((e)->Screen.getFileView().getModuleView().setVisible(true));
-		
-		JMenuItem delBtn = new JMenuItem("Delete File(s)", IconManager.deleteIcon);
-		delBtn.addActionListener((e)->{
-
-			fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
-			fileC.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			fileC.setApproveButtonText("Delete");
-			fileC.setFileFilter(allFileFilter);
-			fileC.setMultiSelectionEnabled(true);
-
-			int res = fileC.showOpenDialog(screen);
-			if(res == JFileChooser.APPROVE_OPTION) {
-				File f = fileC.getSelectedFile();
-				File[] files = fileC.getSelectedFiles();
-				String names = "";
-				boolean v = false;
-				for(File file : files)
-				{
-					names += file.getName() + " && ";
-					v = true;
-				}
-				if(v) names = names.substring(0, names.length() - 4);
-
-				int del = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+names+"?", "Delete or not?", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-				if(del == JOptionPane.OK_OPTION)
-				{
-					new Thread(()->{
-						for(File file : files) {
-							try{
-								deleteDir(file);
-							}catch(Exception e2) {}
-						}
-						ImportManager.readSource(EditorTools.importManager);
-					}).start();
-				}
-			}
-
-		});
-
-		JMenuItem markAsMainBtn = new JMenuItem("Mark As Main Class", IconManager.markAsMain);
-		markAsMainBtn.addActionListener((e)->{
-
-			fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
-			fileC.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileC.setApproveButtonText("Mark This As Main");
-			fileC.setFileFilter(new FileFilter() {
-				@Override
-				public String getDescription() {
-					return "Select a java class";
-				}
-
-				@Override
-				public boolean accept(File f) {
-					if(f.isDirectory()) return false;
-					else if(f.getName().endsWith(".java")) return true;
-					return false;
-				}
-			});
-			fileC.setMultiSelectionEnabled(false);
-
-			int res = fileC.showOpenDialog(screen);
-			if(res == JFileChooser.APPROVE_OPTION)
-				Screen.getRunView().setMainClassPath(fileC.getSelectedFile().getAbsolutePath());
-		});
-		add(markAsMainBtn, FlowLayout.LEFT);
-
-		JMenuItem refreshBtn = new JMenuItem("Refresh", IconManager.refreshIcon);
-		refreshBtn.addActionListener(e->Screen.getProjectView().reload());
-
-		popup.add(refreshBtn);
-		popup.add(libView);
-		popup.add(modView);
-		popup.add(markAsMainBtn);
-		popup.add(delBtn);
+          projectPopup.createItem("Manage Class-Path", IconManager.projectImage, ()->Screen.getFileView().getDependencyView().setVisible(true))
+          .createItem("Manage Module-Path", IconManager.projectImage, ()->Screen.getFileView().getModuleView().setVisible(true))
+          .createItem("Delete Files", IconManager.closeImage, 
+               ()->{
+                    fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
+                    fileC.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                    fileC.setApproveButtonText("Delete");
+                    fileC.setFileFilter(allFileFilter);
+                    fileC.setMultiSelectionEnabled(true);
+     
+                    int res = fileC.showOpenDialog(screen);
+                    if(res == JFileChooser.APPROVE_OPTION) {
+                         File f = fileC.getSelectedFile();
+                         File[] files = fileC.getSelectedFiles();
+                         String names = "";
+                         boolean v = false;
+                         for(File file : files)
+                         {
+                              names += file.getName() + " && ";
+                              v = true;
+                         }
+                         if(v) names = names.substring(0, names.length() - 4);
+     
+                         int del = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+names+"?", "Delete or not?", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+                         if(del == JOptionPane.OK_OPTION)
+                         {
+                              new Thread(()->{
+                                   for(File file : files) {
+                                        try{
+                                             deleteDir(file);
+                                        }catch(Exception e2) {}
+                                   }
+                                   ImportManager.readSource(EditorTools.importManager);
+                              }).start();
+                         }
+                    }
+               })
+          .createItem("Mark As Main Class", IconManager.fileImage, 
+               ()->{
+                    fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
+                    fileC.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    fileC.setApproveButtonText("Mark This As Main");
+                    fileC.setFileFilter(new FileFilter() {
+                         @Override
+                         public String getDescription() {
+                              return "Select a java class";
+                         }
+     
+                         @Override
+                         public boolean accept(File f) {
+                              if(f.isDirectory()) return false;
+                              else if(f.getName().endsWith(".java")) return true;
+                              return false;
+                         }
+                    });
+                    fileC.setMultiSelectionEnabled(false);
+     
+                    int res = fileC.showOpenDialog(screen);
+                    if(res == JFileChooser.APPROVE_OPTION)
+                         Screen.getRunView().setMainClassPath(fileC.getSelectedFile().getAbsolutePath());
+               })
+          .createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload());
 	}
 
-	private void initFilePopup(JPopupMenu popup) {
+	private void initFilePopup() {
 		//New Menu Items
-		JMenu newMenu = new JMenu("New");
-		newMenu.setIcon(IconManager.newFileIcon);
-		JMenuItem newPack = new JMenuItem("Java Package", IconManager.java_20px);
-		newPack.addActionListener((e)->Screen.getFileView().getFileCreator().show("class"));
-		newMenu.add(newPack);
-		JMenuItem newClass = new JMenuItem("Java Class", IconManager.class_20px);
-		newClass.addActionListener((e)->Screen.getFileView().getFileCreator().show("class"));
-		newMenu.add(newClass);
-		JMenuItem newInt = new JMenuItem("Java Interface", IconManager.interface_20px);
-		newInt.addActionListener((e)->Screen.getFileView().getFileCreator().show("interface"));
-		newMenu.add(newInt);
-		JMenuItem newEnum = new JMenuItem("Java Enum", IconManager.enum_20px);
-		newEnum.addActionListener((e)->Screen.getFileView().getFileCreator().show("enum"));
-		newMenu.add(newEnum);
-		JMenuItem newAnn = new JMenuItem("Java Annotation", IconManager.annotation_20px);
-		newAnn.addActionListener((e)->Screen.getFileView().getFileCreator().show("@interface"));
-		newMenu.add(newAnn);
-		JMenuItem newOth = new JMenuItem("Other file", IconManager.file_20px);
-		newMenu.addActionListener((e)->Screen.getFileView().getFileCreator().show("Custom File"));
-		newMenu.add(newOth);
-		popup.add(newMenu);
-		
-		//Project Menu Item
-		JMenuItem createProItem = new JMenuItem("New Project", IconManager.project);
-		createProItem.addActionListener((e)->projectWizard.setVisible(true));
-		popup.add(createProItem);
-		
-		//Open Menu Item
-		JMenuItem openFile = new JMenuItem("Open File", IconManager.open_file);
-		openFile.addActionListener((e)->Screen.getFileView().open("File"));
-		popup.add(openFile);
-		JMenuItem openPro = new JMenuItem("Open Project", IconManager.project);
-		openPro.addActionListener((e)->Screen.getFileView().open("Project"));
-		popup.add(openPro);
-		openFileMenu = new JMenu("Open Recent Files");
-		openFileMenu.setIcon(IconManager.open_file);
-		popup.add(openFileMenu);
-		openProjectMenu = new JMenu("Open Recent Projects");
-		openProjectMenu.setIcon(IconManager.project);
-		popup.add(openProjectMenu);
-		
-		//Close Menu Item
-		JMenuItem closePro = new JMenuItem("Close Project", IconManager.project);
-		closePro.addActionListener((e)->{
-			Screen.getFileView().closeProject();
-		});
-		popup.add(closePro);
-		
+          filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getFileView().open("File"))
+          .createItem("Open Project", IconManager.projectImage, ()->Screen.getFileView().open("Project"))
+          .createItem("New Project", IconManager.projectImage, ()->projectWizard.setVisible(true));
 
-		//Build Menu Item
-		compilePro = new JMenuItem("Compile Project", IconManager.compileProjectIcon);
-		compilePro.addActionListener((e)->Screen.getBuildView().compileProject());
-		popup.add(compilePro);
-		buildPro = new JMenuItem("Create Jar", IconManager.compileProjectIcon);
-		buildPro.addActionListener((e)->Screen.getBuildView().createJar());
-		popup.add(buildPro);
+          recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(300).height(250);
+          fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{
+               recentFilePopup.setLocation(filePopup.getX() + fileMenu.getX() + fileMenu.getWidth(), filePopup.getY() + fileMenu.getY());
+               recentFilePopup.setVisible(!recentFilePopup.isVisible());
+          });
+          filePopup.addItem(fileMenu);
+          
+          recentProjectPopup = OPopupWindow.gen("Recent Projects Menu", screen, 0, true).width(300).height(250);
+          projectMenu = new OPopupItem(recentProjectPopup, "Recent Projects", IconManager.projectImage, ()->{
+               recentProjectPopup.setLocation(filePopup.getX() + projectMenu.getX() + projectMenu.getWidth(), filePopup.getY() + projectMenu.getY());
+               recentProjectPopup.setVisible(!recentProjectPopup.isVisible());
+          });
+          filePopup.addItem(projectMenu);
 
-		//Save Menu Item
-		JMenuItem saveAll = new JMenuItem("Save All", IconManager.saveIcon);
-		saveAll.addActionListener((e)->screen.saveAllEditors());
-		popup.add(saveAll);
+          filePopup.setOnClose(()->{
+               recentFilePopup.setVisible(false);
+               recentProjectPopup.setVisible(false);
+          });
 
-		//Settings Menu Item
-		JMenuItem prefs = new JMenuItem("Preferences", IconManager.settingsIcon);
-		prefs.addActionListener((e)->Screen.getSettingsView().setVisible(true));
-		popup.add(prefs);
-
-		//Quit Menu Item
-		JMenuItem exitDnotTerminate = new JMenuItem("Save Everything and Exit -Without terminating running apps", IconManager.hide);
-		exitDnotTerminate.addActionListener((e)->{
-			Screen.notify("Saving UI and Data");
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			Screen.notify("Saving Project");
-			screen.saveAllEditors();
-			try{Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
-			System.exit(0);
-		});
-		popup.add(exitDnotTerminate);
-
-		JMenuItem exitDnotSave = new JMenuItem("Terminate Running Apps and Exit -Without saving opened editors", IconManager.hide);
-		exitDnotSave.addActionListener((e)->{
-			Screen.notify("Terminating Running Applications");
-			try{
-				for(Process p : Screen.getRunView().runningApps) {
-					if(p.isAlive())
-						p.destroyForcibly();
-				}
-			}catch(Exception e2) {}
-			Screen.notify("Saving UI and Data");
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			try{Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
-			System.exit(0);
-		});
-		popup.add(exitDnotSave);
-
-		JMenuItem exit = new JMenuItem("Exit", IconManager.hide);
-		exit.addActionListener((e)->{
-			Screen.notify("Terminating Running Applications");
-			try{
-				for(Process p : Screen.getRunView().runningApps) {
-					if(p.isAlive())
-						p.destroyForcibly();
-				}
-			}catch(Exception e2) {}
-			Screen.notify("Saving UI and Data");
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			Screen.notify("Saving Project");
-			screen.saveAllEditors();
-			try{Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
-			System.exit(0);
-		});
-		popup.add(exit);
+          filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
+          .createItem("Create Java Archive", IconManager.buildImage, ()->Screen.getBuildView().createJar())
+          .createItem("Save All Editors", IconManager.fileImage, ()->screen.saveAllEditors())
+          .createItem("Preferences", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true))
+          .createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage, 
+               ()->{
+                    Screen.notify("Saving UI and Data");
+                    screen.getUIManager().save();
+                    screen.getDataManager().saveData();
+                    Screen.notify("Saving Project");
+                    screen.saveAllEditors();
+                    try{Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
+                    System.exit(0);
+               })
+          .createItem("Terminate Running Apps and Exit -Without saving opened editors", IconManager.closeImage, 
+               ()->{
+                    Screen.notify("Terminating Running Applications");
+                    try{
+                         for(Process p : Screen.getRunView().runningApps) {
+                              if(p.isAlive())
+                                   p.destroyForcibly();
+                         }
+                    }catch(Exception e2) {}
+                    Screen.notify("Saving UI and Data");
+                    screen.getUIManager().save();
+                    screen.getDataManager().saveData();
+                    try{Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
+                    System.exit(0);
+               })
+          .createItem("Exit", IconManager.closeImage, 
+               ()->{
+                    Screen.notify("Terminating Running Applications");
+                    try{
+                         for(Process p : Screen.getRunView().runningApps) {
+                              if(p.isAlive())
+                                   p.destroyForcibly();
+                         }
+                    }catch(Exception e2) {}
+                    Screen.notify("Saving UI and Data");
+                    screen.getUIManager().save();
+                    screen.getDataManager().saveData();
+                    Screen.notify("Saving Project");
+                    screen.saveAllEditors();
+                    try{Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
+                    System.exit(0);
+               });
 	}
 
 	private void addComp(Component c) {
@@ -577,62 +647,14 @@ public class ToolMenu extends JPanel {
 		}
 	}
 
-	private void deleteEmptyDir(File file)
-	{
+	private void deleteEmptyDir(File file) {
 		file.delete();
 	}
+    
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		reshape();
-	}
-
-	public class MenuButton extends JComponent{
-		private volatile boolean enter;
-		private ImageIcon icon;
-		public MenuButton(String text, Icon icon, Runnable r) {
-			setToolTipText(text);
-			this.icon = (ImageIcon)icon;
-			UIManager.setData(this);
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					enter = true;
-					repaint();
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					enter = false;
-					repaint();
-				}
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					r.run();
-				}
-			});
-			addComp(this);
-		}
-
-		@Override
-		public void setFont(Font f) {
-			super.setFont(font);
-			setSize(ToolMenu.this.getHeight(), ToolMenu.this.getHeight());
-			setPreferredSize(getSize());
-		}
-
-		@Override
-		public void paint(Graphics g2D) {
-			Graphics2D g = (Graphics2D)g2D;
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), null);
-			if(enter) {
-				g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), null);
-				g.setColor(HIGHLIGHT);
-				g.fillRect(0, 0, getWidth(), 3);
-			}
-		}
 	}
 
 	public class LabelMenu extends JComponent {
@@ -671,7 +693,7 @@ public class ToolMenu extends JPanel {
 				this.text = text;
 			repaint();
 		}
-		
+
 		public void setMsg(String msg) {
 			this.msg = msg;
 			if(msg != null)
@@ -683,12 +705,11 @@ public class ToolMenu extends JPanel {
 
 		@Override
 		public void setFont(Font f) {
-			super.setFont(font);
-			f = font;
+			super.setFont(f);
 			setSize(100, ToolMenu.this.getHeight());
 			setPreferredSize(getSize());
 		}
-		
+
 		@Override
 		public void paint(Graphics g2D) {
 			Graphics2D g = (Graphics2D)g2D;
@@ -702,15 +723,13 @@ public class ToolMenu extends JPanel {
 			int x = g.getFontMetrics().stringWidth(text);
 			int cx = x;
 			if(getWidth() + 3 != x + 3) {
-				setSize(x + 3, ToolMenu.this.getHeight());
+				setSize(x + 3, 20);
 				setPreferredSize(getSize());
 				reshapeTask();
 			}
 			x = getWidth()/2 - x/2;
 			g.drawString(text, x, getFont().getSize());
 			if(enter) {
-				g.setColor(HIGHLIGHT);
-				g.fillRect(x, getHeight() - 3, cx, 2);
 				g.setFont(getFont());
 				g.drawString(text, x, getFont().getSize());
 			}
@@ -720,10 +739,9 @@ public class ToolMenu extends JPanel {
 	public class Menu extends JComponent {
 		private String text;
 		private volatile boolean enter;
-		public Menu(JPopupMenu popup, String text) {
+		public Menu(OPopupWindow popup, String text) {
 			this.text = text;
 			UIManager.setData(this);
-			popup.setInvoker(this);
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -736,7 +754,7 @@ public class ToolMenu extends JPanel {
 					repaint();
 				}
 				@Override
-				public void mouseClicked(MouseEvent e) {
+				public void mousePressed(MouseEvent e) {
 					popup.setLocation(getX() + screen.getX(), getY() + getHeight() + 15 + getHeight() + screen.getY());
 					popup.setVisible(true);
 				}

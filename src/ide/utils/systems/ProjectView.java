@@ -94,10 +94,6 @@ public class ProjectView extends JDialog{
 	}
 
 	public void reload() {
-		if(!screen.screenHasProjectView)
-			remove(tree);
-		else
-			screen.setToNull();
 		tree = tree.reload();
 		organizeProjectViewDefaults();
 		Screen.getFileView().getSearchWindow().cleanAndLoad(new File(Screen.getFileView().getProjectPath()));

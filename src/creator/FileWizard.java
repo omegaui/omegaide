@@ -1,4 +1,7 @@
 package creator;
+import popup.*;
+
+import static ide.utils.UIManager.*;
 import static creator.ProjectWizard.addHoverEffect;
 import static creator.ProjectWizard.createSRCFile;
 import static creator.ProjectWizard.setData;
@@ -18,11 +21,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 import ide.Screen;
+import ide.utils.UIManager;
 import ide.utils.systems.EditorTools;
 import importIO.ImportManager;
+import settings.comp.TextComp;
 public class FileWizard extends JDialog{
-	protected JButton typeBtn;
-	protected JButton parentRoot;
+	protected TextComp parentRoot;
+	protected TextComp typeBtn;
 	public FileWizard(JFrame f){
 		super(f, true);
 		setLayout(null);
@@ -35,6 +40,7 @@ public class FileWizard extends JDialog{
 
 	private void init(){
 		JTextField nameField = new JTextField();
+		nameField.setForeground(UIManager.c3);
 		addHoverEffect(nameField, "Enter name of the File or Source");
 		nameField.setBounds(0, 0, getWidth() - 40, 40);
 		add(nameField);
@@ -44,8 +50,7 @@ public class FileWizard extends JDialog{
 		fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileC.setApproveButtonText("Select");
 		fileC.setDialogTitle("Select a directory as source root");
-		parentRoot = new JButton(":");
-		parentRoot.addActionListener((e)->{
+		parentRoot = new TextComp(":", c1, c3, c2, ()->{
 			int res = fileC.showOpenDialog(this);
 			if(res == JFileChooser.APPROVE_OPTION){
 				parentRoot.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
@@ -54,37 +59,24 @@ public class FileWizard extends JDialog{
 		parentRoot.setBounds(nameField.getWidth(), 0, 40, 40);
 		add(parentRoot);
 
-		typeBtn = new JButton("class");
+		final OPopupWindow popup = new OPopupWindow("File-Type Menu", this, 0, false).width(210);
+		typeBtn = new TextComp("class", c1, c2, c3, ()->{});
 		typeBtn.setBounds(0, nameField.getHeight(), getWidth(), 40);
-		final JPopupMenu popup = new JPopupMenu();
-		final JMenuItem classItem = new JMenuItem("Class");
-		final JMenuItem interItem = new JMenuItem("Interface");
-		final JMenuItem annoItem = new JMenuItem("Annotaion");
-		final JMenuItem enumItem = new JMenuItem("Enum");
-		final JMenuItem fileItem = new JMenuItem("Custom File");
-		classItem.addActionListener((e)->typeBtn.setText("class"));
-		interItem.addActionListener((e)->typeBtn.setText("interface"));
-		annoItem.addActionListener((e)->typeBtn.setText("@interface"));
-		enumItem.addActionListener((e)->typeBtn.setText("enum"));
-		fileItem.addActionListener((e)->typeBtn.setText("Custom File"));
-		popup.add(classItem);
-		popup.add(interItem);
-		popup.add(annoItem);
-		popup.add(enumItem);
-		popup.add(fileItem);
-		popup.setInvoker(typeBtn);
-		typeBtn.addMouseListener(new MouseAdapter(){
+          popup.createItem("Class", tabPane.IconManager.classImage, ()->typeBtn.setText("class"))
+          .createItem("Interface", tabPane.IconManager.interImage, ()->typeBtn.setText("interface"))
+          .createItem("Annotation", tabPane.IconManager.annImage, ()->typeBtn.setText("@interface"))
+          .createItem("Enum", tabPane.IconManager.enumImage, ()->typeBtn.setText("enum"))
+          .createItem("Custom File", tabPane.IconManager.fileImage, ()->typeBtn.setText("Custom File"));
+		typeBtn.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent e) {
 				popup.setLocation(e.getXOnScreen(), e.getYOnScreen());
 				popup.setVisible(true);
 			}
 		});
 		add(typeBtn);
 
-		JButton packBtn = new JButton("Create Only Package");
-		packBtn.setBounds(0, typeBtn.getY() + typeBtn.getHeight(), getWidth(), 40);
-		packBtn.addActionListener((e)->{
+		TextComp packBtn = new TextComp("Create Only Package", c1, c2, c3, ()->{
 			String path = nameField.getText();
 			StringTokenizer tokenizer = new StringTokenizer(path, ".");
 			path = parentRoot.getToolTipText() + "/";
@@ -100,17 +92,15 @@ public class FileWizard extends JDialog{
 			}
 			setVisible(false);
 		});
+		packBtn.setBounds(0, typeBtn.getY() + typeBtn.getHeight(), getWidth(), 40);
 		add(packBtn);
 
-		JButton cancelBtn = new JButton("Close");
+		TextComp cancelBtn = new TextComp("Close", c1, c2, c3, ()->setVisible(false));
 		cancelBtn.setBounds(0, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
-		cancelBtn.addActionListener((e)->setVisible(false));
 		setData(cancelBtn);
 		add(cancelBtn);
 
-		JButton createBtn = new JButton("Create");
-		createBtn.setBounds(getWidth()/2, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
-		createBtn.addActionListener((e)->{
+		TextComp createBtn = new TextComp("Create", c1, c2, c3, ()->{
 			if(parentRoot.getToolTipText() == null) return;
 			if(!new File(parentRoot.getToolTipText()).exists()) {
 				nameField.setText("The Root Directory Does not exists");
@@ -148,6 +138,7 @@ public class FileWizard extends JDialog{
 					nameField.setText("File Already Exists");
 			}
 		});
+		createBtn.setBounds(getWidth()/2, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
 		setData(createBtn);
 		add(createBtn);
 	}

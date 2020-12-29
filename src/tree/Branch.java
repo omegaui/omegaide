@@ -1,4 +1,7 @@
 package tree;
+import popup.*;
+
+import java.util.Locale;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,7 +19,7 @@ public class Branch extends JComponent{
 	public File file;
 	private String name;
 	private String type = "?";
-	private JPopupMenu popupMenu;
+	private OPopupWindow popupMenu;
 	private volatile boolean enter;
 	private boolean expand;
 	private Locale l;
@@ -24,15 +27,15 @@ public class Branch extends JComponent{
 	private static final Font FONT_BOLD = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 20;
-	private static final Color SOURCE_COLOR = new Color(50, 50, 250);
-	private static final Color ANY_COLOR = ide.utils.ToolMenu.HIGHLIGHT;
-	private static final Color BYTE_COLOR = new Color(150, 150, 50);
-	private static final Color IMAGE_COLOR = new Color(50, 150, 50);
-	private static final Color LINUX_COLOR = new Color(250, 50, 50);
-	private static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
-	private static final Color WEB_COLOR = Color.ORANGE;
-	private static final Color XML_COLOR = Color.PINK;
-	private static final Color ARCHIVE_COLOR = Color.DARK_GRAY;
+	public static final Color SOURCE_COLOR = new Color(50, 50, 250);
+	public static final Color ANY_COLOR = ide.utils.UIManager.c1;
+	public static final Color BYTE_COLOR = new Color(150, 150, 50);
+	public static final Color IMAGE_COLOR = new Color(50, 150, 50);
+	public static final Color LINUX_COLOR = new Color(250, 50, 50);
+	public static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
+	public static final Color WEB_COLOR = Color.ORANGE;
+	public static final Color XML_COLOR = Color.PINK;
+	public static final Color ARCHIVE_COLOR = Color.DARK_GRAY;
 	public interface Locale {
 		void locate(Branch b);
 	}
@@ -52,7 +55,7 @@ public class Branch extends JComponent{
 		else{
 			setForeground(ANY_COLOR);
 			setFont(FONT_BOLD);
-			if(file.getName().endsWith(".java") || file.getName().endsWith(".fxml") || file.getName().endsWith(".py")){
+			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")){
 				setForeground(SOURCE_COLOR);
 				type = "SourceCode";
 			}
@@ -81,7 +84,7 @@ public class Branch extends JComponent{
 				setForeground(WEB_COLOR);
 				type = "Web";
 			}
-			else if(file.getName().endsWith(".xml")){
+			else if(file.getName().endsWith(".xml") || file.getName().endsWith(".fxml")){
 				setForeground(XML_COLOR);
 				type = "Xml";
 			}
@@ -101,8 +104,7 @@ public class Branch extends JComponent{
 				type = "Archive";
 			}
 		}
-		popupMenu = new JPopupMenu();
-		popupMenu.setInvoker(this);
+		popupMenu= OPopupWindow.gen("Tree Menu", ide.Screen.getScreen(), 0, false).width(300);
 		PopupManager.createTreePopup(popupMenu, file);
 		addMouseListener(new MouseAdapter(){
 			@Override

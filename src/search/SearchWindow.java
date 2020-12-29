@@ -1,4 +1,11 @@
 package search;
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import tree.FileTree;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import java.nio.file.Files;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
@@ -22,7 +29,7 @@ public class SearchWindow extends JDialog{
 	private JTextField field;
 	private LinkedList<Door> doors;
 	private int pointer;
-	private BufferedImage image;
+	private BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 	private Screen screen;
 	public SearchWindow(Screen f){
 		super(f, false);
@@ -62,9 +69,26 @@ public class SearchWindow extends JDialog{
 					list(field.getText());
 			}
 		});
-		ide.utils.UIManager.setData(field);
+		field.setFont(settings.Screen.PX16);
+          field.setBackground(ide.utils.UIManager.c2);
+          field.setForeground(ide.utils.UIManager.c3);
 		ide.utils.UIManager.setData(panel);
-		image = launcher.Launcher.getImage("/file.png");
+          
+          //Creating File Image of size 32, 32 here
+          Graphics graphics = image.getGraphics();
+          Graphics2D g = (Graphics2D)graphics;
+          g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+          g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+          g.setColor(tabPane.IconManager.getBackground());
+          g.fillRoundRect(0, 0, 32, 32, 5, 5);
+          g.setColor(tabPane.IconManager.getForeground());
+          g.fillRect(4, 4, 4, 2);
+          g.fillRect(8, 4, 4, 2);
+          g.fillRect(6, 8, 4, 2);
+          g.fillRect(10, 8, 4, 2);
+          g.fillRect(4, 12, 4, 2);
+          g.fillRect(8, 12, 4, 2);
+          g.dispose();
 	}
 
 	public void list(String text){
@@ -105,7 +129,7 @@ public class SearchWindow extends JDialog{
 		if(files == null || files.length == 0) return;
 		for(File file : files){
 			if(file.isDirectory()) load(file);
-			else this.files.add(file);
+			else if(!file.getName().endsWith(".class")) this.files.add(file);
 		}
 	}
 }

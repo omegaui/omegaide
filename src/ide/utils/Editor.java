@@ -64,6 +64,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile boolean shift_pressed;
 	private volatile boolean o_pressed;
 
+     //FindAndReplace is Under Development [last updated Omega IDE v13.1 beta]
 	public class FindAndReplace extends JComponent {
 		private JButton findBtn;
 		private JButton replaceBtn;
@@ -210,7 +211,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setLayout(null);
 	}
 
-	private void setStyle(Editor e, File f) {
+	public static void setStyle(Editor e, File f) {
 		if(f.getName().endsWith(".html"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
 		else if(f.getName().endsWith(".js"))
@@ -225,6 +226,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(SYNTAX_STYLE_XML);
 		else if(f.getName().endsWith(".java"))
 			e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVA);
+		else if(f.getName().endsWith(".rs"))
+			e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVASCRIPT);
+		else if(f.getName().endsWith(".sh") || f.getName().endsWith(".run"))
+			e.setSyntaxEditingStyle(SYNTAX_STYLE_UNIX_SHELL);
 		else
 			e.setSyntaxEditingStyle(null);
 	}
@@ -246,7 +251,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}catch(Exception e) { }
 
 	}
-
+    
 	public static Theme getTheme() {
 		try {
 			if(!currentTheme.equals(DataManager.getEditorColoringScheme()))
@@ -462,7 +467,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
 			if(res0 != JOptionPane.YES_OPTION)
 				return;
-
 			printArea.setVisible(true);
 			if(!currentFile.delete()) {
 				printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
@@ -481,7 +485,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(currentFile != null) {
 			if(currentFile.getName().endsWith(".java")) {
 				int code = e.getKeyCode();
-				autoSymbolCompletion(e);
+				if(code == KeyEvent.VK_BACK_SPACE)
+					autoSymbolExclusion(e);
+				else
+					autoSymbolCompletion(e);
 				//Managing KeyBoard
 				if(code == KeyEvent.VK_CONTROL)
 					ctrl_pressed = true;
@@ -569,7 +576,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					o_pressed = false;
 				//Shortcut
 				if(code == KeyEvent.VK_F2) {
-					if(Screen.getScreen().getToolMenu().runBtn.isEnabled() && Screen.getScreen().getToolMenu().compileBtn.isEnabled())
+					if(Screen.getScreen().getToolMenu().runComp.isClickable() && Screen.getScreen().getToolMenu().buildComp.isClickable())
 						Screen.getRunView().run();
 				}
 				//Code Assist
@@ -589,18 +596,46 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	//Managing Smart type code completion
 
-	private void autoSymbolCompletion(KeyEvent e)
-	{
+	private void autoSymbolExclusion(KeyEvent e) {
+		try {
+			switch(getText().charAt(getCaretPosition() - 1)) {
+			case '\"':
+				if(getText().charAt(getCaretPosition()) == '\"')
+					getDocument().remove(getCaretPosition(), 1);
+				break;
+			case '\'':
+				if(getText().charAt(getCaretPosition()) == '\'')
+					getDocument().remove(getCaretPosition(), 1);
+				break;
+			case '<':
+				if(getText().charAt(getCaretPosition()) == '>')
+					getDocument().remove(getCaretPosition(), 1);
+				break;
+			case '(':
+				if(getText().charAt(getCaretPosition()) == ')')
+					getDocument().remove(getCaretPosition(), 1);
+				break;
+			case '[':
+				if(getText().charAt(getCaretPosition()) == ']')
+					getDocument().remove(getCaretPosition(), 1);
+				break;
+			default:
+			}
+		}catch(Exception ex){ System.err.println(ex); }
+	}
+
+	private void autoSymbolCompletion(KeyEvent e) {
 		try {
 			switch (e.getKeyChar()) {
 			case '(':
-				if(getText().charAt(getCaretPosition() + 1) != ')'){
+				if(getText().charAt(getCaretPosition()) != ')'){
+					System.out.println(getText().charAt(getCaretPosition()));
 					insert(")", getCaretPosition());
 					setCaretPosition(getCaretPosition() - 1);
 				}
 				break;
 			case '[':
-				if(getText().charAt(getCaretPosition() + 1) != ']'){
+				if(getText().charAt(getCaretPosition()) != ']'){
 					insert("]", getCaretPosition());
 					setCaretPosition(getCaretPosition() - 1);
 				}
@@ -620,7 +655,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			default:
 				break;
 			}
-		}catch(Exception ex) {}
+		}catch(Exception ex) { System.err.println(ex); }
 	}
 
 	private class PrintArea extends View {
@@ -644,6 +679,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			textArea.setAutoscrolls(true);
 			textArea.setHighlightCurrentLine(false);
 			UIManager.setData(textArea);
+               textArea.setFont(settings.Screen.PX16);
 			JScrollPane p = new JScrollPane(textArea);
 			p.setAutoscrolls(true);
 			add(p, BorderLayout.CENTER);
