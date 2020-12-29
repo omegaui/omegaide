@@ -8,40 +8,40 @@ Omega UI is a software company to provide lightweight and resource efficient pro
 Omega IDE is an extremely lightweight and performant java IDE written from scratch.
 It has been designed for **Linux Desktops**.
 
-![](/images/super_components.png)
+![Components](/images/super_components.png)
 
 It uses the native `GTKLookAndFeel` and it has its own set of custom components.
 
-![](/images/classpath_manager.png)
-![](/images/module_manager.png)
+![Components](/images/classpath_manager.png)
+![Components](/images/module_manager.png)
 
 It offers dependency managers from classpath to module path.
 
-![](/images/code_assist.png)
+![Components](/images/code_assist.png)
 It has a (**beta state**) content assist that just works.
 It has Auto Import feature (Press **Ctrl + Shift + O**).
 
-![](/images/snippet_manager.png)
+![Components](/images/snippet_manager.png)
 
 It offers Snippet Management that lets you code faster.
 
-![](/images/terminal_shell.png)
+![Components](/images/terminal_shell.png)
 
 It has built-in terminal support(non-root).
 
-![](/images/plugin_manager.png)
-![](/images/plugin_store.png)
+![Components](/images/plugin_manager.png)
+![Components](/images/plugin_store.png)
 
 **It has its own Plugin System API**(visit https://www.github.com/omegaui/omegaide-plugins to create your own).
 
 It has a beautiful text editor (thanks to **rsyntaxtextarea**).
 
-![](/images/main_window.png)
-![](/images/dark_mode.png)
+![Components](/images/main_window.png)
+![Components](/images/dark_mode.png)
 
 It manages the theme on its own like other GTK applications.
 
-![](/images/about_section.png)
+![Components](/images/about_section.png)
 
 There are lot more features to explore. Give it a try.
 
