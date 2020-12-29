@@ -1,18 +1,61 @@
 ## Omega UI
 
 Omega UI is a software company to provide lightweight and resource efficient programs for development purposes.
-Omega IDE is a lightweight program which is a super fast java ide designed for linux to speed up development in java.
 
-### Screenshots
+# **Omega IDE**
+![Main View](/images/main_window.png)
 
-![Splash Screen](/images/startup_splash.png)
+Omega IDE is an extremely lightweight and performant java IDE written from scratch.
+It has been designed for **Linux Desktops**.
 
+![](/images/super_components.png)
 
-![Project Window](images/view_list.png)
+It uses the native `GTKLookAndFeel` and it has its own set of custom components.
 
+![](/images/classpath_manager.png)
+![](/images/module_manager.png)
 
-![Main Window](/images/main_window.png)
+It offers dependency managers from classpath to module path.
 
+![](/images/code_assist.png)
+It has a (**beta state**) content assist that just works.
+It has Auto Import feature (Press **Ctrl + Shift + O**).
+
+![](/images/snippet_manager.png)
+
+It offers Snippet Management that lets you code faster.
+
+![](/images/terminal_shell.png)
+
+It has built-in terminal support(non-root).
+
+![](/images/plugin_manager.png)
+![](/images/plugin_store.png)
+
+**It has its own Plugin System API**(visit https://www.github.com/omegaui/omegaide-plugins to create your own).
+
+It has a beautiful text editor (thanks to **rsyntaxtextarea**).
+
+![](/images/main_window.png)
+![](/images/dark_mode.png)
+
+It manages the theme on its own like other GTK applications.
+
+![](/images/about_section.png)
+
+There are lot more features to explore. Give it a try.
+
+## Installing
+Dependency : JDK 11 or above
+For installation on Debain or its derivatives use the .deb installer in the release section on github.
+For Other Distros download the Omega IDE.zip file from the release section on github.
+It contains three files (**one shell script, one desktop entry, one image-icon and a runnable jar file**) and I think you know what to do with them.
+
+## Editing
+For Editing the source codes you can use even Omega IDE,
+Just clone this repository and open the folder **omegaide** as the project root. Setup the **res** directory as the resource root and the **jfontchooser-vX.jar** as the jar dependency.
+
+Thats all.
 
 ### About
 
@@ -30,8 +73,5 @@ So, I started creating my own IDE.
 And after it **just works**.
 I made it public.
 
-# Follow
+# Hope you liked it
 Instagram @i_am_arham_92
-# Hope you liked it.
-
-[Donate](https://paypal.me/imarham)
