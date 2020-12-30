@@ -41,8 +41,8 @@ public class TextComp extends JComponent{
                     enter = false;
                     press = false;
                     repaint();
-                    if(runnable != null)
-                         runnable.run();
+                    if(TextComp.this.runnable != null)
+                         TextComp.this.runnable.run();
 			}
 			
 			@Override
