@@ -1,59 +1,99 @@
-## Omega UI
-
-Omega UI is a software company to provide lightweight and resource efficient programs for development purposes.
-
 # **Omega IDE**
-![Main View](/images/main_window.png)
+![](/images/main_window.png)
 
-Omega IDE is an extremely lightweight and performant java IDE written from scratch.
-It has been designed for **Linux Desktops**.
+Omega IDE is a blazing fast cross-platform java IDE written from scratch.
 
-![Components](/images/super_components.png)
+All the Binaries of Omega IDE are compiled with GraalVM (the fastest JVM).
 
-It uses the native `GTKLookAndFeel` and it has its own set of custom components.
+JDK 11 or above is required to run Omega IDE anywhere.
 
-![Components](/images/classpath_manager.png)
-![Components](/images/module_manager.png)
+It uses the FlatL&F to provide a familier UX for programmers coming from IntelliJ or Eclipse IDE.
 
-It offers dependency managers from classpath to module path.
+It has its own set of custom components from the buttons to popup menus.
 
-![Components](/images/code_assist.png)
-It has a (**beta state**) content assist that just works.
-It has Auto Import feature (Press **Ctrl + Shift + O**).
+It has a variety of features :
 
-![Components](/images/snippet_manager.png)
+**Content-Assist**
 
-It offers Snippet Management that lets you code faster.
+![](/images/content_assist.png)
 
-![Components](/images/terminal_shell.png)
+**Snippet Management**
 
-It has built-in terminal support(non-root).
+![](/images/snippet_manager.png)
 
-![Components](/images/plugin_manager.png)
-![Components](/images/plugin_store.png)
+**Getter/Setter(s)**
+
+![](/images/getter-setter.png)
+
+**Override/Implement**
+
+![](/images/override-impl.png)
+
+**Classpath Management**
+
+![](/images/classpath.png)
+
+
+**Modulepath Management**
+
+![](/images/modulepath.png)
+
+**Terminal Inside**
+
+![](/images/shell.png)
+
+**Stucture View**
+
+![](/images/structure-view.png)
+
+**Workspaces**
+
+![](/images/workspace.png)
+
+**Plugin System**
+
+![](/images/plugin-manager.png)
+
+**Theming Modes (light and dark)**
+
+![](/images/light.png)
+
+![](/images/dark.png)
+
 
 **It has its own Plugin System API**(visit https://www.github.com/omegaui/omegaide-plugins to create your own).
 
 It has a beautiful text editor (thanks to **rsyntaxtextarea**).
 
-![Components](/images/main_window.png)
-![Components](/images/dark_mode.png)
-
-It manages the theme on its own like other GTK applications.
-
-![Components](/images/about_section.png)
+![](/images/about_section.png)
 
 There are lot more features to explore. Give it a try.
 
 ## Installing
+Well, Omega IDE is a portable application.
+
+No matter where you run the **Omega IDE.jar** file, it will setup itself completely.
+
 Dependency : JDK 11 or above
-For installation on Debain or its derivatives use the .deb installer in the release section on github.
-For Other Distros download the Omega IDE.zip file from the release section on github.
-It contains three files (**one shell script, one desktop entry, one image-icon and a runnable jar file**) and I think you know what to do with them.
+
+For installation on Windows run **Omega IDE.jar (download from the release section)**
+
+For installation on Debain or its derivatives use the .deb installer in the release section.
+
+For Other Distros download the **Omega IDE.zip file from the release section**. 
+
+It contains three files (**one shell script, one desktop entry, one image-icon and a runnable jar file**) 
+
+and I think you know what to do with them.
 
 ## Editing
+
 For Editing the source codes you can use even Omega IDE,
-Just clone this repository and open the folder **omegaide** as the project root. Setup the **res** directory as the resource root and the **jfontchooser-vX.jar** as the jar dependency.
+
+Just clone this repository and open the folder **omegaide** as the project root.
+
+Setup the **res** directory as the resource root and the **jfontchooser-vX.jar** and **flatlaf-vX.jar** as the jar dependencies.
+
 
 Thats all.
 
