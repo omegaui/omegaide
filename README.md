@@ -13,47 +13,46 @@ It has its own set of custom components from the buttons to popup menus.
 
 It has a variety of features :
 
-![](/images/content_assist.png)
-
 **Content-Assist**
 
-**Auto-Imports**
-
-![](/images/snippet_manager.png)
+![](/images/content_assist.png)
 
 **Snippet Management**
 
-![](/images/getter-setter.png)
+![](/images/snippet_manager.png)
 
 **Getter/Setter(s)**
 
-![](/images/override-impl.png)
+![](/images/getter-setter.png)
 
 **Override/Implement**
 
-![](/images/classpath.png)
+![](/images/override-impl.png)
 
 **Classpath Management**
 
-![](/images/modulepath.png)
+![](/images/classpath.png)
+
 
 **Modulepath Management**
 
-![](/images/shell.png)
+![](/images/modulepath.png)
 
 **Terminal Inside**
 
-![](/images/structure-View.png)
+![](/images/shell.png)
+
+**Stucture View**
+
+![](/images/structure-view.png)
 
 **Workspaces**
 
 ![](/images/workspace.png)
 
-**Stucture View**
+**Plugin System**
 
 ![](/images/plugin-manager.png)
-
-**Plugin System**
 
 **Theming Modes (light and dark)**
 
