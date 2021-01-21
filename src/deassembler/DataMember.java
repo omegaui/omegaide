@@ -8,7 +8,7 @@ public class DataMember {
      public String parameters;
      public int parameterCount = 0;
      private LinkedList<String> modifiers = new LinkedList<>();
-     protected DataMember(String access, String modifier, String type, String name, String parameters){
+     public DataMember(String access, String modifier, String type, String name, String parameters){
           this.access = access;
           this.type = type;
           this.modifier = modifier;
@@ -53,15 +53,15 @@ public class DataMember {
      }
      
      public String getRepresentableValue() {
-    	 if(access.equals("custom hint"))
-    		 return name + " - " + type;
-    	 if(name.contains(".") & parameters != null)
-    		 return null;
-    	 if(parameterCount != 0) {
-    		 String x = name.substring(0, name.indexOf('('));
-    		 return x + "(" + parameters + ")" + " - " + type;
-    	 }
-    	 return name + " - " + type;
+    	     if(access.equals("custom hint"))
+    		     return name + " - " + type;
+    	     if(name.contains(".") & parameters != null)
+    		     return null;
+    	     if(parameterCount != 0) {
+               String x = name.substring(0, name.indexOf('('));
+               return x + "(" + parameters + ")" + " - " + type;
+    	     }
+    	     return name + " - " + type;
      }
 
      @Override

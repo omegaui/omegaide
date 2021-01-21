@@ -9,7 +9,6 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 import ide.Screen;
-import ide.utils.ResourceView;
 import ide.utils.UIManager;
 import ide.utils.systems.creators.RefractionManager;
 import tree.FileTree;
@@ -20,7 +19,6 @@ public class ProjectView extends JDialog{
 	public FileTree tree;
 	private JFileChooser chooser = new JFileChooser();
 	private RefractionManager refractionManager;
-	public ResourceView resourceView;
 	private Screen screen;
 
 	public ProjectView(String title, Screen window) {
@@ -34,7 +32,6 @@ public class ProjectView extends JDialog{
 		setLayout(new BorderLayout());
 		initComponents();
 		setAlwaysOnTop(true);
-		resourceView = new ResourceView(window);
 		UIManager.setData(chooser);
 		setModal(false);
 	}

@@ -29,6 +29,8 @@ public class PluginView extends JDialog{
 	private static TextComp mRBtn;
 	private static TextComp mLBtn;
 	private static int index = 0;
+     private int mouseX;
+     private int mouseY;
 
 	public PluginView(ide.Screen screen){
 		super(screen);
@@ -47,9 +49,7 @@ public class PluginView extends JDialog{
 				dispose();
 			}
 		});
-		try{
-			image = (BufferedImage) ImageIO.read(getClass().getResourceAsStream(ide.utils.UIManager.isDarkMode() ? "/omega_ide_icon32_dark.png" : "/omega_ide_icon32.png"));
-		}catch(Exception e){ System.err.println(e); }
+		image = tabPane.IconManager.ideImage;
 		init();
 	}
 
@@ -66,14 +66,27 @@ public class PluginView extends JDialog{
 				setLocation(e.getXOnScreen() - 50, e.getYOnScreen() - 20);
 			}
 		});
+          closeBtn.setArc(0, 0);
 		add(closeBtn);
 
-		JTextField title = new JTextField("       Plugin Manager");
+		TextComp title = new TextComp("Plugin Manager", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{});
 		title.setBounds(40, 0, LEFT_OFFSET - 40, 40);
-		title.setEditable(false);
 		title.setFont(PX16);
-          title.setBackground(ide.utils.UIManager.c2);
-          title.setForeground(ide.utils.UIManager.c3);
+          title.setArc(0, 0);
+          title.setClickable(false);
+          title.addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e) {
+                    setLocation(e.getXOnScreen() - mouseX - 40, e.getYOnScreen() - mouseY);
+               }
+          });
+          title.addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e) {
+                    mouseX = e.getX();
+                    mouseY = e.getY();
+               }
+          });
 		add(title);
 
 		leftPane.setBounds(0, 40, LEFT_OFFSET, getHeight());
@@ -112,12 +125,13 @@ public class PluginView extends JDialog{
                String fileName = ide.Screen.getPluginManager().getPlug(plugin.getName()).fileName;
                int res = JOptionPane.showConfirmDialog(PluginView.this, "Do you want to uninstall " + plugin.getName() + "?\nThis Operation requires IDE restart!", "Plugin Manager", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                if(res == JOptionPane.OK_OPTION) {
-                    new java.io.File("omega-ide-plugins/" + fileName).delete();
+                    new java.io.File("omega-ide-plugins" + java.io.File.separator + fileName).delete();
                }
 	     });
 		removeBtn.setToolTipText("Click to Uninstall this Plugin");
 		removeBtn.setFont(PX16);
 		removeBtn.setBounds(getWidth() - 40, 0, 40, 40);
+          removeBtn.setArc(0, 0);
 		add(removeBtn);
 
 		descriptionArea = new JTextArea() {
@@ -161,6 +175,7 @@ public class PluginView extends JDialog{
 	     });
 		mRBtn.setFont(PX14);
 		mRBtn.setBounds(getWidth() - 40, 140, 40, 40);
+          mRBtn.setArc(0, 0);
 		add(mRBtn);
 
 		mLBtn = new TextComp("<", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
@@ -173,6 +188,7 @@ public class PluginView extends JDialog{
 	     });
 		mLBtn.setFont(PX14);
 		mLBtn.setBounds(getWidth() - 80, 140, 40, 40);
+          mLBtn.setArc(0, 0);
 		add(mLBtn);
 	}
 

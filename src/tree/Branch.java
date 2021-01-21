@@ -27,8 +27,8 @@ public class Branch extends JComponent{
 	private static final Font FONT_BOLD = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 20;
-	public static final Color SOURCE_COLOR = new Color(50, 50, 250);
-	public static final Color ANY_COLOR = ide.utils.UIManager.c1;
+     public static final Color SOURCE_COLOR = new Color(250, 50, 50);
+	public static final Color ANY_COLOR = ide.utils.UIManager.c3;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50);
 	public static final Color IMAGE_COLOR = new Color(50, 150, 50);
 	public static final Color LINUX_COLOR = new Color(250, 50, 50);
@@ -36,9 +36,11 @@ public class Branch extends JComponent{
 	public static final Color WEB_COLOR = Color.ORANGE;
 	public static final Color XML_COLOR = Color.PINK;
 	public static final Color ARCHIVE_COLOR = Color.DARK_GRAY;
+  
 	public interface Locale {
 		void locate(Branch b);
 	}
+    
 	public Branch(File file, Locale l){
 		this.file = file;
 		this.l = l;
@@ -93,7 +95,8 @@ public class Branch extends JComponent{
 			}
 			else if(file.getName().endsWith(".png") || file.getName().endsWith(".jpg")
 					|| file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")
-					|| file.getName().endsWith(".jp2") || file.getName().endsWith(".bmp")){
+					|| file.getName().endsWith(".jp2") || file.getName().endsWith(".bmp")
+					|| file.getName().endsWith(".ico") || file.getName().endsWith(".svg")){
 				setForeground(IMAGE_COLOR);
 				type = "Image";
 			}

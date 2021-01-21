@@ -57,10 +57,23 @@ public class TextComp extends JComponent{
 		this(text, color1, color2, color3, runnable);
 		setToolTipText(toolTip);
 	}
+
+     public void setColors(Color c1, Color c2, Color c3){
+          color1 = c1;
+          color2 = c2;
+          color3 = c3;
+          repaint();
+     }
 	
 	public void draw(Graphics2D g) {
 		
 	}
+
+     public void setArc(int x, int y){
+          this.arcX = x;
+          this.arcY = y;
+          repaint();
+     }
 
 	public void setText(String text){
 		this.dir = text;
@@ -116,8 +129,6 @@ public class TextComp extends JComponent{
 	}
 
 	public void paintEnter(Graphics2D g){
-		//g.setColor(color3);
-		//g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		g.setColor(color1);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 	}

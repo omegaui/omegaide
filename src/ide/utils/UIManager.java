@@ -1,4 +1,10 @@
 package ide.utils;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.File;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -8,29 +14,28 @@ import ide.Screen;
 import omega.database.DataBase;
 import omega.database.DataEntry;
 
-public class UIManager extends DataBase{
+public class UIManager extends DataBase {
 
 	public static String fontName = "Ubuntu Mono";
 	public static int fontSize = 20;
 	private static final Font font = new Font("Ubuntu Mono",Font.BOLD, 12);
-	public static Color glow = Color.YELLOW;
+	public static Color glow;
 	public static Color c1;
 	public static Color c2;
 	public static Color c3;
 
-	public UIManager(Screen screen) 	{
+	public UIManager(Screen screen) {
 		super(".ui");
           loadData();
 	}
 
      public static void loadHighlight(){
           if(isDarkMode())
-               glow = Color.decode("#ffffff");
-          else glow = tree.Branch.ANY_COLOR;
+               glow = Color.WHITE;
+          else glow = Color.BLACK;
      }
 
-	public void loadData()
-	{
+	public void loadData() {
 		try {
 			DataEntry e = getEntryAt("Font", 0);
 			if(e == null) return;
@@ -42,11 +47,11 @@ public class UIManager extends DataBase{
 				c2 = Color.WHITE;
 			}
 			else {
-                    c1 = new Color(133, 46, 196);
-                    c2 = new Color(5, 6, 16);
-                    c3 = new Color(160, 107, 200);
+                    c1 = new Color(131, 141, 151, 80);
+                    c2 = new Color(31, 41, 51);
+                    c3 = new Color(247, 155, 25);
 			}
-		}catch(Exception e) {System.out.println(e.getMessage());}
+		}catch(Exception e) {System.err.println(e.getMessage());}
 	}
 	
 	public static void reset() {
@@ -70,16 +75,30 @@ public class UIManager extends DataBase{
 	}
 
 	@Override
-	public void save()
-	{
+	public void save() {
 		clear();
 		addEntry("Font", fontName);
 		addEntry("Font", fontSize+"");
 		super.save();
 	}
+
+     public static File loadDefaultFile(String name){
+          File file = new File(name);
+     	try{
+               if(file.exists()) return file;
+               InputStream in = UIManager.class.getResourceAsStream("/" + name);
+               OutputStream out = new FileOutputStream(file);
+               while(in.available() > 0)
+                    out.write(in.read());
+               out.close();
+               in.close();
+     	}catch(Exception e){ System.err.println(e); }
+          return file;
+     }
 	
 	public static boolean isDarkMode() {
-		return ((Color)javax.swing.UIManager.get("Button.background")).getRed() <= 62;
+          return DataManager.getTheme().equals("dark");
+		//return ((Color)javax.swing.UIManager.get("Button.background")).getRed() <= 62;
 	}
 
 	public static void setFontName(String fontName) {

@@ -50,12 +50,14 @@ public class FileWizard extends JDialog{
 		fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileC.setApproveButtonText("Select");
 		fileC.setDialogTitle("Select a directory as source root");
+          
 		parentRoot = new TextComp(":", c1, c3, c2, ()->{
 			int res = fileC.showOpenDialog(this);
 			if(res == JFileChooser.APPROVE_OPTION){
 				parentRoot.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
 			}
 		});
+          parentRoot.setArc(0, 0);
 		parentRoot.setBounds(nameField.getWidth(), 0, 40, 40);
 		add(parentRoot);
 
@@ -74,14 +76,15 @@ public class FileWizard extends JDialog{
 				popup.setVisible(true);
 			}
 		});
+          typeBtn.setArc(0, 0);
 		add(typeBtn);
 
 		TextComp packBtn = new TextComp("Create Only Package", c1, c2, c3, ()->{
 			String path = nameField.getText();
 			StringTokenizer tokenizer = new StringTokenizer(path, ".");
-			path = parentRoot.getToolTipText() + "/";
+			path = parentRoot.getToolTipText() + File.separator;
 			while(tokenizer.hasMoreTokens()){
-				path += tokenizer.nextToken() + "/";
+				path += tokenizer.nextToken() + File.separator;
 				File file = new File(path);
 				if(!file.exists())
 					file.mkdir();
@@ -93,11 +96,13 @@ public class FileWizard extends JDialog{
 			setVisible(false);
 		});
 		packBtn.setBounds(0, typeBtn.getY() + typeBtn.getHeight(), getWidth(), 40);
+          packBtn.setArc(0, 0);
 		add(packBtn);
 
 		TextComp cancelBtn = new TextComp("Close", c1, c2, c3, ()->setVisible(false));
 		cancelBtn.setBounds(0, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
 		setData(cancelBtn);
+          cancelBtn.setArc(0, 0);
 		add(cancelBtn);
 
 		TextComp createBtn = new TextComp("Create", c1, c2, c3, ()->{
@@ -116,9 +121,9 @@ public class FileWizard extends JDialog{
 				final String PATH = text.substring(0, text.lastIndexOf('.'));
 				String path = PATH;
 				StringTokenizer tokenizer = new StringTokenizer(path, ".");
-				path = parentRoot.getToolTipText() + "/";
+				path = parentRoot.getToolTipText() + File.separator;
 				while(tokenizer.hasMoreTokens()){
-					path += tokenizer.nextToken() + "/";
+					path += tokenizer.nextToken() + File.separator;
 					File file = new File(path);
 					if(!file.exists())
 						file.mkdir();
@@ -127,7 +132,7 @@ public class FileWizard extends JDialog{
 				createSRCFile(src, type, PATH, text.substring(text.lastIndexOf('.') + 1));
 				ImportManager.readSource(EditorTools.importManager);
 			}else{
-				File file = new File(parentRoot.getToolTipText() + "/" + nameField.getText());
+				File file = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
 				if(!file.exists()){
 					try{
 						file.createNewFile();
@@ -140,13 +145,14 @@ public class FileWizard extends JDialog{
 		});
 		createBtn.setBounds(getWidth()/2, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
 		setData(createBtn);
+          createBtn.setArc(0, 0);
 		add(createBtn);
 	}
 
 	public void show(String type){
 		typeBtn.setText(type);
 		if(Screen.getFileView().getProjectPath() != null && new File(Screen.getFileView().getProjectPath()).exists())
-			parentRoot.setToolTipText(Screen.getFileView().getProjectPath()+"/src");
+			parentRoot.setToolTipText(Screen.getFileView().getProjectPath() + File.separator + "src");
 		setVisible(true);
 	}
 

@@ -26,7 +26,7 @@ public class DependencyManager {
 
 	public void loadFile() {
 		dependencies.clear();
-		String path = Screen.getFileView().getProjectPath() + "/" + DEPENDENCIES_PATH;
+		String path = Screen.getFileView().getProjectPath() + File.separator + DEPENDENCIES_PATH;
 		File file  = new File(path);
 		if(!file.exists()) return;
 		try {
@@ -45,7 +45,7 @@ public class DependencyManager {
 
 	public void saveFile() {
 		try {
-			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + "/" + DEPENDENCIES_PATH));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator + DEPENDENCIES_PATH));
 			dependencies.forEach((d)->{
 				d = "\""+d+"\"";
 				writer.println(d);

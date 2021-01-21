@@ -29,6 +29,8 @@ public class SplashScreen extends JFrame{
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
 	private volatile boolean ground = false;
+     private int mouseX;
+     private int mouseY;
 
 	public SplashScreen(){
 		BACK = ide.utils.UIManager.c2;
@@ -45,8 +47,16 @@ public class SplashScreen extends JFrame{
 			public void mousePressed(MouseEvent e){
 				render();
 				paint(getGraphics());
+                    mouseX = e.getX();
+                    mouseY = e.getY();
 			}
 		});
+          addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e) {
+                    setLocation(e.getXOnScreen() - mouseX, e.getYOnScreen() - mouseY);
+               }
+          });
 		addWindowListener(new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e){
@@ -114,16 +124,16 @@ public class SplashScreen extends JFrame{
 		int[] _Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(_X, _Y, X.length);
           g.setColor(BACK);
-          g.fillRect(getWidth()/2 - 64, 20, 128, 128);
+          //g.fillRect(getWidth()/2 - 64, 20, 128, 128);
 		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
 	}
 
 	@Override
 	public void paint(Graphics g){
-          g.setColor(BACK);
-          g.fillRect(getWidth()/2 - 64, 20, 128, 128);
-		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
+          //g.setColor(BACK);
+          //g.fillRect(getWidth()/2 - 64, 20, 128, 128);
+		//g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 	}
 
 	public void setProgress(int progress, String status){

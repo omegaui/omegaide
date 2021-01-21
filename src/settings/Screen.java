@@ -17,7 +17,7 @@ import say.swing.JFontChooser;
 import settings.comp.Comp;
 import settings.comp.TextComp;
 import ui.SDKSelector;
-public class Screen extends JDialog{
+public class Screen extends JDialog {
 	//Light + Dark Mode
 	public static final Color color1 = new Color(255, 0, 0, 130);
 	public static final Color color2 = new Color(255, 0, 0, 220);

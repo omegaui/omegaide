@@ -1,4 +1,6 @@
 package deassembler;
+import importIO.ImportManager;
+import ide.utils.*;
 import java.io.*;
 import java.util.*;
 public class ByteReader {
@@ -29,10 +31,13 @@ public class ByteReader {
 				String classPath = getClassPath();
 				if(classPath == null) return;
 				Process process = null;
+                    String javap = "javap";
+                    if(ide.Screen.getFileView().getProjectManager().jdkExists())
+                         javap = ide.Screen.getFileView().getProjectManager().jdkPath + File.separator + "bin" + File.separator + javap;
 				if(classPath.equals("system"))
-					process = new ProcessBuilder("javap", "-public", className).start();
+					process = new ProcessBuilder(javap, "-public", className).start();
 				else
-					process = new ProcessBuilder("javap", "-public", "-cp", classPath, className).start();
+					process = new ProcessBuilder(javap, "-public", "-cp", classPath, className).start();
 				while(process.isAlive());
 				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				String token = reader.readLine();
@@ -358,17 +363,3 @@ public class ByteReader {
 		return null;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

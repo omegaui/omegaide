@@ -934,6 +934,7 @@ try {
 	 * @see #getCurrentLineHighlightColor
 	 */
 	public void setCurrentLineHighlightColor(Color color) {
+		color = ide.utils.UIManager.isDarkMode() ? new Color(247, 155, 25, 20) : new Color(0, 0, 255, 20);
 		if (color==null) {
 			throw new NullPointerException();
 		}

@@ -46,8 +46,8 @@ public class OPopupItem extends JComponent{
                @Override
                public void mousePressed(MouseEvent e){
                    popup.setVisible(false);
-                   if(run != null)
-                         run.run();
+                   if(OPopupItem.this.run != null)
+                       OPopupItem.this.run.run();
                }
           });
      }

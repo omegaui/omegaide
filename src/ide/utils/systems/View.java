@@ -16,13 +16,10 @@ public abstract class View extends JDialog {
 	private Action a = ()->{};
 	
 	public interface Action {
-		
 		void perform();
-		
 	}
 	
-	public View(String title, Screen window)
-	{
+	public View(String title, Screen window) {
 		super(window, true);
 		s = window;
 		setTitle(title);
@@ -33,19 +30,16 @@ public abstract class View extends JDialog {
 		UIManager.setData(this);
 	}
 	
-	public void setAction(Action a)
-	{
+	public void setAction(Action a) {
 		this.a = a;
 	}
 	
-	public Screen getScreen()
-	{
+	public Screen getScreen() {
 		return s;
 	}
 	
 	@Override
-	public void paint(Graphics g)
-	{
+	public void paint(Graphics g) {
 		g.setColor(getBackground());
 		g.fillRect(0,0,getWidth(), getHeight());
 		try {comps.forEach(c->c.repaint());}catch(Exception e) {}
@@ -53,8 +47,7 @@ public abstract class View extends JDialog {
 	
 	
 	@Override
-	public void setVisible(boolean value)
-	{
+	public void setVisible(boolean value) {
 		if(value) {
 			a.perform();
 		}

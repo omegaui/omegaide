@@ -47,11 +47,15 @@ public class SDKSelector extends JDialog {
 		String pathJava = DataManager.getPathToJava();
 		if(pathJava == null) return;
 		File[] files = new File(pathJava).listFiles();
+          if(files == null) {
+               ide.Screen.getScreen().getToolMenu().setTask("No JDKs found in \"" + pathJava + "\"");
+               return;
+          }
 		for(File file : files) {
 			if(file.isFile()) continue;
 			String release = getRelease(file.getAbsolutePath());
 			if(release != null) {
-				ToggleBox box = new ToggleBox(file.getName()+"("+release+")", (selected)->{
+				ToggleBox box = new ToggleBox(file.getName() + "(" + release + ")", (selected)->{
 					if(!selected) return;
 					selection = file.getAbsolutePath();
 					SDKSelector.this.setVisible(false);
@@ -67,7 +71,7 @@ public class SDKSelector extends JDialog {
 	}
 	
 	private String getRelease(String path) {
-		File releaseFile = new File(path+"/release");
+		File releaseFile = new File(path + File.separator + "release");
 		if(!releaseFile.exists()) return null;
 		try{
 			Scanner reader = new Scanner(releaseFile);

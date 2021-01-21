@@ -1,4 +1,6 @@
 package ide.utils.systems;
+import launcher.Launcher;
+import javax.swing.JOptionPane;
 
 import java.awt.FlowLayout;
 import java.io.File;
@@ -79,7 +81,7 @@ public class FileView extends View {
 	{
 		if(projectPath == null)
 			return "";
-		return projectPath.substring(projectPath.lastIndexOf('/')+1);
+		return projectPath.substring(projectPath.lastIndexOf(File.separatorChar)+1);
 	}
 
 	public void setProjectPath(String path) {
@@ -87,16 +89,23 @@ public class FileView extends View {
 			if(projectPath.equals(path))
 				return;
 		}
+          if(projectPath != null){
+               int res = JOptionPane.showConfirmDialog(getScreen(), "Open the project in a new window?", "Opening Project", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);;
+     		if(res == JOptionPane.YES_OPTION){
+                    Screen.launchNewWindow(path);
+                    return;
+     		}
+          }
 		new Thread(()->Screen.addAndSaveRecents(path)).start();
 		projectPath = path;
 		if(Screen.launcher != null)
 			Screen.launcher.setVisible(false);
 		DataManager.setDefaultProjectPath(projectPath);
-		Screen.notify("Loading Project \""+getProjectName()+"\"");
-		checkDir(new File(projectPath+"/src"));
-		checkDir(new File(projectPath+"/out"));
-		checkDir(new File(projectPath+"/bin"));
-		checkDir(new File(projectPath+"/res"));
+		Screen.notify("Loading Project \"" + getProjectName() + "\"");
+		checkDir(new File(projectPath + File.separator + "src"));
+		checkDir(new File(projectPath + File.separator + "out"));
+		checkDir(new File(projectPath + File.separator + "bin"));
+		checkDir(new File(projectPath + File.separator + "res"));
 		getScreen().setProject(getProjectName());
 		try {
 			Screen.getProjectView().getProjectView().setVisible(true);
@@ -162,10 +171,10 @@ public class FileView extends View {
 				saveAll();
 				getScreen().closeCurrentProject();
 				setProjectPath(ch.getSelectedFile().getPath());
-				checkDir(new File(projectPath+"/src"));
-				checkDir(new File(projectPath+"/out"));
-				checkDir(new File(projectPath+"/bin"));
-				checkDir(new File(projectPath+"/res"));
+				checkDir(new File(projectPath + File.separator + "src"));
+				checkDir(new File(projectPath + File.separator + "out"));
+				checkDir(new File(projectPath + File.separator + "bin"));
+				checkDir(new File(projectPath + File.separator + "res"));
 				return true;
 			}
 		}
@@ -173,7 +182,7 @@ public class FileView extends View {
 		{
 			ch.setDialogTitle("Open File");
 			ch.setMultiSelectionEnabled(true);
-			ch.setCurrentDirectory(new File(projectPath+"/src"));
+			ch.setCurrentDirectory(new File(projectPath + File.separator + "src"));
 			ch.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int res = ch.showOpenDialog(getScreen());
 			if(res == JFileChooser.APPROVE_OPTION)

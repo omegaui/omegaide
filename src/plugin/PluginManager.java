@@ -21,7 +21,7 @@ public class PluginManager {
 	public static LinkedList<Plug> plugs = new LinkedList<>();
 	public static LinkedList<Plug> init_plugs = new LinkedList<>();
 	public static final String BASEDIR = "omega-ide-plugins";
-	public static final File plugFile = new File(BASEDIR + "/.plugs");
+	public static final File plugFile = new File(BASEDIR + File.separator + ".plugs");
 
 	public PluginManager(){
           refresh();

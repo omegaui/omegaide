@@ -40,7 +40,7 @@ public class RecentsManager {
 			RECENTS.forEach((r)->{
 				File fileX = new File(r);
 				if(fileX.isFile()) {
-                         ToolMenu.recentFilePopup.createItem(r.substring(r.lastIndexOf('/')+1), IconManager.fileImage, ()->{
+                         ToolMenu.recentFilePopup.createItem(r.substring(r.lastIndexOf(File.separatorChar)+1), IconManager.fileImage, ()->{
                               ToolMenu.recentFilePopup.setVisible(false);
                               Screen.getScreen().getToolMenu().filePopup.setVisible(false);
                               screen.loadFile(fileX);
@@ -57,7 +57,7 @@ public class RecentsManager {
 			RECENTS.forEach((r)->{
 				File fileX = new File(r);
 				if(fileX.isDirectory()) {
-                         ToolMenu.recentProjectPopup.createItem(r.substring(r.lastIndexOf('/')+1), IconManager.projectImage, ()->{
+                         ToolMenu.recentProjectPopup.createItem(r.substring(r.lastIndexOf(File.separator)+1), IconManager.projectImage, ()->{
                               ToolMenu.recentProjectPopup.setVisible(false);
                               Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
                               screen.loadProject(fileX);
@@ -69,6 +69,29 @@ public class RecentsManager {
                     ToolMenu.recentProjectPopup.setVisible(false);
                     removeAllProjects();
                });
+               File home = new File(DataManager.getProjectsHome());
+               if(home.exists()){
+                    ToolMenu.allProjectsPopup.trash();
+                    File[] files = home.listFiles();
+                    for(int i = 0; i < files.length; i++){
+                         for(int j = 0; j < files.length - i - 1; j++){
+                         	if(files[j].getName().compareTo(files[j + 1].getName()) > 0){
+                                   File f = files[j];
+                                   files[j] = files[j + 1];
+                                   files[j + 1] = f;
+                         	}
+                         }
+                    }
+                    for(File fileZ : files){
+                         if(fileZ.isDirectory()){
+                              ToolMenu.allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, ()->{
+                                   ToolMenu.recentProjectPopup.setVisible(false);
+                                   Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
+                                   screen.loadProject(fileZ);
+                              });
+                         }
+                    }
+               }
                
 		}catch(Exception e) {e.printStackTrace();}
 	}

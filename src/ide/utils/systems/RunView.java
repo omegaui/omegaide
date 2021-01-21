@@ -56,7 +56,7 @@ public class RunView extends View{
 			return;
 		mainClass = "";
 		boolean canRecord = false;
-		StringTokenizer tokenizer = new StringTokenizer(mainClassPath, "/");
+		StringTokenizer tokenizer = new StringTokenizer(mainClassPath, File.separator);
 		while(tokenizer.hasMoreTokens())
 		{
 			String token = tokenizer.nextToken();
@@ -74,8 +74,7 @@ public class RunView extends View{
 		Screen.getProjectView().setTitleMainClass();
 	}
 
-	public void setMainClass()
-	{
+	public void setMainClass() {
 		if(getScreen().getCurrentEditor().currentFile == null)
 			return;
 		mainClassPath = getScreen().getCurrentEditor().currentFile.getAbsolutePath();
@@ -83,7 +82,7 @@ public class RunView extends View{
 			return;
 		mainClass = "";
 		boolean canRecord = false;
-		StringTokenizer tokenizer = new StringTokenizer(mainClassPath, "/");
+		StringTokenizer tokenizer = new StringTokenizer(mainClassPath, File.separator);
 		while(tokenizer.hasMoreTokens())
 		{
 			String token = tokenizer.nextToken();
@@ -127,13 +126,13 @@ public class RunView extends View{
 					Screen.setStatus("Building Project", percent);
 					String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 					if(jdkPath != null && new File(jdkPath).exists())
-						jdkPath = String.copyValueOf(jdkPath.toCharArray()) + "/bin/";
+						jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
 					
 					String cmd = "";
 					String depenPath = "";
 					if(!Screen.getFileView().getDependencyManager().dependencies.isEmpty()) {
 						for(String d : Screen.getFileView().getDependencyManager().dependencies) {
-							depenPath += d + ":";
+							depenPath += d + ide.Screen.PATH_SEPARATOR;
 						}
 						if(!depenPath.equals("")) {
 							depenPath = depenPath.substring(0, depenPath.length() - 1);
@@ -260,19 +259,19 @@ public class RunView extends View{
 
 				NATIVE_PATH = "";
 				for(String d : Screen.getFileView().getNativesManager().natives) {
-					NATIVE_PATH += d + ":";
+					NATIVE_PATH += d + ide.Screen.PATH_SEPARATOR;
 				}
 				if(!NATIVE_PATH.equals("")) {
 					NATIVE_PATH = NATIVE_PATH.substring(0, NATIVE_PATH.length() - 1);
-					NATIVE_PATH = NATIVE_PATH+":$PATH";
+					NATIVE_PATH = NATIVE_PATH + ide.Screen.PATH_SEPARATOR + "$PATH";
 				}
 				else
 					NATIVE_PATH = "$PATH";
 				String depenPath = "";
 				for(String d : Screen.getFileView().getDependencyManager().dependencies)
-					depenPath += d + ":";
+					depenPath += d + ide.Screen.PATH_SEPARATOR;
 				for(String d : ide.utils.ResourceManager.roots)
-					depenPath += d + ":";
+					depenPath += d + ide.Screen.PATH_SEPARATOR;
 				if(!depenPath.equals("")) {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
@@ -286,21 +285,21 @@ public class RunView extends View{
 				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 				String cmd = null;
 				if(jdkPath != null && new File(jdkPath).exists())
-					cmd = jdkPath + "/bin/java";
+					cmd = jdkPath + File.separator + "bin" + File.separator + "java";
 				else
 					cmd = "java" + cmd;
 				if(depenPath != null && !depenPath.equals("")) {
 					if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
 						if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
 							runProcess = new ProcessBuilder(
-									cmd, "-classpath", depenPath+":.",
+									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".",
 									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
 									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
 									"-Djava.library.path="+NATIVE_PATH+"", Screen.getFileView().getProjectManager().run_time_args, mainClass
 									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
-									cmd, "-classpath", depenPath+":.", 
+									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".", 
 									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
 									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
 									"-Djava.library.path="+NATIVE_PATH+"", mainClass
@@ -310,12 +309,12 @@ public class RunView extends View{
 					else {
 						if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
 							runProcess = new ProcessBuilder(
-									cmd, "-classpath", depenPath+":.", "-Djava.library.path="+NATIVE_PATH+"", 
+									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".", "-Djava.library.path="+NATIVE_PATH+"", 
 									Screen.getFileView().getProjectManager().run_time_args, mainClass
 									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
-									cmd, "-classpath", depenPath+":.", "-Djava.library.path="+NATIVE_PATH+"", mainClass
+									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".", "-Djava.library.path="+NATIVE_PATH+"", mainClass
 									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
 						}
 					}

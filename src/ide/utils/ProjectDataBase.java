@@ -15,9 +15,10 @@ public class ProjectDataBase extends DataBase{
 	public String run_time_args;
 	public String jdkPath;
 	public String mainClass;
+     public File jdk;
 
 	public ProjectDataBase() {
-		super(Screen.getFileView().getProjectPath()+"/.projectInfo");
+		super(Screen.getFileView().getProjectPath()+ File.separator + ".projectInfo");
 		jdkPath = null;
 		compile_time_args = "";
 		run_time_args = "";
@@ -29,6 +30,7 @@ public class ProjectDataBase extends DataBase{
 		compile_time_args = getEntryAt("Compile_Time", 0) != null ? getEntryAt("Compile_Time", 0).getValue() : "";
 		run_time_args = getEntryAt("Run_Time", 0) != null ? getEntryAt("Run_Time", 0).getValue() : "";
 		mainClass = getEntryAt("Main Class", 0) != null ? getEntryAt("Main Class", 0).getValue() : "";
+          jdk = new File(jdkPath != null ? jdkPath : "");
 		try {
 			Screen.getRunView().mainClass = mainClass;
 		}catch(Exception e) {}
@@ -65,6 +67,10 @@ public class ProjectDataBase extends DataBase{
 			readJDK(true);
 		}).start();
 	}
+
+     public boolean jdkExists(){
+     	return jdk.exists();
+     }
 
 	public void readJDK(boolean internal) {
 		try {

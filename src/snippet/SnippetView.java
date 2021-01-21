@@ -1,4 +1,8 @@
 package snippet;
+import tabPane.IconManager;
+import ide.utils.UIManager;
+import ide.Screen;
+import java.io.File;
 import Omega.IDE;
 import settings.comp.TextComp;
 import java.awt.Color;
@@ -24,7 +28,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import ide.utils.Editor;
 import launcher.Door;
-public class SnippetView extends JDialog{
+public class SnippetView extends JDialog {
 	private static final Font FONT = new Font("Ubuntu Mono", Font.BOLD, 16);
 	private RSyntaxTextArea textArea;
 	private JTextField textField;
@@ -63,7 +67,6 @@ public class SnippetView extends JDialog{
 		add(pane);
 
 		//View System
-
 		textField = new JTextField();
 		textField.setBounds(250, 0, getWidth() - 250 - 120, 40);
 		textField.setToolTipText("Enter Snippet Name with alphabets, numbers and symbols(except \';\') without whitespaces");
@@ -80,6 +83,7 @@ public class SnippetView extends JDialog{
 	     });
 		add.setBounds(getWidth() - 120, 0, 40, 40);
 		add.setFont(FONT);
+          add.setArc(0, 0);
 		add(add);
 
 		TextComp rem = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
@@ -91,6 +95,7 @@ public class SnippetView extends JDialog{
 	     });
 		rem.setBounds(getWidth() - 80, 0, 40, 40);
 		rem.setFont(FONT);
+          rem.setArc(0, 0);
 		add(rem);
 
 		TextComp close = new TextComp("x", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
@@ -99,6 +104,7 @@ public class SnippetView extends JDialog{
 	     });
 		close.setBounds(getWidth() - 40, 0, 40, 40);
 		close.setFont(FONT);
+          close.setArc(0, 0);
 		add(close);
 
 		textArea = new RSyntaxTextArea();
@@ -124,7 +130,7 @@ public class SnippetView extends JDialog{
 			     Theme.load(Editor.class.getResourceAsStream("/dark.xml")).apply(textArea);
 			}catch(Exception e) {}
 		}
-		textField.setFont(FONT);
+		textField.setFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
 		RTextScrollPane scrollPane = new RTextScrollPane(textArea);
 		scrollPane.setBounds(250, 40, getWidth() - 250, getHeight() - 40);
 		add(scrollPane);
@@ -154,7 +160,7 @@ public class SnippetView extends JDialog{
 		doors.clear();
 		block = -40;
 		for(Snippet snip : SnippetBase.getAll()) {
-			Door door = new Door("/\\/" + snip.base, image, ()->setView(snip));
+			Door door = new Door(File.separator + "\\" + File.separator + snip.base, image, ()->setView(snip));
 			door.setBounds(0, block += 40, 250, 40);
 			doors.add(door);
 			leftPanel.add(door);

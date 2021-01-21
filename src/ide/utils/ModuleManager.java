@@ -8,7 +8,7 @@ import omega.database.DataEntry;
 public class ModuleManager extends DataBase{
 	public LinkedList<String> roots = new LinkedList<>();
 	public ModuleManager(){
-		super(Screen.getFileView().getProjectPath() + "/.modules");
+		super(Screen.getFileView().getProjectPath() + File.separator + ".modules");
 		LinkedList<DataEntry> entries = getEntries("Module Roots");
 		if(entries != null){
 			entries.forEach(e->{
@@ -31,7 +31,7 @@ public class ModuleManager extends DataBase{
 		if(roots.isEmpty()) return null;
 		String command = "";
 		for(String r : roots)
-			command += r + ":";
+			command += r + ide.Screen.PATH_SEPARATOR;
 		return command.equals("") ? null : command;
 	}
 

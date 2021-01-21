@@ -44,7 +44,7 @@ public class SourceReader {
 		}catch(Exception e) {}
 	}
 
-	public SourceReader(String code, boolean only) {
+	public SourceReader(String code, boolean readOnlyImports) {
 		this.code = code;
 		readImports();
 	}
@@ -105,7 +105,7 @@ public class SourceReader {
 				String name = im.substring(im.lastIndexOf('.') + 1);
 				if(pack.equals("java.lang")) continue;
 				if(name.equals("*") && !ImportManager.reading){
-					//To be continued in IDE's repository
+
 					if(line.contains(" static ")) {
 						if(CodeFramework.isSource(pack)) {
 							SourceReader reader = new SourceReader(pack);

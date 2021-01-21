@@ -1,7 +1,8 @@
 package creator;
+import popup.*;
+
 import settings.comp.TextComp;
 import settings.comp.Comp;
-import popup.*;
 
 import java.awt.Color;
 import java.awt.Panel;
@@ -47,7 +48,7 @@ public class ProjectWizard extends JDialog{
 		super(f, true);
 		setLayout(null);
 		setTitle("Project Wizard -Omega IDE");
-		setSize(700, 640);
+		setSize(700, 600);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setUndecorated(true);
@@ -60,7 +61,7 @@ public class ProjectWizard extends JDialog{
 		fileC.setMultiSelectionEnabled(false);
 
 		JTextField projectNameField = new JTextField();
-		addHoverEffect(projectNameField, "Enter Project Name (including path is optional)");
+		addHoverEffect(projectNameField, "Enter Project Name (do not include \'" + File.separator + "\')");
 		projectNameField.setBounds(0, 0, getWidth() - 40, 40);
           projectNameField.setBackground(ide.utils.UIManager.c2);
           projectNameField.setForeground(ide.utils.UIManager.c3);
@@ -68,7 +69,7 @@ public class ProjectWizard extends JDialog{
 
 		TextComp rootBtn = new TextComp(":", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		rootBtn.setBounds(projectNameField.getWidth(), 0, 40, 40);
-		rootBtn.setToolTipText("Choose Project Parent Folder e.g: ~/Documents/Omega Projects");
+		rootBtn.setToolTipText("Choose Project Parent Folder e.g: user.home/Documents/Omega Projects");
           rootBtn.setRunnable(()->{
                fileC.setDialogTitle("Select the folder in which the project will be created");
                fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -77,6 +78,8 @@ public class ProjectWizard extends JDialog{
                if(res == JFileChooser.APPROVE_OPTION)
                     rootBtn.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
           });
+          rootBtn.setToolTipText(ide.utils.DataManager.getProjectsHome());
+          rootBtn.setArc(0, 0);
 		add(rootBtn);
 
 		JTextField jdkPath = new JTextField("Choose Java SE Environment");
@@ -100,22 +103,24 @@ public class ProjectWizard extends JDialog{
                String path = sdkSel.getSelection();
                if(path == null) return;
                jdkPath.setToolTipText(path);
-               jdkPath.setText(path.substring(path.lastIndexOf('/') + 1));
+               jdkPath.setText(path.substring(path.lastIndexOf(File.separatorChar) + 1));
 	     });
 		javaRoot.setBounds(projectNameField.getWidth(), projectNameField.getHeight(), 40, 40);
 		javaRoot.setToolTipText("Choose Java Development Kit");
+          javaRoot.setArc(0, 0);
 		add(javaRoot);
 
 		TextComp packLabel = new TextComp("Source Files", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		packLabel.setBounds(0, jdkPath.getY() + jdkPath.getHeight(), getWidth(), 30);
 		packLabel.setClickable(false);
+          packLabel.setArc(0, 0);
 		add(packLabel);
 
 		JPanel memberPanel = new JPanel();
 		memberPanel.setLayout(new BorderLayout());
 		memberPanel.setBounds(0, packLabel.getY() + packLabel.getHeight(), getWidth(), 200);
 		JTextArea packArea = new JTextArea();
-		addHoverEffect(packArea, "type a source name with or "+"\n"+"without package (according to the java convections) "+"\n"+"e.g: package.MySourceFile -type"+"\n"+"separated by new line "+"\n"+"e.g: anima.Animation -@interface"+"\n"+"ide.Screen -class");
+		addHoverEffect(packArea, "type a source name with"+"\n"+"package (according to the java conventions) "+"\n"+"e.g: package.MySourceFile -type"+"\n"+"separated by new line "+"\n"+"\n\nanima.Animation -@interface"+"\n"+"ide.Screen -class");
 		setData(packArea);
           packArea.setBackground(ide.utils.UIManager.c2);
           packArea.setForeground(ide.utils.UIManager.c3);
@@ -127,7 +132,8 @@ public class ProjectWizard extends JDialog{
 
 		TextComp addDepenLabel = new TextComp("Dependencies and Resources Roots", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		addDepenLabel.setBounds(0, memberPanel.getY() + memberPanel.getHeight(), getWidth() - 60, 30);
-		addDepenLabel.setEnabled(false);
+		addDepenLabel.setClickable(false);
+          addDepenLabel.setArc(0, 0);
 		add(addDepenLabel);
 
 		JPanel depenPanel = new JPanel();
@@ -137,7 +143,7 @@ public class ProjectWizard extends JDialog{
 		setData(depenArea);
           depenArea.setBackground(ide.utils.UIManager.c2);
           depenArea.setForeground(ide.utils.UIManager.c3);
-          depenArea.setCurrentLineHighlightColor(ide.utils.UIManager.c1);
+          depenArea.setCurrentLineHighlightColor(ide.utils.UIManager.isDarkMode() ? new Color(133, 46, 196) : new Color(0, 0, 255, 20));
 		depenArea.setEditable(false);
 		depenPanel.add(new JScrollPane(depenArea), BorderLayout.CENTER);
 		add(depenPanel);
@@ -235,6 +241,7 @@ public class ProjectWizard extends JDialog{
 			}
 		});
 		setData(addRootBtn);
+          addRootBtn.setArc(0, 0);
 		add(addRootBtn);
 
 		TextComp remRootBtn = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{
@@ -258,6 +265,7 @@ public class ProjectWizard extends JDialog{
 	     });
 		remRootBtn.setBounds(getWidth() - 30, addDepenLabel.getY(), 30, 30);
 		setData(remRootBtn);
+          remRootBtn.setArc(0, 0);
 		add(remRootBtn);
 
 		Comp cancelBtn = new Comp("Cancel", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->setVisible(false));
@@ -269,13 +277,7 @@ public class ProjectWizard extends JDialog{
                setVisible(false);
                String proRoot = projectNameField.getText();
                String proRootX = rootBtn.getToolTipText();
-               String metaProRoot = "";
-               if(proRoot.startsWith("/"))
-                    proRoot = proRoot.substring(1);
-               if(proRoot.contains("/") && new File(proRoot).exists())
-                    metaProRoot = proRoot;
-               else
-                    metaProRoot = proRootX + "/" + proRoot;
+               String metaProRoot = proRootX + File.separator + proRoot;
                final String jdkRoot = jdkPath.getToolTipText();
                final String memberList = packArea.getText();
                LinkedList<Member> members = new LinkedList<>();
@@ -335,24 +337,24 @@ public class ProjectWizard extends JDialog{
 		if(!file.exists())
 			file.mkdir();
 		else return false;
-		new File(file.getAbsolutePath()+"/bin").mkdir();
-		new File(file.getAbsolutePath()+"/out").mkdir();
-		new File(file.getAbsolutePath()+"/src").mkdir();
-		new File(file.getAbsolutePath()+"/res").mkdir();
+		new File(file.getAbsolutePath() + File.separator + "bin").mkdir();
+		new File(file.getAbsolutePath() + File.separator +"out").mkdir();
+		new File(file.getAbsolutePath() + File.separator + "src").mkdir();
+		new File(file.getAbsolutePath() + File.separator + "res").mkdir();
 		LinkedList<File> sources = new LinkedList<>();
 		members.forEach(m->{
 			if(m.name.contains(".")) {
 				String pack = m.name.substring(0, m.name.lastIndexOf('.'));
 				StringTokenizer tok = new StringTokenizer(pack, ".");
-				pack = projectRoot + "/src";
+				pack = projectRoot + File.separator + "src";
 				while(tok.hasMoreTokens()) {
 					String token = tok.nextToken();
-					pack += '/' + token;
+					pack += File.separator + token;
 					File packX = new File(pack);
 					packX.mkdir();
 					System.out.println("Making Directory "+packX);
 				}	
-				File srcFile = new File(pack+"/"+m.name.substring(m.name.lastIndexOf('.') + 1) + ".java");
+				File srcFile = new File(pack + File.separator + m.name.substring(m.name.lastIndexOf('.') + 1) + ".java");
 				createSRCFile(srcFile, m.type, m.name.substring(0, m.name.lastIndexOf('.')), m.name.substring(m.name.lastIndexOf('.') + 1));
 				if(srcFile.getName().endsWith(".java"))
 					sources.add(srcFile);
@@ -363,19 +365,15 @@ public class ProjectWizard extends JDialog{
 		DependencyManager depenManager = ide.Screen.getFileView().getDependencyManager();
 		NativesManager nativeManager = ide.Screen.getFileView().getNativesManager();
 		ResourceManager resManager = ide.Screen.getFileView().getResourceManager();
-		System.out.println("Hmm........."+dependencies.size());
 		for(Member m : dependencies) {
 			System.out.println(m.type);
 			if(m.type.trim().equals("Jar")) {
-				System.out.println("Adding Depen "+m.name);
 				depenManager.add(m.name);
 			}
 			else if(m.type.trim().equals("Native")) {
-				System.out.println("Adding Native "+m.name);
 				nativeManager.add(m.name);
 			}
 			else if(m.type.trim().equals("Resource")) {
-				System.out.println("Adding Res "+m.name);
 				resManager.add(m.name);
 			}
 		}
@@ -393,8 +391,8 @@ public class ProjectWizard extends JDialog{
 			PrintWriter writer = new PrintWriter(new FileOutputStream(file));
 			String header = type;
 			if(!header.equals("")){
-				writer.println("package "+pack+";");
-				writer.println("public "+header+" "+name+" {\n}");
+				writer.println("package " + pack + ";");
+				writer.println("public " + header + " " + name + " {\n}");
 			}
 			writer.close();
 			ide.Screen.getScreen().loadFile(file);

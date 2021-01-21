@@ -33,6 +33,7 @@ public class Screen extends JDialog{
 		super(screen, true);
 		setLayout(null);
 		setTitle("Info");
+          s
 		try{
 			image = (BufferedImage)tabPane.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 		}catch(Exception e){e.printStackTrace();}
@@ -52,12 +53,14 @@ public class Screen extends JDialog{
                repaint();
 	     });
 		infoBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
+          infoBtn.setArc(0, 0);
 		add(infoBtn);
 
 		wnBtn = new Comp("Whats New!", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{
                STATE = 1;
                repaint();
 	     });
+          wnBtn.setArc(0, 0);
 		wnBtn.setBounds(getWidth()/2, getHeight() - 40, getWidth()/2, 40);
 		add(wnBtn);
 	}
@@ -96,13 +99,14 @@ public class Screen extends JDialog{
 			g.setFont(PX20);
 			g.drawString("BUGS FIXED IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("BUGS FIXED IN THIS RELEASE")/2, 21);
 			g.setFont(PX12);
-			g.drawString("ImportFramework has been rewritten", getWidth()/2 - g.getFontMetrics().stringWidth("ImportFramework has been rewritten")/2, 21 + 21);
+			g.drawString("Major Bug Fixes", getWidth()/2 - g.getFontMetrics().stringWidth("Major Bug Fixes")/2, 21 + 21);
 
 			g.setFont(PX20);
 			g.drawString("NEW FEATURES IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("NEW FEATURES IN THIS RELEASE")/2, 21 + 21 + 21 + 21 + 51);
 			g.setFont(PX12);
-			g.drawString("Added Support for Extra Menu Items", getWidth()/2 - g.getFontMetrics().stringWidth("Added Support for Extra Menu Items")/2, 21 + 21 + 21 + 21 + 21 + 51);
-			g.drawString("Performance Improvements", getWidth()/2 - g.getFontMetrics().stringWidth("Performance Improvements")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
+			g.drawString("Structure View", getWidth()/2 - g.getFontMetrics().stringWidth("Structure View")/2, 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("More Standard Tools", getWidth()/2 - g.getFontMetrics().stringWidth("More Standard Tools")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("Added a basic manual", getWidth()/2 - g.getFontMetrics().stringWidth("Added a basic manual")/2, 21 + 21 + 21 + 21 + 21 + 21 + 21 + 51);
 			g.drawImage(image, getWidth()/2 - 32, getHeight() - 110, 64, 64, this);
 		}
 		infoBtn.repaint();

@@ -15,7 +15,7 @@ public class ResourceManager {
 	
 	public ResourceManager() {
 		roots.clear();
-		file = new File(Screen.getFileView().getProjectPath()+"/.resources");
+		file = new File(Screen.getFileView().getProjectPath() + File.separator + ".resources");
 		loadFile();
 	}
 	

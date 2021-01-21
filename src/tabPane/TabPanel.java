@@ -1,4 +1,9 @@
 package tabPane;
+import java.awt.image.BufferedImage;
+import java.awt.FontMetrics;
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import popup.*;
 
@@ -23,6 +28,12 @@ public class TabPanel extends JPanel{
 	private LinkedList<String> names;
 	private LinkedList<Editor> editors;
 	private LinkedList<JPanel> panels;
+
+     private static final String TITLE = "Open a text file to start editing here";
+     private static final String HINT = "Navigate the File Tree (on left)";
+     private static final String HINT1 = "Open the File tree by clicking the third ";
+
+     private BufferedImage image = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
 	
 	public TabPanel(Screen screen) {
 		TabPanel.screen = screen;
@@ -38,6 +49,17 @@ public class TabPanel extends JPanel{
 
 		tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		UIManager.setData(tabPane);
+          Graphics graphics = image.getGraphics();
+          Graphics2D g = (Graphics2D)graphics;
+          g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+          g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+          g.setColor(ide.utils.UIManager.c3);
+          g.fillOval(7, 7, 16, 16);
+          g.setColor(ide.utils.UIManager.c2);
+          g.fillOval(10, 10, 10, 10);
+          g.setColor(ide.utils.UIManager.c1);
+          g.fillOval(10, 10, 10, 10);
+          g.dispose();
 	}
 
 	public void addTab(String name, Editor editor, String toolTip) {
@@ -125,7 +147,7 @@ public class TabPanel extends JPanel{
 	
 	public void remove(Editor editor) {
 		if(editors.indexOf(editor) < 0) {
-			System.out.println(editor.currentFile + "does not exxits");
+			System.err.println(editor.currentFile + "does not exxits");
 			return;
 		}
 		editor.saveCurrentFile();
@@ -182,5 +204,27 @@ public class TabPanel extends JPanel{
 		setBounds(0,30,screen.getWidth() - 14, screen.getHeight() - 30 - 38);
 		repaint();
 	}
-	
+
+     @Override
+     public void paint(Graphics graphics){
+          if(tabPane.getTabCount() == 0){
+               Graphics2D g = (Graphics2D)graphics;
+               g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+               g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+               g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+               g.setColor(ide.utils.UIManager.c2);
+               g.fillRect(0, 0, getWidth(), getHeight());
+               g.setColor(ide.utils.UIManager.c3);
+               g.setFont(settings.Screen.PX28);
+               FontMetrics f = g.getFontMetrics();
+               String hint = screen.getToolMenu().hidden ? HINT1 : HINT;
+               g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
+               g.drawString(hint, getWidth()/2 - f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());
+               if(hint.equals(HINT1)){
+                    g.drawImage(image, getWidth()/2 + f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 - 13 + f.getAscent() - f.getDescent() + f.getHeight(), null);
+               }
+               g.dispose();
+          }
+          else super.paint(graphics);
+     }
 }

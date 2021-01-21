@@ -18,7 +18,7 @@ import importIO.Import;
 public class ImportResolver extends JDialog {
 	private JScrollPane scrollPane;
 	private LinkedList<ToggleBox> boxs = new LinkedList<>();
-	public static final Font font = new Font("Consolas", Font.BOLD, 12);
+	public static final Font font = new Font("Ubuntu Mono", Font.BOLD, 16);
 	private JPanel panel = new JPanel(null);
 	private static Dimension dimension;
 	private int y;

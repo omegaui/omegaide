@@ -137,7 +137,7 @@ public class Accessories {
 				setAction(()->{
 					textArea.setText("------------------------------------------");
 					UIManager.setData(PrintArea.this);
-					});
+				});
 			}
 			
 			public void print(String text)

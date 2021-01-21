@@ -158,14 +158,16 @@ public class CloseButton extends JComponent {
 	public static String getBaseName(String ext) {
 		if(ext.equals("Compilation"))
 				return "JVM";
+
           else if(ext.equals("Terminal"))
                return "Shell";
+
 		if(ext.contains("Run("))
 			return "JVM";
 
           if(!ext.contains("."))
                return "?";
-		
+
 		ext = ext.substring(ext.lastIndexOf('.'));
 		
 		if(ext.equals(".java") || ext.equals(".class"))

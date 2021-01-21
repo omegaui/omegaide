@@ -1,4 +1,13 @@
 package ide.utils;
+import deassembler.DataMember;
+import gset.Generator;
+import java.awt.Image;
+import org.fife.rsta.ui.search.SearchEvent;
+import java.awt.Dimension;
+import org.fife.rsta.ui.search.ReplaceToolBar;
+import org.fife.rsta.ui.search.FindToolBar;
+import org.fife.rsta.ui.search.FindDialog;
+import org.fife.rsta.ui.search.SearchListener;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -45,7 +54,7 @@ import ide.utils.systems.View;
 import importIO.ImportManager;
 import snippet.SnippetBase;
 
-public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener {
+public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, SearchListener {
 
 	private static Screen screen;
 	private RTextScrollPane scrollPane;
@@ -60,81 +69,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static boolean launched = false;
 	private volatile boolean call = true;
 	public ContentWindow contentWindow;
-	private volatile boolean ctrl_pressed;
-	private volatile boolean shift_pressed;
-	private volatile boolean o_pressed;
-
-     //FindAndReplace is Under Development [last updated Omega IDE v13.1 beta]
-	public class FindAndReplace extends JComponent {
-		private JButton findBtn;
-		private JButton replaceBtn;
-		private JButton nextBtn;
-		private JButton previousBtn;
-		private JTextArea findArea;
-		private JTextArea replaceArea;
-		private JScrollPane findPane;
-		private JScrollPane replacePane;
-		private JButton closeBtn;
-		private SearchResult sr;
-
-		public FindAndReplace() {
-			setVisible(false);
-			setLayout(new FlowLayout());
-			setSize(10, 30);
-			setPreferredSize(getSize());
-
-			findArea = new JTextArea("Search Text Here");
-
-			replaceArea = new JTextArea("Replace Text Here");
-
-			findBtn = new JButton("Find");
-			findBtn.addActionListener((e)->{
-				sr = SearchEngine.find(Editor.this, new SearchContext(findArea.getText()));
-			});
-			nextBtn = new JButton("Next");
-			previousBtn = new JButton("Previous");
-			replaceBtn = new JButton("Replace");
-			replaceBtn.addActionListener((e)->{
-				SearchEngine.replace(Editor.this, new SearchContext(replaceArea.getText()));
-			});
-			closeBtn = new JButton("X");
-			closeBtn.addActionListener((e)->{
-				setVisible(false);
-			});
-
-			add(findBtn);
-			add((findPane = new JScrollPane(findArea)));
-			add(replaceBtn);
-			add((replacePane = new JScrollPane(replaceArea)));
-			add(nextBtn);
-			add(previousBtn);
-			add(closeBtn);
-
-			UIManager.setData(findBtn);
-			UIManager.setData(replaceBtn);
-			UIManager.setData(findArea);
-			UIManager.setData(replaceArea);
-			UIManager.setData(nextBtn);
-			UIManager.setData(previousBtn);
-			UIManager.setData(closeBtn);
-			UIManager.setData(this);
-		}
-		@Override
-		public void paint(Graphics g) {
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(), getHeight());
-
-			findBtn.repaint();
-			replaceBtn.repaint();
-			findArea.repaint();
-			replaceArea.repaint();
-			nextBtn.repaint();
-			previousBtn.repaint();
-			closeBtn.repaint();
-			findPane.repaint();
-			replacePane.repaint();
-		}
-	}
+	private volatile boolean ctrl;
+	private volatile boolean shift;
+     private volatile boolean o; // Auto-Imports
+     private volatile boolean f; // Find and Replace
+     private volatile boolean r; // Run
+     private volatile boolean b; // Build
+     private volatile boolean s; // Save
+     private volatile boolean c; // Click Editor Image
+     private volatile boolean g; // getters and setters
+     private volatile boolean i; // override methods
 
 	public Editor(Screen screen) {
 		super();
@@ -186,8 +130,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		return scrollPane;
 	}
 
-	private void initView()
-	{
+	private void initView() {
 		addKeyListener((keyListener = this));
 		addMouseListener(this);		
 		setAnimateBracketMatching(true);
@@ -237,11 +180,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void loadTheme()
 	{
 		try {
-			if(!currentTheme.equals(DataManager.getEditorColoringScheme()))
-			{
-				currentTheme = DataManager.getEditorColoringScheme();
-				theme = Theme.load(Editor.class.getResourceAsStream("/"+DataManager.getEditorColoringScheme()+".xml"));
-			}
+               String name = ide.utils.UIManager.isDarkMode() ? "dark" : "idea";
+               theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
 			theme.apply(this);
 		} catch (Exception e) { }
 		try {
@@ -251,16 +191,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}catch(Exception e) { }
 
 	}
-    
+     
 	public static Theme getTheme() {
-		try {
-			if(!currentTheme.equals(DataManager.getEditorColoringScheme()))
-			{
-				currentTheme = DataManager.getEditorColoringScheme();
-				theme = Theme.load(Editor.class.getResourceAsStream("/"+DataManager.getEditorColoringScheme()+".xml"));
-			}
-		}
-		catch(Exception e) {e.printStackTrace();}
+          if(theme == null){
+     		try {
+                    String name = ide.utils.UIManager.isDarkMode() ? "dark" : "idea";
+     			theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
+     		}
+     		catch(Exception e) {e.printStackTrace();}
+          }
 		return theme;
 	}
 
@@ -322,19 +261,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			paint(image.getGraphics() != null ? image.createGraphics() : image.getGraphics());
 			String path = Screen.getFileView().getProjectPath();
-			path += "/out/" + currentFile.getName() + "_lines_" + getLineCount() + ".jpg";
+			path += File.separator + "out" + File.separator + currentFile.getName() + "_lines_" + getLineCount() + ".jpg";
 			if(ImageIO.write(image, "JPG", new File(path))) {
-				System.out.println("Created Image " + path);
 				Screen.getProjectView().reload();
 			}
-			else
-				System.out.println("Unable to Create Image " + path);
 		}catch(Exception e) {System.out.println(e);}
 	}
 
 	public void saveFileAs()
 	{
-		chooser.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
+		chooser.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int res = chooser.showSaveDialog(screen);
 		if(res == JFileChooser.APPROVE_OPTION)
@@ -373,8 +309,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 	}
 
-	public void deleteFile()
-	{
+	public void deleteFile() {
 		try {
 			if(currentFile == null)
 				return;
@@ -385,10 +320,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(res0 != JOptionPane.YES_OPTION)
 				return;
 
-			printArea.setVisible(true);
 			closeFile();
 			if(!currentFile.delete()) {
 				printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
+                    printArea.setVisible(true);
 			}
 
 			else {
@@ -402,38 +337,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}catch(Exception e) {System.err.println(e.getMessage());}
 	}
 
-	public static void deleteDir(File file) throws Exception
-	{
-
-		if (file.isDirectory())
-		{
-
-			/*
-			 * If directory is empty, then delete it
-			 */
+	public static void deleteDir(File file) throws Exception {
+		if (file.isDirectory()) {
 			if (file.list().length == 0)
-			{
-				file.delete();
-			}
-			else
-			{
-				// list all the directory contents
+			     file.delete();
+			else {
 				File files[] = file.listFiles();
-
 				for (File fileDelete : files)
-				{
-					/*
-					 * Recursive delete
-					 */
 					deleteDir(fileDelete);
-				}
-
-				/*
-				 * check the directory again, if empty then 
-				 * delete it.
-				 */
-				if (file.list().length == 0)
-				{
+				if (file.list().length == 0) {
 					file.delete();
 				}
 			}
@@ -443,66 +355,141 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public static void deleteFile(File currentFile)
 	{
-		try {
-			if(currentFile == null)
-				return;
-			if(currentFile.isDirectory()) {
-				int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
-				if(res0 != JOptionPane.YES_OPTION)
-					return;
-				printArea.setVisible(true);
-				try {
-					deleteDir(currentFile);
-					printArea.print("Successfully Deleted "+currentFile.getName());
-					ImportManager.readSource(EditorTools.importManager);
-					Screen.getProjectView().reload();
-				}catch(Exception e) {
-					printArea.print("File is Open Somewhere, Unable to delete directory "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
-				}
-				return;
-			}
-			if(!currentFile.exists())
-				return;
-			Screen.getProjectView().setVisible(false);
-			int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
-			if(res0 != JOptionPane.YES_OPTION)
-				return;
-			printArea.setVisible(true);
-			if(!currentFile.delete()) {
-				printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
-			}
-
-			else {
-				printArea.print("Successfully Deleted "+currentFile.getName());
-				Screen.getProjectView().reload();
-				ImportManager.readSource(EditorTools.importManager);
-			}
-		}catch(Exception e) {System.err.println(e.getMessage());}
+          new Thread(()->{
+              try {
+                    if(currentFile == null)
+                         return;
+                    if(currentFile.isDirectory()) {
+                         int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
+                         if(res0 != JOptionPane.YES_OPTION)
+                              return;
+                         printArea.setVisible(true);
+                         try {
+                              deleteDir(currentFile);
+                              printArea.print("Successfully Deleted "+currentFile.getName());
+                              ImportManager.readSource(EditorTools.importManager);
+                              Screen.getProjectView().reload();
+                         }catch(Exception e) {
+                              printArea.print("File is Open Somewhere, Unable to delete directory "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
+                         }
+                         return;
+                    }
+                    if(!currentFile.exists())
+                         return;
+                    Screen.getProjectView().setVisible(false);
+                    int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
+                    if(res0 != JOptionPane.YES_OPTION)
+                         return;
+                    printArea.setVisible(true);
+                    if(!currentFile.delete()) {
+                         printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
+                    }
+     
+                    else {
+                         printArea.print("Successfully Deleted "+currentFile.getName());
+                         Screen.getProjectView().reload();
+                         ImportManager.readSource(EditorTools.importManager);
+                    }
+               }catch(Exception e) {System.err.println(e.getMessage());}
+          }).start();
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+          int code = e.getKeyCode();
+          
+          if(code == KeyEvent.VK_CONTROL)
+               ctrl = true;
+          else if(code == KeyEvent.VK_SHIFT)
+               shift = true;
+          else if(code == KeyEvent.VK_O)
+               o = true;
+          else if(code == KeyEvent.VK_F)
+               f = true;
+          else if(code == KeyEvent.VK_R)
+               r = true;
+          else if(code == KeyEvent.VK_S)
+               s = true;
+          else if(code == KeyEvent.VK_B)
+               b = true;
+          else if(code == KeyEvent.VK_C)
+               c = true;
+          else if(code == KeyEvent.VK_G)
+               g = true;
+          else if(code == KeyEvent.VK_I)
+               i = true;
+          
+          if(ctrl && shift && f) {
+               fAndR.setVisible(!fAndR.isVisible());
+               f = false;
+               ctrl = false;
+               shift = false;
+          }
+
+          if(ctrl && s){
+               saveCurrentFile();
+               s = false;
+               ctrl = false;
+               shift = false;
+          }
+
+          if(ctrl && shift && c){
+               saveImage();
+               c = false;
+               ctrl = false;
+               shift = false;
+          }
+               
 		if(currentFile != null) {
 			if(currentFile.getName().endsWith(".java")) {
-				int code = e.getKeyCode();
 				if(code == KeyEvent.VK_BACK_SPACE)
 					autoSymbolExclusion(e);
 				else
 					autoSymbolCompletion(e);
-				//Managing KeyBoard
-				if(code == KeyEvent.VK_CONTROL)
-					ctrl_pressed = true;
-				else if(code == KeyEvent.VK_SHIFT)
-					shift_pressed = true;
-				else if(code == KeyEvent.VK_O)
-					o_pressed = true;
+                    
+				//Managing KeyBoard Shortcuts
+                    if(ctrl && shift && o) {
+                         ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
+                         o = false;
+                         ctrl = false;
+                         shift = false;
+                    }
+                    
+                    if(ctrl && shift && g) {
+                         Generator.gsView.genView(this);
+                         g = false;
+                         ctrl = false;
+                         shift = false;
+                    }
+                    
+                    if(ctrl && shift && i) {
+                         Generator.overView.genView(this);
+                         i = false;
+                         ctrl = false;
+                         shift = false;
+                    }
 
-				if(ctrl_pressed && shift_pressed && o_pressed) {
-					ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
-					ctrl_pressed = false;
-					shift_pressed = false;
-					o_pressed = false;
-				}
+                    if(ctrl && shift && r && currentFile != null && screen.getToolMenu().buildComp.isClickable()){
+                         Screen.getRunView().setMainClassPath(currentFile.getAbsolutePath());
+                         Screen.getRunView().run();
+                         r = false;
+                         ctrl = false;
+                         shift = false;
+                    }
+          
+                    if(ctrl && r && screen.getToolMenu().buildComp.isClickable()){
+                         Screen.getRunView().run();
+                         r = false;
+                         ctrl = false;
+                         shift = false;
+                    }
+          
+                    if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
+                         Screen.getBuildView().compileProject();
+                         b = false;
+                         ctrl = false;
+                         shift = false;
+                    }
 
 				if(code == KeyEvent.VK_TAB){
 					String codeX = getText();
@@ -541,6 +528,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 							call = true;
 						return;
 					}
+                         if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                              contentWindow.setVisible(false);
+                              return;
+                         }
 					if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_ENTER) {
 						if((contentWindow.pointer == 0 && e.getKeyCode() == KeyEvent.VK_UP) || (contentWindow.pointer == contentWindow.max && e.getKeyCode() == KeyEvent.VK_DOWN)) {
 							contentWindow.setVisible(false);
@@ -556,29 +547,40 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch(e.getKeyChar()){
-		case ',':
-			insert(" ", getCaretPosition());
-			return;
-		default:
+		     case ',':
+     			insert(" ", getCaretPosition());
+     			return;
+		     default:
 		}
+         
+          int code = e.getKeyCode();
+          if(code == KeyEvent.VK_CONTROL)
+               ctrl = false;
+          else if(code == KeyEvent.VK_SHIFT)
+               shift = false;
+          else if(code == KeyEvent.VK_O)
+               o = false;
+          else if(code == KeyEvent.VK_F)
+               f = false;
+          else if(code == KeyEvent.VK_R)
+               r = false;
+          else if(code == KeyEvent.VK_S)
+               s = false;
+          else if(code == KeyEvent.VK_B)
+               b = false;
+          else if(code == KeyEvent.VK_C)
+               c = false;
+          else if(code == KeyEvent.VK_G)
+               g = false;
+          else if(code == KeyEvent.VK_I)
+               i = false;
 
 		if(currentFile != null) {
 			if(currentFile.getName().endsWith(".java")) {
 				if(!screen.isVisible()) {
 					return;
 				}
-				int code = e.getKeyCode();
-				if(code == KeyEvent.VK_CONTROL)
-					ctrl_pressed = false;
-				else if(code == KeyEvent.VK_SHIFT)
-					shift_pressed = false;
-				else if(code == KeyEvent.VK_O)
-					o_pressed = false;
-				//Shortcut
-				if(code == KeyEvent.VK_F2) {
-					if(Screen.getScreen().getToolMenu().runComp.isClickable() && Screen.getScreen().getToolMenu().buildComp.isClickable())
-						Screen.getRunView().run();
-				}
+                   
 				//Code Assist
 				char c = e.getKeyChar();
 				if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
@@ -658,6 +660,17 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}catch(Exception ex) { System.err.println(ex); }
 	}
 
+     public class FindAndReplace extends JComponent{
+          private ReplaceToolBar replaceToolBar;
+          public FindAndReplace(){
+               setVisible(false);
+               setLayout(new BorderLayout());
+               setPreferredSize(new Dimension(400, 60));
+               replaceToolBar = new ReplaceToolBar(Editor.this);
+               add(replaceToolBar, BorderLayout.CENTER);
+          }
+     }
+
 	private class PrintArea extends View {
 
 		private RTextArea textArea;
@@ -667,8 +680,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			super(title, window);
 			setModal(false);
 			setLayout(new BorderLayout());
-			setSize(300,150);
-			setLocationRelativeTo(null);				
+			setSize(300, 150);
+			setLocationRelativeTo(null);		
 			init();
 		}
 
@@ -684,18 +697,60 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			p.setAutoscrolls(true);
 			add(p, BorderLayout.CENTER);
 			comps.add(textArea);
-
-			setAction(()->{
-				textArea.setText("Operation Progress : ");
-			});
 		}
 
-		public void print(String text)
-		{
+		public void print(String text) {
 			textArea.append("\n"+text);
 		}
 
 	}
+
+     @Override
+     public void searchEvent(SearchEvent e) {
+
+          SearchEvent.Type type = e.getType();
+          SearchContext context = e.getSearchContext();
+          SearchResult result;
+
+          switch (type) {
+               default: // Prevent FindBugs warning later
+               case MARK_ALL:
+                    result = SearchEngine.markAll(this, context);
+                    break;
+               case FIND:
+                    result = SearchEngine.find(this, context);
+                    if (!result.wasFound() || result.isWrapped()) {
+                         javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
+                    }
+                    break;
+               case REPLACE:
+                    result = SearchEngine.replace(this, context);
+                    if (!result.wasFound() || result.isWrapped()) {
+                         javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
+                    }
+                    break;
+               case REPLACE_ALL:
+                    result = SearchEngine.replaceAll(this, context);
+                    break;
+          }
+
+          String text;
+          if (result.wasFound()) {
+               text = "Text found; occurrences marked: " + result.getMarkedCount();
+          }
+          else if (type == SearchEvent.Type.MARK_ALL) {
+               if (result.getMarkedCount() > 0) {
+                    text = "Occurrences marked: " + result.getMarkedCount();
+               }
+               else {
+                    text = "";
+               }
+          }
+          else {
+               text = "Text not found";
+          }
+          screen.getToolMenu().setTask(!text.equals("") ? text : "Hover to see Memory Statistics");
+     }
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {

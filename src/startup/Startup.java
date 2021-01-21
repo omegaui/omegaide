@@ -1,129 +1,127 @@
 package startup;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
+import java.util.Scanner;
+import ide.utils.UIManager;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.io.File;
 import javax.imageio.ImageIO;
+import org.fife.ui.rtextarea.RTextArea;
+import settings.comp.TextComp;
+import java.awt.image.BufferedImage;
 import javax.swing.JDialog;
 
 import ide.Screen;
 public class Startup extends JDialog {
-	public static final Color BASE_COLOR = new Color(20, 20, 160);
-	public static final Font BASE_FONT = new Font("Ubuntu Mono", Font.BOLD, 15);
-	public static final Font BASE_FONT_BIG = new Font("Ubuntu Mono", Font.BOLD, 20);
 	private static BufferedImage image;
-	private static short frame = -1;
-	private Click closeButton;
-	private Click next_button;
+     private TextComp closeBtn;
+     private RTextArea textArea;
+     private TextComp acceptComp;
+     private static String LICENSE_TEXT = "";
 	public Startup(Screen screen){
 		super(screen, true);
-		try {
-			image = (BufferedImage)ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon32.png"));
-		}catch(Exception e) {}
+          try{
+               image = ImageIO.read(getClass().getResourceAsStream(ide.utils.UIManager.isDarkMode() ? "/omega_ide_icon64_dark.png" : "/omega_ide_icon64.png"));
+               Scanner reader = new Scanner(getClass().getResourceAsStream("/LICENSE"));
+               while(reader.hasNextLine()){
+                    LICENSE_TEXT += reader.nextLine() + "\n";
+               }
+               reader.close();
+          }catch(Exception e){ System.err.println(e); }
 		setUndecorated(true);
 		setSize(800, 550);
-		setLayout(null);
+          JPanel panel = new JPanel(null);
+          panel.setBackground(ide.utils.UIManager.c2);
+          setContentPane(panel);
+          setLayout(null);
 		setLocationRelativeTo(null);
 		setAlwaysOnTop(true);
-		setBackground(BASE_COLOR);
+		setBackground(ide.utils.UIManager.c2);
 		init();
 		setVisible(true);
 	}
 
-	private void init(){
-		closeButton = new Click("X", ()->System.exit(0));
-		closeButton.setBounds(getWidth() - 30, 0, 30, 18);
-		add(closeButton);
-		next_button = new Click("Next", ()->{
-			if(frame != 1)
-				frame++;
-			else{
-				try {
-					new java.io.File(".firststartup").createNewFile();
-				}catch(Exception e) {e.printStackTrace();}
-				dispose();
-			}
-			repaint();
-		});
-		next_button.setBounds(getWidth()/2 - 30, getHeight() - 28, 60, 28);
-		add(next_button);
-	}
+     public void init(){
+     	closeBtn = new TextComp("x", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->System.exit(0));
+          closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
+          closeBtn.setFont(settings.Screen.PX18);
+          closeBtn.setArc(0, 0);
+          add(closeBtn);
 
-	@Override
-	public void paint(Graphics g){
-		super.paint(g);
-		g.setColor(BASE_COLOR);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(image, 0, 0, 64, 64, null);
-		Graphics2D g2 = (Graphics2D)g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2.setColor(Color.WHITE);
-		g2.setFont(BASE_FONT_BIG);
-		if(frame == -1)
-			firstFrame(g2);
-		else if(frame == 0)
-			secondFrame(g2);
-		else if(frame == 1)
-			lastFrame(g2);
-	}
+          textArea = new RTextArea(LICENSE_TEXT);
+          JScrollPane scrollPane = new JScrollPane(textArea);
+          scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
+          textArea.setBackground(ide.utils.UIManager.c2);
+          textArea.setForeground(ide.utils.UIManager.c3);
+          textArea.setFont(settings.Screen.PX18);
+          textArea.setCaretPosition(0);
+          textArea.setEditable(false);
+          add(scrollPane);
 
-	private void firstFrame(Graphics2D g){
-		g.drawString("Welcome to the first startup of", 50, 100);
-		g.drawString("Omega Integrated Development Environment Community Edition", 50, 150);
-		g.drawString("Edition : Community", 50, 200);
-		g.drawString("Type : Rolling Release", 50, 250);
-		g.drawString("Owner/Author : Omega UI", 50, 300);
-		g.drawString("Written in : Java", 50, 350);
-		g.drawString("Runtime Needed : Java SE 11", 50, 400);
-		g.drawString("Recommended Desktop Environment (For Linux) : Gnome", 50, 450);
-		closeButton.repaint();
-		next_button.repaint();
-	}
+          acceptComp = new TextComp("I Accept", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
+               try{
+               	new File(".firststartup").createNewFile();
+                    setVisible(false);
+               }catch(Exception e){ System.err.println(e); }
+          });
+          acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
+          acceptComp.setFont(settings.Screen.PX16);
+          add(acceptComp);
 
-	private void secondFrame(Graphics2D g){
-		g.setFont(BASE_FONT);
-		g.drawString("If you continue this means that you agree :", 50, 100);
-		g.drawString("-> The Software is provided \"AS IS\" without warranty of any kind", 50, 150);
-		g.drawString("-> In no event shall the author be held liable for any damages", 50, 200);
-		g.drawString("      arising from the use of Omega Integrated Development Environment.", 50, 250);
-		g.drawString("-> No portion of the Omega Integrated Development Environment binaries may be", 50, 300);
-		g.drawString("      disassembled, reverse engineered, decompiled, modified or altered.", 50, 350);
-		g.drawString("-> No person or company may distribute separate parts", 50, 400);
-		g.drawString("      of Omega Integrated Development Environment.", 50, 450);
-		next_button.setText("I accept");
-		closeButton.repaint();
-	}
+          TextComp imageComp = new TextComp("", ide.utils.UIManager.c2, ide.utils.UIManager.c2, ide.utils.UIManager.c2, ()->{}){
+               @Override
+               public void paint(Graphics graphics){
+                    super.paint(graphics);
+                    Graphics2D g = (Graphics2D)graphics;
+                    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                    g.drawImage(image, 1, 1, null);
+               }
+          };
+          imageComp.setBounds(0, 0, 66, 66);
+          imageComp.setClickable(false);
+          add(imageComp);
 
-	private void lastFrame(Graphics2D g){
-		g.setFont(BASE_FONT);
-		g.drawString("Some Key Features of Omega IDE Community Edition:", 50, 100);
-		g.setFont(BASE_FONT_BIG);
-		g.drawString("Omega IDE is an extremely lightweight java IDE.", 50, 150);
-		g.drawString("The Content Assist is extremely fast.", 50, 200);
-		g.drawString("Provides a simple Way to manage complex settings.", 50, 250);
-		g.drawString("Changes theme with change in theme of the system.", 50, 300);
-		g.drawString("Provides a faster way to code.", 50, 350);
-		g.drawString("Totally Free.", 50, 400);
-		next_button.setText("Launch");
-		closeButton.repaint();
-	}
+          TextComp textComp = new TextComp("Omega IDE", ide.utils.UIManager.c2, ide.utils.UIManager.c3, ide.utils.UIManager.c3, ()->{});
+          textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
+          textComp.setClickable(false);
+          textComp.setFont(settings.Screen.PX28);
+          textComp.setArc(0, 0);
+          add(textComp);
+          
+          TextComp licComp = new TextComp("license agreement", ide.utils.UIManager.c2, ide.utils.UIManager.c3, ide.utils.UIManager.c3, ()->{});
+          licComp.setBounds(getWidth()/2 - 150, 50, 300, 30);
+          licComp.setClickable(false);
+          licComp.setFont(settings.Screen.PX18);
+          licComp.setArc(0, 0);
+          add(licComp);
+     }
 
-	@Override
-	public Component add(Component c){
-		super.add(c);
-		c.repaint();
-		return c;
-	}
-
+     @Override
+     public void paint(Graphics graphics){
+     	Graphics2D g = (Graphics2D)graphics;
+     	g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+     	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+     	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+          g.setColor(getBackground());
+          g.fillRect(0, 0, getWidth(), getHeight());
+     }
+    
 	public static void checkStartup(Screen screen) {
-		if(!new File(".firststartup").exists())
+		if(!new File(".firststartup").exists()){
 			new Startup(screen).repaint();
+		}
 	}
+
+     public static void writeUIFiles(){
+     	if(!new File(".firststartup").exists()){
+               ide.utils.UIManager.loadDefaultFile(".ui");
+               ide.utils.UIManager.loadDefaultFile(".preferences");
+               ide.utils.UIManager.loadDefaultFile(".snippets");
+          }
+     }
 }

@@ -1,83 +1,58 @@
 package launcher;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
+import ide.Manuals;
+import java.awt.event.MouseAdapter;
+import java.awt.Font;
+import tabPane.IconManager;
 import ide.Screen;
+import java.awt.Dimension;
+import java.io.File;
 import ide.utils.RecentsManager;
 import ide.utils.ToolMenu;
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import settings.comp.TextComp;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
+import javax.swing.JFrame;
+import static ide.utils.UIManager.*;
 public class Launcher extends JFrame{
-     protected static final BufferedImage icon = getImage("/omega_ide_icon32.png");
-     protected static final BufferedImage drawIcon = getImage("/omega_ide_icon128.png");
-	protected final JPanel panel = new JPanel(null);
-	protected final JScrollPane scrollPane = new JScrollPane(panel);
-	protected CloseButton c;
-	private class CloseButton extends JComponent {
-		private volatile boolean enter;
-		protected CloseButton(){
-			addMouseListener(new MouseAdapter(){
-				@Override
-				public void mouseClicked(MouseEvent e){
-					System.exit(0);
-				}
-				@Override
-				public void mouseEntered(MouseEvent e){
-					enter = true;
-					repaint();
-				}
-				@Override
-				public void mouseExited(MouseEvent e){
-					enter = false;
-					repaint();
-				}
-			});
-			setBackground(Launcher.this.getForeground());
-			setForeground(Launcher.this.getBackground());
-			setFont(new Font("Ubuntu Mono", Font.BOLD, 20));
-		}
-
-		@Override
-		public void paint(Graphics g2){
-			super.paint(g2);
-			Graphics2D g = (Graphics2D)g2;
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(getBackground());
-			g.fill3DRect(0, 0, getWidth(), getHeight(), !enter);
-			String text = "X";
-			int size = g.getFontMetrics().stringWidth(text);
-			g.setColor(getForeground());
-			g.drawString(text, getWidth()/2 - size/2, getHeight()/2 + 5);
-		}
-	}
+     private static final BufferedImage icon = getImage("/omega_ide_icon32.png");
+     private static final BufferedImage drawIcon = getImage("/omega_ide_icon128.png");
+	private final JPanel panel = new JPanel(null);
+	private final JScrollPane scrollPane = new JScrollPane(panel);
+     private TextComp closeComp;
+     private TextComp imageComp;
+     private TextComp textComp;
+     private int mouseX;
+     private int mouseY;
 	public Launcher(){
+          JPanel p = new JPanel(null);
+          p.setBackground(c2);
+          setContentPane(p);
 		setUndecorated(true);
+          setBackground(c2);
 		setLayout(null);
 		setSize(600, 500);
 		setLocationRelativeTo(null);
 		setResizable(false);
-          setDefaultCloseOperation(HIDE_ON_CLOSE);
 		setIconImage(icon);
-		if(ide.utils.UIManager.isDarkMode()) {
-			ide.utils.UIManager.setData(this);
-		}else {
-			setBackground(Color.WHITE);
-			setForeground(Color.decode("#4063BF"));
-		}
-		setFont(new Font("Ubuntu Mono", Font.BOLD, 44));
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e) {
+                  setLocation(e.getXOnScreen() - mouseX, e.getYOnScreen() - mouseY);
+               }
+          });
+          addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e) {
+                    mouseX = e.getX();
+                    mouseY = e.getY();
+               }
+          });
 		init();
 		setVisible(true);
 	}
@@ -87,26 +62,56 @@ public class Launcher extends JFrame{
 		scrollPane.setBounds(0, 220, getWidth(), getHeight() - 220);
 		add(scrollPane);
 
-		c = new CloseButton();
-		c.setBounds(getWidth() - 40, 0, 40, 40);
-		add(c);
+		closeComp = new TextComp("X", c1, c2, c3, ()->System.exit(0));
+		closeComp.setBounds(getWidth() - 40, 0, 40, 40);
+          closeComp.setFont(settings.Screen.PX18);
+          closeComp.setArc(0, 0);
+		add(closeComp);
+
+          imageComp = new TextComp("", c1, c3, c2, ()->{}){
+               @Override
+               public void paint(Graphics graphics){
+               	Graphics2D g = (Graphics2D)graphics;
+               	g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+               	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+               	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+               	g.drawImage(drawIcon, 0, 0, null);
+               }
+          };
+          imageComp.setBounds(getWidth()/2 - 64, 10, 128, 128);
+          imageComp.setClickable(false);
+          add(imageComp);
+
+          textComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, c3, ()->{});
+          textComp.setBounds(getWidth()/2 - 200, 140, 400, 50);
+          textComp.setClickable(false);
+          textComp.setFont(new Font("Ubuntu Mono", Font.BOLD, 40));
+          textComp.setArc(0, 0);
+          add(textComp);
 		
-		Door openDoor = new Door("/ide/Project/Open", icon, ()->{
+		Door openDoor = new Door(File.separator + "ide" + File.separator + "Project" + File.separator + "Open", icon, ()->{
 			if(Screen.getFileView().open("Project"))
 				setVisible(false);
 		});
 		openDoor.setBounds(0, 0, getWidth(), 40);
 		panel.add(openDoor);
 		
-		Door newDoor = new Door("/ide/Project/New", icon, ()->{
-			ToolMenu.projectWizard.setVisible(true);
-			Screen.hideNotif();
-		});
-		newDoor.setBounds(0, 40, getWidth(), 40);
-		panel.add(newDoor);
+          Door newDoor = new Door(File.separator + "ide" + File.separator + "ide" + File.separator + "Project" + File.separator + "Open" + "Project" + File.separator + "New", icon, ()->{
+               ToolMenu.projectWizard.setVisible(true);
+               Screen.hideNotif();
+          });
+          newDoor.setBounds(0, 40, getWidth(), 40);
+          panel.add(newDoor);
+          
+          Door bmanDoor = new Door(File.separator + "ide" + File.separator + "ide" + File.separator + "Manual" + File.separator + "Basic" + " Manual" + File.separator + "See Manual", icon, ()->{
+               ide.Manuals.showBasicManual();
+               Screen.hideNotif();
+          });
+          bmanDoor.setBounds(0, 80, getWidth(), 40);
+          panel.add(bmanDoor);
 
 		//Creating Doors
-		int y = 80;
+		int y = 120;
 		for(int i = RecentsManager.RECENTS.size() - 1; i >= 0; i--) {
 			String path = RecentsManager.RECENTS.get(i);
 			File file = new File(path);
@@ -124,25 +129,13 @@ public class Launcher extends JFrame{
 		panel.setPreferredSize(new Dimension(getWidth(), y));
 	}
 
-	@Override
-	public void paint(Graphics g2){
-		super.paint(g2);
-		Graphics2D g = (Graphics2D)g2;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(drawIcon, getWidth()/2 - 128/2, 10, 128, 128, this);
-		String text = "Omega IDE Community Edition";
-		int size = g.getFontMetrics().stringWidth(text);
-		g.setColor(getForeground());
-		g.drawString(text, getWidth()/2 - size/2, 180);
-		g.fillRect(getWidth()/2 - size/2, 180 + 10, size, 2);
-		scrollPane.repaint();
-		c.repaint();
-	}
+     @Override
+     public void setVisible(boolean value){
+     	super.setVisible(value);
+          repaint();
+     }
 
 	public static BufferedImage getImage(String path){
-		return (BufferedImage)tabPane.IconManager.getImageIcon(path).getImage();
+		return (BufferedImage)IconManager.getImageIcon(path).getImage();
 	}
 }

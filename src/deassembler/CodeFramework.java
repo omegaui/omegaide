@@ -1,5 +1,5 @@
 package deassembler;
-//Debugging Completed - I wish I could say that :-(, it never completes some or the other thing always interfere.
+//Debugging Completed - I wish I could say that :-(-: it never completes some or the other thing always interrupt.
 
 import static deassembler.Assembly.getReader;
 import static deassembler.Assembly.has;
@@ -267,8 +267,6 @@ public class CodeFramework{
 			path = path.substring(0, path.lastIndexOf('.'));
 			code = "." + code;
 		}
-		System.out.println("Path : " + path);
-		System.out.println("Code : " + code);
 		if(!isSource(path)){
 			boolean isAvailable = false;
 			for(importIO.Import im : importIO.ImportManager.getAllImports()) {
@@ -876,16 +874,16 @@ public class CodeFramework{
 			StringTokenizer tok = new StringTokenizer(className, ".");
 			while(tok.hasMoreTokens())
 				files.add(tok.nextToken());
-			String path = Screen.getFileView().getProjectPath() + "/src/";
+			String path = Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator;
 			for(String f : files) {
-				path += f + "/";
+				path += f + File.separator;
 			}
 			path = path.substring(0, path.length() - 1).trim();
 			files.clear();
 			file =  new File(path+".java");
 		}
 		else {
-			file = new File(Screen.getFileView().getProjectPath() + "/src/" + className + ".java");
+			file = new File(Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator + className + ".java");
 		}
 		String code = "";
 		for(Editor ex : Screen.getScreen().getTabPanel().getEditors()) {
@@ -912,16 +910,16 @@ public class CodeFramework{
 			StringTokenizer tok = new StringTokenizer(className, ".");
 			while(tok.hasMoreTokens())
 				files.add(tok.nextToken());
-			String path = Screen.getFileView().getProjectPath() + "/src/";
+			String path = Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator;
 			for(String f : files) {
-				path += f + "/";
+				path += f + File.separator;
 			}
 			path = path.substring(0, path.length() - 1).trim();
 			files.clear();
 			return new File(path+".java").exists();
 		}
 		else {
-			return new File(Screen.getFileView().getProjectPath() + "/src/" + className + ".java").exists();
+			return new File(Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator + className + ".java").exists();
 		}
 	}
 

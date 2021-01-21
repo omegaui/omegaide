@@ -18,7 +18,7 @@ public class Terminal extends JComponent{
      private static int pointer;
      public volatile boolean shellAlive;
      public static File currentDir;
-     public static final String LAUNCH_COMMAND = "relaunchShell-IDE";
+     public static final String LAUNCH_COMMAND = "shell-again";
      public static final String USER_HOME = System.getProperty("user.home");
      public Terminal(){
           setLayout(new BorderLayout());
@@ -63,6 +63,9 @@ public class Terminal extends JComponent{
      	if(process != null && process.isAlive() || shellAlive) return this;
           try{
                shellAlive = true;
+               String shell = "cmd.exe";
+               if(File.separator.equals("/"))
+                    shell = "bash";
                process = new ProcessBuilder("bash").start();
                writer = new PrintWriter(process.getOutputStream());
                inReader = new Scanner(process.getInputStream());
@@ -82,8 +85,10 @@ public class Terminal extends JComponent{
                     shellAlive = false;
                     print("Shell Closed, To relaunch the shell enter " + LAUNCH_COMMAND);
                }).start();
-               currentDir = new File(ide.Screen.getFileView().getProjectPath() + "/bin");
-               textArea.setText("Lets run some commands, TerminalInsideOmegaIDE.\nCurrent Directory : "+ ide.Screen.getFileView().getProjectPath() + "/bin\n\n");
+               if(File.separator.equals("/")){
+                    currentDir = new File(ide.Screen.getFileView().getProjectPath() + File.separator + "bin");
+                    textArea.setText("Current Directory : "+ ide.Screen.getFileView().getProjectPath() + File.separator + "bin\n\n");
+               }
                textField.setText("");
           }catch(Exception e){ 
                shellAlive = false;
@@ -118,16 +123,16 @@ public class Terminal extends JComponent{
                     textArea.setText("");
                     return;
                }
-               else if(text.equals("cd ..")){
+               else if(text.equals("cd ..") && File.separator.equals("/")){
                     String path = currentDir.getAbsolutePath();
                     File originalPath = currentDir;
-                    currentDir = new File(path.substring(0, path.lastIndexOf('/')));
+                    currentDir = new File(path.substring(0, path.lastIndexOf(File.separatorChar)));
                     if(currentDir.exists())
                          setToolTipText(currentDir.getAbsolutePath());
                     else
                          currentDir = originalPath;
                }
-               else if(text.equals("cd ~")){
+               else if(text.equals("cd ~") && File.separator.equals("/")){
                     File originalPath = currentDir;
                     currentDir = new File(USER_HOME);
                     if(currentDir.exists())
@@ -135,7 +140,7 @@ public class Terminal extends JComponent{
                     else
                          currentDir = originalPath;
                }
-               else if(text.startsWith("cd ")){
+               else if(text.startsWith("cd ") && File.separator.equals("/")){
                     String path = text;
                     if(path.substring(path.indexOf(' ')).trim().charAt(0) == '/')
                          path = path.substring(path.indexOf(' ') + 1).trim();
@@ -152,7 +157,8 @@ public class Terminal extends JComponent{
                     else
                          currentDir = originalPath;
                }
-               print("OmegaIDE:\""+ currentDir.getAbsolutePath() + "\"$ " + text);
+               if(File.separator.equals("/"))
+                    print("OmegaIDE:\""+ currentDir.getAbsolutePath() + "\"$ " + text);
      		writer.println(text);
                writer.flush();
      	}catch(Exception e){ System.err.println(e); }

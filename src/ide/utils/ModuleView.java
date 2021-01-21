@@ -139,8 +139,7 @@ public class ModuleView extends JDialog{
 					StringTokenizer tokX = new StringTokenizer(modules, ",");
 					while(tokX.hasMoreTokens()) {
 						String tokenX = tokX.nextToken();
-						String path = token + "/" + tokenX + ".jar";
-						System.out.println(path);
+						String path = token + File.separator + tokenX + ".jar";
 						Screen.getFileView().getDependencyManager().dependencies.remove(path);
 					}
 				}
@@ -168,7 +167,7 @@ public class ModuleView extends JDialog{
 				StringTokenizer tok = new StringTokenizer(modules, ",");
 				while(tok.hasMoreTokens()) {
 					String token = tok.nextToken();
-					String path = root + "/" + token + ".jar";
+					String path = root + File.separator + token + ".jar";
 					System.out.println(path);
 					Screen.getFileView().getDependencyManager().add(path);
 				}

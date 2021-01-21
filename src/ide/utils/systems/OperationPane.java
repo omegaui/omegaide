@@ -1,4 +1,8 @@
 package ide.utils.systems;
+import java.awt.FontMetrics;
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import popup.*;
 
@@ -22,6 +26,9 @@ public class OperationPane extends JPanel{
 	private Screen screen;
 	private JTabbedPane tabPane;
 	private static LinkedList<String> names = new LinkedList<>();
+    
+     private static final String TITLE = "Process Panel";
+     private static final String HINT = "There is no process running";
 	
 	public OperationPane(Screen screen) {
 		this.screen = screen;
@@ -47,12 +54,9 @@ public class OperationPane extends JPanel{
 				}, ()->{
 					tabPane.setSelectedIndex(names.indexOf(name));
 				}, "", null));
-		try {
-			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
-		}catch(Exception e) {}
-		setVisible(true);
-		setVisible(false);
-		setVisible(true);
+          if(tabPane.getTabCount() != 0)
+               tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
+          setVisible(true);
 	}
 	
 	public void addTab(String name, Component c, Runnable r, OPopupWindow popup) {
@@ -72,9 +76,7 @@ public class OperationPane extends JPanel{
 		try {
 			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
 		}catch(Exception e) {}
-		setVisible(true);
-		setVisible(false);
-		setVisible(true);
+          setVisible(true);
 	}
 	
 	public static int count(String name) {
@@ -90,16 +92,17 @@ public class OperationPane extends JPanel{
 	public void setVisible(boolean value) {
 		if(tabPane.getTabCount() == 0)
 			super.setVisible(false);
-		try {
-			if(value) {
-				screen.compilancePane.setDividerLocation(screen.getHeight() - 400);
-				setPreferredSize(new Dimension(screen.getWidth(), 450));
-			}
-			else {
-				screen.getToolMenu().oPHidden = true;
-			}
-		}catch(Exception e) {}
 		super.setVisible(value);
+          try{
+               screen.getToolMenu().oPHidden = value;
+               if(value) {
+                    setPreferredSize(new Dimension(screen.getWidth(), getHeight() > 450 ? getHeight() : 450));
+                    int y = screen.getHeight() - 400;
+                    screen.compilancePane.setDividerLocation(y);
+               }
+               ide.Screen.getScreen().getToolMenu().operateComp.repaint();
+          }
+          catch(Exception e) {}
 	}
 	
 	public void removeTab(String name) {
@@ -111,5 +114,24 @@ public class OperationPane extends JPanel{
 		if(names.isEmpty())
 			setVisible(false);
 	}
+
+     @Override
+     public void paint(Graphics graphics){
+          if(tabPane.getTabCount() == 0){
+           Graphics2D g = (Graphics2D)graphics;
+               g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+               g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+               g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+               g.setColor(ide.utils.UIManager.c2);
+               g.fillRect(0, 0, getWidth(), getHeight());
+               g.setColor(ide.utils.UIManager.c3);
+               g.setFont(settings.Screen.PX28);
+               FontMetrics f = g.getFontMetrics();
+               g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
+               g.drawString(HINT, getWidth()/2 - f.stringWidth(HINT)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());
+               g.dispose();
+          }
+          else super.paint(graphics);
+     }
 
 }

@@ -65,20 +65,19 @@ public class RefractionManager extends View {
 		setTitle(title);
 		nameField.setText(file.getName());
 		task = ()->{
-			String dir = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('/'));
+			String dir = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separatorChar));
 			String newName = nameField.getText();
 			try {
 				InputStream in = new FileInputStream(file);
-				OutputStream out = new FileOutputStream(dir + "/" + newName);
+				OutputStream out = new FileOutputStream(dir + File.separator + newName);
 				while(in.available() > 0)
 					out.write(in.read());
 				in.close();
 				out.close();
 				file.delete();
-				lastFile = new File(dir+"/"+newName);
+				lastFile = new File(dir + File.separator + newName);
 			}catch(Exception e) {System.err.println(e);}
 		};
 		setVisible(true);
 	}
-
 }

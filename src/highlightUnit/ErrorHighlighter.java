@@ -15,7 +15,7 @@ import ide.utils.Editor;
 public class ErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
-	private static final Color color = new Color(200, 20, 30);
+	private static final Color color = ide.utils.UIManager.isDarkMode() ? new Color(255, 255, 0, 30) : new Color(255, 0, 0, 30);
 	
 	public ErrorHighlighter() {
 		highlights = new LinkedList<>();
@@ -31,11 +31,12 @@ public class ErrorHighlighter {
 		try {
 			while(tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
-				if(token.contains("/") && token.contains(".java") && token.contains(":") && !canRecord) {
+				if(token.contains(".java") && token.contains(":") && !canRecord) {
 					int e = token.indexOf(':');
 					path = token.substring(0, e);
 					line = Integer.parseInt(token.substring(e + 1, token.indexOf(':', e + 1)));
-					canRecord = true;
+                         if(new File(path).exists())
+                              canRecord = true;
 				}
 				else if(canRecord) {
 					code = token.trim();

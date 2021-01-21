@@ -20,7 +20,7 @@ public class JDKReader{
 		if(path == null) return;
 		File jdk = new File(path);
 		if(!jdk.exists()) return;
-		File releaseFile = new File(path+"/release");
+		File releaseFile = new File(path + File.separator + "release");
 		version = 0;
 		try{
 			Scanner reader = new Scanner(releaseFile);
@@ -51,7 +51,7 @@ public class JDKReader{
 		packages.clear();
 		if(version < 9){
 			try{
-				JarFile jarFile = new JarFile(path+"/jre/lib/rt.jar");
+				JarFile jarFile = new JarFile(path + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar");
 				for(Enumeration<JarEntry> enums = jarFile.entries(); enums.hasMoreElements();){
 					JarEntry jarEntry = enums.nextElement();
 					String name = jarEntry.getName();
@@ -64,7 +64,7 @@ public class JDKReader{
 		}
 		else{
 			try{
-				File modDir = new File(path+"/jmods");
+				File modDir = new File(path + File.separator + "jmods");
 				File[] mods = modDir.listFiles();
 				for(File module : mods){
 					ZipFile zipFile = new ZipFile(module);

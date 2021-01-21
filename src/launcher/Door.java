@@ -1,4 +1,5 @@
 package launcher;
+import java.io.File;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.*;
@@ -13,9 +14,9 @@ public class Door extends JComponent{
 		super();
 		this.image = image;
 		this.path = path;
-		this.name = path.substring(path.lastIndexOf('/') + 1);
-		this.parent = path.substring(0, path.lastIndexOf('/'));
-		this.parent = "<"+this.parent.substring(parent.lastIndexOf('/') + 1)+">";
+		this.name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
+		this.parent = path.substring(0, path.lastIndexOf(File.separatorChar));
+		this.parent = "<"+this.parent.substring(parent.lastIndexOf(File.separatorChar) + 1)+">";
 		if(ide.utils.UIManager.isDarkMode()) {
 			ide.utils.UIManager.setData(this);
 		}else {

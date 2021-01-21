@@ -21,7 +21,7 @@ import ide.utils.ResourceManager;
 public class DependencyPanel extends JPanel{
 	private String type;
 	private RTextArea pathArea;
-	public static final Font font = new Font("Ubuntu Mono", Font.BOLD, 14);
+	public static final Font font = settings.Screen.PX14;
 	private class ActionPanel extends JComponent{
 		public ActionPanel(String head, Runnable addAction, Runnable rmAction){
 			setLayout(null);
@@ -175,7 +175,7 @@ public class DependencyPanel extends JPanel{
 		}
 		add(actionPanel, BorderLayout.NORTH);
 
-		pathArea = new RTextArea("");
+		pathArea = new RTextArea();
 		ide.utils.UIManager.setData(pathArea);
 		pathArea.setEditable(false);
 		pathArea.setFont(font);
@@ -193,7 +193,7 @@ public class DependencyPanel extends JPanel{
 		else
 			paths = ResourceManager.roots;
 		pathArea.setText("");
-		paths.forEach(p->append(p.substring(p.lastIndexOf('/') + 1) + " | " + p));
+		paths.forEach(p->append(p.substring(p.lastIndexOf(File.separatorChar) + 1) + " | " + p));
 	}
 
 	public void append(String text){

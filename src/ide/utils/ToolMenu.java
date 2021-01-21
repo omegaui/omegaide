@@ -1,5 +1,7 @@
 package ide.utils;
-import popup.*;
+import java.awt.Dimension;
+import popup.OPopupWindow;
+import popup.OPopupItem;
 
 import java.nio.file.Files;
 import java.awt.Panel;
@@ -50,6 +52,8 @@ public class ToolMenu extends JPanel {
      public static OPopupItem fileMenu;
      public static OPopupWindow recentProjectPopup;
      public static OPopupItem projectMenu;
+     public static OPopupWindow allProjectsPopup;
+     public static OPopupItem allMenu;
 
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
@@ -70,27 +74,49 @@ public class ToolMenu extends JPanel {
 	public TextComp operateComp;
      public TextComp sep3;
      public TextComp shellComp;
-	public TextComp searchComp;
+     public TextComp searchComp;
+     public TextComp sep4;
+     public TextComp structureViewComp;
+     public TextComp sep5;
+     public TextComp themeComp;
 
 	public LabelMenu taskMenu;
 	public volatile boolean oPHidden = true;
 	public static JMenu openFileMenu;
 	public static JMenu openProjectMenu;
 	public static info.Screen infoScreen;
+     public static structure.Screen structureView;
 	public boolean hidden;
 	public static ProjectWizard projectWizard;
      private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 14);
+     private int pressX;
+     private int pressY;
+     
 
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
 		if(projectWizard == null){
 			projectWizard = new ProjectWizard(screen);
                infoScreen = new info.Screen(screen);
+               structureView = new structure.Screen(screen);
 	     }
 		setLayout(null);
 		setSize(screen.getWidth(), 60);
 		setPreferredSize(getSize());
 		UIManager.setData(this);
+          addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e){
+               	pressX = e.getX();
+               	pressY = e.getY();
+               }
+          });
+          addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e){
+                    screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY - 30);
+               }
+          });
 		init();
 	}
 
@@ -371,6 +397,14 @@ public class ToolMenu extends JPanel {
 			}
 		};
 		addComp(searchComp);
+          
+          sep4 = new TextComp("", c1, c3, c3, ()->{});
+          addComp(sep4);
+
+          structureViewComp = new TextComp("<\\>", c1, c2, c3, ()->structureView.setVisible(true));
+          structureViewComp.setFont(settings.Screen.PX16);
+          structureViewComp.setToolTipText("Lets see that class");
+          addComp(structureViewComp);
 
           sep3 = new TextComp("", c1, c3, c3, ()->{});
           sep3.setBounds(500, 20, 2, 40);
@@ -382,6 +416,27 @@ public class ToolMenu extends JPanel {
           shellComp.setFont(settings.Screen.PX16);
           shellComp.setBounds(510, 25, 60, 30);
           add(shellComp);
+
+          sep5 = new TextComp("", c1, c3, c3, ()->{});
+          sep5.setBounds(580, 20, 2, 40);
+          addComp(sep5);
+
+          Color l1 = c3;
+          Color l2 = c1;
+          Color l3 = c2;
+          if(!ide.utils.UIManager.isDarkMode()){
+               l1 = c1;
+               l2 = c3;
+               l3 = c2;
+          }
+          
+          themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE restart", l1, l2, l3, ()->{
+               DataManager.setTheme(DataManager.getTheme().equals("light") ? "dark" : "light");
+               themeComp.setText(DataManager.getTheme());
+          });
+          themeComp.setFont(settings.Screen.PX16);
+          themeComp.setBounds(600, 25, 60, 30);
+          add(themeComp);
           
 		reshape();
 	}
@@ -402,6 +457,8 @@ public class ToolMenu extends JPanel {
 
 	private void reshapeTask() {
 		searchComp.setBounds(getWidth() - 30, 25, 30, 30);
+          sep4.setBounds(getWidth() - 40, 20, 2, 40);
+          structureViewComp.setBounds(getWidth() - 110, 25, 60, 30);
 		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 0);
 	}
 
@@ -420,11 +477,13 @@ public class ToolMenu extends JPanel {
                     screen.loadThemes();
                }
           })
+          .createItem("Change Workspace", IconManager.settingsImage, ()->new ide.utils.ProjectsHomeSelector(screen).setVisible(true))
           .createItem("All Settings", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true));
 	}
 
 	private void initHelpMenu() {
-          helpPopup.createItem("Plugin Store", IconManager.ideImage, ()->Screen.getPluginStore().setVisible(true))
+          helpPopup.createItem("See Basic Manual", IconManager.ideImage, ()->ide.Manuals.showBasicManual())
+          .createItem("Plugin Store", IconManager.ideImage, ()->Screen.getPluginStore().setVisible(true))
           .createItem("Plugin Manager", IconManager.ideImage, ()->Screen.getPluginView().setVisible(true))
           .createItem("Check for Update", IconManager.ideImage, ()->Screen.updateIDE())
           .createItem("About", IconManager.ideImage, ()->{
@@ -435,13 +494,15 @@ public class ToolMenu extends JPanel {
 	private void initViewMenu() {
           viewPopup.createItem("Show Project Panel", IconManager.projectImage, ()->{
                 if(!screen.screenHasProjectView)
-                         Screen.getProjectView().setVisible(true);
+                    Screen.getProjectView().setVisible(true);
           });
 	}
 
 	private void initToolMenu() {
           toolsPopup.createItem("Import Picker", IconManager.buildImage, ()->EditorTools.showIS())
-          .createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true));
+          .createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
+          .createItem("Generate Getter/Setter", IconManager.buildImage, ()->gset.Generator.gsView.genView(screen.getCurrentEditor()))
+          .createItem("Override/Implement Methods", IconManager.buildImage, ()->gset.Generator.overView.genView(screen.getCurrentEditor()));
 	}
 
 	private void initProjectPopup() {
@@ -464,7 +525,7 @@ public class ToolMenu extends JPanel {
           .createItem("Manage Module-Path", IconManager.projectImage, ()->Screen.getFileView().getModuleView().setVisible(true))
           .createItem("Delete Files", IconManager.closeImage, 
                ()->{
-                    fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
+                    fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
                     fileC.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                     fileC.setApproveButtonText("Delete");
                     fileC.setFileFilter(allFileFilter);
@@ -478,7 +539,7 @@ public class ToolMenu extends JPanel {
                          boolean v = false;
                          for(File file : files)
                          {
-                              names += file.getName() + " && ";
+                              names += file.getName() + " ";
                               v = true;
                          }
                          if(v) names = names.substring(0, names.length() - 4);
@@ -499,7 +560,7 @@ public class ToolMenu extends JPanel {
                })
           .createItem("Mark As Main Class", IconManager.fileImage, 
                ()->{
-                    fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()+"/src"));
+                    fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
                     fileC.setFileSelectionMode(JFileChooser.FILES_ONLY);
                     fileC.setApproveButtonText("Mark This As Main");
                     fileC.setFileFilter(new FileFilter() {
@@ -533,24 +594,31 @@ public class ToolMenu extends JPanel {
           recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(300).height(250);
           fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{
                recentFilePopup.setLocation(filePopup.getX() + fileMenu.getX() + fileMenu.getWidth(), filePopup.getY() + fileMenu.getY());
-               recentFilePopup.setVisible(!recentFilePopup.isVisible());
+               recentFilePopup.setVisible(true);
           });
           filePopup.addItem(fileMenu);
           
           recentProjectPopup = OPopupWindow.gen("Recent Projects Menu", screen, 0, true).width(300).height(250);
           projectMenu = new OPopupItem(recentProjectPopup, "Recent Projects", IconManager.projectImage, ()->{
                recentProjectPopup.setLocation(filePopup.getX() + projectMenu.getX() + projectMenu.getWidth(), filePopup.getY() + projectMenu.getY());
-               recentProjectPopup.setVisible(!recentProjectPopup.isVisible());
+               recentProjectPopup.setVisible(true);
           });
           filePopup.addItem(projectMenu);
+          
+          allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(300).height(250);
+          allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, ()->{
+               allProjectsPopup.setLocation(filePopup.getX() + allMenu.getX() + allMenu.getWidth(), filePopup.getY() + allMenu.getY());
+               allProjectsPopup.setVisible(true);
+          });
+          filePopup.addItem(allMenu);
 
           filePopup.setOnClose(()->{
                recentFilePopup.setVisible(false);
                recentProjectPopup.setVisible(false);
+               allProjectsPopup.setVisible(false);
           });
 
           filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
-          .createItem("Create Java Archive", IconManager.buildImage, ()->Screen.getBuildView().createJar())
           .createItem("Save All Editors", IconManager.fileImage, ()->screen.saveAllEditors())
           .createItem("Preferences", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true))
           .createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage, 

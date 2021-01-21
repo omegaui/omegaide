@@ -72,7 +72,7 @@ public class PluginStore extends JFrame{
 			Bucket bucket = new Bucket(i.name, i.size, i.desc, (e)->{
 				int res = JOptionPane.showConfirmDialog(PluginStore.this, "Do you want to Download " + i.name + " plugin of size " + i.size + "?\n If the plugin is already downloaded it will be deleted!", "Plugin Store",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if(res == JOptionPane.OK_OPTION){
-					File file = new File("omega-ide-plugins/" + i.fileName);
+					File file = new File("omega-ide-plugins" + File.separator + i.fileName);
 					if(file.exists()) {
 						res = JOptionPane.showConfirmDialog(PluginStore.this, "This Plugin already exists. If you continue it we be deleted and reinstalled", "Plugin Store",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);;
 						if(res == JOptionPane.OK_OPTION){
@@ -96,12 +96,12 @@ public class PluginStore extends JFrame{
 	}
 
 	public File download(String name){
-		File file = new File("omega-ide-plugins/"+name); 
+		File file = new File("omega-ide-plugins" + File.separator + name); 
 		try{
 			ready = true;
 			file.delete();
 			String url = "https://raw.githubusercontent.com/omegaui/omegaide-plugins/main/"+name;
-			Process pull = new ProcessBuilder("wget", url, "--output-document=omega-ide-plugins/"+name).start();
+			Process pull = new ProcessBuilder("wget", url, "--output-document=omega-ide-plugins" + File.separator + name).start();
 			Scanner out = new Scanner(pull.getInputStream());
 			Scanner err = new Scanner(pull.getErrorStream());
 			downloader.setVisible(true);
@@ -122,8 +122,7 @@ public class PluginStore extends JFrame{
 		}
 		if(downloader.isErrorOccured()) ready = false;
 		if(!ready) return null;
-		if(name.contains("/")) name = name.substring(name.lastIndexOf('/') + 1).trim();
-		return new File("omega-ide-plugins/"+name);
+		return file;
 	}
 
 	@Override

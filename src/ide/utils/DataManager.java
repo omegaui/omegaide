@@ -6,16 +6,16 @@ import ide.Screen;
 import omega.database.DataBase;
 import omega.database.DataEntry;
 
-public class DataManager extends DataBase{
+public class DataManager extends DataBase {
 
-	private volatile static String defaultProjectPath = "No Default Project set yet.";
-	private volatile static String editorColoringScheme = "idea";
-	private volatile static boolean realTimeContentAssist = true;
-	private volatile static boolean useStarImports = false;
-	private volatile static String pathToJava = "";
+	private static String defaultProjectPath = "No Default Project set yet.";
+	private volatile static boolean realTimeContentAssist = false;
+	private static boolean useStarImports = false;
+	private static String pathToJava = "";
+     private static String projectsHome = "";
+     private static String theme = "light";
 	
-	public DataManager(Screen screen)
-	{
+	public DataManager(Screen screen) {
 		super(".preferences");
 		loadData();
 	}
@@ -27,21 +27,25 @@ public class DataManager extends DataBase{
 			if(e == null) return;
 			if(new File(e.getValue()).exists())
 				setDefaultProjectPath(e.getValue());
-			setEditorColoringScheme(getEntryAt("Editor Coloring Scheme", 0).getValue());
 			setContentAssistRealTime(getEntryAt("Content Assist Real-Time", 0).getValueAsBoolean());
 			setUseStarImports(getEntryAt("Use Star Imports", 0).getValueAsBoolean());
-			setPathToJava(getEntryAt("Folder Containing Java Development Kits and Environments", 0).getValue());
-		}catch(Exception e) {e.printStackTrace();}
+               setPathToJava(getEntryAt("Folder Containing Java Development Kits and Environments", 0).getValue());
+               setProjectsHome(getEntryAt("Projects Home", 0).getValue());
+               setTheme(getEntryAt("Theme", 0).getValue());
+		}catch(Exception e) { 
+		     System.err.println(e);
+	     }
 	}
 
 	public void saveData()
 	{
 		clear();
 		addEntry("Default Project", defaultProjectPath);
-		addEntry("Editor Coloring Scheme", editorColoringScheme);
 		addEntry("Content Assist Real-Time", isContentAssistRealTime()+"");
 		addEntry("Use Star Imports", isUsingStarImports()+"");
-		addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
+          addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
+          addEntry("Projects Home", getProjectsHome());
+          addEntry("Theme", getTheme());
 		save();
 	}
 	
@@ -76,12 +80,20 @@ public class DataManager extends DataBase{
 	public static boolean isUsingStarImports() {
 		return useStarImports;
 	}
-	
-	public static String getEditorColoringScheme() {
-		return editorColoringScheme;
-	}
 
-	public static void setEditorColoringScheme(String editorColoringScheme) {
-		DataManager.editorColoringScheme = editorColoringScheme;
-	}
+     public static void setProjectsHome(String home){
+          projectsHome = home;
+     }
+
+     public static String getProjectsHome(){
+     	return projectsHome;
+     }
+
+     public static void setTheme(String t){
+     	theme = t;
+     }
+
+     public static String getTheme(){
+     	return theme;
+     }
 }

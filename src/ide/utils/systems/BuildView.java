@@ -37,94 +37,12 @@ public class BuildView extends View {
 	public PrintArea printArea;
 	public static final String SRC_LIST = ".sources";
 
-	public BuildView(String title, Screen window) 
-	{
+	public BuildView(String title, Screen window) {
 		super(title, window);
 		printArea = new PrintArea("Build Process", window);
 		setLayout(new FlowLayout());
 		setSize(770, 120);
 		setLocationRelativeTo(null);
-	}
-
-	public void createJar() {
-		new Thread(()->{
-
-			try {
-				if(Screen.getFileView().getProjectPath() == null || !new File(Screen.getFileView().getProjectPath()).exists())
-					return;
-
-				printArea.setVisible(true);
-				getScreen().getOperationPanel().addTab("Create Jar", printArea, ()->{});
-				printArea.print("Please compile the project explicity before creating a jar file");
-				printArea.print("---------------------------------------------------");
-				String jarName = Screen.getFileView().getProjectPath()+"/out/"+Screen.getFileView().getProjectName()+".jar";
-				File jar = new File(jarName);
-				if(jar.exists())
-					jar.delete();
-				ZipOutputStream out = new ZipOutputStream(new FileOutputStream(jarName));
-				for(String path : Screen.getFileView().getDependencyManager().dependencies) {
-					printArea.print("Extracting Jar File : \""+path.substring(path.lastIndexOf('/'))+"\"");
-					extractJar(Screen.getFileView().getProjectPath()+"/bin", path);
-					printArea.clear();
-				}
-				BuildView.copyResources(printArea);
-				LinkedList<File> files = new LinkedList<>();
-				loadAllFiles(Screen.getFileView().getProjectPath()+"/bin", files);
-				for(File file : files) {
-					String name = file.getAbsolutePath();
-					name = name.substring(name.indexOf("/bin/") + "/bin/".length());
-					if(name.endsWith("/MANIFEST.MF")) continue;
-					ZipEntry zipEntry = new ZipEntry(name);
-					out.putNextEntry(zipEntry);
-					printArea.print("Adding Resource File : \"" + name + "\"");
-					try {
-						InputStream o = new FileInputStream(file.getAbsolutePath());
-						while(o.available() > 0)
-							out.write(o.read());
-						o.close();
-					}catch(Exception ex) {ex.printStackTrace();}
-				}
-				if(Screen.getRunView().mainClass != null && !Screen.getRunView().mainClass.equals("")) {
-					printArea.print("Creating MANIFEST.MF File in \"META-INF\"");
-					File file = new File(Screen.getFileView().getProjectPath()+"/bin/META-INF/");
-					if(!file.exists())
-						file.mkdir();
-					PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath()+"/bin/META-INF/MANIFEST.MF"));
-					writer.println("Manifest-Version: 1.0");
-					writer.println("Main-Class: "+Screen.getRunView().mainClass+"\n");
-					writer.close();
-					printArea.print("----------------------");
-					printArea.print("Manifest-Version: 1.0");
-					printArea.print("Main-Class: "+Screen.getRunView().mainClass);
-					printArea.print("----------------------");
-					//Creating Manifest
-					file = new File(Screen.getFileView().getProjectPath()+"/bin/META-INF/MANIFEST.MF");
-					String name = Screen.getFileView().getProjectPath()+"/bin/META-INF/MANIFEST.MF";
-					name = name.substring(name.indexOf("/bin/") + "/bin/".length());
-					ZipEntry zipEntry = new ZipEntry(name);
-					out.putNextEntry(zipEntry);
-					try {
-						InputStream o = new FileInputStream(file.getAbsolutePath());
-						while(o.available() > 0)
-							out.write(o.read());
-						o.close();
-					}catch(Exception ex) {ex.printStackTrace();}
-				}
-				else {
-					printArea.print("No Main-Class found");
-					printArea.print("Jar Manifest Information was not created");
-					printArea.print("Without any Main-Class, the jar created will not run.");
-					printArea.print("It can only be used as a library");
-					printArea.print("If you want the jar to behave as an application");
-					printArea.print("then, please mark or run a class as Main (Run as Main)");
-				}
-				out.close();
-				files.clear();
-				printArea.print("Jar File is created, it is in directory \"out\" of this Project");
-				Screen.getProjectView().reload();
-			}catch(Exception e) {e.printStackTrace();};
-
-		}).start();
 	}
 
 	public static LinkedList<File> loadAllFiles(String dir, LinkedList<File> files){
@@ -136,55 +54,6 @@ public class BuildView extends View {
 				files.add(f);
 		}
 		return files;
-	}
-
-	public void extractJar(String destinationDir, String jarPath)
-	{
-		try {
-
-			File file = new File(jarPath);
-			JarFile jar = new JarFile(file);
-			printArea.print("----------Extracting "+jar.getName()+"----------");
-			for(Enumeration<JarEntry> enums = jar.entries(); enums.hasMoreElements() ;) {
-				JarEntry entry = enums.nextElement();
-				String fileName = destinationDir + File.separator + entry.getName();
-				if(fileName.endsWith("/") && !fileName.contains("META_INF") && !new File(fileName).exists())
-				{
-					printArea.print("Creating package : "+entry.getName());
-					new File(fileName).mkdir();
-				}
-				else
-					printArea.print("Package already exists : \""+entry.getName()+"\"");
-			}
-
-			for(Enumeration<JarEntry> enums = jar.entries(); enums.hasMoreElements() ;)
-			{
-				JarEntry entry = enums.nextElement();
-				String fileName = destinationDir + File.separator + entry.getName();
-				if(!fileName.endsWith("/"))
-				{
-					if(!new File(fileName).exists()){
-						InputStream is = jar.getInputStream(entry);
-						FileOutputStream fos = new FileOutputStream(new File(fileName));
-						printArea.print("Creating resource : \""+entry.getName()+"\"");
-						while(is.available() > 0)
-						{
-							fos.write(is.read());
-						}
-						fos.close();
-						is.close();
-					}
-					else
-						printArea.print("Resource already exists : \""+entry.getName()+"\"");
-				}
-			}
-			jar.close();
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public void compileProject() {
@@ -211,13 +80,13 @@ public class BuildView extends View {
 				}
 				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 				if(jdkPath != null && new File(jdkPath).exists())
-					jdkPath = String.copyValueOf(jdkPath.toCharArray()) + "/bin/";
+					jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
 
 				String cmd = "";
 				String depenPath = "";
 				if(!Screen.getFileView().getDependencyManager().dependencies.isEmpty()) {
 					for(String d : Screen.getFileView().getDependencyManager().dependencies) {
-						depenPath += d + ":";
+						depenPath += d + ide.Screen.PATH_SEPARATOR;
 					}
 					if(!depenPath.equals("")) {
 						depenPath = depenPath.substring(0, depenPath.length() - 1);
@@ -319,7 +188,7 @@ public class BuildView extends View {
 	}
 	
 	public static void optimizeProjectOutputs(){
-		File outputDir = new File(Screen.getFileView().getProjectPath() + "/bin");
+		File outputDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
 		LinkedList<File> files = new LinkedList<>();
 		loadClassFiles(outputDir, files);
 		if(files.isEmpty()) return;
@@ -409,84 +278,12 @@ public class BuildView extends View {
 		}
 	}
 
-	public static int copyResources(ide.utils.systems.RunView.PrintArea printArea) {
-		int value = -1;
-		if(ResourceManager.roots.isEmpty()) return value;
-		for(String root : ResourceManager.roots) {
-			File f = new File(root);
-			if(f.exists()) {
-				File[] files = f.listFiles();
-				LinkedList<File> folders = new LinkedList<>();
-				LinkedList<File> fs = new LinkedList<>();
-				getAllFolders(files, folders);
-				getAllFiles(files, fs);
-				folders.forEach(file->{
-					String path = file.getAbsolutePath();
-					String name = file.getName();
-					String pointName = path.substring(path.indexOf(root) + root.length());
-					pointName = Screen.getFileView().getProjectPath() + "/bin" + pointName;
-					printArea.printText("Creating " + name + " As in \""+file.getAbsolutePath()+"\"");
-					RefractionManager.copy(file, new File(pointName));
-				});
-				fs.forEach(file->{
-					String path = file.getAbsolutePath();
-					String name = file.getName();
-					String pointName = path.substring(path.indexOf(root) + root.length());
-					pointName = Screen.getFileView().getProjectPath() + "/bin" + pointName;
-					printArea.printText("Copying " + name + " from \""+file.getAbsolutePath()+"\"");
-					RefractionManager.copy(file, new File(pointName));
-				});
-			}
-			else {
-				value = 0;
-				printArea.printText("Resource-Root-Does-Not-Exists : "+f.getName());
-			}
-		}
-		return value;
-	}
-
-	public static int copyResources(ide.utils.systems.BuildView.PrintArea printArea) {
-		int value = -1;
-		if(ResourceManager.roots.isEmpty()) return value;
-		for(String root : ResourceManager.roots) {
-			File f = new File(root);
-			if(f.exists()) {
-				File[] files = f.listFiles();
-				LinkedList<File> folders = new LinkedList<>();
-				LinkedList<File> fs = new LinkedList<>();
-				getAllFolders(files, folders);
-				getAllFiles(files, fs);
-				folders.forEach(file->{
-					String path = file.getAbsolutePath();
-					String name = file.getName();
-					String pointName = path.substring(path.indexOf(root) + root.length());
-					pointName = Screen.getFileView().getProjectPath() + "/bin" + pointName;
-					printArea.print("Creating " + name + " As in \""+file.getAbsolutePath()+"\"");
-					RefractionManager.copy(file, new File(pointName));
-				});
-				fs.forEach(file->{
-					String path = file.getAbsolutePath();
-					String name = file.getName();
-					String pointName = path.substring(path.indexOf(root) + root.length());
-					pointName = Screen.getFileView().getProjectPath() + "/bin" + pointName;
-					printArea.print("Copying " + name + " from \""+file.getAbsolutePath()+"\"");
-					RefractionManager.copy(file, new File(pointName));
-				});
-			}
-			else {
-				value = 0;
-				printArea.print("Resource-Root-Does-Not-Exists : "+f.getName());
-			}
-		}
-		return value;
-	}
-
 	public void createClassList()
 	{
 		classess.clear();
 		try {
 			LinkedList<String> dirs = new LinkedList<>();
-			loadData(dirs, new File(Screen.getFileView().getProjectPath()+"/src").listFiles());
+			loadData(dirs, new File(Screen.getFileView().getProjectPath() + File.separator + "src").listFiles());
 
 			while(!dirs.isEmpty())
 			{
@@ -518,16 +315,16 @@ public class BuildView extends View {
 			LinkedList<String> paths = new LinkedList<>();
 			classess.forEach((c)->{
 				String res = "";
-				StringTokenizer tokenizer = new StringTokenizer(c, "/");
+				StringTokenizer tokenizer = new StringTokenizer(c, File.separator);
 				while(tokenizer.hasMoreTokens()) {
-					res+=tokenizer.nextToken()+"/";
+					res += tokenizer.nextToken() + File.separator;
 				}
 				res = res.substring(0, res.length() - 1);
-				res = "\"/"+res+"\"";
+				res = "\"" + File.separator + res + "\"";
 				paths.add(res);
 			});
 			//Creating SourcePath
-			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath()+"/"+SRC_LIST));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator +SRC_LIST));
 			paths.forEach(path->writer.println(path));
 			writer.close();
 		}catch(Exception e) {e.printStackTrace();}

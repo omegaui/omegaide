@@ -25,7 +25,7 @@ public class NativesManager {
 	
 	public void loadFile() {
 		natives.clear();
-		String path = Screen.getFileView().getProjectPath() + "/" + NATIVES_PATH;
+		String path = Screen.getFileView().getProjectPath() + File.separator + NATIVES_PATH;
 		File file  = new File(path);
 		if(!file.exists()) return;
 		try {
@@ -44,7 +44,7 @@ public class NativesManager {
 	
 	public void saveFile() {
 		try {
-			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + "/" + NATIVES_PATH));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator + NATIVES_PATH));
 			natives.forEach((d)->{
 				d = "\""+d+"\"";
 				writer.println(d);

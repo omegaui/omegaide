@@ -73,7 +73,8 @@ public class Updater extends JDialog {
 		downBtn.setFont(font);
           downBtn.setPreferredSize(new Dimension(200, 40));
 		downBtn.setVisible(false);
-		add(downBtn, BorderLayout.SOUTH);
+          if(File.separator.equals("/"))
+               add(downBtn, BorderLayout.SOUTH);
 	}
 
 	public File download(String name){
@@ -124,6 +125,8 @@ public class Updater extends JDialog {
 				print("\t" + reader.nextLine());
 			reader.close();
 			downBtn.setVisible(true);
+               if(!File.separator.equals("/"))
+                    print("goto https://github.com/omegaui/omegaide to download the latest version!!");
 		}
 		catch(Exception e){ print(e.toString()); }
 	}

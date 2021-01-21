@@ -1,23 +1,17 @@
 package importUI;
-
-import java.awt.BorderLayout;
-import java.awt.Choice;
+import ide.utils.UIManager;
+import ide.Screen;
+import ide.utils.systems.View;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
+import importIO.ImportManager;
+import ide.utils.Editor;
+import java.awt.BorderLayout;
 import javax.swing.JTextField;
-
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import java.awt.Choice;
 
-import ide.Screen;
-import ide.utils.Editor;
-import ide.utils.UIManager;
-import ide.utils.systems.View;
-import importIO.ImportManager;
-
-public class ImportSelector extends View implements KeyListener{
+public class ImportSelector extends View {
 
 	private Choice choice;
 	private static final String INSTRUCT = "Select An Import";
@@ -54,7 +48,6 @@ public class ImportSelector extends View implements KeyListener{
 		scrollPane.setWheelScrollingEnabled(true);
 
 		textField = new JTextField();
-		textField.addKeyListener(this);
 		textField.addActionListener((e)->showImportsFor(textField.getText()));
 		UIManager.setData(textField);
 		add(textField, BorderLayout.NORTH);
@@ -110,19 +103,7 @@ public class ImportSelector extends View implements KeyListener{
 			choice.addItem(text);
 		}
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e){}
-
-	@Override
-	public void keyPressed(KeyEvent e){}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-
-	}
-
+    
 	@Override
 	public void paint(Graphics g)
 	{

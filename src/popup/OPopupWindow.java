@@ -1,21 +1,9 @@
 package popup;
+import java.awt.image.*;
 import java.awt.*;
-import java.awt.Dimension;
-import javax.swing.JScrollPane;
-import ide.utils.UIManager;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.image.BufferedImage;
-import java.awt.event.MouseAdapter;
-import java.util.LinkedList;
-import javax.swing.JComponent;
-import javax.swing.JWindow;
-import javax.swing.JFrame;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 public class OPopupWindow extends JWindow{
      private int y;
      private String name;
@@ -38,6 +26,7 @@ public class OPopupWindow extends JWindow{
           setLayout(scrollable ? new BorderLayout() : null);
           setBackground(ide.utils.UIManager.c2);
           setForeground(ide.utils.UIManager.c3);
+          setType(JWindow.Type.POPUP);
           if(scrollable) {
                panel = new JPanel(null);
                panel.setBackground(ide.utils.UIManager.c2);

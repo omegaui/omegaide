@@ -54,8 +54,4 @@ public class PlugInfoWriter {
           }catch(Exception e){ System.err.println(e); }
           return infos;
      }
-
-     public static void main(String[] args){
-     	write("/home/arham/omega-ide-plugins");
-     }
 }

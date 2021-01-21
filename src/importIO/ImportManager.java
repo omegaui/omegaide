@@ -29,7 +29,7 @@ public class ImportManager{
 
 	private void init()
 	{
-		File libRoot = new File(projectPath + "/lib");
+		File libRoot = new File(projectPath + File.separator + "lib");
 		readingThread = new Thread(()->{
 			if(reading) return;
 			reading = true;
@@ -103,13 +103,13 @@ public class ImportManager{
 		for(Import im : sources)
 			imports.remove(im);
 		sources.clear();
-		File srcRoot = new File(file.getAbsolutePath() + "/src");
+		File srcRoot = new File(file.getAbsolutePath() + File.separator + "src");
 		String[] filePaths = srcRoot.list();
 		if(filePaths.length == 0)
 			return;
 		LinkedList<String> paths = new LinkedList<>();
 		for(String path : filePaths) {
-			paths.add(srcRoot.getAbsolutePath()+"/"+path);
+			paths.add(srcRoot.getAbsolutePath() + File.separator + path);
 		}
 
 		//File Path Listing
@@ -202,7 +202,7 @@ public class ImportManager{
 			{
 				for(String path0 : file.list())
 				{
-					paths0.add(file.getAbsolutePath() + "/" + path0);
+					paths0.add(file.getAbsolutePath() + File.separator + path0);
 				}
 			}
 			else
@@ -214,7 +214,7 @@ public class ImportManager{
 	private static String getPackagePathOfSource(File file)
 	{
 		String res = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separator));
-		StringTokenizer tokenizer = new StringTokenizer(res, "/");
+		StringTokenizer tokenizer = new StringTokenizer(res, File.separator);
 		res = "";
 		boolean canRecord = false;
 		while(tokenizer.hasMoreTokens())
@@ -250,8 +250,7 @@ public class ImportManager{
 		return im;
 	}
 
-	private String replaceInnerSource(String srcName)
-	{
+	private String replaceInnerSource(String srcName) {
 		String res = "";
 		boolean canRecord = true;
 		for(int i = 0; i < srcName.length() - 1; i++)
@@ -270,8 +269,7 @@ public class ImportManager{
 		return res;
 	}
 
-	public static synchronized LinkedList<Import> getAllImports()
-	{
+	public static synchronized LinkedList<Import> getAllImports() {
 		return imports;
 	}
 

@@ -18,6 +18,8 @@ public class Comp extends JComponent{
 	public Runnable runnable_temp;
 	public TextComp leftComp;
 	public TextComp rightComp;
+     public int arcX = 40;
+     public int arcY = 40;
 	public Comp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.text = text;
 		this.originalText = text;
@@ -71,6 +73,12 @@ public class Comp extends JComponent{
 		this.toggleON = toggle;
 		setText(this.toggleON ? activeText : inactiveText);
 	}
+
+     public void setArc(int x, int y){
+     	this.arcX = x;
+          this.arcY = y;
+          repaint();
+     }
 
 	public void createToggle(boolean toggleON, String activeText, String inactiveText, ToggleListener tL){
 		this.toggleON = toggleON;
@@ -126,22 +134,22 @@ public class Comp extends JComponent{
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(color1);
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
+		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		g.setColor(Color.WHITE);
-		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, 40, 40);
+		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, arcX, arcY);
 		g.setColor(color2);
-		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, 40, 40);
+		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, arcX, arcY);
 		g.setColor(color3);
 		g.setFont(getFont());
 		int textLength = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, getWidth()/2 - textLength/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent());
 		if(enter){
 			g.setColor(color3);
-			g.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
+			g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 			g.setColor(Color.WHITE);
-			g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, 40, 40);
+			g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, arcX, arcY);
 			g.setColor(color2);
-			g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, 40, 40);
+			g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, arcX, arcY);
 			g.setColor(color3);
 			g.drawString(text, getWidth()/2 - textLength/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent());
 		}
@@ -153,11 +161,11 @@ public class Comp extends JComponent{
 
 	public void paintPress(Graphics2D g, int textLength){
 		g.setColor(color1);
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
+		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		g.setColor(Color.WHITE);
-		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, 40, 40);
+		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, arcX, arcY);
 		g.setColor(color2);
-		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, 40, 40);
+		g.fillRoundRect(6, 6, getWidth() - 11, getHeight() - 11, arcX, arcY);
 		g.setColor(color3);
 		g.drawString(text, getWidth()/2 - textLength/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent());
 	}

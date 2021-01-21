@@ -1,4 +1,5 @@
 package tabPane;
+import java.awt.Desktop;
 import popup.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -65,10 +66,9 @@ public class PopupManager {
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
           .createItem("Create Custom File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().show("Custom File"))
           .createItem("Delete", IconManager.closeImage, ()->{
-              Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
-               if(editor != null) {
+               Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
+               if(editor != null) 
                     ide.Screen.getScreen().getTabPanel().remove(editor);
-               }
                Editor.deleteFile(file);
                Screen.getProjectView().reload();
                ImportManager.readSource(EditorTools.importManager);
@@ -84,7 +84,7 @@ public class PopupManager {
                ImportManager.readSource(EditorTools.importManager);
           });
 		
-          popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+file.getAbsolutePath()+"\""), null));
+          popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"" + file.getAbsolutePath() + "\""), null));
           popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));
 	}
 }

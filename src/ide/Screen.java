@@ -1,4 +1,5 @@
 package ide;
+import ide.utils.ProjectsHomeSelector;
 import terminal.TerminalComp;
 import java.awt.Desktop;
 import Omega.IDE;
@@ -49,17 +50,18 @@ public class Screen extends JFrame {
      public JSplitPane compilancePane;
      public static Launcher launcher;
      public static SnippetView snippetView; 
-     public static final String VERSION = "v1.4";
+     public static final String VERSION = "v1.5";
+     public static String PATH_SEPARATOR = ":";
      public volatile boolean active = true;
      public volatile boolean screenHasProjectView = true;
-    
-     private Robot robot;
+
      private SplashScreen splash;
 	private OperationPane operationPane;
 	private TabPanel tabPanel;
 	private ToolMenu toolMenu;
-	private UIManager uiManager;
-	private DataManager dataManager;
+     private static Robot robot;
+	private static UIManager uiManager;
+	private static DataManager dataManager;
      private static RunView runView;
      private static FileView fileView;
      private static BuildView buildView;
@@ -76,29 +78,35 @@ public class Screen extends JFrame {
      private static TerminalComp terminal;
 
 	public Screen() {
-		String l$F = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-		if(System.getProperty("os.name").contains("indows"))
-			l$F = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 		try {
-			javax.swing.UIManager.setLookAndFeel(l$F);
+               Startup.writeUIFiles();
+               if(!File.separator.equals("/"))
+                    PATH_SEPARATOR = ";";
+               dataManager = new DataManager(this);
+               if(UIManager.isDarkMode())
+                    com.formdev.flatlaf.FlatDarkLaf.install();
+               else
+                    com.formdev.flatlaf.FlatLightLaf.install();
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
 		} catch (Exception e1) {
 			System.out.println(e1);
 		}
-          Startup.checkStartup(this);
-		UIManager.loadHighlight();
-		uiManager = new UIManager(this);
+          UIManager.loadHighlight();
+          uiManager = new UIManager(this);
 		UIManager.setData(this);
+          Startup.checkStartup(this);
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
 		splash.setProgress(37, "welcome");
+          gset.Generator.init(this);
 
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
-		setTitle("Omega Integrated Development Environment "+VERSION);
+		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
+          setMinimumSize(getSize());
 		setLocationRelativeTo(null);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -122,7 +130,7 @@ public class Screen extends JFrame {
 		});
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		splash.setProgress(60, "initializing");
-		init();
+          init();
 	}
 
 	private void init() {
@@ -164,11 +172,6 @@ public class Screen extends JFrame {
 		buildView = new BuildView("Build", this);
 		runView = new RunView("Run", this, true);
 		projectView = new ProjectView("Project", this);
-		dataManager = new DataManager(this);
-		if(UIManager.isDarkMode())
-			DataManager.setEditorColoringScheme("dark");
-		else DataManager.setEditorColoringScheme("idea");
-
 
 		tools = new EditorTools();
 
@@ -183,6 +186,10 @@ public class Screen extends JFrame {
 
 		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
+       
+          if(DataManager.getProjectsHome().equals("") || !new File(DataManager.getProjectsHome()).exists())
+               new ProjectsHomeSelector(this).setVisible(true);
+          
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
 		}
@@ -217,6 +224,10 @@ public class Screen extends JFrame {
 		}
 		super.setVisible(value);
 	}
+
+     public void justVisible(boolean value){
+     	super.setVisible(value);
+     }
 
 	public void revoke() {
 		boolean wasExtended = false;
@@ -296,6 +307,11 @@ public class Screen extends JFrame {
 	}
 
 	public Editor loadFile(File file) {
+          String fn = file.getName();
+          if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
+               openInDesktop(file);
+               return null;
+          }
 		if(tabPanel.viewImage(file)) return null;
 		if(tabPanel.viewArchive(file)) return null;
 		if(isFileOpened(file))
@@ -311,6 +327,11 @@ public class Screen extends JFrame {
 		RecentsManager.add(path);
 		recentsManager.saveData();
 	}
+
+     public static void launchNewWindow(String projectPath){
+     	Omega.IDE.main(null);
+          
+     }
 
 	public void loadProject(File file)
 	{
@@ -336,7 +357,7 @@ public class Screen extends JFrame {
 	{
 		String res = "";
 		boolean canRecord = false;
-		StringTokenizer tokenizer = new StringTokenizer(file.getAbsolutePath(), "/");
+		StringTokenizer tokenizer = new StringTokenizer(file.getAbsolutePath(), File.separator);
 		while(tokenizer.hasMoreTokens())
 		{
 			String token = tokenizer.nextToken();
