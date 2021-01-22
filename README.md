@@ -1,5 +1,5 @@
 # **Omega IDE**
-![](/images/main_window.png)
+![](/images/light.png)
 
 Omega IDE is a blazing fast cross-platform java IDE written from scratch.
 
