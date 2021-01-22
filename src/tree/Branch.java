@@ -1,4 +1,20 @@
 package tree;
+/*
+    Copyright (C) 2021 Omega UI. All Rights Reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 import popup.*;
 
 import java.util.Locale;
@@ -20,27 +36,27 @@ public class Branch extends JComponent{
 	private String name;
 	private String type = "?";
 	private OPopupWindow popupMenu;
-	private volatile boolean enter;
+	public volatile boolean enter;
 	private boolean expand;
 	private Locale l;
 	private static final Font FONT = new Font("Ubuntu Mono", Font.BOLD, 18);
 	private static final Font FONT_BOLD = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 20;
-     public static final Color SOURCE_COLOR = new Color(250, 50, 50);
+     public static final Color SOURCE_COLOR = new Color(250, 50, 50, 160);
 	public static final Color ANY_COLOR = ide.utils.UIManager.c3;
-	public static final Color BYTE_COLOR = new Color(150, 150, 50);
-	public static final Color IMAGE_COLOR = new Color(50, 150, 50);
-	public static final Color LINUX_COLOR = new Color(250, 50, 50);
+	public static final Color BYTE_COLOR = new Color(150, 150, 50, 160);
+	public static final Color IMAGE_COLOR = new Color(50, 150, 50, 160);
+	public static final Color LINUX_COLOR = new Color(250, 50, 50, 160);
 	public static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
-	public static final Color WEB_COLOR = Color.ORANGE;
-	public static final Color XML_COLOR = Color.PINK;
-	public static final Color ARCHIVE_COLOR = Color.DARK_GRAY;
+	public static final Color WEB_COLOR = new Color(255, 200, 0, 160);
+	public static final Color XML_COLOR = new Color(255, 175, 175, 160);
+	public static final Color ARCHIVE_COLOR = new Color(64, 64, 64, 160);
   
 	public interface Locale {
 		void locate(Branch b);
 	}
-    
+     
 	public Branch(File file, Locale l){
 		this.file = file;
 		this.l = l;
@@ -134,7 +150,7 @@ public class Branch extends JComponent{
 	public void force() {
 		l.locate(this);
 	}
-	
+     
 	public void set(boolean v){
 		this.enter = v;
 		if(!expand){

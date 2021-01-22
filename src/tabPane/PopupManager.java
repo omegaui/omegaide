@@ -1,14 +1,28 @@
 package tabPane;
+/*
+    Copyright (C) 2021 Omega UI. All Rights Reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 import java.awt.Desktop;
 import popup.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
-import java.nio.file.Path;
 
 import java.io.File;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import ide.Screen;
 import ide.utils.Editor;
@@ -66,10 +80,21 @@ public class PopupManager {
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
           .createItem("Create Custom File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().show("Custom File"))
           .createItem("Delete", IconManager.closeImage, ()->{
-               Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
-               if(editor != null) 
-                    ide.Screen.getScreen().getTabPanel().remove(editor);
-               Editor.deleteFile(file);
+               if(!file.isDirectory()){
+                    Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
+                    if(editor != null)
+                         ide.Screen.getScreen().getTabPanel().remove(editor);
+               }
+               if(file.isDirectory()){
+                    try{
+                         int res0 = JOptionPane.showConfirmDialog(Screen.getScreen(), "Do you want to delete Directory " + file.getName() + "?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
+                         if(res0 != JOptionPane.YES_OPTION)
+                              return;
+                         Editor.deleteDir(file);
+                    }catch(Exception e){ System.err.println(e); }
+               }
+               else
+                    Editor.deleteFile(file);
                Screen.getProjectView().reload();
                ImportManager.readSource(EditorTools.importManager);
           })

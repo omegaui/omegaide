@@ -1,4 +1,20 @@
 package ide.utils.systems;
+/*
+    Copyright (C) 2021 Omega UI. All Rights Reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 import launcher.Launcher;
 import javax.swing.JOptionPane;
 
@@ -89,13 +105,6 @@ public class FileView extends View {
 			if(projectPath.equals(path))
 				return;
 		}
-          if(projectPath != null){
-               int res = JOptionPane.showConfirmDialog(getScreen(), "Open the project in a new window?", "Opening Project", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);;
-     		if(res == JOptionPane.YES_OPTION){
-                    Screen.launchNewWindow(path);
-                    return;
-     		}
-          }
 		new Thread(()->Screen.addAndSaveRecents(path)).start();
 		projectPath = path;
 		if(Screen.launcher != null)

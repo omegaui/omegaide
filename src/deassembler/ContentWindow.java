@@ -1,5 +1,21 @@
 package deassembler;
+/*
+    The Content Asisst Window.
+    Copyright (C) 2021 Omega UI. All Rights Reserved.
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,7 +31,6 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import contentUI.ContentManager;
 import ide.Screen;
 import ide.utils.Editor;
 import ide.utils.UIManager;
@@ -104,34 +119,6 @@ public class ContentWindow extends JPanel implements KeyListener{
 			i = 0;
 
 			final String LCode = CodeFramework.getLastCodeIgnoreDot(Screen.getScreen().getCurrentEditor().getText(), Screen.getScreen().getCurrentEditor().getCaretPosition());
-			ContentManager.userCodes.forEach((code)->{
-				if(LCode != null && !code.startsWith(LCode)) {}
-				else if(LCode == null){
-					String type = ContentManager.codeTypes.get(i++);
-					DataMember d = new DataMember("custom hint", "", type, code, code.contains("(") ? "" : null);
-					Hint hint = new Hint(d, (dx)->{
-						String lCode = CodeFramework.getLastCodeIgnoreDot(Screen.getScreen().getCurrentEditor().getText(), Screen.getScreen().getCurrentEditor().getCaretPosition());
-						if(lCode == null) {
-							e.insert(d.name, e.getCaretPosition());
-						}
-						else {
-							String part = d.name;
-							try {
-								part = part.substring(lCode.length());
-								e.insert(part, e.getCaretPosition());
-								if(d.parameterCount > 0) e.setCaretPosition(e.getCaretPosition() - 1);
-							}catch(Exception es) {}
-						}
-
-					}, d.getRepresentableValue());
-					hint.setBounds(0, block, getWidth(), Hint.OPTIMAL_HEIGHT);
-					if(isDarkMode) ide.utils.UIManager.setData(hint);
-					hint.setFont(font);
-					panel.add(hint);
-					hints.add(hint);
-					block += Hint.OPTIMAL_HEIGHT;
-				}
-			});
 			Screen.getScreen().getGraphics().setFont(xf);
 			hints.get(0).focussed(true);
 			panel.setPreferredSize(new Dimension(max, block));

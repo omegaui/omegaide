@@ -1,4 +1,28 @@
 package tree;
+/*
+    Copyright (C) 2021 Omega UI. All Rights Reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import ide.Screen;
+import ide.utils.UIManager;
+import ide.utils.systems.creators.*;
+import java.awt.event.MouseAdapter;
+import java.awt.image.BufferedImage;
+import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +33,8 @@ import java.util.LinkedList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import ide.utils.systems.creators.*;
 public class FileTree extends JComponent{
 	private File root;
 	private LinkedList<Branch> branches = new LinkedList<>();
@@ -16,11 +42,20 @@ public class FileTree extends JComponent{
 	private JPanel panel;
 	private int layoutX = -Branch.OPTIMAL_HEIGHT;
 	private int layoutY = 0;
-	private JScrollPane scrollPane;
+	public JScrollPane scrollPane;
 	private int maxW = 300;
 	private int max = 0;
 	private int pointer;
-	//101820
+     private Branch pressedBranch;
+     private BufferedImage image;
+     private int mouseX;
+     private int mouseY;
+     private int mousePX;
+     private int mousePY;
+     private volatile boolean dragging;
+     private volatile boolean loopRunning;
+     public ChoiceDialog choiceDialog;
+
 	public FileTree(String root){
 		super();
 		setPreferredSize(new Dimension(300, 400));
@@ -28,11 +63,55 @@ public class FileTree extends JComponent{
 			this.pointer = 0;
 			this.root = new File(root);
 			setLayout(new BorderLayout());
-			scrollPane = new JScrollPane(panel = new JPanel(null));
+               panel = new JPanel(null);
+			scrollPane = new JScrollPane(panel);
                panel.setBackground(ide.utils.UIManager.c2);
 			add(scrollPane, BorderLayout.CENTER);
+               choiceDialog = new ChoiceDialog(Screen.getScreen());
 		}
 	}
+
+     public void paintComp(int x, int y){
+          if(dragging)
+               getGraphics().drawImage(image, x, y, null);
+     }
+
+     @Override
+     public void paint(Graphics graphics){
+          paintComp(mouseX, mouseY);
+     	super.paint(graphics);
+     }
+
+     public void startPaintLoop(){
+          if(loopRunning) return;
+          loopRunning = true;
+          new Thread(()->{
+               while(loopRunning)
+                    repaint();
+          }).start();
+     }
+     
+     public void stopPaintLoop(){
+          loopRunning = false;
+          Branch selection = null;
+          for(Branch b : branches){
+               if(b.enter){
+                    selection = b;
+                    break;
+               }
+          }
+          if(selection == null) return;
+          if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
+          
+          //Doing move or copy operation
+          int res = choiceDialog.show("Move", "Copy");
+          if(res == ChoiceDialog.CANCEL)
+               return;
+          if(res == ChoiceDialog.CHOICE_1)
+               RefractionManager.move(pressedBranch.file, selection.file);
+          else 
+               RefractionManager.copy(pressedBranch.file, selection.file);
+     }
 
 	public void gen(File file){
 		if(expandedRoots.contains(file)) return;
@@ -52,9 +131,34 @@ public class FileTree extends JComponent{
 						dissloveBranch(f);
 					}
 				}
-				else ide.Screen.getScreen().loadFile(branch.file);
+				else 
+			          ide.Screen.getScreen().loadFile(branch.file);
 			});
 			b.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
+               b.addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mousePressed(MouseEvent e){
+                         pressedBranch = b;
+                         image = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                         b.paint(image.getGraphics());
+                         mousePX = e.getX();
+                         mousePY = e.getY();
+                    }
+                    @Override
+                    public void mouseReleased(MouseEvent e){
+                         dragging = false;
+                         stopPaintLoop();
+                    }
+               });
+               b.addMouseMotionListener(new MouseAdapter(){
+                    @Override
+                    public void mouseDragged(MouseEvent e){
+                         dragging = true;
+                         mouseX = e.getX() + b.getX() - mousePX;
+                         mouseY = e.getY() + b.getY() - mousePY - scrollPane.getVerticalScrollBar().getValue();
+                         startPaintLoop();
+                    }
+               });
 			panel.add(b);
 			branches.add(b);
 			layoutY += Branch.OPTIMAL_HEIGHT;
@@ -85,6 +189,30 @@ public class FileTree extends JComponent{
 				else ide.Screen.getScreen().loadFile(branch.file);
 			});
 			b.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
+               b.addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mousePressed(MouseEvent e){
+                         pressedBranch = b;
+                         image = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                         b.paint(image.getGraphics());
+                         mousePX = e.getX();
+                         mousePY = e.getY();
+                    }
+                    @Override
+                    public void mouseReleased(MouseEvent e){
+                         dragging = false;
+                         stopPaintLoop();
+                    }
+               });
+               b.addMouseMotionListener(new MouseAdapter(){
+                    @Override
+                    public void mouseDragged(MouseEvent e){
+                         dragging = true;
+                         mouseX = e.getX() + b.getX() - mousePX;
+                         mouseY = e.getY() + b.getY() - mousePY - scrollPane.getVerticalScrollBar().getValue();
+                         startPaintLoop();
+                    }
+               });
 			panel.add(b);
 			branches.add(b);
 			branchesX.add(b);
@@ -265,7 +393,7 @@ public class FileTree extends JComponent{
 			expandedRoots.forEach(fileTree::genBranch);
 			fileTree.relocate();
 		}catch(Exception e) {}
-		scrollPane.getVerticalScrollBar().setValue(value);
+		fileTree.scrollPane.getVerticalScrollBar().setValue(value);
 		return fileTree;
 	}
 	
