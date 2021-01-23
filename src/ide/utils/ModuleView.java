@@ -54,6 +54,7 @@ public class ModuleView extends JDialog{
 
 			TextComp title = new TextComp("Module Manager -Manage Project Modules", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 			title.setBounds(40, 0, 440, 40);
+               title.setArc(0, 0);
 			UIManager.setData(title);
 			title.setFont(font);
 			title.setClickable(false);
@@ -69,12 +70,14 @@ public class ModuleView extends JDialog{
 			addBtn.setBounds(480, 0, 40, 40);
 			UIManager.setData(addBtn);
 			addBtn.setFont(font);
+               addBtn.setArc(0, 0);
 			add(addBtn);
 
 			TextComp rmBtn = new TextComp("-", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->removePath(textArea.getCaretLineNumber()));
 			rmBtn.setBounds(520, 0, 40, 40);
 			UIManager.setData(rmBtn);
 			rmBtn.setFont(font);
+               rmBtn.setArc(0, 0);
 			add(rmBtn);
 
 
@@ -117,6 +120,7 @@ public class ModuleView extends JDialog{
 			howBtn.setBounds(560, 0, 40, 40);
 			UIManager.setData(howBtn);
 			howBtn.setFont(font);
+               howBtn.setArc(0, 0);
 			howBtn.addMouseListener(new MouseAdapter(){
 				@Override
 				public void mouseEntered(MouseEvent e){

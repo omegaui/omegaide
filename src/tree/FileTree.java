@@ -146,8 +146,10 @@ public class FileTree extends JComponent{
                     }
                     @Override
                     public void mouseReleased(MouseEvent e){
-                         dragging = false;
-                         stopPaintLoop();
+                         if(dragging){
+                              dragging = false;
+                              stopPaintLoop();
+                         }
                     }
                });
                b.addMouseMotionListener(new MouseAdapter(){
@@ -200,8 +202,10 @@ public class FileTree extends JComponent{
                     }
                     @Override
                     public void mouseReleased(MouseEvent e){
-                         dragging = false;
-                         stopPaintLoop();
+                         if(dragging){
+                              dragging = false;
+                              stopPaintLoop();
+                         }
                     }
                });
                b.addMouseMotionListener(new MouseAdapter(){

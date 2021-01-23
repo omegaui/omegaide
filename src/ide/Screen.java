@@ -96,7 +96,7 @@ public class Screen extends JFrame {
 	public Screen() {
 		try {
                Startup.writeUIFiles();
-               if(!File.separator.equals("\\"))
+               if(!File.separator.equals("/"))
                     PATH_SEPARATOR = ";";
                dataManager = new DataManager(this);
                if(UIManager.isDarkMode())
@@ -117,7 +117,7 @@ public class Screen extends JFrame {
 		splash.setProgress(10, "welcome");
 		splash.setProgress(37, "welcome");
           gset.Generator.init(this);
-
+          
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());

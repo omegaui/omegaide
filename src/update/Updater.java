@@ -69,9 +69,9 @@ public class Updater extends JDialog {
                     terminalArea.setText("");
                     downBtn.setVisible(false);
                     label.setText("Downloading Update");
-                    String fileName = "out/omega-ide_" + version + "_all.deb";
+                    String fileName = "out/omega-ide_" + version.substring(1) + "_all.deb";
                     if(File.separator.equals("\\"))
-                         fileName = "out/Omega IDE v" + version + ".jar";
+                         fileName = "out/Omega IDE " + version + ".jar";
                     File debFile = download(fileName);
                     if(debFile == null){
                          label.setText("Problem Receiving installation File from server's end");
@@ -87,6 +87,7 @@ public class Updater extends JDialog {
                          System.out.println(debFile);
                          java.awt.Desktop.getDesktop().open(debFile);
                     }catch(Exception ex){ print(ex.toString()); }
+                    label.setText("Installing....Done!!");
                }).start();
 	     });
 		downBtn.setFont(font);
@@ -114,7 +115,8 @@ public class Updater extends JDialog {
 			out.close();
 		}catch(Exception e){ System.err.println(e); }
 		if(name.contains("/")) name = name.substring(name.lastIndexOf('/') + 1).trim();
-		return new File(name);
+          File file = new File(name);
+		return  file.exists() ? file : null;
 	}
 
 	public void check(){
@@ -137,7 +139,7 @@ public class Updater extends JDialog {
 				return;
 			}
 			print("Update Available\n");
-			print("Omega IDE v" + version);
+			print("Omega IDE " + version);
 			print("Download Size : " + reader.nextLine() + "\n");
 			print("Whats New!");
 			while(reader.hasNextLine())

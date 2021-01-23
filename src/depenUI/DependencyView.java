@@ -16,13 +16,11 @@ package depenUI;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-import java.awt.BorderLayout;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
+import ide.*;
+import java.awt.*;
+import javax.swing.*;
 
-import ide.Screen;
 public class DependencyView extends JDialog{
 	private JTabbedPane tabPane;
 	private DependencyPanel lib;
@@ -36,7 +34,7 @@ public class DependencyView extends JDialog{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		init();
-		ide.utils.UIManager.setData(this);
+          ide.utils.UIManager.setData(this);
 	}
 
 	private void init(){
@@ -45,8 +43,8 @@ public class DependencyView extends JDialog{
 		tabPane.addTab("Libraries", lib = new DependencyPanel("library"));
 		tabPane.addTab("Natives", nat = new DependencyPanel("natives"));
 		tabPane.addTab("Resources", res = new DependencyPanel("resources"));
+          tabPane.setBackground(ide.utils.UIManager.c2);
 		add(tabPane, BorderLayout.CENTER);
-		ide.utils.UIManager.setData(tabPane);
 	}
 
 	@Override
