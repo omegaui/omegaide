@@ -15,7 +15,11 @@ package ide;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-import ide.utils.ProjectsHomeSelector;
+import gset.Generator;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import ide.utils.systems.creators.ChoiceDialog;
+import ide.utils.WorkspaceSelector;
 import terminal.TerminalComp;
 import java.awt.Desktop;
 import Omega.IDE;
@@ -84,6 +88,7 @@ public class Screen extends JFrame {
      private static Accessories accessories;
      private static BasicHighlight basicHighlight;
 	private static RecentsManager recentsManager;
+     private static ChoiceDialog choiceDialog;
      private static ErrorHighlighter errorHighlighter;
 	private static ProjectView projectView;
 	private static settings.Screen settings;
@@ -100,9 +105,9 @@ public class Screen extends JFrame {
                     PATH_SEPARATOR = ";";
                dataManager = new DataManager(this);
                if(UIManager.isDarkMode())
-                    com.formdev.flatlaf.FlatDarkLaf.install();
+                    FlatDarkLaf.install();
                else
-                    com.formdev.flatlaf.FlatLightLaf.install();
+                    FlatLightLaf.install();
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
@@ -117,7 +122,7 @@ public class Screen extends JFrame {
 		splash.setProgress(10, "welcome");
 		splash.setProgress(37, "welcome");
           gset.Generator.init(this);
-          
+
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
@@ -150,6 +155,7 @@ public class Screen extends JFrame {
 	}
 
 	private void init() {
+          choiceDialog = new ChoiceDialog(this);
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
 		updater = new Updater(this);
@@ -204,7 +210,7 @@ public class Screen extends JFrame {
 		File file = new File(DataManager.getDefaultProjectPath());
        
           if(DataManager.getProjectsHome().equals("") || !new File(DataManager.getProjectsHome()).exists())
-               new ProjectsHomeSelector(this).setVisible(true);
+               new WorkspaceSelector(this).setVisible(true);
           
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
@@ -508,6 +514,10 @@ public class Screen extends JFrame {
 	public static PluginStore getPluginStore() {
 		return pluginStore;
 	}
+
+     public static ChoiceDialog getChoiceDialog() {
+          return choiceDialog;
+     }
 
 	public void saveEssential() {
 		uiManager.save();

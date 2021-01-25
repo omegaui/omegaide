@@ -31,7 +31,7 @@ public class DataManager extends DataBase {
      private static String theme = "light";
 	
 	public DataManager(Screen screen) {
-		super(".preferences");
+		super(".omega-ide" + File.separator + ".preferences");
 		loadData();
 	}
 	

@@ -41,7 +41,7 @@ public class UIManager extends DataBase {
 	public static Color c3;
 
 	public UIManager(Screen screen) {
-		super(".ui");
+		super(".omega-ide" + File.separator + ".ui");
           loadData();
 	}
 

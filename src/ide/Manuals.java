@@ -15,12 +15,13 @@ package ide;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import java.io.File;
 import ide.utils.UIManager;
 import java.awt.Desktop;
 public class Manuals {
      public static final void showBasicManual(){
      	try{
-               Desktop.getDesktop().open(UIManager.loadDefaultFile("Basic Manual.pdf"));
+               Desktop.getDesktop().open(UIManager.loadDefaultFile(".omega-ide" + File.separator + "Basic Manual.pdf"));
      	}catch(Exception e){ System.err.println(e); }
      }
 }

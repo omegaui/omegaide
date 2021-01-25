@@ -25,7 +25,7 @@ import javax.swing.JFileChooser;
 
 import ide.Screen;
 import ide.utils.UIManager;
-import ide.utils.systems.creators.RefractionManager;
+import ide.utils.systems.creators.FileOperationManager;
 import tree.FileTree;
 
 public class ProjectView extends JDialog{
@@ -33,7 +33,7 @@ public class ProjectView extends JDialog{
 	private static final long serialVersionUID = 1L;
 	public FileTree tree;
 	private JFileChooser chooser = new JFileChooser();
-	private RefractionManager refractionManager;
+	private FileOperationManager fileOperationManager;
 	private Screen screen;
 
 	public ProjectView(String title, Screen window) {
@@ -51,12 +51,12 @@ public class ProjectView extends JDialog{
 		setModal(false);
 	}
 
-	public RefractionManager getRefractor(){
-		return refractionManager;
+	public FileOperationManager getFileOperationManager(){
+		return fileOperationManager;
 	}
 
 	private void initComponents() {
-		refractionManager = new RefractionManager(getScreen());
+		fileOperationManager = new FileOperationManager(getScreen());
 		tree = new FileTree(null);
 		final KeyAdapter keyListener = new KeyAdapter() {
 			@Override

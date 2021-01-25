@@ -30,7 +30,7 @@ import tabPane.IconManager;
 public class RecentsManager {
 
 	public final static LinkedList<String> RECENTS = new LinkedList<>();
-	private static final String EXT = ".recents";
+	private static final String EXT = ".omega-ide" + File.separator + ".recents";
 	private Screen screen;
 	
 	public RecentsManager(Screen screen) {

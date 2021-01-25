@@ -493,7 +493,7 @@ public class ToolMenu extends JPanel {
                     screen.loadThemes();
                }
           })
-          .createItem("Change Workspace", IconManager.settingsImage, ()->new ide.utils.ProjectsHomeSelector(screen).setVisible(true))
+          .createItem("Change Workspace", IconManager.settingsImage, ()->new ide.utils.WorkspaceSelector(screen).setVisible(true))
           .createItem("All Settings", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true));
 	}
 

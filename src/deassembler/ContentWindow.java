@@ -71,10 +71,6 @@ public class ContentWindow extends JPanel implements KeyListener{
 		try {
 			sort(dataMembers);
 			final Editor e = Screen.getScreen().getCurrentEditor();
-			Point point = e.getCaret().getMagicCaretPosition();
-			setLocation(point.x, point.y + e.getFont().getSize() + 1);
-			final int X = (int)e.getAttachment().getVisibleRect().getWidth(); 
-			setSize(X - 65 > 0 ? X - 65 : 500, 200);
 			hints.forEach(h->{
 				h.setVisible(false);
 				panel.remove(h);
@@ -175,23 +171,22 @@ public class ContentWindow extends JPanel implements KeyListener{
 		meths_ = null;
 		members = null;
 	}
-	
+
 	@Override
 	public void setVisible(boolean value) {
 		if(value) {
-			setVisible(false);
-			Editor e = Screen.getScreen().getTabPanel().getCurrentEditor();
-			setLocation(e.getCaret().getMagicCaretPosition().x, e.getCaret().getMagicCaretPosition().y + e.getFont().getSize() + 1);
 			Rectangle vRect = e.getAttachment().getVisibleRect();
-			Rectangle cRect = getBounds();
-			if(cRect.getY() + cRect.getHeight() > vRect.getY() + vRect.getHeight()) {
-				setLocation(getX(), (int)(cRect.getY() - cRect.getHeight() - e.getFont().getSize() - 1));
-			}
-			setLocation(e.getCaret().getMagicCaretPosition().x - getWidth() > 0 ? e.getCaret().getMagicCaretPosition().x - getWidth() : 0, getY());
-			repaint();
+               setBounds(vRect.x, e.getHeight() - 200, vRect.width - 50, 200);
+               repaint();
 		}
 		super.setVisible(value);
 	}
+
+     @Override
+     public void setLocation(int x, int y){
+          super.setLocation(x, y);
+     	System.out.println(x + " " + y);
+     }
 
 	@Override
 	public void keyTyped(KeyEvent e) {

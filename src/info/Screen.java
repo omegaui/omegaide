@@ -82,7 +82,6 @@ public class Screen extends JDialog{
 
 	@Override
 	public void paint(Graphics graphics){
-		super.paint(graphics);
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -126,6 +125,7 @@ public class Screen extends JDialog{
 		}
 		infoBtn.repaint();
 		wnBtn.repaint();
+          super.paint(graphics);
 	}
 
 	@Override

@@ -24,10 +24,10 @@ import settings.comp.TextComp;
 import ide.Screen;
 import javax.swing.JDialog;
 import static ide.utils.UIManager.*;
-public class ProjectsHomeSelector extends JDialog{
+public class WorkspaceSelector extends JDialog{
      private int mouseX;
      private int mouseY;
-     public ProjectsHomeSelector(Screen screen){
+     public WorkspaceSelector(Screen screen){
      	super(screen);
           setUndecorated(true);
           JPanel panel = new JPanel(null);
@@ -35,7 +35,7 @@ public class ProjectsHomeSelector extends JDialog{
           setContentPane(panel);
           setLayout(null);
           setBackground(c2);
-          setTitle("Select Projects Home");
+          setTitle("Select Workspace Directory");
           setModal(true);
           setSize(500, 150);
           setLocationRelativeTo(null);
@@ -50,7 +50,7 @@ public class ProjectsHomeSelector extends JDialog{
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp titleComp = new TextComp("Select Projects Home Directory", c1, c2, c3, ()->{
+          TextComp titleComp = new TextComp("Select Workspace Directory", c1, c2, c3, ()->{
                setVisible(false);
           });
           titleComp.addMouseMotionListener(new MouseAdapter(){
@@ -87,7 +87,7 @@ public class ProjectsHomeSelector extends JDialog{
           chooser.setDialogTitle("Choose only one directory");
 
           TextComp chooseComp = new TextComp("select", c1, c2, c3, ()->{
-               int res = chooser.showOpenDialog(ProjectsHomeSelector.this);
+               int res = chooser.showOpenDialog(WorkspaceSelector.this);
                if(res == JFileChooser.APPROVE_OPTION){
                     DataManager.setProjectsHome(chooser.getSelectedFile().getAbsolutePath());
                     textField.setText(DataManager.getProjectsHome());

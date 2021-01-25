@@ -20,7 +20,7 @@ import java.util.*;
 import javax.swing.text.*;
 import javax.swing.*;
 public class SnippetBase {
-	private static File dataBase = new File(".snippets");
+	private static File dataBase = new File(".omega-ide" + File.separator + ".snippets");
 	private static LinkedList<Snippet> snipps = new LinkedList<>();
 	private static final String BASE = ">:>:>";
 	private static final String CARET = "<:<:<";

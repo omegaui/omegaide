@@ -17,6 +17,7 @@ public class ChoiceDialog extends JDialog{
           setLocationRelativeTo(null);
           setModal(true);
           setLayout(null);
+          setAlwaysOnTop(true);
           init();
      }
 
@@ -29,7 +30,7 @@ public class ChoiceDialog extends JDialog{
                choice = CHOICE_2;
                setVisible(false);
            });
-           cancel = new TextComp("Cancel", c1, c2, c3, ()->{
+           cancel = new TextComp("Cancel", "Closes this Window", c1, c2, c3, ()->{
                choice = CANCEL;
                setVisible(false);
            });

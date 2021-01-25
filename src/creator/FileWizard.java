@@ -43,8 +43,8 @@ import ide.utils.systems.EditorTools;
 import importIO.ImportManager;
 import settings.comp.TextComp;
 public class FileWizard extends JDialog{
-	protected TextComp parentRoot;
-	protected TextComp typeBtn;
+	public TextComp parentRoot;
+	public TextComp typeBtn;
 	public FileWizard(JFrame f){
 		super(f, true);
 		setLayout(null);
@@ -81,7 +81,8 @@ public class FileWizard extends JDialog{
 		final OPopupWindow popup = new OPopupWindow("File-Type Menu", this, 0, false).width(210);
 		typeBtn = new TextComp("class", c1, c2, c3, ()->{});
 		typeBtn.setBounds(0, nameField.getHeight(), getWidth(), 40);
-          popup.createItem("Class", tabPane.IconManager.classImage, ()->typeBtn.setText("class"))
+          popup.createItem("Directory", tabPane.IconManager.projectImage, ()->typeBtn.setText("directory"))
+          .createItem("Class", tabPane.IconManager.classImage, ()->typeBtn.setText("class"))
           .createItem("Interface", tabPane.IconManager.interImage, ()->typeBtn.setText("interface"))
           .createItem("Annotation", tabPane.IconManager.annImage, ()->typeBtn.setText("@interface"))
           .createItem("Enum", tabPane.IconManager.enumImage, ()->typeBtn.setText("enum"))
@@ -129,6 +130,12 @@ public class FileWizard extends JDialog{
 				return;
 			}
 			String type = typeBtn.getText();
+               if(type.equals("directory")){
+                    File dir = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
+                    dir.mkdir();
+                    Screen.getProjectView().reload();
+                    return;
+               }
 			if(!type.equals("Custom File")){
 				String text = nameField.getText();
 				if(!text.contains(".")){

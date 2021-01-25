@@ -78,7 +78,7 @@ public class Startup extends JDialog {
 
           acceptComp = new TextComp("I Accept", ide.utils.UIManager.c1, ide.utils.UIManager.c2, ide.utils.UIManager.c3, ()->{
                try{
-               	new File(".firststartup").createNewFile();
+               	new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
                     setVisible(false);
                }catch(Exception e){ System.err.println(e); }
           });
@@ -127,16 +127,23 @@ public class Startup extends JDialog {
      }
     
 	public static void checkStartup(Screen screen) {
-		if(!new File(".firststartup").exists()){
+		if(!new File(".omega-ide" + File.separator + ".firststartup").exists()){
 			new Startup(screen).repaint();
 		}
 	}
 
      public static void writeUIFiles(){
-     	if(!new File(".firststartup").exists()){
-               ide.utils.UIManager.loadDefaultFile(".ui");
-               ide.utils.UIManager.loadDefaultFile(".preferences");
-               ide.utils.UIManager.loadDefaultFile(".snippets");
+          File f = new File(".omega-ide");
+          if(!f.exists()){
+              f.mkdir();
+          }
+          f = new File(".omega-ide" + File.separator + "out");
+          if(!f.exists())
+               f.mkdir();
+     	if(!new File(".omega-ide" + File.separator + ".firststartup").exists()){
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets");
           }
      }
 }

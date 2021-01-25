@@ -17,25 +17,36 @@ package ide.utils.systems.creators;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import ide.*;
-import ide.utils.systems.*;
-import java.util.*;
-import java.awt.*;
-import ide.utils.*;
-import org.fife.ui.rsyntaxtextarea.*;
-import java.io.*;
-import javax.swing.*;
+import ide.Screen;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.StringTokenizer;
+import ide.utils.Editor;
+import java.io.File;
+import java.util.LinkedList;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JDialog;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import settings.comp.TextComp;
+import static ide.utils.UIManager.*;
 
-public class RefractionManager extends View {
-	private JTextField nameField;
-	private Runnable task;
-	private Runnable externalTask;
-	public static volatile File lastFile;
+public class FileOperationManager extends JDialog {
+     private static TextComp titleComp;
+     private static TextComp closeComp;
+     private static JTextField nameField;
+     private static TextComp actionComp;
      private static JScrollPane scrollPane;
      private static RSyntaxTextArea logArea;
      private static Thread operationThread;
      private static LinkedList<File> files;
      private static volatile boolean duplicateStructures = false;
+     private int mouseX;
+     private int mouseY;
      
      static {
           logArea  = new RSyntaxTextArea(){
@@ -50,27 +61,78 @@ public class RefractionManager extends View {
           Editor.getTheme().apply(logArea);
      }
 
-	public RefractionManager(Screen window) {
-		super("Refractor", window);
-		setLayout(new BorderLayout());
+	public FileOperationManager(Screen window) {
+		super(window, true);
+          setTitle("File Operation Manager");
+          setUndecorated(true);
+		setLayout(null);
 		setAlwaysOnTop(true);
+          setSize(400, 120);
+          setLocationRelativeTo(null);
 		init();
-		setSize(400, 70);
-		setLocationRelativeTo(null);
 	}
 
-	private void init() {
-		nameField = new JTextField();
-		nameField.addActionListener((e)->{
-			setVisible(false);
-			task.run();
-			Screen.getProjectView().reload();
-			if(externalTask != null) externalTask.run();
-		});
-		add(nameField, BorderLayout.CENTER);
-		comps.add(nameField);
-		nameField.setFont(new java.awt.Font("Ubuntu Mono", java.awt.Font.BOLD, 14));
-	}
+     public void init(){
+     	titleComp = new TextComp("File Operation Manager", c1, c2, c3, ()->{});
+          titleComp.setBounds(40, 0, getWidth() - 40, 40);
+          titleComp.setFont(settings.Screen.PX16);
+          titleComp.setArc(0, 0);
+          titleComp.setClickable(false);
+          titleComp.addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e) {
+                    setLocation(e.getXOnScreen() - mouseX - 40, e.getYOnScreen() - mouseY);
+               }
+          });
+          titleComp.addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e) {
+                    mouseX = e.getX();
+                    mouseY = e.getY();
+               }
+          });
+          add(titleComp);
+
+          closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+          closeComp.setBounds(0, 0, 40, 40);
+          closeComp.setFont(settings.Screen.PX16);
+          closeComp.setArc(0, 0);
+          add(closeComp);
+
+          nameField = new JTextField();
+          nameField.setBounds(0, 40, getWidth(), 40);
+          nameField.setFont(settings.Screen.PX14);
+          add(nameField);
+
+          actionComp = new TextComp("", c1, c2, c3, ()->{});
+          actionComp.setBounds(0, 80, getWidth(), 40);
+          actionComp.setFont(settings.Screen.PX16);
+          actionComp.setArc(0, 0);
+          add(actionComp);
+     }
+
+     public static void rename(String title, String actionText, File file0){
+     	final FileOperationManager fom = Screen.getProjectView().getFileOperationManager();
+          fom.nameField.setText(file0.getName());
+          fom.titleComp.setText(title);
+          fom.actionComp.setText(actionText);
+          fom.actionComp.setRunnable(()->{
+               File file = new File(file0.getParentFile().getAbsolutePath() + File.separator + fom.nameField.getText());
+               if(!file0.isDirectory()){
+                    move(file0, file);
+               }
+               else{
+                   file.mkdir();
+                   File[] files = file0.listFiles();
+                   for(File fx : files){
+                         move(fx, file);
+                   }
+                   file0.delete();
+               }
+               fom.setVisible(false);
+          });
+          fom.setVisible(true);
+     }
 
      public static void move(File target, File destination){
           if(operationThread != null && operationThread.isAlive())
@@ -189,26 +251,4 @@ public class RefractionManager extends View {
                out.close();
           }catch(Exception e) { e.printStackTrace(); }
      }
-
-	public void rename(File file, String title, Runnable externalTask) {
-          if(file.isDirectory()) return;
-		this.externalTask = externalTask;
-		setTitle(title);
-		nameField.setText(file.getName());
-		task = ()->{
-			String dir = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(File.separatorChar));
-			String newName = nameField.getText();
-			try {
-				InputStream in = new FileInputStream(file);
-				OutputStream out = new FileOutputStream(dir + File.separator + newName);
-				while(in.available() > 0)
-					out.write(in.read());
-				in.close();
-				out.close();
-				file.delete();
-				lastFile = new File(dir + File.separator + newName);
-			}catch(Exception e) {System.err.println(e);}
-		};
-		setVisible(true);
-	}
 }

@@ -28,7 +28,7 @@ import ide.Screen;
 import ide.utils.Editor;
 import ide.utils.UIManager;
 import ide.utils.systems.EditorTools;
-import ide.utils.systems.creators.RefractionManager;
+import ide.utils.systems.creators.FileOperationManager;
 import importIO.ImportManager;
 
 public class PopupManager {
@@ -73,7 +73,8 @@ public class PopupManager {
 	}
 
 	public static void createTreePopup(OPopupWindow popup, File file) {
-          popup.createItem("New Package", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().show("Class"))
+          popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
+          .createItem("New Package", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().show("Class"))
           .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("Class"))
           .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().show("interface"))
           .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
@@ -102,9 +103,7 @@ public class PopupManager {
           .createItem("Rename", IconManager.fileImage, ()->{
                Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);
                if(editor != null) ide.Screen.getScreen().getTabPanel().remove(editor);
-               Screen.getProjectView().getRefractor().rename(file, "Rename -"+file.getName(), ()->{
-                    Screen.getProjectView().getScreen().loadFile(RefractionManager.lastFile);
-               });
+               Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
                Screen.getProjectView().reload();
                ImportManager.readSource(EditorTools.importManager);
           });

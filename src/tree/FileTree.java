@@ -54,7 +54,6 @@ public class FileTree extends JComponent{
      private int mousePY;
      private volatile boolean dragging;
      private volatile boolean loopRunning;
-     public ChoiceDialog choiceDialog;
 
 	public FileTree(String root){
 		super();
@@ -67,7 +66,6 @@ public class FileTree extends JComponent{
 			scrollPane = new JScrollPane(panel);
                panel.setBackground(ide.utils.UIManager.c2);
 			add(scrollPane, BorderLayout.CENTER);
-               choiceDialog = new ChoiceDialog(Screen.getScreen());
 		}
 	}
 
@@ -104,13 +102,13 @@ public class FileTree extends JComponent{
           if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
           
           //Doing move or copy operation
-          int res = choiceDialog.show("Move", "Copy");
+          int res = Screen.getScreen().getChoiceDialog().show("Move", "Copy");
           if(res == ChoiceDialog.CANCEL)
                return;
           if(res == ChoiceDialog.CHOICE_1)
-               RefractionManager.move(pressedBranch.file, selection.file);
+               FileOperationManager.move(pressedBranch.file, selection.file);
           else 
-               RefractionManager.copy(pressedBranch.file, selection.file);
+               FileOperationManager.copy(pressedBranch.file, selection.file);
      }
 
 	public void gen(File file){

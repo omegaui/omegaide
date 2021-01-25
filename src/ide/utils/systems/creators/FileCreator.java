@@ -28,11 +28,17 @@ public class FileCreator {
 	public FileCreator(Screen screen) {
 		this.screen = screen;
 		fileWizard = new FileWizard(screen);
-	}	
+	}
 	
 	public void show(String type) {
+          fileWizard.parentRoot.setToolTipText(Screen.getFileView().getProjectPath() + File.separator + "src");
 		if(Screen.getFileView().getProjectPath() != null && new File(Screen.getFileView().getProjectPath()).exists())
 			fileWizard.show(type);
 	}
 
+     public void showDirView(String path){
+     	fileWizard.parentRoot.setToolTipText(path);
+          fileWizard.typeBtn.setText("directory");
+          fileWizard.setVisible(true);
+     }
 }
