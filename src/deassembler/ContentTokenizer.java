@@ -28,8 +28,13 @@ public class ContentTokenizer {
                LinkedList<DataMember> dataMembers = new LinkedList<>();
                //Searching whether you need Class names as suggestion
                LinkedList<SourceReader.Import> imports = new LinkedList<>();
+               main:
                for(SourceReader.Import im : reader.imports){
                     if(!im.isStatic && im.name.startsWith(text)){
+                         for(SourceReader.Import x : imports){
+                              if(x.get().equals(im.get()))
+                                   continue main;
+                         }
                          imports.add(im);
                     }
                }

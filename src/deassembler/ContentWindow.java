@@ -45,6 +45,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 	private int i;
 	public ContentWindow() {
 		super(new BorderLayout());
+          setSize(600, 200);
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -175,18 +176,25 @@ public class ContentWindow extends JPanel implements KeyListener{
 	@Override
 	public void setVisible(boolean value) {
 		if(value) {
+               final Editor e = Screen.getScreen().getCurrentEditor();
 			Rectangle vRect = e.getAttachment().getVisibleRect();
-               setBounds(vRect.x, e.getHeight() - 200, vRect.width - 50, 200);
+               int x = e.getCaret().getMagicCaretPosition().x;
+               int y = e.getCaret().getMagicCaretPosition().y + e.getFont().getSize();
+               int xSep = (x + getWidth()) - (int)(vRect.x + vRect.getWidth());
+               int ySep = (y + getHeight()) - (int)(vRect.y + vRect.getHeight());
+               if(xSep > 0){
+                    x -= xSep;
+                    if(x < vRect.x)
+                         x = vRect.x;
+               }
+               if(ySep > 0){
+                    y = e.getCaret().getMagicCaretPosition().y - getHeight();
+               }
+               setLocation(x, y);
                repaint();
 		}
 		super.setVisible(value);
 	}
-
-     @Override
-     public void setLocation(int x, int y){
-          super.setLocation(x, y);
-     	System.out.println(x + " " + y);
-     }
 
 	@Override
 	public void keyTyped(KeyEvent e) {
