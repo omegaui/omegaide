@@ -605,7 +605,8 @@ public class ToolMenu extends JPanel {
 		//New Menu Items
           filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getFileView().open("File"))
           .createItem("Open Project", IconManager.projectImage, ()->Screen.getFileView().open("Project"))
-          .createItem("New Project", IconManager.projectImage, ()->projectWizard.setVisible(true));
+          .createItem("New Project", IconManager.projectImage, ()->projectWizard.setVisible(true))
+          .createItem("New Project (non-java project)", IconManager.projectImage, ()->{});
 
           recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(300).height(250);
           fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{

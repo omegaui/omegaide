@@ -20,14 +20,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-public class OPopupWindow extends JWindow{
+public class OPopupWindow extends JDialog{
      private int y;
      private String name;
      private Window owner;
      private JPanel panel;
      private JScrollPane scrollPane;
      private LinkedList<OPopupItem> items = new LinkedList<>();
-     private OPopupItem closeItem;
      private int animaTime;
      
      public static int HEIGHT = 32;
@@ -39,17 +38,23 @@ public class OPopupWindow extends JWindow{
           this.owner = f;
           this.animaTime = animaTime;
           this.scrollable = scrollable;
+          setUndecorated(true);
           setLayout(scrollable ? new BorderLayout() : null);
           setBackground(ide.utils.UIManager.c2);
           setForeground(ide.utils.UIManager.c3);
           setType(JWindow.Type.POPUP);
+          addFocusListener(new FocusAdapter(){
+               @Override
+               public void focusLost(FocusEvent e){
+               	setVisible(false);
+               }
+          });
           if(scrollable) {
                panel = new JPanel(null);
                panel.setBackground(ide.utils.UIManager.c2);
                panel.setForeground(ide.utils.UIManager.c3);
                super.add(scrollPane = new JScrollPane(panel), BorderLayout.CENTER);
           }
-          closeItem = new OPopupItem(this, "Close " + name, null, ()->setVisible(false));
      }
 
      public void trash(){
@@ -101,9 +106,6 @@ public class OPopupWindow extends JWindow{
      public void setVisible(boolean value){
           if(value){
                if(items.isEmpty()) return;
-               removeItem("Close " + name);
-               items.add(closeItem);
-               add(closeItem);
                
                if(scrollable)
                     panel.setPreferredSize(new Dimension(getWidth(), items.size() * 32));

@@ -106,7 +106,6 @@ public class ContentWindow extends JPanel implements KeyListener{
 						
 					}, d.getRepresentableValue());
 					hint.setBounds(0, block, getWidth(), Hint.OPTIMAL_HEIGHT);
-					if(isDarkMode) ide.utils.UIManager.setData(hint);
 					hint.setFont(font);
 					panel.add(hint);
 					hints.add(hint);
@@ -120,7 +119,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 			hints.get(0).focussed(true);
 			panel.setPreferredSize(new Dimension(max, block));
 			setVisible(true);
-			scrollPane.getVerticalScrollBar().setVisible(true);
+               scrollPane.getVerticalScrollBar().setValue(0);
+               scrollPane.getVerticalScrollBar().setVisible(true);
 			repaint();
 			scrollPane.getVerticalScrollBar().repaint();
 			scrollPane.getHorizontalScrollBar().repaint();

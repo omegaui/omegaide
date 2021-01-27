@@ -40,14 +40,13 @@ public class Hint extends JComponent{
 	public static final int OPTIMAL_FONT_HEIGHT = 15;
 	private InjectionListener i;
 	private BufferedImage typeImage;
-	private static final Color CYAN = new Color(20, 20, 160);
 	public Hint(DataMember d, InjectionListener i, String repValue){
 		this.repValue = repValue;
 		this.d = d;
 		this.i = i;
 		typeImage = d.parameters != null ? IconManager.methImage : IconManager.varImage;
-		setBackground(Color.WHITE);
-		setForeground(CYAN);
+		setBackground(ide.utils.UIManager.c2);
+		setForeground(ide.utils.UIManager.c3);
 		addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseEntered(MouseEvent e){

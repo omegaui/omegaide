@@ -249,8 +249,7 @@ public class FileTree extends JComponent{
 			branches.add(b);
 		}
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-		ide.Screen.getScreen().splitPane.setDividerLocation(ide.Screen.getScreen().splitPane.getDividerLocation() + 1);
-		ide.Screen.getScreen().splitPane.setDividerLocation(ide.Screen.getScreen().splitPane.getDividerLocation() - 1);
+          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches));
 		repaint();
 	}
 
@@ -284,10 +283,20 @@ public class FileTree extends JComponent{
 		}
 		children.clear();
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-		ide.Screen.getScreen().splitPane.setDividerLocation(ide.Screen.getScreen().splitPane.getDividerLocation() + 1);
-		ide.Screen.getScreen().splitPane.setDividerLocation(ide.Screen.getScreen().splitPane.getDividerLocation() - 1);
+          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches));
 		repaint();
 	}
+
+     public static int getWidestBranchLastX(LinkedList<Branch> branches){
+     	int x = 0;
+          int w = 0;
+          for(Branch b : branches){
+               w = b.getX() + b.getWidth();
+               if(w > x)
+                    x = w;
+          }
+          return x;
+     }
 
 	private synchronized LinkedList<File> getContents(File file){
 		LinkedList<File> files = new LinkedList<>();
