@@ -610,30 +610,24 @@ public class ToolMenu extends JPanel {
 
           recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(300).height(250);
           fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{
-               recentFilePopup.setLocation(filePopup.getX() + fileMenu.getX() + fileMenu.getWidth(), filePopup.getY() + fileMenu.getY());
+               recentFilePopup.setLocation(filePopup.getX(), filePopup.getY());
                recentFilePopup.setVisible(true);
           });
           filePopup.addItem(fileMenu);
           
           recentProjectPopup = OPopupWindow.gen("Recent Projects Menu", screen, 0, true).width(300).height(250);
           projectMenu = new OPopupItem(recentProjectPopup, "Recent Projects", IconManager.projectImage, ()->{
-               recentProjectPopup.setLocation(filePopup.getX() + projectMenu.getX() + projectMenu.getWidth(), filePopup.getY() + projectMenu.getY());
+               recentProjectPopup.setLocation(filePopup.getX(), filePopup.getY());
                recentProjectPopup.setVisible(true);
           });
           filePopup.addItem(projectMenu);
           
           allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(300).height(250);
           allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, ()->{
-               allProjectsPopup.setLocation(filePopup.getX() + allMenu.getX() + allMenu.getWidth(), filePopup.getY() + allMenu.getY());
+               allProjectsPopup.setLocation(filePopup.getX(), filePopup.getY());
                allProjectsPopup.setVisible(true);
           });
           filePopup.addItem(allMenu);
-
-          filePopup.setOnClose(()->{
-               recentFilePopup.setVisible(false);
-               recentProjectPopup.setVisible(false);
-               allProjectsPopup.setVisible(false);
-          });
 
           filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
           .createItem("Save All Editors", IconManager.fileImage, ()->screen.saveAllEditors())
