@@ -49,7 +49,7 @@ public class FileWizard extends JDialog{
 		super(f, true);
 		setLayout(null);
 		setUndecorated(true);
-		setSize(400, 160);
+		setSize(400, 120);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		init();
@@ -97,28 +97,8 @@ public class FileWizard extends JDialog{
           typeBtn.setArc(0, 0);
 		add(typeBtn);
 
-		TextComp packBtn = new TextComp("Create Only Package", c1, c2, c3, ()->{
-			String path = nameField.getText();
-			StringTokenizer tokenizer = new StringTokenizer(path, ".");
-			path = parentRoot.getToolTipText() + File.separator;
-			while(tokenizer.hasMoreTokens()){
-				path += tokenizer.nextToken() + File.separator;
-				File file = new File(path);
-				if(!file.exists())
-					file.mkdir();
-				else{
-					nameField.setText("Package Already Exists");
-					return;
-				}
-			}
-			setVisible(false);
-		});
-		packBtn.setBounds(0, typeBtn.getY() + typeBtn.getHeight(), getWidth(), 40);
-          packBtn.setArc(0, 0);
-		add(packBtn);
-
 		TextComp cancelBtn = new TextComp("Close", c1, c2, c3, ()->setVisible(false));
-		cancelBtn.setBounds(0, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
+		cancelBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
 		setData(cancelBtn);
           cancelBtn.setArc(0, 0);
 		add(cancelBtn);
@@ -161,13 +141,14 @@ public class FileWizard extends JDialog{
 					try{
 						file.createNewFile();
 						Screen.getProjectView().reload();
+                              Screen.getScreen().loadFile(file);
 					}catch(Exception ex){nameField.setText("Access Denied");}
 				}
 				else
 					nameField.setText("File Already Exists");
 			}
 		});
-		createBtn.setBounds(getWidth()/2, packBtn.getY() + packBtn.getHeight(), getWidth()/2, 40);
+		createBtn.setBounds(getWidth()/2, getHeight() - 40, getWidth()/2, 40);
 		setData(createBtn);
           createBtn.setArc(0, 0);
 		add(createBtn);

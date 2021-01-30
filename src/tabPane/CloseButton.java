@@ -173,7 +173,10 @@ public class CloseButton extends JComponent {
 	
 	public static String getBaseName(String ext) {
 		if(ext.equals("Compilation"))
-				return "JVM";
+			return "JVM";
+
+          if(ext.equals("Building"))
+               return "IDE";
 
           else if(ext.equals("Terminal"))
                return "Shell";
@@ -181,8 +184,11 @@ public class CloseButton extends JComponent {
           else if(ext.equals("File Operation"))
                return "Task";
 
-		if(ext.contains("Run("))
-			return "JVM";
+          if(ext.contains("Run("))
+               return "JVM";
+               
+          if(ext.contains("Run ") || ext.contains("Run"))
+               return "IDE";
 
           if(!ext.contains("."))
                return "?";
@@ -191,8 +197,10 @@ public class CloseButton extends JComponent {
 		
 		if(ext.equals(".java") || ext.equals(".class"))
 			return "J";
-		else if(ext.equals(".py"))
-			return "Py";
+          else if(ext.equals(".py"))
+               return "Py";
+          else if(ext.equals(".groovy"))
+               return "*G*";
 		else if(ext.equals(".js") || ext.equals(".html"))
 			return "Web";
 		else if(ext.equals(".rs"))
@@ -205,7 +213,7 @@ public class CloseButton extends JComponent {
 			return "Xml";
 		else if(ext.equals(".dmg"))
 			return "Mac";
-		else if(ext.equals(".projectInfo") || ext.equals(".sources") || ext.equals(".natives") || ext.equals(".dependencies") || ext.equals(".modules") || ext.equals(".ui") || ext.equals(".content") || ext.equals(".resources"))
+		else if(ext.equals(".projectInfo") || ext.equals(".sources")|| ext.equals(".args") || ext.equals(".natives") || ext.equals(".dependencies") || ext.equals(".modules") || ext.equals(".ui") || ext.equals(".content") || ext.equals(".resources"))
 			return "IDE";
 		else if(ext.equals(".sh") || ext.equals(".run"))
 			return "Linux";

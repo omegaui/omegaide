@@ -49,6 +49,7 @@ public class DependencyView extends JDialog{
 
 	@Override
 	public void setVisible(boolean value) {
+          if(Screen.getFileView().getProjectManager().non_java) return;
 		if(value) {
 			lib.read();
 			res.read();

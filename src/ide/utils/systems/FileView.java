@@ -1,4 +1,5 @@
 package ide.utils.systems;
+import creator.ArgumentManager;
 /*
     Copyright (C) 2021 Omega UI. All Rights Reserved.
 
@@ -48,6 +49,7 @@ public class FileView extends View {
 	private DependencyView dependencyView;
 	private ModuleView moduleView;
 	private ModuleManager moduleManager;
+     private ArgumentManager argumentManager;
 	private SearchWindow searchWindow;
 
 	public FileView(String title, Screen window) {
@@ -64,42 +66,6 @@ public class FileView extends View {
 		fileCreator = new FileCreator(getScreen());	
 	}
 
-	public ProjectDataBase getProjectManager()
-	{
-		return projectManager;
-	}
-
-	public DependencyManager getDependencyManager() {
-		return dependencyManager;
-	}
-
-	public NativesManager getNativesManager() {
-		return nativesManager;
-	}
-
-	public ResourceManager getResourceManager() {
-		return resourceManager;
-	}
-
-	public DependencyView getDependencyView() {
-		return dependencyView;
-	}
-
-	public ModuleView getModuleView() {
-		return moduleView;
-	}
-
-	public ModuleManager getModuleManager() {
-		return moduleManager;
-	}
-
-	public String getProjectName()
-	{
-		if(projectPath == null)
-			return "";
-		return projectPath.substring(projectPath.lastIndexOf(File.separatorChar)+1);
-	}
-
 	public void setProjectPath(String path) {
 		if(projectPath != null) {
 			if(projectPath.equals(path))
@@ -111,10 +77,6 @@ public class FileView extends View {
 			Screen.launcher.setVisible(false);
 		DataManager.setDefaultProjectPath(projectPath);
 		Screen.notify("Loading Project \"" + getProjectName() + "\"");
-		checkDir(new File(projectPath + File.separator + "src"));
-		checkDir(new File(projectPath + File.separator + "out"));
-		checkDir(new File(projectPath + File.separator + "bin"));
-		checkDir(new File(projectPath + File.separator + "res"));
 		getScreen().setProject(getProjectName());
 		try {
 			Screen.getProjectView().getProjectView().setVisible(true);
@@ -122,28 +84,32 @@ public class FileView extends View {
 				Screen.getProjectView().organizeProjectViewDefaults();
 				getScreen().setVisible(true);
 			}
-			
 		}catch(Exception ex) {System.out.println(ex);}
 		getScreen().getTabPanel().closeAllTabs();
 		Assembly.deassemble();
-		Screen.notify("Reading Dependencies and Resource Roots", 1000, null);
 		projectManager = new ProjectDataBase();
-		dependencyManager = new DependencyManager();
-		nativesManager = new NativesManager();
-		resourceManager = new ResourceManager();
-		moduleManager = new ModuleManager();
+          getScreen().manageTools(projectManager);
+          if(!projectManager.non_java){
+               Screen.notify("Reading Dependencies and Resource Roots", 1000, null);
+     		dependencyManager = new DependencyManager();
+     		nativesManager = new NativesManager();
+     		resourceManager = new ResourceManager();
+     		moduleManager = new ModuleManager();
+          }
+          else{
+               argumentManager = new ArgumentManager();
+          }
 		searchWindow.cleanAndLoad(new File(projectPath));
-		try {
-			Screen.getProjectView().getProjectView().setVisible(true);
-		}catch(Exception e) {System.out.println(e);}
-		if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists()){
-			Screen.notify("No JDK Defined for Project "+Screen.getFileView().getProjectName(), 3000, null);
-		}
-		else {
-			projectManager.readJDK(false);
-		}
-		Screen.hideNotif();
-		try {Screen.getProjectView().reload();}catch(Exception e) {}
+          if(!projectManager.non_java) {
+     		if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists()){
+     			Screen.notify("No JDK Defined for Project "+Screen.getFileView().getProjectName(), 3000, null);
+     		}
+     		else {
+     			projectManager.readJDK(false);
+     		}
+     		Screen.hideNotif();
+     		try {Screen.getProjectView().reload();}catch(Exception e) {}
+          }
 	}
 
 	public String getProjectPath() {
@@ -151,23 +117,27 @@ public class FileView extends View {
 	}
 
 	public void saveAll() {
-		if(projectManager != null)
+		if(projectManager != null){
 			projectManager.save();
-		if(dependencyManager != null)
-			dependencyManager.saveFile();
-		if(nativesManager != null)
-			nativesManager.saveFile();
-		if(resourceManager != null)
-			resourceManager.saveData();
+               if(!projectManager.non_java){
+          		if(dependencyManager != null)
+          			dependencyManager.saveFile();
+          		if(nativesManager != null)
+          			nativesManager.saveFile();
+          		if(resourceManager != null)
+          			resourceManager.saveData();
+               }
+               else{
+                    argumentManager.save();
+               }
+		}
 	}
 
 	public boolean open(String type) {
 		JFileChooser ch = new JFileChooser();
 		UIManager.setData(ch);
 		Screen.getAccessories().addDeleteButton(ch);
-		setVisible(false);
-		if(type.equals("Project"))
-		{
+		if(type.equals("Project")) {
 			ch.setDialogTitle("Open Project -Select/Create an empty folder to create a new poject");
 			ch.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			ch.setMultiSelectionEnabled(false);
@@ -176,29 +146,21 @@ public class FileView extends View {
 				if(Screen.launcher != null)
 					Screen.launcher.setVisible(false);
 				Screen.getScreen().setVisible(true);
-
 				saveAll();
 				getScreen().closeCurrentProject();
 				setProjectPath(ch.getSelectedFile().getPath());
-				checkDir(new File(projectPath + File.separator + "src"));
-				checkDir(new File(projectPath + File.separator + "out"));
-				checkDir(new File(projectPath + File.separator + "bin"));
-				checkDir(new File(projectPath + File.separator + "res"));
 				return true;
 			}
 		}
-		else
-		{
+		else {
 			ch.setDialogTitle("Open File");
 			ch.setMultiSelectionEnabled(true);
-			ch.setCurrentDirectory(new File(projectPath + File.separator + "src"));
+			ch.setCurrentDirectory(new File(projectPath));
 			ch.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int res = ch.showOpenDialog(getScreen());
-			if(res == JFileChooser.APPROVE_OPTION)
-			{
-				for(File file : ch.getSelectedFiles()) {
+			if(res == JFileChooser.APPROVE_OPTION) {
+				for(File file : ch.getSelectedFiles())
 					getScreen().loadFile(file);
-				}
 			}
 		}
 		return false;
@@ -221,6 +183,45 @@ public class FileView extends View {
 	public FileCreator getFileCreator() {
 		return fileCreator;
 	}
+     
+     public ProjectDataBase getProjectManager(){
+          return projectManager;
+     }
+
+     public DependencyManager getDependencyManager() {
+          return dependencyManager;
+     }
+
+     public NativesManager getNativesManager() {
+          return nativesManager;
+     }
+
+     public ResourceManager getResourceManager() {
+          return resourceManager;
+     }
+
+     public DependencyView getDependencyView() {
+          return dependencyView;
+     }
+
+     public ModuleView getModuleView() {
+          return moduleView;
+     }
+
+     public ModuleManager getModuleManager() {
+          return moduleManager;
+     }
+
+     public ArgumentManager getArgumentManager() {
+          return argumentManager;
+     }
+
+     public String getProjectName()
+     {
+          if(projectPath == null)
+               return "";
+          return projectPath.substring(projectPath.lastIndexOf(File.separatorChar)+1);
+     }
 
 	public static void checkDir(File file)
 	{

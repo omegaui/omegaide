@@ -39,6 +39,7 @@ public class EditorTools {
 	}
 
 	public static void showIS() {
+          if(Screen.getFileView().getProjectManager().non_java) return;     
 		if(importSelector != null) {
 			importSelector.setVisible(true);
 		}

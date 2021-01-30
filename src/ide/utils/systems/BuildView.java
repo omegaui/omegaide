@@ -71,11 +71,88 @@ public class BuildView extends View {
 		return files;
 	}
 
+     public void compile(){
+          new Thread(()->{
+               String args = Screen.getFileView().getArgumentManager().compile_time_args;
+               String compileDir = Screen.getFileView().getArgumentManager().compileDir;
+               String[] arguments = convertToArray(args.trim());
+               try{
+                    getScreen().getToolMenu().buildComp.setClickable(false);
+                    getScreen().getToolMenu().runComp.setClickable(false);
+                    printArea.setVisible(true);
+                    printArea.clear();
+                    printArea.print("Building Project...\n\"" + args + "\"");
+                    String status = "Successfully";
+                    
+                    compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
+                    printArea.setProcess(compileProcess);
+                    getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+                    Scanner inputReader = new Scanner(compileProcess.getInputStream());
+                    Scanner errorReader = new Scanner(compileProcess.getErrorStream());
+                    while(compileProcess.isAlive()) {
+                         while(inputReader.hasNextLine())
+                              printArea.print(inputReader.nextLine());
+                         while(errorReader.hasNextLine()) {
+                              String line = errorReader.nextLine();
+                              printArea.print(line);
+                         }
+                    }
+                    inputReader.close();
+                    errorReader.close();
+                    if(compileProcess.exitValue() != 0)
+                         status = "with error(s)";
+                    printArea.print("Compilation Completed " + status);
+                    compileProcess = null;
+                    getScreen().getToolMenu().buildComp.setClickable(true);
+                    getScreen().getToolMenu().runComp.setClickable(true);
+                    Screen.getProjectView().reload();
+                    
+               }catch(Exception e){ System.err.println(e); }
+          }).start();
+     }
+
+     public static String[] convertToArray(String args){
+          String token = "";
+          LinkedList<String> arguments = new LinkedList<>();
+          boolean canRecord = false;
+          boolean strRec = false;
+     	for(int i = 0; i < args.length(); i++){
+               char ch = args.charAt(i);
+     		if(!canRecord && (Character.isLetter(ch) || ch == '-')){
+                    token = "";
+                    canRecord = true;
+     		}
+               if(ch == '\"' && !strRec){
+                    strRec = true;
+               }
+               else if(strRec){
+                    strRec = false;
+               }
+               if(ch == ' ' && !strRec){
+                    arguments.add(token);
+                    canRecord = false;
+               }
+               else if(canRecord){
+                    token += ch;
+               }
+     	}
+          arguments.add(token);
+          String[] A = new String[arguments.size()];
+          int k = 0;
+          for(String x : arguments)
+               A[k++] = x;
+          return A;
+     }
+
 	public void compileProject() {
 		if(compileProcess != null) {
 			if(compileProcess.isAlive())
 				return;
 		}
+          if(ide.Screen.getFileView().getProjectManager().non_java){
+               compile();
+               return;
+          }
 		new Thread(()->{
 
 			try  {
@@ -192,7 +269,7 @@ public class BuildView extends View {
 					status = " with error(s)";
 					Screen.getErrorHighlighter().loadErrors(errorlog);
 				}
-				printArea.print("Compilation Completed"+status);
+				printArea.print("Compilation Completed" + status);
 				compileProcess = null;
 				getScreen().getToolMenu().buildComp.setClickable(true);
 				getScreen().getToolMenu().runComp.setClickable(true);
@@ -293,28 +370,23 @@ public class BuildView extends View {
 		}
 	}
 
-	public void createClassList()
-	{
+	public void createClassList() {
+          if(ide.Screen.getFileView().getProjectManager().non_java) return;
 		classess.clear();
 		try {
 			LinkedList<String> dirs = new LinkedList<>();
 			loadData(dirs, new File(Screen.getFileView().getProjectPath() + File.separator + "src").listFiles());
 
-			while(!dirs.isEmpty())
-			{
+			while(!dirs.isEmpty()) {
 				try {
-					for(String path : dirs)
-					{
+					for(String path : dirs) {
 						File file = new File(path);
-						if(!file.isDirectory())
-						{
-							if(path.endsWith(".java"))
-							{
+						if(!file.isDirectory()) {
+							if(path.endsWith(".java")) {
 								classess.add(path);
 							}
 						}
-						else
-						{
+						else {
 							LinkedList<String> subDirs = new LinkedList<>();
 							File[] fileList = file.listFiles();
 							if(fileList == null)
@@ -345,8 +417,7 @@ public class BuildView extends View {
 		}catch(Exception e) {e.printStackTrace();}
 	}
 
-	private static void loadData(LinkedList<String> paths, File[] files)
-	{
+	private static void loadData(LinkedList<String> paths, File[] files) {
 		try {
 			for (File file : files) {
 				paths.add(file.getPath());
@@ -354,12 +425,9 @@ public class BuildView extends View {
 		}catch(Exception e){}
 	}
 
-	private static void loadData(LinkedList<String> paths0, LinkedList<String> paths1)
-	{
+	private static void loadData(LinkedList<String> paths0, LinkedList<String> paths1) {
 		for(String path0 : paths0)
-		{
 			paths1.add(path0);
-		}
 	}
 
 	public class PrintArea extends JPanel {

@@ -37,8 +37,14 @@ public class FileCreator {
 	}
 
      public void showDirView(String path){
-     	fileWizard.parentRoot.setToolTipText(path);
+          fileWizard.parentRoot.setToolTipText(path);
           fileWizard.typeBtn.setText("directory");
+          fileWizard.setVisible(true);
+     }
+     
+     public void showFileView(String path){
+          fileWizard.parentRoot.setToolTipText(path);
+          fileWizard.typeBtn.setText("Custom File");
           fileWizard.setVisible(true);
      }
 }

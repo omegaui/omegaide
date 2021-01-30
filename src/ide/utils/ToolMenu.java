@@ -15,6 +15,9 @@ package ide.utils;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import gset.Generator;
+import ide.Manuals;
+import creator.UniversalProjectWizard;
 import java.awt.Dimension;
 import popup.OPopupWindow;
 import popup.OPopupItem;
@@ -103,7 +106,8 @@ public class ToolMenu extends JPanel {
 	public static info.Screen infoScreen;
      public static structure.Screen structureView;
 	public boolean hidden;
-	public static ProjectWizard projectWizard;
+     public static ProjectWizard projectWizard;
+     public static UniversalProjectWizard universalProjectWizard;
      private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 14);
      private int pressX;
      private int pressY;
@@ -112,7 +116,8 @@ public class ToolMenu extends JPanel {
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
 		if(projectWizard == null){
-			projectWizard = new ProjectWizard(screen);
+               projectWizard = new ProjectWizard(screen);
+               universalProjectWizard = new UniversalProjectWizard(screen);
                infoScreen = new info.Screen(screen);
                structureView = new structure.Screen(screen);
 	     }
@@ -493,8 +498,23 @@ public class ToolMenu extends JPanel {
                     screen.loadThemes();
                }
           })
-          .createItem("Change Workspace", IconManager.settingsImage, ()->new ide.utils.WorkspaceSelector(screen).setVisible(true))
-          .createItem("All Settings", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true));
+          .createItem("Change Workspace", IconManager.settingsImage, ()->new ide.utils.WorkspaceSelector(screen).setVisible(true));
+
+          OPopupItem typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, ()->{});
+          typeItem.setAction(()->{
+               ide.Screen.getFileView().getProjectManager().non_java = !ide.Screen.getFileView().getProjectManager().non_java;
+               typeItem.setName(ide.Screen.getFileView().getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
+               ide.Screen.getScreen().manageTools(ide.Screen.getFileView().getProjectManager());
+               ide.Screen.getFileView().getProjectManager().save();
+          });
+          setPopup.addItem(typeItem);
+          
+          setPopup.createItem("All Settings", IconManager.settingsImage, ()->{
+               if(Screen.getFileView().getProjectManager().non_java)
+                    Screen.getUniversalSettingsView().setVisible(true);
+               else
+                    Screen.getSettingsView().setVisible(true);
+          });
 	}
 
 	private void initHelpMenu() {
@@ -576,6 +596,8 @@ public class ToolMenu extends JPanel {
                })
           .createItem("Mark As Main Class", IconManager.fileImage, 
                ()->{
+                    
+                    if(Screen.getFileView().getProjectManager().non_java) return;
                     fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
                     fileC.setFileSelectionMode(JFileChooser.FILES_ONLY);
                     fileC.setApproveButtonText("Mark This As Main");
@@ -606,7 +628,7 @@ public class ToolMenu extends JPanel {
           filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getFileView().open("File"))
           .createItem("Open Project", IconManager.projectImage, ()->Screen.getFileView().open("Project"))
           .createItem("New Project", IconManager.projectImage, ()->projectWizard.setVisible(true))
-          .createItem("New Project (non-java project)", IconManager.projectImage, ()->{});
+          .createItem("New Project (non-java project)", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
 
           recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(300).height(250);
           fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{

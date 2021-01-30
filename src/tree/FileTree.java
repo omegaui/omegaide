@@ -165,10 +165,7 @@ public class FileTree extends JComponent{
 		});
 		if(branches.isEmpty()) return;
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-		try {
-			ide.Screen.getScreen().splitPane.setDividerLocation(ide.Screen.getScreen().splitPane.getDividerLocation() + 1);
-			ide.Screen.getScreen().splitPane.setDividerLocation(ide.Screen.getScreen().splitPane.getDividerLocation() - 1);
-		}catch(Exception e) {}
+          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
 		repaint();
 	}
 
@@ -249,7 +246,7 @@ public class FileTree extends JComponent{
 			branches.add(b);
 		}
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches));
+          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
 		repaint();
 	}
 
@@ -283,7 +280,7 @@ public class FileTree extends JComponent{
 		}
 		children.clear();
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches));
+          ide.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
 		repaint();
 	}
 
@@ -295,7 +292,7 @@ public class FileTree extends JComponent{
                if(w > x)
                     x = w;
           }
-          return x;
+          return x + 5;
      }
 
 	private synchronized LinkedList<File> getContents(File file){

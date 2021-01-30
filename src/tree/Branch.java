@@ -73,7 +73,8 @@ public class Branch extends JComponent{
 		else{
 			setForeground(ANY_COLOR);
 			setFont(FONT_BOLD);
-			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")){
+			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
+			   || file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
 				type = "SourceCode";
 			}
@@ -95,7 +96,7 @@ public class Branch extends JComponent{
 			else if(file.getName().endsWith(".dependencies") || file.getName().endsWith(".sources")
 					|| file.getName().endsWith(".natives") || file.getName().endsWith(".resources")
 					|| file.getName().endsWith(".projectInfo") || file.getName().endsWith(".modules")
-					|| file.getName().endsWith(".snippets") || file.getName().endsWith(".content")){
+					|| file.getName().endsWith(".snippets") || file.getName().endsWith(".args")){
 				type = "IDE";
 			}
 			else if(file.getName().endsWith(".js") || file.getName().endsWith(".html")){

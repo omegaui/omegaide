@@ -68,6 +68,8 @@ public class Terminal extends JComponent{
                     else if(e.getKeyCode() == KeyEvent.VK_DOWN){
                          if(pointer < commands.size() - 1)
                               pointer++;
+                         if(pointer >= commands.size())
+                              pointer = 0;
                          textField.setText(commands.get(pointer));
                          textArea.setCaretPosition(textArea.getText().length());
                     }

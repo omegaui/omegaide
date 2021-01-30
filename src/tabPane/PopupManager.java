@@ -74,12 +74,11 @@ public class PopupManager {
 
 	public static void createTreePopup(OPopupWindow popup, File file) {
           popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
-          .createItem("New Package", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().show("Class"))
+          .createItem("New File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().showFileView(file.getAbsolutePath()))
           .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("Class"))
           .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().show("interface"))
           .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
-          .createItem("Create Custom File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().show("Custom File"))
           .createItem("Delete", IconManager.closeImage, ()->{
                if(!file.isDirectory()){
                     Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);

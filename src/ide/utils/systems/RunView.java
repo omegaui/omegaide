@@ -15,6 +15,7 @@ package ide.utils.systems;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -65,25 +66,18 @@ public class RunView extends View{
 		Screen.getProjectView().setTitleMainClass();
 	}
 
-	public void setMainClassPath(String mainClassPath)
-	{
+	public void setMainClassPath(String mainClassPath) {
 		if(!mainClassPath.endsWith(".java"))
 			return;
 		mainClass = "";
 		boolean canRecord = false;
 		StringTokenizer tokenizer = new StringTokenizer(mainClassPath, File.separator);
-		while(tokenizer.hasMoreTokens())
-		{
+		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
 			if(canRecord)
-			{
 				mainClass += token +".";
-			}
-			else
-			{
-				if(token.equals("src"))
-					canRecord = true;
-			}
+			else if(token.equals("src"))
+				canRecord = true;
 		}
 		mainClass = mainClass.substring(0, mainClass.length() - 6);
 		Screen.getProjectView().setTitleMainClass();
@@ -98,32 +92,130 @@ public class RunView extends View{
 		mainClass = "";
 		boolean canRecord = false;
 		StringTokenizer tokenizer = new StringTokenizer(mainClassPath, File.separator);
-		while(tokenizer.hasMoreTokens())
-		{
+		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
 			if(canRecord)
-			{
-				mainClass += token +".";
-			}
-			else
-			{
-				if(token.equals("src"))
-					canRecord = true;
-			}
+				mainClass += token + ".";
+			else if(token.equals("src"))
+				canRecord = true;
 		}
 		mainClass = mainClass.substring(0, mainClass.length() - 6);
 		Screen.getProjectView().setTitleMainClass();
 	}
 
+     public void runNJ(){
+     	new Thread(()->{
+               getScreen().getOperationPanel().removeTab("Build");
+               String args = Screen.getFileView().getArgumentManager().compile_time_args;
+               String compileDir = Screen.getFileView().getArgumentManager().compileDir;
+               
+               PrintArea printArea = new PrintArea("Build Output", getScreen());
+               String[] arguments = BuildView.convertToArray(args.trim());
+               try{
+                    getScreen().getToolMenu().buildComp.setClickable(false);
+                    getScreen().getToolMenu().runComp.setClickable(false);
+                    printArea.setVisible(true);
+                    printArea.printText("Building Project...\n\"" + args + "\"");
+                    String status = "Successfully";
+                    
+                    int percent = (int)Math.ceil(Math.random() * 70);
+                    Screen.setStatus("Building Project", percent);
+                    compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
+                    runningApps.add(compileProcess);
+                    printArea.setRunProcess(compileProcess);
+                    Scanner inputReader = new Scanner(compileProcess.getInputStream());
+                    Scanner errorReader = new Scanner(compileProcess.getErrorStream());
+                    while(compileProcess.isAlive()) {
+                         while(inputReader.hasNextLine())
+                              printArea.printText(inputReader.nextLine());
+                         while(errorReader.hasNextLine()) {
+                              String line = errorReader.nextLine();
+                              printArea.printText(line);
+                         }
+                    }
+                    inputReader.close();
+                    errorReader.close();
+                    if(compileProcess.exitValue() != 0)
+                         status = "with error(s)";
+                    printArea.printText("Compilation Completed " + status);
+                    getScreen().getToolMenu().buildComp.setClickable(true);
+                    getScreen().getToolMenu().runComp.setClickable(true);
+                    Screen.getProjectView().reload();
+                    if(compileProcess.exitValue() != 0){
+                         getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+                         compileProcess = null;
+                         return;
+                    }
+                    compileProcess = null;
+               }catch(Exception e){ System.err.println(e); }
+          
+               Screen.setStatus("Running Project", 56);
+               args = Screen.getFileView().getArgumentManager().run_time_args;
+               String runDir = Screen.getFileView().getArgumentManager().runDir;
+               arguments = BuildView.convertToArray(args.trim());
+               try{
+                    PrintArea terminal = new PrintArea("Terminal -Closing This Conlose will terminate Execution", getScreen());
+                    terminal.printText("Running Project...\n\"" + args + "\"");
+                    terminal.printText("");
+                    terminal.printText("---<>--------------------------------------<>---");
+                    terminal.launchAsTerminal();
+                    terminal.setVisible(true);
+                    String status = "Successfully";
+                    
+                    Screen.setStatus("Running Project", 100);
+                    Process runProcess = new ProcessBuilder(arguments).directory(new File(runDir)).start();
+                    terminal.setRunProcess(runProcess);
+                    
+                    runningApps.add(runProcess);
+                    String name = "Run";
+                    int count = OperationPane.count(name);
+                    if(count > -1)
+                         name = name + " " + count;
+                    
+                    getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
+                    Scanner inputReader = new Scanner(runProcess.getInputStream());
+                    Scanner errorReader = new Scanner(runProcess.getErrorStream());
+
+                    new Thread(()->{
+                         String statusX = "No Errors";
+                         while(runProcess.isAlive()) {
+                              while(errorReader.hasNextLine()) {
+                                   if(!statusX.equals("Errors")) statusX = "Errors";
+                                   terminal.printText(errorReader.nextLine());
+                              }
+                         }
+                         terminal.printText("Program Execution finished with " + statusX);
+                         terminal.printText("---<>--------------------------------------<>---");
+                         errorReader.close();
+                    }).start();
+
+                    while(runProcess.isAlive()) {
+                         while(inputReader.hasNextLine()) {
+                              String data = inputReader.nextLine();
+                              terminal.printText(data);
+                         }
+                    }
+                    inputReader.close();
+                    runningApps.remove(runProcess);
+                    inputReader.close();
+                    errorReader.close();
+                    getScreen().getToolMenu().runComp.setClickable(true);
+                    Screen.getProjectView().reload();
+                    
+               }catch(Exception e){ e.printStackTrace(); }
+          }).start();
+     }
+
 	public void run() {
+          if(ide.Screen.getFileView().getProjectManager().non_java){
+               runNJ();
+               return;
+          }
 		new Thread(()->{
 			String mainClass = this.mainClass;
-			String mainClassPath = this.mainClassPath;
-
-			try
-			{
-				try
-				{
+			String mainClassPath = this.mainClassPath; 
+			try {
+				try {
 					if(printA != null)
 						getScreen().getOperationPanel().removeTab("Compilation");
 					getScreen().saveAllEditors();
@@ -390,7 +482,7 @@ public class RunView extends View{
 							terminal.printText(errorReader.nextLine());
 						}
 					}
-					terminal.printText("Program Execution finished with "+status);
+					terminal.printText("Program Execution finished with " + status);
 					errorReader.close();
 				}).start();
 
@@ -419,8 +511,7 @@ public class RunView extends View{
 		private Process runProcess;
 		private JScrollPane p;
 
-		public PrintArea(String title, Screen window) 
-		{
+		public PrintArea(String title, Screen window) {
 			setLayout(new BorderLayout());
 			setPreferredSize(getSize());
 			init();
@@ -449,8 +540,7 @@ public class RunView extends View{
 			super.setVisible(v);
 		}
 
-		public void setRunProcess(Process p)
-		{
+		public void setRunProcess(Process p) {
 			runProcess = p;
 		}
 
@@ -468,7 +558,9 @@ public class RunView extends View{
 		
 		public void launchAsTerminal() 		{
 			setAction(()->{
-				textArea.setText("Running......\""+mainClass+"\"\n");
+                    if(!ide.Screen.getFileView().getProjectManager().non_java){
+				     textArea.setText("Running......\""+mainClass+"\"\n");
+                    }
 				textArea.setEditable(false);
 				UIManager.setData(PrintArea.this);
 			});

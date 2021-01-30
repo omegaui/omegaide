@@ -15,6 +15,7 @@ package ide.utils;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import java.io.PrintWriter;
 import java.io.File;
 import java.util.LinkedList;
 
@@ -31,24 +32,29 @@ public class ProjectDataBase extends DataBase{
 	public String jdkPath;
 	public String mainClass;
      public File jdk;
+     public volatile boolean non_java;
 
-	public ProjectDataBase() {
-		super(Screen.getFileView().getProjectPath()+ File.separator + ".projectInfo");
-		jdkPath = null;
-		compile_time_args = "";
-		run_time_args = "";
-		load();
-	}
+     public ProjectDataBase() {
+          super(Screen.getFileView().getProjectPath() + File.separator + ".projectInfo");
+          jdkPath = null;
+          compile_time_args = "";
+          run_time_args = "";
+          non_java = false;
+          load();
+     }
 
 	public void load() {
 		jdkPath = getEntryAt("JDK Path", 0) != null ? getEntryAt("JDK Path", 0).getValue() : null;
 		compile_time_args = getEntryAt("Compile_Time", 0) != null ? getEntryAt("Compile_Time", 0).getValue() : "";
 		run_time_args = getEntryAt("Run_Time", 0) != null ? getEntryAt("Run_Time", 0).getValue() : "";
 		mainClass = getEntryAt("Main Class", 0) != null ? getEntryAt("Main Class", 0).getValue() : "";
-          jdk = new File(jdkPath != null ? jdkPath : "");
-		try {
-			Screen.getRunView().mainClass = mainClass;
-		}catch(Exception e) {}
+          non_java = getEntryAt("Non-Java Project", 0) != null ? getEntryAt("Non-Java Project", 0).getValueAsBoolean() : true;
+          if(!non_java) {
+               jdk = new File(jdkPath != null ? jdkPath : "");
+     		try {
+     			Screen.getRunView().mainClass = mainClass;
+     		}catch(Exception e) {}
+          }
 		LinkedList<DataEntry> entries = getEntries("Opened Editors");
 		if(entries == null) return;
 		for(DataEntry e : entries) {
@@ -65,6 +71,7 @@ public class ProjectDataBase extends DataBase{
 		addEntry("Compile_Time", compile_time_args);
 		addEntry("Run_Time", run_time_args);
 		addEntry("Main Class", Screen.getRunView().mainClass != null ? Screen.getRunView().mainClass : "");
+          addEntry("Non-Java Project", String.valueOf(non_java));
 		Screen.getFileView().getScreen().getTabPanel().getEditors().forEach(editor->{
 			if(editor.currentFile != null) {
 				addEntry("Opened Editors", editor.currentFile.getAbsolutePath());
@@ -82,6 +89,17 @@ public class ProjectDataBase extends DataBase{
 			readJDK(true);
 		}).start();
 	}
+
+     public static void genInfo(String projectPath, boolean non_java){
+     	try{
+               File file = new File(projectPath + File.separator + ".projectInfo");
+               if(file.exists()) return;
+     		PrintWriter writer = new PrintWriter(file);
+               writer.println(">Non-Java Project");
+               writer.println("-" + non_java);
+               writer.close();
+     	}catch(Exception e){ System.err.println(e); }
+     }
 
      public boolean jdkExists(){
      	return jdk.exists();

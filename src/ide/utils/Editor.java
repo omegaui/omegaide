@@ -183,8 +183,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PHP);
 		else if(f.getName().endsWith(".xml") || f.getName().endsWith(".fxml"))
 			e.setSyntaxEditingStyle(SYNTAX_STYLE_XML);
-		else if(f.getName().endsWith(".java"))
-			e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVA);
+          else if(f.getName().endsWith(".java"))
+               e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVA);
+          else if(f.getName().endsWith(".groovy"))
+               e.setSyntaxEditingStyle(SYNTAX_STYLE_GROOVY);
 		else if(f.getName().endsWith(".rs"))
 			e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVASCRIPT);
 		else if(f.getName().endsWith(".sh") || f.getName().endsWith(".run"))
@@ -400,13 +402,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                     if(!currentFile.delete()) {
                          printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
                     }
-     
                     else {
-                         printArea.print("Successfully Deleted "+currentFile.getName());
+                         printArea.print("Successfully Deleted " + currentFile.getName());
                          Screen.getProjectView().reload();
                          ImportManager.readSource(EditorTools.importManager);
                     }
-               }catch(Exception e) {System.err.println(e.getMessage());}
+               }catch(Exception e) {
+                    System.err.println(e);
+               }
           }).start();
 	}
 
@@ -455,13 +458,40 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                ctrl = false;
                shift = false;
           }
-               
+
+          if(code == KeyEvent.VK_TAB){
+               String codeX = getText();
+               codeX = codeX.substring(0, getCaretPosition());
+               int index = 0;
+               if(codeX.contains("\n")){
+                    index = codeX.lastIndexOf('\n') + 1;
+                    codeX = codeX.substring(index);
+               }
+               if(codeX.contains(";")){
+                    index = codeX.lastIndexOf(';') + 1;
+                    codeX = codeX.substring(codeX.lastIndexOf(';') + 1);
+               }
+               String cx = codeX;
+               if(codeX.startsWith(" ")) {
+                    index = codeX.lastIndexOf(' ') + 1;
+                    codeX = codeX.substring(codeX.lastIndexOf(' ') + 1);
+               }
+               if(codeX.startsWith("\t")) {
+                    index += codeX.lastIndexOf('\t') + 1;
+                    codeX = codeX.substring(codeX.lastIndexOf('\t') + 1);
+               }
+               if(SnippetBase.hasSnippet(codeX)){
+                    SnippetBase.insertSnippet(this, codeX, index = getCaretPosition() - codeX.length(), cx.substring(0, cx.indexOf(codeX)));
+                    e.consume();
+               }
+          }
+          if(code == KeyEvent.VK_BACK_SPACE)
+               autoSymbolExclusion(e);
+          else
+               autoSymbolCompletion(e);
+
 		if(currentFile != null) {
 			if(currentFile.getName().endsWith(".java")) {
-				if(code == KeyEvent.VK_BACK_SPACE)
-					autoSymbolExclusion(e);
-				else
-					autoSymbolCompletion(e);
                     
 				//Managing KeyBoard Shortcuts
                     if(ctrl && shift && o) {
@@ -506,33 +536,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                          ctrl = false;
                          shift = false;
                     }
-
-				if(code == KeyEvent.VK_TAB){
-					String codeX = getText();
-					codeX = codeX.substring(0, getCaretPosition());
-					int index = 0;
-					if(codeX.contains("\n")){
-						index = codeX.lastIndexOf('\n') + 1;
-						codeX = codeX.substring(index);
-					}
-					if(codeX.contains(";")){
-						index = codeX.lastIndexOf(';') + 1;
-						codeX = codeX.substring(codeX.lastIndexOf(';') + 1);
-					}
-					String cx = codeX;
-					if(codeX.startsWith(" ")) {
-						index = codeX.lastIndexOf(' ') + 1;
-						codeX = codeX.substring(codeX.lastIndexOf(' ') + 1);
-					}
-					if(codeX.startsWith("\t")) {
-						index += codeX.lastIndexOf('\t') + 1;
-						codeX = codeX.substring(codeX.lastIndexOf('\t') + 1);
-					}
-					if(SnippetBase.hasSnippet(codeX)){
-						SnippetBase.insertSnippet(this, codeX, index = getCaretPosition() - codeX.length(), cx.substring(0, cx.indexOf(codeX)));
-						e.consume();
-					}
-				}
 
 				if(contentWindow.isVisible()) {
 					if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END) {

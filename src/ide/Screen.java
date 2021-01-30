@@ -15,6 +15,7 @@ package ide;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import creator.Settings;
 import gset.Generator;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
@@ -46,6 +47,7 @@ import ide.utils.Editor;
 import ide.utils.RecentsManager;
 import ide.utils.ToolMenu;
 import ide.utils.UIManager;
+import ide.utils.ProjectDataBase;
 import ide.utils.systems.BuildView;
 import ide.utils.systems.EditorTools;
 import ide.utils.systems.FileView;
@@ -91,7 +93,8 @@ public class Screen extends JFrame {
      private static ChoiceDialog choiceDialog;
      private static ErrorHighlighter errorHighlighter;
 	private static ProjectView projectView;
-	private static settings.Screen settings;
+     private static settings.Screen settings;
+     private static Settings universalSettings;
 	private static PluginManager pluginManager;
 	private static PluginView pluginView;
 	private static PluginStore pluginStore;
@@ -191,6 +194,7 @@ public class Screen extends JFrame {
 
 		fileView = new FileView("File", this);
 		settings = new settings.Screen(this);
+          universalSettings = new Settings(this);
 		buildView = new BuildView("Build", this);
 		runView = new RunView("Run", this, true);
 		projectView = new ProjectView("Project", this);
@@ -287,6 +291,11 @@ public class Screen extends JFrame {
 		}).start();
 	}
 
+     public void manageTools(ProjectDataBase manager){
+          toolMenu.structureViewComp.setClickable(!manager.non_java);
+          toolMenu.asteriskComp.setClickable(!manager.non_java);
+     }
+
 	public static void setStatus(String status, int value) {
 		if(value != 100)
 			Screen.getScreen().getToolMenu().setMsg(status + " " + value + "%");
@@ -295,8 +304,7 @@ public class Screen extends JFrame {
 	}
 
 	@Override
-	public void paint(Graphics g)
-	{
+	public void paint(Graphics g) {
 		super.paint(g);
 		for(Component c : getComponents())
 			c.repaint();
@@ -352,20 +360,16 @@ public class Screen extends JFrame {
 
      public static void launchNewWindow(String projectPath){
      	Omega.IDE.main(null);
-          
      }
 
-	public void loadProject(File file)
-	{
+	public void loadProject(File file) {
 		fileView.saveAll();
 		fileView.setProjectPath(file.getAbsolutePath());
 		Screen.hideNotif();
 	}
 
-	public boolean isFileOpened(File file)
-	{
-		for(Editor e : tabPanel.getEditors())
-		{
+	public boolean isFileOpened(File file) {
+		for(Editor e : tabPanel.getEditors()) {
 			if(e.currentFile != null) {
 				if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath())){
 					return true;
@@ -375,8 +379,7 @@ public class Screen extends JFrame {
 		return false;
 	}
 
-	public String getPackName(File file)
-	{
+	public String getPackName(File file) {
 		String res = "";
 		boolean canRecord = false;
 		StringTokenizer tokenizer = new StringTokenizer(file.getAbsolutePath(), File.separator);
@@ -413,13 +416,11 @@ public class Screen extends JFrame {
 		return buildView;
 	}
 
-	public static RunView getRunView()
-	{
+	public static RunView getRunView() {
 		return runView;
 	}
 
-	public static ProjectView getProjectView()
-	{
+	public static ProjectView getProjectView() {
 		return projectView;
 	}
 
@@ -431,10 +432,14 @@ public class Screen extends JFrame {
 		return basicHighlight;
 	}
 
-	public static settings.Screen getSettingsView() {
-		return settings;
-	}
+     public static settings.Screen getSettingsView() {
+          return settings;
+     }
 
+     public static Settings getUniversalSettingsView() {
+          return universalSettings;
+     }
+     
 	public static Accessories getAccessories(){
 		return accessories;
 	}

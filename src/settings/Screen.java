@@ -71,7 +71,6 @@ public class Screen extends JDialog {
 
 	public LinkedList<JComponent> projectComps = new LinkedList<>();
 	public LinkedList<JComponent> ideComps = new LinkedList<>();
-
 	
 	//Temporary Changes
 	public volatile boolean realTime;
@@ -149,7 +148,6 @@ public class Screen extends JDialog {
 		projectComps.add(compileComp);
 
 		compileTimeField = new JTextField();
-		compileTimeField.setToolTipText("Only One Compile Time Argument Allowed starting with \'-\'");
 		compileTimeField.setBounds(100, 190, getWidth() - 100, 40);
 		compileTimeField.setFont(PX14);
 		add(compileTimeField);
@@ -165,7 +163,6 @@ public class Screen extends JDialog {
 		projectComps.add(runComp);
 
 		runTimeField = new JTextField();
-		runTimeField.setToolTipText("Only One Run Time Argument Allowed starting with \'-\'");
 		runTimeField.setBounds(100, 230, getWidth() - 100, 40);
 		runTimeField.setFont(PX14);
 		add(runTimeField);
@@ -311,6 +308,12 @@ public class Screen extends JDialog {
 	
 	@Override
 	public void setVisible(boolean value) {
+          boolean nj = ide.Screen.getFileView().getProjectManager().non_java;
+          javaComp.setClickable(!nj);
+          classPathComp.setClickable(!nj);
+          modulePathComp.setClickable(!nj);
+          jdkComp.setClickable(!nj);
+          asteriskComp.setClickable(!nj);
 		if(value) {
 			setView("PROJECT");
 		}

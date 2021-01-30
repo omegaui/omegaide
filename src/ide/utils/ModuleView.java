@@ -232,7 +232,9 @@ public class ModuleView extends JDialog{
 		}
 	}
 
+     @Override
 	public void setVisible(boolean value) {
+          if(Screen.getFileView().getProjectManager().non_java) return;
 		if(value && Screen.getFileView().getModuleManager() != null) {
 			read();
 		}

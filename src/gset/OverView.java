@@ -102,6 +102,7 @@ public class OverView extends JDialog{
      }
 
      public void genView(RSyntaxTextArea textArea){
+          if(ide.Screen.getFileView().getProjectManager().non_java) return;
           if(textArea == null) return;
           new Thread(()->{
                this.textArea = textArea;

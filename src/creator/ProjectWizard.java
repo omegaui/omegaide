@@ -1,4 +1,5 @@
 package creator;
+import java.lang.reflect.Member;
 /*
     This class creates the GUI of the Project Wizard.
     Copyright (C) 2021 Omega UI. All Rights Reserved.
@@ -61,6 +62,7 @@ import tabPane.IconManager;
 import ui.SDKSelector;
 public class ProjectWizard extends JDialog{
 	private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 18);
+     private TextComp rootBtn;
 	public ProjectWizard(JFrame f){
 		super(f, true);
 		setLayout(null);
@@ -84,7 +86,7 @@ public class ProjectWizard extends JDialog{
           projectNameField.setForeground(ide.utils.UIManager.c3);
 		add(projectNameField);
 
-		TextComp rootBtn = new TextComp(":", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
+		rootBtn = new TextComp(":", ide.utils.UIManager.c1, ide.utils.UIManager.c3, ide.utils.UIManager.c2, ()->{});
 		rootBtn.setBounds(projectNameField.getWidth(), 0, 40, 40);
 		rootBtn.setToolTipText("Choose Project Parent Folder e.g: user.home/Documents/Omega Projects");
           rootBtn.setRunnable(()->{
@@ -355,7 +357,7 @@ public class ProjectWizard extends JDialog{
 			file.mkdir();
 		else return false;
 		new File(file.getAbsolutePath() + File.separator + "bin").mkdir();
-		new File(file.getAbsolutePath() + File.separator +"out").mkdir();
+		new File(file.getAbsolutePath() + File.separator + "out").mkdir();
 		new File(file.getAbsolutePath() + File.separator + "src").mkdir();
 		new File(file.getAbsolutePath() + File.separator + "res").mkdir();
 		LinkedList<File> sources = new LinkedList<>();
@@ -378,6 +380,7 @@ public class ProjectWizard extends JDialog{
 			}
 		});
 		//Here Create the ProjectDataBaseSystem from ide.utils.ProjectDataBase
+          ProjectDataBase.genInfo(file.getAbsolutePath(), false);
 		ide.Screen.getScreen().loadProject(file);
 		DependencyManager depenManager = ide.Screen.getFileView().getDependencyManager();
 		NativesManager nativeManager = ide.Screen.getFileView().getNativesManager();
@@ -444,6 +447,14 @@ public class ProjectWizard extends JDialog{
 		setData(c);
 		return c;
 	}
+
+     @Override
+     public void setVisible(boolean value){
+          if(value){
+               rootBtn.setToolTipText(ide.utils.DataManager.getProjectsHome());
+          }
+     	super.setVisible(value);
+     }
 
 	protected class Member{
 		public String name;
