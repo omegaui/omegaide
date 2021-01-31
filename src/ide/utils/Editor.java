@@ -616,7 +616,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	//Managing Smart type code completion
-
 	private void autoSymbolExclusion(KeyEvent e) {
 		try {
 			switch(getText().charAt(getCaretPosition() - 1)) {
@@ -650,7 +649,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			switch (e.getKeyChar()) {
 			case '(':
 				if(getText().charAt(getCaretPosition()) != ')'){
-					System.out.println(getText().charAt(getCaretPosition()));
 					insert(")", getCaretPosition());
 					setCaretPosition(getCaretPosition() - 1);
 				}

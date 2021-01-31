@@ -74,19 +74,28 @@ public class BuildView extends View {
      public void compile(){
           new Thread(()->{
                String args = Screen.getFileView().getArgumentManager().compile_time_args;
+               printArea.setVisible(true);
+               printArea.clear();
+               printArea.print("Building Project...\n\"" + args + "\"");
+               getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+               if(args.trim().equals("")){
+                    printArea.print("\'No Compile Time Command Specified!!!\'");
+                    printArea.print("Click \"Settings\", then Click \"All Settings\"");
+                    printArea.print("And Specify the Compile Time Args or Command");
+                    return;
+               }
+               ide.Screen.getFileView().getArgumentManager().genLists();
                String compileDir = Screen.getFileView().getArgumentManager().compileDir;
                String[] arguments = convertToArray(args.trim());
                try{
                     getScreen().getToolMenu().buildComp.setClickable(false);
                     getScreen().getToolMenu().runComp.setClickable(false);
-                    printArea.setVisible(true);
-                    printArea.clear();
-                    printArea.print("Building Project...\n\"" + args + "\"");
                     String status = "Successfully";
                     
                     compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
                     printArea.setProcess(compileProcess);
-                    getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+                    printArea.clear();
+                    printArea.print("Building Project...\n\"" + args + "\"");
                     Scanner inputReader = new Scanner(compileProcess.getInputStream());
                     Scanner errorReader = new Scanner(compileProcess.getErrorStream());
                     while(compileProcess.isAlive()) {
@@ -149,6 +158,7 @@ public class BuildView extends View {
 			if(compileProcess.isAlive())
 				return;
 		}
+          getScreen().saveAllEditors();
           if(ide.Screen.getFileView().getProjectManager().non_java){
                compile();
                return;
@@ -156,7 +166,6 @@ public class BuildView extends View {
 		new Thread(()->{
 
 			try  {
-				getScreen().saveAllEditors();
 				createClassList();
 				if(classess.isEmpty())
 					return;
@@ -460,11 +469,15 @@ public class BuildView extends View {
 
 		public void setProcess(Process p) {
 			process = p;
-			textArea.setText("Building Project with JDK v" + JDKReader.version);
+               if(!Screen.getFileView().getProjectManager().non_java)
+			     textArea.setText("Building Project with JDK v" + JDKReader.version);
+               else
+                    textArea.setText("Building Project ...");
 		}
 
 		public void stopProcess() {
-			process.destroyForcibly();
+               if(process != null)
+			     process.destroyForcibly();
 		}
 
 		public String getText() {

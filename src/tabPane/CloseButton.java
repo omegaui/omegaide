@@ -193,6 +193,11 @@ public class CloseButton extends JComponent {
           if(!ext.contains("."))
                return "?";
 
+          if(ext.equals(".projectInfo") || ext.equals(".sources")|| ext.equals(".args") || ext.equals(".natives") || ext.equals(".dependencies") || ext.equals(".modules") || ext.equals(".ui") || ext.equals(".content") || ext.equals(".resources"))
+               return "IDE";
+          else if(ext.charAt(0) == '.')
+               return "DataFile";
+
 		ext = ext.substring(ext.lastIndexOf('.'));
 		
 		if(ext.equals(".java") || ext.equals(".class"))
@@ -213,8 +218,6 @@ public class CloseButton extends JComponent {
 			return "Xml";
 		else if(ext.equals(".dmg"))
 			return "Mac";
-		else if(ext.equals(".projectInfo") || ext.equals(".sources")|| ext.equals(".args") || ext.equals(".natives") || ext.equals(".dependencies") || ext.equals(".modules") || ext.equals(".ui") || ext.equals(".content") || ext.equals(".resources"))
-			return "IDE";
 		else if(ext.equals(".sh") || ext.equals(".run"))
 			return "Linux";
 		return "?";

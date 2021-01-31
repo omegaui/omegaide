@@ -1,4 +1,8 @@
 package creator;
+import java.awt.Dimension;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+import java.util.LinkedList;
 import java.io.File;
 import settings.comp.Comp;
 import javax.swing.JFileChooser;
@@ -17,11 +21,17 @@ public class Settings extends JDialog{
      public TextComp rtDirComp;
      public TextComp closeComp;
      public Comp applyComp;
+
+     private JPanel panel;
+     private JScrollPane scrollPane;
+     private LinkedList<ListComp> comps = new LinkedList<>();
+     private int block;
+     
      public Settings(Screen screen){
      	super(screen);
           setUndecorated(true);
           setLayout(null);
-          setSize(500, 160);
+          setSize(500, 360);
           setLocationRelativeTo(null);
           setDefaultCloseOperation(HIDE_ON_CLOSE);
           init();
@@ -68,6 +78,7 @@ public class Settings extends JDialog{
           add(runTimeField);
 
           JFileChooser fc = new JFileChooser();
+          fc.setMultiSelectionEnabled(false);
           fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
           fc.setDialogTitle("Select Working Directory");
           fc.setApproveButtonText("Select");
@@ -98,6 +109,11 @@ public class Settings extends JDialog{
           applyComp.setBounds(0, getHeight() - 40, getWidth(), 40);
           applyComp.setFont(PX18);
           add(applyComp);
+
+          scrollPane = new JScrollPane(panel = new JPanel(null));
+          scrollPane.setBounds(0, 120, getWidth(), getHeight() - 160);
+          panel.setBackground(c2);
+          add(scrollPane);
      }
 
      public void apply(){
@@ -105,7 +121,53 @@ public class Settings extends JDialog{
           Screen.getFileView().getArgumentManager().run_time_args = runTimeField.getText();
           Screen.getFileView().getArgumentManager().compileDir = ctDirComp.getToolTipText();
           Screen.getFileView().getArgumentManager().runDir = rtDirComp.getToolTipText();
+          Screen.getFileView().getArgumentManager().units.clear();
+          comps.forEach(c->{
+               if(c.isValidComp()){
+                    Screen.getFileView().getArgumentManager().units.add(c.genUnit());
+               }
+          });
           Screen.getFileView().getArgumentManager().save();
+     }
+
+     public void genFields(){
+          comps.forEach(panel::remove);
+          comps.clear();
+     	LinkedList<ListUnit> units = Screen.getFileView().getArgumentManager().units;
+          block = 0;
+          if(units.isEmpty()){
+               ListComp l = new ListComp(this::genNext);
+               l.setBounds(0, block, getWidth(), 40);
+               comps.add(l);
+               panel.add(l);
+               block += 40;
+          }
+          else{
+               units.forEach(u->{
+                    ListComp l = new ListComp(u, this::genNext);
+                    l.setBounds(0, block, getWidth(), 40);
+                    comps.add(l);
+                    panel.add(l);
+                    block += 40;
+               });
+          }
+          panel.setPreferredSize(new Dimension(500, block));
+          scrollPane.getVerticalScrollBar().setValue(0);
+          scrollPane.getVerticalScrollBar().setVisible(true);
+          panel.repaint();
+     }
+
+     public void genNext(){
+     	ListComp l = new ListComp(this::genNext);
+          l.setBounds(0, block, getWidth(), 40);
+          comps.add(l);
+          panel.add(l);
+          block += 40;
+          
+          panel.setPreferredSize(new Dimension(500, block));
+          scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+          scrollPane.getVerticalScrollBar().setVisible(true);
+          panel.repaint();
      }
 
      @Override
@@ -115,6 +177,7 @@ public class Settings extends JDialog{
                runTimeField.setText(Screen.getFileView().getArgumentManager().run_time_args);
                ctDirComp.setToolTipText(Screen.getFileView().getArgumentManager().compileDir.equals("") ? "Working Directory When Building" : Screen.getFileView().getArgumentManager().compileDir);
                rtDirComp.setToolTipText(Screen.getFileView().getArgumentManager().runDir.equals("") ? "Working Directory When Running" : Screen.getFileView().getArgumentManager().runDir);
+     	     genFields();
      	}
           super.setVisible(value);
      }

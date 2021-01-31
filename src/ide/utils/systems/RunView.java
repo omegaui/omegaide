@@ -105,55 +105,56 @@ public class RunView extends View{
 
      public void runNJ(){
      	new Thread(()->{
+               getScreen().getToolMenu().buildComp.setClickable(false);
+               getScreen().getToolMenu().runComp.setClickable(false);
                getScreen().getOperationPanel().removeTab("Build");
+               ide.Screen.getFileView().getArgumentManager().genLists();
                String args = Screen.getFileView().getArgumentManager().compile_time_args;
-               String compileDir = Screen.getFileView().getArgumentManager().compileDir;
-               
-               PrintArea printArea = new PrintArea("Build Output", getScreen());
-               String[] arguments = BuildView.convertToArray(args.trim());
-               try{
-                    getScreen().getToolMenu().buildComp.setClickable(false);
-                    getScreen().getToolMenu().runComp.setClickable(false);
-                    printArea.setVisible(true);
-                    printArea.printText("Building Project...\n\"" + args + "\"");
-                    String status = "Successfully";
-                    
-                    int percent = (int)Math.ceil(Math.random() * 70);
-                    Screen.setStatus("Building Project", percent);
-                    compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
-                    runningApps.add(compileProcess);
-                    printArea.setRunProcess(compileProcess);
-                    Scanner inputReader = new Scanner(compileProcess.getInputStream());
-                    Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-                    while(compileProcess.isAlive()) {
-                         while(inputReader.hasNextLine())
-                              printArea.printText(inputReader.nextLine());
-                         while(errorReader.hasNextLine()) {
-                              String line = errorReader.nextLine();
-                              printArea.printText(line);
+               if(!args.trim().equals("")){
+                    String compileDir = Screen.getFileView().getArgumentManager().compileDir;
+                    PrintArea printArea = new PrintArea("Build Output", getScreen());
+                    String[] arguments = BuildView.convertToArray(args.trim());
+                    try{
+                         printArea.setVisible(true);
+                         printArea.printText("Building Project...\n\"" + args + "\"");
+                         String status = "Successfully";
+                         
+                         int percent = (int)Math.ceil(Math.random() * 70);
+                         Screen.setStatus("Building Project", percent);
+                         compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
+                         runningApps.add(compileProcess);
+                         printArea.setRunProcess(compileProcess);
+                         Scanner inputReader = new Scanner(compileProcess.getInputStream());
+                         Scanner errorReader = new Scanner(compileProcess.getErrorStream());
+                         while(compileProcess.isAlive()) {
+                              while(inputReader.hasNextLine())
+                                   printArea.printText(inputReader.nextLine());
+                              while(errorReader.hasNextLine()) {
+                                   String line = errorReader.nextLine();
+                                   printArea.printText(line);
+                              }
                          }
-                    }
-                    inputReader.close();
-                    errorReader.close();
-                    if(compileProcess.exitValue() != 0)
-                         status = "with error(s)";
-                    printArea.printText("Compilation Completed " + status);
-                    getScreen().getToolMenu().buildComp.setClickable(true);
-                    getScreen().getToolMenu().runComp.setClickable(true);
-                    Screen.getProjectView().reload();
-                    if(compileProcess.exitValue() != 0){
-                         getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+                         inputReader.close();
+                         errorReader.close();
+                         if(compileProcess.exitValue() != 0)
+                              status = "with error(s)";
+                         printArea.printText("Compilation Completed " + status);
+                         getScreen().getToolMenu().buildComp.setClickable(true);
+                         getScreen().getToolMenu().runComp.setClickable(true);
+                         Screen.getProjectView().reload();
+                         if(compileProcess.exitValue() != 0){
+                              getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+                              compileProcess = null;
+                              return;
+                         }
                          compileProcess = null;
-                         return;
-                    }
-                    compileProcess = null;
-               }catch(Exception e){ System.err.println(e); }
+                    }catch(Exception e){ System.err.println(e); }
+               }
           
                Screen.setStatus("Running Project", 56);
-               args = Screen.getFileView().getArgumentManager().run_time_args;
-               String runDir = Screen.getFileView().getArgumentManager().runDir;
-               arguments = BuildView.convertToArray(args.trim());
                try{
+                    
+                    args = Screen.getFileView().getArgumentManager().run_time_args;
                     PrintArea terminal = new PrintArea("Terminal -Closing This Conlose will terminate Execution", getScreen());
                     terminal.printText("Running Project...\n\"" + args + "\"");
                     terminal.printText("");
@@ -163,16 +164,27 @@ public class RunView extends View{
                     String status = "Successfully";
                     
                     Screen.setStatus("Running Project", 100);
-                    Process runProcess = new ProcessBuilder(arguments).directory(new File(runDir)).start();
-                    terminal.setRunProcess(runProcess);
                     
-                    runningApps.add(runProcess);
                     String name = "Run";
                     int count = OperationPane.count(name);
                     if(count > -1)
                          name = name + " " + count;
                     
                     getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
+                    
+                    if(args.trim().equals("")){
+                         terminal.printText("\'No Run Time Command Specified!!!\'");
+                         terminal.printText("Click \"Settings\", then Click \"All Settings\"");
+                         terminal.printText("And Specify the Run Time Args or Command");
+                         return;
+                    }
+                    String runDir = Screen.getFileView().getArgumentManager().runDir;
+                    String[] arguments = BuildView.convertToArray(args.trim());
+                    Process runProcess = new ProcessBuilder(arguments).directory(new File(runDir)).start();
+                    terminal.setRunProcess(runProcess);
+                    
+                    runningApps.add(runProcess);
+                         
                     Scanner inputReader = new Scanner(runProcess.getInputStream());
                     Scanner errorReader = new Scanner(runProcess.getErrorStream());
 
@@ -207,6 +219,7 @@ public class RunView extends View{
      }
 
 	public void run() {
+          getScreen().saveAllEditors();
           if(ide.Screen.getFileView().getProjectManager().non_java){
                runNJ();
                return;
@@ -218,7 +231,6 @@ public class RunView extends View{
 				try {
 					if(printA != null)
 						getScreen().getOperationPanel().removeTab("Compilation");
-					getScreen().saveAllEditors();
 					Screen.getBuildView().createClassList();
 					if(Screen.getBuildView().classess.isEmpty())
 						return;
@@ -545,9 +557,10 @@ public class RunView extends View{
 		}
 
 		public void stopProcess() {
-			try {
-				runProcess.destroyForcibly();
-			}catch(Exception e) {}
+               if(runProcess != null){
+                    System.out.println("Destroying Application");
+     			runProcess.destroyForcibly();
+               }
 		}
 
 		@Override
