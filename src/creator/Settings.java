@@ -31,7 +31,7 @@ public class Settings extends JDialog{
      	super(screen);
           setUndecorated(true);
           setLayout(null);
-          setSize(500, 360);
+          setSize(540, 360);
           setLocationRelativeTo(null);
           setDefaultCloseOperation(HIDE_ON_CLOSE);
           init();
@@ -151,7 +151,7 @@ public class Settings extends JDialog{
                     block += 40;
                });
           }
-          panel.setPreferredSize(new Dimension(500, block));
+          panel.setPreferredSize(new Dimension(540, block));
           scrollPane.getVerticalScrollBar().setValue(0);
           scrollPane.getVerticalScrollBar().setVisible(true);
           panel.repaint();

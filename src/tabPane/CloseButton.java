@@ -187,7 +187,7 @@ public class CloseButton extends JComponent {
           if(ext.contains("Run("))
                return "JVM";
                
-          if(ext.contains("Run ") || ext.contains("Run"))
+          if(ext.contains("Run ") || ext.contains("Run") || ext.contains("Build"))
                return "IDE";
 
           if(!ext.contains("."))
@@ -195,8 +195,6 @@ public class CloseButton extends JComponent {
 
           if(ext.equals(".projectInfo") || ext.equals(".sources")|| ext.equals(".args") || ext.equals(".natives") || ext.equals(".dependencies") || ext.equals(".modules") || ext.equals(".ui") || ext.equals(".content") || ext.equals(".resources"))
                return "IDE";
-          else if(ext.charAt(0) == '.')
-               return "DataFile";
 
 		ext = ext.substring(ext.lastIndexOf('.'));
 		

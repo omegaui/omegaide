@@ -12,14 +12,16 @@ public class ListComp extends JComponent{
      private JTextField containerField;
      private TextComp rootComp;
      private TextComp chComp;
+     private TextComp surComp;
      private volatile boolean validComp = true;
+     private volatile boolean sur = true;
      public Runnable r;
      
      public ListComp(Runnable r){
           this.r = r;
           setBackground(c2);
           setLayout(null);
-          setPreferredSize(new Dimension(500, 40));
+          setPreferredSize(new Dimension(540, 40));
      	init();
      }
 
@@ -28,6 +30,9 @@ public class ListComp extends JComponent{
           extField.setText(unit.ext);
           containerField.setText(unit.container);
           rootComp.setToolTipText(unit.sourceDir);
+          surComp.setToolTipText(unit.sur ? "Click to do not surround file paths within \" double quotes" : "Click to surround file paths within \" double quotes");
+          surComp.setText(unit.sur ? "-\"" : "+\"");
+          sur = unit.sur;
      }
 
      public void init(){
@@ -52,6 +57,7 @@ public class ListComp extends JComponent{
           fc.setApproveButtonText("Select");
 
           rootComp = new TextComp(":", c1, c3, c2, ()->{
+               fc.setCurrentDirectory(new File(ide.Screen.getFileView().getProjectPath()));
                int res = fc.showOpenDialog(ListComp.this);
                if(res == JFileChooser.APPROVE_OPTION){
                     rootComp.setToolTipText(fc.getSelectedFile().getAbsolutePath());
@@ -73,6 +79,17 @@ public class ListComp extends JComponent{
           chComp.setFont(PX14);
           chComp.setArc(0, 0);
           add(chComp);
+
+          surComp = new TextComp("\"", "Click to surround file paths within \" double quotes", c1, c2, c3, ()->{});
+          surComp.setRunnable(()->{
+               sur = !sur;
+               surComp.setToolTipText(sur ? "Click to do not surround file paths within \" double quotes" : "Click to surround file paths within \" double quotes");
+               surComp.setText(sur ? "-\"" : "+\"");
+          });
+          surComp.setBounds(500, 0, 40, 40);
+          surComp.setFont(PX16);
+          surComp.setArc(0, 0);
+          add(surComp);
      }
 
      public String getExt(){
@@ -94,7 +111,11 @@ public class ListComp extends JComponent{
                     && new File(getSourceDir()).exists());
      }
 
+     public boolean surroundWithinDoubleQuotes(){
+     	return sur;
+     }
+
      public ListUnit genUnit(){
-     	return new ListUnit(extField.getText(), containerField.getText(), rootComp.getToolTipText());
+     	return new ListUnit(extField.getText(), containerField.getText(), rootComp.getToolTipText(), sur);
      }
 }

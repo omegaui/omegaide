@@ -30,11 +30,13 @@ public class ArgumentManager extends DataBase{
           LinkedList<DataEntry> extensions = getEntries("Extensions");
           LinkedList<DataEntry> containers = getEntries("Containers");
           LinkedList<DataEntry> sources = getEntries("Sources");
+          LinkedList<DataEntry> bounds = getEntries("Bounds Surrounded");
           if(extensions == null) return;
           for(int i = 0; i < extensions.size(); i++){
                units.add(new ListUnit(extensions.get(i).getValue(), 
                                       containers.get(i).getValue(), 
-                                      sources.get(i).getValue()));
+                                      sources.get(i).getValue(), 
+                                      bounds.get(i).getValueAsBoolean()));
           }
      }
 
@@ -43,15 +45,18 @@ public class ArgumentManager extends DataBase{
                LinkedList<File> files = new LinkedList<>();
                loadFiles(unit.ext, files, new File(unit.sourceDir));
                if(!files.isEmpty())
-                    writeList(unit.container, files);
+                    writeList(unit.container, files, unit.sur);
 	     });
      }
 
-     public void writeList(String name, LinkedList<File> files){
+     public void writeList(String name, LinkedList<File> files, boolean sur){
      	try{
      		PrintWriter writer = new PrintWriter(new File(Screen.getFileView().getProjectPath() + File.separator + name));
                files.forEach(file->{
-                    writer.println("\"" + file.getAbsolutePath() + "\"");
+                    if(sur)
+                         writer.println("\"" + file.getAbsolutePath() + "\"");
+                    else
+                         writer.println(file.getAbsolutePath());
                });
                writer.close();
      	}catch(Exception e){ System.err.println(e); }
@@ -79,6 +84,7 @@ public class ArgumentManager extends DataBase{
                updateEntry("Extensions", u.ext, i);
                updateEntry("Containers", u.container, i);
                updateEntry("Sources", u.sourceDir, i);
+               updateEntry("Bounds Surrounded", String.valueOf(u.sur), i);
           }
           super.save();
      }

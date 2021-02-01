@@ -84,39 +84,49 @@ public class BuildView extends View {
                     printArea.print("And Specify the Compile Time Args or Command");
                     return;
                }
+               getScreen().getToolMenu().buildComp.setClickable(false);
+               getScreen().getToolMenu().runComp.setClickable(false);
                ide.Screen.getFileView().getArgumentManager().genLists();
                String compileDir = Screen.getFileView().getArgumentManager().compileDir;
-               String[] arguments = convertToArray(args.trim());
-               try{
-                    getScreen().getToolMenu().buildComp.setClickable(false);
-                    getScreen().getToolMenu().runComp.setClickable(false);
-                    String status = "Successfully";
+               String shell = "bash";
+               if(ide.Screen.PATH_SEPARATOR.equals("\\"))
+                    shell = "cmd.exe";
+               try {
+                    Process compileInShell = new ProcessBuilder(shell).directory(new File(compileDir)).start();
+                    Scanner errorReader = new Scanner(compileInShell.getErrorStream());
+                    Scanner inputReader = new Scanner(compileInShell.getInputStream());
+                    printArea.setProcess(compileInShell);
+                    printArea.print("Running ... " + args + " ...Directly in your shell!");
                     
-                    compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
-                    printArea.setProcess(compileProcess);
-                    printArea.clear();
-                    printArea.print("Building Project...\n\"" + args + "\"");
-                    Scanner inputReader = new Scanner(compileProcess.getInputStream());
-                    Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-                    while(compileProcess.isAlive()) {
-                         while(inputReader.hasNextLine())
-                              printArea.print(inputReader.nextLine());
-                         while(errorReader.hasNextLine()) {
-                              String line = errorReader.nextLine();
-                              printArea.print(line);
+                    PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
+                    writer.println(args);
+                    writer.println("exit");
+                    writer.close();
+                    
+                    new Thread(()->{
+                         String statusX = "No Errors";
+                         while(compileInShell.isAlive()) {
+                              while(errorReader.hasNextLine()) {
+                                   statusX = "Errors";
+                                   printArea.print(errorReader.nextLine());
+                              }
+                         }
+                         printArea.print("Compilation finished with \"" + statusX + "\"");
+                         errorReader.close();
+                    }).start();
+
+                    while(compileInShell.isAlive()) {
+                         while(inputReader.hasNextLine()) {
+                              String data = inputReader.nextLine();
+                              printArea.print(data);
                          }
                     }
                     inputReader.close();
                     errorReader.close();
-                    if(compileProcess.exitValue() != 0)
-                         status = "with error(s)";
-                    printArea.print("Compilation Completed " + status);
-                    compileProcess = null;
-                    getScreen().getToolMenu().buildComp.setClickable(true);
-                    getScreen().getToolMenu().runComp.setClickable(true);
-                    Screen.getProjectView().reload();
-                    
-               }catch(Exception e){ System.err.println(e); }
+               }catch(Exception e){  }
+               getScreen().getToolMenu().buildComp.setClickable(true);
+               getScreen().getToolMenu().runComp.setClickable(true);
+               getScreen().getProjectView().reload();
           }).start();
      }
 
@@ -127,14 +137,14 @@ public class BuildView extends View {
           boolean strRec = false;
      	for(int i = 0; i < args.length(); i++){
                char ch = args.charAt(i);
-     		if(!canRecord && (Character.isLetter(ch) || ch == '-')){
+     		if(!canRecord && (Character.isLetterOrDigit(ch) || "@-\"".contains(ch + ""))){
                     token = "";
                     canRecord = true;
      		}
                if(ch == '\"' && !strRec){
                     strRec = true;
                }
-               else if(strRec){
+               else if(ch == '\"' && strRec){
                     strRec = false;
                }
                if(ch == ' ' && !strRec){

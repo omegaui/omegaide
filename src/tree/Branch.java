@@ -99,6 +99,8 @@ public class Branch extends JComponent{
 					|| file.getName().endsWith(".snippets") || file.getName().endsWith(".args")){
 				type = "IDE";
 			}
+               else if(file.getName().startsWith("."))
+                    type = "File";
 			else if(file.getName().endsWith(".js") || file.getName().endsWith(".html")){
 				setForeground(WEB_COLOR);
 				type = "Web";

@@ -51,7 +51,8 @@ public class RunView extends View{
 	public volatile String mainClass = "";
 	public static String NATIVE_PATH = "";
 	public volatile LinkedList<Process> runningApps = new LinkedList<>();
-	private static volatile String errorlog = "";
+	private static String errorlog = "";
+     private String statusX = "";
 	private static PrintArea printA;
 	private Process compileProcess = null;
 	private Process runProcess = null;
@@ -110,60 +111,73 @@ public class RunView extends View{
                getScreen().getOperationPanel().removeTab("Build");
                ide.Screen.getFileView().getArgumentManager().genLists();
                String args = Screen.getFileView().getArgumentManager().compile_time_args;
+               String shell = "bash";
+               if(ide.Screen.PATH_SEPARATOR.equals("\\"))
+                    shell = "cmd.exe";
                if(!args.trim().equals("")){
+                    Screen.setStatus("Building Project", 45);
                     String compileDir = Screen.getFileView().getArgumentManager().compileDir;
                     PrintArea printArea = new PrintArea("Build Output", getScreen());
-                    String[] arguments = BuildView.convertToArray(args.trim());
-                    try{
-                         printArea.setVisible(true);
-                         printArea.printText("Building Project...\n\"" + args + "\"");
-                         String status = "Successfully";
+                    try {
+                         Process compileInShell = new ProcessBuilder(shell).directory(new File(compileDir)).start();
+                         Scanner errorReader = new Scanner(compileInShell.getErrorStream());
+                         Scanner inputReader = new Scanner(compileInShell.getInputStream());
+                         printArea.setRunProcess(compileInShell);
+                         printArea.printText("Building Project ...");
+                         printArea.printText("Running ... " + args + " ...Directly in your shell!");
+     
+                         runningApps.add(compileInShell);
                          
-                         int percent = (int)Math.ceil(Math.random() * 70);
-                         Screen.setStatus("Building Project", percent);
-                         compileProcess = new ProcessBuilder(arguments).directory(new File(compileDir)).start();
-                         runningApps.add(compileProcess);
-                         printArea.setRunProcess(compileProcess);
-                         Scanner inputReader = new Scanner(compileProcess.getInputStream());
-                         Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-                         while(compileProcess.isAlive()) {
-                              while(inputReader.hasNextLine())
-                                   printArea.printText(inputReader.nextLine());
-                              while(errorReader.hasNextLine()) {
-                                   String line = errorReader.nextLine();
-                                   printArea.printText(line);
+                         Screen.setStatus("Building Project", 67);
+                         PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
+                         writer.println(args);
+                         writer.println("exit");
+                         writer.close();
+                         
+                         new Thread(()->{
+                              statusX = "No Errors";
+                              while(compileInShell.isAlive()) {
+                                   while(errorReader.hasNextLine()) {
+                                        statusX = "Errors";
+                                        printArea.printText(errorReader.nextLine());
+                                   }
+                              }
+                              if(!statusX.contains("No")){
+                                   getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+                              }
+                              printArea.printText("Compilation finished with \"" + statusX + "\"");
+                              errorReader.close();
+                         }).start();
+     
+                         while(compileInShell.isAlive()) {
+                              while(inputReader.hasNextLine()) {
+                                   String data = inputReader.nextLine();
+                                   printArea.printText(data);
                               }
                          }
                          inputReader.close();
                          errorReader.close();
-                         if(compileProcess.exitValue() != 0)
-                              status = "with error(s)";
-                         printArea.printText("Compilation Completed " + status);
-                         getScreen().getToolMenu().buildComp.setClickable(true);
-                         getScreen().getToolMenu().runComp.setClickable(true);
-                         Screen.getProjectView().reload();
-                         if(compileProcess.exitValue() != 0){
-                              getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
-                              compileProcess = null;
+                         Screen.setStatus("Building Project", 100);
+                         if(!statusX.contains("No")){
+                              getScreen().getToolMenu().buildComp.setClickable(true);
+                              getScreen().getToolMenu().runComp.setClickable(true);
                               return;
                          }
-                         compileProcess = null;
                     }catch(Exception e){ System.err.println(e); }
                }
+               
+               getScreen().getToolMenu().buildComp.setClickable(true);
           
                Screen.setStatus("Running Project", 56);
                try{
-                    
                     args = Screen.getFileView().getArgumentManager().run_time_args;
                     PrintArea terminal = new PrintArea("Terminal -Closing This Conlose will terminate Execution", getScreen());
-                    terminal.printText("Running Project...\n\"" + args + "\"");
+                    terminal.printText("Running Project...\n" + args );
                     terminal.printText("");
                     terminal.printText("---<>--------------------------------------<>---");
                     terminal.launchAsTerminal();
                     terminal.setVisible(true);
                     String status = "Successfully";
-                    
-                    Screen.setStatus("Running Project", 100);
                     
                     String name = "Run";
                     int count = OperationPane.count(name);
@@ -179,14 +193,20 @@ public class RunView extends View{
                          return;
                     }
                     String runDir = Screen.getFileView().getArgumentManager().runDir;
-                    String[] arguments = BuildView.convertToArray(args.trim());
-                    Process runProcess = new ProcessBuilder(arguments).directory(new File(runDir)).start();
-                    terminal.setRunProcess(runProcess);
                     
+                    Process runProcess = new ProcessBuilder(shell).directory(new File(runDir)).start();
+                    terminal.setRunProcess(runProcess);
+
                     runningApps.add(runProcess);
-                         
+                    
                     Scanner inputReader = new Scanner(runProcess.getInputStream());
                     Scanner errorReader = new Scanner(runProcess.getErrorStream());
+                    PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
+                    writer.println(args);
+                    writer.flush();
+                    
+                    Screen.setStatus("Running Project", 100);
+                    getScreen().getToolMenu().runComp.setClickable(true);
 
                     new Thread(()->{
                          String statusX = "No Errors";
@@ -211,9 +231,7 @@ public class RunView extends View{
                     runningApps.remove(runProcess);
                     inputReader.close();
                     errorReader.close();
-                    getScreen().getToolMenu().runComp.setClickable(true);
                     Screen.getProjectView().reload();
-                    
                }catch(Exception e){ e.printStackTrace(); }
           }).start();
      }
@@ -253,10 +271,10 @@ public class RunView extends View{
 						for(String d : Screen.getFileView().getDependencyManager().dependencies) {
 							depenPath += d + ide.Screen.PATH_SEPARATOR;
 						}
-						if(!depenPath.equals("")) {
-							depenPath = depenPath.substring(0, depenPath.length() - 1);
-						}
 					}
+                         if(!depenPath.equals("")) {
+                              depenPath = depenPath.substring(0, depenPath.length() - 1);
+                         }
 					cmd  += " " + Screen.getFileView().getProjectManager().compile_time_args;
 					if(jdkPath != null && new File(jdkPath).exists())
 						cmd = jdkPath + "javac";
@@ -394,6 +412,7 @@ public class RunView extends View{
 				if(!depenPath.equals("")) {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
+                    System.out.println(depenPath);
 				PrintArea terminal = new PrintArea("Terminal "+mainClass+"-Closing This Conlose will terminate Execution", getScreen());
 				terminal.printText("running \""+mainClass+"\" with JDK v" + JDKReader.version);
 				terminal.printText("");
@@ -407,6 +426,7 @@ public class RunView extends View{
 					cmd = jdkPath + File.separator + "bin" + File.separator + "java";
 				else
 					cmd = "java" + cmd;
+                     
 				if(depenPath != null && !depenPath.equals("")) {
 					if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
 						if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
@@ -415,14 +435,14 @@ public class RunView extends View{
 									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
 									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
 									"-Djava.library.path="+NATIVE_PATH+"", Screen.getFileView().getProjectManager().run_time_args, mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
 									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".", 
 									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
 									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
 									"-Djava.library.path="+NATIVE_PATH+"", mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}
 					}
 					else {
@@ -430,11 +450,11 @@ public class RunView extends View{
 							runProcess = new ProcessBuilder(
 									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".", "-Djava.library.path="+NATIVE_PATH+"", 
 									Screen.getFileView().getProjectManager().run_time_args, mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
 									cmd, "-classpath", depenPath + ide.Screen.PATH_SEPARATOR + ".", "-Djava.library.path="+NATIVE_PATH+"", mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}
 					}
 				}
@@ -447,7 +467,7 @@ public class RunView extends View{
 									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
 									"-Djava.library.path=\""+NATIVE_PATH+"\"", 
 									Screen.getFileView().getProjectManager().run_time_args, mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
 									cmd, 
@@ -462,11 +482,11 @@ public class RunView extends View{
 							runProcess = new ProcessBuilder(
 									cmd, "-Djava.library.path=\""+NATIVE_PATH+"\"", 
 									Screen.getFileView().getProjectManager().run_time_args, mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
 									cmd, "-Djava.library.path=\""+NATIVE_PATH+"\"", mainClass
-									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}
 					}
 				}
@@ -529,8 +549,7 @@ public class RunView extends View{
 			init();
 		}
 
-		private void init()
-		{
+		private void init() {
 			textArea = new RSyntaxTextArea("......................");
 			textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
 			textArea.setAutoscrolls(true);
@@ -558,7 +577,6 @@ public class RunView extends View{
 
 		public void stopProcess() {
                if(runProcess != null){
-                    System.out.println("Destroying Application");
      			runProcess.destroyForcibly();
                }
 		}
