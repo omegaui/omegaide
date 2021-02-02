@@ -203,7 +203,8 @@ public class RunView extends View{
                     Scanner errorReader = new Scanner(runProcess.getErrorStream());
                     PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
                     writer.println(args);
-                    writer.close();
+                    writer.println("exit");
+                    writer.flush();
                     
                     Screen.setStatus("Running Project", 100);
                     getScreen().getToolMenu().runComp.setClickable(true);
