@@ -1,6 +1,6 @@
 package deassembler;
 /*
-    The Content Asisst Window.
+    The Content Asisst Window (Content Panel inside the Editor)
     Copyright (C) 2021 Omega UI. All Rights Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -46,6 +46,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 	public ContentWindow() {
 		super(new BorderLayout());
           setSize(600, 200);
+          setVisible(false);
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -128,7 +129,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		}catch(Exception ex) {System.out.println(ex.getMessage()); setVisible(false);}
 	}
 	
-	public static void sort(LinkedList<DataMember> dataMembers) {
+	public synchronized static void sort(LinkedList<DataMember> dataMembers) {
 		Object[] members = dataMembers.toArray();
 		LinkedList<DataMember> vars = new LinkedList<>();
 		LinkedList<DataMember> meths = new LinkedList<>();

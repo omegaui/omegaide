@@ -111,7 +111,7 @@ public class RunView extends View{
                getScreen().getOperationPanel().removeTab("Build");
                ide.Screen.getFileView().getArgumentManager().genLists();
                String args = Screen.getFileView().getArgumentManager().compile_time_args;
-               String shell = "bash";
+               String shell = "sh";
                if(ide.Screen.PATH_SEPARATOR.equals("\\"))
                     shell = "cmd.exe";
                if(!args.trim().equals("")){
@@ -124,14 +124,13 @@ public class RunView extends View{
                          Scanner inputReader = new Scanner(compileInShell.getInputStream());
                          printArea.setRunProcess(compileInShell);
                          printArea.printText("Building Project ...");
-                         printArea.printText("Running ... " + args + " ...Directly in your shell!");
+                         printArea.printText("Running ... " + args + " ... Directly in your shell!");
      
                          runningApps.add(compileInShell);
                          
                          Screen.setStatus("Building Project", 67);
                          PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
                          writer.println(args);
-                         writer.println("exit");
                          writer.close();
                          
                          new Thread(()->{
@@ -167,13 +166,15 @@ public class RunView extends View{
                }
                
                getScreen().getToolMenu().buildComp.setClickable(true);
-          
+               
                Screen.setStatus("Running Project", 56);
                try{
                     args = Screen.getFileView().getArgumentManager().run_time_args;
                     PrintArea terminal = new PrintArea("Terminal -Closing This Conlose will terminate Execution", getScreen());
                     terminal.printText("Running Project...\n" + args );
                     terminal.printText("");
+                    terminal.printText("If your application does terminates on its own or by pressing the \'x\' button (on left)");
+                    terminal.printText("Then, In that case you need to manually close it.");
                     terminal.printText("---<>--------------------------------------<>---");
                     terminal.launchAsTerminal();
                     terminal.setVisible(true);
@@ -183,8 +184,6 @@ public class RunView extends View{
                     int count = OperationPane.count(name);
                     if(count > -1)
                          name = name + " " + count;
-                    
-                    getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
                     
                     if(args.trim().equals("")){
                          terminal.printText("\'No Run Time Command Specified!!!\'");
@@ -196,6 +195,7 @@ public class RunView extends View{
                     
                     Process runProcess = new ProcessBuilder(shell).directory(new File(runDir)).start();
                     terminal.setRunProcess(runProcess);
+                    getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
 
                     runningApps.add(runProcess);
                     
@@ -203,7 +203,7 @@ public class RunView extends View{
                     Scanner errorReader = new Scanner(runProcess.getErrorStream());
                     PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
                     writer.println(args);
-                    writer.flush();
+                    writer.close();
                     
                     Screen.setStatus("Running Project", 100);
                     getScreen().getToolMenu().runComp.setClickable(true);
@@ -576,8 +576,10 @@ public class RunView extends View{
 		}
 
 		public void stopProcess() {
-               if(runProcess != null){
-     			runProcess.destroyForcibly();
+               if(runProcess != null && runProcess.isAlive()) {
+                    runProcess.destroyForcibly();
+                    runProcess.destroyForcibly();
+                    printText("\'Destroy Command Sent\' to process id \"" + runProcess.pid() + "\"");
                }
 		}
 
@@ -589,22 +591,16 @@ public class RunView extends View{
 		
 		public void launchAsTerminal() 		{
 			setAction(()->{
-                    if(!ide.Screen.getFileView().getProjectManager().non_java){
-				     textArea.setText("Running......\""+mainClass+"\"\n");
-                    }
 				textArea.setEditable(false);
 				UIManager.setData(PrintArea.this);
 			});
 			JTextField inputField = new JTextField();
 			inputField.setText("Input? From Here");
 			inputField.addActionListener((e)->{
-
 				if(runProcess == null)
 					return;
 				else if(!runProcess.isAlive())
 					return;
-
-				System.out.println("\""+inputField.getText()+"\"");
 				try {						
 					PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
 					writer.println(inputField.getText());

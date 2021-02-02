@@ -16,28 +16,76 @@ package deassembler;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+import ide.Screen;
+
+import java.util.StringTokenizer;
 import java.util.LinkedList;
 
 import ide.utils.Editor;
 
 public class ContentTokenizer {
+     public static void arrangeTokens(Editor e, String text){
+          if(text.trim().equals("")) {
+               e.contentWindow.setVisible(false);
+               return;
+          }
+     	StringTokenizer tok = new StringTokenizer(e.getText(), "`1234567890-=[\\;\',./]~!@#$%^&*()_+{}|:\"<>?)\n ");
+          
+          LinkedList<DataMember> dataMembers = new LinkedList<>();
+          LinkedList<DataMember> tokens = new LinkedList<>();
+          while(tok.hasMoreTokens()){
+               final String token = tok.nextToken().trim();
+               if(token.equals("") || !token.startsWith(text) || token.equals(text)) continue;
+               DataMember d = new DataMember("", "", "", token, null){
+                    @Override
+                    public String getRepresentableValue(){
+                         return token;
+                    }
+               };
+               tokens.add(d);
+          }
+          
+          ContentWindow.sort(tokens);
+          main:
+               for(DataMember token : tokens){
+                    for(DataMember dx : dataMembers){
+                         if(dx.name.equals(token.name))
+                              continue main;
+                    }
+                    dataMembers.add(token);
+               }
+          tokens.clear();
+          
+          if(!dataMembers.isEmpty())
+               CodeFramework.gen(dataMembers, e);
+          else 
+               e.contentWindow.setVisible(false);
+     }
+     
 	public static void arrangeTokens(Editor e) {
+          if(Screen.getFileView().getProjectManager().non_java){
+               arrangeTokens(e, CodeFramework.getLastCodeIgnoreDot(e.getText(), e.getCaretPosition()));
+               return;
+          }
 		String text = CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition());
 		if(text != null && !text.trim().equals("\n") && !text.trim().equals("")) {
 			SourceReader reader = new SourceReader(e.getText());
                LinkedList<DataMember> dataMembers = new LinkedList<>();
                //Searching whether you need Class names as suggestion
                LinkedList<SourceReader.Import> imports = new LinkedList<>();
+               
                main:
-               for(SourceReader.Import im : reader.imports){
-                    if(!im.isStatic && im.name.startsWith(text)){
-                         for(SourceReader.Import x : imports){
-                              if(x.get().equals(im.get()))
-                                   continue main;
+                    for(SourceReader.Import im : reader.imports){
+                         if(!im.isStatic && im.name.startsWith(text)){
+                              for(SourceReader.Import x : imports){
+                                   if(x.get().equals(im.get()))
+                                        continue main;
+                              }
+                              imports.add(im);
                          }
-                         imports.add(im);
                     }
-               }
+               
                SourceReader.Import[] I = new SourceReader.Import[imports.size()];
                int k = 0;
                for(SourceReader.Import im : imports)

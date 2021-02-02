@@ -490,76 +490,74 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
           else
                autoSymbolCompletion(e);
 
-		if(currentFile != null) {
-			if(currentFile.getName().endsWith(".java")) {
-                    
-				//Managing KeyBoard Shortcuts
-                    if(ctrl && shift && o) {
-                         ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
-                         o = false;
-                         ctrl = false;
-                         shift = false;
-                    }
-                    
-                    if(ctrl && shift && g) {
-                         Generator.gsView.genView(this);
-                         g = false;
-                         ctrl = false;
-                         shift = false;
-                    }
-                    
-                    if(ctrl && shift && i) {
-                         Generator.overView.genView(this);
-                         i = false;
-                         ctrl = false;
-                         shift = false;
-                    }
+          if(ctrl && r && screen.getToolMenu().buildComp.isClickable()){
+               Screen.getRunView().run();
+               r = false;
+               ctrl = false;
+               shift = false;
+          }
 
-                    if(ctrl && shift && r && currentFile != null && screen.getToolMenu().buildComp.isClickable()){
-                         Screen.getRunView().setMainClassPath(currentFile.getAbsolutePath());
-                         Screen.getRunView().run();
-                         r = false;
-                         ctrl = false;
-                         shift = false;
-                    }
-          
-                    if(ctrl && r && screen.getToolMenu().buildComp.isClickable()){
-                         Screen.getRunView().run();
-                         r = false;
-                         ctrl = false;
-                         shift = false;
-                    }
-          
-                    if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
-                         Screen.getBuildView().compileProject();
-                         b = false;
-                         ctrl = false;
-                         shift = false;
-                    }
+          if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
+               Screen.getBuildView().compileProject();
+               b = false;
+               ctrl = false;
+               shift = false;
+          }
 
-				if(contentWindow.isVisible()) {
-					if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END) {
+		if(currentFile != null) {                    
+			//Managing KeyBoard Shortcuts
+               if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
+                    ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
+                    o = false;
+                    ctrl = false;
+                    shift = false;
+               }
+               
+               if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
+                    Generator.gsView.genView(this);
+                    g = false;
+                    ctrl = false;
+                    shift = false;
+               }
+               
+               if(ctrl && shift && i && currentFile.getName().endsWith(".java")) {
+                    Generator.overView.genView(this);
+                    i = false;
+                    ctrl = false;
+                    shift = false;
+               }
+
+               if(ctrl && shift && r && currentFile != null && screen.getToolMenu().buildComp.isClickable() && currentFile.getName().endsWith(".java")){
+                    Screen.getRunView().setMainClassPath(currentFile.getAbsolutePath());
+                    Screen.getRunView().run();
+                    r = false;
+                    ctrl = false;
+                    shift = false;
+               }
+
+			if(contentWindow.isVisible()) {
+				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END) {
+					contentWindow.setVisible(false);
+					return;
+				}
+				if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if(DataManager.isContentAssistRealTime())
+						call = true;
+					return;
+				}
+                    if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                         contentWindow.setVisible(false);
+                         return;
+                    }
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if((contentWindow.pointer == 0 && e.getKeyCode() == KeyEvent.VK_UP) || (contentWindow.pointer == contentWindow.max && e.getKeyCode() == KeyEvent.VK_DOWN)) {
 						contentWindow.setVisible(false);
 						return;
 					}
-					if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-						if(DataManager.isContentAssistRealTime())
-							call = true;
-						return;
-					}
-                         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-                              contentWindow.setVisible(false);
-                              return;
-                         }
-					if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if((contentWindow.pointer == 0 && e.getKeyCode() == KeyEvent.VK_UP) || (contentWindow.pointer == contentWindow.max && e.getKeyCode() == KeyEvent.VK_DOWN)) {
-							contentWindow.setVisible(false);
-							return;
-						}
-						e.consume();
-					}
+					e.consume();
 				}
 			}
+		
 		}
 	}
 
@@ -595,17 +593,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                i = false;
 
 		if(currentFile != null) {
-			if(currentFile.getName().endsWith(".java")) {
-				if(!screen.isVisible()) {
-					return;
-				}
-                   
-				//Code Assist
-				char c = e.getKeyChar();
-				if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
-					if(DataManager.isContentAssistRealTime())
-						call = true;
-				}
+			if(!screen.isVisible()) {
+				return;
+			}
+              
+			//Code Assist
+			char c = e.getKeyChar();
+			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
+				if(DataManager.isContentAssistRealTime())
+					call = true;
 			}
 		}
 	}

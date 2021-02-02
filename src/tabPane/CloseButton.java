@@ -203,7 +203,7 @@ public class CloseButton extends JComponent {
           else if(ext.equals(".py"))
                return "Py";
           else if(ext.equals(".groovy"))
-               return "*G*";
+               return "G";
 		else if(ext.equals(".js") || ext.equals(".html"))
 			return "Web";
 		else if(ext.equals(".rs"))
