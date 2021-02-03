@@ -141,9 +141,9 @@ public class Startup extends JDialog {
           if(!f.exists())
                f.mkdir();
      	if(!new File(".omega-ide" + File.separator + ".firststartup").exists()){
-               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui");
-               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences");
-               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences", ".omega-ide/.preferences");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets", ".omega-ide/.snippets");
           }
      }
 }

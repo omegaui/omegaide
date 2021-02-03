@@ -98,11 +98,11 @@ public class UIManager extends DataBase {
 		super.save();
 	}
 
-     public static File loadDefaultFile(String name){
-          File file = new File(name);
+     public static File loadDefaultFile(String fileName, String resName){
+          File file = new File(fileName);
      	try{
                if(file.exists()) return file;
-               InputStream in = UIManager.class.getResourceAsStream("/" + name);
+               InputStream in = UIManager.class.getResourceAsStream("/" + resName);
                OutputStream out = new FileOutputStream(file);
                while(in.available() > 0)
                     out.write(in.read());
@@ -114,7 +114,6 @@ public class UIManager extends DataBase {
 	
 	public static boolean isDarkMode() {
           return DataManager.getTheme().equals("dark");
-		//return ((Color)javax.swing.UIManager.get("Button.background")).getRed() <= 62;
 	}
 
 	public static void setFontName(String fontName) {

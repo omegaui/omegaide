@@ -21,7 +21,7 @@ import java.awt.Desktop;
 public class Manuals {
      public static final void showBasicManual(){
      	try{
-               Desktop.getDesktop().open(UIManager.loadDefaultFile(".omega-ide" + File.separator + "Basic Manual.pdf"));
+               Desktop.getDesktop().open(UIManager.loadDefaultFile(".omega-ide" + File.separator + "Basic Manual.pdf", ".omega-ide/Basic Manual.pdf"));
      	}catch(Exception e){ System.err.println(e); }
      }
 }

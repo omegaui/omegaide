@@ -279,6 +279,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			paint(image.getGraphics() != null ? image.createGraphics() : image.getGraphics());
 			String path = Screen.getFileView().getProjectPath();
+               new File(Screen.getFileView().getProjectPath() + File.separator + "out").mkdir();
 			path += File.separator + "out" + File.separator + currentFile.getName() + "_lines_" + getLineCount() + ".jpg";
 			if(ImageIO.write(image, "JPG", new File(path))) {
 				Screen.getProjectView().reload();
@@ -416,7 +417,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void keyPressed(KeyEvent e) {
           int code = e.getKeyCode();
-          
+          System.out.println(KeyEvent.getKeyText(code));
           if(code == KeyEvent.VK_CONTROL)
                ctrl = true;
           else if(code == KeyEvent.VK_SHIFT)
@@ -448,6 +449,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
           if(ctrl && s){
                saveCurrentFile();
                s = false;
+               ctrl = false;
+               shift = false;
+          }
+
+          if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
+               Screen.getBuildView().compileProject();
+               b = false;
                ctrl = false;
                shift = false;
           }
@@ -490,20 +498,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
           else
                autoSymbolCompletion(e);
 
-          if(ctrl && r && screen.getToolMenu().buildComp.isClickable()){
-               Screen.getRunView().run();
-               r = false;
-               ctrl = false;
-               shift = false;
-          }
-
-          if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
-               Screen.getBuildView().compileProject();
-               b = false;
-               ctrl = false;
-               shift = false;
-          }
-
 		if(currentFile != null) {                    
 			//Managing KeyBoard Shortcuts
                if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
@@ -527,8 +521,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                     shift = false;
                }
 
-               if(ctrl && shift && r && currentFile != null && screen.getToolMenu().buildComp.isClickable() && currentFile.getName().endsWith(".java")){
-                    Screen.getRunView().setMainClassPath(currentFile.getAbsolutePath());
+               if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
                     Screen.getRunView().run();
                     r = false;
                     ctrl = false;
@@ -596,7 +589,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(!screen.isVisible()) {
 				return;
 			}
-              
 			//Code Assist
 			char c = e.getKeyChar();
 			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
@@ -688,8 +680,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 		private RTextArea textArea;
 
-		public PrintArea(String title, Screen window) 
-		{
+		public PrintArea(String title, Screen window) {
 			super(title, window);
 			setModal(false);
 			setLayout(new BorderLayout());
@@ -698,8 +689,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			init();
 		}
 
-		private void init()
-		{
+		private void init() {
 			textArea = new RTextArea("Operation Progress : ");
 			textArea.setEditable(false);
 			textArea.setAutoscrolls(true);
@@ -768,19 +758,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -791,6 +778,5 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 }
