@@ -294,6 +294,7 @@ public class Screen extends JFrame {
      public void manageTools(ProjectDataBase manager){
           toolMenu.structureViewComp.setClickable(!manager.non_java);
           toolMenu.asteriskComp.setClickable(!manager.non_java);
+          toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
      }
 
 	public static void setStatus(String status, int value) {

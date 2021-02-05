@@ -73,6 +73,7 @@ public class ToolMenu extends JPanel {
      public static OPopupItem projectMenu;
      public static OPopupWindow allProjectsPopup;
      public static OPopupItem allMenu;
+     public static OPopupItem typeItem;
 
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
@@ -500,14 +501,14 @@ public class ToolMenu extends JPanel {
           })
           .createItem("Change Workspace", IconManager.settingsImage, ()->new ide.utils.WorkspaceSelector(screen).setVisible(true));
 
-          OPopupItem typeItem = new OPopupItem(setPopup, "Project Type : Non-Java (Needs IDE Restart)", IconManager.settingsImage, ()->{});
+          typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, ()->{});
           typeItem.setAction(()->{
                ide.Screen.getFileView().getProjectManager().non_java = !ide.Screen.getFileView().getProjectManager().non_java;
                typeItem.setName(ide.Screen.getFileView().getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
                ide.Screen.getScreen().manageTools(ide.Screen.getFileView().getProjectManager());
                ide.Screen.getFileView().getProjectManager().save();
+               typeItem.setToolTipText("Please Relaunch the IDE");
           });
-          typeItem.setToolTipText("Wait... If You have changed \"Project Type\" Please Relaunch the IDE");
           setPopup.addItem(typeItem);
           
           setPopup.createItem("All Settings", IconManager.settingsImage, ()->{
