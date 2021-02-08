@@ -29,7 +29,15 @@ import importIO.Import;
 import importIO.ImportManager;
 import ui.ImportResolver;
 public class ImportFramework{
+
+     //The Object of the Window that lets you choose the imports 
+     //when classess in different packages have a same name.
 	private static ImportResolver imR = new ImportResolver();
+
+     /**
+      * The method that search for classess in the passed code (String text)
+      * @param text = The Code
+     */
 	public static LinkedList<String> findClasses(String text){
           text = removeUsuals(text);
 		LinkedList<String> cls = new LinkedList<>();
@@ -49,6 +57,10 @@ public class ImportFramework{
 		return cls;
 	}
 
+     /**
+      * The method removes all the comments, chars & String from the code
+      * @param text = The code
+     */
 	public static synchronized String removeUsuals(String text) {
 		boolean commentStarts = false;
 		StringTokenizer tok = new StringTokenizer(text, "\n");
@@ -85,6 +97,11 @@ public class ImportFramework{
 		return text;
 	}
 
+     /**
+      * The method adds the imports in the editor after rectifying the classess
+      * @param classess = The list of classess to be imported
+      * @param editor = The Editor in which the imports are to be inserted
+     */
 	public static synchronized void addImports(LinkedList<String> classess, Editor editor){
 		if(ImportManager.reading) return;
 		String PACK = "";
@@ -179,11 +196,23 @@ public class ImportFramework{
 		}
 	}
 
+     /**
+      * The method checks whether a specified import is already present in the editor or not
+      * @param editor = The Editor in which the searching is to be made
+      * @param packName = The package of the class
+      * @param className = The name of the Class
+     */
 	public static boolean contains(Editor editor, String packName, String className) {
 		return editor.getText().contains("import " + packName + ".*;") || 
 				editor.getText().contains("import " + packName + "." + className + ";");
 	}
 
+     /**
+      * The method inserts the imports in the specified editor
+      * @param editor = The Editor in which the import to be inserted
+      * @param pack = The package of the class
+      * @param className = The name of the class
+     */
 	public static void insertImport(Editor editor, String pack, String className) {
 		try {
 			if(editor.getText().startsWith("package")) {

@@ -668,11 +668,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
      public class FindAndReplace extends JComponent{
           private ReplaceToolBar replaceToolBar;
           public FindAndReplace(){
-               setVisible(false);
                setLayout(new BorderLayout());
                setPreferredSize(new Dimension(400, 60));
                replaceToolBar = new ReplaceToolBar(Editor.this);
                add(replaceToolBar, BorderLayout.CENTER);
+               setVisible(false);
+          }
+
+          @Override
+          public void setVisible(boolean value){
+               try{
+                    replaceToolBar.getSearchContext().setMarkAll(value);
+               }catch(Exception e){ System.err.println(e); }
+               super.setVisible(value);
           }
      }
 
@@ -716,7 +724,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
           SearchResult result;
 
           switch (type) {
-               default: // Prevent FindBugs warning later
+               default: 
                case MARK_ALL:
                     result = SearchEngine.markAll(this, context);
                     break;

@@ -136,7 +136,6 @@ public class FileView extends View {
 	public boolean open(String type) {
 		JFileChooser ch = new JFileChooser();
 		UIManager.setData(ch);
-		Screen.getAccessories().addDeleteButton(ch);
 		if(type.equals("Project")) {
 			ch.setDialogTitle("Open Project -Select/Create an empty folder to create a new poject");
 			ch.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

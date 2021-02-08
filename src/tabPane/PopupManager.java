@@ -69,6 +69,7 @@ public class PopupManager {
 		}
           popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
           popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
+		popup.createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(editor.currentFile));
 		return popup;
 	}
 
@@ -79,6 +80,7 @@ public class PopupManager {
           .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().show("interface"))
           .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
+          .createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file))
           .createItem("Delete", IconManager.closeImage, ()->{
                if(!file.isDirectory()){
                     Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);

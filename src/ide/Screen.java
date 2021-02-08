@@ -41,7 +41,6 @@ import javax.swing.JSplitPane;
 
 import highlightUnit.BasicHighlight;
 import highlightUnit.ErrorHighlighter;
-import ide.utils.Accessories;
 import ide.utils.DataManager;
 import ide.utils.Editor;
 import ide.utils.RecentsManager;
@@ -87,7 +86,6 @@ public class Screen extends JFrame {
      private static RunView runView;
      private static FileView fileView;
      private static BuildView buildView;
-     private static Accessories accessories;
      private static BasicHighlight basicHighlight;
 	private static RecentsManager recentsManager;
      private static ChoiceDialog choiceDialog;
@@ -182,8 +180,6 @@ public class Screen extends JFrame {
 		tabPanel = new TabPanel(this);
 		splitPane.setRightComponent(tabPanel);
 		splitPane.setDividerSize(2);
-
-		accessories = new Accessories(this);
 
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
@@ -292,8 +288,8 @@ public class Screen extends JFrame {
 	}
 
      public void manageTools(ProjectDataBase manager){
-          toolMenu.structureViewComp.setClickable(!manager.non_java);
-          toolMenu.asteriskComp.setClickable(!manager.non_java);
+          toolMenu.structureViewComp.setVisible(!manager.non_java);
+          toolMenu.asteriskComp.setVisible(!manager.non_java);
           toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
      }
 
@@ -441,10 +437,6 @@ public class Screen extends JFrame {
           return universalSettings;
      }
      
-	public static Accessories getAccessories(){
-		return accessories;
-	}
-
      public static TerminalComp getTerminalComp(){
           return terminal;
      }

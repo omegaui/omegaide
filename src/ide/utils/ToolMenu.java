@@ -155,7 +155,7 @@ public class ToolMenu extends JPanel {
 		projectMenu.setBounds(60, 0, 60, 20);
 		addComp(projectMenu);
 
-		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
+		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(350);
 		initToolMenu();
 		Menu toolsMenu = new Menu(toolsPopup, "Tools");
 		toolsMenu.setBounds(120, 0, 60, 20);
@@ -173,7 +173,7 @@ public class ToolMenu extends JPanel {
 		setMenu.setBounds(240, 0, 60, 20);
 		addComp(setMenu);
 
-		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
+		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(350);
 		initHelpMenu();
 		Menu helpMenu = new Menu(helpPopup, "Help");
 		helpMenu.setBounds(300, 0, 60, 20);
@@ -520,7 +520,11 @@ public class ToolMenu extends JPanel {
 	}
 
 	private void initHelpMenu() {
-          helpPopup.createItem("See Basic Manual", IconManager.ideImage, ()->ide.Manuals.showBasicManual())
+          helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.ideImage, ()->{
+               try{
+                    java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com").toURI());
+               }catch(Exception e){ System.err.println(e); }
+          })
           .createItem("Plugin Store", IconManager.ideImage, ()->Screen.getPluginStore().setVisible(true))
           .createItem("Plugin Manager", IconManager.ideImage, ()->Screen.getPluginView().setVisible(true))
           .createItem("Check for Update", IconManager.ideImage, ()->Screen.updateIDE())

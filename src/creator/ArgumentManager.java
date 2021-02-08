@@ -1,4 +1,20 @@
 package creator;
+/*
+    Copyright (C) 2021 Omega UI. All Rights Reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 import java.io.PrintWriter;
 import omega.database.DataEntry;
 import java.util.LinkedList;
@@ -6,16 +22,24 @@ import ide.Screen;
 import java.io.File;
 import omega.database.DataBase;
 public class ArgumentManager extends DataBase{
-     public String run_time_args;
-     public String compile_time_args;
-     public String runDir;
-     public String compileDir;
-     public LinkedList<ListUnit> units = new LinkedList<>();
+     
+     public String run_time_args; // The String containing the run time command
+     public String compile_time_args; // The String containing the compile time command
+     public String runDir; // The String containing the working directory of the run-time
+     public String compileDir; // The String containing the working directory of the compile-time
+     public LinkedList<ListUnit> units = new LinkedList<>(); //The set of list-units
+     
+     /**
+      * The Default constructor.
+     */
      public ArgumentManager(){
      	super(Screen.getFileView().getProjectPath() + File.separator + ".args");
           load();
      }
 
+     /**
+      * The method that loades data from the DataBase.
+     */
      public void load(){
           compile_time_args = getEntryAt("Compile Time Argument", 0) != null ? getEntryAt("Compile Time Argument", 0).getValue() : "";
           run_time_args = getEntryAt("Run Time Argument", 0) != null ? getEntryAt("Run Time Argument", 0).getValue() : "";                
@@ -40,6 +64,9 @@ public class ArgumentManager extends DataBase{
           }
      }
 
+     /**
+      * The method that generates the required files as specified in the Settings
+     */
      public void genLists(){
      	units.forEach(unit->{
                LinkedList<File> files = new LinkedList<>();
@@ -49,6 +76,12 @@ public class ArgumentManager extends DataBase{
 	     });
      }
 
+     /**
+      * The method that writes the files specified in the settings
+      * @param name = name of the file
+      * @param files = the files whose paths are to be written
+      * @param sur = if the files are to be surrounded within (") sur = true else vice versa
+     */
      public void writeList(String name, LinkedList<File> files, boolean sur){
      	try{
      		PrintWriter writer = new PrintWriter(new File(Screen.getFileView().getProjectPath() + File.separator + name));
@@ -62,6 +95,10 @@ public class ArgumentManager extends DataBase{
      	}catch(Exception e){ System.err.println(e); }
      }
 
+     /**
+      * The method loads the all the Files of the directory dir in files list
+      * which ends with the ext extension
+     */
      public void loadFiles(String ext, LinkedList<File> files, File dir){
      	File[] F = dir.listFiles();
           if(F == null || F.length == 0) return;
