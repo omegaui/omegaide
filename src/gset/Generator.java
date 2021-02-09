@@ -124,7 +124,7 @@ public class Generator {
           meth = meth.trim() + " void";
           String name = "set" + toUpperCase(d.name) + "(" + d.type + " " + d.name + ") {";
           meth = meth.trim() + " " + name;
-          String s = d.modifier.equals("static") ? className : "this";
+          String s = d.modifier.contains("static") ? className : "this";
           meth += "\n" + tabs + tabs + s + "." + d.name + " = " + d.name + ";\n" + tabs +"}\n" + tabs;
           textArea.insert(meth, caret);
      }

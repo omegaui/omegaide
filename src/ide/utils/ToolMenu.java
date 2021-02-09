@@ -88,7 +88,8 @@ public class ToolMenu extends JPanel {
 	public TextComp enComp;
 	public TextComp fileComp;
 	public TextComp sep2;
-	public TextComp contentComp;
+     public TextComp contentComp;
+     public TextComp contentModeComp;
 	public TextComp asteriskComp;
 	public TextComp structureComp;
 	public TextComp operateComp;
@@ -330,6 +331,27 @@ public class ToolMenu extends JPanel {
 		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 		addComp(contentComp);
 
+          contentModeComp = new TextComp("", c1, c2, c3, ()->{
+               DataManager.setContentModeJava(!DataManager.isContentModeJava());
+               contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
+               contentModeComp.repaint();
+          }){
+             @Override
+               public void draw(Graphics2D g) {
+                    g.setColor(color3);
+                    g.fillOval(7, 7, 16, 16);
+                    if(DataManager.isContentModeJava()) {
+                         g.setColor(color2);
+                         g.fillOval(10, 10, 10, 10);
+                         g.setColor(color1);
+                         g.fillOval(10, 10, 10, 10);
+                    }
+               }
+          };
+          contentModeComp.setBounds(392, 25, 30, 30);
+          contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
+          addComp(contentModeComp);
+
 		asteriskComp = new TextComp("", c1, c2, c3, ()->{
 			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
 			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
@@ -347,7 +369,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		asteriskComp.setBounds(392, 25, 30, 30);
+		asteriskComp.setBounds(392 + 30, 25, 30, 30);
 		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		addComp(asteriskComp);
 
@@ -373,7 +395,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		structureComp.setBounds(424, 25, 30, 30);
+		structureComp.setBounds(424 + 30, 25, 30, 30);
 		structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
 		addComp(structureComp);
 
@@ -401,7 +423,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		operateComp.setBounds(456, 25, 30, 30);
+		operateComp.setBounds(456 + 30, 25, 30, 30);
 		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
 		addComp(operateComp);
 
@@ -429,18 +451,18 @@ public class ToolMenu extends JPanel {
           addComp(structureViewComp);
 
           sep3 = new TextComp("", c1, c3, c3, ()->{});
-          sep3.setBounds(500, 20, 2, 40);
+          sep3.setBounds(500 + 30, 20, 2, 40);
           addComp(sep3);
 
           shellComp = new TextComp("</>", "Click to open a non-root terminal inside the IDE", c1, c2, c3, ()->{
                ide.Screen.getTerminalComp().showTerminal(true);
           });
           shellComp.setFont(settings.Screen.PX16);
-          shellComp.setBounds(510, 25, 60, 30);
+          shellComp.setBounds(510 + 30, 25, 60, 30);
           add(shellComp);
 
           sep5 = new TextComp("", c1, c3, c3, ()->{});
-          sep5.setBounds(580, 20, 2, 40);
+          sep5.setBounds(580 + 30, 20, 2, 40);
           addComp(sep5);
 
           Color l1 = c3;
@@ -457,7 +479,7 @@ public class ToolMenu extends JPanel {
                themeComp.setText(DataManager.getTheme());
           });
           themeComp.setFont(settings.Screen.PX16);
-          themeComp.setBounds(600, 25, 60, 30);
+          themeComp.setBounds(600 + 30, 25, 60, 30);
           add(themeComp);
           
 		reshape();

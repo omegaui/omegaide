@@ -17,6 +17,7 @@ package deassembler;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import ide.utils.DataManager;
 import ide.Screen;
 
 import java.util.StringTokenizer;
@@ -64,7 +65,7 @@ public class ContentTokenizer {
      }
      
 	public static void arrangeTokens(Editor e) {
-          if(Screen.getFileView().getProjectManager().non_java){
+          if(Screen.getFileView().getProjectManager().non_java || !DataManager.isContentModeJava()){
                arrangeTokens(e, CodeFramework.getLastCodeIgnoreDot(e.getText(), e.getCaretPosition()));
                return;
           }

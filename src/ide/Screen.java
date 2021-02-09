@@ -290,6 +290,7 @@ public class Screen extends JFrame {
      public void manageTools(ProjectDataBase manager){
           toolMenu.structureViewComp.setVisible(!manager.non_java);
           toolMenu.asteriskComp.setVisible(!manager.non_java);
+          toolMenu.contentModeComp.setVisible(!manager.non_java);
           toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
      }
 

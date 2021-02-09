@@ -25,6 +25,7 @@ public class DataManager extends DataBase {
 
 	private static String defaultProjectPath = "No Default Project set yet.";
 	private volatile static boolean realTimeContentAssist = false;
+     private volatile static boolean contentModeJava = true;
 	private static boolean useStarImports = false;
 	private static String pathToJava = "";
      private static String projectsHome = "";
@@ -47,6 +48,7 @@ public class DataManager extends DataBase {
                setPathToJava(getEntryAt("Folder Containing Java Development Kits and Environments", 0).getValue());
                setProjectsHome(getEntryAt("Projects Home", 0).getValue());
                setTheme(getEntryAt("Theme", 0).getValue());
+               setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
 		}catch(Exception e) { 
 		     System.err.println(e);
 	     }
@@ -56,7 +58,8 @@ public class DataManager extends DataBase {
 	{
 		clear();
 		addEntry("Default Project", defaultProjectPath);
-		addEntry("Content Assist Real-Time", isContentAssistRealTime()+"");
+          addEntry("Content Assist Real-Time", isContentAssistRealTime()+"");
+          addEntry("Content Mode Java", isContentModeJava()+"");
 		addEntry("Use Star Imports", isUsingStarImports()+"");
           addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
           addEntry("Projects Home", getProjectsHome());
@@ -110,5 +113,13 @@ public class DataManager extends DataBase {
 
      public static String getTheme(){
      	return theme;
+     }
+
+     public static boolean isContentModeJava() {
+          return contentModeJava;
+     }
+     
+     public static void setContentModeJava(boolean contentModeJava) {
+          DataManager.contentModeJava = contentModeJava;
      }
 }

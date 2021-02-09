@@ -128,52 +128,52 @@ public class ContentWindow extends JPanel implements KeyListener{
 			doLayout();
 		}catch(Exception ex) {System.out.println(ex.getMessage()); setVisible(false);}
 	}
-	
-	public synchronized static void sort(LinkedList<DataMember> dataMembers) {
-		Object[] members = dataMembers.toArray();
-		LinkedList<DataMember> vars = new LinkedList<>();
-		LinkedList<DataMember> meths = new LinkedList<>();
-		for(Object obj : members) {
-			DataMember m = (DataMember)obj;
-			if(m.parameters == null) vars.add(m);
-			else meths.add(m);
-		}
-		dataMembers.clear();
-		Object[] var_ =vars.toArray();
-		Object[] meths_ = meths.toArray(); 
-		for(int i = 0; i < var_.length; i++) {
-			for(int j = 0; j < var_.length - 1 - i; i++) {
-				DataMember m = (DataMember)var_[j];
-				DataMember n = (DataMember)var_[j + 1];
-				if(m.name.compareTo(n.name) > 0) {
-					Object o = var_[j];
-					var_[j] = var_[j + 1];
-					var_[j + 1] = o;
-				}
-			}
-		} 
-		for(int i = 0; i < meths_.length; i++) {
-			for(int j = 0; j < meths_.length - 1 - i; i++) {
-				DataMember m = (DataMember)meths_[j];
-				DataMember n = (DataMember)meths_[j + 1];
-				if(m.name.compareTo(n.name) > 0) {
-					Object o = meths_[j];
-					meths_[j] = meths_[j + 1];
-					meths_[j + 1] = o;
-				}
-			}
-		}
-		for(Object v : var_) {
-			dataMembers.add((DataMember)v);
-		}
-		for(Object v : meths_) {
-			dataMembers.add((DataMember)v);
-		}
-		var_ = null;
-		meths_ = null;
-		members = null;
-	}
-
+    
+     public synchronized static void sort(LinkedList<DataMember> dataMembers) {
+          Object[] members = dataMembers.toArray();
+          LinkedList<DataMember> vars = new LinkedList<>();
+          LinkedList<DataMember> meths = new LinkedList<>();
+          for(Object obj : members) {
+               DataMember m = (DataMember)obj;
+               if(m.parameters == null) vars.add(m);
+               else meths.add(m);
+          }
+          dataMembers.clear();
+          Object[] var_ =vars.toArray();
+          Object[] meths_ = meths.toArray(); 
+          for(int i = 0; i < var_.length; i++) {
+               for(int j = 0; j < var_.length - 1 - i; i++) {
+                    DataMember m = (DataMember)var_[j];
+                    DataMember n = (DataMember)var_[j + 1];
+                    if(m.name.compareTo(n.name) > 0) {
+                         Object o = var_[j];
+                         var_[j] = var_[j + 1];
+                         var_[j + 1] = o;
+                    }
+               }
+          } 
+          for(int i = 0; i < meths_.length; i++) {
+               for(int j = 0; j < meths_.length - 1 - i; i++) {
+                    DataMember m = (DataMember)meths_[j];
+                    DataMember n = (DataMember)meths_[j + 1];
+                    if(m.name.compareTo(n.name) > 0) {
+                         Object o = meths_[j];
+                         meths_[j] = meths_[j + 1];
+                         meths_[j + 1] = o;
+                    }
+               }
+          }
+          for(Object v : var_) {
+               dataMembers.add((DataMember)v);
+          }
+          for(Object v : meths_) {
+               dataMembers.add((DataMember)v);
+          }
+          var_ = null;
+          meths_ = null;
+          members = null;
+     }
+     
 	@Override
 	public void setVisible(boolean value) {
 		if(value) {

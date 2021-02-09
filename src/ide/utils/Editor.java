@@ -417,7 +417,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void keyPressed(KeyEvent e) {
           int code = e.getKeyCode();
-          System.out.println(KeyEvent.getKeyText(code));
           if(code == KeyEvent.VK_CONTROL)
                ctrl = true;
           else if(code == KeyEvent.VK_SHIFT)

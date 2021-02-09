@@ -47,7 +47,7 @@ public class TabPanel extends JPanel{
 
      private static final String TITLE = "Open a text file to start editing here";
      private static final String HINT = "Navigate the File Tree (on left)";
-     private static final String HINT1 = "Open the File tree by clicking the third ";
+     private static final String HINT1 = "Open the File tree by clicking the fourth ";
 
      private BufferedImage image = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
 	
