@@ -31,7 +31,7 @@ public class ContentTokenizer {
                e.contentWindow.setVisible(false);
                return;
           }
-     	StringTokenizer tok = new StringTokenizer(e.getText(), "`1234567890-=[\\;\',./]~!@#$%^&*()_+{}|:\"<>?)\n ");
+     	StringTokenizer tok = new StringTokenizer(e.getText(), "`1234567890-=[\\;\',./]~!@#%^&*()+{}|:\"<>?)\n ");
           
           LinkedList<DataMember> dataMembers = new LinkedList<>();
           LinkedList<DataMember> tokens = new LinkedList<>();
