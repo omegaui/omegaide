@@ -23,7 +23,7 @@ You can program not only Java but also other programming languages.
 
 Using the Universal Feature of Omega IDE.
 
-See the Tutorial Videos on the ![Youtube](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg) to learn how.
+See the Tutorial Videos on the [Youtube](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg) to learn how.
 
 **Content-Assist**
 
