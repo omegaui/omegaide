@@ -3,6 +3,8 @@
 
 Omega IDE is a blazing fast cross-platform java IDE written from scratch.
 
+It is also an instant IDE for other programming languages.
+
 All the Binaries of Omega IDE are compiled with GraalVM (the fastest JVM).
 
 JDK 11 or above is required to run Omega IDE anywhere.
@@ -13,7 +15,23 @@ It has its own set of custom components from the buttons to popup menus.
 
 It has a variety of features :
 
+**An Instant IDE**
+
+![](/images/instant-mode.png)
+
+You can program not only Java but also other programming languages.
+
+Using the Universal Feature of Omega IDE.
+
+See the Tutorial Videos on the ![Youtube](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg) to learn how.
+
 **Content-Assist**
+
+The Content Assist has two modes : Java and Tokenizer.
+
+The Java mode will give you code suggestion by disassembling the codes.
+
+The Tokenizer mode will give you code suggestion on the basis of what words or tokens the editor contains.
 
 ![](/images/content_assist.png)
 
@@ -32,7 +50,6 @@ It has a variety of features :
 **Classpath Management**
 
 ![](/images/classpath.png)
-
 
 **Modulepath Management**
 
@@ -70,21 +87,14 @@ It has a beautiful text editor (thanks to **rsyntaxtextarea**).
 There are lot more features to explore. Give it a try.
 
 ## Installing
+
+Dependency : JDK 11 or above
+
 Well, Omega IDE is a portable application.
 
 No matter where you run the **Omega IDE.jar** file, it will setup itself completely.
 
-Dependency : JDK 11 or above
-
-For installation on Windows run **Omega IDE.jar (download from the release section)**
-
-For installation on Debain or its derivatives use the .deb installer in the release section.
-
-For Other Distros download the **Omega IDE.zip file from the release section**. 
-
-It contains three files (**one shell script, one desktop entry, one image-icon and a runnable jar file**) 
-
-and I think you know what to do with them.
+For installation on any platform run **Omega IDE.jar (download from the release section)**
 
 ## Editing
 

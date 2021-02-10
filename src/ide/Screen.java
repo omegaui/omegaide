@@ -166,7 +166,7 @@ public class Screen extends JFrame {
 		operationPane = new OperationPane(this);
 
           terminal = new TerminalComp();
-
+          
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		UIManager.setData(splitPane);
 		compilancePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

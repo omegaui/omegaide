@@ -16,7 +16,6 @@ package launcher;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 import java.awt.event.MouseEvent;
-import ide.Manuals;
 import java.awt.event.MouseAdapter;
 import java.awt.Font;
 import tabPane.IconManager;
@@ -112,22 +111,31 @@ public class Launcher extends JFrame{
 		openDoor.setBounds(0, 0, getWidth(), 40);
 		panel.add(openDoor);
 		
-          Door newDoor = new Door(File.separator + "ide" + File.separator + "ide" + File.separator + "Project" + File.separator + "Open" + "Project" + File.separator + "New", icon, ()->{
+          Door newDoor = new Door(File.separator + "ide" + File.separator + "Project" + File.separator + "New", icon, ()->{
                ToolMenu.projectWizard.setVisible(true);
                Screen.hideNotif();
           });
           newDoor.setBounds(0, 40, getWidth(), 40);
           panel.add(newDoor);
           
-          Door bmanDoor = new Door(File.separator + "ide" + File.separator + "ide" + File.separator + "Manual" + File.separator + "Basic" + " Manual" + File.separator + "See Manual", icon, ()->{
-               ide.Manuals.showBasicManual();
+          Door bmanDoor = new Door(File.separator + "ide" + File.separator + "Non-Java Project"  + File.separator + "New", icon, ()->{
+               ToolMenu.universalProjectWizard.setVisible(true);
                Screen.hideNotif();
           });
           bmanDoor.setBounds(0, 80, getWidth(), 40);
           panel.add(bmanDoor);
+          
+          Door stuckDoor = new Door(File.separator + "ide" + File.separator + "See Tutorial Videos"  + File.separator + "Stucked or need Help?", icon, ()->{
+               try{
+                    java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
+               }catch(Exception e){ System.err.println(e); }
+               Screen.hideNotif();
+          });
+          stuckDoor.setBounds(0, 120, getWidth(), 40);
+          panel.add(stuckDoor);
 
 		//Creating Doors
-		int y = 120;
+		int y = 160;
 		for(int i = RecentsManager.RECENTS.size() - 1; i >= 0; i--) {
 			String path = RecentsManager.RECENTS.get(i);
 			File file = new File(path);

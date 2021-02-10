@@ -16,7 +16,6 @@ package ide.utils;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 import gset.Generator;
-import ide.Manuals;
 import creator.UniversalProjectWizard;
 import java.awt.Dimension;
 import popup.OPopupWindow;
@@ -544,7 +543,7 @@ public class ToolMenu extends JPanel {
 	private void initHelpMenu() {
           helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.ideImage, ()->{
                try{
-                    java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com").toURI());
+                    java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
                }catch(Exception e){ System.err.println(e); }
           })
           .createItem("Plugin Store", IconManager.ideImage, ()->Screen.getPluginStore().setVisible(true))

@@ -37,7 +37,7 @@ public class Screen extends JDialog{
 	private static final String WARRANTY = "This program comes with absolutely no warranty";
 	private static final String COMPANY = "Omega UI";
 	private static final String CREDIT = "Created by : Arham";
-	private static final String COPYRIGHT = "Copyright © 2020 Omega UI. All Right Reserved";
+	private static final String COPYRIGHT = "Copyright © 2020-2021 Omega UI";
 	private static final Font PX28 = new Font("Ubuntu Mono", Font.BOLD, 28);
 	private static final Font PX20 = new Font("Ubuntu Mono", Font.BOLD, 20);
 	private static final Font PX12 = new Font("Ubuntu Mono", Font.ITALIC, 12);
@@ -114,14 +114,14 @@ public class Screen extends JDialog{
 			g.setFont(PX20);
 			g.drawString("BUGS FIXED IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("BUGS FIXED IN THIS RELEASE")/2, 21);
 			g.setFont(PX12);
-			g.drawString("Major Bug Fixes", getWidth()/2 - g.getFontMetrics().stringWidth("Major Bug Fixes")/2, 21 + 21);
+			g.drawString("Small Bug Fixes", getWidth()/2 - g.getFontMetrics().stringWidth("Small Bug Fixes")/2, 21 + 21);
 
 			g.setFont(PX20);
 			g.drawString("NEW FEATURES IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("NEW FEATURES IN THIS RELEASE")/2, 21 + 21 + 21 + 21 + 51);
 			g.setFont(PX12);
-			g.drawString("Structure View", getWidth()/2 - g.getFontMetrics().stringWidth("Structure View")/2, 21 + 21 + 21 + 21 + 21 + 51);
-               g.drawString("More Standard Tools", getWidth()/2 - g.getFontMetrics().stringWidth("More Standard Tools")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
-               g.drawString("Added a basic manual", getWidth()/2 - g.getFontMetrics().stringWidth("Added a basic manual")/2, 21 + 21 + 21 + 21 + 21 + 21 + 21 + 51);
+			g.drawString("Modes in Content Assist", getWidth()/2 - g.getFontMetrics().stringWidth("Modes in Content Assist")/2, 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("Support for other Programming Langs", getWidth()/2 - g.getFontMetrics().stringWidth("Support for other Programming Langs")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("Tutorial Videos instead of Manuals", getWidth()/2 - g.getFontMetrics().stringWidth("Tutorial Videos instead of Manuals")/2, 21 + 21 + 21 + 21 + 21 + 21 + 21 + 51);
 			g.drawImage(image, getWidth()/2 - 32, getHeight() - 110, 64, 64, this);
 		}
 		infoBtn.repaint();
