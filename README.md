@@ -96,6 +96,8 @@ No matter where you run the **Omega IDE.jar** file, it will setup itself complet
 
 For installation on any platform run **Omega IDE.jar (download from the release section)**
 
+For debian, there is a installer included in the release section.
+
 ## Editing
 
 For Editing the source codes you can use even Omega IDE,
