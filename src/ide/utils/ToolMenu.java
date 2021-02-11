@@ -514,8 +514,7 @@ public class ToolMenu extends JPanel {
                int res = fontC.showDialog(screen);
                if(res ==JFontChooser.OK_OPTION) {
                     Font font = fontC.getSelectedFont();
-                    UIManager.fontName = font.getName();
-                    UIManager.fontSize = font.getSize();
+                    UIManager.setData(font.getSize(), font.getName(), font.getStyle());
                     screen.getUIManager().save();
                     screen.loadThemes();
                }

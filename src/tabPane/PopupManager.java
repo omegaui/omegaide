@@ -81,6 +81,8 @@ public class PopupManager {
           .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
           .createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file))
+          .createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
+          .createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file))
           .createItem("Delete", IconManager.closeImage, ()->{
                if(!file.isDirectory()){
                     Editor editor = ide.Screen.getScreen().getTabPanel().findEditor(file);

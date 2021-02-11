@@ -469,7 +469,7 @@ public class BuildView extends View {
 			textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
 			textArea.setAutoscrolls(true);
 			Editor.getTheme().apply(textArea);
-			textArea.setFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
+			textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 			textArea.setHighlightCurrentLine(false);
 			p = new JScrollPane(textArea);
 			p.setAutoscrolls(true);

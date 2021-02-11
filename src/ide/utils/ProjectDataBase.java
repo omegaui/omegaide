@@ -55,13 +55,30 @@ public class ProjectDataBase extends DataBase{
      			Screen.getRunView().mainClass = mainClass;
      		}catch(Exception e) {}
           }
-		LinkedList<DataEntry> entries = getEntries("Opened Editors");
-		if(entries == null) return;
-		for(DataEntry e : entries) {
-			File f = new File(e.getValue());
-			if(f.exists())
-				Screen.getFileView().getScreen().loadFile(f);
-		}
+          LinkedList<DataEntry> mainEditors = getEntries("Opened Editors on Main Tab Panel");
+          LinkedList<DataEntry> rightEditors = getEntries("Opened Editors on Right Tab Panel");
+          LinkedList<DataEntry> bottomEditors = getEntries("Opened Editors on Bottom Tab Panel");
+          if(mainEditors != null){
+             for(DataEntry e : mainEditors) {
+                    File f = new File(e.getValue());
+                    if(f.exists())
+                         Screen.getFileView().getScreen().loadFile(f);
+               }
+          }
+          if(rightEditors != null){
+              for(DataEntry e : rightEditors) {
+                    File f = new File(e.getValue());
+                    if(f.exists())
+                         Screen.getFileView().getScreen().loadFileOnRightTabPanel(f);
+               }
+          }
+          if(bottomEditors != null){
+              for(DataEntry e : bottomEditors) {
+                    File f = new File(e.getValue());
+                    if(f.exists())
+                         Screen.getFileView().getScreen().loadFileOnBottomTabPanel(f);
+               }
+          }
 	}
 
 	@Override
@@ -72,11 +89,21 @@ public class ProjectDataBase extends DataBase{
 		addEntry("Run_Time", run_time_args);
 		addEntry("Main Class", Screen.getRunView().mainClass != null ? Screen.getRunView().mainClass : "");
           addEntry("Non-Java Project", String.valueOf(non_java));
-		Screen.getFileView().getScreen().getTabPanel().getEditors().forEach(editor->{
-			if(editor.currentFile != null) {
-				addEntry("Opened Editors", editor.currentFile.getAbsolutePath());
-			}
-		});
+          Screen.getFileView().getScreen().getTabPanel().getEditors().forEach(editor->{
+               if(editor.currentFile != null) {
+                    addEntry("Opened Editors on Main Tab Panel", editor.currentFile.getAbsolutePath());
+               }
+          });
+          Screen.getFileView().getScreen().getRightTabPanel().getEditors().forEach(editor->{
+               if(editor.currentFile != null) {
+                    addEntry("Opened Editors on Right Tab Panel", editor.currentFile.getAbsolutePath());
+               }
+          });
+          Screen.getFileView().getScreen().getBottomTabPanel().getEditors().forEach(editor->{
+               if(editor.currentFile != null) {
+                    addEntry("Opened Editors on Bottom Tab Panel", editor.currentFile.getAbsolutePath());
+               }
+          });
 		super.save();
 	}
 

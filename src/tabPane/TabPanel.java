@@ -40,7 +40,7 @@ import ide.utils.UIManager;
 public class TabPanel extends JPanel{
 
 	private static Screen screen;
-	private JTabbedPane tabPane;
+	public JTabbedPane tabPane;
 	private LinkedList<String> names;
 	private LinkedList<Editor> editors;
 	private LinkedList<JPanel> panels;
@@ -50,12 +50,17 @@ public class TabPanel extends JPanel{
      private static final String HINT1 = "Open the File tree by clicking the fourth ";
 
      private BufferedImage image = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
+
+     private Runnable addAction;
+     private Runnable removeAction;
 	
 	public TabPanel(Screen screen) {
+          addAction = ()->{};
+          removeAction = ()->{};
+          setBackground(UIManager.c2);
 		TabPanel.screen = screen;
 		tabPane = new JTabbedPane();
 		tabPane.setUI(new TabPaneUI());
-		tabPane.setFocusable(false);
 		
 		editors = new LinkedList<>();
 		names = new LinkedList<>();
@@ -105,6 +110,7 @@ public class TabPanel extends JPanel{
 			tabPane.setSelectedIndex(editors.indexOf(editor));
 		},toolTip, createMenu(editor)));
 		tabPane.setSelectedIndex(names.lastIndexOf(name));
+          addAction.run();
 	}
 	
 	public boolean viewImage(File file) {
@@ -174,6 +180,7 @@ public class TabPanel extends JPanel{
 		editors.remove(editor);
 		if(tabPane.getTabCount() > 0)
 			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
+          removeAction.run();
 	}
 	
 	public void remove(String name) {
@@ -184,6 +191,7 @@ public class TabPanel extends JPanel{
 		editors.remove(names.indexOf(name));
 		panels.remove(names.indexOf(name));
 		names.remove(name);
+          removeAction.run();
 	}
 	
 	public void closeAllTabs() {
@@ -198,6 +206,7 @@ public class TabPanel extends JPanel{
 		names.clear();
 		panels.clear();
 		tabPane.removeAll();
+          removeAction.run();
 	}
 	
 	public JPanel getPanel(Editor e) {
@@ -215,11 +224,23 @@ public class TabPanel extends JPanel{
 	public LinkedList<Editor> getEditors(){
 		return editors;
 	}
-	
-	public void resize() {
-		setBounds(0,30,screen.getWidth() - 14, screen.getHeight() - 30 - 38);
-		repaint();
-	}
+
+     public Runnable getAddAction() {
+          return addAction;
+     }
+     
+     public void setAddAction(Runnable addAction) {
+          this.addAction = addAction;
+     }
+     
+     public Runnable getRemoveAction() {
+          return removeAction;
+     }
+     
+     public void setRemoveAction(Runnable removeAction) {
+          this.removeAction = removeAction;
+     }
+     
 
      @Override
      public void paint(Graphics graphics){

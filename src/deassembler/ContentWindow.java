@@ -43,8 +43,11 @@ public class ContentWindow extends JPanel implements KeyListener{
 	public volatile int pointer;
 	public static volatile int max;
 	private int i;
-	public ContentWindow() {
+     private Editor editor;
+     
+	public ContentWindow(Editor editor) {
 		super(new BorderLayout());
+          this.editor = editor;
           setSize(600, 200);
           setVisible(false);
 		addMouseListener(new MouseAdapter() {
@@ -72,7 +75,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		}
 		try {
 			sort(dataMembers);
-			final Editor e = Screen.getScreen().getCurrentEditor();
+			final Editor e = editor;
 			hints.forEach(h->{
 				h.setVisible(false);
 				panel.remove(h);
@@ -92,7 +95,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 						max = w + 1;
 					}
 					Hint hint = new Hint(d, (dx)->{
-						String lCode = CodeFramework.getCodeIgnoreDot(Screen.getScreen().getCurrentEditor().getText(), Screen.getScreen().getCurrentEditor().getCaretPosition());
+						String lCode = CodeFramework.getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 					     
 						if(lCode == null) {
 							e.insert(d.name, e.getCaretPosition());
@@ -115,7 +118,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			});
 			i = 0;
 
-			final String LCode = CodeFramework.getLastCodeIgnoreDot(Screen.getScreen().getCurrentEditor().getText(), Screen.getScreen().getCurrentEditor().getCaretPosition());
+			final String LCode = CodeFramework.getLastCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 			Screen.getScreen().getGraphics().setFont(xf);
 			hints.get(0).focussed(true);
 			panel.setPreferredSize(new Dimension(max, block));
@@ -177,7 +180,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 	@Override
 	public void setVisible(boolean value) {
 		if(value) {
-               final Editor e = Screen.getScreen().getCurrentEditor();
+               final Editor e = editor;
 			Rectangle vRect = e.getAttachment().getVisibleRect();
                int x = e.getCaret().getMagicCaretPosition().x;
                int y = e.getCaret().getMagicCaretPosition().y + e.getFont().getSize();

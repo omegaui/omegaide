@@ -515,6 +515,7 @@ public class RunView extends View{
 							terminal.printText(errorReader.nextLine());
 						}
 					}
+                         terminal.printText("---<>--------------------------------------<>---");
 					terminal.printText("Program Execution finished with " + status);
 					errorReader.close();
 				}).start();
@@ -531,7 +532,6 @@ public class RunView extends View{
 				inputReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
-				terminal.printText("---<>--------------------------------------<>---");
 			}
 			catch(Exception e) {e.printStackTrace();}
 		}).start();
@@ -556,7 +556,7 @@ public class RunView extends View{
 			textArea.setAutoscrolls(true);
 			textArea.setCaretColor(java.awt.Color.WHITE);
 			Editor.getTheme().apply(textArea);
-			textArea.setFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
+			textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 			textArea.setHighlightCurrentLine(false);
 			p = new JScrollPane(textArea);
 			p.setAutoscrolls(true);

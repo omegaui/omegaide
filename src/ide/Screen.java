@@ -15,6 +15,7 @@ package ide;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import java.util.LinkedList;
 import creator.Settings;
 import gset.Generator;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -55,6 +56,7 @@ import ide.utils.systems.ProjectView;
 import ide.utils.systems.RunView;
 import launcher.Launcher;
 import plugin.PluginManager;
+
 import plugin.PluginStore;
 import plugin.PluginView;
 import snippet.SnippetBase;
@@ -69,6 +71,9 @@ public class Screen extends JFrame {
      public EditorTools tools;
      public JSplitPane splitPane;
      public JSplitPane compilancePane;
+     public JSplitPane rightTabPanelSplitPane;
+     public JSplitPane bottomTabPanelSplitPane;
+     public Editor focussedEditor;
      public static Launcher launcher;
      public static SnippetView snippetView; 
      public static final String VERSION = "v1.7";
@@ -78,7 +83,9 @@ public class Screen extends JFrame {
 
      private SplashScreen splash;
 	private OperationPane operationPane;
-	private TabPanel tabPanel;
+     private TabPanel tabPanel;
+     private TabPanel rightTabPanel;
+     private TabPanel bottomTabPanel;
 	private ToolMenu toolMenu;
      private static Robot robot;
 	private static UIManager uiManager;
@@ -167,9 +174,15 @@ public class Screen extends JFrame {
 		operationPane = new OperationPane(this);
 
           terminal = new TerminalComp();
-          
+
+          rightTabPanelSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+          bottomTabPanelSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+         
 		UIManager.setData(splitPane);
+          UIManager.setData(rightTabPanelSplitPane);
+          UIManager.setData(bottomTabPanelSplitPane);
+      
 		compilancePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		compilancePane.setTopComponent(splitPane);
 		compilancePane.setBottomComponent(operationPane);
@@ -179,8 +192,45 @@ public class Screen extends JFrame {
 		UIManager.setData(compilancePane);
 
 		tabPanel = new TabPanel(this);
-		splitPane.setRightComponent(tabPanel);
+          rightTabPanel = new TabPanel(this);
+          bottomTabPanel = new TabPanel(this);
+
+          rightTabPanel.setAddAction(()->{
+               if(rightTabPanel.tabPane.getTabCount() > 0){
+                    rightTabPanel.setVisible(true);
+                    rightTabPanelSplitPane.setDividerLocation(rightTabPanelSplitPane.getWidth()/2);
+               }
+          });
+          
+          rightTabPanel.setRemoveAction(()->{
+               if(rightTabPanel.tabPane.getTabCount() == 0)
+                    rightTabPanel.setVisible(false);
+          });
+          
+          bottomTabPanel.setAddAction(()->{
+               if(bottomTabPanel.tabPane.getTabCount() > 0){
+                    bottomTabPanel.setVisible(true);
+                    bottomTabPanelSplitPane.setDividerLocation(bottomTabPanelSplitPane.getWidth()/2);
+               }
+          });
+          
+          bottomTabPanel.setRemoveAction(()->{
+               if(bottomTabPanel.tabPane.getTabCount() == 0)
+                    bottomTabPanel.setVisible(false);
+          });
+          
+          rightTabPanel.setVisible(false);
+          bottomTabPanel.setVisible(false);
+
+		splitPane.setRightComponent(bottomTabPanelSplitPane);
+          rightTabPanelSplitPane.setLeftComponent(tabPanel);
+          rightTabPanelSplitPane.setRightComponent(rightTabPanel);
+          bottomTabPanelSplitPane.setTopComponent(rightTabPanelSplitPane);
+          bottomTabPanelSplitPane.setBottomComponent(bottomTabPanel);
+       
 		splitPane.setDividerSize(2);
+          rightTabPanelSplitPane.setDividerSize(2);
+          bottomTabPanelSplitPane.setDividerSize(2);
 
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
@@ -335,22 +385,56 @@ public class Screen extends JFrame {
 		}catch(Exception e) {System.out.println(e);}
 	}
 
-	public Editor loadFile(File file) {
+     public Editor loadFile(File file) {
           String fn = file.getName();
           if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
                openInDesktop(file);
                return null;
           }
-		if(tabPanel.viewImage(file)) return null;
-		if(tabPanel.viewArchive(file)) return null;
-		if(isFileOpened(file))
-			return null;
-		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
-		Editor editor = new Editor(this);
-		editor.loadFile(file);
-		tabPanel.addTab(file.getName(), editor, getPackName(file));
-		return editor;
-	}
+          if(tabPanel.viewImage(file)) return null;
+          if(tabPanel.viewArchive(file)) return null;
+          if(isFileOpened(file))
+               return null;
+          new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
+          Editor editor = new Editor(this);
+          editor.loadFile(file);
+          tabPanel.addTab(file.getName(), editor, getPackName(file));
+          return editor;
+     }
+
+     public Editor loadFileOnRightTabPanel(File file) {
+          String fn = file.getName();
+          if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
+               openInDesktop(file);
+               return null;
+          }
+          if(rightTabPanel.viewImage(file)) return null;
+          if(rightTabPanel.viewArchive(file)) return null;
+          if(isFileOpened(file))
+               return null;
+          new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
+          Editor editor = new Editor(this);
+          editor.loadFile(file);
+          rightTabPanel.addTab(file.getName(), editor, getPackName(file));
+          return editor;
+     }
+
+     public Editor loadFileOnBottomTabPanel(File file) {
+          String fn = file.getName();
+          if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
+               openInDesktop(file);
+               return null;
+          }
+          if(bottomTabPanel.viewImage(file)) return null;
+          if(bottomTabPanel.viewArchive(file)) return null;
+          if(isFileOpened(file))
+               return null;
+          new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
+          Editor editor = new Editor(this);
+          editor.loadFile(file);
+          bottomTabPanel.addTab(file.getName(), editor, getPackName(file));
+          return editor;
+     }
 
 	public static void addAndSaveRecents(String path) {
 		RecentsManager.add(path);
@@ -368,9 +452,14 @@ public class Screen extends JFrame {
 	}
 
 	public boolean isFileOpened(File file) {
-		for(Editor e : tabPanel.getEditors()) {
+          LinkedList<Editor> allEditors = new LinkedList<>();
+          tabPanel.getEditors().forEach(allEditors::add);
+          rightTabPanel.getEditors().forEach(allEditors::add);
+          bottomTabPanel.getEditors().forEach(allEditors::add);
+		for(Editor e : allEditors) {
 			if(e.currentFile != null) {
 				if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath())){
+                         allEditors.clear();
 					return true;
 				}
 			}
@@ -445,14 +534,13 @@ public class Screen extends JFrame {
 
 	public ToolMenu getToolMenu() {
 		return toolMenu;
-	}
+	}    
 
 	public OperationPane getOperationPanel() {
 		return operationPane;
 	}
 
-	public void pressKey(int code)
-	{
+	public void pressKey(int code){
 		try {
 			if(robot == null)
 				robot = new Robot();
@@ -477,18 +565,20 @@ public class Screen extends JFrame {
 		return dataManager;
 	}
 
-	public void saveAllEditors()
-	{
-		tabPanel.getEditors().forEach(w->w.saveCurrentFile());
+	public void saveAllEditors() {
+          tabPanel.getEditors().forEach(w->w.saveCurrentFile());
+          rightTabPanel.getEditors().forEach(w->w.saveCurrentFile());
+          bottomTabPanel.getEditors().forEach(w->w.saveCurrentFile());
 	}
 
-	public void loadThemes()
-	{
-		tabPanel.getEditors().forEach(w->w.loadTheme());
+	public void loadThemes(){
+          tabPanel.getEditors().forEach(w->w.loadTheme());
+          rightTabPanel.getEditors().forEach(w->w.loadTheme());
+          bottomTabPanel.getEditors().forEach(w->w.loadTheme());
 	}
 
 	public Editor getCurrentEditor() {
-		return tabPanel.getCurrentEditor();
+		return focussedEditor;
 	}
 
 	public void closeCurrentProject() {
@@ -499,6 +589,14 @@ public class Screen extends JFrame {
 		return tabPanel;
 	}
 
+     public TabPanel getRightTabPanel() {
+          return rightTabPanel;
+     }
+     
+     public TabPanel getBottomTabPanel() {
+          return bottomTabPanel;
+     }
+     
 	public static void updateIDE() {
 		updater.setVisible(true);
 	}

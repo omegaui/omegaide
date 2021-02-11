@@ -225,8 +225,7 @@ public class Screen extends JDialog {
 			int res = fontC.showDialog(this);
 			if(res == JFontChooser.OK_OPTION) {
 				Font font = fontC.getSelectedFont();
-				UIManager.fontName = font.getName();
-				UIManager.fontSize = font.getSize();
+                    UIManager.setData(font.getSize(), font.getName(), font.getStyle());
 				ide.Screen.getFileView().getScreen().getUIManager().save();
 				ide.Screen.getFileView().getScreen().loadThemes();
 			}

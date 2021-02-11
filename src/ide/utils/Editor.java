@@ -15,6 +15,7 @@ package ide.utils;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import java.awt.event.MouseAdapter;
 import deassembler.DataMember;
 import gset.Generator;
 import java.awt.Image;
@@ -109,7 +110,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	private void createNewContent() {
-		contentWindow = new ContentWindow();
+		contentWindow = new ContentWindow(this);
 		addKeyListener(contentWindow);
 		launchContentAssist();
 		setLayout(null);
@@ -195,8 +196,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(null);
 	}
 
-	public void loadTheme()
-	{
+	public void loadTheme() {
 		try {
                String name = ide.utils.UIManager.isDarkMode() ? "dark" : "idea";
                theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
@@ -204,7 +204,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		} catch (Exception e) { }
 		try {
 			screen.getUIManager().loadData();
-			setFont(new Font(UIManager.fontName,Font.BOLD, UIManager.fontSize));
+			setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 			UIManager.setData(screen.getTabPanel());
 		}catch(Exception e) { }
 
@@ -221,8 +221,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		return theme;
 	}
 
-	public synchronized void loadFile(File file)
-	{
+	public synchronized void loadFile(File file) {
 		if(file == null)
 			return;
 
@@ -658,7 +657,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					setCaretPosition(getCaretPosition() - 1);
 				}
 				break;
-			default:
+			     default:
 				break;
 			}
 		}catch(Exception ex) { System.err.println(ex); }
@@ -779,6 +778,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+          screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
 	}
 

@@ -33,8 +33,9 @@ import omega.database.DataEntry;
 public class UIManager extends DataBase {
 
 	public static String fontName = "Ubuntu Mono";
-	public static int fontSize = 20;
-	private static final Font font = new Font("Ubuntu Mono",Font.BOLD, 12);
+     public static int fontSize = 20;
+     public static int fontState = Font.BOLD;
+	private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 12);
 	public static Color glow;
 	public static Color c1;
 	public static Color c2;
@@ -56,7 +57,8 @@ public class UIManager extends DataBase {
 			DataEntry e = getEntryAt("Font", 0);
 			if(e == null) return;
 			setFontName(e.getValue());
-			setFontSize(getEntryAt("Font", 1).getValueAsInt());
+               setFontSize(getEntryAt("Font", 1).getValueAsInt());
+               setFontState(getEntryAt("Font", 2).getValueAsInt());
 			if(!isDarkMode()) {
 				c3 = settings.Screen.color4;
 				c1 = new Color(0, 0, 255, 20);
@@ -72,16 +74,18 @@ public class UIManager extends DataBase {
 	
 	public static void reset() {
 		fontName = "Ubuntu Mono";
-		fontSize = 12;
+		fontSize = 18;
+          fontState = Font.BOLD;
 	}
 
 	public static void setData(Editor editor) {
-		editor.setFont(new Font(fontName, Font.BOLD, fontSize));
+		editor.setFont(new Font(fontName, fontState, fontSize));
 	}
 
-	public void setData(int fontSize, String fontName) {
+	public static void setData(int fontSize, String fontName, int fontState) {
 		UIManager.fontSize = fontSize;
 		UIManager.fontName = fontName;
+          UIManager.fontState = fontState;
 	}
 
 	public static void setData(Component c) {
@@ -94,7 +98,8 @@ public class UIManager extends DataBase {
 	public void save() {
 		clear();
 		addEntry("Font", fontName);
-		addEntry("Font", fontSize+"");
+          addEntry("Font", fontSize+"");
+          addEntry("Font", fontState+"");
 		super.save();
 	}
 
@@ -120,8 +125,12 @@ public class UIManager extends DataBase {
 		UIManager.fontName = fontName;
 	}
 
-	public static void setFontSize(int fontSize) {
-		UIManager.fontSize = fontSize;
-	}
+     public static void setFontSize(int fontSize) {
+          UIManager.fontSize = fontSize;
+     }
+
+     public static void setFontState(int fontState) {
+          UIManager.fontState = fontState;
+     }
 
 }
