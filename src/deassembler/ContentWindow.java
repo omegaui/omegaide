@@ -92,7 +92,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 						max = w + 1;
 					}
 					Hint hint = new Hint(d, (dx)->{
-						String lCode = CodeFramework.getLastCodeIgnoreDot(Screen.getScreen().getCurrentEditor().getText(), Screen.getScreen().getCurrentEditor().getCaretPosition());
+						String lCode = CodeFramework.getCodeIgnoreDot(Screen.getScreen().getCurrentEditor().getText(), Screen.getScreen().getCurrentEditor().getCaretPosition());
+					     
 						if(lCode == null) {
 							e.insert(d.name, e.getCaretPosition());
 						}
@@ -102,9 +103,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 								part = part.substring(lCode.length());
 								e.insert(part, e.getCaretPosition());
 								if(d.parameterCount > 0) e.setCaretPosition(e.getCaretPosition() - 1);
-							}catch(Exception es) {}
+							}catch(Exception es) { es.printStackTrace(); }
 						}
-						
 					}, d.getRepresentableValue());
 					hint.setBounds(0, block, getWidth(), Hint.OPTIMAL_HEIGHT);
 					hint.setFont(font);

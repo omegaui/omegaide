@@ -27,11 +27,11 @@ import ide.utils.Editor;
 
 public class ContentTokenizer {
      public static void arrangeTokens(Editor e, String text){
-          if(text.trim().equals("")) {
+          if(text.equals("")) {
                e.contentWindow.setVisible(false);
                return;
           }
-     	StringTokenizer tok = new StringTokenizer(e.getText(), "`1234567890-=[\\;\',./]~!@#%^&*()+{}|:\"<>?)\n ");
+     	StringTokenizer tok = new StringTokenizer(e.getText(), "`-=[\\;\',./]~!@#%^&*()+{}|:\"<>?)\n ");
           
           LinkedList<DataMember> dataMembers = new LinkedList<>();
           LinkedList<DataMember> tokens = new LinkedList<>();
@@ -66,7 +66,7 @@ public class ContentTokenizer {
      
 	public static void arrangeTokens(Editor e) {
           if(Screen.getFileView().getProjectManager().non_java || !DataManager.isContentModeJava()){
-               arrangeTokens(e, CodeFramework.getLastCodeIgnoreDot(e.getText(), e.getCaretPosition()));
+               arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
                return;
           }
 		String text = CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition());

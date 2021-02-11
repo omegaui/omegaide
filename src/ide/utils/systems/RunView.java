@@ -217,8 +217,8 @@ public class RunView extends View{
                                    terminal.printText(errorReader.nextLine());
                               }
                          }
-                         terminal.printText("Program Execution finished with " + statusX);
                          terminal.printText("---<>--------------------------------------<>---");
+                         terminal.printText("Program Execution finished with " + statusX);
                          errorReader.close();
                     }).start();
 

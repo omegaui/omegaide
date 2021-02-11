@@ -71,7 +71,7 @@ public class Screen extends JFrame {
      public JSplitPane compilancePane;
      public static Launcher launcher;
      public static SnippetView snippetView; 
-     public static final String VERSION = "v1.6";
+     public static final String VERSION = "v1.7";
      public static String PATH_SEPARATOR = ":";
      public volatile boolean active = true;
      public volatile boolean screenHasProjectView = true;
@@ -122,6 +122,7 @@ public class Screen extends JFrame {
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
 		splash.setProgress(37, "welcome");
+      
           gset.Generator.init(this);
 
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());

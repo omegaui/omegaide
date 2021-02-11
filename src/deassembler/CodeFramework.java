@@ -1014,8 +1014,10 @@ public class CodeFramework{
 			text = text.substring(text.lastIndexOf('>') + 1).trim();
 		if(text.contains(";"))
 			text = text.substring(text.lastIndexOf(';') + 1).trim();
+          if(text.contains(" "))
+               text = text.substring(text.lastIndexOf(' ') + 1).trim();
 		if(text.contains("."))
-			text = null;
+			text = text.substring(text.lastIndexOf('.') + 1).trim();;
 		return text;
 	}
 
