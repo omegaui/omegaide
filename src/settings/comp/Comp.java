@@ -34,8 +34,8 @@ public class Comp extends JComponent{
 	public Runnable runnable_temp;
 	public TextComp leftComp;
 	public TextComp rightComp;
-     public int arcX = 40;
-     public int arcY = 40;
+	public int arcX = 40;
+     	public int arcY = 40;
 	public Comp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.text = text;
 		this.originalText = text;
@@ -90,11 +90,11 @@ public class Comp extends JComponent{
 		setText(this.toggleON ? activeText : inactiveText);
 	}
 
-     public void setArc(int x, int y){
-     	this.arcX = x;
-          this.arcY = y;
-          repaint();
-     }
+	public void setArc(int x, int y){
+		this.arcX = x;
+		this.arcY = y;
+		repaint();
+	}
 
 	public void createToggle(boolean toggleON, String activeText, String inactiveText, ToggleListener tL){
 		this.toggleON = toggleON;

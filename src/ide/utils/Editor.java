@@ -527,7 +527,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                }
 
 			if(contentWindow.isVisible()) {
-				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END) {
+				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
+				     || ";:|\\`~!".contains(e.getKeyChar() + "")) {
 					contentWindow.setVisible(false);
 					return;
 				}
@@ -541,7 +542,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                          return;
                     }
 				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if((contentWindow.pointer == 0 && e.getKeyCode() == KeyEvent.VK_UP) || (contentWindow.pointer == contentWindow.max && e.getKeyCode() == KeyEvent.VK_DOWN)) {
+					if((contentWindow.index == 0 && e.getKeyCode() == KeyEvent.VK_UP) || ((contentWindow.index == contentWindow.hints.size() - 1) && e.getKeyCode() == KeyEvent.VK_DOWN)) {
 						contentWindow.setVisible(false);
 						return;
 					}

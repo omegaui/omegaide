@@ -25,6 +25,7 @@ public class TextComp extends JComponent{
 	
 	public int arcX = 20;
 	public int arcY = 20;
+     public int alingX = -1;
 	private String dir;
 	public Color color1;
 	public Color color2;
@@ -141,7 +142,7 @@ public class TextComp extends JComponent{
 
 	public void draw(Graphics2D g, int x, int y){
 		g.setColor(color3);
-		g.drawString(dir, x, y);
+		g.drawString(dir, alingX < 0 ? x : alingX, y);
 	}
 
 	public void paintEnter(Graphics2D g){

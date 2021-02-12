@@ -862,10 +862,10 @@ public class CodeFramework{
 			dataMembers.forEach(d->{
 				if(d.name.startsWith(lCode)) mx.add(d);
 			});
-			editor.contentWindow.genView(mx);
+			editor.contentWindow.genView(mx, Screen.getScreen().getGraphics());
 			return;
 		}
-		editor.contentWindow.genView(dataMembers);
+		editor.contentWindow.genView(dataMembers, Screen.getScreen().getGraphics());
 	}
 
 	public static void gen(LinkedList<DataMember> dataMembers, Editor editor){
@@ -874,10 +874,10 @@ public class CodeFramework{
 			dataMembers.forEach(d->{
 				if(d.name.startsWith(lCode)) mx.add(d);
 			});
-			editor.contentWindow.genView(mx);
+			editor.contentWindow.genView(mx, ide.Screen.getScreen().getGraphics());
 			return;
 		}
-		editor.contentWindow.genView(dataMembers);
+		editor.contentWindow.genView(dataMembers, ide.Screen.getScreen().getGraphics());
 	}
 
 	public static String getName(String line){
