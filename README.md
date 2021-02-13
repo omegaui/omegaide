@@ -1,7 +1,7 @@
 # **Omega IDE**
 ![](/images/light.png)
 
-Omega IDE is a blazing fast cross-platform java IDE written from scratch.
+Omega IDE is a blazing fast extremely lightweight and a cross-platform java IDE written from scratch.
 
 It is also an instant IDE for other programming languages.
 
