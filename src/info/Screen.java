@@ -58,6 +58,7 @@ public class Screen extends JDialog{
 				setVisible(false);
 			}
 		});
+          
 		setUndecorated(true);
 		setSize(300, 350);
 		setLocationRelativeTo(null);

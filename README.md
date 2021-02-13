@@ -13,6 +13,8 @@ It uses the FlatL&F to provide a familier UX for programmers coming from Intelli
 
 It has its own set of custom components from the buttons to popup menus.
 
+It is recommended to learn how to use Omega IDE properly from [Youtube](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg) else you may get stucked.
+
 It has a variety of features :
 
 **An Instant IDE**
