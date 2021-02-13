@@ -35,6 +35,7 @@ public class ArgumentManager extends DataBase{
      public ArgumentManager(){
      	super(Screen.getFileView().getProjectPath() + File.separator + ".args");
           load();
+          
      }
 
      /**

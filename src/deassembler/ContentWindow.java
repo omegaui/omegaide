@@ -25,6 +25,7 @@ public class ContentWindow extends JPanel implements KeyListener{
      private int width;
      public int index;
      public static int optimalHintHeight = 20;
+     public static Color highlightColor = isDarkMode() ? Color.WHITE : Color.BLACK;
 
      public ContentWindow(Editor editor){
           this.editor = editor;
@@ -60,7 +61,7 @@ public class ContentWindow extends JPanel implements KeyListener{
           width += optimalHintHeight/2;
 
           final Editor e = editor;
-
+          
      	dataMembers.forEach(d->{
                if(d.getRepresentableValue() != null){
                     TextComp textComp = new TextComp(d.getRepresentableValue(), c1, c2, c3, ()->{
@@ -80,7 +81,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                     });
                     textComp.setBounds(0, block, width, optimalHintHeight);
                     textComp.setArc(0, 0);
-                    textComp.alingX = 5;
+                    textComp.alignX = 5;
                     textComp.setFont(PX12);
                     panel.add(textComp);
                     hints.add(textComp);
@@ -91,6 +92,7 @@ public class ContentWindow extends JPanel implements KeyListener{
           if(block == 0) return;
 
           hints.getFirst().setEnter(true);
+          hints.getFirst().color3 = highlightColor;
           
           index = 0;
           
@@ -133,14 +135,18 @@ public class ContentWindow extends JPanel implements KeyListener{
           if(e.getKeyCode() == KeyEvent.VK_DOWN){
                if(index < hints.size() - 1){
                     hints.get(index).setEnter(false);
+                    hints.get(index).color3 = c3;
                     hints.get(++index).setEnter(true);
+                    hints.get(index).color3 = highlightColor;
                     scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
                }
           }
           else if(e.getKeyCode() == KeyEvent.VK_UP){
                if(index > 0){
                     hints.get(index).setEnter(false);
+                    hints.get(index).color3 = c3;
                     hints.get(--index).setEnter(true);
+                    hints.get(index).color3 = highlightColor;
                     scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
                }
           }

@@ -162,6 +162,8 @@ public class GSView extends JDialog{
                          });
                          textComp.setBounds(0, y, getWidth(), 30);
                          textComp.setArc(0, 0);
+                         textComp.setFont(settings.Screen.PX14);
+                         textComp.alignX = 5;
                          panel.add(textComp);
                          comps.add(textComp);
                          members.add(d);

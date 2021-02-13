@@ -146,6 +146,7 @@ public class OverView extends JDialog{
                     txComp.setBounds(0, y, getWidth(), 30);
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);
+                    txComp.setFont(settings.Screen.PX14);
                     panel.add(txComp);
                     comps.add(txComp);
                     members.add(new DataMember("", "", "", "", ""));
@@ -160,6 +161,8 @@ public class OverView extends JDialog{
                               });
                               textComp.setBounds(0, y, getWidth(), 30);
                               textComp.setArc(0, 0);
+                              textComp.alignX = 5;
+                              textComp.setFont(settings.Screen.PX14);
                               panel.add(textComp);
                               comps.add(textComp);
                               members.add(d);
@@ -172,6 +175,7 @@ public class OverView extends JDialog{
                     txComp.setBounds(0, y, getWidth(), 30);
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);
+                    txComp.setFont(settings.Screen.PX14);
                     panel.add(txComp);
                     comps.add(txComp);
                     members.add(new DataMember("", "", "", "", ""));
@@ -186,6 +190,8 @@ public class OverView extends JDialog{
                               });
                               textComp.setBounds(0, y, getWidth(), 30);
                               textComp.setArc(0, 0);
+                              textComp.alignX = 5;
+                              textComp.setFont(settings.Screen.PX14);
                               panel.add(textComp);
                               comps.add(textComp);
                               members.add(d);

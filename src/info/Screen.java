@@ -119,9 +119,9 @@ public class Screen extends JDialog{
 			g.setFont(PX20);
 			g.drawString("NEW FEATURES IN THIS RELEASE", getWidth()/2 - g.getFontMetrics().stringWidth("NEW FEATURES IN THIS RELEASE")/2, 21 + 21 + 21 + 21 + 51);
 			g.setFont(PX12);
-			g.drawString("Modes in Content Assist", getWidth()/2 - g.getFontMetrics().stringWidth("Modes in Content Assist")/2, 21 + 21 + 21 + 21 + 21 + 51);
-               g.drawString("Support for other Programming Langs", getWidth()/2 - g.getFontMetrics().stringWidth("Support for other Programming Langs")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
-               g.drawString("Tutorial Videos instead of Manuals", getWidth()/2 - g.getFontMetrics().stringWidth("Tutorial Videos instead of Manuals")/2, 21 + 21 + 21 + 21 + 21 + 21 + 21 + 51);
+			g.drawString("Improved Content Assist UI", getWidth()/2 - g.getFontMetrics().stringWidth("Improved Content Assist UI")/2, 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("Improved Content Assist Performance", getWidth()/2 - g.getFontMetrics().stringWidth("Improved Content Assist Performance")/2, 21 + 21 + 21 + 21 + 21 + 21 + 51);
+               g.drawString("Some Visual Tweaks", getWidth()/2 - g.getFontMetrics().stringWidth("Some Visual Tweaks")/2, 21 + 21 + 21 + 21 + 21 + 21 + 21 + 51);
 			g.drawImage(image, getWidth()/2 - 32, getHeight() - 110, 64, 64, this);
 		}
 		infoBtn.repaint();

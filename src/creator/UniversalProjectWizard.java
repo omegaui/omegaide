@@ -40,7 +40,7 @@ public class UniversalProjectWizard extends JDialog{
           closeComp.setFont(settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
-
+          
           titleComp = new TextComp("Project Wizard", c1, c2, c3, ()->{});
           titleComp.setBounds(40, 0, getWidth() - 40, 40);
           titleComp.setFont(settings.Screen.PX16);
