@@ -99,7 +99,7 @@ public class SnippetBase {
 				}
 			}
 			reader.close();
-		}catch(Exception e){System.err.println(e);}
+		}catch(Exception e){ e.printStackTrace(); }
 	}
 
 	public static void save(){

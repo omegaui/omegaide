@@ -45,7 +45,7 @@ public class Startup extends JDialog {
                     LICENSE_TEXT += reader.nextLine() + "\n";
                }
                reader.close();
-          }catch(Exception e){ System.err.println(e); }
+          }catch(Exception e){ e.printStackTrace(); }
 		setUndecorated(true);
 		setSize(800, 550);
           JPanel panel = new JPanel(null);
@@ -80,7 +80,7 @@ public class Startup extends JDialog {
                try{
                	new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
                     setVisible(false);
-               }catch(Exception e){ System.err.println(e); }
+               }catch(Exception e){ e.printStackTrace(); }
           });
           acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
           acceptComp.setFont(settings.Screen.PX16);
@@ -144,10 +144,10 @@ public class Startup extends JDialog {
                ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
           }
           if(!new File(".omega-ide" + File.separator + ".preferences").exists()){
-               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.preferences");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences", ".omega-ide/.preferences");
           }
           if(!new File(".omega-ide" + File.separator + ".snippets").exists()){
-               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.snippets");
+               ide.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets", ".omega-ide/.snippets");
           }
      }
 }

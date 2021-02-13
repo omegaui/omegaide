@@ -113,7 +113,7 @@ public class UIManager extends DataBase {
                     out.write(in.read());
                out.close();
                in.close();
-     	}catch(Exception e){ System.err.println(e); }
+     	}catch(Exception e){ e.printStackTrace(); }
           return file;
      }
 	

@@ -120,7 +120,7 @@ public class Screen extends JFrame {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
 		} catch (Exception e1) {
-			System.out.println(e1);
+			e1.printStackTrace();
 		}
           UIManager.loadHighlight();
           uiManager = new UIManager(this);

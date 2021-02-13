@@ -21,7 +21,7 @@ It has a variety of features :
 
 ![](/images/instant-mode.png)
 
-You can program not only Java but also other programming languages.
+You can program not only in Java but also in other programming languages.
 
 Using the Universal Feature of Omega IDE.
 
