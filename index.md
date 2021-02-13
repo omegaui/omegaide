@@ -1,7 +1,7 @@
 # **Omega IDE**
 ![](/images/light.png)
 
-Omega IDE is a blazing fast cross-platform java IDE written from scratch.
+Omega IDE is a blazing fast extremely lightweight and a cross-platform java IDE written from scratch.
 
 It is also an instant IDE for other programming languages.
 
@@ -13,13 +13,15 @@ It uses the FlatL&F to provide a familier UX for programmers coming from Intelli
 
 It has its own set of custom components from the buttons to popup menus.
 
+It is recommended to learn how to use Omega IDE properly from [Youtube](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg) else you may get stucked.
+
 It has a variety of features :
 
 **An Instant IDE**
 
 ![](/images/instant-mode.png)
 
-You can program not only Java but also other programming languages.
+You can program not only in Java but also in other programming languages.
 
 Using the Universal Feature of Omega IDE.
 
