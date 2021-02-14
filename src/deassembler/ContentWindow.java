@@ -93,6 +93,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 
           hints.getFirst().setEnter(true);
           hints.getFirst().color3 = highlightColor;
+          scrollPane.getVerticalScrollBar().setValue(0);
           
           index = 0;
           

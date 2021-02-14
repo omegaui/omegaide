@@ -119,6 +119,10 @@ public class OPopupWindow extends JDialog{
                });
                if(scrollable)
                     scrollPane.repaint();
+
+               int dy = getY() + getHeight() - (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+               int dx = getX() + getWidth() - (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+               setLocation(dx > 0 ? (getX() - dx) : getX(), dy > 0 ? (getY() - dy) : getY());
           }
      	super.setVisible(value);
           if(scrollable){

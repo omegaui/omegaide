@@ -53,7 +53,7 @@ public class PopupManager {
                     editor.reloadFile();
                     screen.getTabPanel().remove(editor);
                })
-               .createItem("Reload", null, ()->editor.reloadFile()).width(300);
+               .createItem("Reload", null, ()->editor.reloadFile()).width(200);
 		}
 		else {
 			popup.createItem("Save", IconManager.fileImage, ()->editor.saveCurrentFile())
@@ -65,7 +65,7 @@ public class PopupManager {
                     editor.reloadFile();
                     screen.getTabPanel().remove(editor);
                })
-               .createItem("Reload", null, ()->editor.reloadFile()).width(300);
+               .createItem("Reload", null, ()->editor.reloadFile()).width(200);
 		}
           popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
           popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));

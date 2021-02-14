@@ -149,7 +149,7 @@ public class ToolMenu extends JPanel {
 		fileMenu.setBounds(0, 0, 60, 20);
 		addComp(fileMenu);
 
-          projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(400);
+          projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(200);
 		initProjectPopup();
 		Menu projectMenu = new Menu(projectPopup, "Project");
 		projectMenu.setBounds(60, 0, 60, 20);
@@ -161,13 +161,13 @@ public class ToolMenu extends JPanel {
 		toolsMenu.setBounds(120, 0, 60, 20);
 		addComp(toolsMenu);
 
-		viewPopup = OPopupWindow.gen("View Menu", screen, 0, false).width(300);
+		viewPopup = OPopupWindow.gen("View Menu", screen, 0, false).width(250);
 		initViewMenu();
-		Menu viewMenu = new Menu(viewPopup, "View ");
+		Menu viewMenu = new Menu(viewPopup, "View");
 		viewMenu.setBounds(180, 0, 60, 20);
 		addComp(viewMenu);
 
-		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(400);
+		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(250);
 		initSetMenu();
 		Menu setMenu = new Menu(setPopup, "Settings");
 		setMenu.setBounds(240, 0, 60, 20);

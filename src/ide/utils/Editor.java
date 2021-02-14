@@ -76,7 +76,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static Screen screen;
 	private RTextScrollPane scrollPane;
 	public volatile File currentFile;
-	private static volatile PrintArea printArea;
+	private static PrintArea printArea;
 	private volatile JFileChooser chooser = new JFileChooser();
 	private volatile String savedText = "";
 	public static KeyListener keyListener;
@@ -84,7 +84,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static String currentTheme = "no-theme";
 	private FindAndReplace fAndR;
 	private static boolean launched = false;
-	private volatile boolean call = true;
+	private volatile boolean call = false;
 	public ContentWindow contentWindow;
 	private volatile boolean ctrl;
 	private volatile boolean shift;
@@ -168,7 +168,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setDragEnabled(true);
 		setDropMode(DropMode.USE_SELECTION);
 		UIManager.setData(this);
-		setLayout(null);
 	}
 
 	public static void setStyle(Editor e, File f) {
@@ -333,6 +332,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				return;
 			if(!currentFile.exists())
 				return;
+                                 
 			Screen.getProjectView().setVisible(false);
 			int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
 			if(res0 != JOptionPane.YES_OPTION)
@@ -371,8 +371,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}else file.delete();
 	}
 
-	public static void deleteFile(File currentFile)
-	{
+	public static void deleteFile(File currentFile) {
           new Thread(()->{
               try {
                     if(currentFile == null)
@@ -381,15 +380,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                          int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
                          if(res0 != JOptionPane.YES_OPTION)
                               return;
-                         printArea.setVisible(true);
                          try {
                               deleteDir(currentFile);
-                              printArea.print("Successfully Deleted "+currentFile.getName());
                               ImportManager.readSource(EditorTools.importManager);
                               Screen.getProjectView().reload();
-                         }catch(Exception e) {
-                              printArea.print("File is Open Somewhere, Unable to delete directory "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
-                         }
+                         }catch(Exception e) { }
                          return;
                     }
                     if(!currentFile.exists())
@@ -398,17 +393,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                     int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
                     if(res0 != JOptionPane.YES_OPTION)
                          return;
-                    printArea.setVisible(true);
-                    if(!currentFile.delete()) {
-                         printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
-                    }
-                    else {
-                         printArea.print("Successfully Deleted " + currentFile.getName());
+                    if(currentFile.delete()) {
                          Screen.getProjectView().reload();
                          ImportManager.readSource(EditorTools.importManager);
                     }
                }catch(Exception e) {
-                    System.err.println(e);
+                    e.printStackTrace();
                }
           }).start();
 	}
@@ -710,7 +700,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 
 		public void print(String text) {
-			textArea.append("\n"+text);
+			textArea.append("\n" + text);
 		}
 
 	}

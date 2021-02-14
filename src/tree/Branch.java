@@ -17,6 +17,8 @@ package tree;
 */
 import popup.*;
 
+import tabPane.IconManager;
+import java.awt.image.BufferedImage;
 import java.util.Locale;
 import java.awt.Color;
 import java.awt.Font;
@@ -36,22 +38,23 @@ public class Branch extends JComponent{
 	private String name;
 	private String type = "?";
 	private OPopupWindow popupMenu;
+     private BufferedImage icon;
 	public volatile boolean enter;
 	private boolean expand;
 	private Locale l;
 	private static final Font FONT = new Font("Ubuntu Mono", Font.BOLD, 18);
 	private static final Font FONT_BOLD = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final int OPTIMAL_HEIGHT = 30;
-	public static final int OPTIMAL_X = 20;
-     public static final Color SOURCE_COLOR = new Color(250, 50, 50, 160);
-	public static final Color ANY_COLOR = ide.utils.UIManager.c3;
+	public static final int OPTIMAL_X = 40;
+     public static final Color ANY_COLOR = ide.utils.UIManager.c3;
+     public static final Color SOURCE_COLOR = ANY_COLOR;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 160);
 	public static final Color IMAGE_COLOR = new Color(50, 150, 50, 160);
 	public static final Color LINUX_COLOR = new Color(250, 50, 50, 160);
 	public static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
 	public static final Color WEB_COLOR = new Color(255, 200, 0, 160);
-	public static final Color XML_COLOR = new Color(255, 175, 175, 160);
-	public static final Color ARCHIVE_COLOR = new Color(64, 64, 64, 160);
+	public static final Color XML_COLOR = LINUX_COLOR;
+	public static final Color ARCHIVE_COLOR = ANY_COLOR;
   
 	public interface Locale {
 		void locate(Branch b);
@@ -62,6 +65,7 @@ public class Branch extends JComponent{
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
+          this.icon = expand ? IconManager.projectImage : IconManager.fileImage;
 		setFont(FONT);
 		if(expand){
 			type = "";
@@ -76,7 +80,7 @@ public class Branch extends JComponent{
 			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
 			   || file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
-				type = "SourceCode";
+                         type = "SourceCode";
 			}
 			else if(file.getName().endsWith(".class")){
 				setForeground(BYTE_COLOR);
@@ -126,7 +130,7 @@ public class Branch extends JComponent{
 				type = "Archive";
 			}
 		}
-		popupMenu= OPopupWindow.gen("Tree Menu", ide.Screen.getScreen(), 0, false).width(300);
+		popupMenu= OPopupWindow.gen("Tree Menu", ide.Screen.getScreen(), 0, false).width(250);
 		PopupManager.createTreePopup(popupMenu, file);
 		addMouseListener(new MouseAdapter(){
 			@Override
@@ -178,10 +182,11 @@ public class Branch extends JComponent{
 		if(getWidth() < w)
 			setSize(w, getHeight());
 		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
+		g.fillRect(enter ? (OPTIMAL_X - 2) : 0, 0, getWidth(), getHeight());
 		g.setColor(getForeground());
 		g.drawString(name, OPTIMAL_X, (getHeight()/2) + 2);
 		g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
+		g.drawImage(icon, 16, 8, 16, 16, null);
 		if(enter){
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + FONT.getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
 		}
