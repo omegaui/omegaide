@@ -150,6 +150,7 @@ public class Screen extends JDialog {
 		compileTimeField = new JTextField();
 		compileTimeField.setBounds(100, 190, getWidth() - 100, 40);
 		compileTimeField.setFont(PX14);
+          compileTimeField.setBackground(c2);
 		add(compileTimeField);
 		projectComps.add(compileTimeField);
 
@@ -165,6 +166,7 @@ public class Screen extends JDialog {
 		runTimeField = new JTextField();
 		runTimeField.setBounds(100, 230, getWidth() - 100, 40);
 		runTimeField.setFont(PX14);
+          runTimeField.setBackground(c2);
 		add(runTimeField);
 		projectComps.add(runTimeField);
 

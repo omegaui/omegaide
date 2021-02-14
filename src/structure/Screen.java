@@ -103,6 +103,7 @@ public class Screen extends JDialog {
           add(sep0);
 
           JTextField searchClassField = new JTextField("Package name or exact Class name");
+          searchClassField.setBackground(c2);
           searchClassField.setBounds(0, 40, getWidth()/3, 30);
           searchClassField.setFont(settings.Screen.PX16);
           searchClassField.setForeground(c3);
@@ -115,6 +116,7 @@ public class Screen extends JDialog {
           add(rightPane);
 
           JTextField searchContentField = new JTextField();
+          searchContentField.setBackground(c2);
           searchContentField.setBounds(getWidth()/3 + 2, 40, rightPane.getWidth() - 10 - 30, 30);
           searchContentField.setFont(settings.Screen.PX16);
           searchContentField.setForeground(c3);

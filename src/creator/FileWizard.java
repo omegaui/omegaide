@@ -60,6 +60,7 @@ public class FileWizard extends JDialog{
 		nameField.setForeground(UIManager.c3);
 		addHoverEffect(nameField, "Enter name of the File or Source");
 		nameField.setBounds(0, 0, getWidth() - 40, 40);
+          nameField.setBackground(c2);
 		add(nameField);
 
 		final JFileChooser fileC = new JFileChooser();
