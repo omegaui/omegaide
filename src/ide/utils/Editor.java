@@ -15,6 +15,7 @@ package ide.utils;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import codePoint.IndentationFramework;
 import java.awt.event.MouseAdapter;
 import deassembler.DataMember;
 import gset.Generator;
@@ -498,6 +499,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
                if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
                     Generator.gsView.genView(this);
                     g = false;
+                    ctrl = false;
+                    shift = false;
+               }
+               
+               if(ctrl && !shift && i && currentFile.getName().endsWith(".java")) {
+                    IndentationFramework.indent(this);
+                    i = false;
                     ctrl = false;
                     shift = false;
                }
