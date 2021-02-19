@@ -409,7 +409,7 @@ public class RTextArea extends RTextAreaBase implements Printable {
 		}
 		if(clickImageMenuItem != null) return;
 		clickImageMenuItem = new JMenuItem("Click Image");
-		clickImageMenuItem.addActionListener(e->ide.Screen.getScreen().getCurrentEditor().saveImage());
+		clickImageMenuItem.addActionListener(e->omega.Screen.getScreen().getCurrentEditor().saveImage());
 		popupMenu.add(clickImageMenuItem);
 
 	}

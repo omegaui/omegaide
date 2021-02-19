@@ -1,9 +1,6 @@
-package Omega;
+package omega.deassembler;
 /*
-    Omega.IDE, this class launhces a new instance of Omega IDE.
-    This is the main-class of the project.
-    This is named like Omega.IDE to make it overcome the StartUPWMClassName
-          warning on the Linux Desktop without any illegal reflection t.
+    Stores the DataMember with depth in a method block.
     Copyright (C) 2021 Omega UI. All Rights Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -19,14 +16,15 @@ package Omega;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-public class IDE {
-     
-	public static omega.Screen screen; //The Object of the Main Window
+public class DepthMember extends DataMember{
+     public int depth = 0;
+     public DepthMember(String access, String modifier, String type, String name, String parameters, int depth){
+          super(access, modifier, type, name, parameters);
+          this.depth = depth;
+     }
 
-     /*
-      * The main method
-     */
-	public static void main(String[] args) {
-		screen = new omega.Screen();
-	}
+     @Override
+     public String toString(){
+          return super.toString() + ", depth - " + depth;
+     }
 }

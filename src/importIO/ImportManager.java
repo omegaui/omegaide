@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import ide.Screen;
+import omega.Screen;
 
 public class ImportManager{
 

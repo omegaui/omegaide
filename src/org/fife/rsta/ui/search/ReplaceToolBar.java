@@ -70,7 +70,7 @@ public class ReplaceToolBar extends FindToolBar {
 		Box panel = new Box(BoxLayout.LINE_AXIS);
 
 		JPanel bp = new JPanel(new GridLayout(2,2, 5,5));
-          bp.setBackground(ide.utils.UIManager.c2);
+          bp.setBackground(omega.utils.UIManager.c2);
 		panel.add(bp);
 
 		createFindButtons();
@@ -82,7 +82,7 @@ public class ReplaceToolBar extends FindToolBar {
 		panel.add(bp);
 
 		JPanel optionPanel = new JPanel(new SpringLayout());
-          optionPanel.setBackground(ide.utils.UIManager.c2);
+          optionPanel.setBackground(omega.utils.UIManager.c2);
 		matchCaseCheckBox = createCB("MatchCase");
 		regexCheckBox = createCB("RegEx");
 		wholeWordCheckBox = createCB("WholeWord");
@@ -124,21 +124,21 @@ public class ReplaceToolBar extends FindToolBar {
 		findFieldListener = new ReplaceFindFieldListener();
 
 		JPanel temp = new JPanel(new SpringLayout());
-          temp.setBackground(ide.utils.UIManager.c2);
+          temp.setBackground(omega.utils.UIManager.c2);
 
 		JLabel findLabel = new JLabel(MSG.getString("FindWhat"));
-          findLabel.setBackground(ide.utils.UIManager.c2);
+          findLabel.setBackground(omega.utils.UIManager.c2);
 		JLabel replaceLabel = new JLabel(MSG.getString("ReplaceWith"));
-          replaceLabel.setBackground(ide.utils.UIManager.c2);
+          replaceLabel.setBackground(omega.utils.UIManager.c2);
 
 		findCombo = new SearchComboBox(this, false);
-          findCombo.setBackground(ide.utils.UIManager.c2);
+          findCombo.setBackground(omega.utils.UIManager.c2);
 		JTextComponent findField = UIUtil.getTextComponent(findCombo);
 		findFieldListener.install(findField);
 		Container fcp = createContentAssistablePanel(findCombo);
 
 		replaceCombo = new SearchComboBox(this, true);
-          replaceCombo.setBackground(ide.utils.UIManager.c2);
+          replaceCombo.setBackground(omega.utils.UIManager.c2);
 		JTextComponent replaceField = UIUtil.getTextComponent(replaceCombo);
 		findFieldListener.install(replaceField);
 		Container rcp = createContentAssistablePanel(replaceCombo);

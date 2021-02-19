@@ -1,9 +1,5 @@
-package Omega;
+package omega.snippet;
 /*
-    Omega.IDE, this class launhces a new instance of Omega IDE.
-    This is the main-class of the project.
-    This is named like Omega.IDE to make it overcome the StartUPWMClassName
-          warning on the Linux Desktop without any illegal reflection t.
     Copyright (C) 2021 Omega UI. All Rights Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -19,14 +15,14 @@ package Omega;
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-public class IDE {
+public class Snippet {
+     public String base = "";
+     public String code = "";
+     public int caret = 0;
+     public int line = 0;
      
-	public static omega.Screen screen; //The Object of the Main Window
-
-     /*
-      * The main method
-     */
-	public static void main(String[] args) {
-		screen = new omega.Screen();
-	}
+     @Override
+     public String toString() {
+    	 return base;
+     }
 }

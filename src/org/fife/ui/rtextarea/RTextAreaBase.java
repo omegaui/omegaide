@@ -449,7 +449,7 @@ public abstract class RTextAreaBase extends JTextArea {
 		// support; see Sun bug S282887.
 		StyleContext sc = StyleContext.getDefaultStyleContext();
 		Font font = null;
-		font = sc.getFont(ide.utils.UIManager.fontName, Font.BOLD, ide.utils.UIManager.fontSize);
+		font = sc.getFont(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
 //		if (isOSX()) {
 //			// Snow Leopard (1.6) uses Menlo as default monospaced font,
 //			// pre-Snow Leopard used Monaco.
@@ -934,7 +934,7 @@ try {
 	 * @see #getCurrentLineHighlightColor
 	 */
 	public void setCurrentLineHighlightColor(Color color) {
-		color = ide.utils.UIManager.isDarkMode() ? new Color(249, 56, 0, 20) : new Color(0, 0, 255, 20);
+		color = omega.utils.UIManager.isDarkMode() ? new Color(249, 56, 0, 20) : new Color(0, 0, 255, 20);
 		if (color==null) {
 			throw new NullPointerException();
 		}
