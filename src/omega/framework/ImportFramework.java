@@ -115,16 +115,19 @@ public class ImportFramework{
 				if(im.getClassName().equals(classX)) {
 					if(im.getPackage().equals(PACK) || contains(editor, im.getPackage(), im.getClassName()) || CodeFramework.isSource(PACK + "." + im.getClassName())) continue main;
 					try {
-						for(String baseX : bases)
-							if(baseX.equals(im.getImport())) continue inner;
-						if(!CodeFramework.isSource(im.getImport()))
-							ClassLoader.getSystemClassLoader().loadClass(im.getImport());
+						for(String baseX : bases){
+							if(baseX.equals(im.getImport())) 
+							     continue inner;
+						}
 						bases.add(im.getImport());
-					}catch(Exception e) { }
+					}
+					catch(Exception e) {
+                              
+				     }
 				}
 			}
 			if(!bases.isEmpty())
-				coexistingClassess.add(bases);
+                    coexistingClassess.add(bases);
 		}
 		//Removing Multiple Existence
 		for(LinkedList<String> bases : coexistingClassess) {

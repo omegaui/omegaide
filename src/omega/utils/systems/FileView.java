@@ -56,8 +56,10 @@ public class FileView extends View {
      public void readDependencies(){
      	if(jdkManager == null) return;
           projectManager.jars.forEach(path->{
-               System.out.println("Reading Jar : " + path);
                jdkManager.readJar(path, false);
+          });
+          projectManager.modules.forEach(path->{
+               jdkManager.readJar(path, true);
           });
      }
 	

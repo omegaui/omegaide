@@ -130,8 +130,9 @@ public class JDKManager {
 				String name = jarEntry.getName();
 				if(!name.endsWith("/")){
 					String classPath = Module.convertJarPathToPackagePath(name);
-					if(classPath != null)
+					if(classPath != null){
 						addImport(classPath, path, module);
+					}
 				}
 			}
 		}

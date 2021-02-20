@@ -29,14 +29,18 @@ public class ByteReader {
 	private void read(){
 		try{
 			if(code == null){
-				String classPath = getClassPath();
-				if(classPath == null) return;
+                    Import im  = getImport();
+				if(im == null) return;
 				Process process = null;
                     String javap = omega.Screen.getFileView().getJDKManager().javap;
-				if(classPath.equals("system"))
-					process = new ProcessBuilder(javap, "-public", className).start();
-				else
-					process = new ProcessBuilder(javap, "-public", "-cp", classPath, className).start();
+				if(!im.module)
+					process = new ProcessBuilder(javap, "-public", "-cp", im.jarPath, className).start();
+				else{
+                         String s = im.jarPath;
+                         String module_path = s.substring(0, s.lastIndexOf(File.separator));
+                         String module_name = s.substring(s.lastIndexOf(File.separator) + 1, s.lastIndexOf('.'));
+					process = new ProcessBuilder(javap, "-public", "--module-path", module_path, "--module", module_name, className).start();
+				}
 				while(process.isAlive());
 				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				String token = reader.readLine();
@@ -353,10 +357,10 @@ public class ByteReader {
 		return "[type - " + type + ", name - " + className + ", modifier - " + modifier + ", access - " + access + ", parent - " + parent + ", features - " + f.trim() + "]";
 	}
 
-	private String getClassPath(){
+	private Import getImport(){
 		for(Import m : JDKManager.getAllImports()) {
 			if(m.getImport().equals(className)) {
-				return m.jarPath;
+				return m;
 			}
 		}
 		return null;
