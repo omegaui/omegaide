@@ -1,5 +1,6 @@
 package omega.deassembler;
-import importIO.ImportManager;
+import omega.jdk.Import;
+import omega.jdk.JDKManager;
 import omega.utils.*;
 import java.io.*;
 import java.util.*;
@@ -31,9 +32,7 @@ public class ByteReader {
 				String classPath = getClassPath();
 				if(classPath == null) return;
 				Process process = null;
-                    String javap = "javap";
-                    if(omega.Screen.getFileView().getProjectManager().jdkExists())
-                         javap = omega.Screen.getFileView().getProjectManager().jdkPath + File.separator + "bin" + File.separator + javap;
+                    String javap = omega.Screen.getFileView().getJDKManager().javap;
 				if(classPath.equals("system"))
 					process = new ProcessBuilder(javap, "-public", className).start();
 				else
@@ -355,7 +354,7 @@ public class ByteReader {
 	}
 
 	private String getClassPath(){
-		for(importIO.Import m : importIO.ImportManager.getAllImports()) {
+		for(Import m : JDKManager.getAllImports()) {
 			if(m.getImport().equals(className)) {
 				return m.jarPath;
 			}

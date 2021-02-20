@@ -2,7 +2,6 @@ package omega.tabPane;
 import omega.popup.*;
 import omega.Screen;
 import omega.utils.systems.EditorTools;
-import importIO.ImportManager;
 import javax.swing.JOptionPane;
 import omega.utils.Editor;
 import java.awt.Desktop;
@@ -79,7 +78,6 @@ public class PopupManager {
                else
                     Editor.deleteFile(file);
                Screen.getProjectView().reload();
-               ImportManager.readSource(EditorTools.importManager);
           })
           .createItem("Refresh", null, ()->Screen.getProjectView().reload())
           .createItem("Rename", IconManager.fileImage, ()->{
@@ -87,7 +85,6 @@ public class PopupManager {
                if(editor != null) Screen.getScreen().getTabPanel().remove(editor);
                Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
                Screen.getProjectView().reload();
-               ImportManager.readSource(EditorTools.importManager);
           });
 		
           popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"" + file.getAbsolutePath() + "\""), null));

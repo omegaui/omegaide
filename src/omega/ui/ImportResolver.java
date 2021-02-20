@@ -1,5 +1,5 @@
 package omega.ui;
-import importIO.Import;
+import omega.jdk.Import;
 import omega.utils.UIManager;
 import omega.Screen;
 import java.awt.BorderLayout;

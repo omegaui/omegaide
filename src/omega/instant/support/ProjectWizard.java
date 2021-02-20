@@ -1,11 +1,8 @@
 package omega.instant.support;
 import omega.popup.*;
-import omega.utils.ResourceManager;
 import omega.Screen;
 import omega.tabPane.IconManager;
 import omega.utils.UIManager;
-import omega.utils.NativesManager;
-import omega.utils.DependencyManager;
 import omega.utils.ProjectDataBase;
 import java.lang.reflect.Member;
 import omega.comp.Comp;
@@ -365,27 +362,22 @@ public class ProjectWizard extends JDialog{
 		//Here Create the ProjectDataBaseSystem from omega.utils.ProjectDataBase
           ProjectDataBase.genInfo(file.getAbsolutePath(), false);
 		omega.Screen.getScreen().loadProject(file);
-		DependencyManager depenManager = omega.Screen.getFileView().getDependencyManager();
-		NativesManager nativeManager = omega.Screen.getFileView().getNativesManager();
-		ResourceManager resManager = omega.Screen.getFileView().getResourceManager();
+          ProjectDataBase dataBase = omega.Screen.getFileView().getProjectManager();
 		for(Member m : dependencies) {
 			System.out.println(m.type);
 			if(m.type.trim().equals("Jar")) {
-				depenManager.add(m.name);
+				dataBase.jars.add(m.name);
 			}
 			else if(m.type.trim().equals("Native")) {
-				nativeManager.add(m.name);
+				dataBase.natives.add(m.name);
 			}
 			else if(m.type.trim().equals("Resource")) {
-				resManager.add(m.name);
+				dataBase.resourceRoots.add(m.name);
 			}
 		}
-		ProjectDataBase dataBase = omega.Screen.getFileView().getProjectManager();
 		dataBase.setJDKPath(jdkPath);
-		depenManager.saveFile();
-		nativeManager.saveFile();
-		resManager.saveData();
 		sources.forEach(s->omega.Screen.getScreen().loadFile(s));
+          dataBase.save();
 		return true;
 	}
 

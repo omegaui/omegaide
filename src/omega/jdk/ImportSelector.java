@@ -2,24 +2,7 @@ package omega.jdk;
 import omega.utils.UIManager;
 import omega.Screen;
 import omega.utils.systems.View;
-import importIO.ImportManager;
 import omega.utils.Editor;
-/*
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 import java.awt.Graphics;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
@@ -97,7 +80,7 @@ public class ImportSelector extends View {
 		choice.removeAll();
 		choice.addItem(INSTRUCT);
 		try {
-			ImportManager.getAllImports().forEach(im->{
+			JDKManager.getAllImports().forEach(im->{
 				String import0 = im.getImport();
 				if(import0.endsWith("."))
 					import0 = import0.substring(0, import0.length() - 1);

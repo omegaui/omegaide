@@ -18,7 +18,6 @@ import omega.framework.ImportFramework;
 import omega.snippet.SnippetBase;
 import java.awt.event.KeyEvent;
 import omega.utils.systems.EditorTools;
-import importIO.ImportManager;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
@@ -297,7 +296,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				Screen.getProjectView().reload();
 				savedText = "";
 				currentFile = null;
-				ImportManager.readSource(EditorTools.importManager);
 				Screen.getProjectView().reload();
 			}
 	}catch(Exception e) {System.err.println(e.getMessage());}
@@ -327,7 +325,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 						return;
 					try {
 						deleteDir(currentFile);
-						ImportManager.readSource(EditorTools.importManager);
 						Screen.getProjectView().reload();
 				}catch(Exception e) { }
 					return;
@@ -340,7 +337,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					return;
 				if(currentFile.delete()) {
 					Screen.getProjectView().reload();
-					ImportManager.readSource(EditorTools.importManager);
 				}
 			}catch(Exception e) {
 				e.printStackTrace();

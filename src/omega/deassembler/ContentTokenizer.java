@@ -1,5 +1,5 @@
 package omega.deassembler;
-import importIO.Import;
+import omega.jdk.Import;
 import omega.Screen;
 import omega.utils.DataManager;
 import omega.framework.CodeFramework;

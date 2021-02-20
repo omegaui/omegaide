@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import omega.utils.UIManager;
 import java.awt.Component;
 import omega.utils.systems.EditorTools;
-import importIO.ImportManager;
 import java.util.StringTokenizer;
 import java.io.File;
 import java.awt.event.MouseAdapter;
@@ -114,7 +113,6 @@ public class FileWizard extends JDialog{
 				}
 				File src = new File(path+text.substring(text.lastIndexOf('.') + 1)+".java");
 				createSRCFile(src, type, PATH, text.substring(text.lastIndexOf('.') + 1));
-				ImportManager.readSource(EditorTools.importManager);
 			}else{
 				File file = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
 				if(!file.exists()){

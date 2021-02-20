@@ -1,4 +1,6 @@
 package omega.utils.systems;
+import omega.utils.BuildPathManager;
+import omega.jdk.JDKManager;
 import omega.instant.support.ArgumentManager;
 import omega.launcher.Launcher;
 import javax.swing.JOptionPane;
@@ -9,15 +11,9 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import omega.deassembler.Assembly;
-import omega.depenUI.DependencyView;
 import omega.Screen;
 import omega.utils.DataManager;
-import omega.utils.DependencyManager;
-import omega.utils.ModuleManager;
-import omega.utils.ModuleView;
-import omega.utils.NativesManager;
 import omega.utils.ProjectDataBase;
-import omega.utils.ResourceManager;
 import omega.utils.UIManager;
 import omega.utils.systems.creators.FileCreator;
 import omega.search.SearchWindow;
@@ -26,20 +22,15 @@ public class FileView extends View {
 
 	private static String projectPath = null;
 	private ProjectDataBase projectManager;
-	private DependencyManager dependencyManager;
-	private NativesManager nativesManager;
-	private ResourceManager resourceManager;
-	private volatile FileCreator fileCreator;
-	private DependencyView dependencyView;
-	private ModuleView moduleView;
-	private ModuleManager moduleManager;
      private ArgumentManager argumentManager;
+	private FileCreator fileCreator;
+     private BuildPathManager dependencyView;
 	private SearchWindow searchWindow;
+     private JDKManager jdkManager;
 
 	public FileView(String title, Screen window) {
 		super(title, window);
-		dependencyView = new DependencyView(window);
-		moduleView = new ModuleView(window);
+		dependencyView = new BuildPathManager(window);
 		searchWindow = new SearchWindow(window);
 		setLayout(new FlowLayout());
 		init();
@@ -47,9 +38,29 @@ public class FileView extends View {
 	}
 
 	private void init() {
-		fileCreator = new FileCreator(getScreen());	
+		fileCreator = new FileCreator(getScreen());
 	}
 
+	public void readJDK(){
+          int version = 0;
+          if(jdkManager != null)
+               version = jdkManager.getVersionAsInt();
+          int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
+          if(version != versionThis)
+               Assembly.deassemble();
+          jdkManager = new JDKManager(new File(projectManager.jdkPath));
+          jdkManager.readSources(projectPath);
+          readDependencies();
+	}
+
+     public void readDependencies(){
+     	if(jdkManager == null) return;
+          projectManager.jars.forEach(path->{
+               System.out.println("Reading Jar : " + path);
+               jdkManager.readJar(path, false);
+          });
+     }
+	
 	public void setProjectPath(String path) {
 		if(projectPath != null) {
 			if(projectPath.equals(path))
@@ -70,29 +81,26 @@ public class FileView extends View {
 			}
 		}catch(Exception ex) {System.out.println(ex);}
 		getScreen().getTabPanel().closeAllTabs();
-		Assembly.deassemble();
 		projectManager = new ProjectDataBase();
           getScreen().manageTools(projectManager);
-          if(!projectManager.non_java){
-               Screen.notify("Reading Dependencies and Resource Roots", 1000, null);
-     		dependencyManager = new DependencyManager();
-     		nativesManager = new NativesManager();
-     		resourceManager = new ResourceManager();
-     		moduleManager = new ModuleManager();
-          }
-          else{
+          if(projectManager.non_java){
                argumentManager = new ArgumentManager();
           }
 		searchWindow.cleanAndLoad(new File(projectPath));
           if(!projectManager.non_java) {
-     		if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists()){
-     			Screen.notify("No JDK Defined for Project "+Screen.getFileView().getProjectName(), 3000, null);
-     		}
+     		if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists())
+     			Screen.notify("No JDK Defined for Project " + Screen.getFileView().getProjectName(), 3000, null);
      		else {
-     			projectManager.readJDK(false);
+     			readJDK();
      		}
+                    
      		Screen.hideNotif();
-     		try {Screen.getProjectView().reload();}catch(Exception e) {}
+     		try {
+     		     Screen.getProjectView().reload();
+		     }
+		     catch(Exception e) {
+                    
+	          }
           }
 	}
 
@@ -103,15 +111,7 @@ public class FileView extends View {
 	public void saveAll() {
 		if(projectManager != null){
 			projectManager.save();
-               if(!projectManager.non_java){
-          		if(dependencyManager != null)
-          			dependencyManager.saveFile();
-          		if(nativesManager != null)
-          			nativesManager.saveFile();
-          		if(resourceManager != null)
-          			resourceManager.saveData();
-               }
-               else{
+               if(projectManager.non_java){
                     argumentManager.save();
                }
 		}
@@ -171,45 +171,26 @@ public class FileView extends View {
           return projectManager;
      }
 
-     public DependencyManager getDependencyManager() {
-          return dependencyManager;
-     }
-
-     public NativesManager getNativesManager() {
-          return nativesManager;
-     }
-
-     public ResourceManager getResourceManager() {
-          return resourceManager;
-     }
-
-     public DependencyView getDependencyView() {
+     public BuildPathManager getDependencyView() {
           return dependencyView;
-     }
-
-     public ModuleView getModuleView() {
-          return moduleView;
-     }
-
-     public ModuleManager getModuleManager() {
-          return moduleManager;
      }
 
      public ArgumentManager getArgumentManager() {
           return argumentManager;
      }
 
-     public String getProjectName()
-     {
+     public JDKManager getJDKManager() {
+          return jdkManager;
+     }
+     
+     public String getProjectName() {
           if(projectPath == null)
                return "";
           return projectPath.substring(projectPath.lastIndexOf(File.separatorChar)+1);
      }
 
-	public static void checkDir(File file)
-	{
-		if(!file.exists())
-		{
+	public static void checkDir(File file) {
+		if(!file.exists()) {
 			file.mkdir();
 		}
 	}

@@ -1,10 +1,10 @@
 package omega.structure;
-import importIO.Import;
+import omega.jdk.JDKManager;
+import omega.jdk.Import;
 import omega.utils.UIManager;
 import omega.deassembler.ByteReader;
 import omega.deassembler.SourceReader;
 import omega.framework.CodeFramework;
-import importIO.ImportManager;
 import omega.utils.Editor;
 import omega.deassembler.DataMember;
 import omega.comp.TextComp;
@@ -157,7 +157,7 @@ public class Screen extends JDialog {
      	leftBlock = 0;
           boolean containsDot = path.contains(".");
           LinkedList<String> addedImports = new LinkedList<>();
-          for(Import im : ImportManager.getAllImports()){
+          for(Import im : JDKManager.getAllImports()){
                if(addedImports.contains(im.getImport())) continue;
                if((containsDot && im.getImport().contains(path)) || im.getClassName().equals(path)) {
                     String text = im.getImport();

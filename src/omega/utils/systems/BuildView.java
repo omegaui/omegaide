@@ -1,20 +1,4 @@
 package omega.utils.systems;
-/*
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -40,10 +24,9 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import omega.Screen;
 import omega.utils.Editor;
-import omega.utils.ResourceManager;
 import omega.utils.UIManager;
+import omega.jdk.*;
 import omega.utils.systems.creators.FileOperationManager;
-import importIO.JDKReader;
 
 public class BuildView extends View {
 
@@ -195,8 +178,8 @@ public class BuildView extends View {
 
 				String cmd = "";
 				String depenPath = "";
-				if(!Screen.getFileView().getDependencyManager().dependencies.isEmpty()) {
-					for(String d : Screen.getFileView().getDependencyManager().dependencies) {
+				if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
+					for(String d : Screen.getFileView().getProjectManager().jars) {
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
 					}
 					if(!depenPath.equals("")) {
@@ -208,19 +191,19 @@ public class BuildView extends View {
 				else
 					cmd = "javac" + cmd;
 				if(depenPath != null && !depenPath.equals("")) {
-					if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
+					if(Screen.getFileView().getDependencyView().getModulePath() != null) {
 						if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
 							compileProcess = new ProcessBuilder(
 									cmd, "-d", "bin", "-classpath", depenPath, 
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+									"--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+									"--add-modules", Screen.getFileView().getDependencyView().getModules(),
 									Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
 									).directory(new File(Screen.getFileView().getProjectPath())).start();
 						}else {
 							compileProcess = new ProcessBuilder(
 									cmd, "-d", "bin", "-classpath", depenPath,
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),"@"+BuildView.SRC_LIST
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
 									).directory(new File(Screen.getFileView().getProjectPath())).start();
 						}
 					}
@@ -238,19 +221,19 @@ public class BuildView extends View {
 					}
 				}
 				else {
-					if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
+					if(Screen.getFileView().getDependencyView().getModulePath() != null) {
 						if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
 							compileProcess = new ProcessBuilder(
 									cmd, "-d", "bin",
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 									Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
 									).directory(new File(Screen.getFileView().getProjectPath())).start();
 						}else {
 							compileProcess = new ProcessBuilder(
 									cmd, "-d", "bin",
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(), "@"+BuildView.SRC_LIST
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
 									).directory(new File(Screen.getFileView().getProjectPath())).start();
 						}
 					}
@@ -480,7 +463,7 @@ public class BuildView extends View {
 		public void setProcess(Process p) {
 			process = p;
                if(!Screen.getFileView().getProjectManager().non_java)
-			     textArea.setText("Building Project with JDK v" + JDKReader.version);
+			     textArea.setText("Building Project with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
                else
                     textArea.setText("Building Project ...");
 		}

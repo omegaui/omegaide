@@ -36,7 +36,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import static omega.utils.UIManager.*;
-import importIO.ImportManager;
 import say.swing.JFontChooser;
 
 public class ToolMenu extends JPanel {
@@ -45,7 +44,6 @@ public class ToolMenu extends JPanel {
 	public OPopupWindow filePopup;
 	public OPopupWindow projectPopup;
 	public OPopupWindow toolsPopup;
-	public OPopupWindow viewPopup;
 	public OPopupWindow setPopup;
 	public OPopupWindow helpPopup;
 
@@ -144,22 +142,16 @@ public class ToolMenu extends JPanel {
 		toolsMenu.setBounds(120, 0, 60, 20);
 		addComp(toolsMenu);
 
-		viewPopup = OPopupWindow.gen("View Menu", screen, 0, false).width(250);
-		initViewMenu();
-		Menu viewMenu = new Menu(viewPopup, "View");
-		viewMenu.setBounds(180, 0, 60, 20);
-		addComp(viewMenu);
-
 		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(250);
 		initSetMenu();
 		Menu setMenu = new Menu(setPopup, "Settings");
-		setMenu.setBounds(240, 0, 60, 20);
+		setMenu.setBounds(180, 0, 60, 20);
 		addComp(setMenu);
 
 		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(350);
 		initHelpMenu();
 		Menu helpMenu = new Menu(helpPopup, "Help");
-		helpMenu.setBounds(300, 0, 60, 20);
+		helpMenu.setBounds(240, 0, 60, 20);
 		addComp(helpMenu);
 		
 		taskMenu = new LabelMenu("Click to Run Garbage Collector", ()->{
@@ -535,13 +527,6 @@ public class ToolMenu extends JPanel {
           });
 	}
 
-	private void initViewMenu() {
-          viewPopup.createItem("Show Project Panel", IconManager.projectImage, ()->{
-                if(!screen.screenHasProjectView)
-                    Screen.getProjectView().setVisible(true);
-          });
-	}
-
 	private void initToolMenu() {
           toolsPopup.createItem("Import Picker", IconManager.buildImage, ()->EditorTools.showIS())
           .createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
@@ -566,7 +551,10 @@ public class ToolMenu extends JPanel {
 		JFileChooser fileC = new JFileChooser();
 
           projectPopup.createItem("Manage Class-Path", IconManager.projectImage, ()->Screen.getFileView().getDependencyView().setVisible(true))
-          .createItem("Manage Module-Path", IconManager.projectImage, ()->Screen.getFileView().getModuleView().setVisible(true))
+          .createItem("Manage Module-Path", IconManager.projectImage, ()->{
+               Screen.getFileView().getDependencyView().setVisible(true);
+               Screen.getFileView().getDependencyView().setView(3);
+          })
           .createItem("Delete Files", IconManager.closeImage, 
                ()->{
                     fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
@@ -597,7 +585,6 @@ public class ToolMenu extends JPanel {
                                              deleteDir(file);
                                         }catch(Exception e2) {}
                                    }
-                                   ImportManager.readSource(EditorTools.importManager);
                               }).start();
                          }
                     }

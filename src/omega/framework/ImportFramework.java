@@ -1,27 +1,10 @@
 package omega.framework;
-import importIO.Import;
+import omega.jdk.JDKManager;
+import omega.jdk.Import;
 import omega.utils.DataManager;
-import importIO.ImportManager;
 import omega.utils.Editor;
 import omega.deassembler.SourceReader;
 import omega.ui.ImportResolver;
-/*
-    codePoint.ImportFramework, this class is responsible for managing auto-imports.
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -101,7 +84,7 @@ public class ImportFramework{
       * @param editor = The Editor in which the imports are to be inserted
      */
 	public static synchronized void addImports(LinkedList<String> classess, Editor editor){
-		if(ImportManager.reading) return;
+		if(JDKManager.reading) return;
 		String PACK = "";
 		if(editor.getText().startsWith("package")) {
 			PACK = editor.getText().substring(editor.getText().indexOf(" ") + 1, editor.getText().indexOf(';'));
@@ -111,8 +94,8 @@ public class ImportFramework{
 		//Removing Java Lang Classess
 		for(String classX : classess) {
 			boolean found = false;
-			for(String langClass : ImportManager.javaLangPack) {
-				String className = langClass.substring(langClass.lastIndexOf('.') + 1);
+			for(Import xm : JDKManager.javaLangPack) {
+				String className = xm.getClassName();
 				if(className.equals(classX)) {
 					found = true;
 					break;
@@ -128,7 +111,7 @@ public class ImportFramework{
 		for(String classX : unimported) {
 			LinkedList<String> bases = new LinkedList<>();
 			inner:
-			for(Import im : ImportManager.getAllImports()) {
+			for(Import im : JDKManager.getAllImports()) {
 				if(im.getClassName().equals(classX)) {
 					if(im.getPackage().equals(PACK) || contains(editor, im.getPackage(), im.getClassName()) || CodeFramework.isSource(PACK + "." + im.getClassName())) continue main;
 					try {
@@ -234,22 +217,3 @@ public class ImportFramework{
 		}catch(Exception e) { System.err.println(e); }
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

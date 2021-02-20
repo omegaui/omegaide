@@ -1,4 +1,6 @@
 package omega.framework;
+import omega.jdk.Import;
+import omega.jdk.JDKManager;
 import omega.Screen;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -7,7 +9,6 @@ import java.io.File;
 import omega.deassembler.DataBlock;
 import omega.deassembler.SourceReader;
 import omega.deassembler.ByteReader;
-import importIO.ImportManager;
 import omega.deassembler.DataMember;
 import java.util.LinkedList;
 import omega.utils.Editor;
@@ -66,7 +67,7 @@ public class CodeFramework{
 		LinkedList<DataMember> dataMembers = new LinkedList<>();
 		if(!isSource(className)){
 			boolean isAvailable = false;
-			for(importIO.Import im : importIO.ImportManager.getAllImports()) {
+			for(Import im : JDKManager.getAllImports()) {
 				if(im.getImport().equals(className)) {
 					isAvailable = true;
 					break;
@@ -269,7 +270,7 @@ public class CodeFramework{
 		}
 		if(!isSource(path)){
 			boolean isAvailable = false;
-			for(importIO.Import im : importIO.ImportManager.getAllImports()) {
+			for(Import im : JDKManager.getAllImports()) {
 				if(im.getImport().equals(path)) {
 					isAvailable = true;
 					break;
@@ -623,7 +624,7 @@ public class CodeFramework{
 		LinkedList<DataMember> dataMembers = new LinkedList<>();
 		if(!isSource(className)){
 			boolean isAvailable = false;
-			for(importIO.Import im : importIO.ImportManager.getAllImports()) {
+			for(Import im : JDKManager.getAllImports()) {
 				if(im.getImport().equals(className)) {
 					isAvailable = true;
 					break;

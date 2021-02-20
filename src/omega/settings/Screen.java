@@ -1,6 +1,5 @@
 package omega.settings;
 import omega.utils.UIManager;
-import importIO.JDKReader;
 import omega.utils.ToolMenu;
 import omega.utils.DataManager;
 import java.io.File;
@@ -118,7 +117,8 @@ public class Screen extends JDialog {
 		projectComps.add(classPathComp);
 
 		modulePathComp = new Comp("Manage ModulePath", c1, c2, c3, ()->{
-			omega.Screen.getFileView().getModuleView().setVisible(true);
+               omega.Screen.getFileView().getDependencyView().setVisible(true);
+               omega.Screen.getFileView().getDependencyView().setView(3);
 		});
 		modulePathComp.setBounds(0, 140, getWidth(), 50);
 		modulePathComp.setFont(PX16);
@@ -263,7 +263,7 @@ public class Screen extends JDialog {
      		suggestionComp.setToggle(realTime = DataManager.isContentAssistRealTime());
      		asteriskComp.setToggle(asterisk = DataManager.isUsingStarImports());
      		if(omega.Screen.getFileView().getProjectManager().jdkPath != null)
-     			jdkComp.setText("Using JDK v" + importIO.JDKReader.version);
+     			jdkComp.setText("Using JDK v" + omega.Screen.getFileView().getJDKManager().getVersionAsInt());
      		else
      			jdkComp.setText("Select a Java SE Environment");
      		String text = DataManager.getPathToJava();

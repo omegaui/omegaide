@@ -1,10 +1,8 @@
 package omega.utils.systems;
 import omega.utils.UIManager;
-import omega.utils.ResourceManager;
 import omega.Screen;
 import omega.comp.TextComp;
 import omega.utils.Editor;
-import importIO.JDKReader;
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -26,7 +24,7 @@ import javax.swing.JTextField;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-public class RunView extends View{
+public class RunView extends View {
 
 	private static final long serialVersionUID = 1L;
 
@@ -251,8 +249,8 @@ public class RunView extends View{
 					
 					String cmd = "";
 					String depenPath = "";
-					if(!Screen.getFileView().getDependencyManager().dependencies.isEmpty()) {
-						for(String d : Screen.getFileView().getDependencyManager().dependencies) {
+					if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
+						for(String d : Screen.getFileView().getProjectManager().jars) {
 							depenPath += d + omega.Screen.PATH_SEPARATOR;
 						}
 					}
@@ -265,19 +263,19 @@ public class RunView extends View{
 					else
 						cmd = "javac" + cmd;
 					if(depenPath != null && !depenPath.equals("")) {
-						if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
+						if(Screen.getFileView().getDependencyView().getModulePath() != null) {
 							if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
 								compileProcess = new ProcessBuilder(
 										cmd, "-d", "bin", "-classpath", depenPath, 
-										"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-										"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                                  "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                                  "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 										Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
 										).directory(new File(Screen.getFileView().getProjectPath())).start();
 							}else {
 								compileProcess = new ProcessBuilder(
 										cmd, "-d", "bin", "-classpath", depenPath,
-										"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-										"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),"@"+BuildView.SRC_LIST
+                                                  "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                                  "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
 										).directory(new File(Screen.getFileView().getProjectPath())).start();
 							}
 						}
@@ -295,19 +293,19 @@ public class RunView extends View{
 						}
 					}
 					else {
-						if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
+						if(Screen.getFileView().getDependencyView().getModulePath() != null) {
 							if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
 								compileProcess = new ProcessBuilder(
 										cmd, "-d", "bin",
-										"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-										"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                                  "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                                  "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 										Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
 										).directory(new File(Screen.getFileView().getProjectPath())).start();
 							}else {
 								compileProcess = new ProcessBuilder(
 										cmd, "-d", "bin",
-										"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-										"--add-modules", Screen.getFileView().getModuleManager().getModularNames(), "@"+BuildView.SRC_LIST
+                                                  "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                                  "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
 										).directory(new File(Screen.getFileView().getProjectPath())).start();
 							}
 						}
@@ -360,8 +358,8 @@ public class RunView extends View{
 				}catch(Exception e2) {e2.printStackTrace();}
 
 				getScreen().getOperationPanel().removeTab("Compilation");
-				if(mainClass == null)
-				{
+                  
+				if(mainClass == null) {
 					PrintArea p = new PrintArea("Main Class does not exists", getScreen());
 					p.setVisible(true);
 					getScreen().getOperationPanel().addTab("No Main Config", p, ()->{p.stopProcess();});
@@ -379,7 +377,7 @@ public class RunView extends View{
 				Screen.setStatus("Running Project", 23);
 
 				NATIVE_PATH = "";
-				for(String d : Screen.getFileView().getNativesManager().natives) {
+				for(String d : Screen.getFileView().getProjectManager().natives) {
 					NATIVE_PATH += d + omega.Screen.PATH_SEPARATOR;
 				}
 				if(!NATIVE_PATH.equals("")) {
@@ -389,21 +387,26 @@ public class RunView extends View{
 				else
 					NATIVE_PATH = "$PATH";
 				String depenPath = "";
-				for(String d : Screen.getFileView().getDependencyManager().dependencies)
+				for(String d : Screen.getFileView().getProjectManager().jars)
 					depenPath += d + omega.Screen.PATH_SEPARATOR;
-				for(String d : omega.utils.ResourceManager.roots)
+				for(String d : Screen.getFileView().getProjectManager().resourceRoots)
 					depenPath += d + omega.Screen.PATH_SEPARATOR;
 				if(!depenPath.equals("")) {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
                     System.out.println(depenPath);
 				PrintArea terminal = new PrintArea("Terminal "+mainClass+"-Closing This Conlose will terminate Execution", getScreen());
-				terminal.printText("running \""+mainClass+"\" with JDK v" + JDKReader.version);
+				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 				terminal.launchAsTerminal();
 
 				Screen.setStatus("Running Project", 56);
+                    if(Screen.getFileView().getProjectManager().jdkPath == null){
+                         getScreen().getToolMenu().runComp.setClickable(true);
+                         getScreen().getToolMenu().setTask("Please Setup the Project JDK First!");
+                         return;
+                    }
 				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 				String cmd = null;
 				if(jdkPath != null && new File(jdkPath).exists())
@@ -412,19 +415,19 @@ public class RunView extends View{
 					cmd = "java" + cmd;
                      
 				if(depenPath != null && !depenPath.equals("")) {
-					if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
+					if(Screen.getFileView().getDependencyView().getModulePath() != null) {
 						if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
 							runProcess = new ProcessBuilder(
 									cmd, "-classpath", depenPath + omega.Screen.PATH_SEPARATOR + ".",
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 									"-Djava.library.path="+NATIVE_PATH+"", Screen.getFileView().getProjectManager().run_time_args, mainClass
 									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
 									cmd, "-classpath", depenPath + omega.Screen.PATH_SEPARATOR + ".", 
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 									"-Djava.library.path="+NATIVE_PATH+"", mainClass
 									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}
@@ -443,20 +446,20 @@ public class RunView extends View{
 					}
 				}
 				else {
-					if(Screen.getFileView().getModuleManager().getModularPath() != null && Screen.getFileView().getModuleManager().getModularNames() != null) {
+					if(Screen.getFileView().getDependencyView().getModulePath() != null) {
 						if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
 							runProcess = new ProcessBuilder(
 									cmd, 
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 									"-Djava.library.path=\""+NATIVE_PATH+"\"", 
 									Screen.getFileView().getProjectManager().run_time_args, mainClass
 									).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
 						}else {
 							runProcess = new ProcessBuilder(
 									cmd, 
-									"--module-path", Screen.getFileView().getModuleManager().getModularPath(),
-									"--add-modules", Screen.getFileView().getModuleManager().getModularNames(),
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
 									"-Djava.library.path=\""+NATIVE_PATH+"\"", mainClass
 									).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
 						}
@@ -623,7 +626,7 @@ public class RunView extends View{
                     runComp.setPreferredSize(size);
                     add(runComp);
                     
-                    TextComp clrComp = new TextComp("(.)", UIManager.c2, UIManager.c1, UIManager.c3, ()->textArea.setText(""));
+                    TextComp clrComp = new TextComp("(-)", UIManager.c2, UIManager.c1, UIManager.c3, ()->textArea.setText(""));
                     clrComp.setFont(omega.settings.Screen.PX18);
                     clrComp.setPreferredSize(size);
                     add(clrComp);

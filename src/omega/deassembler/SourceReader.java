@@ -1,9 +1,9 @@
 package omega.deassembler;
+import omega.jdk.JDKManager;
 import omega.framework.CodeFramework;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import importIO.ImportManager;
 public class SourceReader {
 	public class Import{
 		public String pack;
@@ -105,7 +105,7 @@ public class SourceReader {
 				String pack = im.substring(0, im.lastIndexOf('.'));
 				String name = im.substring(im.lastIndexOf('.') + 1);
 				if(pack.equals("java.lang")) continue;
-				if(name.equals("*") && !ImportManager.reading){
+				if(name.equals("*") && !JDKManager.reading){
 
 					if(line.contains(" static ")) {
 						if(CodeFramework.isSource(pack)) {
@@ -128,7 +128,7 @@ public class SourceReader {
 						}
 					}
 					else {
-						for(importIO.Import impo : ImportManager.getAllImports()) {
+						for(omega.jdk.Import impo : JDKManager.getAllImports()) {
 							if(impo.getPackage().equals(pack)) {
 								imports.add(new Import(pack, impo.getClassName()));
 							}
@@ -211,7 +211,7 @@ public class SourceReader {
 				String pack = im.substring(0, im.lastIndexOf('.'));
 				String name = im.substring(im.lastIndexOf('.') + 1);
 				if(pack.equals("java.lang")) continue;
-				if(name.equals("*") && !ImportManager.reading){
+				if(name.equals("*") && !JDKManager.reading){
 					//To be continued in IDE's repository
 					if(line.contains(" static ")) {
 						if(CodeFramework.isSource(pack)) {
@@ -234,7 +234,7 @@ public class SourceReader {
 						}
 					}
 					else {
-						for(importIO.Import impo : ImportManager.getAllImports()) {
+						for(omega.jdk.Import impo : JDKManager.getAllImports()) {
 							if(impo.getPackage().equals(pack)) {
 								imports.add(new Import(pack, impo.getClassName()));
 							}
@@ -435,11 +435,9 @@ public class SourceReader {
 				}
 			}
 		}
-		ImportManager.javaLangPack.forEach(im->{
-			String pack = im.substring(0, im.lastIndexOf('.'));
-			String name = im.substring(im.lastIndexOf('.') + 1);
-			imports.add(new Import(pack, name));
-		});
+		JDKManager.javaLangPack.forEach(im->{
+               imports.add(new Import(im.getPackage(), im.getClassName()));
+	     });
 		String parent = this.parent;
 		if(!parent.contains("."))
 			parent = getPackage(parent);
