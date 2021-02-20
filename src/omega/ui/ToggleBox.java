@@ -44,7 +44,6 @@ public class ToggleBox extends JComponent{
      
      public ToggleBox(String text, Toggle t){
          this.text = text;
-         setFont(ImportResolver.font);
          addMouseListener(new MouseAdapter(){
              @Override
              public void mouseClicked(MouseEvent e){

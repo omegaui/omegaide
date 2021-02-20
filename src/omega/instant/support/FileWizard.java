@@ -5,7 +5,6 @@ import omega.Screen;
 import java.awt.event.MouseEvent;
 import omega.utils.UIManager;
 import java.awt.Component;
-import omega.utils.systems.EditorTools;
 import java.util.StringTokenizer;
 import java.io.File;
 import java.awt.event.MouseAdapter;

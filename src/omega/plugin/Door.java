@@ -91,7 +91,7 @@ public class Door extends JComponent{
           else{
                g.setColor(lightR);
                g.fillRect(getWidth() - 40, getHeight()/2 - 10, 20, 20);
-               g.setColor(darkR); 
+               g.setColor(darkR);
                g.fillRect(getWidth() - 20, getHeight()/2 - 15, 20, 30);
                if(enter){
                     g.drawString(">", getWidth() - 48, getHeight()/2 + 6);

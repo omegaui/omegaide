@@ -1,7 +1,6 @@
 package omega.tabPane;
 import omega.popup.*;
 import omega.Screen;
-import omega.utils.systems.EditorTools;
 import javax.swing.JOptionPane;
 import omega.utils.Editor;
 import java.awt.Desktop;

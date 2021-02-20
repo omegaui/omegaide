@@ -3,7 +3,6 @@ import omega.popup.*;
 import omega.tabPane.IconManager;
 import omega.Screen;
 import omega.gset.Generator;
-import omega.utils.systems.EditorTools;
 import java.net.URL;
 import java.awt.Desktop;
 import omega.framework.CodeFramework;
@@ -528,8 +527,7 @@ public class ToolMenu extends JPanel {
 	}
 
 	private void initToolMenu() {
-          toolsPopup.createItem("Import Picker", IconManager.buildImage, ()->EditorTools.showIS())
-          .createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
+          toolsPopup.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
           .createItem("Generate Getter/Setter", IconManager.buildImage, ()->omega.gset.Generator.gsView.genView(screen.getCurrentEditor()))
           .createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()));
 	}

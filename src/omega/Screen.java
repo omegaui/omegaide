@@ -44,14 +44,9 @@ import omega.snippet.SnippetView;
 import omega.launcher.Launcher;
 import omega.utils.Editor;
 import javax.swing.JSplitPane;
-import omega.utils.systems.EditorTools;
 import javax.swing.JFrame;
 
-
-
-
 public class Screen extends JFrame {
-     public EditorTools tools;
      public JSplitPane splitPane;
      public JSplitPane compilancePane;
      public JSplitPane rightTabPanelSplitPane;
@@ -228,8 +223,6 @@ public class Screen extends JFrame {
 		buildView = new BuildView("Build", this);
 		runView = new RunView("Run", this, true);
 		projectView = new ProjectView("Project", this);
-
-		tools = new EditorTools();
 
 		splitPane.setLeftComponent(projectView.getProjectView());
 		splitPane.setDividerLocation(300);

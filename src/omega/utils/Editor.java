@@ -17,7 +17,6 @@ import omega.gset.Generator;
 import omega.framework.ImportFramework;
 import omega.snippet.SnippetBase;
 import java.awt.event.KeyEvent;
-import omega.utils.systems.EditorTools;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
