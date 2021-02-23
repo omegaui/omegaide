@@ -200,21 +200,17 @@ public class SourceReader {
 			//Skipping Comments
                
 			if(line.startsWith("//")) {
-                    System.out.println("Line is a comment");
 			     continue;
 			}
 			if(line.startsWith("/*")){
 				commentStarts = true;
-                    System.out.println("Line is a comment");
 				continue;
 			}
 			else if(line.contains("*/")){
 				commentStarts = false;
-                    System.out.println("Line is a comment");
 				continue;
 			}
 			else if(commentStarts) {
-                    System.out.println("Line is a comment");
 			     continue;
 			}
 			//Reading code

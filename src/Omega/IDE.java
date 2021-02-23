@@ -30,7 +30,7 @@ public class IDE {
       * The main method
      */
 	public static void main(String[] args) {
-		screen = new Screen();
+		screen = new Screen();          
 	}
 }
 

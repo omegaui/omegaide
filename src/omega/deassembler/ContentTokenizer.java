@@ -51,6 +51,10 @@ public class ContentTokenizer {
 			return;
 		}
 		String text = CodeFramework.getCodeDoNotEliminateDot(e.getText(), e.getCaretPosition());
+          if(text == null || text.equals("")){
+               e.contentWindow.setVisible(false);
+               return;
+          }
 		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())){
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
