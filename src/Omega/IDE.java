@@ -1,9 +1,11 @@
 package Omega;
+import omega.Screen;
 /*
     Omega.IDE, this class launhces a new instance of Omega IDE.
     This is the main-class of the project.
     This is named like Omega.IDE to make it overcome the StartUPWMClassName
-          warning on the Linux Desktop without any illegal reflection t.
+          warning/problem on the Linux Desktop without any illegal reflection.
+    
     Copyright (C) 2021 Omega UI. All Rights Reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -21,12 +23,24 @@ package Omega;
 */
 public class IDE {
      
-	public static omega.Screen screen; //The Object of the Main Window
+     //The Object of the Main Window
+	public static Screen screen;
 
      /*
       * The main method
      */
 	public static void main(String[] args) {
-		screen = new omega.Screen();
+		screen = new Screen();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+

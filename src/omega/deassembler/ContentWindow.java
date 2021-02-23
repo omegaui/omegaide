@@ -24,6 +24,7 @@ public class ContentWindow extends JPanel implements KeyListener{
      private JScrollPane scrollPane;
      private int block;
      private int width;
+     private int height;
      public int index;
      public static int optimalHintHeight = 20;
      public static Color highlightColor = isDarkMode() ? Color.WHITE : Color.BLACK;
@@ -32,8 +33,8 @@ public class ContentWindow extends JPanel implements KeyListener{
           this.editor = editor;
           setVisible(false);
           setBackground(c2);
-          setLayout(new BorderLayout());
-          add(scrollPane = new JScrollPane(panel = new JPanel(null)), BorderLayout.CENTER);
+          setLayout(null);
+          add(scrollPane = new JScrollPane(panel = new JPanel(null)));
           panel.setBackground(c2);
      }
 
@@ -77,7 +78,10 @@ public class ContentWindow extends JPanel implements KeyListener{
                                    part = part.substring(lCode.length());
                                    e.insert(part, e.getCaretPosition());
                                    if(d.parameterCount > 0) e.setCaretPosition(e.getCaretPosition() - 1);
-                              }catch(Exception es) { es.printStackTrace(); }
+                              }
+                              catch(Exception es) { 
+                                   es.printStackTrace();
+                              }
                          }
                     });
                     textComp.setBounds(0, block, width, optimalHintHeight);
@@ -99,13 +103,20 @@ public class ContentWindow extends JPanel implements KeyListener{
           index = 0;
           
           panel.setPreferredSize(new Dimension(width, block));
+          scrollPane.setPreferredSize(panel.getPreferredSize());
+          doLayout();
           
           width += optimalHintHeight;
-          
-          setSize(width > 700 ? 700 : width, (block > 200 ? 200 : block) + 4);
+          height = (block > 200 ? 200 : block) + 4;
+
+          setVisible(false);
+          setSize((width > 700 ? 700 : width), height);
+          setMinimumSize(getSize());
+          setPreferredSize(getSize());
+          scrollPane.setBounds(0, 0, getWidth(), height);
           decideLocation();
-          repaint();
           setVisible(true);
+          repaint();
      }
 
      public void decideLocation(){
@@ -168,8 +179,10 @@ public class ContentWindow extends JPanel implements KeyListener{
           LinkedList<DataMember> meths = new LinkedList<>();
           for(Object obj : members) {
                DataMember m = (DataMember)obj;
-               if(m.parameters == null) vars.add(m);
-               else meths.add(m);
+               if(m.parameters == null) 
+                    vars.add(m);
+               else 
+                    meths.add(m);
           }
           dataMembers.clear();
           Object[] var_ =vars.toArray();
@@ -178,7 +191,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                for(int j = 0; j < var_.length - 1 - i; i++) {
                     DataMember m = (DataMember)var_[j];
                     DataMember n = (DataMember)var_[j + 1];
-                    if(m.name.compareTo(n.name) > 0) {
+                    if(m.name.length() > n.name.length()) {
                          Object o = var_[j];
                          var_[j] = var_[j + 1];
                          var_[j + 1] = o;
@@ -190,7 +203,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                for(int j = 0; j < meths_.length - 1 - i; i++) {
                     DataMember m = (DataMember)meths_[j];
                     DataMember n = (DataMember)meths_[j + 1];
-                    if(m.name.compareTo(n.name) > 0) {
+                    if(m.name.length() > n.name.length()) {
                          Object o = meths_[j];
                          meths_[j] = meths_[j + 1];
                          meths_[j + 1] = o;

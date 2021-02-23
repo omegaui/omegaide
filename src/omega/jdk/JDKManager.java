@@ -35,16 +35,17 @@ public class JDKManager {
 		Screen.getScreen().getToolMenu().setTask("Reading JDK v" + version);
 		String rtJarPath = jdkDir.getAbsolutePath() + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar";
 		try{
-			JarFile rtJarFile = new JarFile(rtJarPath);
-			for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();) {
-				JarEntry jarEntry = enums.nextElement();
-				String name = jarEntry.getName();
-				if(!name.endsWith("/")){
-					String classPath = Module.convertJarPathToPackagePath(name);
-					if(classPath != null)
-						addImport(classPath, rtJarPath, false);
-				}
-			}
+		     try(JarFile rtJarFile = new JarFile(rtJarPath)){
+		          for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();) {
+          			JarEntry jarEntry = enums.nextElement();
+          			String name = jarEntry.getName();
+          			if(!name.endsWith("/")){
+          				String classPath = Module.convertJarPathToPackagePath(name);
+          				if(classPath != null)
+          					addImport(classPath, rtJarPath, false);
+          			}
+          		}
+		     }
 		}
 		catch(Exception e) {
 			Screen.getScreen().getToolMenu().setTask("Exception while Reading the JDK v" + version);
@@ -97,7 +98,7 @@ public class JDKManager {
 		File[] files = dir.listFiles();
 		if(files == null || files.length == 0)
 			return false;
-		String releaseFilePath = dir.getAbsolutePath() + File.separator + "";
+		String releaseFilePath = dir.getAbsolutePath() + File.separator + "release";
 		File releaseFile = new File(releaseFilePath);
 		return releaseFile.exists();
 	}
@@ -124,16 +125,17 @@ public class JDKManager {
 	public void readJar(String path, boolean module){
 		Screen.getScreen().getToolMenu().setTask("Reading Jar : " + new File(path).getName());
 		try{
-			JarFile rtJarFile = new JarFile(path);
-			for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
-				JarEntry jarEntry = enums.nextElement();
-				String name = jarEntry.getName();
-				if(!name.endsWith("/")){
-					String classPath = Module.convertJarPathToPackagePath(name);
-					if(classPath != null){
-						addImport(classPath, path, module);
-					}
-				}
+			try(JarFile rtJarFile = new JarFile(path)){
+     			for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
+     				JarEntry jarEntry = enums.nextElement();
+     				String name = jarEntry.getName();
+     				if(!name.endsWith("/")){
+     					String classPath = Module.convertJarPathToPackagePath(name);
+     					if(classPath != null){
+     						addImport(classPath, path, module);
+     					}
+     				}
+     			}
 			}
 		}
 		catch(Exception e) {

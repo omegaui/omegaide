@@ -25,15 +25,16 @@ public class CodeFramework{
 		CodeFramework.editor = e;
 		CodeFramework.text = text;
 		String code = getCode(text, caret);
-		lCode = null;
+		lCode = "";
 		if(code != null){
 			resolving = true;
-			lCode = getLastCode(code, caret);
 			CodeFramework.caret = caret;
-			if(lCode != null) lCode = lCode.trim();
 			try{
 				var = createHints(code);
-			}catch(Exception ex){}
+			}
+			catch(Exception ex){
+                    
+		     }
 			finally {
 				resolving = false;
 			}
@@ -73,7 +74,8 @@ public class CodeFramework{
 					break;
 				}
 			}
-			if(!isAvailable) return false;
+			if(!isAvailable) 
+			     return false;
 			ByteReader reader = null;
 			if(has(className)) reader = getReader(className);
 			else reader = new ByteReader(className);
@@ -122,18 +124,22 @@ public class CodeFramework{
 								continue inner;
 							}
 						}
-				if(in == 0) {
-					for(ByteReader r : reader.internalReaders) {
-						if(r.className.equals(member)) {
-							dataMembers = r.dataMembers;
-							least = true;
-						}
-					}
-				} 
-				in = 1;
+     				if(in == 0) {
+     					for(ByteReader r : reader.internalReaders) {
+     						if(r.className.equals(member)) {
+     							dataMembers = r.dataMembers;
+     							least = true;
+     						}
+     					}
+     				} 
+     				in = 1;
 				}
-				if(least) gen(dataMembers);
-				else System.out.println("Not at least one match found for "+code);
+				if(least) 
+				     gen(dataMembers);
+                    else {
+                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+                         editor.contentWindow.setVisible(false);
+                    }
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -236,18 +242,22 @@ public class CodeFramework{
 								continue inner;
 							}
 						}
-				if(in == 0) {
-					for(SourceReader r : reader.internalReaders) {
-						if(r.className.equals(member)) {
-							dataMembers = r.dataMembers;
-							least = true;
-						}
-					}
-				} 
-				in = 1;
+     				if(in == 0) {
+     					for(SourceReader r : reader.internalReaders) {
+     						if(r.className.equals(member)) {
+     							dataMembers = r.dataMembers;
+     							least = true;
+     						}
+     					}
+     				} 
+     				in = 1;
 				}
-				if(least) gen(dataMembers);
-				else System.out.println("Not at least one match found for "+code);
+				if(least) 
+				     gen(dataMembers);
+				else {
+				     Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+                         editor.contentWindow.setVisible(false);
+				}
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -325,18 +335,22 @@ public class CodeFramework{
 								continue inner;
 							}
 						}
-				if(in == 0) {
-					for(ByteReader r : reader.internalReaders) {
-						if(r.className.equals(member)) {
-							dataMembers = r.dataMembers;
-							least = true;
-						}
-					}
-				} 
-				in = 1;
+     				if(in == 0) {
+     					for(ByteReader r : reader.internalReaders) {
+     						if(r.className.equals(member)) {
+     							dataMembers = r.dataMembers;
+     							least = true;
+     						}
+     					}
+     				} 
+     				in = 1;
 				}
-				if(least) gen(dataMembers);
-				else System.out.println("Not at least one match found for "+code);
+				if(least) 
+				     gen(dataMembers);
+                    else {
+                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+                         editor.contentWindow.setVisible(false);
+                    }
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -449,8 +463,12 @@ public class CodeFramework{
 				} 
 				in = 1;
 				}
-				if(least) gen(dataMembers);
-				else System.out.println("Not at least one match found for "+code);
+				if(least) 
+				     gen(dataMembers);
+                    else {
+                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+                         editor.contentWindow.setVisible(false);
+                    }
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -803,8 +821,12 @@ public class CodeFramework{
 				} 
 				in = 1;
 				}
-				if(least) gen(dataMembers);
-				else System.out.println("Not at least one match found for "+code);
+				if(least) 
+				     gen(dataMembers);
+                    else {
+                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+                         editor.contentWindow.setVisible(false);
+                    }
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -835,13 +857,15 @@ public class CodeFramework{
 			}
 			if(!p.contains(","))
 				parameterCount = 1;
-			else parameterCount = p.split(",").length;
+			else 
+			     parameterCount = p.split(",").length;
 		}
 		return parameterCount;
 	}
 
 	public static void gen(LinkedList<DataMember> dataMembers){
 		LinkedList<DataMember> mx = new LinkedList<>();
+          lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
 				if(d.name.startsWith(lCode)) mx.add(d);
@@ -854,9 +878,11 @@ public class CodeFramework{
 
 	public static void gen(LinkedList<DataMember> dataMembers, Editor editor){
 		LinkedList<DataMember> mx = new LinkedList<>();
+          lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
-				if(d.name.startsWith(lCode)) mx.add(d);
+				if(d.name.startsWith(lCode)) 
+				     mx.add(d);
 			});
 			editor.contentWindow.genView(mx, omega.Screen.getScreen().getGraphics());
 			return;
@@ -881,7 +907,7 @@ public class CodeFramework{
 			}
 			path = path.substring(0, path.length() - 1).trim();
 			files.clear();
-			file =  new File(path+".java");
+			file =  new File(path + ".java");
 		}
 		else {
 			file = new File(Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator + className + ".java");
@@ -932,40 +958,72 @@ public class CodeFramework{
 		return -1;
 	}
 
-	public static String getCode(String text, int caret){
-		text = text.substring(0, caret);
-		if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
-		if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
-		if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
-		text = text.trim();
-		//Checking whether <text> is frame-able or not
-		if(count(text, '(') > count(text, ')')){
-			text = text.substring(text.lastIndexOf('(') + 1).trim();
-			if(text.contains(","))
-				text = text.substring(text.lastIndexOf(',') + 1).trim();
-		}
-		if(text.contains("="))
-			text = text.substring(text.lastIndexOf('=') + 1).trim();
-		if(text.contains("+"))
-			text = text.substring(text.lastIndexOf('+') + 1).trim();
-		if(text.contains("-"))
-			text = text.substring(text.lastIndexOf('-') + 1).trim();
-		if(text.contains("*"))
-			text = text.substring(text.lastIndexOf('*') + 1).trim();
-		if(text.contains("/"))
-			text = text.substring(text.lastIndexOf('/') + 1).trim();
-		if(text.contains("^"))
-			text = text.substring(text.lastIndexOf('^') + 1).trim();
-		if(text.contains("<"))
-			text = text.substring(text.lastIndexOf('<') + 1).trim();
-		if(text.contains(">"))
-			text = text.substring(text.lastIndexOf('>') + 1).trim();
-		if(text.contains(";"))
-			text = text.substring(text.lastIndexOf(';') + 1).trim();
-		if(!text.contains("."))
-			text = null;
-		return text;
-	}
+     public static String getCode(String text, int caret){
+          text = text.substring(0, caret);
+          if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
+          if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
+          if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
+          text = text.trim();
+          //Checking whether <text> is frame-able or not
+          if(count(text, '(') > count(text, ')')){
+               text = text.substring(text.lastIndexOf('(') + 1).trim();
+               if(text.contains(","))
+                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+          }
+          if(text.contains("="))
+               text = text.substring(text.lastIndexOf('=') + 1).trim();
+          if(text.contains("+"))
+               text = text.substring(text.lastIndexOf('+') + 1).trim();
+          if(text.contains("-"))
+               text = text.substring(text.lastIndexOf('-') + 1).trim();
+          if(text.contains("*"))
+               text = text.substring(text.lastIndexOf('*') + 1).trim();
+          if(text.contains("/"))
+               text = text.substring(text.lastIndexOf('/') + 1).trim();
+          if(text.contains("^"))
+               text = text.substring(text.lastIndexOf('^') + 1).trim();
+          if(text.contains("<"))
+               text = text.substring(text.lastIndexOf('<') + 1).trim();
+          if(text.contains(">"))
+               text = text.substring(text.lastIndexOf('>') + 1).trim();
+          if(text.contains(";"))
+               text = text.substring(text.lastIndexOf(';') + 1).trim();
+          if(!text.contains("."))
+               text = null;
+          return text;
+     }
+    public static String getCodeDoNotEliminateDot(String text, int caret){
+          text = text.substring(0, caret);
+          if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
+          if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
+          if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
+          text = text.trim();
+          //Checking whether <text> is frame-able or not
+          if(count(text, '(') > count(text, ')')){
+               text = text.substring(text.lastIndexOf('(') + 1).trim();
+               if(text.contains(","))
+                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+          }
+          if(text.contains("="))
+               text = text.substring(text.lastIndexOf('=') + 1).trim();
+          if(text.contains("+"))
+               text = text.substring(text.lastIndexOf('+') + 1).trim();
+          if(text.contains("-"))
+               text = text.substring(text.lastIndexOf('-') + 1).trim();
+          if(text.contains("*"))
+               text = text.substring(text.lastIndexOf('*') + 1).trim();
+          if(text.contains("/"))
+               text = text.substring(text.lastIndexOf('/') + 1).trim();
+          if(text.contains("^"))
+               text = text.substring(text.lastIndexOf('^') + 1).trim();
+          if(text.contains("<"))
+               text = text.substring(text.lastIndexOf('<') + 1).trim();
+          if(text.contains(">"))
+               text = text.substring(text.lastIndexOf('>') + 1).trim();
+          if(text.contains(";"))
+               text = text.substring(text.lastIndexOf(';') + 1).trim();
+          return text;
+     }
 
 	public static String getCodeIgnoreDot(String text, int caret){
 		text = text.substring(0, caret);
@@ -1026,7 +1084,7 @@ public class CodeFramework{
 
 	public static String getLastCode(String text, int caret){
 		if(text.contains("."))
-			text = text.substring(text.lastIndexOf('.') + 1);
+			text = text.substring(text.lastIndexOf('.') + 1, caret);
 		if(text.equals(""))
 			text = null;
 		return text;

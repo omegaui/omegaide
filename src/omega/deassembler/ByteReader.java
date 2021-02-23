@@ -16,7 +16,7 @@ public class ByteReader {
 	public LinkedList<DataMember> dataMembers = new LinkedList<>();
 	public LinkedList<ByteReader> internalReaders = new LinkedList<>();
 	public ByteReader(String className){
-		if(!className.contains(" ")) {
+		if(className != null && !className.contains(" ")) {
 			omega.Screen.getScreen().getToolMenu().setTask("Unpacking " + className);
 			this.className = className;
 			read();
@@ -54,14 +54,13 @@ public class ByteReader {
 			//Unpacking the _code
 			dataMembers.clear();
 			internalReaders.clear();
-			StringTokenizer tok = new StringTokenizer(this.code, "\n");
 			boolean recordingInternal = false;
 			boolean commentStarts = false;
 			int openBracesCount = -1;
 			int internalCount = -1;
 			String internalCode = "";
-			while(tok.hasMoreTokens()){
-				String line = tok.nextToken().trim();
+               LinkedList<String> tokens = CodeTokenizer.tokenize(this.code, '\n');
+			for(String line : tokens){
 				if(line.startsWith("Compiled from")) continue;
 				//Skipping Strings and characters
 				String cLine = line;

@@ -566,7 +566,7 @@ public class RunView extends View {
                if(runProcess != null && runProcess.isAlive()) {
                     runProcess.destroyForcibly();
                     runProcess.destroyForcibly();
-                    printText("\'Destroy Command Sent\' to process id \"" + runProcess.pid() + "\"");
+                    printText("\'Destroy Command\' Sent to process id \"" + runProcess.pid() + "\"");
                }
 		}
 

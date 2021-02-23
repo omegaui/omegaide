@@ -1,4 +1,5 @@
 package omega.structure;
+import omega.deassembler.Assembly;
 import omega.jdk.JDKManager;
 import omega.jdk.Import;
 import omega.utils.UIManager;
@@ -197,7 +198,11 @@ public class Screen extends JDialog {
                search("");
           }
           else {
-               ByteReader reader = new ByteReader(im.getImport());
+               ByteReader reader = null;
+               if(Assembly.has(im.getImport()))
+                    reader = Assembly.getReader(im.getImport());
+               else
+                    reader = new ByteReader(im.getImport());
                this.dataMembers = reader.dataMembers;
                search("");
           }

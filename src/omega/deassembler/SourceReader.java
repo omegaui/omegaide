@@ -2,7 +2,6 @@ package omega.deassembler;
 import omega.jdk.JDKManager;
 import omega.framework.CodeFramework;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 public class SourceReader {
 	public class Import{
@@ -42,7 +41,10 @@ public class SourceReader {
 		this.code = code;
 		try {
 			read();
-		}catch(Exception e) {}
+		}
+		catch(Exception e) {
+		     e.printStackTrace();
+	     }
 	}
 
 	public SourceReader(String code, boolean readOnlyImports) {
@@ -55,12 +57,14 @@ public class SourceReader {
 		internalReaders.clear();
 		imports.clear();
 		dataBlocks.clear();
-		StringTokenizer tok = new StringTokenizer(code, "\n");
 		recordingInternal = false;
 		boolean commentStarts = false;
 		boolean canReadImports = true;
-		while(tok.hasMoreTokens()){
-			String line = tok.nextToken().trim();
+          LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
+		for(String line : tokens){
+               //Skippings Single Character like }, etc
+               if(line.trim().length() <= 1 && !line.trim().equals("}"))
+                    continue;
 			//Skipping Strings and characters
 			String cLine = line;
 			line = "";
@@ -148,7 +152,6 @@ public class SourceReader {
 		internalReaders.clear();
 		imports.clear();
 		dataBlocks.clear();
-		StringTokenizer tok = new StringTokenizer(code, "\n");
 		recordingInternal = false;
 		boolean commentStarts = false;
 		boolean canReadImports = true;
@@ -157,9 +160,16 @@ public class SourceReader {
 		int internalCount = -1;
 		String internalCode = "";
 		String blockCode = "";
-		while(tok.hasMoreTokens()){
-			String line = tok.nextToken().trim();
+		LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
+          int lineN = 0;
+          for(int i = 0; i < tokens.size(); i++){
+               String line = tokens.get(i);
+               //Skipping Single Words
+               if(line.trim().length() <= 1 && !line.trim().equals("}")){
+                    continue;
+               }
 			//Skipping Strings and characters
+               lineN++;
 			String cLine = line;
 			line = "";
 			boolean r = true;
@@ -188,22 +198,33 @@ public class SourceReader {
 				}
 			}
 			//Skipping Comments
-			if(line.startsWith("//")) continue;
+               
+			if(line.startsWith("//")) {
+                    System.out.println("Line is a comment");
+			     continue;
+			}
 			if(line.startsWith("/*")){
 				commentStarts = true;
+                    System.out.println("Line is a comment");
 				continue;
 			}
 			else if(line.contains("*/")){
 				commentStarts = false;
+                    System.out.println("Line is a comment");
 				continue;
 			}
-			else if(commentStarts) continue;
+			else if(commentStarts) {
+                    System.out.println("Line is a comment");
+			     continue;
+			}
 			//Reading code
 			//Counting Braces for InternalReaders
 			if(line.contains("{")) internalCount += CodeFramework.count(line, '{');
 			if(line.contains("}")) internalCount -= CodeFramework.count(line, '}');
 			//Balancing OpenBraces
 			if(line.contains("{")) openBracesCount += CodeFramework.count(line, '{');
+               //System.out.println(line);
+               //System.out.println(line + " Line " + lineN + " of "+ tokens.size() + "-->\' " + openBracesCount + " \', Comment=" + commentStarts);
 			//System.out.println(line+", count "+openBracesCount);
 			//Unpacking Prototype_
 			if(line.startsWith("import ") && canReadImports){
@@ -369,6 +390,7 @@ public class SourceReader {
 										access = type;
 										type = "";
 									}
+                                             if(name.contains(".")) continue;
 									dataMembers.add(new DataMember(access, mods, type, name + "()", parameters));
 									dataBlocks.add(new DataBlock(dataMembers.getLast()));
 									readBlock = true;
@@ -380,6 +402,7 @@ public class SourceReader {
 										access = type;
 										type = "";
 									}
+                                             if(name.contains(".")) continue;
 									dataMembers.add(new DataMember(access, "", type, name + "()", parameters));
 									dataBlocks.add(new DataBlock(dataMembers.getLast()));
 									readBlock = true;
@@ -388,6 +411,7 @@ public class SourceReader {
 							}
 							else{
 								String type = cL;
+                                        if(name.contains(".")) continue;
 								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters));
 								dataBlocks.add(new DataBlock(dataMembers.getLast()));
 								readBlock = true;
@@ -397,10 +421,14 @@ public class SourceReader {
 					}catch(Exception e) {}
 				}
 				else if(openBracesCount == 0){
+                         if(cL.startsWith("final ")){
+                              cL = cL.substring(cL.indexOf(' ') + 1).trim();
+                         }
 					if(cL.trim().endsWith(";")){
 						cL = cL.substring(0, cL.lastIndexOf(';')).trim();
 					}
 					String name = cL.substring(cL.lastIndexOf(' ') + 1).trim();
+                         if(!cL.contains(" ")) continue;
 					cL = cL.substring(0, cL.lastIndexOf(' '));
 					if(cL.contains(" ")){
 						String type = cL.substring(cL.lastIndexOf(' ') + 1).trim();
@@ -409,15 +437,18 @@ public class SourceReader {
 							String mods = cL.substring(cL.indexOf(' ') + 1).trim();
 							cL = cL.substring(0, cL.indexOf(' ')).trim();
 							String access = cL;
+                                   if(name.contains(".")) continue;
 							dataMembers.add(new DataMember(access, mods, type, name, null));
 						}
 						else{
 							String access = cL;
+                                   if(name.contains(".")) continue;
 							dataMembers.add(new DataMember(access, "", type, name, null));
 						}
 					}
 					else{
 						String type = cL;
+                              if(name.contains(".")) continue;
 						dataMembers.add(new DataMember("", "", type, name, null));
 					}
 				}
@@ -429,7 +460,9 @@ public class SourceReader {
 					if(blockCode.endsWith("}\n")){
 						blockCode = blockCode.substring(0, blockCode.lastIndexOf('}'));
 					}
-					dataBlocks.getLast().read(blockCode);
+                         if(blockCode.trim().length() > 1){
+					     dataBlocks.getLast().read(blockCode);
+                         }
 					blockCode = "";
 					readBlock = false;
 				}
@@ -457,8 +490,10 @@ public class SourceReader {
 					f = getPackage(f);
 				if(!CodeFramework.isSource(f)) {
 					ByteReader byteReader = null;
-					if(Assembly.has(f)) byteReader = Assembly.getReader(f);
-					else byteReader = new ByteReader(f);
+					if(Assembly.has(f)) 
+					     byteReader = Assembly.getReader(f);
+					else 
+					     byteReader = new ByteReader(f);
 					byteReader.dataMembers.forEach(this::offer);
 				}
 				else {
@@ -481,12 +516,29 @@ public class SourceReader {
 
 	public static boolean isInnerLine(String line){
 		try{
-			return line.contains("else") || (line.contains("if") && !Character.isLetter(line.charAt(line.indexOf("if") + 2))) || (line.contains("for") && !Character.isLetter(line.charAt(line.indexOf("for") + 3))) || line.contains("do") || (line.contains("switch") && !Character.isLetter(line.charAt(line.indexOf("switch") + 5))) || line.contains("return ") || line.contains("case");
-		}catch(Exception e){
+			return line.contains("else") 
+			     || (line.contains("if") && !Character.isLetter(line.charAt(line.indexOf("if") + 2))) 
+		          || (line.contains("for") && !Character.isLetter(line.charAt(line.indexOf("for") + 3))) 
+		          || (line.contains("do") && !Character.isLetter(line.charAt(line.indexOf("do") + 2)))
+		          || (line.contains("switch") 
+		          && !Character.isLetter(line.charAt(line.indexOf("switch") + 5))) 
+		          || line.contains("return ") 
+		          || line.contains("case");
+		}
+		catch(Exception e){
 			try{
-				return line.contains("else") || (line.contains("if") && !Character.isLetter(line.charAt(line.indexOf("if") - 1))) || (line.contains("for") && !Character.isLetter(line.charAt(line.indexOf("for") - 1))) || line.contains("do") || (line.contains("switch") && !Character.isLetter(line.charAt(line.indexOf("switch") - 1))) || line.contains("return ") || line.contains("case");
+				return line.contains("else") 
+				|| (line.contains("if") && !Character.isLetter(line.charAt(line.indexOf("if") - 1))) 
+				|| (line.contains("for") && !Character.isLetter(line.charAt(line.indexOf("for") - 1))) 
+				|| line.contains("do") 
+				|| (line.contains("switch") 
+				&& !Character.isLetter(line.charAt(line.indexOf("switch") - 1))) 
+				|| line.contains("return ") 
+				|| line.contains("case");
 			}
-			catch(Exception e1){return true;}
+			catch(Exception e1){
+			     return false;
+		     }
 		}
 	}
 

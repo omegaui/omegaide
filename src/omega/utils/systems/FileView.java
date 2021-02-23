@@ -42,6 +42,8 @@ public class FileView extends View {
 	}
 
 	public void readJDK(){
+          if(projectManager.jdkPath == null)
+               return;
           int version = 0;
           if(jdkManager != null)
                version = jdkManager.getVersionAsInt();

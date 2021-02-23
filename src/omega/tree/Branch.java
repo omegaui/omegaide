@@ -73,9 +73,12 @@ public class Branch extends JComponent{
 			else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
 				type = "Windows";
 			}
-			else if(file.getName().endsWith(".dmg")){
-				type = "Mac";
-			}
+               else if(file.getName().endsWith(".dmg")){
+                    type = "Mac";
+               }
+               else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
+                    type = "Native Lib";
+               }
 			else if(file.getName().endsWith(".deb") || file.getName().endsWith(".run")
 					|| file.getName().endsWith(".sh")){
 				setForeground(LINUX_COLOR);

@@ -42,7 +42,7 @@ public class ImportResolver extends JDialog {
           titleComp.addMouseListener(new MouseAdapter(){
                @Override
                public void mousePressed(MouseEvent e){
-                 pressX = e.getX();
+                    pressX = e.getX();
                     pressY = e.getY();
                }
           });
@@ -70,6 +70,7 @@ public class ImportResolver extends JDialog {
           comps.clear();
 		LinkedList<Import> selections = new LinkedList<>();
           int maxW = getWidth();
+          block = 0;
           Graphics g = Screen.getScreen().getGraphics();
           g.setFont(PX14);
           for(Import im : imports){

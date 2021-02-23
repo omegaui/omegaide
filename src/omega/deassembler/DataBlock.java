@@ -31,16 +31,18 @@ public class DataBlock {
           this.code = code;
           //Unpacking DataMembers from _prototype
           if(block.parameterCount > 0){
-               if(block.parameters.contains(",")){
+               if(block.parameters.contains(",") && block.parameters.contains(" ")){
                     StringTokenizer tok = new StringTokenizer(block.parameters, ",");
                     while(tok.hasMoreTokens()){
                          String p = tok.nextToken().trim();
-                         String name = p.substring(p.indexOf(' ') + 1).trim();
-                         String type = p.substring(0, p.indexOf(' ')).trim();
-                         depthMembers.add(new DepthMember("", "", type, name, null, 1));
+                         if(p.contains(" ")){
+                              String name = p.substring(p.indexOf(' ') + 1).trim();
+                              String type = p.substring(0, p.indexOf(' ')).trim();
+                              depthMembers.add(new DepthMember("", "", type, name, null, 1));
+                         }
                     }
                }
-               else{
+               else if(block.parameters.contains(" ")){
                     String p = block.parameters;
                     String name = p.substring(p.indexOf(' ') + 1).trim();
                     String type = p.substring(0, p.indexOf(' ')).trim();
