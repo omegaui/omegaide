@@ -1,5 +1,6 @@
 package omega.tabPane;
-import omega.popup.*;
+import omega.popup.OPopupWindow;
+import java.io.File;
 import omega.Screen;
 import omega.utils.UIManager;
 import omega.comp.TextComp;
@@ -93,7 +94,7 @@ public class CloseButton extends JComponent {
 		CloseButton closeButton = new CloseButton().setOnClose(closeAction);
 		closeButton.setFont(new Font("Ubuntu", Font.BOLD, 14));
 
-		JTextArea textField = new JTextArea(name);
+		JTextArea textField = new JTextArea(!toolTip.startsWith("src") ? ("{" + name + "}") : name);
 		UIManager.setData(textField);
 		final Color FORE = textField.getForeground();
 		final MouseAdapter mouseAdapter = new MouseAdapter() {
