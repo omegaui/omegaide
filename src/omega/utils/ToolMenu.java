@@ -1,5 +1,5 @@
 package omega.utils;
-import omega.popup.*;
+import omega.popup.OPopupWindow;
 import omega.tabPane.IconManager;
 import omega.Screen;
 import omega.gset.Generator;
@@ -448,7 +448,7 @@ public class ToolMenu extends JPanel {
           }
           
           themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE restart", l1, l2, l3, ()->{
-               DataManager.setTheme(DataManager.getTheme().equals("light") ? "dark" : "light");
+               Screen.pickTheme(DataManager.getTheme());
                themeComp.setText(DataManager.getTheme());
           });
           themeComp.setFont(omega.settings.Screen.PX16);

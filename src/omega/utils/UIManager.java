@@ -70,7 +70,10 @@ public class UIManager extends DataBase {
                     c2 = Color.decode("#283350");
                     c3 = Color.decode("#FFFFFF");
 			}
-		}catch(Exception e) {System.err.println(e.getMessage());}
+		}
+		catch(Exception e) {
+		     e.printStackTrace();
+	     }
 	}
 	
 	public static void reset() {

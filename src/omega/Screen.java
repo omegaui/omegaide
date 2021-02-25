@@ -1,4 +1,5 @@
 package omega;
+import omega.utils.ThemePicker;
 import java.awt.event.*;
 import omega.tabPane.IconManager;
 import omega.utils.systems.FileView;
@@ -83,6 +84,7 @@ public class Screen extends JFrame {
 	private static PluginStore pluginStore;
 	private static Updater updater;
      private static TerminalComp terminal;
+     private static ThemePicker picker;
 
 	public Screen() {
 		try {
@@ -100,10 +102,11 @@ public class Screen extends JFrame {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-          UIManager.loadHighlight();
+          picker = new ThemePicker(this);
           uiManager = new UIManager(this);
-		UIManager.setData(this);
           Startup.checkStartup(this);
+          UIManager.loadHighlight();
+          UIManager.setData(this);
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
 		splash.setProgress(37, "welcome");
@@ -508,6 +511,13 @@ public class Screen extends JFrame {
           return terminal;
      }
 
+     public static void pickTheme(String defaultTheme){
+          picker.lightMode = defaultTheme.equals("light");
+          picker.loadImage(defaultTheme + ".png");
+          picker.manageTheme();
+          picker.setVisible(true);
+     }
+
 	public ToolMenu getToolMenu() {
 		return toolMenu;
 	}    
@@ -524,8 +534,7 @@ public class Screen extends JFrame {
 		}catch(Exception e) {}
 	}
 
-	public void moveTo(int x, int y)
-	{
+	public void moveTo(int x, int y) {
 		try {
 			if(robot == null)
 				robot = new Robot();
@@ -533,11 +542,11 @@ public class Screen extends JFrame {
 		}catch(Exception e) {}
 	}
 
-	public UIManager getUIManager() {
+	public static UIManager getUIManager() {
 		return uiManager;
 	}
 
-	public DataManager getDataManager(){
+	public static DataManager getDataManager(){
 		return dataManager;
 	}
 

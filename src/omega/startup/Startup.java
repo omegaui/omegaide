@@ -1,4 +1,7 @@
 package omega.startup;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import omega.utils.DataManager;
 import omega.utils.UIManager;
 import omega.Screen;
 import omega.comp.TextComp;
@@ -15,122 +18,126 @@ import java.awt.image.BufferedImage;
 import javax.swing.JDialog;
 public class Startup extends JDialog {
 	private static BufferedImage image;
-     private TextComp closeBtn;
-     private RTextArea textArea;
-     private TextComp acceptComp;
-     private static String LICENSE_TEXT = "";
+	private TextComp closeBtn;
+	private RTextArea textArea;
+	private TextComp acceptComp;
+	private static String LICENSE_TEXT = "";
 	public Startup(Screen screen){
 		super(screen, true);
-          try{
-               image = ImageIO.read(getClass().getResourceAsStream(omega.utils.UIManager.isDarkMode() ? "/omega_ide_icon64_dark.png" : "/omega_ide_icon64.png"));
-               Scanner reader = new Scanner(getClass().getResourceAsStream("/LICENSE"));
-               while(reader.hasNextLine()){
-                    LICENSE_TEXT += reader.nextLine() + "\n";
-               }
-               reader.close();
-          }catch(Exception e){ e.printStackTrace(); }
+		try{
+			image = ImageIO.read(getClass().getResourceAsStream(omega.utils.UIManager.isDarkMode() ? "/omega_ide_icon64_dark.png" : "/omega_ide_icon64.png"));
+			Scanner reader = new Scanner(getClass().getResourceAsStream("/LICENSE"));
+			while(reader.hasNextLine()){
+				LICENSE_TEXT += reader.nextLine() + "\n";
+			}
+			reader.close();
+	}catch(Exception e){ e.printStackTrace(); }
 		setUndecorated(true);
 		setSize(800, 550);
-          JPanel panel = new JPanel(null);
-          panel.setBackground(omega.utils.UIManager.c2);
-          setContentPane(panel);
-          setLayout(null);
+		JPanel panel = new JPanel(null);
+		panel.setBackground(omega.utils.UIManager.c2);
+		setContentPane(panel);
+		setLayout(null);
 		setLocationRelativeTo(null);
 		setAlwaysOnTop(true);
 		setBackground(omega.utils.UIManager.c2);
 		init();
 		setVisible(true);
 	}
-
-     public void init(){
-     	closeBtn = new TextComp("x", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->System.exit(0));
-          closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
-          closeBtn.setFont(omega.settings.Screen.PX18);
-          closeBtn.setArc(0, 0);
-          add(closeBtn);
-
-          textArea = new RTextArea(LICENSE_TEXT);
-          JScrollPane scrollPane = new JScrollPane(textArea);
-          scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
-          textArea.setBackground(omega.utils.UIManager.c2);
-          textArea.setForeground(omega.utils.UIManager.c3);
-          textArea.setFont(omega.settings.Screen.PX18);
-          textArea.setCaretPosition(0);
-          textArea.setEditable(false);
-          add(scrollPane);
-
-          acceptComp = new TextComp("I Accept", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
-               try{
-               	new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
-                    setVisible(false);
-               }catch(Exception e){ e.printStackTrace(); }
-          });
-          acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
-          acceptComp.setFont(omega.settings.Screen.PX16);
-          add(acceptComp);
-
-          TextComp imageComp = new TextComp("", omega.utils.UIManager.c2, omega.utils.UIManager.c2, omega.utils.UIManager.c2, ()->{}){
-               @Override
-               public void paint(Graphics graphics){
-                    super.paint(graphics);
-                    Graphics2D g = (Graphics2D)graphics;
-                    g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                    g.drawImage(image, 1, 1, null);
-               }
-          };
-          imageComp.setBounds(0, 0, 66, 66);
-          imageComp.setClickable(false);
-          add(imageComp);
-
-          TextComp textComp = new TextComp("Omega IDE", omega.utils.UIManager.c2, omega.utils.UIManager.c3, omega.utils.UIManager.c3, ()->{});
-          textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
-          textComp.setClickable(false);
-          textComp.setFont(omega.settings.Screen.PX28);
-          textComp.setArc(0, 0);
-          add(textComp);
-          
-          TextComp licComp = new TextComp("license agreement", omega.utils.UIManager.c2, omega.utils.UIManager.c3, omega.utils.UIManager.c3, ()->{});
-          licComp.setBounds(getWidth()/2 - 150, 50, 300, 30);
-          licComp.setClickable(false);
-          licComp.setFont(omega.settings.Screen.PX18);
-          licComp.setArc(0, 0);
-          add(licComp);
-     }
-
-     @Override
-     public void paint(Graphics graphics){
-     	Graphics2D g = (Graphics2D)graphics;
-     	g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-     	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-     	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
-          g.fillRect(0, 0, getWidth(), getHeight());
-     }
-    
+	public void init(){
+		closeBtn = new TextComp("x", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->System.exit(0));
+		closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
+		closeBtn.setFont(omega.settings.Screen.PX18);
+		closeBtn.setArc(0, 0);
+		add(closeBtn);
+		textArea = new RTextArea(LICENSE_TEXT);
+		JScrollPane scrollPane = new JScrollPane(textArea);
+		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
+		textArea.setBackground(omega.utils.UIManager.c2);
+		textArea.setForeground(omega.utils.UIManager.c3);
+		textArea.setFont(omega.settings.Screen.PX18);
+		textArea.setCaretPosition(0);
+		textArea.setEditable(false);
+		add(scrollPane);
+		acceptComp = new TextComp("I Accept", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
+			try{
+				new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
+				setVisible(false);
+		}catch(Exception e){ e.printStackTrace(); }
+		});
+		acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
+		acceptComp.setFont(omega.settings.Screen.PX16);
+		add(acceptComp);
+	TextComp imageComp = new TextComp("", omega.utils.UIManager.c2, omega.utils.UIManager.c2, omega.utils.UIManager.c2, ()->{}){
+			@Override
+			public void paint(Graphics graphics){
+				super.paint(graphics);
+				Graphics2D g = (Graphics2D)graphics;
+				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g.drawImage(image, 1, 1, null);
+			}
+		};
+		imageComp.setBounds(0, 0, 66, 66);
+		imageComp.setClickable(false);
+		add(imageComp);
+	TextComp textComp = new TextComp("Omega IDE", omega.utils.UIManager.c2, omega.utils.UIManager.c3, omega.utils.UIManager.c3, ()->{});
+		textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
+		textComp.setClickable(false);
+		textComp.setFont(omega.settings.Screen.PX28);
+		textComp.setArc(0, 0);
+		add(textComp);
+		
+	TextComp licComp = new TextComp("license agreement", omega.utils.UIManager.c2, omega.utils.UIManager.c3, omega.utils.UIManager.c3, ()->{});
+		licComp.setBounds(getWidth()/2 - 150, 50, 300, 30);
+		licComp.setClickable(false);
+		licComp.setFont(omega.settings.Screen.PX18);
+		licComp.setArc(0, 0);
+		add(licComp);
+	}
+	@Override
+	public void paint(Graphics graphics){
+		Graphics2D g = (Graphics2D)graphics;
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setColor(getBackground());
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+	
 	public static void checkStartup(Screen screen) {
 		if(!new File(".omega-ide" + File.separator + ".firststartup").exists()){
+			Screen.pickTheme(DataManager.getTheme());
+			Screen.getUIManager().loadData();
+			try{
+				if(UIManager.isDarkMode())
+					FlatDarkLaf.install();
+				else
+				     FlatLightLaf.install();
+			}
+			catch(Exception e) {
+				System.err.println(e);
+			}
 			new Startup(screen).repaint();
 		}
 	}
-
-     public static void writeUIFiles(){
-          File f = new File(".omega-ide");
-          if(!f.exists()){
-              f.mkdir();
-          }
-          f = new File(".omega-ide" + File.separator + "out");
-          if(!f.exists())
-               f.mkdir();
-     	if(!new File(".omega-ide" + File.separator + ".ui").exists()){
-               omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
-          }
-          if(!new File(".omega-ide" + File.separator + ".preferences").exists()){
-               omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences", ".omega-ide/.preferences");
-          }
-          if(!new File(".omega-ide" + File.separator + ".snippets").exists()){
-               omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets", ".omega-ide/.snippets");
-          }
-     }
+	public static void writeUIFiles(){
+		File f = new File(".omega-ide");
+		if(!f.exists()){
+			f.mkdir();
+		}
+		f = new File(".omega-ide" + File.separator + "out");
+		if(!f.exists())
+			f.mkdir();
+		if(!new File(".omega-ide" + File.separator + ".ui").exists()){
+			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
+		}
+		if(!new File(".omega-ide" + File.separator + ".preferences").exists()){
+			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences", ".omega-ide/.preferences");
+		}
+		if(!new File(".omega-ide" + File.separator + ".snippets").exists()){
+			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets", ".omega-ide/.snippets");
+		}
+	}
 }
