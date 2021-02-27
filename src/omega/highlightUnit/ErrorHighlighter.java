@@ -1,4 +1,5 @@
 package omega.highlightUnit;
+import omega.deassembler.CodeTokenizer;
 import omega.Screen;
 import omega.utils.UIManager;
 import omega.utils.Editor;
@@ -15,12 +16,18 @@ import javax.swing.text.Highlighter.HighlightPainter;
 public class ErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
-	private static final Color color = omega.utils.UIManager.isDarkMode() ? new Color(255, 255, 0, 30) : new Color(255, 0, 0, 30);
+	public static final Color color = omega.utils.UIManager.isDarkMode() ? new Color(200, 200, 200, 40) : new Color(255, 0, 0, 30);
 	
 	public ErrorHighlighter() {
 		highlights = new LinkedList<>();
 	}
-	
+
+     public String getSimplifiedErrorLog(String errorLog){
+          String log = "";
+          LinkedList<String> lines = CodeTokenizer.tokenize(errorLog, '\n');
+          return log;
+     }
+     
 	public void loadErrors(String errorLog) {
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");

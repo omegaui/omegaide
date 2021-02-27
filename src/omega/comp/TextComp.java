@@ -138,6 +138,7 @@ public class TextComp extends JComponent{
 		if(press) paintPress(g);
 		draw(g, x, y);
 		draw(g);
+          super.paint(graphics);
 	}
 
 	public void draw(Graphics2D g, int x, int y){

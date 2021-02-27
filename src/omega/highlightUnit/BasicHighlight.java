@@ -29,7 +29,7 @@ import javax.swing.text.Highlighter.HighlightPainter;
 public class BasicHighlight {
 
 	private LinkedList<Highlight> highlights;
-	private static final Color color = new Color(225, 20, 30);
+	public static final Color color = new Color(225, 20, 30);
 	
 	public BasicHighlight() {
 		highlights = new LinkedList<>();

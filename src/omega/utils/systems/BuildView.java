@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import omega.utils.BuildLog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -32,15 +33,14 @@ public class BuildView extends View {
 
 	public volatile Process compileProcess;
 	public LinkedList<String> classess = new LinkedList<>();
-	public PrintArea printArea;
 	public static final String SRC_LIST = ".sources";
+     public BuildLog buildLog;
+     public PrintArea printArea;
 
 	public BuildView(String title, Screen window) {
 		super(title, window);
-		printArea = new PrintArea("Build Process", window);
-		setLayout(new FlowLayout());
-		setSize(770, 120);
-		setLocationRelativeTo(null);
+          printArea = new PrintArea();
+          buildLog = new BuildLog();
 	}
 
 	public static LinkedList<File> loadAllFiles(String dir, LinkedList<File> files){
@@ -146,141 +146,138 @@ public class BuildView extends View {
           return A;
      }
 
-	public void compileProject() {
-		if(compileProcess != null) {
-			if(compileProcess.isAlive())
-				return;
-		}
+     public void compileProject() {
+          if(compileProcess != null) {
+               if(compileProcess.isAlive())
+                    return;
+          }
           getScreen().saveAllEditors();
           if(omega.Screen.getFileView().getProjectManager().non_java){
                compile();
                return;
           }
-		new Thread(()->{
+          new Thread(()->{
 
-			try  {
-				createClassList();
-				if(classess.isEmpty())
-					return;
-				Screen.getErrorHighlighter().removeAllHighlights();
-				optimizeProjectOutputs();
-				getScreen().getToolMenu().buildComp.setClickable(false);
-				getScreen().getToolMenu().runComp.setClickable(false);
-				String status = " Successfully";
-				printArea.setVisible(true);
-				printArea.print("Building Project....");
-				if(Screen.getFileView().getProjectManager().jdkPath == null) {
-					printArea.print("No JDK Defined for this Project!\nSelect a JDK from the Project Tab in Settings.");
-				}
-				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
-				if(jdkPath != null && new File(jdkPath).exists())
-					jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
-
-				String cmd = "";
-				String depenPath = "";
-				if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
-					for(String d : Screen.getFileView().getProjectManager().jars) {
-						depenPath += d + omega.Screen.PATH_SEPARATOR;
-					}
-					if(!depenPath.equals("")) {
-						depenPath = depenPath.substring(0, depenPath.length() - 1);
-					}
-				}
-				if(jdkPath != null && new File(jdkPath).exists())
-					cmd = jdkPath + "javac";
-				else
-					cmd = "javac" + cmd;
-				if(depenPath != null && !depenPath.equals("")) {
-					if(Screen.getFileView().getDependencyView().getModulePath() != null) {
-						if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin", "-classpath", depenPath, 
-									"--module-path", Screen.getFileView().getDependencyView().getModulePath(),
-									"--add-modules", Screen.getFileView().getDependencyView().getModules(),
-									Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}else {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin", "-classpath", depenPath,
-                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
-                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}
-					}
-					else {
-						if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin", "-classpath", depenPath,
-									Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}else {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin", "-classpath", depenPath, "@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}
-					}
-				}
-				else {
-					if(Screen.getFileView().getDependencyView().getModulePath() != null) {
-						if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin",
+               try  {
+                    createClassList();
+                    if(classess.isEmpty())
+                         return;
+                    Screen.getErrorHighlighter().removeAllHighlights();
+                    optimizeProjectOutputs();
+                    getScreen().getToolMenu().buildComp.setClickable(false);
+                    getScreen().getToolMenu().runComp.setClickable(false);
+                    String status = " Successfully";
+                    String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+                    if(jdkPath != null && new File(jdkPath).exists())
+                         jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
+                    String cmd = "";
+                    String depenPath = "";
+                    if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
+                         for(String d : Screen.getFileView().getProjectManager().jars) {
+                              depenPath += d + omega.Screen.PATH_SEPARATOR;
+                         }
+                         if(!depenPath.equals("")) {
+                              depenPath = depenPath.substring(0, depenPath.length() - 1);
+                         }
+                    }
+                    if(jdkPath != null && new File(jdkPath).exists())
+                         cmd = jdkPath + "javac";
+                    else
+                         cmd = "javac" + cmd;
+                    if(depenPath != null && !depenPath.equals("")) {
+                         if(Screen.getFileView().getDependencyView().getModulePath() != null) {
+                              if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin", "-classpath", depenPath, 
                                              "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
                                              "--add-modules", Screen.getFileView().getDependencyView().getModules(),
-									Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}else {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin",
+                                             Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }else {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin", "-classpath", depenPath,
                                              "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
                                              "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}
-					}
-					else {
-						if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin", 
-									Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}else {
-							compileProcess = new ProcessBuilder(
-									cmd, "-d", "bin", "@"+BuildView.SRC_LIST
-									).directory(new File(Screen.getFileView().getProjectPath())).start();
-						}
-					}
-				}
-				getScreen().getOperationPanel().addTab("Compilation", printArea, ()->{printArea.stopProcess();});
-				printArea.setProcess(compileProcess);
-				printArea.print("Using \"" + cmd + "\"");
-				String errorlog = "";
-				Scanner inputReader = new Scanner(compileProcess.getInputStream());
-				Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-				while(compileProcess.isAlive()) {
-					while(inputReader.hasNextLine())
-						printArea.print(inputReader.nextLine());
-					while(errorReader.hasNextLine()) {
-						String line = errorReader.nextLine();
-						printArea.print(line);
-						errorlog += line + "\n";
-					}
-				}
-				inputReader.close();
-				errorReader.close();
-				if(compileProcess.exitValue() != 0) {
-					status = " with error(s)";
-					Screen.getErrorHighlighter().loadErrors(errorlog);
-				}
-				printArea.print("Compilation Completed" + status);
-				compileProcess = null;
-				getScreen().getToolMenu().buildComp.setClickable(true);
-				getScreen().getToolMenu().runComp.setClickable(true);
-				Screen.getProjectView().reload();
-			}catch(Exception e) {e.printStackTrace();}
-
-		}).start();
-	}
-	
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }
+                         }
+                         else {
+                              if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin", "-classpath", depenPath,
+                                             Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }else {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin", "-classpath", depenPath, "@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }
+                         }
+                    }
+                    else {
+                         if(Screen.getFileView().getDependencyView().getModulePath() != null) {
+                              if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin",
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
+                                             Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }else {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin",
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),"@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }
+                         }
+                         else {
+                              if(!Screen.getFileView().getProjectManager().compile_time_args.trim().equals("")) {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin", 
+                                             Screen.getFileView().getProjectManager().compile_time_args, "@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }else {
+                                   compileProcess = new ProcessBuilder(
+                                             cmd, "-d", "bin", "@"+BuildView.SRC_LIST
+                                             ).directory(new File(Screen.getFileView().getProjectPath())).start();
+                              }
+                         }
+                    }
+                    
+                    buildLog.setHeading("Building Project with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+                    getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{
+                         if(compileProcess != null && compileProcess.isAlive())
+                              compileProcess.destroyForcibly();
+                    });
+                    String errorlog = "";
+                    Scanner errorReader = new Scanner(compileProcess.getErrorStream());
+                    while(compileProcess.isAlive()) {
+                         while(errorReader.hasNextLine()) {
+                              String line = errorReader.nextLine();
+                              errorlog += line + "\n";
+                         }
+                    }
+                    errorReader.close();
+                    if(compileProcess.exitValue() != 0) {
+                         buildLog.setHeading("Build Resulted in following Error(s)");
+                         buildLog.genView(errorlog);
+                         Screen.getErrorHighlighter().loadErrors(errorlog);
+                    }
+                    else{
+                         buildLog.setHeading("Build Completed Successfully");
+                    }
+                    compileProcess = null;
+                    getScreen().getToolMenu().buildComp.setClickable(true);
+                    getScreen().getToolMenu().runComp.setClickable(true);
+                    Screen.getProjectView().reload();
+               }
+               catch(Exception e) {
+                    e.printStackTrace();
+               }
+          }).start();
+     }
+     
 	public static void optimizeProjectOutputs(){
 		File outputDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
 		LinkedList<File> files = new LinkedList<>();
@@ -438,7 +435,7 @@ public class BuildView extends View {
 		private Process process;
 		private JScrollPane p;
 
-		public PrintArea(String title, Screen window) {
+		public PrintArea() {
 			setLayout(new BorderLayout());
 			setLocationRelativeTo( null);
 			UIManager.setData(this);

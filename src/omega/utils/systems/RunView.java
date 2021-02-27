@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import omega.utils.BuildLog;
 import omega.utils.UIManager;
 import omega.Screen;
 import omega.comp.TextComp;
@@ -37,9 +38,11 @@ public class RunView extends View {
 	private static PrintArea printA;
 	private Process compileProcess = null;
 	private Process runProcess = null;
+     private BuildLog buildLog;
 
 	public RunView(String title, Screen window, boolean canRun) {
 		super(title, window);
+          buildLog = new BuildLog();
 	}
 
 	public void setMainClass(String mainClass)
@@ -238,8 +241,6 @@ public class RunView extends View {
 					BuildView.optimizeProjectOutputs();
 					getScreen().getToolMenu().buildComp.setClickable(false);
 					getScreen().getToolMenu().runComp.setClickable(false);
-					PrintArea printArea = new PrintArea("Compile-Time Errors", getScreen());
-					printA = printArea;
 					errorlog = "";
 					int percent = (int)Math.ceil(Math.random() * 70);
 					Screen.setStatus("Building Project", percent);
@@ -323,26 +324,13 @@ public class RunView extends View {
 						}
 					}
 					runningApps.add(compileProcess);
-					printArea.printText("Building....");
-					Scanner inputReader = new Scanner(compileProcess.getInputStream());
 					Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-					new Thread(()->{
-						while(compileProcess.isAlive())
-						{
-							while(errorReader.hasNextLine()) {
-								String line = errorReader.nextLine();
-								printArea.printText(line);
-								errorlog += line + "\n";
-							}
+					while(compileProcess.isAlive()) {
+						while(errorReader.hasNextLine()) {
+							errorlog += errorReader.nextLine() + "\n";
 						}
-						errorReader.close();
-					}).start();
-					while(compileProcess.isAlive())
-					{
-						while(inputReader.hasNextLine())
-							printArea.printText(inputReader.nextLine());
 					}
-					inputReader.close();
+					errorReader.close();
 					Screen.setStatus("Building Project", 90);
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					Screen.getProjectView().reload();
@@ -351,7 +339,9 @@ public class RunView extends View {
 						runningApps.remove(compileProcess);
 						getScreen().getToolMenu().runComp.setClickable(true);
 						Screen.getErrorHighlighter().loadErrors(errorlog);
-						getScreen().getOperationPanel().addTab("Compilation", printArea, ()->{printArea.stopProcess();});
+                              buildLog.setHeading("Build Resulted in following Error(s)");
+                              buildLog.genView(errorlog);
+						getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
 						return;
 					}
 					Screen.getErrorHighlighter().removeAllHighlights();

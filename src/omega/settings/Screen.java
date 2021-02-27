@@ -21,16 +21,17 @@ import javax.swing.JTextField;
 import say.swing.JFontChooser;
 public class Screen extends JDialog {
 	//Light + Dark Mode
-	public static final Color color1 = new Color(255, 0, 0, 130);
-	public static final Color color2 = new Color(255, 0, 0, 220);
+	public static final Color color1 = new Color(255, 0, 0, 20);
+	public static final Color color2 = new Color(255, 0, 0, 130);
 	public static final Color color3 = new Color(255, 255, 200, 220);
 	public static final Color color4 = new Color(0, 0, 255, 130);
 	public static final Color color5 = new Color(0, 0, 255, 220);
-	public static final Color color6 = new Color(0, 255, 0, 130);
-	public static final Color color7 = new Color(0, 255, 0, 220);
+	public static final Color color6 = new Color(0, 255, 0, 20);
+	public static final Color color7 = new Color(0, 255, 0, 130);
 
 	//Fonts
-	public static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
+     public static final Font PX12 = new Font("Ubuntu Mono", Font.BOLD, 12);
+     public static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
 	public static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final Font PX18 = new Font("Ubuntu Mono", Font.BOLD, 18);
 	public static final Font PX28 = new Font("Ubuntu Mono", Font.BOLD, 28);
