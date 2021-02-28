@@ -39,11 +39,13 @@ public class ContentWindow extends JPanel implements KeyListener{
      }
 
      public void genView(LinkedList<DataMember> dataMembers, Graphics g){
+          if(dataMembers.isEmpty()){
+               setVisible(false);
+               return;
+          }
+               
           hints.forEach(panel::remove);
           hints.clear();
-          
-          if(dataMembers.isEmpty())
-               return;
 
           sort(dataMembers);
 

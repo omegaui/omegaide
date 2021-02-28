@@ -51,11 +51,11 @@ public class ContentTokenizer {
 			return;
 		}
 		String text = CodeFramework.getCodeDoNotEliminateDot(e.getText(), e.getCaretPosition());
-          if(text == null || text.equals("")){
+          if(text == null || text.equals("")) {
                e.contentWindow.setVisible(false);
                return;
           }
-		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())){
+		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
 			//Searching whether you need Class names as suggestion
@@ -117,7 +117,5 @@ public class ContentTokenizer {
 			else
      			e.contentWindow.setVisible(false);
 		}
-          else
-               e.contentWindow.setVisible(false);
 	}
 }
