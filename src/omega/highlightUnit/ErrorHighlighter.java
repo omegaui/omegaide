@@ -65,8 +65,8 @@ public class ErrorHighlighter {
 					}
 					int start = text.indexOf(code, index+1);
 					int end = start + code.length();
-				    h.addHighlight(start, end, hp);
-				    highlights.add(new Highlight(e, hp, start, end));
+				     h.addHighlight(start, end, hp);
+				     highlights.add(new Highlight(e, hp, start, end));
 					canRecord = false;
 				}
 			}
@@ -91,5 +91,4 @@ public class ErrorHighlighter {
 			if(h.editor == e && caretPosition >= h.start && caretPosition <= h.end) h.remove();
 		});
 	}
-	
 }

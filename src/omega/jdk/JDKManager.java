@@ -32,7 +32,7 @@ public class JDKManager {
 		     readRTJarFile();
 	}
 	public void readRTJarFile(){
-		Screen.getScreen().getToolMenu().setTask("Reading JDK v" + version);
+		Screen.setStatus("Reading JDK v" + version, 10);
 		String rtJarPath = jdkDir.getAbsolutePath() + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar";
 		try{
 		     try(JarFile rtJarFile = new JarFile(rtJarPath)){
@@ -48,10 +48,10 @@ public class JDKManager {
 		     }
 		}
 		catch(Exception e) {
-			Screen.getScreen().getToolMenu().setTask("Exception while Reading the JDK v" + version);
+			Screen.setStatus("Exception while Reading the JDK v" + version, 99);
 			e.printStackTrace();
 		}
-		Screen.getScreen().getToolMenu().setTask("Hover to see Memory Statistics");
+		Screen.setStatus("", 100);
 	}
 	public void readModules(){
 		File[] modulesFiles = new File(jdkDir.getAbsolutePath() + File.separator + "jmods").listFiles();
@@ -123,7 +123,7 @@ public class JDKManager {
 		});
 	}
 	public void readJar(String path, boolean module){
-		Screen.getScreen().getToolMenu().setTask("Reading Jar : " + new File(path).getName());
+		Screen.setStatus("Reading Jar : " + new File(path).getName(), 10);
 		try{
 			try(JarFile rtJarFile = new JarFile(path)){
      			for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
@@ -139,10 +139,10 @@ public class JDKManager {
 			}
 		}
 		catch(Exception e) {
-			Screen.getScreen().getToolMenu().setTask("Exception while Reading Jar : " + new File(path).getName());
+			Screen.setStatus("Exception while Reading Jar : " + new File(path).getName(), 12);
 			e.printStackTrace();
 		}
-		Screen.getScreen().getToolMenu().setTask("Hover to see Memory Statistics");
+		Screen.setStatus("", 100);
 	}
 	public static int calculateVersion(File jdkDir){
 		String version = "";

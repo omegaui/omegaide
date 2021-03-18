@@ -428,7 +428,7 @@ public class ToolMenu extends JPanel {
           addComp(sep3);
 
           shellComp = new TextComp("</>", "Click to open a non-root terminal inside the IDE", c1, c2, c3, ()->{
-               omega.Screen.getTerminalComp().showTerminal(true);
+               Screen.getTerminalComp().showTerminal(true);
           });
           shellComp.setFont(omega.settings.Screen.PX16);
           shellComp.setBounds(510 + 30, 25, 60, 30);
@@ -447,9 +447,10 @@ public class ToolMenu extends JPanel {
                l3 = c2;
           }
           
-          themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE restart", l1, l2, l3, ()->{
+          themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE\'s restart", l1, l2, l3, ()->{
                Screen.pickTheme(DataManager.getTheme());
                themeComp.setText(DataManager.getTheme());
+               Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
           });
           themeComp.setFont(omega.settings.Screen.PX16);
           themeComp.setBounds(600 + 30, 25, 60, 30);

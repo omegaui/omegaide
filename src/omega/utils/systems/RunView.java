@@ -394,7 +394,7 @@ public class RunView extends View {
 				Screen.setStatus("Running Project", 56);
                     if(Screen.getFileView().getProjectManager().jdkPath == null){
                          getScreen().getToolMenu().runComp.setClickable(true);
-                         getScreen().getToolMenu().setTask("Please Setup the Project JDK First!");
+                         Screen.setStatus("Please Setup the Project JDK First!", 99);
                          return;
                     }
 				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());

@@ -17,7 +17,7 @@ public class Module {
 		readModule();
 	}
 	public void readModule(){
-          Screen.getScreen().getToolMenu().setTask("Reading Module : " + name);
+          Screen.setStatus("Reading Module : " + name, 10);
 		try{
 			ZipFile zipFile = new ZipFile(moduleFile);
 			Enumeration enums = zipFile.entries();
@@ -30,10 +30,10 @@ public class Module {
 			}
 		}
 		catch(Exception e){
-               Screen.getScreen().getToolMenu().setTask("Exception while Reading Module : " + name);
+               Screen.setStatus("Exception while Reading Module : " + name, 10);
 			e.printStackTrace();
 		}
-          Screen.getScreen().getToolMenu().setTask("Hover to see Memory Statistics");
+          Screen.setStatus("", 100);
 	}
 	public static String convertModulePathToPackagePath(String zipPath){
 		if(zipPath == null || !zipPath.startsWith("classes/") || zipPath.contains("$") || !zipPath.endsWith(".class") || zipPath.startsWith("META-INF"))

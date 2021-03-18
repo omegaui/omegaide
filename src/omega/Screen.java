@@ -1,4 +1,8 @@
 package omega;
+import javax.imageio.ImageIO;
+import omega.utils.BottomPane;
+import omega.utils.SandBar;
+import omega.utils.SideMenu;
 import omega.utils.ThemePicker;
 import java.awt.event.*;
 import omega.tabPane.IconManager;
@@ -66,6 +70,9 @@ public class Screen extends JFrame {
      private TabPanel rightTabPanel;
      private TabPanel bottomTabPanel;
 	private ToolMenu toolMenu;
+     private SideMenu sideMenu;
+     private SandBar sandBar;
+     private BottomPane bottomPane;
      private static Robot robot;
 	private static UIManager uiManager;
 	private static DataManager dataManager;
@@ -113,6 +120,7 @@ public class Screen extends JFrame {
       
           omega.gset.Generator.init(this);
 
+          setUndecorated(true);
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
@@ -122,21 +130,7 @@ public class Screen extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				active = false;
-				Screen.notify("Terminating Running Applications");
-				try{
-					for(Process p : runView.runningApps) {
-						if(p.isAlive())
-							p.destroyForcibly();
-					}
-				}catch(Exception e2) {}
-				Screen.notify("Saving UI and Data");
-				uiManager.save();
-				dataManager.saveData();
-				SnippetBase.save();
-				Screen.notify("Saving Project");
-				saveAllEditors();
-				try{getFileView().getProjectManager().save();}catch(Exception e2) {}
+				dispose();
 			}
 		});
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -145,6 +139,14 @@ public class Screen extends JFrame {
 	}
 
 	private void init() {
+          try{
+               String name = UIManager.isDarkMode() ? "omega_ide_icon128_dark.png" : "omega_ide_icon128.png";
+               sandBar = new SandBar(this, ImageIO.read(getClass().getResourceAsStream("/" + name)));
+          }
+          catch(Exception e){ 
+               e.printStackTrace();
+          }
+          
           choiceDialog = new ChoiceDialog(this);
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
@@ -216,6 +218,12 @@ public class Screen extends JFrame {
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
 
+          sideMenu = new SideMenu(this);
+          add(sideMenu, BorderLayout.WEST);
+
+          bottomPane = new BottomPane(this);
+          add(bottomPane, BorderLayout.SOUTH);
+
 		recentsManager = new RecentsManager(this);
 
 		splash.setProgress(77, "initializing");
@@ -274,6 +282,8 @@ public class Screen extends JFrame {
 			revoke();
 			Screen.getProjectView().setVisible(false);
 		}
+          if(sandBar != null)
+               sandBar.setVisible(value);
 		super.setVisible(value);
 	}
 
@@ -310,7 +320,12 @@ public class Screen extends JFrame {
 	public static void notify(String text, long time, Runnable task) {
 		getScreen().setTitle(text);
 		new Thread(()->{
-			try{Thread.sleep(time);}catch(Exception e) {System.out.println(e.getMessage());}
+			try{
+			     Thread.sleep(time);
+			}
+			catch(Exception e) {
+                    
+		     }
 			getScreen().loadTitle(getFileView().getProjectName());
 			if(task != null)
 				task.run();
@@ -322,13 +337,14 @@ public class Screen extends JFrame {
           toolMenu.asteriskComp.setVisible(!manager.non_java);
           toolMenu.contentModeComp.setVisible(!manager.non_java);
           toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
+          sideMenu.structureComp.setVisible(!manager.non_java);
      }
 
 	public static void setStatus(String status, int value) {
 		if(value != 100)
-			Screen.getScreen().getToolMenu().setMsg(status + " " + value + "%");
+			Screen.getScreen().getBottomPane().setMessage(status);
 		else
-			Screen.getScreen().getToolMenu().setMsg(null);
+			Screen.getScreen().getBottomPane().setMessage("Status of any process running will appear here!");
 	}
 
 	@Override
@@ -347,6 +363,13 @@ public class Screen extends JFrame {
 	public void loadTitle(String projectName) {
 		setTitle(projectName+" -Omega IDE "+VERSION);
 	}
+
+     @Override
+     public void setTitle(String title){
+     	super.setTitle(title);
+          if(sandBar != null)
+               sandBar.repaint();
+     }
 	
 	public void setProject(String projectName) {
 		loadTitle(projectName);
@@ -465,6 +488,33 @@ public class Screen extends JFrame {
 		return res;
 	}
 
+     @Override
+     public void dispose(){
+     	active = false;
+          Screen.notify("Terminating Running Applications");
+          try{
+               for(Process p : runView.runningApps) {
+                    if(p.isAlive())
+                         p.destroyForcibly();
+               }
+          }
+          catch(Exception e) {
+               
+          }
+          Screen.notify("Saving UI and Data");
+          uiManager.save();
+          dataManager.saveData();
+          SnippetBase.save();
+          Screen.notify("Saving Project");
+          saveAllEditors();
+          try{
+               getFileView().getProjectManager().save();
+          }
+          catch(Exception e2) {}
+          super.dispose();
+          System.exit(0);
+     }
+          
 	public static final Screen getScreen() {
 		return Screen.getFileView().getScreen();
 	}
@@ -522,6 +572,18 @@ public class Screen extends JFrame {
 		return toolMenu;
 	}    
 
+     public SideMenu getSideMenu() {
+          return sideMenu;
+     }
+     
+     public SandBar getSandBar() {
+          return sandBar;
+     }
+     
+     public BottomPane getBottomPane() {
+          return bottomPane;
+     }
+     
 	public OperationPane getOperationPanel() {
 		return operationPane;
 	}

@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.highlightUnit.BasicHighlight;
 import org.fife.ui.rtextarea.SearchResult;
 import java.awt.event.MouseEvent;
 import omega.utils.systems.View;
@@ -38,7 +39,6 @@ import org.fife.rsta.ui.search.SearchListener;
 import java.awt.event.MouseListener;
 import java.awt.event.KeyListener;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, SearchListener {
 	private static Screen screen;
 	private RTextScrollPane scrollPane;
@@ -72,7 +72,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		fAndR = new FindAndReplace();
 		initView();
 		printArea = new PrintArea("File Operation Log", screen);
+          addCaretListener((e)->{
+               String text = getSelectedText();
+               if(text == null || text.equals(""))
+                    Screen.getScreen().getBottomPane().jumpField.setText("");
+               else
+                    Screen.getScreen().getBottomPane().jumpField.setText("Length : " + text.length());
+          });
 		createNewContent();
+          
 	}
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);
@@ -297,7 +305,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				currentFile = null;
 				Screen.getProjectView().reload();
 			}
-	}catch(Exception e) {System.err.println(e.getMessage());}
+		}
+		catch(Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 	public static void deleteDir(File file) throws Exception {
 		if (file.isDirectory()) {
@@ -344,6 +355,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
+          BasicHighlight.highlightJava(this);
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_CONTROL)
 			ctrl = true;

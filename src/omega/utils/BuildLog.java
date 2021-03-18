@@ -1,4 +1,6 @@
 package omega.utils;
+import java.awt.RenderingHints;
+import java.awt.Graphics2D;
 import omega.Screen;
 import omega.highlightUnit.ErrorHighlighter;
 import org.fife.ui.rtextarea.RTextArea;
@@ -39,7 +41,7 @@ public class BuildLog extends JPanel {
      	super(new BorderLayout());
           setBackground(c2);
 
-          headComp = new TextComp("Build Resulted in the following Error(s)", c1, c2, c3, null);
+          headComp = new TextComp("Build Resulted in the following Error(s)", c1, c3, c2, null);
           headComp.setFont(PX14);
           headComp.setClickable(false);
           headComp.setArc(0, 0);
@@ -111,7 +113,7 @@ public class BuildLog extends JPanel {
                     maxW = w;
           });
           errors.forEach(errorSet->{
-               TextComp errorComp = new TextComp(errorSet.getFileName() + " : " + errorSet.line, color1, c2, isDarkMode() ? Color.WHITE : color2, null);
+               TextComp errorComp = new TextComp(errorSet.getFileName() + " : " + errorSet.line, color1, c2, isDarkMode() ? ErrorHighlighter.color : color2, null);
                errorComp.setRunnable(()->{
                     setView(errorSet);
                });
@@ -141,6 +143,7 @@ public class BuildLog extends JPanel {
 
      public void setHeading(String heading){
      	headComp.setText(heading);
+          repaint();
      }
 
      public void setView(Error errorSet){
@@ -181,6 +184,25 @@ public class BuildLog extends JPanel {
           }
           catch(Exception e){ 
           	e.printStackTrace();
+          }
+     }
+
+     @Override
+     public void paint(Graphics graphics){
+          if(fileComps.isEmpty()){
+          	Graphics2D g = (Graphics2D)graphics;
+          	g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+          	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+          	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+               g.setColor(c2);
+               g.fillRect(0, 0, getWidth(), getHeight());
+               g.setColor(c3);
+               g.setFont(PX18);
+               g.drawString(headComp.getText(), getWidth()/2 - g.getFontMetrics().stringWidth(headComp.getText())/2, 
+                              getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+          }
+          else{
+               super.paint(graphics);
           }
      }
 
