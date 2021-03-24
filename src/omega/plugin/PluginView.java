@@ -1,4 +1,5 @@
 package omega.plugin;
+import java.awt.Graphics2D;
 import java.awt.event.*;
 import omega.utils.UIManager;
 import omega.tabPane.IconManager;
@@ -20,6 +21,8 @@ import javax.swing.JPanel;
 import java.util.LinkedList;
 import java.awt.Font;
 import javax.swing.JDialog;
+
+import static omega.utils.UIManager.*;
 public class PluginView extends JDialog{
 	private static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
 	private static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
@@ -28,12 +31,13 @@ public class PluginView extends JDialog{
 	private static JPanel leftPanel = new JPanel(null);
 	private static JScrollPane leftPane = new JScrollPane(leftPanel);
 	public static final int LEFT_OFFSET = 300;
+     public static Plugin plugin;
 	private BufferedImage image;
-	public static Plugin plugin;
+     private BufferedImage imageX;
 	private static TextComp closeBtn;
 
 	//Information View
-	private static JButton iconBtn;
+	private static TextComp iconBtn;
 	private static JTextField nameField;
 	private static JTextField versionField;
 	private static JTextArea descriptionArea;
@@ -114,8 +118,15 @@ public class PluginView extends JDialog{
 		leftPanel.setBackground(leftPane.getBackground());
           
 		//Initializing the View
-		iconBtn = new JButton();
+		iconBtn = new TextComp("", c1, c2, c3, null){
+               @Override
+               public void draw(Graphics2D g){
+               	g.drawImage(imageX, 0, 0, 40, 40, this);
+               }
+	     };
 		iconBtn.setBounds(LEFT_OFFSET, 0, 40, 40);
+          iconBtn.setClickable(false);
+          iconBtn.setArc(0, 0);
 		add(iconBtn);
 
 		nameField = new JTextField();
@@ -232,7 +243,8 @@ public class PluginView extends JDialog{
 
 	public void showPlug(){
 		if(plugin == null) return;
-		iconBtn.setIcon(new ImageIcon(plugin.getImage() == null ? image : plugin.getImage()));
+		imageX = plugin.getImage() == null ? image : plugin.getImage();
+          iconBtn.repaint();
 		nameField.setText(plugin.getName());
 		versionField.setText(plugin.getVersion());
 		descriptionArea.setText(plugin.getDescription());

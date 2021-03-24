@@ -66,9 +66,9 @@ public class UIManager extends DataBase {
 				c2 = Color.WHITE;
 			}
 			else {
-                    c1 = Color.decode("#F93800");
-                    c2 = Color.decode("#283350");
-                    c3 = Color.decode("#FFFFFF");
+                    c1 = Color.decode("#8400FF");
+                    c2 = Color.decode("#1B1A48");
+                    c3 = Color.decode("#F5AA1C");
 			}
 		}
 		catch(Exception e) {

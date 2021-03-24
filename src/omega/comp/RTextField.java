@@ -91,4 +91,10 @@ public class RTextField extends JTextField{
 		}
 		return shape.contains(x, y);
 	}
+
+     @Override
+     public void setText(String text){
+     	super.setText(text);
+          repaint();
+     }
 }

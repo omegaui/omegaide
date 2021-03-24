@@ -30,7 +30,41 @@ public class JDKManager {
 			readModules();
 		else
 		     readRTJarFile();
+          int i = 0;
+          for(Import im : imports){
+               if(!im.getPackage().startsWith("java"))
+                    continue;
+               i++;
+          }
+          System.out.println("Total Classes : " + i);
+          i = 0;
+          for(Import im : imports){
+               if(!im.getPackage().startsWith("java"))
+                    continue;
+               System.out.print(++i);
+               writeToFile(im);
+          }
 	}
+
+     public void writeToFile(Import im){
+     	try{
+               new File("byte-codes").mkdir();
+     		System.out.println(") Deassembling " + im);
+               Process p = new ProcessBuilder("javap", "-public", im.toString()).start();
+               Scanner reader = new Scanner(p.getInputStream());
+               PrintWriter writer = new PrintWriter("byte-codes" + File.separator + im.toString() + ".assist");
+               while(p.isAlive()){
+                    while(reader.hasNextLine())
+                         writer.println(reader.nextLine());
+               }
+               writer.close();
+               reader.close();
+     	}
+     	catch(Exception e){ 
+     		e.printStackTrace();
+     	}
+     }
+    
 	public void readRTJarFile(){
 		Screen.setStatus("Reading JDK v" + version, 10);
 		String rtJarPath = jdkDir.getAbsolutePath() + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar";
@@ -129,9 +163,9 @@ public class JDKManager {
      			for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
      				JarEntry jarEntry = enums.nextElement();
      				String name = jarEntry.getName();
-     				if(!name.endsWith("/")){
+     				if(!name.endsWith("/")) {
      					String classPath = Module.convertJarPathToPackagePath(name);
-     					if(classPath != null){
+     					if(classPath != null) {
      						addImport(classPath, path, module);
      					}
      				}
@@ -168,8 +202,10 @@ public class JDKManager {
 		version = version.substring(version.indexOf('\"') + 1, version.lastIndexOf('\"'));
 		if(version.startsWith("1."))
 			return Integer.parseInt(version.charAt(2) + "");
-		else
-		return Integer.parseInt(version.substring(0, version.indexOf('.')));
+          else if(version.contains("."))
+               return Integer.parseInt(version.substring(0, version.indexOf('.')));
+          else 
+               return Integer.parseInt(version);
 	}
 	public void loadFiles(File dir, LinkedList<File> files, String ext){
 		File[] F = dir.listFiles();
@@ -214,8 +250,10 @@ public class JDKManager {
 		version = version.substring(version.indexOf('\"') + 1, version.lastIndexOf('\"'));
 		if(version.startsWith("1."))
 			return Integer.parseInt(version.charAt(2) + "");
-		else
-		return Integer.parseInt(version.substring(0, version.indexOf('.')));
+          else if(version.contains("."))
+               return Integer.parseInt(version.substring(0, version.indexOf('.')));
+          else 
+               return Integer.parseInt(version);
 	}
 	public void clear(){
 		modules.clear();

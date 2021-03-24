@@ -44,6 +44,7 @@ public class SandBar extends JWindow{
 		super(frame);
 		this.owner = frame;
 		this.iconImage = image;
+          setType(JWindow.Type.UTILITY);
 		JPanel panel = new JPanel(null);
 		panel.setBackground(c2);
 		setContentPane(panel);
@@ -85,10 +86,10 @@ public class SandBar extends JWindow{
 		concentrateComp.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
-                    if(e.getButton() == 1 && e.getClickCount() == 2){
-                         concentrate();
-                         return;
-                    }
+				if(e.getButton() == 1 && e.getClickCount() == 2){
+					concentrate();
+					return;
+				}
 				pressX = e.getX();
 				pressY = e.getY();
 			}
@@ -133,7 +134,7 @@ public class SandBar extends JWindow{
 			}
 		});
 		add(titleComp);
-          
+		
 		closeComp = new TextComp("", c1, c2, c3, this::disposeAll){
 			@Override
 			public void draw(Graphics2D g){
@@ -142,7 +143,6 @@ public class SandBar extends JWindow{
 				g.setColor(closeWinColor);
 				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
 				if(isMouseEntered()){
-					g.fillOval(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20);
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
 					g.setColor(c2);
@@ -160,7 +160,6 @@ public class SandBar extends JWindow{
 				g.setColor(maximizeWinColor);
 				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
 				if(isMouseEntered()){
-					g.fillOval(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20);
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
 					g.setColor(c2);
@@ -179,7 +178,6 @@ public class SandBar extends JWindow{
 				g.setColor(minimizeWinColor);
 				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
 				if(isMouseEntered()){
-					g.fillOval(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20);
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
 					g.setColor(c2);
@@ -190,12 +188,17 @@ public class SandBar extends JWindow{
 		};
 		add(minimizeComp);
 	}
+     
 	@Override
 	public void paint(Graphics graphics){
 		titleComp.setText(owner.getTitle());
 		concentrateComp.setToolTipText(owner.getTitle());
 		resize();
 		super.paint(graphics);
+	}
+	public void recentre(){
+		setSize(owner.getWidth(), optimalHeight);
+		setLocation(owner.getX(), owner.getY() - optimalHeight);
 	}
 	
 	public void resize(){
@@ -208,8 +211,9 @@ public class SandBar extends JWindow{
 	public void setOptimalHeight(int h){
 		if(h < 20)
 			h = 20;
-		if(optimalHeight == h) return;
-			this.optimalHeight = h;
+		if(optimalHeight == h)
+			return;
+		this.optimalHeight = h;
 		resize();
 	}
 	public int getOptimalHeight(){
@@ -239,7 +243,7 @@ public class SandBar extends JWindow{
 			owner.setSize((int)size.getWidth(), (int)size.getHeight() - optimalHeight);
 			setSize((int)size.getWidth(), optimalHeight);
 			setLocation(0, 0);
-			owner.setLocation(0, optimalHeight);
+			owner.setLocation(0, optimalHeight - 1);
 		}
 		else{
 			owner.setLocation(lastLocation);
@@ -259,7 +263,7 @@ public class SandBar extends JWindow{
 	}
 	public void disposeAll(){
 		owner.dispose();
-          dispose();
+		dispose();
 	}
 	public boolean isConcentrateOnMaximize() {
 		return concentrateOnMaximize;
@@ -267,10 +271,15 @@ public class SandBar extends JWindow{
 	public void setConcentrateOnMaximize(boolean concentrateOnMaximize) {
 		this.concentrateOnMaximize = concentrateOnMaximize;
 	}
+	public boolean isMaximized(){
+		return maximized;
+	}
 	@Override
 	public void setVisible(boolean value){
-		if(value)
+		if(value){
 			resize();
+			recentre();
+		}
 		super.setVisible(value);
 	}
 }

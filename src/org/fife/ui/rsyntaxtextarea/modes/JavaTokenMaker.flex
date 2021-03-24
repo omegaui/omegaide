@@ -323,6 +323,9 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 	"const"	 |
 	"continue" |
 	"default" |
+     "record" |
+     "permits" |
+     "var" |
 	"do"	 |
 	"else"	 |
 	"enum"	 |

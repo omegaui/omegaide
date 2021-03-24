@@ -92,7 +92,6 @@ public class ToolMenu extends JPanel {
      private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 14);
      private int pressX;
      private int pressY;
-     
 
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
@@ -109,6 +108,10 @@ public class ToolMenu extends JPanel {
           addMouseListener(new MouseAdapter(){
                @Override
                public void mousePressed(MouseEvent e){
+                    if(e.getButton() == 1 && e.getClickCount() == 2){
+                         screen.getSandBar().setVisible(!screen.getSandBar().isVisible());
+                         return;
+                    }
                	pressX = e.getX();
                	pressY = e.getY();
                }
@@ -116,7 +119,8 @@ public class ToolMenu extends JPanel {
           addMouseMotionListener(new MouseAdapter(){
                @Override
                public void mouseDragged(MouseEvent e){
-                    screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY - 30);
+                    if(!screen.getSandBar().isVisible() && !screen.getSandBar().isMaximized())
+                         screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
                }
           });
 		init();
@@ -418,7 +422,7 @@ public class ToolMenu extends JPanel {
           sep4 = new TextComp("", c1, c3, c3, ()->{});
           addComp(sep4);
 
-          structureViewComp = new TextComp("<\\>", c1, c2, c3, ()->structureView.setVisible(true));
+          structureViewComp = new TextComp("|>>", c1, c2, c3, ()->structureView.setVisible(true));
           structureViewComp.setFont(omega.settings.Screen.PX16);
           structureViewComp.setToolTipText("Lets see that class");
           addComp(structureViewComp);
@@ -427,7 +431,7 @@ public class ToolMenu extends JPanel {
           sep3.setBounds(500 + 30, 20, 2, 40);
           addComp(sep3);
 
-          shellComp = new TextComp("</>", "Click to open a non-root terminal inside the IDE", c1, c2, c3, ()->{
+          shellComp = new TextComp(">_", "Click to open a non-root terminal inside the IDE", c1, c2, c3, ()->{
                Screen.getTerminalComp().showTerminal(true);
           });
           shellComp.setFont(omega.settings.Screen.PX16);

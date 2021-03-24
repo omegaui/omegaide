@@ -12,13 +12,13 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JDialog;
-public class ThemePicker extends JDialog{
+public class ThemePicker extends JDialog {
      private Color c1 = new Color(0, 0, 255, 20);
      private Color c2 = Color.WHITE;
      private Color c3 = new Color(0, 0, 255, 130);
-     private Color b1 = Color.decode("#F93800");
-     private Color b2 = Color.decode("#283350");
-     private Color b3 = c2;
+     private Color b1 = Color.decode("#8400FF");
+     private Color b2 = Color.decode("#1B1A48");
+     private Color b3 = Color.decode("#F5AA1C");
      private Font PX20 = new Font("Ubuntu Mono", Font.BOLD, 20);
      private int pressX;
      private int pressY;

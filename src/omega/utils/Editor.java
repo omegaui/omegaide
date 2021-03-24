@@ -69,18 +69,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		scrollPane = new RTextScrollPane(this);
 		scrollPane.setLineNumbersEnabled(true);
 		scrollPane.setFoldIndicatorEnabled(true);
+          scrollPane.setBackground(UIManager.c2);
 		fAndR = new FindAndReplace();
 		initView();
 		printArea = new PrintArea("File Operation Log", screen);
-          addCaretListener((e)->{
-               String text = getSelectedText();
-               if(text == null || text.equals(""))
-                    Screen.getScreen().getBottomPane().jumpField.setText("");
-               else
-                    Screen.getScreen().getBottomPane().jumpField.setText("Length : " + text.length());
-          });
+		addCaretListener((e)-> {
+			String text = getSelectedText();
+			if(text == null || text.equals(""))
+				Screen.getScreen().getBottomPane().jumpField.setText("Goto Line");
+			else
+			Screen.getScreen().getBottomPane().jumpField.setText(text.length() + "");
+		});
 		createNewContent();
-          
+		
 	}
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);
@@ -138,28 +139,96 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		UIManager.setData(this);
 	}
 	public static void setStyle(Editor e, File f) {
-		if(f.getName().endsWith(".html"))
-			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
+		if(!f.getName().contains(".") || f.getName().endsWith(".txt"))
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NONE);
+		else if(f.getName().endsWith(".as"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ACTIONSCRIPT);
+		else if(f.getName().endsWith(".asm"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_X86);
+		else if(f.getName().endsWith(".asm"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_6502);
+		else if(f.getName().endsWith(".html"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_BBCODE);
+		else if(f.getName().endsWith(".c"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_C);
+		else if(f.getName().endsWith(".clj") || f.getName().endsWith(".cljs") || f.getName().endsWith(".cljc") || f.getName().endsWith(".edn"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CLOJURE);
+		else if(f.getName().endsWith(".cpp"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CPLUSPLUS);
+		else if(f.getName().endsWith(".cs"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSHARP);
+		else if(f.getName().endsWith(".css"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSS);
+		else if(f.getName().endsWith(".csv"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSV);
+		else if(f.getName().endsWith(".d"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_D);
+		else if(f.getName().endsWith(".dart"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DART);
+		else if(f.getName().endsWith(".dpr"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DELPHI);
+		else if(f.getName().endsWith(".dtd"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DTD);
+		else if(f.getName().endsWith(".f90"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_FORTRAN);
+		else if(f.getName().endsWith(".go"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GO);
+		else if(f.getName().endsWith(".groovy"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GROOVY);
+		else if(f.getName().endsWith(".html") || f.getName().endsWith(".svg"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
+		else if(f.getName().endsWith(".ini"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_INI);
+		else if(f.getName().endsWith(".java"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
 		else if(f.getName().endsWith(".js"))
 		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
-		else if(f.getName().endsWith(".py"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PYTHON);
 		else if(f.getName().endsWith(".json"))
 		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON);
+		else if(f.getName().endsWith(".json"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON_WITH_COMMENTS);
+		else if(f.getName().endsWith(".hjson"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSP);
+		else if(f.getName().endsWith(".tex"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LATEX);
+		else if(f.getName().endsWith(".less"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LESS);
+		else if(f.getName().endsWith(".lsp"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LISP);
+		else if(f.getName().endsWith(".lua"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LUA);
+		else if(f.getName().endsWith("makefile"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_MAKEFILE);
+		else if(f.getName().endsWith(".mxml"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_MXML);
+		else if(f.getName().endsWith(".nsi"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NSIS);
+		else if(f.getName().endsWith(".pl"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PERL);
 		else if(f.getName().endsWith(".php"))
 		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PHP);
-		else if(f.getName().endsWith(".xml") || f.getName().endsWith(".fxml"))
-		e.setSyntaxEditingStyle(SYNTAX_STYLE_XML);
-		else if(f.getName().endsWith(".java"))
-		e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVA);
-		else if(f.getName().endsWith(".groovy"))
-		e.setSyntaxEditingStyle(SYNTAX_STYLE_GROOVY);
-		else if(f.getName().endsWith(".rs"))
-		e.setSyntaxEditingStyle(SYNTAX_STYLE_JAVASCRIPT);
+		else if(f.getName().endsWith(".property"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PROPERTIES_FILE);
+		else if(f.getName().endsWith(".py"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PYTHON);
+		else if(f.getName().endsWith(".rb"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_RUBY);
+		else if(f.getName().endsWith(".sas"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SAS);
+		else if(f.getName().endsWith(".scala") || f.getName().endsWith(".sc"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SCALA);
+		else if(f.getName().endsWith(".sql"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SQL);
+		else if(f.getName().endsWith(".ts"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_TYPESCRIPT);
 		else if(f.getName().endsWith(".sh") || f.getName().endsWith(".run"))
-		e.setSyntaxEditingStyle(SYNTAX_STYLE_UNIX_SHELL);
-		else
-		e.setSyntaxEditingStyle(null);
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_UNIX_SHELL);
+		else if(f.getName().endsWith(".bat") || f.getName().endsWith(".cmd"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_WINDOWS_BATCH);
+		else if(f.getName().endsWith(".xml"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_XML);
+		else if(f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))
+		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
 	}
 	public void loadTheme() {
 		try {
@@ -242,7 +311,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(ImageIO.write(image, "JPG", new File(path))) {
 				Screen.getProjectView().reload();
 			}
-	}catch(Exception e) {System.out.println(e);}
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 	public void saveFileAs()
 	{
@@ -355,7 +427,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-          BasicHighlight.highlightJava(this);
+		BasicHighlight.highlightJava(this);
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_CONTROL)
 			ctrl = true;

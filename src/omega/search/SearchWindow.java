@@ -1,4 +1,6 @@
 package omega.search;
+import omega.comp.RTextField;
+import omega.comp.TextComp;
 import omega.launcher.Door;
 import omega.tabPane.IconManager;
 import omega.utils.UIManager;
@@ -21,28 +23,57 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 public class SearchWindow extends JDialog{
 	private JPanel panel;
 	private JScrollPane scrollPane;
 	private LinkedList<File> files;
 	private int blocks = -40;
-	private JTextField field;
+	private RTextField field;
 	private LinkedList<Door> doors;
 	private int pointer;
 	private BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 	private Screen screen;
+
+     private int pressX;
+     private int pressY;
+     
 	public SearchWindow(Screen f){
 		super(f, false);
 		this.screen = f;
+          files = new LinkedList<>();
+          doors = new LinkedList<>();
+          setLayout(null);
+          setUndecorated(true);
 		setTitle("Search Files across the Project");
 		setIconImage(f.getIconImage());
 		setSize(500, 300);
 		setLocationRelativeTo(null);
           setResizable(false);
-		add(scrollPane = new JScrollPane(panel = new JPanel(null)), BorderLayout.CENTER);
-		files = new LinkedList<>();
-		doors = new LinkedList<>();
-		add(field = new JTextField(), BorderLayout.NORTH);
+          
+		scrollPane = new JScrollPane(panel = new JPanel(null));
+          scrollPane.setBackground(c2);
+          scrollPane.setBounds(0, 60, getWidth(), getHeight() - 60);
+          add(scrollPane);
+
+          TextComp titleComp = new TextComp(getTitle(), c1, c3, c2, null);
+          titleComp.setBounds(0, 0, getWidth() - 30, 30);
+          titleComp.setClickable(false);
+          titleComp.setFont(PX14);
+          titleComp.setArc(6, 6);
+          add(titleComp);
+
+          TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+          closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+          closeComp.setFont(PX14);
+          closeComp.setArc(6, 6);
+          add(closeComp);
+
+          field = new RTextField("Type File Name", "", c1, c2, c3);
+          field.setBounds(0, 30, getWidth(), 30);
+          field.setFont(PX16);
 		field.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -69,9 +100,8 @@ public class SearchWindow extends JDialog{
 					list(field.getText());
 			}
 		});
-		field.setFont(omega.settings.Screen.PX16);
-          field.setBackground(omega.utils.UIManager.c2);
-          field.setForeground(omega.utils.UIManager.c3);
+          add(field);
+          
 		omega.utils.UIManager.setData(panel);
           
           //Creating File Image of size 32, 32 here

@@ -193,7 +193,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                for(int j = 0; j < var_.length - 1 - i; i++) {
                     DataMember m = (DataMember)var_[j];
                     DataMember n = (DataMember)var_[j + 1];
-                    if(m.name.length() > n.name.length()) {
+                    if(m.name.compareTo(n.name) > 0) {
                          Object o = var_[j];
                          var_[j] = var_[j + 1];
                          var_[j + 1] = o;
@@ -205,7 +205,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                for(int j = 0; j < meths_.length - 1 - i; i++) {
                     DataMember m = (DataMember)meths_[j];
                     DataMember n = (DataMember)meths_[j + 1];
-                    if(m.name.length() > n.name.length()) {
+                    if(m.name.compareTo(n.name) > 0) {
                          Object o = meths_[j];
                          meths_[j] = meths_[j + 1];
                          meths_[j + 1] = o;

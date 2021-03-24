@@ -1,4 +1,5 @@
 package omega;
+import javax.swing.plaf.ColorUIResource;
 import javax.imageio.ImageIO;
 import omega.utils.BottomPane;
 import omega.utils.SandBar;
@@ -99,10 +100,16 @@ public class Screen extends JFrame {
                if(!File.separator.equals("/"))
                     PATH_SEPARATOR = ";";
                dataManager = new DataManager(this);
-               if(UIManager.isDarkMode())
+               if(UIManager.isDarkMode()) {
                     FlatDarkLaf.install();
-               else
+                    javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(Color.decode("#8400FF")));
+                    javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(Color.decode("#1B1A48")));
+               }
+               else {
                     FlatLightLaf.install();
+                    javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(new Color(0, 0, 255, 130)));
+                    javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(Color.WHITE));
+               }
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));

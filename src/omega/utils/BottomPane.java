@@ -87,8 +87,7 @@ public class BottomPane extends JPanel{
 	public void setMessage(String text){
 		messageComp.setText(text);
 	}
-	public void setDoubleClickAction(Runnable r, String toolTip){
+	public void setDoubleClickAction(Runnable r){
 		this.r = r;
-		this.messageComp.setToolTipText(toolTip);
 	}
 }

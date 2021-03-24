@@ -130,8 +130,8 @@ public class CloseButton extends JComponent {
 			iconButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					popUp.setLocation(e.getLocationOnScreen());
 					popUp.setVisible(true);
+                         popUp.setLocation(e.getLocationOnScreen());
 				}
 			});
 		}

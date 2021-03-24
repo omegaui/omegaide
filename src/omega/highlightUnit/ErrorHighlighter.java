@@ -16,7 +16,7 @@ import javax.swing.text.Highlighter.HighlightPainter;
 public class ErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
-	public static final Color color = omega.utils.UIManager.isDarkMode() ? new Color(200, 200, 200, 40) : new Color(255, 0, 0, 30);
+	public static final Color color = omega.utils.UIManager.isDarkMode() ? Color.decode("#800707") : new Color(255, 0, 0, 30);
 	
 	public ErrorHighlighter() {
 		highlights = new LinkedList<>();

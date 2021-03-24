@@ -51,7 +51,7 @@ public class SideMenu extends JPanel{
           shellComp.setArc(2, 2);
           add(shellComp);
 
-          structureComp = new TextComp("<\\>", c1, c2, c3, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
+          structureComp = new TextComp("|>>", c1, c2, c3, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
           structureComp.setBounds(0, 80, 40, 40);
           structureComp.setFont(PX18);
           structureComp.setArc(2, 2);

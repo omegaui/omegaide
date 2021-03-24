@@ -30,9 +30,9 @@ public class RunView extends View {
 	private static final long serialVersionUID = 1L;
 
 	public String mainClassPath = null;
-	public volatile String mainClass = "";
+	public String mainClass = "";
 	public static String NATIVE_PATH = "";
-	public volatile LinkedList<Process> runningApps = new LinkedList<>();
+	public LinkedList<Process> runningApps = new LinkedList<>();
 	private static String errorlog = "";
      private String statusX = "";
 	private static PrintArea printA;
@@ -112,7 +112,13 @@ public class RunView extends View {
      
                          runningApps.add(compileInShell);
                          
-                         Screen.setStatus("Building Project", 67);
+                         Screen.setStatus("Building Project -- Double Click to kill this process", 70);
+                         Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
+                              Screen.setStatus("Killing Build Process", 10);
+                              if(compileInShell.isAlive())
+                                   compileInShell.destroyForcibly();
+                              Screen.setStatus("", 100);
+                         });
                          PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
                          writer.println(args);
                          writer.close();
@@ -242,8 +248,17 @@ public class RunView extends View {
 					getScreen().getToolMenu().buildComp.setClickable(false);
 					getScreen().getToolMenu().runComp.setClickable(false);
 					errorlog = "";
-					int percent = (int)Math.ceil(Math.random() * 70);
-					Screen.setStatus("Building Project", percent);
+					
+					int percent = 70;
+                     
+					Screen.setStatus("Building Project -- Double Click to kill this process", percent);
+                         Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
+                              Screen.setStatus("Killing Build Process", 10);
+                              if(compileProcess != null && compileProcess.isAlive())
+                                   compileProcess.destroyForcibly();
+                              Screen.setStatus("", 100);
+                         });
+                      
 					String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
 					if(jdkPath != null && new File(jdkPath).exists())
 						jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
@@ -331,7 +346,7 @@ public class RunView extends View {
 						}
 					}
 					errorReader.close();
-					Screen.setStatus("Building Project", 90);
+					Screen.setStatus("Building Project -- Double Click to kill this process", 90);
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					Screen.getProjectView().reload();
 					if(compileProcess.exitValue() != 0) {
@@ -354,7 +369,7 @@ public class RunView extends View {
 					p.setVisible(true);
 					getScreen().getOperationPanel().addTab("No Main Config", p, ()->{p.stopProcess();});
 					if(mainClassPath.equals(Screen.getFileView().getProjectPath() + "/src.java"))
-						p.printText("\"No Main Class Defined for the Project!\" \n\tor\n \"Defined Main Class does not exits!\"");
+						p.printText("\"No Main Class Defined for the Project!\" \n\t or \n \"Defined Main Class does not exits!\"");
 					Screen.setStatus("Running Project Failed", 100);
 					getScreen().getToolMenu().runComp.setClickable(true);
 					return;

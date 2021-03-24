@@ -15,6 +15,11 @@ public class ByteReader {
 	public String[] features;
 	public LinkedList<DataMember> dataMembers = new LinkedList<>();
 	public LinkedList<ByteReader> internalReaders = new LinkedList<>();
+
+     public ByteReader(){
+          //The Default Constructor
+     }
+
 	public ByteReader(String className){
 		if(className != null && !className.contains(" ")) {
 			omega.Screen.getScreen().getToolMenu().setTask("Unpacking " + className);
@@ -23,10 +28,8 @@ public class ByteReader {
 			omega.Screen.getScreen().getToolMenu().setTask("Hover to see Memory Statistics");
 		}
 	}
-
-	public ByteReader(){}
-
-	private void read(){
+    
+	public void read(){
 		try{
 			if(code == null){
                     Import im  = getImport();
@@ -345,6 +348,10 @@ public class ByteReader {
 		});
 		return members;
 	}
+
+     public void setCode(String code){
+     	this.code = code;
+     }
 
 	@Override
 	public String toString(){
