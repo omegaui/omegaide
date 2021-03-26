@@ -52,6 +52,9 @@ public class PluginView extends JDialog{
 
 	public PluginView(omega.Screen screen){
 		super(screen);
+          JPanel panel = new JPanel();
+          panel.setBackground(c2);
+          setContentPane(panel);
 		setTitle("Plugin Manager");
 		setIconImage(screen.getIconImage());
 		setModal(false);

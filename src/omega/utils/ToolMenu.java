@@ -423,7 +423,7 @@ public class ToolMenu extends JPanel {
           addComp(sep4);
 
           structureViewComp = new TextComp("|>>", c1, c2, c3, ()->structureView.setVisible(true));
-          structureViewComp.setFont(omega.settings.Screen.PX16);
+          structureViewComp.setFont(omega.settings.Screen.PX18);
           structureViewComp.setToolTipText("Lets see that class");
           addComp(structureViewComp);
 

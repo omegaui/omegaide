@@ -1,4 +1,6 @@
 package omega.instant.support;
+import java.awt.Color;
+import omega.comp.NoCaretField;
 import omega.popup.*;
 import omega.tabPane.IconManager;
 import omega.Screen;
@@ -33,12 +35,12 @@ public class FileWizard extends JDialog{
 	}
 
 	private void init(){
-		JTextField nameField = new JTextField();
+		NoCaretField nameField = new NoCaretField("", "type file name", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3);
 		nameField.setForeground(UIManager.c3);
-		addHoverEffect(nameField, "Enter name of the File or Source");
+		nameField.setToolTipText("Enter name of the File or Source");
 		nameField.setBounds(0, 0, getWidth() - 40, 40);
-          nameField.setBackground(c2);
 		add(nameField);
+          addKeyListener(nameField);
 
 		final JFileChooser fileC = new JFileChooser();
 		fileC.setMultiSelectionEnabled(false);

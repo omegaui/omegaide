@@ -30,20 +30,6 @@ public class JDKManager {
 			readModules();
 		else
 		     readRTJarFile();
-          int i = 0;
-          for(Import im : imports){
-               if(!im.getPackage().startsWith("java"))
-                    continue;
-               i++;
-          }
-          System.out.println("Total Classes : " + i);
-          i = 0;
-          for(Import im : imports){
-               if(!im.getPackage().startsWith("java"))
-                    continue;
-               System.out.print(++i);
-               writeToFile(im);
-          }
 	}
 
      public void writeToFile(Import im){

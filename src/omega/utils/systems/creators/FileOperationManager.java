@@ -1,4 +1,7 @@
 package omega.utils.systems.creators;
+import omega.utils.UIManager;
+import java.awt.Color;
+import omega.comp.NoCaretField;
 
 import omega.Screen;
 import java.io.FileOutputStream;
@@ -21,7 +24,7 @@ import static omega.utils.UIManager.*;
 public class FileOperationManager extends JDialog {
      private static TextComp titleComp;
      private static TextComp closeComp;
-     private static JTextField nameField;
+     private static NoCaretField nameField;
      private static TextComp actionComp;
      private static JScrollPane scrollPane;
      private static RSyntaxTextArea logArea;
@@ -82,10 +85,11 @@ public class FileOperationManager extends JDialog {
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          nameField = new JTextField();
+          nameField = new NoCaretField("", "type file name", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3);
           nameField.setBounds(0, 40, getWidth(), 40);
           nameField.setFont(omega.settings.Screen.PX14);
           add(nameField);
+          addKeyListener(nameField);
 
           actionComp = new TextComp("", c1, c2, c3, ()->{});
           actionComp.setBounds(0, 80, getWidth(), 40);

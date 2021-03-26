@@ -67,7 +67,7 @@ public class BottomPane extends JPanel{
           });
           add(jumpField);
 
-          themeComp = new TextComp("light", "Switching Theme Requires IDE\'s Restart", c1, c3, c2, null);
+          themeComp = new TextComp(DataManager.getTheme(), "Switching Theme Requires IDE\'s Restart", c1, c3, c2, null);
           themeComp.setRunnable(()->{
                Screen.pickTheme(DataManager.getTheme());
                themeComp.setText(DataManager.getTheme());

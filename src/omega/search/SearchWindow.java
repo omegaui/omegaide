@@ -1,5 +1,8 @@
 package omega.search;
-import omega.comp.RTextField;
+import java.awt.Color;
+import omega.comp.NoCaretField;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 import omega.comp.TextComp;
 import omega.launcher.Door;
 import omega.tabPane.IconManager;
@@ -31,7 +34,7 @@ public class SearchWindow extends JDialog{
 	private JScrollPane scrollPane;
 	private LinkedList<File> files;
 	private int blocks = -40;
-	private RTextField field;
+	private NoCaretField field;
 	private LinkedList<Door> doors;
 	private int pointer;
 	private BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
@@ -59,22 +62,41 @@ public class SearchWindow extends JDialog{
           add(scrollPane);
 
           TextComp titleComp = new TextComp(getTitle(), c1, c3, c2, null);
-          titleComp.setBounds(0, 0, getWidth() - 30, 30);
+          titleComp.setBounds(0, 0, getWidth() - 60, 30);
           titleComp.setClickable(false);
           titleComp.setFont(PX14);
-          titleComp.setArc(6, 6);
+          titleComp.setArc(0, 0);
+          titleComp.addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e){
+               	pressX = e.getX();
+                    pressY = e.getY();
+               }
+          });
+          titleComp.addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e){
+               	setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
+               }
+          });
           add(titleComp);
 
           TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
           closeComp.setBounds(getWidth() - 30, 0, 30, 30);
           closeComp.setFont(PX14);
-          closeComp.setArc(6, 6);
+          closeComp.setArc(0, 0);
           add(closeComp);
 
-          field = new RTextField("Type File Name", "", c1, c2, c3);
+          TextComp reloadComp = new TextComp("%", "Click to Reload File Tree", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
+          reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
+          reloadComp.setArc(0, 0);
+          reloadComp.setFont(PX14);
+          add(reloadComp);
+
+          field = new NoCaretField("", "Type File Name", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3);
           field.setBounds(0, 30, getWidth(), 30);
           field.setFont(PX16);
-		field.addKeyListener(new KeyAdapter() {
+		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(!doors.isEmpty()) {
@@ -101,6 +123,7 @@ public class SearchWindow extends JDialog{
 			}
 		});
           add(field);
+          addKeyListener(field);
           
 		omega.utils.UIManager.setData(panel);
           
