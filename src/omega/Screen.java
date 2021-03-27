@@ -100,20 +100,28 @@ public class Screen extends JFrame {
                if(!File.separator.equals("/"))
                     PATH_SEPARATOR = ";";
                dataManager = new DataManager(this);
+               Color x = null;
+               Color y = null;
                if(UIManager.isDarkMode()) {
                     FlatDarkLaf.install();
-                    javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(Color.decode("#8400FF")));
-                    javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(Color.decode("#1B1A48")));
+                    x = Color.decode("#8400FF");
+                    y = Color.decode("#1B1A48");
                }
                else {
                     FlatLightLaf.install();
-                    javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(new Color(0, 0, 255, 130)));
-                    javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(Color.WHITE));
+                    x = new Color(0, 0, 255, 130);
+                    y = Color.WHITE;
                }
+               javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
+               javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
+               javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
+               javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
+               javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
-		} catch (Exception e1) {
+		} 
+		catch (Exception e1) {
 			e1.printStackTrace();
 		}
           picker = new ThemePicker(this);

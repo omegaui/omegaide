@@ -85,9 +85,14 @@ public class PluginManager {
 			if(p.name.equals(name)) return;
 		}
 		Plugin plugin = getPlugin(name);
-		if(plugin == null) return;
-		plugin.init();
-		plugin.enable();
+		if(plugin == null) 
+		     return;
+          if(!plugin.needsRestart()){
+               new Thread(()->{
+                    plugin.init();
+                    plugin.enable();
+               }).start();
+          }
 		init_plugs.add(getPlug(name));
 	}
 

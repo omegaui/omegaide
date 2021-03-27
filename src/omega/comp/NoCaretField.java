@@ -36,6 +36,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	private volatile boolean x;
 	private volatile boolean c;
 	private volatile boolean v;
+     private volatile boolean editable = true;
 	
 	public NoCaretField(String text, Color c1, Color c2, Color c3){
 		this.text = text;
@@ -135,18 +136,20 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			v = false;
                return;
 		}
-		if(Character.isLetterOrDigit(ch) || isSymbol(ch))
-			text += ch;
-		else if(code == VK_BACK_SPACE){
-			if(text.length() == 1)
-				text = "";
-			else if(text.length() > 1)
-				text = text.substring(0, text.length() - 1);
-		}
-		else if(code == VK_ENTER){
-			if(action != null)
-				new Thread(action).start();
-		}
+          if(editable){
+     		if(Character.isLetterOrDigit(ch) || isSymbol(ch))
+     			text += ch;
+     		else if(code == VK_BACK_SPACE){
+     			if(text.length() == 1)
+     				text = "";
+     			else if(text.length() > 1)
+     				text = text.substring(0, text.length() - 1);
+     		}
+     		else if(code == VK_ENTER){
+     			if(action != null)
+     				new Thread(action).start();
+     		}
+          }
 		repaint();
 	}
 	@Override
@@ -191,6 +194,12 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	public void setIgnorableCharacters(char... ignorableCharacters) {
 		this.ignorableCharacters = ignorableCharacters;
 	}
+     public void setEditable(boolean value){
+     	editable = value;
+     }
+     public boolean isEditable(){
+     	return editable;
+     }
 	public boolean isSymbol(char ch){
 		return "`~!@#$%^&*()_+-={}|[]\\:\";\'<>?,./]) ".contains(ch + "");
 	}

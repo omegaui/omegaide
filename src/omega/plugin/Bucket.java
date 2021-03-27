@@ -3,6 +3,8 @@ import omega.comp.TextComp;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
+
+import static omega.settings.Screen.*;
 public class Bucket extends JComponent{
      public String name;
      public String size;
@@ -29,15 +31,17 @@ public class Bucket extends JComponent{
                    nameField.repaint();
                }
           });
-          nameField.setFont(PluginStore.FONT);
+          nameField.setFont(PX16);
           nameField.setPreferredSize(new Dimension(600, 40));
+          nameField.setArc(0, 0);
           add(nameField, BorderLayout.NORTH);
 
           description = new JTextArea(sum);
           description.setEditable(false);
-          description.setFont(PluginStore.FONT14);
+          description.setFont(PX14);
           description.setBackground(omega.utils.UIManager.c3);
           description.setForeground(omega.utils.UIManager.c2);
+          description.setFocusable(false);
           add(new JScrollPane(description), BorderLayout.CENTER);
      }
 

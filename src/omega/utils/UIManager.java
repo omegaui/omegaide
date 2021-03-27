@@ -62,7 +62,7 @@ public class UIManager extends DataBase {
                setFontState(getEntryAt("Font", 2).getValueAsInt());
 			if(!isDarkMode()) {
 				c3 = omega.settings.Screen.color4;
-				c1 = new Color(0, 0, 255, 20);
+				c1 = new Color(0, 0, 255, 40);
 				c2 = Color.WHITE;
 			}
 			else {

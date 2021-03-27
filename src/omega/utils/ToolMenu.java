@@ -628,21 +628,21 @@ public class ToolMenu extends JPanel {
           .createItem("New Project", IconManager.projectImage, ()->projectWizard.setVisible(true))
           .createItem("New Project (non-java project)", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
 
-          recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(300).height(250);
+          recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(350).height(250);
           fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{
                recentFilePopup.setLocation(filePopup.getX(), filePopup.getY());
                recentFilePopup.setVisible(true);
           });
           filePopup.addItem(fileMenu);
           
-          recentProjectPopup = OPopupWindow.gen("Recent Projects Menu", screen, 0, true).width(300).height(250);
+          recentProjectPopup = OPopupWindow.gen("Recent Projects Menu", screen, 0, true).width(350).height(250);
           projectMenu = new OPopupItem(recentProjectPopup, "Recent Projects", IconManager.projectImage, ()->{
                recentProjectPopup.setLocation(filePopup.getX(), filePopup.getY());
                recentProjectPopup.setVisible(true);
           });
           filePopup.addItem(projectMenu);
           
-          allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(300).height(250);
+          allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(350).height(250);
           allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, ()->{
                allProjectsPopup.setLocation(filePopup.getX(), filePopup.getY());
                allProjectsPopup.setVisible(true);

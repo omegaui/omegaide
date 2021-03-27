@@ -90,10 +90,11 @@ public class OPopupWindow extends JDialog{
      @Override
      public void setVisible(boolean value){
           if(value){
-               if(items.isEmpty()) return;
+               if(items.isEmpty()) 
+                    return;
                
                if(scrollable)
-                    panel.setPreferredSize(new Dimension(getWidth(), items.size() * 32));
+                    panel.setPreferredSize(new Dimension(getWidth() - 15, items.size() * 32));
                else
                     setSize(getWidth(), (items.size() * HEIGHT));
                     

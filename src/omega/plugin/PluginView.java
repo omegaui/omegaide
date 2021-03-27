@@ -23,9 +23,8 @@ import java.awt.Font;
 import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 public class PluginView extends JDialog{
-	private static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
-	private static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
 	private static LinkedList<Door> doors = new LinkedList<>();
 	private static int block;
 	private static JPanel leftPanel = new JPanel(null);
@@ -38,12 +37,12 @@ public class PluginView extends JDialog{
 
 	//Information View
 	private static TextComp iconBtn;
-	private static JTextField nameField;
-	private static JTextField versionField;
+	private static TextComp nameField;
+	private static TextComp versionField;
 	private static JTextArea descriptionArea;
 	private static JScrollPane scrollPane = null;
-	private static JTextField authorField;
-	private static JTextField copyrightField;
+	private static TextComp authorField;
+	private static TextComp copyrightField;
 	private static TextComp mRBtn;
 	private static TextComp mLBtn;
 	private static int index = 0;
@@ -132,20 +131,18 @@ public class PluginView extends JDialog{
           iconBtn.setArc(0, 0);
 		add(iconBtn);
 
-		nameField = new JTextField();
+		nameField = new TextComp("", c1, c2, c3, null);
 		nameField.setFont(PX16);
-		nameField.setEditable(false);
+		nameField.setClickable(false);
 		nameField.setBounds(iconBtn.getX() + 40, 0, getWidth() - iconBtn.getX() - 40 - 140, 40);
-          nameField.setBackground(omega.utils.UIManager.c2);
-          nameField.setForeground(omega.utils.UIManager.c3);
+          nameField.setArc(0, 0);
 		add(nameField);
 
-		versionField = new JTextField();
+		versionField = new TextComp("", c1, c2, c3, null);
 		versionField.setFont(PX16);
-		versionField.setEditable(false);
+		versionField.setClickable(false);
 		versionField.setBounds(nameField.getX() + nameField.getWidth(), 0, 100, 40);
-          versionField.setBackground(omega.utils.UIManager.c2);
-          versionField.setForeground(omega.utils.UIManager.c3);
+          versionField.setArc(0, 0);
 		add(versionField);
 		
 		TextComp removeBtn = new TextComp("-", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{
@@ -157,7 +154,7 @@ public class PluginView extends JDialog{
                }
 	     });
 		removeBtn.setToolTipText("Click to Uninstall this Plugin");
-		removeBtn.setFont(PX16);
+		removeBtn.setFont(PX28);
 		removeBtn.setBounds(getWidth() - 40, 0, 40, 40);
           removeBtn.setArc(0, 0);
 		add(removeBtn);
@@ -177,20 +174,18 @@ public class PluginView extends JDialog{
 		scrollPane.setBounds(LEFT_OFFSET, 40, getWidth() - LEFT_OFFSET, 100);
 		add(scrollPane);
 
-		authorField = new JTextField();
+		authorField = new TextComp("", c1, c2, c3, null);
 		authorField.setFont(PX14);
-		authorField.setEditable(false);
+		authorField.setClickable(false);
 		authorField.setBounds(LEFT_OFFSET, 140, 100, 40);
-          authorField.setBackground(omega.utils.UIManager.c2);
-          authorField.setForeground(omega.utils.UIManager.c3);
+          authorField.setArc(0, 0);
 		add(authorField);
 
-		copyrightField = new JTextField();
+		copyrightField = new TextComp("", c1, c2, c3, null);
 		copyrightField.setFont(PX14);
-		copyrightField.setEditable(false);
+		copyrightField.setClickable(false);
 		copyrightField.setBounds(authorField.getX() + authorField.getWidth(), 140, getWidth() - 80 - LEFT_OFFSET - authorField.getWidth(), 40);
-          copyrightField.setBackground(omega.utils.UIManager.c2);
-          copyrightField.setForeground(omega.utils.UIManager.c3);
+          copyrightField.setArc(0, 0);
 		add(copyrightField);
 
 		mRBtn = new TextComp(">", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
@@ -241,6 +236,10 @@ public class PluginView extends JDialog{
 		if(doors.size() != 0){
 			plugin = PluginManager.plugins.getFirst();
 			showPlug();
+               if(plugin != null && !plugin.getImages().isEmpty()){
+                    index = 0;
+                    repaint();
+               }
 		}
 	}
 
@@ -273,8 +272,10 @@ public class PluginView extends JDialog{
 
 	@Override
 	public void setVisible(boolean value){
-		if(value) load();
-		else omega.Screen.getPluginManager().save();
+		if(value) 
+		     load();
+		else 
+		     omega.Screen.getPluginManager().save();
 		super.setVisible(value);
 	}
 }

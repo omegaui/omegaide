@@ -87,7 +87,7 @@ public class SearchWindow extends JDialog{
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp reloadComp = new TextComp("%", "Click to Reload File Tree", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
+          TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", c1, c2, c3, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
           reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
           reloadComp.setArc(0, 0);
           reloadComp.setFont(PX14);
