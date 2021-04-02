@@ -24,7 +24,7 @@ public class IndentationFramework {
                }
                tabs += count('{', token);
                
-               if(token.startsWith("if") || token.startsWith("while") || token.startsWith("for") || token.startsWith("else")){
+               if((token.startsWith("if") && !token.contains(";")) || token.startsWith("while") || token.startsWith("for") || token.startsWith("else")){
                     if(count('{', token) == 0 && count('(', token) == count(')', token))
                          needsExtraTab = true;
                }

@@ -2,7 +2,6 @@ package omega;
 import javax.swing.plaf.ColorUIResource;
 import javax.imageio.ImageIO;
 import omega.utils.BottomPane;
-import omega.utils.SandBar;
 import omega.utils.SideMenu;
 import omega.utils.ThemePicker;
 import java.awt.event.*;
@@ -72,7 +71,6 @@ public class Screen extends JFrame {
      private TabPanel bottomTabPanel;
 	private ToolMenu toolMenu;
      private SideMenu sideMenu;
-     private SandBar sandBar;
      private BottomPane bottomPane;
      private static Robot robot;
 	private static UIManager uiManager;
@@ -106,17 +104,19 @@ public class Screen extends JFrame {
                     FlatDarkLaf.install();
                     x = Color.decode("#8400FF");
                     y = Color.decode("#1B1A48");
+                    javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
+                    javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
                }
                else {
                     FlatLightLaf.install();
                     x = new Color(0, 0, 255, 130);
                     y = Color.WHITE;
+                    javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
+                    javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(y));
                }
                javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
                javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
                javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
-               javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
-               javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
@@ -154,14 +154,6 @@ public class Screen extends JFrame {
 	}
 
 	private void init() {
-          try{
-               String name = UIManager.isDarkMode() ? "omega_ide_icon128_dark.png" : "omega_ide_icon128.png";
-               sandBar = new SandBar(this, ImageIO.read(getClass().getResourceAsStream("/" + name)));
-          }
-          catch(Exception e){ 
-               e.printStackTrace();
-          }
-          
           choiceDialog = new ChoiceDialog(this);
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
@@ -297,8 +289,6 @@ public class Screen extends JFrame {
 			revoke();
 			Screen.getProjectView().setVisible(false);
 		}
-          if(sandBar != null)
-               sandBar.setVisible(value);
 		super.setVisible(value);
 	}
 
@@ -377,14 +367,8 @@ public class Screen extends JFrame {
 
 	public void loadTitle(String projectName) {
 		setTitle(projectName+" -Omega IDE "+VERSION);
+          toolMenu.titleComp.setText(getTitle());
 	}
-
-     @Override
-     public void setTitle(String title){
-     	super.setTitle(title);
-          if(sandBar != null)
-               sandBar.repaint();
-     }
 	
 	public void setProject(String projectName) {
 		loadTitle(projectName);
@@ -589,10 +573,6 @@ public class Screen extends JFrame {
 
      public SideMenu getSideMenu() {
           return sideMenu;
-     }
-     
-     public SandBar getSandBar() {
-          return sandBar;
      }
      
      public BottomPane getBottomPane() {

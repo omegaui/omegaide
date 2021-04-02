@@ -108,7 +108,7 @@ public class OPopupWindow extends JDialog{
 
                int dy = getY() + getHeight() - (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
                int dx = getX() + getWidth() - (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-               setLocation(dx > 0 ? (getX() - dx) : getX(), dy > 0 ? (getY() - dy) : (getY() - Screen.getScreen().getSandBar().getOptimalHeight()));
+               setLocation(dx > 0 ? (getX() - dx) : getX(), dy > 0 ? (getY() - dy) : (getY() - 30));
           }
      	super.setVisible(value);
           if(scrollable){
