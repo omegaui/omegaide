@@ -93,6 +93,7 @@ public class Screen extends JFrame {
      private static ThemePicker picker;
 
 	public Screen() {
+          setUndecorated(true);
 		try {
                Startup.writeUIFiles();
                if(!File.separator.equals("/"))
@@ -135,7 +136,6 @@ public class Screen extends JFrame {
       
           omega.gset.Generator.init(this);
 
-          setUndecorated(true);
 		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());

@@ -42,7 +42,7 @@
       <style token="COMMENT_MULTILINE" fg="F5AA1C"/>
       <style token="COMMENT_KEYWORD" fg="7D5AA4" bold="true"/>
       <style token="COMMENT_MARKUP" fg="7D5AA4"/>
-      <style token="FUNCTION" fg="E0E2E4"/>
+      <style token="FUNCTION" fg="0C7BEA"/>
       <style token="DATA_TYPE" fg="8400FF" bold="true"/>
       <style token="LITERAL_BOOLEAN" fg="F93800" bold="true"/>
       <style token="LITERAL_NUMBER_DECIMAL_INT" fg="FFCD22"/>
@@ -66,12 +66,12 @@
       <style token="REGEX" fg="d39745"/>
       <style token="SEPARATOR" fg="36FF19"/>
       <style token="VARIABLE" fg="6E3CA7" bold="true"/>
-      <style token="WHITESPACE" fg="E0E2E4"/>
+      <style token="WHITESPACE" fg="0C7BEA"/>
       
-      <style token="ERROR_IDENTIFIER" fg="E0E2E4" bg="04790e"/>
-      <style token="ERROR_NUMBER_FORMAT" fg="E0E2E4" bg="04790e"/>
-      <style token="ERROR_STRING_DOUBLE" fg="E0E2E4" bg="1CF7B5"/>
-      <style token="ERROR_CHAR" fg="E0E2E4" bg="517BF6"/>
+      <style token="ERROR_IDENTIFIER" fg="0C7BEA" bg="04790e"/>
+      <style token="ERROR_NUMBER_FORMAT" fg="0C7BEA" bg="04790e"/>
+      <style token="ERROR_STRING_DOUBLE" fg="0C7BEA" bg="1CF7B5"/>
+      <style token="ERROR_CHAR" fg="0C7BEA" bg="517BF6"/>
    </tokenStyles>
 
 </RSyntaxTheme>
