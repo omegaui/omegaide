@@ -69,7 +69,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		scrollPane = new RTextScrollPane(this);
 		scrollPane.setLineNumbersEnabled(true);
 		scrollPane.setFoldIndicatorEnabled(true);
-          scrollPane.setBackground(UIManager.c2);
+		scrollPane.setBackground(UIManager.c2);
 		fAndR = new FindAndReplace();
 		initView();
 		printArea = new PrintArea("File Operation Log", screen);
@@ -78,7 +78,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(text == null || text.equals(""))
 				Screen.getScreen().getBottomPane().jumpField.setText("Goto Line");
 			else
-			Screen.getScreen().getBottomPane().jumpField.setText(text.length() + "");
+				Screen.getScreen().getBottomPane().jumpField.setText(text.length() + "");
 		});
 		createNewContent();
 		
@@ -92,7 +92,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	public static void launchContentAssist() {
 		if(launched) return;
-			launched = true;
+		launched = true;
 		new Thread(()->{
 			while(screen.active) {
 				try {
@@ -142,93 +142,93 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(!f.getName().contains(".") || f.getName().endsWith(".txt"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NONE);
 		else if(f.getName().endsWith(".as"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ACTIONSCRIPT);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ACTIONSCRIPT);
 		else if(f.getName().endsWith(".asm"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_X86);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_X86);
 		else if(f.getName().endsWith(".asm"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_6502);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_6502);
 		else if(f.getName().endsWith(".html"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_BBCODE);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_BBCODE);
 		else if(f.getName().endsWith(".c"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_C);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_C);
 		else if(f.getName().endsWith(".clj") || f.getName().endsWith(".cljs") || f.getName().endsWith(".cljc") || f.getName().endsWith(".edn"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CLOJURE);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CLOJURE);
 		else if(f.getName().endsWith(".cpp"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CPLUSPLUS);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CPLUSPLUS);
 		else if(f.getName().endsWith(".cs"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSHARP);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSHARP);
 		else if(f.getName().endsWith(".css"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSS);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSS);
 		else if(f.getName().endsWith(".csv"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSV);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CSV);
 		else if(f.getName().endsWith(".d"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_D);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_D);
 		else if(f.getName().endsWith(".dart"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DART);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DART);
 		else if(f.getName().endsWith(".dpr"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DELPHI);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DELPHI);
 		else if(f.getName().endsWith(".dtd"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DTD);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_DTD);
 		else if(f.getName().endsWith(".f90"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_FORTRAN);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_FORTRAN);
 		else if(f.getName().endsWith(".go"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GO);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GO);
 		else if(f.getName().endsWith(".groovy"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GROOVY);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GROOVY);
 		else if(f.getName().endsWith(".html") || f.getName().endsWith(".svg"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
 		else if(f.getName().endsWith(".ini"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_INI);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_INI);
 		else if(f.getName().endsWith(".java"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
 		else if(f.getName().endsWith(".js"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
 		else if(f.getName().endsWith(".json"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON);
 		else if(f.getName().endsWith(".json"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON_WITH_COMMENTS);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON_WITH_COMMENTS);
 		else if(f.getName().endsWith(".hjson"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSP);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSP);
 		else if(f.getName().endsWith(".tex"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LATEX);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LATEX);
 		else if(f.getName().endsWith(".less"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LESS);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LESS);
 		else if(f.getName().endsWith(".lsp"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LISP);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LISP);
 		else if(f.getName().endsWith(".lua"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LUA);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_LUA);
 		else if(f.getName().endsWith("makefile"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_MAKEFILE);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_MAKEFILE);
 		else if(f.getName().endsWith(".mxml"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_MXML);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_MXML);
 		else if(f.getName().endsWith(".nsi"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NSIS);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NSIS);
 		else if(f.getName().endsWith(".pl"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PERL);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PERL);
 		else if(f.getName().endsWith(".php"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PHP);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PHP);
 		else if(f.getName().endsWith(".property"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PROPERTIES_FILE);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PROPERTIES_FILE);
 		else if(f.getName().endsWith(".py"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PYTHON);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_PYTHON);
 		else if(f.getName().endsWith(".rb"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_RUBY);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_RUBY);
 		else if(f.getName().endsWith(".sas"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SAS);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SAS);
 		else if(f.getName().endsWith(".scala") || f.getName().endsWith(".sc"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SCALA);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SCALA);
 		else if(f.getName().endsWith(".sql"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SQL);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_SQL);
 		else if(f.getName().endsWith(".ts"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_TYPESCRIPT);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_TYPESCRIPT);
 		else if(f.getName().endsWith(".sh") || f.getName().endsWith(".run"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_UNIX_SHELL);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_UNIX_SHELL);
 		else if(f.getName().endsWith(".bat") || f.getName().endsWith(".cmd"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_WINDOWS_BATCH);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_WINDOWS_BATCH);
 		else if(f.getName().endsWith(".xml"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_XML);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_XML);
 		else if(f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))
-		e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
 	}
 	public void loadTheme() {
 		try {
@@ -432,23 +432,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(code == KeyEvent.VK_CONTROL)
 			ctrl = true;
 		else if(code == KeyEvent.VK_SHIFT)
-		shift = true;
+			shift = true;
 		else if(code == KeyEvent.VK_O)
-		o = true;
+			o = true;
 		else if(code == KeyEvent.VK_F)
-		f = true;
+			f = true;
 		else if(code == KeyEvent.VK_R)
-		r = true;
+			r = true;
 		else if(code == KeyEvent.VK_S)
-		s = true;
+			s = true;
 		else if(code == KeyEvent.VK_B)
-		b = true;
+			b = true;
 		else if(code == KeyEvent.VK_C)
-		c = true;
+			c = true;
 		else if(code == KeyEvent.VK_G)
-		g = true;
+			g = true;
 		else if(code == KeyEvent.VK_I)
-		i = true;
+			i = true;
 		
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
@@ -503,7 +503,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(code == KeyEvent.VK_BACK_SPACE)
 			autoSymbolExclusion(e);
 		else
-		autoSymbolCompletion(e);
+			autoSymbolCompletion(e);
 		if(currentFile != null) {
 			//Managing KeyBoard Shortcuts
 			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
@@ -578,23 +578,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(code == KeyEvent.VK_CONTROL)
 			ctrl = false;
 		else if(code == KeyEvent.VK_SHIFT)
-		shift = false;
+			shift = false;
 		else if(code == KeyEvent.VK_O)
-		o = false;
+			o = false;
 		else if(code == KeyEvent.VK_F)
-		f = false;
+			f = false;
 		else if(code == KeyEvent.VK_R)
-		r = false;
+			r = false;
 		else if(code == KeyEvent.VK_S)
-		s = false;
+			s = false;
 		else if(code == KeyEvent.VK_B)
-		b = false;
+			b = false;
 		else if(code == KeyEvent.VK_C)
-		c = false;
+			c = false;
 		else if(code == KeyEvent.VK_G)
-		g = false;
+			g = false;
 		else if(code == KeyEvent.VK_I)
-		i = false;
+			i = false;
 		if(currentFile != null) {
 			if(!screen.isVisible()) {
 				return;

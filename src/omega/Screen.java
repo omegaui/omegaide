@@ -107,6 +107,8 @@ public class Screen extends JFrame {
                     y = Color.decode("#1B1A48");
                     javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
                     javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
+                    javax.swing.UIManager.put("Button.foreground", new ColorUIResource(y));
+                    javax.swing.UIManager.put("Button.background", new ColorUIResource(x));
                }
                else {
                     FlatLightLaf.install();
@@ -114,6 +116,8 @@ public class Screen extends JFrame {
                     y = Color.WHITE;
                     javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
                     javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(y));
+                    javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
+                    javax.swing.UIManager.put("Button.background", new ColorUIResource(y));
                }
                javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
                javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
