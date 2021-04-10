@@ -78,7 +78,7 @@ public class CodeFramework{
 			     return false;
 			ByteReader reader = null;
 			if(has(className)) reader = getReader(className);
-			else reader = new ByteReader(className);
+			else reader = Screen.getFileView().getJDKManager().prepareReader(className);
 			dataMembers = reader.getDataMembers("static");
 			//Checking whether if there is data after className
 			if(code.indexOf('.', ix + 1) >= 0){
@@ -109,7 +109,7 @@ public class CodeFramework{
 								if(d.name.equals(name) && d.parameterCount == parameterCount){
 									least = true;
 									if(has(d.type)) reader = getReader(d.type);
-									else reader = new ByteReader(d.type);
+									else reader = Screen.getFileView().getJDKManager().prepareReader(d.type);
 									dataMembers = reader.dataMembers;
 									in = 1;
 									continue inner;
@@ -118,7 +118,7 @@ public class CodeFramework{
 							else if(d.name.equals(member)){
 								least = true;
 								if(has(d.type)) reader = getReader(d.type);
-								else reader = new ByteReader(d.type);
+								else reader = Screen.getFileView().getJDKManager().prepareReader(d.type);
 								dataMembers = reader.dataMembers;
 								in = 1;
 								continue inner;
@@ -184,11 +184,11 @@ public class CodeFramework{
 										if(!isSource(pack)) {
 											if(pack != null) {
 												if(has(pack)) readerB = getReader(pack);
-												else readerB = new ByteReader(pack);
+												else readerB = Screen.getFileView().getJDKManager().prepareReader(pack);
 											}
 											else {
 												if(has(d.type)) readerB = getReader(d.type);
-												else readerB = new ByteReader(d.type);
+												else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 											}
 											dataMembers = readerB.dataMembers;
 											reader = null;
@@ -201,7 +201,7 @@ public class CodeFramework{
 									}
 									else if(readerB != null) {
 										if(has(d.type)) readerB = getReader(d.type);
-										else readerB = new ByteReader(d.type);
+										else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 										reader = null;
 										dataMembers = readerB.dataMembers;
 									}
@@ -217,11 +217,11 @@ public class CodeFramework{
 									if(!isSource(pack)) {
 										if(pack != null) {
 											if(has(pack)) readerB = getReader(pack);
-											else readerB = new ByteReader(pack);
+											else readerB = Screen.getFileView().getJDKManager().prepareReader(pack);
 										}
 										else {
 											if(has(d.type)) readerB = getReader(d.type);
-											else readerB = new ByteReader(d.type);
+											else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 										}
 										dataMembers = readerB.dataMembers;
 										reader = null;
@@ -234,7 +234,7 @@ public class CodeFramework{
 								}
 								else if(readerB != null) {
 									if(has(d.type)) readerB = getReader(d.type);
-									else readerB = new ByteReader(d.type);
+									else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 									reader = null;
 									dataMembers = readerB.dataMembers;
 								}
@@ -289,7 +289,7 @@ public class CodeFramework{
 			if(!isAvailable) return false;
 			ByteReader reader = null;
 			if(has(path)) reader = getReader(path);
-			else reader = new ByteReader(path);
+			else reader = Screen.getFileView().getJDKManager().prepareReader(path);
 			dataMembers = reader.getDataMembers("static");
 			//Checking whether if there is data after className
 			if(code.indexOf('.', code.indexOf('.') + 1) >= 0){
@@ -320,7 +320,7 @@ public class CodeFramework{
 								if(d.name.equals(name) && d.parameterCount == parameterCount){
 									least = true;
 									if(has(d.type)) reader = getReader(d.type);
-									else reader = new ByteReader(d.type);
+									else reader = Screen.getFileView().getJDKManager().prepareReader(d.type);
 									dataMembers = reader.dataMembers;
 									in = 1;
 									continue inner;
@@ -329,7 +329,7 @@ public class CodeFramework{
 							else if(d.name.equals(member)){
 								least = true;
 								if(has(d.type)) reader = getReader(d.type);
-								else reader = new ByteReader(d.type);
+								else reader = Screen.getFileView().getJDKManager().prepareReader(d.type);
 								dataMembers = reader.dataMembers;
 								in = 1;
 								continue inner;
@@ -395,11 +395,11 @@ public class CodeFramework{
 										if(!isSource(pack)) {
 											if(pack != null) {
 												if(has(pack)) readerB = getReader(pack);
-												else readerB = new ByteReader(pack);
+												else readerB = Screen.getFileView().getJDKManager().prepareReader(pack);
 											}
 											else {
 												if(has(d.type)) readerB = getReader(d.type);
-												else readerB = new ByteReader(d.type);
+												else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 											}
 											dataMembers = readerB.dataMembers;
 											reader = null;
@@ -412,7 +412,7 @@ public class CodeFramework{
 									}
 									else if(readerB != null) {
 										if(has(d.type)) readerB = getReader(d.type);
-										else readerB = new ByteReader(d.type);
+										else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 										reader = null;
 										dataMembers = readerB.dataMembers;
 									}
@@ -428,11 +428,11 @@ public class CodeFramework{
 									if(!isSource(pack)) {
 										if(pack != null) {
 											if(has(pack)) readerB = getReader(pack);
-											else readerB = new ByteReader(pack);
+											else readerB = Screen.getFileView().getJDKManager().prepareReader(pack);
 										}
 										else {
 											if(has(d.type)) readerB = getReader(d.type);
-											else readerB = new ByteReader(d.type);
+											else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 										}
 										dataMembers = readerB.dataMembers;
 										reader = null;
@@ -445,7 +445,7 @@ public class CodeFramework{
 								}
 								else if(readerB != null) {
 									if(has(d.type)) readerB = getReader(d.type);
-									else readerB = new ByteReader(d.type);
+									else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 									reader = null;
 									dataMembers = readerB.dataMembers;
 								}
@@ -651,7 +651,7 @@ public class CodeFramework{
 			if(!isAvailable) return false;
 			ByteReader reader = null;
 			if(has(className)) reader = getReader(className);
-			else reader = new ByteReader(className);
+			else reader = Screen.getFileView().getJDKManager().prepareReader(className);
 			dataMembers = reader.dataMembers;
 			//Checking whether if there is data after className
 			if(code.indexOf('.', ix + 1) >= 0){
@@ -682,7 +682,7 @@ public class CodeFramework{
 								if(d.name.equals(name) && d.parameterCount == parameterCount){
 									least = true;
 									if(has(d.type)) reader = getReader(d.type);
-									else reader = new ByteReader(d.type);
+									else reader = Screen.getFileView().getJDKManager().prepareReader(d.type);
 									dataMembers = reader.dataMembers;
 									in = 1;
 									continue inner;
@@ -691,7 +691,7 @@ public class CodeFramework{
 							else if(d.name.equals(member)){
 								least = true;
 								if(has(d.type)) reader = getReader(d.type);
-								else reader = new ByteReader(d.type);
+								else reader = Screen.getFileView().getJDKManager().prepareReader(d.type);
 								dataMembers = reader.dataMembers;
 								in = 1;
 								continue inner;
@@ -753,11 +753,11 @@ public class CodeFramework{
 										if(!isSource(pack)) {
 											if(pack != null) {
 												if(has(pack)) readerB = getReader(pack);
-												else readerB = new ByteReader(pack);
+												else readerB = Screen.getFileView().getJDKManager().prepareReader(pack);
 											}
 											else {
 												if(has(d.type)) readerB = getReader(d.type);
-												else readerB = new ByteReader(d.type);
+												else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 											}
 											dataMembers = readerB.dataMembers;
 											reader = null;
@@ -770,7 +770,7 @@ public class CodeFramework{
 									}
 									else if(readerB != null) {
 										if(has(d.type)) readerB = getReader(d.type);
-										else readerB = new ByteReader(d.type);
+										else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 										reader = null;
 										dataMembers = readerB.dataMembers;
 									}
@@ -786,11 +786,11 @@ public class CodeFramework{
 									if(!isSource(pack)) {
 										if(pack != null) {
 											if(has(pack)) readerB = getReader(pack);
-											else readerB = new ByteReader(pack);
+											else readerB = Screen.getFileView().getJDKManager().prepareReader(pack);
 										}
 										else {
 											if(has(d.type)) readerB = getReader(d.type);
-											else readerB = new ByteReader(d.type);
+											else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 										}
 										dataMembers = readerB.dataMembers;
 										reader = null;
@@ -803,7 +803,7 @@ public class CodeFramework{
 								}
 								else if(readerB != null) {
 									if(has(d.type)) readerB = getReader(d.type);
-									else readerB = new ByteReader(d.type);
+									else readerB = Screen.getFileView().getJDKManager().prepareReader(d.type);
 									reader = null;
 									dataMembers = readerB.dataMembers;
 								}
@@ -868,7 +868,8 @@ public class CodeFramework{
           lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
-				if(d.name.startsWith(lCode)) mx.add(d);
+				if(d.name.startsWith(lCode))
+				     mx.add(d);
 			});
 			editor.contentWindow.genView(mx, Screen.getScreen().getGraphics());
 			return;

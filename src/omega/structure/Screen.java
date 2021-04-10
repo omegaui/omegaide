@@ -202,7 +202,7 @@ public class Screen extends JDialog {
                if(Assembly.has(im.getImport()))
                     reader = Assembly.getReader(im.getImport());
                else
-                    reader = new ByteReader(im.getImport());
+                    reader = omega.Screen.getFileView().getJDKManager().prepareReader(im.getImport());
                this.dataMembers = reader.dataMembers;
                search("");
           }

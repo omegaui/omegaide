@@ -1,7 +1,7 @@
 package omega.jdk;
-import omega.Screen;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import omega.*;
+import java.util.jar.*;
+import omega.deassembler.*;
 import java.util.*;
 import java.io.*;
 public class JDKManager {
@@ -15,16 +15,18 @@ public class JDKManager {
 	public static LinkedList<Import> imports = new LinkedList<>();
 	public static LinkedList<Import> javaLangPack = new LinkedList<>();
 	public static LinkedList<Import> sources = new LinkedList<>();
+     public static LinkedList<JarLoader> jarLoaders = new LinkedList<>();
 	public JDKManager(File jdkDir){
           imports.clear();
           modules.clear();
           javaLangPack.clear();
           sources.clear();
+          jarLoaders.clear();
 		this.jdkDir = jdkDir;
-		String ext = File.separator.equals("\\") ? ".exe" : "";
-		this.java = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "java" + ext;
-		this.javac = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "javac" + ext;
-		this.javap = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "javap" + ext;
+		String ext  = File.separator.equals("\\") ? ".exe" : "";
+		this.java   = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "java" + ext;
+		this.javac  = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "javac" + ext;
+		this.javap  = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "javap" + ext;
 		loadVersionInfo();
 		if(isModularJDK())
 			readModules();
@@ -35,7 +37,6 @@ public class JDKManager {
      public void writeToFile(Import im){
      	try{
                new File("byte-codes").mkdir();
-     		System.out.println(") Deassembling " + im);
                Process p = new ProcessBuilder("javap", "-public", im.toString()).start();
                Scanner reader = new Scanner(p.getInputStream());
                PrintWriter writer = new PrintWriter("byte-codes" + File.separator + im.toString() + ".assist");
@@ -66,6 +67,7 @@ public class JDKManager {
           			}
           		}
 		     }
+               jarLoaders.add(new JarLoader(rtJarPath));
 		}
 		catch(Exception e) {
 			Screen.setStatus("Exception while Reading the JDK v" + version, 99);
@@ -79,7 +81,14 @@ public class JDKManager {
 			return;
 		for(File moduleFile : modulesFiles)
 			modules.add(new Module(moduleFile));
-		modules.forEach(module->module.classes.forEach(this::addImport));
+          final JarLoader moduleLoader = JarLoader.prepareSystemModuleLoader();
+		modules.forEach((module)->{
+	          module.classes.forEach(c->{
+                    addImport(c);
+                    moduleLoader.putClassName(c.toString());
+               });
+	     });
+          jarLoaders.add(moduleLoader);
 	}
 	public void addModule(File moduleFile){
 		for(Module module : modules){
@@ -90,6 +99,16 @@ public class JDKManager {
 		module.classes.forEach(this::addImport);
 		modules.add(module);
 	}
+     public ByteReader prepareReader(String name){
+          for(JarLoader loader : jarLoaders){
+               for(String className : loader.classNames){
+                    if(className.equals(name)){
+                         return loader.loadReader(name);
+                    }
+               }
+          }
+	     return null;
+     }
 	public void loadVersionInfo(){
 		try{
 			Scanner reader = new Scanner(new File(jdkDir.getAbsolutePath() + File.separator + "release"));
@@ -157,6 +176,7 @@ public class JDKManager {
      				}
      			}
 			}
+               jarLoaders.add(new JarLoader(path));
 		}
 		catch(Exception e) {
 			Screen.setStatus("Exception while Reading Jar : " + new File(path).getName(), 12);
@@ -227,6 +247,10 @@ public class JDKManager {
 	public static LinkedList<Import> getSources() {
 		return sources;
 	}
+
+     public static LinkedList<JarLoader> getJarLoaders(){
+          return jarLoaders;
+     }
 	
 	public String getVersion() {
 		return version;
@@ -238,13 +262,15 @@ public class JDKManager {
 			return Integer.parseInt(version.charAt(2) + "");
           else if(version.contains("."))
                return Integer.parseInt(version.substring(0, version.indexOf('.')));
-          else 
+          else
                return Integer.parseInt(version);
 	}
 	public void clear(){
 		modules.clear();
 		imports.clear();
 		sources.clear();
+          jarLoaders.forEach(loader->loader.close());
+          jarLoaders.clear();
 	}
 	
 }

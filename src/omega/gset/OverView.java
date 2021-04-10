@@ -105,7 +105,7 @@ public class OverView extends JDialog{
                               if(Assembly.has(path))
                                    bx = Assembly.getReader(path);
                               else 
-                                   bx = new ByteReader(path);
+                                   bx = omega.Screen.getFileView().getJDKManager().prepareReader(path);
                               brs.add(bx);
                          }
                     }
@@ -119,7 +119,7 @@ public class OverView extends JDialog{
                          if(Assembly.has(path))
                               bx = Assembly.getReader(path);
                          else 
-                              bx = new ByteReader(path);
+                              bx = omega.Screen.getFileView().getJDKManager().prepareReader(path);
                          brs.add(bx);
                     }
                }

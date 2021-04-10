@@ -31,6 +31,6 @@ public class Import {
 	
 	@Override
 	public String toString(){
-		return packagePath;
+		return getImport();
 	}
 }

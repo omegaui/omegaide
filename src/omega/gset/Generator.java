@@ -57,7 +57,7 @@ public class Generator {
                if(Assembly.has("java.lang.Object"))
                     reader = Assembly.getReader("java.lang.Object");
                else
-                    reader = new ByteReader("java.lang.Object");
+                    reader = omega.Screen.getFileView().getJDKManager().prepareReader("java.lang.Object");
      	}
           for(DataMember dx : reader.dataMembers){
                if(dx.toString().equals(d.toString()))

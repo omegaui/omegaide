@@ -122,7 +122,7 @@ public class SourceReader {
 							}
 						}
 						else {
-							ByteReader reader = new ByteReader(pack);
+							ByteReader reader = omega.Screen.getFileView().getJDKManager().prepareReader(pack);
 							for(DataMember m : reader.getDataMembers("static")) {
 								String nameX = m.name;
 								if(nameX.contains("()"))
@@ -241,7 +241,7 @@ public class SourceReader {
 							}
 						}
 						else {
-							ByteReader reader = new ByteReader(pack);
+							ByteReader reader = omega.Screen.getFileView().getJDKManager().prepareReader(pack);
 							for(DataMember m : reader.getDataMembers("static")) {
 								String nameX = m.name;
 								if(nameX.contains("()"))
@@ -473,7 +473,7 @@ public class SourceReader {
 		if(!CodeFramework.isSource(parent)) {
 			ByteReader byteReader = null;
 			if(Assembly.has(parent)) byteReader = Assembly.getReader(parent);
-			else byteReader = new ByteReader(parent);
+			else byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(parent);
 			byteReader.dataMembers.forEach(this::offer);
 		}
 		else {
@@ -489,7 +489,7 @@ public class SourceReader {
 					if(Assembly.has(f)) 
 					     byteReader = Assembly.getReader(f);
 					else 
-					     byteReader = new ByteReader(f);
+					     byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(f);
 					byteReader.dataMembers.forEach(this::offer);
 				}
 				else {

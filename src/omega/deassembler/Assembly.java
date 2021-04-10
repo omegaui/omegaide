@@ -31,8 +31,9 @@ public class Assembly {
 
 	public static ByteReader getReader(String className){
 		for(AssemblyUnit unit : units){
-			if(unit.className.equals(className))
+			if(unit.className.equals(className)){
 				return unit.reader;
+			}
 		}
 		return null;
 	}

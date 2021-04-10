@@ -56,7 +56,8 @@ public class DataMember {
                }
                if(!p.contains(","))
                     parameterCount = 1;
-               else parameterCount = p.split(",").length;
+               else 
+                    parameterCount = p.split(",").length;
           }
      }
 

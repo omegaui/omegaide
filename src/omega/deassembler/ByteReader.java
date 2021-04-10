@@ -1,340 +1,121 @@
 package omega.deassembler;
-import omega.jdk.Import;
-import omega.jdk.JDKManager;
-import omega.utils.*;
-import java.io.*;
-import java.util.*;
+import omega.*;
+import java.lang.reflect.*;
+import java.util.LinkedList;
 public class ByteReader {
-	private String code;
+	private Class c;
 	public String pack;
 	public String access;
 	public String modifier;
 	public String className;
-	public String type;
-	public String parent = "java.lang.Object";
-	public String[] features;
+     public String parent = "java.lang.Object";
+	public String type = "class";
+	public String packagePath;
 	public LinkedList<DataMember> dataMembers = new LinkedList<>();
 	public LinkedList<ByteReader> internalReaders = new LinkedList<>();
-
-     public ByteReader(){
-          //The Default Constructor
+     
+	public ByteReader(Class c){
+          if(c != null) {
+     		this.c = c;
+     		this.className = c.getName();
+     		if(className.contains(" ")){
+     			this.type = className.substring(0, className.indexOf(' '));
+     			this.className = className.substring(className.indexOf(' ') + 1);
+     		}
+     		this.pack = c.getPackage().toString();
+               this.modifier = Modifier.toString(c.getModifiers());
+               if(modifier.contains(" ")){
+                    if(modifier.contains("interface") || modifier.contains("enum") || modifier.contains("record")){
+                         this.type = modifier.substring(modifier.lastIndexOf(' ') + 1);
+                         this.modifier = modifier.substring(0, modifier.lastIndexOf(' '));
+                    }
+                    this.access = modifier.substring(0, modifier.indexOf(' '));
+                    this.modifier = modifier.substring(modifier.indexOf(' ') + 1);
+               }
+     		loadInternalClasses();
+     		loadFields();
+     		loadMethods();
+               //loadParent();
+               if(!Assembly.has(className))
+                    Assembly.add(className, this);
+          }
+	}
+	public void loadInternalClasses(){
+		Class[] internalClasses = c.getDeclaredClasses();
+		if(internalClasses != null && internalClasses.length != 0){
+			for(Class internalClass : internalClasses)
+				internalReaders.add(new ByteReader(internalClass));
+		}
+	}
+	public void loadFields(){
+		for(Field f : c.getFields()){
+			String access = "";
+			String modifier = "";
+			String name = "";
+			String type = "";
+			String member = f.toString();
+			if(!member.startsWith("public"))
+				continue;
+			access = member.substring(0, member.indexOf(' '));
+			member = member.substring(member.indexOf(' ') + 1);
+			name = member.substring(member.lastIndexOf(' ') + 1);
+			if(name.contains("."))
+				name = name.substring(name.lastIndexOf('.') + 1);
+			member = member.substring(0, member.lastIndexOf(' '));
+			type = member.substring(member.lastIndexOf(' ') + 1);
+			if(member.contains(" ")){
+				member = member.substring(0, member.lastIndexOf(' '));
+				modifier = member;
+			}
+			dataMembers.add(new DataMember(access, modifier, type, name, null));
+		}
+	}
+	public void loadMethods(){
+		for(Method m : c.getMethods()){
+			String access = "";
+			String modifier = "";
+			String name = "";
+			String type = "";
+			String parameters = "";
+			String member = m.toString();
+			if(!member.startsWith("public"))
+				continue;
+			int index = member.indexOf('(');
+			if(member.charAt(index + 1) != ')')
+				parameters = member.substring(member.indexOf('(') + 1, member.indexOf(')'));
+			member = member.substring(0, member.indexOf('('));
+			access = member.substring(0, member.indexOf(' '));
+			member = member.substring(member.indexOf(' ') + 1);
+			name = member.substring(member.lastIndexOf(' ') + 1);
+			if(name.contains("."))
+				name = name.substring(name.lastIndexOf('.') + 1);
+			member = member.substring(0, member.lastIndexOf(' '));
+			type = member.substring(member.lastIndexOf(' ') + 1);
+			if(member.contains(" ")){
+				member = member.substring(0, member.lastIndexOf(' '));
+				modifier = member;
+			}
+			dataMembers.add(new DataMember(access, modifier, type, name + "()", parameters));
+		}
+	}
+     public void loadParent(){
+          if(c.getSuperclass().getName().equals(parent))
+               return;
+     	ByteReader br = null;
+          if(Assembly.has(c.getName()))
+               br = Assembly.getReader(c.getName());
+          else
+               br = new ByteReader(c.getSuperclass());
+          br.dataMembers.forEach(dataMembers::add);
      }
-
-	public ByteReader(String className){
-		if(className != null && !className.contains(" ")) {
-			omega.Screen.getScreen().getToolMenu().setTask("Unpacking " + className);
-			this.className = className;
-			read();
-			omega.Screen.getScreen().getToolMenu().setTask("Hover to see Memory Statistics");
+	public int count(String line, char ch){
+		int c = 0;
+		for(char chx : line.toCharArray()){
+			if(ch == chx)
+				c++;
 		}
+		return c;
 	}
-    
-	public void read(){
-		try{
-			if(code == null){
-                    Import im  = getImport();
-				if(im == null) return;
-				Process process = null;
-                    String javap = omega.Screen.getFileView().getJDKManager().javap;
-				if(!im.module)
-					process = new ProcessBuilder(javap, "-public", "-cp", im.jarPath, className).start();
-				else{
-                         String s = im.jarPath;
-                         String module_path = s.substring(0, s.lastIndexOf(File.separator));
-                         String module_name = s.substring(s.lastIndexOf(File.separator) + 1, s.lastIndexOf('.'));
-					process = new ProcessBuilder(javap, "-public", "--module-path", module_path, "--module", module_name, className).start();
-				}
-				while(process.isAlive());
-				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				String token = reader.readLine();
-				if(token == null) return;
-				this.code = "";
-				while(token != null){
-					this.code += token + "\n";
-					token = reader.readLine();
-				}
-			}
-			//Unpacking the _code
-			dataMembers.clear();
-			internalReaders.clear();
-			boolean recordingInternal = false;
-			boolean commentStarts = false;
-			int openBracesCount = -1;
-			int internalCount = -1;
-			String internalCode = "";
-               LinkedList<String> tokens = CodeTokenizer.tokenize(this.code, '\n');
-			for(String line : tokens){
-				if(line.startsWith("Compiled from")) continue;
-				//Skipping Strings and characters
-				String cLine = line;
-				line = "";
-				boolean r = true;
-				int in = 0;
-				for(char ch : cLine.toCharArray()){
-					if((ch == '\"' || ch == '\'') && in > 0 && cLine.charAt(in - 1) != '\\')
-						r = !r;
-					if(r && ch != '\"' && ch != '\''){
-						line += ch;
-					}
-					in++;
-				}
-				cLine = "";
-				//Skipping Diamonds
-				if(line.contains("<") && line.contains(">") && !line.contains("&") && !line.contains("|")){
-					int c = -1;
-					cLine = line;
-					line = "";
-					for(char ch : cLine.toCharArray()){
-						if(ch == '<')
-							c++;
-						else if(ch == '>')
-							c--;
-						if(c == -1 & ch != '<' & ch != '>')
-							line += ch;
-					}
-				}
-				//Skipping Comments
-				if(line.startsWith("//")) continue;
-				if(line.startsWith("/*")){
-					commentStarts = true;
-					continue;
-				}
-				else if(line.contains("*/")){
-					commentStarts = false;
-					continue;
-				}
-				else if(commentStarts) continue;
-				//Reading code
-				//Replacing ';' with "{}"
-				if(line.endsWith(";") && line.contains("(") && line.contains(")")){
-					line = line.substring(0, line.indexOf(';')) + "{}";
-				}
-				else if(line.endsWith(";")){
-					line = line.substring(0, line.indexOf(';'));
-				}
-				//Counting Braces for InternalReaders
-				if(line.contains("{")) internalCount++;
-				if(line.contains("}")) internalCount--;
-				//Balancing OpenBraces
-				if(line.contains("{")) openBracesCount++;
-				//System.out.println(line+", count "+openBracesCount);
-				//Unpacking Prototype_
-				if(line.startsWith("package ") && line.endsWith(";") && pack == null){
-					pack = line.substring(line.indexOf(' ') + 1, line.indexOf(';')).trim();
-					continue;
-				}
-				//Unpacking _description
-				if(this.type == null){
-					String type = "";
-					if(line.contains("class "))
-						type = "class";
-					else if(line.contains("enum "))
-						type = "enum";
-					else if(line.contains("interface "))
-						type = "interface";
-					if(line.contains("@interface "))
-						type = "@interface";
-					if(!type.equals("")){
-						this.type = type;
-						String part = line.substring(0, line.indexOf(type)).trim();
-						if(!line.startsWith(type)){
-							if(part.contains(" ")){
-								access = part.substring(0, part.indexOf(' ')).trim();
-								modifier = part.substring(part.indexOf(' ') + 1).trim();
-							}
-							else access = part;
-						}
-						int index = line.indexOf(type) + type.length();
-						int indexAfter = line.indexOf('\n');
-						if(line.contains("{"))
-							indexAfter = line.indexOf("{");
-						if(line.indexOf(' ', index + 1) > -1){
-							indexAfter = line.indexOf(' ', index + 1);
-						}
-						className = line.substring(index + 1, indexAfter);
-						if(line.contains("extends")){
-							int extendsI = line.indexOf("extends") + 7;
-							if(line.contains("implements")){
-								indexAfter = line.indexOf(' ', extendsI + 1);
-								parent = line.substring(extendsI + 1, indexAfter).trim();
-								int impI = indexAfter + 1 + 10;
-								String x = line.substring(impI).trim();
-								if(x.contains("{"))
-									x = x.substring(0, x.indexOf('{'));
-								else if(x.endsWith("\n"))
-									x = x.substring(0, x.indexOf('\n'));
-								if(!x.contains(",")){
-									features = new String[1];
-									features[0] = x;
-								}
-								else
-									features = x.split(",");
-								for(int ix = 0; ix < features.length; ix++)
-									features[ix] = features[ix].trim();
-							}
-							else{
-								if(line.contains("{"))
-									indexAfter = line.indexOf('{');
-								else indexAfter = line.indexOf('\n');
-								parent = line.substring(extendsI + 1, indexAfter).trim();
-							}
-						}
-						if(line.contains("implements") && !line.contains("extends")){
-							int impI = line.indexOf("implements") + 10;
-							String x = line.substring(impI).trim();
-							if(x.contains("{"))
-								x = x.substring(0, x.indexOf('{'));
-							else if(x.endsWith("\n"))
-								x = x.substring(0, x.indexOf('\n'));
-							if(!x.contains(",")){
-								features = new String[1];
-								features[0] = x;
-							}
-							else
-								features = x.split(",");
-							for(int ix = 0; ix < features.length; ix++)
-								features[ix] = features[ix].trim();
-						}
-						continue;
-					}
-				}
-				//Unpacking Internal Classess
-				if(internalCount >= 1){
-					if(!recordingInternal){
-						if(line.contains("class ") || line.contains("enum ") || line.contains("interface ")){
-							recordingInternal = true;
-						}
-					}
-					if(recordingInternal){
-						internalCode += line + "\n";
-					}
-				}
-				//Closing Internal SourceReader
-				if(internalCount == 0 && recordingInternal){
-					internalCode += line;
-					recordingInternal = false;
-					ByteReader byteReader = new ByteReader();
-					byteReader.code = code;
-					byteReader.read();
-					internalReaders.add(byteReader);
-					internalCode = "";
-				}
-				//Unpacking Global _Variables and _Functions
-				if(line.contains(" ")){
-					String cL = line;
-					if(cL.contains("=")) cL = cL.substring(0, cL.indexOf('=')).trim();
-					if(cL.contains("(") && openBracesCount <= 1){
-						String parameters = cL.substring(cL.indexOf('(') + 1, cL.indexOf(')')).trim();
-						cL = cL.substring(0, cL.indexOf('('));
-						if(cL.contains(" ")){
-							String name = cL.substring(cL.lastIndexOf(' ') + 1).trim();
-							cL = cL.substring(0, cL.lastIndexOf(' ')).trim();
-							if(cL.contains(" ")){
-								String type = cL.substring(cL.lastIndexOf(' ') + 1).trim();
-								cL = cL.substring(0, cL.lastIndexOf(' ')).trim();
-								if(cL.contains(" ")){
-									String mods = cL.substring(cL.indexOf(' ') + 1).trim();
-									cL = cL.substring(0, cL.indexOf(' ')).trim();
-									String access = cL;
-									if(name.equals(className)){
-										access = type;
-										type = "";
-									}
-									if(name.equals(className) && name.contains("."))
-										name = name.substring(name.lastIndexOf('.') + 1);
-									dataMembers.add(new DataMember(access, mods, type, name + "()", parameters));
-								}
-								else{
-									String access = cL;
-									if(name.equals(className)){
-										access = type;
-										type = "";
-									}
-									dataMembers.add(new DataMember(access, "", type, name + "()", parameters));
-								}
-							}
-							else{
-								String type = cL;
-								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters));
-							}
-						}
-					}
-					else if(openBracesCount == 0){
-						String name = cL.substring(cL.lastIndexOf(' ') + 1).trim();
-						cL = cL.substring(0, cL.lastIndexOf(' '));
-						if(cL.contains(" ")){
-							String type = cL.substring(cL.lastIndexOf(' ') + 1).trim();
-							cL = cL.substring(0, cL.lastIndexOf(' '));
-							if(cL.contains(" ")){
-								String mods = cL.substring(cL.indexOf(' ') + 1).trim();
-								cL = cL.substring(0, cL.indexOf(' ')).trim();
-								String access = cL;
-								dataMembers.add(new DataMember(access, mods, type, name, null));
-							}
-							else{
-								String access = cL;
-								dataMembers.add(new DataMember(access, "", type, name, null));
-							}
-						}
-						else{
-							String type = cL;
-							dataMembers.add(new DataMember("", "", type, name, null));
-						}
-					}
-				}
-				//Balancing CloseBraces
-				if(line.contains("}")) {
-					openBracesCount--;
-				}
-			}
-			if(className.equals("java.lang.Object") || className.equals("Object"))
-				parent = "";
-			if(!parent.equals("")) {
-				ByteReader byteReader = null;
-				if(Assembly.has(parent)) byteReader = Assembly.getReader(parent);
-				else byteReader = new ByteReader(parent);
-				byteReader.dataMembers.forEach(this::offer);
-				if(features != null) {
-					for(String f : features) {
-						ByteReader x = null;
-						if(Assembly.has(f)) x = Assembly.getReader(f);
-						else x = new ByteReader(f);
-						x.dataMembers.forEach(this::offer);
-					}
-				}
-			}
-			if(!Assembly.has(className)) Assembly.add(className, this);
-		}catch(Exception e){System.err.println(e.getMessage());}
-	}
-	
-	public void offer(DataMember d) {
-		for(DataMember dx : dataMembers) {
-			if(dx.name.equals(d.name) && dx.parameterCount == d.parameterCount && dx.type.equals(d.type)) {
-				if(dx.parameters != null && d.parameters != null && !dx.parameters.equals(d.parameters)) continue;
-				return;
-			}
-		}
-		dataMembers.add(d);
-	}
-
-	public LinkedList<DataMember> getConstructors(){
-		LinkedList<DataMember> constructors = new LinkedList<>();
-		String className = this.className;
-		if(className.contains("."))
-			className = className.substring(className.lastIndexOf('.') + 1);
-
-		for(DataMember d : dataMembers){
-			if(d.parameters != null){
-				if(d.name.equals(className+"()") && d.type.equals(""))
-					constructors.add(d);
-			}
-		}
-		if(constructors.isEmpty()){
-			constructors.add(new DataMember("public", "", "", className, ""));
-		}
-		return constructors;
-	}
-
 	public LinkedList<DataMember> getDataMembers(String modifier){
 		LinkedList<DataMember> members = new LinkedList<>();
 		dataMembers.forEach(d->{
@@ -348,27 +129,11 @@ public class ByteReader {
 		});
 		return members;
 	}
-
-     public void setCode(String code){
-     	this.code = code;
-     }
-
 	@Override
 	public String toString(){
-		String f = "";
-		if(features != null){
-			for(String fx : features)
-				f += fx + " ";
-		}
-		return "[type - " + type + ", name - " + className + ", modifier - " + modifier + ", access - " + access + ", parent - " + parent + ", features - " + f.trim() + "]";
+		return "[type - " + type + ", name - " + className + ", modifier - " + modifier + ", access - " + access + "]";
 	}
-
-	private Import getImport(){
-		for(Import m : JDKManager.getAllImports()) {
-			if(m.getImport().equals(className)) {
-				return m;
-			}
-		}
-		return null;
+	public void close(){
+		dataMembers.clear();
 	}
 }
