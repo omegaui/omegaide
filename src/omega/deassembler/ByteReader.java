@@ -8,7 +8,6 @@ public class ByteReader {
 	public String access;
 	public String modifier;
 	public String className;
-     public String parent = "java.lang.Object";
 	public String type = "class";
 	public String packagePath;
 	public LinkedList<DataMember> dataMembers = new LinkedList<>();
@@ -35,7 +34,6 @@ public class ByteReader {
      		loadInternalClasses();
      		loadFields();
      		loadMethods();
-               //loadParent();
                if(!Assembly.has(className))
                     Assembly.add(className, this);
           }
@@ -98,16 +96,6 @@ public class ByteReader {
 			dataMembers.add(new DataMember(access, modifier, type, name + "()", parameters));
 		}
 	}
-     public void loadParent(){
-          if(c.getSuperclass().getName().equals(parent))
-               return;
-     	ByteReader br = null;
-          if(Assembly.has(c.getName()))
-               br = Assembly.getReader(c.getName());
-          else
-               br = new ByteReader(c.getSuperclass());
-          br.dataMembers.forEach(dataMembers::add);
-     }
 	public int count(String line, char ch){
 		int c = 0;
 		for(char chx : line.toCharArray()){

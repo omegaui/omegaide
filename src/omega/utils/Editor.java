@@ -98,7 +98,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				try {
 					if(screen.getCurrentEditor() != null)
 						screen.getCurrentEditor().readCode();
-			}catch(Exception e) {}
+     			}
+     			catch(Exception e) {
+                         e.printStackTrace();
+     		     }
 			}
 		}).start();
 	}

@@ -224,10 +224,10 @@ public class SourceReader {
 			//System.out.println(line+", count "+openBracesCount);
 			//Unpacking Prototype_
 			if(line.startsWith("import ") && line.endsWith(";") && canReadImports){
-				String im = line.substring(line.indexOf(' ') + 1, line.indexOf(';')).trim();
+				String im = line.substring(line.lastIndexOf(' ') + 1, line.indexOf(';')).trim();
 				String pack = im.substring(0, im.lastIndexOf('.'));
 				String name = im.substring(im.lastIndexOf('.') + 1);
-				if(pack.equals("java.lang")) continue;
+				if(pack.equals("java.lang") || !Character.isLowerCase(pack.charAt(0))) continue;
 				if(name.equals("*") && !JDKManager.reading){
 					//To be continued in IDE's repository
 					if(line.contains(" static ")) {

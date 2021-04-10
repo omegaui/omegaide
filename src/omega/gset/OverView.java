@@ -37,24 +37,24 @@ public class OverView extends JDialog{
 
      public void init(){
           scrollPane = new JScrollPane(panel = new JPanel(null));
-          scrollPane.setBounds(0, 40, getWidth(), getHeight() - 80);
+          scrollPane.setBounds(0, 30, getWidth(), getHeight() - 60);
           panel.setBackground(c2);
           add(scrollPane);
           
           TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
-          closeComp.setBounds(0, 0, 40, 40);
+          closeComp.setBounds(0, 0, 30, 30);
           closeComp.setFont(omega.settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
           TextComp titleComp = new TextComp("Override/Implement Methods", c1, c2, c3, ()->{});
-          titleComp.setBounds(40, 0, getWidth() - 40, 40);
+          titleComp.setBounds(30, 0, getWidth() - 30, 30);
           titleComp.setFont(omega.settings.Screen.PX18);
           titleComp.setClickable(false);
           titleComp.addMouseMotionListener(new MouseAdapter(){
                @Override
                public void mouseDragged(MouseEvent e) {
-                    setLocation(e.getXOnScreen() - mouseX - 40, e.getYOnScreen() - mouseY);
+                    setLocation(e.getXOnScreen() - mouseX - 30, e.getYOnScreen() - mouseY);
                }
           });
           titleComp.addMouseListener(new MouseAdapter(){
@@ -68,7 +68,7 @@ public class OverView extends JDialog{
           add(titleComp);
 
           TextComp genComp = new TextComp("Implement", c1, c2, c3, this::generate);
-          genComp.setBounds(0, getHeight() - 40, getWidth(), 40);
+          genComp.setBounds(0, getHeight() - 30, getWidth(), 30);
           genComp.setFont(omega.settings.Screen.PX16);
           genComp.setArc(0, 0);
           add(genComp);

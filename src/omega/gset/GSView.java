@@ -39,24 +39,25 @@ public class GSView extends JDialog{
 
      public void init(){
           scrollPane = new JScrollPane(panel = new JPanel(null));
-          scrollPane.setBounds(0, 40, getWidth(), getHeight() - 80);
+          scrollPane.setBounds(0, 30, getWidth(), getHeight() - 60);
           panel.setBackground(c2);
           add(scrollPane);
           
+          
      	TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
-          closeComp.setBounds(0, 0, 40, 40);
+          closeComp.setBounds(0, 0, 30, 30);
           closeComp.setFont(omega.settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
           TextComp titleComp = new TextComp("Generate Getters/Setters", c1, c2, c3, ()->{});
-          titleComp.setBounds(40, 0, getWidth() - 40, 40);
+          titleComp.setBounds(30, 0, getWidth() - 30, 30);
           titleComp.setFont(omega.settings.Screen.PX18);
           titleComp.setClickable(false);
           titleComp.addMouseMotionListener(new MouseAdapter(){
                @Override
                public void mouseDragged(MouseEvent e) {
-                    setLocation(e.getXOnScreen() - mouseX - 40, e.getYOnScreen() - mouseY);
+                    setLocation(e.getXOnScreen() - mouseX - 30, e.getYOnScreen() - mouseY);
                }
           });
           titleComp.addMouseListener(new MouseAdapter(){
@@ -70,7 +71,7 @@ public class GSView extends JDialog{
           add(titleComp);
 
           accessComp = new TextComp("Use Access : public", c1, c2, c3, ()->{});
-          accessComp.setBounds(0, getHeight() - 40, 300, 40);
+          accessComp.setBounds(0, getHeight() - 30, 300, 30);
           accessComp.setRunnable(()->{
                switch(accessComp.getText()){
                     case "Use Access : public": accessComp.setText("Use Access : protected");break;
@@ -84,7 +85,7 @@ public class GSView extends JDialog{
           add(accessComp);
 
           gsComp = new TextComp("Getter&Setter", c1, c2, c3, ()->{});
-          gsComp.setBounds(300, getHeight() - 40, 200, 40);
+          gsComp.setBounds(300, getHeight() - 30, 200, 30);
           gsComp.setRunnable(()->{
                switch(gsComp.getText()){
                     case "Getter&Setter": gsComp.setText("Getter");break;
@@ -97,7 +98,7 @@ public class GSView extends JDialog{
           add(gsComp);
 
           TextComp genComp = new TextComp("Generate", c1, c2, c3, this::generate);
-          genComp.setBounds(500, getHeight() - 40, getWidth() - 500, 40);
+          genComp.setBounds(500, getHeight() - 30, getWidth() - 500, 30);
           genComp.setFont(omega.settings.Screen.PX16);
           genComp.setArc(0, 0);
           add(genComp);

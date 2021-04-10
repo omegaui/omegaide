@@ -124,6 +124,8 @@ public class ContentWindow extends JPanel implements KeyListener{
      public void decideLocation(){
      	final Editor e = editor;
           Rectangle vRect = e.getAttachment().getVisibleRect();
+          if(e.getCaret().getMagicCaretPosition() == null)
+               return;
           int x = e.getCaret().getMagicCaretPosition().x;
           int y = e.getCaret().getMagicCaretPosition().y + e.getFont().getSize();
           int xSep = (x + getWidth()) - (int)(vRect.x + vRect.getWidth());
