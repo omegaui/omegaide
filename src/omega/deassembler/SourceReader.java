@@ -162,6 +162,9 @@ public class SourceReader {
 		String blockCode = "";
 		LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
           int lineN = 0;
+          JDKManager.javaLangPack.forEach(im->{
+               imports.add(new Import(im.getPackage(), im.getClassName()));
+          });
           for(int i = 0; i < tokens.size(); i++){
                String line = tokens.get(i);
                //Skipping Single Words
@@ -275,6 +278,8 @@ public class SourceReader {
 					type = "enum";
 				else if(line.contains("interface "))
 					type = "interface";
+                    else if(line.contains("record "))
+                         type = "record";
 				if(line.contains("@interface "))
 					type = "@interface";
 				if(!type.equals("")){
@@ -387,7 +392,10 @@ public class SourceReader {
 										type = "";
 									}
                                              if(name.contains(".")) continue;
-									dataMembers.add(new DataMember(access, mods, type, name + "()", parameters));
+                                             type = evaluateType(type);
+                                             name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
+                                             if(type != null)
+									     dataMembers.add(new DataMember(access, mods, type, name + "()", parameters));
 									dataBlocks.add(new DataBlock(dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -399,7 +407,10 @@ public class SourceReader {
 										type = "";
 									}
                                              if(name.contains(".")) continue;
-									dataMembers.add(new DataMember(access, "", type, name + "()", parameters));
+                                             type = evaluateType(type);
+                                             name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
+                                             if(type != null)
+									     dataMembers.add(new DataMember(access, "", type, name + "()", parameters));
 									dataBlocks.add(new DataBlock(dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -434,18 +445,25 @@ public class SourceReader {
 							cL = cL.substring(0, cL.indexOf(' ')).trim();
 							String access = cL;
                                    if(name.contains(".")) continue;
-							dataMembers.add(new DataMember(access, mods, type, name, null));
+                                   type = evaluateType(type);
+                                   if(type != null)
+							     dataMembers.add(new DataMember(access, mods, type, name, null));
 						}
 						else{
 							String access = cL;
                                    if(name.contains(".")) continue;
-							dataMembers.add(new DataMember(access, "", type, name, null));
+                                   type = evaluateType(type);
+                                   if(type != null)
+							     dataMembers.add(new DataMember(access, "", type, name, null));
 						}
 					}
 					else{
 						String type = cL;
-                              if(name.contains(".")) continue;
-						dataMembers.add(new DataMember("", "", type, name, null));
+                              if(name.contains(".")) 
+                                   continue;
+                              type = evaluateType(type);
+                              if(type != null)
+						     dataMembers.add(new DataMember("", "", type, name, null));
 					}
 				}
 			}
@@ -464,16 +482,15 @@ public class SourceReader {
 				}
 			}
 		}
-		JDKManager.javaLangPack.forEach(im->{
-               imports.add(new Import(im.getPackage(), im.getClassName()));
-	     });
 		String parent = this.parent;
 		if(!parent.contains("."))
 			parent = getPackage(parent);
 		if(!CodeFramework.isSource(parent)) {
 			ByteReader byteReader = null;
-			if(Assembly.has(parent)) byteReader = Assembly.getReader(parent);
-			else byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(parent);
+			if(Assembly.has(parent)) 
+			     byteReader = Assembly.getReader(parent);
+			else 
+			     byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(parent);
 			byteReader.dataMembers.forEach(this::offer);
 		}
 		else {
@@ -565,6 +582,13 @@ public class SourceReader {
 		}
 		return false;
 	}
+
+     public String evaluateType(String type){
+	     if(" byte short int float double boolean long char void ".contains(type))
+               return type;
+          type = getPackage(type);
+          return (type != null && !type.equals("")) ? type : null;
+     }
 
 	public String getPackage(String className){
 		for(Import im : imports){

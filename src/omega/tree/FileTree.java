@@ -354,7 +354,13 @@ public class FileTree extends JComponent{
 			panel.addKeyListener(k);
 	}
 
-
+     @Override
+     public void setVisible(boolean value){
+          super.setVisible(true);
+     	if(value)
+               omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
+     }
+     
 	private static void sort(File[] files){
 		for(int i = 0; i < files.length; i++){
 			for(int j = 0; j < files.length - 1 - i; j++){

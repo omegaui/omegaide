@@ -113,6 +113,12 @@ public class TextComp extends JComponent{
 	public boolean isClickable() {
 		return clickable;
 	}
+
+     public void doClick(){
+     	if(runnable != null)
+               runnable.run();
+     }
+    
 	@Override
 	public void paint(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;

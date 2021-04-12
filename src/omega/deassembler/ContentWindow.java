@@ -43,12 +43,11 @@ public class ContentWindow extends JPanel implements KeyListener{
                setVisible(false);
                return;
           }
-               
           hints.forEach(panel::remove);
           hints.clear();
 
           sort(dataMembers);
-
+          
           block = 0;
           width = 0;
 

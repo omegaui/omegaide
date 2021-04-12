@@ -70,6 +70,10 @@ public class FileView extends View {
 			if(projectPath.equals(path))
 				return;
 		}
+          if(projectPath != null){
+               if(getScreen().getToolMenu().hidden)
+                    getScreen().getToolMenu().structureComp.doClick();
+          }
 		new Thread(()->Screen.addAndSaveRecents(path)).start();
 		projectPath = path;
 		if(Screen.launcher != null)

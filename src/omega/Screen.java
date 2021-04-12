@@ -285,12 +285,10 @@ public class Screen extends JFrame {
 			screenHasProjectView = false;
 			Screen.getProjectView().organizeProjectViewDefaults();
 			doLayout();
-			revoke();
 			Screen.getProjectView().setVisible(false);
 			screenHasProjectView = true;
 			Screen.getProjectView().organizeProjectViewDefaults();
 			doLayout();
-			revoke();
 			Screen.getProjectView().setVisible(false);
 		}
 		super.setVisible(value);
@@ -300,18 +298,10 @@ public class Screen extends JFrame {
      	super.setVisible(value);
      }
 
-	public void revoke() {
-		boolean wasExtended = false;
-		if(getExtendedState() == MAXIMIZED_BOTH) wasExtended = true;
-		setSize((int)getSize().width + 1, (int)getSize().height);
-		setSize((int)getSize().width - 1, (int)getSize().height);
-		if(wasExtended) setExtendedState(MAXIMIZED_BOTH);
-	}
-
 	public void setToView() {
 		int x = splitPane.getDividerLocation();
 		splitPane.setLeftComponent(projectView.getProjectView());
-		splitPane.setDividerLocation(x <= 300 ? 300 : x);
+		Screen.getProjectView().getProjectView().setVisible(true);
 	}
 
 	public void setToNull() {

@@ -10,7 +10,7 @@ import java.awt.Dimension;
 
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
-public class SideMenu extends JPanel{
+public class SideMenu extends JPanel {
      private Screen screen;
 
      private TextComp sep;
