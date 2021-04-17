@@ -35,7 +35,7 @@ public class Comp extends JComponent{
 	public TextComp leftComp;
 	public TextComp rightComp;
 	public int arcX = 40;
-     	public int arcY = 40;
+	public int arcY = 40;
 	public Comp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.text = text;
 		this.originalText = text;
@@ -61,7 +61,8 @@ public class Comp extends JComponent{
 				if(!clickable) return;
 				press = true;
 				repaint();
-				Comp.this.runnable.run();
+                    if(Comp.this.runnable != null && e.getButton() == 1)
+				     Comp.this.runnable.run();
 			}
 			@Override
 			public void mouseReleased(MouseEvent e){

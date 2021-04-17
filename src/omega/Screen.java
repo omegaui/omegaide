@@ -119,6 +119,7 @@ public class Screen extends JFrame {
                     javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
                     javax.swing.UIManager.put("Button.background", new ColorUIResource(y));
                }
+               javax.swing.UIManager.put("ToolTip.font", omega.settings.Screen.PX14);
                javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
                javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
                javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));

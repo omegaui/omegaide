@@ -55,7 +55,7 @@ public class TextComp extends JComponent{
 				enter = false;
 				press = false;
 				repaint();
-				if(TextComp.this.runnable != null)
+				if(TextComp.this.runnable != null && e.getButton() == 1)
 					TextComp.this.runnable.run();
 			}
 			

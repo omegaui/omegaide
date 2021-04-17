@@ -227,6 +227,244 @@ public class RunView extends View {
           }).start();
      }
 
+     public void justRunNJ(){
+     	new Thread(()->{
+               getScreen().getToolMenu().runComp.setClickable(false);
+               getScreen().getOperationPanel().removeTab("Build");
+               omega.Screen.getFileView().getArgumentManager().genLists();
+               String args = Screen.getFileView().getArgumentManager().run_time_args;
+               String shell = "sh";
+               if(omega.Screen.PATH_SEPARATOR.equals("\\"))
+                    shell = "cmd.exe";
+               
+               Screen.setStatus("Running Project", 56);
+               try{
+                    PrintArea terminal = new PrintArea("Terminal -Closing This Conlose will terminate Execution", getScreen());
+                    terminal.printText("Running Project...\n" + args );
+                    terminal.printText("");
+                    terminal.printText("If your application does terminates on its own or by pressing the \'x\' button (on left)");
+                    terminal.printText("Then, In that case you need to manually close it.");
+                    terminal.printText("---<>--------------------------------------<>---");
+                    terminal.launchAsTerminal();
+                    terminal.setVisible(true);
+                    String status = "Successfully";
+                    
+                    String name = "Run";
+                    int count = OperationPane.count(name);
+                    if(count > -1)
+                         name = name + " " + count;
+                    
+                    if(args.trim().equals("")){
+                         terminal.printText("\'No Run Time Command Specified!!!\'");
+                         terminal.printText("Click \"Settings\", then Click \"All Settings\"");
+                         terminal.printText("And Specify the Run Time Args or Command");
+                         return;
+                    }
+                    String runDir = Screen.getFileView().getArgumentManager().runDir;
+                    
+                    Process runProcess = new ProcessBuilder(shell).directory(new File(runDir)).start();
+                    terminal.setRunProcess(runProcess);
+                    getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
+
+                    runningApps.add(runProcess);
+                    
+                    Scanner inputReader = new Scanner(runProcess.getInputStream());
+                    Scanner errorReader = new Scanner(runProcess.getErrorStream());
+                    PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
+                    writer.println(args);
+                    writer.println("exit");
+                    writer.flush();
+                    
+                    Screen.setStatus("Running Project", 100);
+                    getScreen().getToolMenu().runComp.setClickable(true);
+
+                    new Thread(()->{
+                         String statusX = "No Errors";
+                         while(runProcess.isAlive()) {
+                              while(errorReader.hasNextLine()) {
+                                   if(!statusX.equals("Errors")) statusX = "Errors";
+                                   terminal.printText(errorReader.nextLine());
+                              }
+                         }
+                         terminal.printText("---<>--------------------------------------<>---");
+                         terminal.printText("Program Execution finished with " + statusX);
+                         errorReader.close();
+                    }).start();
+
+                    while(runProcess.isAlive()) {
+                         while(inputReader.hasNextLine()) {
+                              String data = inputReader.nextLine();
+                              terminal.printText(data);
+                         }
+                    }
+                    inputReader.close();
+                    runningApps.remove(runProcess);
+                    inputReader.close();
+                    errorReader.close();
+                    Screen.getProjectView().reload();
+               }catch(Exception e){ e.printStackTrace(); }
+          }).start();
+     }
+
+     public void justRun(){
+     	getScreen().saveAllEditors();
+          if(omega.Screen.getFileView().getProjectManager().non_java){
+               justRunNJ();
+               return;
+          }
+          new Thread(()->{
+               String mainClass = this.mainClass;
+               String mainClassPath = this.mainClassPath; 
+               try {
+                    Screen.setStatus("Running Project", 23);
+
+                    NATIVE_PATH = "";
+                    for(String d : Screen.getFileView().getProjectManager().natives) {
+                         NATIVE_PATH += d + omega.Screen.PATH_SEPARATOR;
+                    }
+                    if(!NATIVE_PATH.equals("")) {
+                         NATIVE_PATH = NATIVE_PATH.substring(0, NATIVE_PATH.length() - 1);
+                         NATIVE_PATH = NATIVE_PATH + omega.Screen.PATH_SEPARATOR + "$PATH";
+                    }
+                    else
+                         NATIVE_PATH = "$PATH";
+                    String depenPath = "";
+                    for(String d : Screen.getFileView().getProjectManager().jars)
+                         depenPath += d + omega.Screen.PATH_SEPARATOR;
+                    for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+                         depenPath += d + omega.Screen.PATH_SEPARATOR;
+                    if(!depenPath.equals("")) {
+                         depenPath = depenPath.substring(0, depenPath.length() - 1);
+                    }
+                    
+                    PrintArea terminal = new PrintArea("Terminal "+mainClass+"-Closing This Conlose will terminate Execution", getScreen());
+                    terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+                    terminal.printText("");
+                    terminal.printText("---<>--------------------------------------<>---");
+                    terminal.launchAsTerminal();
+
+                    Screen.setStatus("Running Project", 56);
+                    if(Screen.getFileView().getProjectManager().jdkPath == null){
+                         getScreen().getToolMenu().runComp.setClickable(true);
+                         Screen.setStatus("Please Setup the Project JDK First!", 99);
+                         return;
+                    }
+                    String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+                    String cmd = null;
+                    if(jdkPath != null && new File(jdkPath).exists())
+                         cmd = jdkPath + File.separator + "bin" + File.separator + "java";
+                    else
+                         cmd = "java" + cmd;
+                     
+                    if(depenPath != null && !depenPath.equals("")) {
+                         if(Screen.getFileView().getDependencyView().getModulePath() != null) {
+                              if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, "-classpath", depenPath + omega.Screen.PATH_SEPARATOR + ".",
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
+                                             "-Djava.library.path="+NATIVE_PATH+"", Screen.getFileView().getProjectManager().run_time_args, mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }else {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, "-classpath", depenPath + omega.Screen.PATH_SEPARATOR + ".", 
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
+                                             "-Djava.library.path="+NATIVE_PATH+"", mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }
+                         }
+                         else {
+                              if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, "-classpath", depenPath + omega.Screen.PATH_SEPARATOR + ".", "-Djava.library.path="+NATIVE_PATH+"", 
+                                             Screen.getFileView().getProjectManager().run_time_args, mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }else {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, "-classpath", depenPath + omega.Screen.PATH_SEPARATOR + ".", "-Djava.library.path="+NATIVE_PATH+"", mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }
+                         }
+                    }
+                    else {
+                         if(Screen.getFileView().getDependencyView().getModulePath() != null) {
+                              if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, 
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
+                                             "-Djava.library.path=\""+NATIVE_PATH+"\"", 
+                                             Screen.getFileView().getProjectManager().run_time_args, mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }else {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, 
+                                             "--module-path", Screen.getFileView().getDependencyView().getModulePath(),
+                                             "--add-modules", Screen.getFileView().getDependencyView().getModules(),
+                                             "-Djava.library.path=\""+NATIVE_PATH+"\"", mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath()+"/bin")).start();
+                              }
+                         }
+                         else {
+                              if(!Screen.getFileView().getProjectManager().run_time_args.trim().equals("")) {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, "-Djava.library.path=\""+NATIVE_PATH+"\"", 
+                                             Screen.getFileView().getProjectManager().run_time_args, mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }else {
+                                   runProcess = new ProcessBuilder(
+                                             cmd, "-Djava.library.path=\""+NATIVE_PATH+"\"", mainClass
+                                             ).directory(new File(Screen.getFileView().getProjectPath() + File.separator + "bin")).start();
+                              }
+                         }
+                    }
+                    runningApps.add(runProcess);
+                    String name = "Run("+mainClass;
+                    int count = OperationPane.count(name);
+                    if(count > -1) {
+                         name = name + " " + count;
+                    }
+                    name =  name + ")";
+                    getScreen().getOperationPanel().addTab(name, terminal, ()->terminal.stopProcess());
+                    terminal.setRunProcess(runProcess);
+                    Scanner inputReader = new Scanner(runProcess.getInputStream());
+                    Scanner errorReader = new Scanner(runProcess.getErrorStream());
+                    terminal.setVisible(true);
+                    Screen.setStatus("Running Project", 100);
+
+                    new Thread(()->{
+                         String status = "No Errors";
+                         while(runProcess.isAlive())
+                         {
+                              while(errorReader.hasNextLine())
+                              {
+                                   if(!status.equals("Errors")) status = "Errors";
+                                   terminal.printText(errorReader.nextLine());
+                              }
+                         }
+                         terminal.printText("---<>--------------------------------------<>---");
+                         terminal.printText("Program Execution finished with " + status);
+                         errorReader.close();
+                    }).start();
+
+                    getScreen().getToolMenu().runComp.setClickable(true);
+                    while(runProcess.isAlive())
+                    {
+                         while(inputReader.hasNextLine())
+                         {
+                              String data = inputReader.nextLine();
+                              terminal.printText(data);
+                         }
+                    }
+                    inputReader.close();
+                    runningApps.remove(runProcess);
+                    Screen.getProjectView().reload();
+               }
+               catch(Exception e) {e.printStackTrace();}
+          }).start();
+     }
+
 	public void run() {
           getScreen().saveAllEditors();
           if(omega.Screen.getFileView().getProjectManager().non_java){

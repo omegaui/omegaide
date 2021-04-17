@@ -18,7 +18,7 @@ public class ToggleComp extends TextComp {
                public void mousePressed(MouseEvent e){
                	ToggleComp.this.state = !ToggleComp.this.state;
                     repaint();
-                    if(ToggleComp.this.toggleListener != null)
+                    if(ToggleComp.this.toggleListener != null && e.getButton() == 1)
                          ToggleComp.this.toggleListener.toggle(ToggleComp.this.state);
                }
           });

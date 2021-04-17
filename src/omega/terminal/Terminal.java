@@ -5,6 +5,8 @@ import java.awt.*;
 import org.fife.ui.rsyntaxtextarea.*;
 import java.io.*;
 import javax.swing.*;
+
+import static omega.settings.Screen.*;
 public class Terminal extends JComponent{
      private Process process;
      private PrintWriter writer;
@@ -12,8 +14,6 @@ public class Terminal extends JComponent{
      private Scanner errReader;
      private JTextField textField;
      public RSyntaxTextArea textArea;
-     private static final Font PX18 = new Font("Ubuntu Mono", Font.BOLD, 18);
-     private static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
      private static LinkedList<String> commands = new LinkedList<>();
      private static int pointer;
      public volatile boolean shellAlive;
@@ -30,6 +30,8 @@ public class Terminal extends JComponent{
           
           textField = new JTextField();
           textField.setFont(PX16);
+          textField.setBackground(omega.utils.UIManager.c2);
+          textField.setForeground(omega.utils.UIManager.c3);
           add(textField, BorderLayout.SOUTH);
           textField.addKeyListener(new KeyAdapter(){
                @Override

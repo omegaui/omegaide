@@ -321,14 +321,23 @@ public class ToolMenu extends JPanel {
 		sep0 = new TextComp("", c1, c3, c3, null);
 		sep0.setBounds(100, 50, 2, 40);
 		addComp(sep0);
-		
-		runComp = new TextComp(">", "Lets Run", c1, c2, c3, ()->{
-			if(runComp.isClickable() && buildComp.isClickable())
-				Screen.getRunView().run();
-		});
-		runComp.setBounds(110, 55, 30, 30);
-		runComp.setFont(omega.settings.Screen.PX28);
-		add(runComp);
+       
+          runComp = new TextComp(">", "Run Project, Right Click to launch without build!", c1, c2, c3, ()->{
+               if(runComp.isClickable() && buildComp.isClickable())
+                    Screen.getRunView().run();
+          });
+          runComp.setBounds(110, 55, 30, 30);
+          runComp.addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e){
+               	if(e.getButton() == 3){
+                         if(runComp.isClickable() && buildComp.isClickable())
+                              Screen.getRunView().justRun();
+               	}
+               }
+          });
+          runComp.setFont(omega.settings.Screen.PX28);
+          add(runComp);
 		
 		buildComp = new TextComp("", "Time to Build", c1, c2, c3, ()->{
 			if(runComp.isClickable() && buildComp.isClickable())
