@@ -269,6 +269,7 @@ public class ProjectWizard extends JDialog{
 
 		Comp cancelBtn = new Comp("Cancel", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->setVisible(false));
 		cancelBtn.setBounds(0, getHeight() - 60, getWidth()/2, 60);
+          cancelBtn.setArc(0, 0);
 		setData(cancelBtn);
 		add(cancelBtn);
 
@@ -317,6 +318,7 @@ public class ProjectWizard extends JDialog{
                }
 	     });
 		createBtn.setBounds(getWidth()/2, getHeight() - 60, getWidth()/2, 60);
+          createBtn.setArc(0, 0);
 		setData(createBtn);
 		add(createBtn);
 	}

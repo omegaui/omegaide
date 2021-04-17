@@ -135,7 +135,7 @@ public class Branch extends JComponent{
 					l.locate(Branch.this);
 				else if(e.getButton() == 3) {
 					popupMenu.setLocation(e.getLocationOnScreen());
-					popupMenu.setVisible(true);
+                         popupMenu.setVisible(true);
 				}
 			}
 		});

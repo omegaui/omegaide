@@ -108,6 +108,7 @@ public class UniversalProjectWizard extends JDialog{
           });
           createBtn.setBounds(0, getHeight() - 50, getWidth(), 50);
           createBtn.setFont(omega.settings.Screen.PX18);
+          createBtn.setArc(0, 0);
           add(createBtn);
      }
 

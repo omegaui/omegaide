@@ -48,7 +48,7 @@ public class UIManager extends DataBase {
 
      public static void loadHighlight(){
           if(isDarkMode())
-               glow = c1;
+               glow = Color.WHITE;
           else 
                glow = Color.BLACK;
      }

@@ -85,7 +85,7 @@ public class ToolMenu extends JPanel {
 	public volatile boolean oPHidden = true;
 	public static JMenu openFileMenu;
 	public static JMenu openProjectMenu;
-	public static omega.info.Screen infoScreen;
+	public static InfoScreen infoScreen;
 	public static omega.structure.Screen structureView;
 	public boolean hidden;
 	public static ProjectWizard projectWizard;
@@ -111,7 +111,7 @@ public class ToolMenu extends JPanel {
 		if(projectWizard == null){
 			projectWizard = new ProjectWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
-			infoScreen = new omega.info.Screen(screen);
+			infoScreen = new InfoScreen(screen);
 			structureView = new omega.structure.Screen(screen);
 		}
 		setLayout(null);

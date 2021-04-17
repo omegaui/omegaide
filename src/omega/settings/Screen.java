@@ -35,6 +35,7 @@ public class Screen extends JDialog {
 	public static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final Font PX18 = new Font("Ubuntu Mono", Font.BOLD, 18);
 	public static final Font PX28 = new Font("Ubuntu Mono", Font.BOLD, 28);
+     public static final Font PX26 = new Font("Ubuntu Mono", Font.BOLD, 26);
 
 	//Components
 	public Comp projectComp;

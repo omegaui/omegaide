@@ -13,7 +13,7 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JDialog;
 public class ThemePicker extends JDialog {
-     private Color c1 = new Color(0, 0, 255, 20);
+     private Color c1 = new Color(0, 0, 255, 40);
      private Color c2 = Color.WHITE;
      private Color c3 = new Color(0, 0, 255, 130);
      private Color b1 = Color.decode("#8400FF");
