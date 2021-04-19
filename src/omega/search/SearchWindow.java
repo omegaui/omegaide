@@ -1,4 +1,5 @@
 package omega.search;
+import omega.tree.*;
 import java.awt.Color;
 import omega.comp.NoCaretField;
 import java.awt.event.MouseEvent;
@@ -37,7 +38,9 @@ public class SearchWindow extends JDialog{
 	private NoCaretField field;
 	private LinkedList<Door> doors;
 	private int pointer;
-	private BufferedImage image = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+     private BufferedImage textImage = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+     private BufferedImage imageImage = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+     private BufferedImage allImage = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 	private Screen screen;
 
      private int pressX;
@@ -128,13 +131,19 @@ public class SearchWindow extends JDialog{
 		omega.utils.UIManager.setData(panel);
           
           //Creating File Image of size 32, 32 here
+          writeImage(textImage, Branch.LINUX_COLOR, c2);
+          writeImage(imageImage, Branch.IMAGE_COLOR, c2);
+          writeImage(allImage, IconManager.getBackground(), IconManager.getForeground());
+	}
+
+     public void writeImage(BufferedImage image, Color f, Color b){
           Graphics graphics = image.getGraphics();
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(IconManager.getBackground());
+          g.setColor(f);
           g.fillRoundRect(0, 0, 32, 32, 5, 5);
-          g.setColor(IconManager.getForeground());
+          g.setColor(b);
           g.fillRect(4, 4, 4, 2);
           g.fillRect(8, 4, 4, 2);
           g.fillRect(6, 8, 4, 2);
@@ -142,7 +151,7 @@ public class SearchWindow extends JDialog{
           g.fillRect(4, 12, 4, 2);
           g.fillRect(8, 12, 4, 2);
           g.dispose();
-	}
+     }
 
 	public void list(String text){
 		doors.forEach(panel::remove);
@@ -150,11 +159,26 @@ public class SearchWindow extends JDialog{
 		blocks = -40;
 		files.forEach(file->{
 			if(file.getName().contains(text)){
+                    String ext = file.getName();
+                    if(ext.contains("."))
+                         ext = ext.substring(ext.lastIndexOf('.'));
+                    BufferedImage image = switch(ext){
+                         case ".txt", ".groovy", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> textImage;
+                         case ".png", ".jpg", ".bmp", ".jpeg" -> imageImage;
+                         default -> allImage;
+                    };
 				Door door = new Door(file.getAbsolutePath(), image, ()->{
 					setVisible(false);
 					screen.loadFile(file);
 				});
 				door.setBounds(0, blocks += 40, getWidth(), 40);
+                    door.setToolTipText(file.getAbsolutePath());
+                    door.setBackground(c2);
+                    door.setForeground(switch(ext){
+                         case ".txt", ".groovy", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> Branch.LINUX_COLOR;
+                         case ".png", ".jpg", ".bmp", ".jpeg" -> Branch.IMAGE_COLOR;
+                         default -> c3;
+                    });
 				panel.add(door);
 				doors.add(door);
 			}

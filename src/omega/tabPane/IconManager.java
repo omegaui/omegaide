@@ -20,6 +20,7 @@ public class IconManager {
      public static BufferedImage hideImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage infoImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage classImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+     public static BufferedImage recordImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage enumImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage interImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage annImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -38,6 +39,7 @@ public class IconManager {
           paintHideImage(hideImage.getGraphics());
           paintCharImage(infoImage.getGraphics(), "!");
           paintCharImage(classImage.getGraphics(), "C");
+          paintCharImage(recordImage.getGraphics(), "R");
           paintCharImage(enumImage.getGraphics(), "E");
           paintCharImage(interImage.getGraphics(), "I");
           paintCharImage(annImage.getGraphics(), "A");

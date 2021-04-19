@@ -1,43 +1,17 @@
 package omega;
-/*
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
+import javax.swing.*;
+import omega.tabPane.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.awt.*;
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-
-import javax.swing.JFrame;
+import static omega.settings.Screen.*;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
 	private static final String VERSION = Screen.VERSION;
 	private static String ENCOURAGE = "lets code";
 	private static final Color ALPHA = new Color(0, 0, 0, 0);
-	private static final Font PX40 = new Font("Ubuntu Mono", Font.BOLD, 40);
-	private static final Font PX26 = new Font("Ubuntu Mono", Font.BOLD, 26);
-	private static final Font PX20 = new Font("Ubuntu Mono", Font.BOLD, 20);
-	private static final Font PX22 = new Font("Ubuntu Mono", Font.BOLD, 22);
 	private static Color BACK;
 	private static Color BLU;
 	private static Color DG;

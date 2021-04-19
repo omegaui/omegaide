@@ -63,6 +63,7 @@ public class FileWizard extends JDialog{
 		typeBtn.setBounds(0, nameField.getHeight(), getWidth(), 40);
           popup.createItem("Directory", IconManager.projectImage, ()->typeBtn.setText("directory"))
           .createItem("Class", IconManager.classImage, ()->typeBtn.setText("class"))
+          .createItem("Record", IconManager.recordImage, ()->typeBtn.setText("record"))
           .createItem("Interface", IconManager.interImage, ()->typeBtn.setText("interface"))
           .createItem("Annotation", IconManager.annImage, ()->typeBtn.setText("@interface"))
           .createItem("Enum", IconManager.enumImage, ()->typeBtn.setText("enum"))

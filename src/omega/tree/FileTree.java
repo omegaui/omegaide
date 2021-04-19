@@ -407,7 +407,10 @@ public class FileTree extends JComponent{
 			fileTree.gen(root);
 			expandedRoots.forEach(fileTree::genBranch);
 			fileTree.relocate();
-		}catch(Exception e) {}
+		}
+		catch(Exception e) {
+               
+	     }
 		fileTree.scrollPane.getVerticalScrollBar().setValue(value);
 		return fileTree;
 	}

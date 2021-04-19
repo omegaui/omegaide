@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.token.factory.*;
 import omega.highlightUnit.BasicHighlight;
 import org.fife.ui.rtextarea.SearchResult;
 import java.awt.event.MouseEvent;
@@ -81,7 +82,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				Screen.getScreen().getBottomPane().jumpField.setText(text.length() + "");
 		});
 		createNewContent();
-		
 	}
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);
@@ -129,7 +129,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setBracketMatchingEnabled(true);
 		setCloseCurlyBraces(true);
 		setPaintMatchedBracketPair(true);
-		setSyntaxEditingStyle(SYNTAX_STYLE_JAVA);
 		setTabsEmulated(true);
 		setHyperlinksEnabled(true);
 		setHyperlinkForeground(Color.GREEN);
@@ -183,7 +182,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".ini"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_INI);
 		else if(f.getName().endsWith(".java"))
-			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
+               e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
 		else if(f.getName().endsWith(".js"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
 		else if(f.getName().endsWith(".json"))
@@ -232,18 +231,26 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_XML);
 		else if(f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
+          else if(f.getName().endsWith(".rs"))
+               RustTokenMaker.apply(e);
 	}
 	public void loadTheme() {
 		try {
 			String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
 			theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
 			theme.apply(this);
-	} catch (Exception e) { }
+	     }
+	     catch (Exception e) { 
+               
+          }
 		try {
 			screen.getUIManager().loadData();
 			setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 			UIManager.setData(screen.getTabPanel());
-	}catch(Exception e) { }
+	     }
+	     catch(Exception e) { 
+               
+          }
 	}
 	
 	public static Theme getTheme() {
@@ -252,10 +259,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
 				theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
 			}
-		catch(Exception e) {e.printStackTrace();}
+		     catch(Exception e) {
+		          e.printStackTrace();
+	          }
 		}
 		return theme;
 	}
+    
 	public synchronized void loadFile(File file) {
 		if(file == null)
 			return;
@@ -276,7 +286,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			savedText = getText();
 			setStyle(this, currentFile);
 			setCaretPosition(0);
-	}catch(Exception e) {e.printStackTrace();}
+	     }
+          catch(Exception e) {
+               e.printStackTrace();
+          }
 	}
 	public void saveCurrentFile()
 	{
@@ -302,7 +315,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			PrintWriter writer = new PrintWriter(new FileOutputStream(currentFile));
 			writer.print(text);
 			writer.close();
-	}catch(Exception e) {e.printStackTrace();}
+	     }
+	     catch(Exception e) {
+	          e.printStackTrace();
+	     }
 	}
 	public void saveImage() {
 		try {
@@ -319,8 +335,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			System.out.println(e);
 		}
 	}
-	public void saveFileAs()
-	{
+	public void saveFileAs() {
 		chooser.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int res = chooser.showSaveDialog(screen);
@@ -332,7 +347,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				writer.println(getText());
 				writer.close();
 				Screen.getProjectView().reload();
-		}catch(Exception e) {e.printStackTrace();}
+		     }
+		     catch(Exception e) {
+		          e.printStackTrace();
+		     }
 		}
 	}
 	public void closeFile()
@@ -354,7 +372,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				savedText = getText();
 				setStyle(this, currentFile);
 				setCaretPosition(0);
-		}catch(Exception e) {System.out.println(e);}
+		     }catch(Exception e) {System.out.println(e);}
 		}
 	}
 	public void deleteFile() {

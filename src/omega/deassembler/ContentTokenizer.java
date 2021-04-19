@@ -46,7 +46,7 @@ public class ContentTokenizer {
 	}
 	
 	public static void arrangeTokens(Editor e) {
-		if(Screen.getFileView().getProjectManager().non_java || !DataManager.isContentModeJava()){
+		if(!e.currentFile.getName().endsWith(".java") || Screen.getFileView().getProjectManager().non_java || !DataManager.isContentModeJava()){
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
 		}
@@ -102,7 +102,9 @@ public class ContentTokenizer {
 			String reducedText = e.getText().substring(0, e.getCaretPosition());
 			reducedText = CodeFramework.completeCode(reducedText);
 			reader = new SourceReader(reducedText);
-			DataBlock block = reader.dataBlocks.getLast();
+			DataBlock block = null;
+               if(!reader.dataBlocks.isEmpty())
+                    block = reader.dataBlocks.getLast();
 			if(!reader.recordingInternal) {
 				if(block != null) {
 					for(DataMember m : block.depthMembers) {

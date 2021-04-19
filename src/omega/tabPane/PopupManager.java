@@ -61,18 +61,16 @@ public class PopupManager {
           .createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
           .createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file))
           .createItem("Delete", IconManager.closeImage, ()->{
-               if(!file.isDirectory()){
-                    Editor editor = Screen.getScreen().getTabPanel().findEditor(file);
-                    if(editor != null)
-                         Screen.getScreen().getTabPanel().remove(editor);
-               }
                if(file.isDirectory()){
                     try{
                          int res0 = JOptionPane.showConfirmDialog(Screen.getScreen(), "Do you want to delete Directory " + file.getName() + "?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
                          if(res0 != JOptionPane.YES_OPTION)
                               return;
                          Editor.deleteDir(file);
-                    }catch(Exception e){ System.err.println(e); }
+                    }
+                    catch(Exception e){ 
+                         System.err.println(e);
+                    }
                }
                else
                     Editor.deleteFile(file);
@@ -80,8 +78,6 @@ public class PopupManager {
           })
           .createItem("Refresh", null, ()->Screen.getProjectView().reload())
           .createItem("Rename", IconManager.fileImage, ()->{
-               Editor editor = Screen.getScreen().getTabPanel().findEditor(file);
-               if(editor != null) Screen.getScreen().getTabPanel().remove(editor);
                Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
                Screen.getProjectView().reload();
           });

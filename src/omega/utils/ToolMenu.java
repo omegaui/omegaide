@@ -63,12 +63,7 @@ public class ToolMenu extends JPanel {
 	public TextComp runComp;
 	public TextComp buildComp;
 	public TextComp sep1;
-	public TextComp classComp;
-	public TextComp intComp;
-	public TextComp annComp;
-	public TextComp enComp;
-	public TextComp fileComp;
-	public TextComp sep2;
+	public TextComp newFileComp;
 	public TextComp contentComp;
 	public TextComp contentModeComp;
 	public TextComp asteriskComp;
@@ -302,6 +297,7 @@ public class ToolMenu extends JPanel {
 		openFileComp.setBounds(32, 55, 30, 30);
 		openFileComp.setFont(omega.settings.Screen.PX14);
 		addComp(openFileComp);
+          
 		newProjectComp = new TextComp("", "Create New Project", c1, c2, c3, ()->projectWizard.setVisible(true)) {
 			@Override
 			public void draw(Graphics2D g) {
@@ -317,16 +313,34 @@ public class ToolMenu extends JPanel {
 		newProjectComp.setBounds(64, 55, 30, 30);
 		newProjectComp.setFont(omega.settings.Screen.PX14);
 		addComp(newProjectComp);
+
+          newFileComp = new TextComp("", "Create New File", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("Custom File")) {
+               @Override
+               public void draw(Graphics2D g) {
+                    g.setColor(color3);
+                    g.fillRoundRect(7, 7, 16, 16, 5, 5);
+                    g.setColor(color2);
+                    g.fillRect(10, 10, 3, 1);
+                    g.fillRect(14, 10, 3, 1);
+                    g.fillRect(12, 14, 3, 1);
+                    g.fillRect(16, 14, 3, 1);
+                    g.fillRect(10, 18, 3, 1);
+                    g.fillRect(14, 18, 3, 1);
+               }
+          };
+          newFileComp.setBounds(96, 55, 30, 30);
+          newFileComp.setFont(PX14);
+          addComp(newFileComp);
 		
 		sep0 = new TextComp("", c1, c3, c3, null);
-		sep0.setBounds(100, 50, 2, 40);
+		sep0.setBounds(130, 50, 2, 40);
 		addComp(sep0);
        
           runComp = new TextComp(">", "Run Project, Right Click to launch without build!", c1, c2, c3, ()->{
                if(runComp.isClickable() && buildComp.isClickable())
                     Screen.getRunView().run();
           });
-          runComp.setBounds(110, 55, 30, 30);
+          runComp.setBounds(140, 55, 30, 30);
           runComp.addMouseListener(new MouseAdapter(){
                @Override
                public void mousePressed(MouseEvent e){
@@ -353,37 +367,14 @@ public class ToolMenu extends JPanel {
 				g.fillOval(20, 5, 8, 8);
 			}
 		};
-		buildComp.setBounds(142, 55, 30, 30);
+		buildComp.setBounds(172, 55, 30, 30);
 		buildComp.setFont(omega.settings.Screen.PX18);
 		add(buildComp);
 		
 		sep1 = new TextComp("", c1, c3, c3, null);
-		sep1.setBounds(177, 50, 2, 40);
+		sep1.setBounds(210, 50, 2, 40);
 		addComp(sep1);
-		
-		classComp = new TextComp("C", "Create Class", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("class"));
-		classComp.setBounds(187, 55, 30, 30);
-		classComp.setFont(omega.settings.Screen.PX18);
-		addComp(classComp);
-		intComp = new TextComp("I", "Create Interface", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("interface"));
-		intComp.setBounds(219, 55, 30, 30);
-		intComp.setFont(omega.settings.Screen.PX18);
-		addComp(intComp);
-		annComp = new TextComp("A", "Create Annotation", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("@interface"));
-		annComp.setBounds(251, 55, 30, 30);
-		annComp.setFont(omega.settings.Screen.PX18);
-		addComp(annComp);
-		enComp = new TextComp("E", "Create Enum", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("enum"));
-		enComp.setBounds(283, 55, 30, 30);
-		enComp.setFont(omega.settings.Screen.PX18);
-		addComp(enComp);
-		fileComp = new TextComp("+", "Create Custom File", c1, c2, c3, ()->Screen.getFileView().getFileCreator().show("Custom File"));
-		fileComp.setBounds(315, 55, 30, 30);
-		fileComp.setFont(omega.settings.Screen.PX18);
-		addComp(fileComp);
-		sep2 = new TextComp("", c1, c3, c3, null);
-		sep2.setBounds(350, 50, 2, 40);
-		addComp(sep2);
+          
 		contentComp = new TextComp("", c1, c2, c3, ()->{
 			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
 			contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
@@ -401,9 +392,10 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		contentComp.setBounds(360, 55, 30, 30);
+		contentComp.setBounds(220, 55, 30, 30);
 		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 		addComp(contentComp);
+          
 		contentModeComp = new TextComp("", c1, c2, c3, ()->{
 			DataManager.setContentModeJava(!DataManager.isContentModeJava());
 			contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
@@ -421,9 +413,10 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		contentModeComp.setBounds(392, 55, 30, 30);
+		contentModeComp.setBounds(252, 55, 30, 30);
 		contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 		addComp(contentModeComp);
+          
 		asteriskComp = new TextComp("", c1, c2, c3, ()->{
 			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
 			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
@@ -441,9 +434,10 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		asteriskComp.setBounds(392 + 30, 55, 30, 30);
+		asteriskComp.setBounds(284, 55, 30, 30);
 		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		addComp(asteriskComp);
+          
 		structureComp = new TextComp("", c1, c2, c3, ()->{
 			hidden = !hidden;
 			screen.screenHasProjectView = !screen.screenHasProjectView;
@@ -465,9 +459,10 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		structureComp.setBounds(424 + 30, 55, 30, 30);
+		structureComp.setBounds(316, 55, 30, 30);
 		structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
 		addComp(structureComp);
+          
 		operateComp = new TextComp("", c1, c2, c3, ()->{
 			if(!oPHidden) {
 				screen.getOperationPanel().setVisible(false);
@@ -492,9 +487,10 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		operateComp.setBounds(456 + 30, 55, 30, 30);
+		operateComp.setBounds(348, 55, 30, 30);
 		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
 		addComp(operateComp);
+         
 		searchComp = new TextComp("", "Search and Open File", c1, c2, c3, ()->Screen.getFileView().getSearchWindow().setVisible(true)) {
 			@Override
 			public void draw(Graphics2D g) {
@@ -512,22 +508,27 @@ public class ToolMenu extends JPanel {
 		
 		sep4 = new TextComp("", c1, c3, c3, null);
 		addComp(sep4);
+      
 		structureViewComp = new TextComp("|>>", c1, c2, c3, ()->structureView.setVisible(true));
 		structureViewComp.setFont(omega.settings.Screen.PX18);
 		structureViewComp.setToolTipText("Lets see that class");
 		addComp(structureViewComp);
+        
 		sep3 = new TextComp("", c1, c3, c3, null);
-		sep3.setBounds(500 + 30, 50, 2, 40);
+		sep3.setBounds(382, 50, 2, 40);
 		addComp(sep3);
+      
 		shellComp = new TextComp(">_", "Click to open a non-root terminal inside the IDE", c1, c2, c3, ()->{
 			Screen.getTerminalComp().showTerminal(true);
 		});
 		shellComp.setFont(omega.settings.Screen.PX16);
-		shellComp.setBounds(510 + 30, 55, 60, 30);
+		shellComp.setBounds(392, 55, 60, 30);
 		add(shellComp);
+          
 		sep5 = new TextComp("", c1, c3, c3, null);
-		sep5.setBounds(580 + 30, 50, 2, 40);
+		sep5.setBounds(457, 50, 2, 40);
 		addComp(sep5);
+      
 		Color l1 = c3;
 		Color l2 = c1;
 		Color l3 = c2;
@@ -543,14 +544,16 @@ public class ToolMenu extends JPanel {
 			Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
 		});
 		themeComp.setFont(omega.settings.Screen.PX16);
-		themeComp.setBounds(600 + 30, 55, 60, 30);
+		themeComp.setBounds(472, 55, 60, 30);
 		add(themeComp);
 		
 		reshapeComp();
 	}
+     
 	public void minimize(){
 		screen.setState(Screen.ICONIFIED);
 	}
+     
 	public void maximize(){
 		Dimension SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 		if(maximized){
