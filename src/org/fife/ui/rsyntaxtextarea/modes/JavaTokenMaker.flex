@@ -325,6 +325,8 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 	"default" |
      "record" |
      "permits" |
+	 "sealed" |
+	 "yield" |
      "var" |
 	"do"	 |
 	"else"	 |
