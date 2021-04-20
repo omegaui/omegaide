@@ -1,4 +1,5 @@
 package omega.tabPane;
+import omega.tree.*;
 import omega.popup.OPopupWindow;
 import java.io.File;
 import omega.Screen;
@@ -28,6 +29,7 @@ public class CloseButton extends JComponent {
 	public CloseButton() {
 		setFocusable(false);
 		UIManager.setData(this);
+          setForeground(UIManager.TOOLMENU_COLOR1);
 		final Color fore = getForeground();
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -95,7 +97,8 @@ public class CloseButton extends JComponent {
 		closeButton.setFont(new Font("Ubuntu", Font.BOLD, 14));
 
 		JTextArea textField = new JTextArea(!toolTip.startsWith("src") ? ("{" + name + "}") : name);
-		UIManager.setData(textField);
+		textField.setForeground(Branch.getColor(name));
+          textField.setBackground(UIManager.c2);
 		final Color FORE = textField.getForeground();
 		final MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override
@@ -121,8 +124,10 @@ public class CloseButton extends JComponent {
           TextComp iconButton = null;
           if(UIManager.isDarkMode())
                iconButton = new TextComp(baseName, UIManager.c1, UIManager.c2, UIManager.c3, ()->{});
-          else
-               iconButton = new TextComp(baseName, UIManager.c2, UIManager.c1, UIManager.c3, ()->{});
+          else {
+               Color alpha = new Color(FORE.getRed(), FORE.getGreen(), FORE.getBlue(), 40);
+               iconButton = new TextComp(baseName, textField.getBackground(), alpha, FORE, ()->{});
+          }
 		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 25) : 20, 16));
 		iconButton.setFont(omega.settings.Screen.PX16);
 		

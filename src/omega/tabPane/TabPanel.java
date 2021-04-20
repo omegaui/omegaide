@@ -55,11 +55,11 @@ public class TabPanel extends JPanel{
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(omega.utils.UIManager.c3);
+          g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
           g.fillOval(7, 7, 16, 16);
           g.setColor(omega.utils.UIManager.c2);
           g.fillOval(10, 10, 10, 10);
-          g.setColor(omega.utils.UIManager.c1);
+          g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3_SHADE);
           g.fillOval(10, 10, 10, 10);
           g.dispose();
 	}
@@ -222,7 +222,6 @@ public class TabPanel extends JPanel{
           this.removeAction = removeAction;
      }
      
-
      @Override
      public void paint(Graphics graphics){
           if(tabPane.getTabCount() == 0){
@@ -232,11 +231,12 @@ public class TabPanel extends JPanel{
                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                g.setColor(omega.utils.UIManager.c2);
                g.fillRect(0, 0, getWidth(), getHeight());
-               g.setColor(omega.utils.UIManager.c3);
+               g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
                g.setFont(omega.settings.Screen.PX28);
                FontMetrics f = g.getFontMetrics();
                String hint = screen.getToolMenu().hidden ? HINT1 : HINT;
                g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
+               g.setColor(omega.utils.UIManager.TOOLMENU_COLOR1);
                g.drawString(hint, getWidth()/2 - f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());
                if(hint.equals(HINT1)){
                     g.drawImage(image, getWidth()/2 + f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 - 13 + f.getAscent() - f.getDescent() + f.getHeight(), null);

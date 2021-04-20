@@ -40,6 +40,8 @@ import javax.swing.text.JTextComponent;
 
 import org.fife.ui.rtextarea.RTextArea;
 
+import static omega.utils.UIManager.*;
+
 public class ProjectWizard extends JDialog{
 	private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 18);
      private TextComp rootBtn;
@@ -62,11 +64,11 @@ public class ProjectWizard extends JDialog{
 		JTextField projectNameField = new JTextField();
 		addHoverEffect(projectNameField, "Enter Project Name (do not include \'" + File.separator + "\')");
 		projectNameField.setBounds(0, 0, getWidth() - 40, 40);
-          projectNameField.setBackground(omega.utils.UIManager.c2);
-          projectNameField.setForeground(omega.utils.UIManager.c3);
+          projectNameField.setBackground(c2);
+          projectNameField.setForeground(TOOLMENU_COLOR1);
 		add(projectNameField);
 
-		rootBtn = new TextComp(":", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{});
+		rootBtn = new TextComp(":", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{});
 		rootBtn.setBounds(projectNameField.getWidth(), 0, 40, 40);
 		rootBtn.setToolTipText("Choose Project Parent Folder e.g: user.home/Documents/Omega Projects");
           rootBtn.setRunnable(()->{
@@ -84,11 +86,11 @@ public class ProjectWizard extends JDialog{
 		JTextField jdkPath = new JTextField("Choose Java SE Environment");
 		jdkPath.setBounds(0, projectNameField.getHeight(), projectNameField.getWidth(), 40);
 		jdkPath.setEditable(false);
-          jdkPath.setBackground(omega.utils.UIManager.c2);
-          jdkPath.setForeground(omega.utils.UIManager.c3);
+          jdkPath.setBackground(c2);
+          jdkPath.setForeground(TOOLMENU_COLOR1);
 		add(jdkPath);
 
-		TextComp javaRoot = new TextComp(":", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{
+		TextComp javaRoot = new TextComp(":", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{
                String javaPath = DataManager.getPathToJava();
                if(javaPath == null || javaPath.equals("")) {
                     fileC.setDialogTitle("Select the folder containing the jdks");
@@ -109,7 +111,7 @@ public class ProjectWizard extends JDialog{
           javaRoot.setArc(0, 0);
 		add(javaRoot);
 
-		TextComp packLabel = new TextComp("Source Files", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{});
+		TextComp packLabel = new TextComp("Source Files", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{});
 		packLabel.setBounds(0, jdkPath.getY() + jdkPath.getHeight(), getWidth(), 30);
 		packLabel.setClickable(false);
           packLabel.setArc(0, 0);
@@ -121,15 +123,15 @@ public class ProjectWizard extends JDialog{
 		JTextArea packArea = new JTextArea();
 		addHoverEffect(packArea, "type a source name with"+"\n"+"package (according to the java conventions) "+"\n"+"e.g: package.MySourceFile -type"+"\n"+"separated by new line "+"\n"+"\n\nanima.Animation -@interface"+"\n"+"omega.Screen -class");
 		setData(packArea);
-          packArea.setBackground(omega.utils.UIManager.c2);
-          packArea.setForeground(omega.utils.UIManager.c3);
+          packArea.setBackground(c2);
+          packArea.setForeground(TOOLMENU_COLOR3);
 
 		memberPanel.add(new JScrollPane(packArea), BorderLayout.CENTER);
 		add(memberPanel);
 
 		//Dependency Panel
 
-		TextComp addDepenLabel = new TextComp("Dependencies and Resources Roots", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{});
+		TextComp addDepenLabel = new TextComp("Dependencies and Resources Roots", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{});
 		addDepenLabel.setBounds(0, memberPanel.getY() + memberPanel.getHeight(), getWidth() - 60, 30);
 		addDepenLabel.setClickable(false);
           addDepenLabel.setArc(0, 0);
@@ -140,8 +142,8 @@ public class ProjectWizard extends JDialog{
 		depenPanel.setBounds(0, addDepenLabel.getY() + addDepenLabel.getHeight(), getWidth(), 200);
 		RTextArea depenArea = new RTextArea();
 		setData(depenArea);
-          depenArea.setBackground(omega.utils.UIManager.c2);
-          depenArea.setForeground(omega.utils.UIManager.c3);
+          depenArea.setBackground(c2);
+          depenArea.setForeground(TOOLMENU_COLOR3);
           depenArea.setCurrentLineHighlightColor(omega.utils.UIManager.isDarkMode() ? new Color(133, 46, 196) : new Color(0, 0, 255, 20));
 		depenArea.setEditable(false);
 		depenPanel.add(new JScrollPane(depenArea), BorderLayout.CENTER);
@@ -230,7 +232,7 @@ public class ProjectWizard extends JDialog{
 				text = text.substring(0, text.length() - 1);
 			depenArea.setText(text);
 		});
-		TextComp addRootBtn = new TextComp("+", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{});
+		TextComp addRootBtn = new TextComp("+", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{});
 		addRootBtn.setBounds(getWidth() - 60, addDepenLabel.getY(), 30, 30);
 		addRootBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -243,7 +245,7 @@ public class ProjectWizard extends JDialog{
           addRootBtn.setArc(0, 0);
 		add(addRootBtn);
 
-		TextComp remRootBtn = new TextComp("-", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{
+		TextComp remRootBtn = new TextComp("-", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{
 	          int n = depenArea.getCaretLineNumber();
                String text = depenArea.getText();
                StringTokenizer tokenizer = new StringTokenizer(text, "\n");
@@ -267,13 +269,13 @@ public class ProjectWizard extends JDialog{
           remRootBtn.setArc(0, 0);
 		add(remRootBtn);
 
-		Comp cancelBtn = new Comp("Cancel", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->setVisible(false));
+		Comp cancelBtn = new Comp("Cancel", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->setVisible(false));
 		cancelBtn.setBounds(0, getHeight() - 60, getWidth()/2, 60);
           cancelBtn.setArc(0, 0);
 		setData(cancelBtn);
 		add(cancelBtn);
 
-		Comp createBtn = new Comp("Create", omega.utils.UIManager.c1, omega.utils.UIManager.c3, omega.utils.UIManager.c2, ()->{
+		Comp createBtn = new Comp("Create", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, ()->{
                setVisible(false);
                String proRoot = projectNameField.getText();
                String proRootX = rootBtn.getToolTipText();

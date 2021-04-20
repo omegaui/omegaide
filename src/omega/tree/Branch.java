@@ -14,7 +14,6 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 public class Branch extends JComponent{
@@ -22,7 +21,7 @@ public class Branch extends JComponent{
 	private String name;
 	private String type = "?";
 	private OPopupWindow popupMenu;
-     private BufferedImage icon;
+	private BufferedImage icon;
 	public volatile boolean enter;
 	private boolean expand;
 	private Locale l;
@@ -30,26 +29,26 @@ public class Branch extends JComponent{
 	private static final Font FONT_BOLD = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 40;
-     public static final Color ANY_COLOR = omega.utils.UIManager.c3;
-     public static final Color SOURCE_COLOR = ANY_COLOR;
+	public static final Color ANY_COLOR = omega.utils.UIManager.TOOLMENU_COLOR2;
+	public static final Color SOURCE_COLOR = ANY_COLOR;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 160);
 	public static final Color IMAGE_COLOR = new Color(50, 150, 50, 160);
 	public static final Color LINUX_COLOR = new Color(250, 50, 50, 160);
 	public static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
-	public static final Color WEB_COLOR = new Color(255, 200, 0, 160);
+	public static final Color WEB_COLOR = omega.utils.UIManager.TOOLMENU_COLOR3;
 	public static final Color XML_COLOR = LINUX_COLOR;
 	public static final Color ARCHIVE_COLOR = ANY_COLOR;
-  
+	
 	public interface Locale {
 		void locate(Branch b);
 	}
-     
+	
 	public Branch(File file, Locale l){
 		this.file = file;
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
-          this.icon = expand ? IconManager.projectImage : IconManager.fileImage;
+		this.icon = expand ? IconManager.projectImage : IconManager.fileImage;
 		setFont(FONT);
 		if(expand){
 			type = "";
@@ -62,9 +61,9 @@ public class Branch extends JComponent{
 			setForeground(ANY_COLOR);
 			setFont(FONT_BOLD);
 			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
-			   || file.getName().endsWith(".groovy")) {
+			|| file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
-                         type = "SourceCode";
+				type = "SourceCode";
 			}
 			else if(file.getName().endsWith(".class")){
 				setForeground(BYTE_COLOR);
@@ -73,25 +72,25 @@ public class Branch extends JComponent{
 			else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
 				type = "Windows";
 			}
-               else if(file.getName().endsWith(".dmg")){
-                    type = "Mac";
-               }
-               else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
-                    type = "Native Lib";
-               }
+			else if(file.getName().endsWith(".dmg")){
+				type = "Mac";
+			}
+			else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
+				type = "Native Lib";
+			}
 			else if(file.getName().endsWith(".deb") || file.getName().endsWith(".run")
-					|| file.getName().endsWith(".sh")){
+			|| file.getName().endsWith(".sh")){
 				setForeground(LINUX_COLOR);
 				type = "Linux";
 			}
 			else if(file.getName().endsWith(".dependencies") || file.getName().endsWith(".sources")
-					|| file.getName().endsWith(".natives") || file.getName().endsWith(".resources")
-					|| file.getName().endsWith(".projectInfo") || file.getName().endsWith(".modules")
-					|| file.getName().endsWith(".snippets") || file.getName().endsWith(".args")){
+			|| file.getName().endsWith(".natives") || file.getName().endsWith(".resources")
+			|| file.getName().endsWith(".projectInfo") || file.getName().endsWith(".modules")
+			|| file.getName().endsWith(".snippets") || file.getName().endsWith(".args")){
 				type = "IDE";
 			}
-               else if(file.getName().startsWith("."))
-                    type = "File";
+			else if(file.getName().startsWith("."))
+				type = "File";
 			else if(file.getName().endsWith(".js") || file.getName().endsWith(".html")){
 				setForeground(WEB_COLOR);
 				type = "Web";
@@ -104,15 +103,15 @@ public class Branch extends JComponent{
 				type = "Text";
 			}
 			else if(file.getName().endsWith(".png") || file.getName().endsWith(".jpg")
-					|| file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")
-					|| file.getName().endsWith(".jp2") || file.getName().endsWith(".bmp")
-					|| file.getName().endsWith(".ico") || file.getName().endsWith(".svg")){
+			|| file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")
+			|| file.getName().endsWith(".jp2") || file.getName().endsWith(".bmp")
+			|| file.getName().endsWith(".ico") || file.getName().endsWith(".svg")){
 				setForeground(IMAGE_COLOR);
 				type = "Image";
 			}
 			else if(file.getName().endsWith(".zip") || file.getName().endsWith(".7z") ||
-					file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz")
-					|| file.getName().endsWith(".jar")){
+			file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz")
+			|| file.getName().endsWith(".jar")){
 				setForeground(ARCHIVE_COLOR);
 				type = "Archive";
 			}
@@ -135,16 +134,15 @@ public class Branch extends JComponent{
 					l.locate(Branch.this);
 				else if(e.getButton() == 3) {
 					popupMenu.setLocation(e.getLocationOnScreen());
-                         popupMenu.setVisible(true);
+					popupMenu.setVisible(true);
 				}
 			}
 		});
 	}
-
 	public void force() {
 		l.locate(this);
 	}
-     
+	
 	public void set(boolean v){
 		this.enter = v;
 		if(!expand){
@@ -154,7 +152,6 @@ public class Branch extends JComponent{
 		}
 		repaint();
 	}
-
 	@Override
 	public void paint(Graphics graphics){
 		super.paint(graphics);
@@ -177,5 +174,61 @@ public class Branch extends JComponent{
 		if(enter){
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + FONT.getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
 		}
+	}
+	public static Color getColor(String fileName){
+          Color res = ANY_COLOR;
+          if(!fileName.contains("."))
+               return res;
+          File file = new File(fileName);
+		if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
+		|| file.getName().endsWith(".groovy")) {
+			res = SOURCE_COLOR;
+		}
+		else if(file.getName().endsWith(".class")){
+			res = BYTE_COLOR;
+		}
+		else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
+               res = UIManager.TOOLMENU_COLOR1;
+		}
+		else if(file.getName().endsWith(".dmg")){
+               res = UIManager.TOOLMENU_COLOR1;
+		}
+		else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
+               res = UIManager.TOOLMENU_COLOR2;
+		}
+		else if(file.getName().endsWith(".deb") || file.getName().endsWith(".run")
+		|| file.getName().endsWith(".sh")){
+			res = LINUX_COLOR;
+		}
+		else if(file.getName().endsWith(".dependencies") || file.getName().endsWith(".sources")
+		|| file.getName().endsWith(".natives") || file.getName().endsWith(".resources")
+		|| file.getName().endsWith(".projectInfo") || file.getName().endsWith(".modules")
+		|| file.getName().endsWith(".snippets") || file.getName().endsWith(".args")){
+               res = UIManager.TOOLMENU_COLOR1;
+		}
+		else if(file.getName().startsWith(".")){
+               res = UIManager.TOOLMENU_COLOR4;
+		}
+		else if(file.getName().endsWith(".js") || file.getName().endsWith(".html")){
+			res = WEB_COLOR;
+		}
+		else if(file.getName().endsWith(".xml") || file.getName().endsWith(".fxml")){
+			res = XML_COLOR;
+		}
+		else if(file.getName().endsWith(".txt")){
+               res = UIManager.TOOLMENU_COLOR3;
+		}
+		else if(file.getName().endsWith(".png") || file.getName().endsWith(".jpg")
+		|| file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")
+		|| file.getName().endsWith(".jp2") || file.getName().endsWith(".bmp")
+		|| file.getName().endsWith(".ico") || file.getName().endsWith(".svg")){
+			res = IMAGE_COLOR;
+		}
+		else if(file.getName().endsWith(".zip") || file.getName().endsWith(".7z") ||
+		file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz")
+		|| file.getName().endsWith(".jar")){
+			res = ARCHIVE_COLOR;
+		}
+          return res;
 	}
 }

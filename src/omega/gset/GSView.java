@@ -43,14 +43,13 @@ public class GSView extends JDialog{
           panel.setBackground(c2);
           add(scrollPane);
           
-          
-     	TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+     	TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(0, 0, 30, 30);
           closeComp.setFont(omega.settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp titleComp = new TextComp("Generate Getters/Setters", c1, c2, c3, ()->{});
+          TextComp titleComp = new TextComp("Generate Getters/Setters", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
           titleComp.setBounds(30, 0, getWidth() - 30, 30);
           titleComp.setFont(omega.settings.Screen.PX18);
           titleComp.setClickable(false);
@@ -70,7 +69,7 @@ public class GSView extends JDialog{
           titleComp.setArc(0, 0);
           add(titleComp);
 
-          accessComp = new TextComp("Use Access : public", c1, c2, c3, ()->{});
+          accessComp = new TextComp("Use Access : public", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
           accessComp.setBounds(0, getHeight() - 30, 300, 30);
           accessComp.setRunnable(()->{
                switch(accessComp.getText()){
@@ -84,7 +83,7 @@ public class GSView extends JDialog{
           accessComp.setArc(0, 0);
           add(accessComp);
 
-          gsComp = new TextComp("Getter&Setter", c1, c2, c3, ()->{});
+          gsComp = new TextComp("Getter&Setter", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
           gsComp.setBounds(300, getHeight() - 30, 200, 30);
           gsComp.setRunnable(()->{
                switch(gsComp.getText()){
@@ -97,7 +96,7 @@ public class GSView extends JDialog{
           gsComp.setArc(0, 0);
           add(gsComp);
 
-          TextComp genComp = new TextComp("Generate", c1, c2, c3, this::generate);
+          TextComp genComp = new TextComp("Generate", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::generate);
           genComp.setBounds(500, getHeight() - 30, getWidth() - 500, 30);
           genComp.setFont(omega.settings.Screen.PX16);
           genComp.setArc(0, 0);
@@ -107,7 +106,7 @@ public class GSView extends JDialog{
      public void generate(){
      	LinkedList<DataMember> selections = new LinkedList<>();
           comps.forEach(c->{
-               if(c.color2 == omega.utils.UIManager.c3)
+               if(c.color2 == TOOLMENU_COLOR3)
                     selections.add(members.get(comps.indexOf(c)));
           });
           String access = accessComp.getText().substring(accessComp.getText().indexOf(':') + 1);
@@ -141,7 +140,7 @@ public class GSView extends JDialog{
                int y = 0;
                for(DataMember d : reader.dataMembers){
                     if(d.parameters == null){
-                         TextComp textComp = new TextComp(d.name, c1, c2, c3, ()->{});
+                         TextComp textComp = new TextComp(d.name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
                          textComp.setRunnable(()->{
                               textComp.setColors(textComp.color1, textComp.color3, textComp.color2);
                          });

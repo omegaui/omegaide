@@ -41,13 +41,13 @@ public class OverView extends JDialog{
           panel.setBackground(c2);
           add(scrollPane);
           
-          TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(0, 0, 30, 30);
           closeComp.setFont(omega.settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp titleComp = new TextComp("Override/Implement Methods", c1, c2, c3, ()->{});
+          TextComp titleComp = new TextComp("Override/Implement Methods", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
           titleComp.setBounds(30, 0, getWidth() - 30, 30);
           titleComp.setFont(omega.settings.Screen.PX18);
           titleComp.setClickable(false);
@@ -67,7 +67,7 @@ public class OverView extends JDialog{
           titleComp.setArc(0, 0);
           add(titleComp);
 
-          TextComp genComp = new TextComp("Implement", c1, c2, c3, this::generate);
+          TextComp genComp = new TextComp("Implement", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::generate);
           genComp.setBounds(0, getHeight() - 30, getWidth(), 30);
           genComp.setFont(omega.settings.Screen.PX16);
           genComp.setArc(0, 0);
@@ -77,7 +77,7 @@ public class OverView extends JDialog{
      public void generate(){
           LinkedList<DataMember> selections = new LinkedList<>();
           comps.forEach(c->{
-               if(c.color2 == c3)
+               if(c.color2 == TOOLMENU_COLOR3)
                     selections.add(members.get(comps.indexOf(c)));
           });
           selections.forEach(d->Generator.implement(d, textArea));
@@ -125,7 +125,7 @@ public class OverView extends JDialog{
                }
                int y = 0;
                for(ByteReader b : brs){
-                    TextComp txComp = new TextComp(b.className, c1, c2, c3, ()->{});
+                    TextComp txComp = new TextComp(b.className, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
                     txComp.setBounds(0, y, getWidth(), 30);
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);
@@ -138,7 +138,7 @@ public class OverView extends JDialog{
                          if(d.parameters != null && !Generator.isMemberOfObject(d)){
                               String rep = d.getRepresentableValue();
                               if(rep == null) continue;
-                              TextComp textComp = new TextComp(rep, c1, c2, c3, ()->{});
+                              TextComp textComp = new TextComp(rep, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
                               textComp.setRunnable(()->{
                                    textComp.setColors(textComp.color1, textComp.color3, textComp.color2);
                               });
@@ -154,7 +154,7 @@ public class OverView extends JDialog{
                     }
                }
                for(SourceReader s : srs){
-                    TextComp txComp = new TextComp(s.className, c1, c2, c3, ()->{});
+                    TextComp txComp = new TextComp(s.className, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
                     txComp.setBounds(0, y, getWidth(), 30);
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);

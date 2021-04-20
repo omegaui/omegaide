@@ -31,7 +31,7 @@ public class BuildPanel extends JPanel{
                g.setFont(PX14);
 			g.setColor(c2);
 			g.fillRect(0, 0, getWidth(), getHeight());
-			g.setColor(c3);
+			g.setColor(TOOLMENU_COLOR4);
 			g.drawString(hint, getWidth()/2 - g.getFontMetrics().stringWidth(hint)/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		}
 		else{

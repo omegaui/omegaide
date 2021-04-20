@@ -29,10 +29,10 @@ public class SideMenu extends JPanel {
      }
 
      public void init(){
-          sep = new TextComp("", c1, c3, c3, null);
+          sep = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
           add(sep);
           
-     	projectTabComp = new TextComp("", c1, c2, c3, ()->Screen.getScreen().getToolMenu().structureComp.runnable.run()){
+     	projectTabComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureComp.runnable.run()){
                @Override
                public void draw(Graphics2D g) {
                     g.setColor(color3);
@@ -45,19 +45,19 @@ public class SideMenu extends JPanel {
           projectTabComp.setArc(2, 2);
           add(projectTabComp);
 
-          shellComp = new TextComp(">_", c1, c2, c3, ()->Screen.getTerminalComp().showTerminal(true));
+          shellComp = new TextComp(">_", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getTerminalComp().showTerminal(true));
           shellComp.setBounds(0, 40, 40, 40);
           shellComp.setFont(PX18);
           shellComp.setArc(2, 2);
           add(shellComp);
 
-          structureComp = new TextComp("|>>", c1, c2, c3, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
+          structureComp = new TextComp("|>>", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
           structureComp.setBounds(0, 80, 40, 40);
           structureComp.setFont(PX18);
           structureComp.setArc(2, 2);
           add(structureComp);
 
-          searchComp = new TextComp("", c1, c2, c3, ()->Screen.getFileView().getSearchWindow().setVisible(true)){
+          searchComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true)){
                @Override
                public void draw(Graphics2D g) {
                     g.setColor(color3);

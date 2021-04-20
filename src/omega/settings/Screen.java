@@ -88,8 +88,8 @@ public class Screen extends JDialog {
 		//Project Components
 		JFileChooser fileChooser = new JFileChooser();
 		SDKSelector sdkSelector = new SDKSelector(omega.Screen.getScreen());
-
-		projectComp = new Comp("Project Specific Settings", c1, c2, c3, ()->{});
+          
+		projectComp = new Comp("Project Specific Settings", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		projectComp.setBounds(0, 0, getWidth(), 50);
 		projectComp.setFont(PX18);
 		projectComp.setClickable(false);
@@ -98,7 +98,7 @@ public class Screen extends JDialog {
 		add(projectComp);
 		projectComps.add(projectComp);
 
-		jdkComp = new Comp("Select a Java SE Environment", c1, c2, c3, ()->{
+		jdkComp = new Comp("Select a Java SE Environment", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			sdkSelector.setVisible(true);
 			String sel = sdkSelector.getSelection();
 			if(sel != null) {
@@ -113,7 +113,7 @@ public class Screen extends JDialog {
 		add(jdkComp);
 		projectComps.add(jdkComp);
 
-		classPathComp = new Comp("Manage ClassPath", c1, c2, c3, ()->{
+		classPathComp = new Comp("Manage ClassPath", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			omega.Screen.getFileView().getDependencyView().setVisible(true);
 		});
 		classPathComp.setBounds(0, 90, getWidth(), 50);
@@ -121,7 +121,7 @@ public class Screen extends JDialog {
 		add(classPathComp);
 		projectComps.add(classPathComp);
 
-		modulePathComp = new Comp("Manage ModulePath", c1, c2, c3, ()->{
+		modulePathComp = new Comp("Manage ModulePath", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
                omega.Screen.getFileView().getDependencyView().setVisible(true);
                omega.Screen.getFileView().getDependencyView().setView(3);
 		});
@@ -130,7 +130,7 @@ public class Screen extends JDialog {
 		add(modulePathComp);
 		projectComps.add(modulePathComp);
 
-		compileComp = new TextComp("Compile Time", c1, c2, c3, ()->{});
+		compileComp = new TextComp("Compile Time", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		compileComp.setClickable(false);
 		compileComp.setBounds(0, 190, 100, 40);
 		compileComp.setFont(PX14);
@@ -146,7 +146,7 @@ public class Screen extends JDialog {
 		add(compileTimeField);
 		projectComps.add(compileTimeField);
 
-		runComp = new TextComp("Run Time", c1, c2, c3, ()->{});
+		runComp = new TextComp("Run Time", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		runComp.setClickable(false);
 		runComp.setBounds(0, 230, 100, 40);
 		runComp.setFont(PX14);
@@ -163,7 +163,7 @@ public class Screen extends JDialog {
 		projectComps.add(runTimeField);
 
 		//IDE Components
-		ideComp = new Comp("Universal Settings", c1, c2, c3, ()->{});
+		ideComp = new Comp("Universal Settings", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		ideComp.setBounds(0, 0, getWidth(), 50);
 		ideComp.setFont(PX18);
 		ideComp.setClickable(false);
@@ -172,7 +172,7 @@ public class Screen extends JDialog {
 		add(ideComp);
 		ideComps.add(ideComp);
 
-		javaComp = new Comp("Select Folder Containing the Java SE(s)", c1, c2, c3, ()->{
+		javaComp = new Comp("Select Folder Containing the Java SE(s)", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			fileChooser.setMultiSelectionEnabled(false);
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fileChooser.setDialogTitle("Choose Path to the folder contaning the jdks");
@@ -191,7 +191,7 @@ public class Screen extends JDialog {
 		add(javaComp);
 		ideComps.add(javaComp);
 
-		suggestionComp = new Comp("", c1, c2, c3, ()->{});
+		suggestionComp = new Comp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 		suggestionComp.setBounds(0, 90, getWidth(), 50);
 		suggestionComp.setFont(PX16);
 		suggestionComp.createToggle(DataManager.isContentAssistRealTime(), "Content Assist is Real-Time", "Content Assist is Stopped",
@@ -201,7 +201,7 @@ public class Screen extends JDialog {
 		add(suggestionComp);
 		ideComps.add(suggestionComp);
 
-		asteriskComp = new Comp("", c1, c2, c3, ()->{});
+		asteriskComp = new Comp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 		asteriskComp.setBounds(0, 140, getWidth(), 50);
 		asteriskComp.setFont(PX16);
 		asteriskComp.createToggle(DataManager.isUsingStarImports(), "Using asterisk imports(import package.*)", "Using named Imports(import package.ClassName)", 
@@ -212,7 +212,7 @@ public class Screen extends JDialog {
 		ideComps.add(asteriskComp);
 
 		JFontChooser fontC = new JFontChooser();
-		fontComp = new Comp("Change Editor Font\'s Name and Size", c1, c2, c3, ()->{
+		fontComp = new Comp("Change Editor Font\'s Name and Size", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			UIManager.setData(fontC);
 			fontC.setSelectedFontStyle(Font.BOLD);
 			fontC.setSelectedFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
@@ -229,7 +229,7 @@ public class Screen extends JDialog {
 		add(fontComp);
 		ideComps.add(fontComp);
 
-		whatsNewComp = new Comp("Whats New in Omega IDE " + omega.Screen.VERSION, c1, c2, c3, ()->{
+		whatsNewComp = new Comp("Whats New in Omega IDE " + omega.Screen.VERSION, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			omega.utils.ToolMenu.infoScreen.setVisible(true);
 		});
 		whatsNewComp.setBounds(0, 230, getWidth(), 40);
@@ -237,12 +237,12 @@ public class Screen extends JDialog {
 		add(whatsNewComp);
 		ideComps.add(whatsNewComp);
 
-		closeComp = new Comp("Close", c1, c2, c3, ()->setVisible(false));
+		closeComp = new Comp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
 		closeComp.setFont(PX18);
 		closeComp.setBounds(0, 270, getWidth()/2, 40);
 		add(closeComp);
 
-		applyComp = new Comp("Apply", c1, c2, c3, this::apply);
+		applyComp = new Comp("Apply", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::apply);
 		applyComp.setFont(PX18);
 		applyComp.setBounds(getWidth()/2, 270, getWidth()/2, 40);
 		add(applyComp);

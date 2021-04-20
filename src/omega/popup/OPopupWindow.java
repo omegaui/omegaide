@@ -26,7 +26,7 @@ public class OPopupWindow extends JDialog{
           setUndecorated(true);
           setLayout(scrollable ? new BorderLayout() : null);
           setBackground(omega.utils.UIManager.c2);
-          setForeground(omega.utils.UIManager.c3);
+          setForeground(omega.utils.UIManager.TOOLMENU_COLOR1);
           setType(JWindow.Type.POPUP);
           addFocusListener(new FocusAdapter(){
                @Override
@@ -37,7 +37,7 @@ public class OPopupWindow extends JDialog{
           if(scrollable) {
                panel = new JPanel(null);
                panel.setBackground(omega.utils.UIManager.c2);
-               panel.setForeground(omega.utils.UIManager.c3);
+               panel.setForeground(omega.utils.UIManager.TOOLMENU_COLOR1);
                super.add(scrollPane = new JScrollPane(panel), BorderLayout.CENTER);
           }
      }
@@ -75,6 +75,14 @@ public class OPopupWindow extends JDialog{
           items.add(item);
           add(item);
      	return this;
+     }
+
+     public OPopupItem getItem(String name){
+          for(OPopupItem item : items){
+               if(item.getName().equals(name))
+                    return item;
+          }
+     	return null;
      }
 
      public OPopupWindow width(int width){

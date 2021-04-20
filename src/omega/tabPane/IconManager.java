@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import static omega.utils.UIManager.*;
 public class IconManager {
      public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage projectImage = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
@@ -53,7 +54,7 @@ public class IconManager {
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR4);
           g.fillRoundRect(0, 0, 16, 16, 5, 5);
           g.setColor(getForeground());
           g.setFont(omega.settings.Screen.PX16);
@@ -64,11 +65,11 @@ public class IconManager {
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR4);
           g.fillRoundRect(0, 0, 16, 16, 5, 5);
           g.setColor(getForeground());
           g.fillOval(4, 4, 8, 8);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR4);
           g.fillOval(6, 6, 6, 6);
      }
      
@@ -76,7 +77,7 @@ public class IconManager {
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR3);
           g.fillRoundRect(0, 0, 16, 16, 5, 5);
           g.setColor(getForeground());
           g.fillOval(2, 2, 12, 12);
@@ -86,7 +87,7 @@ public class IconManager {
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR3);
           g.fillRoundRect(0, 0, 16, 16, 5, 5);
           g.fillOval(2, 2, 12, 12);
           g.setColor(getForeground());
@@ -97,7 +98,7 @@ public class IconManager {
      	Graphics2D g = (Graphics2D)graphics;
      	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
      	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR2);
           g.fillRoundRect(0, 0, 16, 16, 5, 5);
           g.setColor(getForeground());
           g.drawLine(4, 4, 12, 12);
@@ -108,13 +109,13 @@ public class IconManager {
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR2);
           g.fillRoundRect(0, 0, 30, 30, 5, 5);
           g.setColor(getForeground());
           g.fillOval(12, 5, 14, 14);
           g.drawLine(13, 15, 5, 24);
           g.drawLine(13, 16, 5, 25);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR2);
           g.fillOval(20, 5, 8, 8);
      }
 
@@ -122,7 +123,7 @@ public class IconManager {
      	Graphics2D g = (Graphics2D)graphics;
      	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
      	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR1);
           g.fillRoundRect(0, 0, 16, 16, 6, 6);
           g.setColor(getForeground());
           g.fillRect(4, 4, 2, 1);
@@ -137,7 +138,7 @@ public class IconManager {
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-     	g.setColor(getBackground());
+     	g.setColor(TOOLMENU_COLOR1);
           g.fillRoundRect(2, 5, 21, 18, 5, 5);
           g.drawRect(2, 1, 13, 4);
           g.drawRect(2, 2, 13, 1);
@@ -150,7 +151,7 @@ public class IconManager {
      	Graphics2D g = (Graphics2D)graphics;
      	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
      	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(getBackground());
+          g.setColor(TOOLMENU_COLOR1);
           g.fillRoundRect(0, 0, 16, 16, 6, 6);
           g.setColor(getForeground());
           g.fillRect(8, 2, 1, 11);

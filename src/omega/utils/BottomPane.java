@@ -26,7 +26,7 @@ public class BottomPane extends JPanel{
 		init();
 	}
 	public void init(){
-		messageComp = new TextComp("Status of any process running will appear here!", c1, c3, c2, null);
+		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, null);
 		messageComp.setFont(PX14);
 		messageComp.alignX = 15;
 		messageComp.setPreferredSize(new Dimension(100, 25));
@@ -40,7 +40,7 @@ public class BottomPane extends JPanel{
 		});
 		add(messageComp);
 
-          jumpField = new RTextField("Goto Line", "", c1, c2, c3);
+          jumpField = new RTextField("Goto Line", "", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2);
           jumpField.setFont(PX14);
           jumpField.setArc(0, 0);
           jumpField.addActionListener((e)->{
@@ -67,7 +67,7 @@ public class BottomPane extends JPanel{
           });
           add(jumpField);
 
-          themeComp = new TextComp(DataManager.getTheme(), "Switching Theme Requires IDE\'s Restart", c1, c3, c2, null);
+          themeComp = new TextComp(DataManager.getTheme(), "Switching Theme Requires IDE\'s Restart", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, null);
           themeComp.setRunnable(()->{
                Screen.pickTheme(DataManager.getTheme());
                themeComp.setText(DataManager.getTheme());

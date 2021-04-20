@@ -27,6 +27,8 @@ import javax.swing.JTextField;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
+
+import static omega.utils.UIManager.*;
 public class SnippetView extends JDialog {
 	private static final Font FONT = new Font("Ubuntu Mono", Font.BOLD, 16);
 	private RSyntaxTextArea textArea;
@@ -71,7 +73,7 @@ public class SnippetView extends JDialog {
 		textField.setToolTipText("Enter Snippet Name with alphabets, numbers and symbols(except \';\') without whitespaces");
 		add(textField);
 
-		TextComp add = new TextComp("+", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
+		TextComp add = new TextComp("+", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
                if(textField.getText().contains(" ") || textField.getText().equals("")) {
                     textField.setText("See Tooltip for Naming the Snippets");
                     return;
@@ -85,7 +87,7 @@ public class SnippetView extends JDialog {
           add.setArc(0, 0);
 		add(add);
 
-		TextComp rem = new TextComp("-", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
+		TextComp rem = new TextComp("-", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
                SnippetBase.remove(textField.getText());
                loadDoors();
                textField.setText("");
@@ -97,7 +99,7 @@ public class SnippetView extends JDialog {
           rem.setArc(0, 0);
 		add(rem);
 
-		TextComp close = new TextComp("x", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
+		TextComp close = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
                dispose();
                saveView();
 	     });
@@ -115,9 +117,9 @@ public class SnippetView extends JDialog {
 			}
 		});
 		if(!omega.utils.UIManager.isDarkMode()) {
-			textField.setBackground(Color.WHITE);
-			textField.setForeground(Color.BLACK);
-			leftPanel.setBackground(Color.WHITE);
+			textField.setBackground(c2);
+			textField.setForeground(glow);
+			leftPanel.setBackground(c2);
 			try {
 			     Theme.load(Editor.class.getResourceAsStream("/idea.xml")).apply(textArea);
 			}catch(Exception e) {}
@@ -143,7 +145,6 @@ public class SnippetView extends JDialog {
 		textArea.setCaretPosition(snip.caret);
 	}
 	
-
 	public void saveView() {
 		if(snip == null) return;
 		if(!snip.base.equals(textField.getText())) return;
@@ -161,6 +162,8 @@ public class SnippetView extends JDialog {
 		for(Snippet snip : SnippetBase.getAll()) {
 			Door door = new Door(File.separator + "\\" + File.separator + snip.base, image, ()->setView(snip));
 			door.setBounds(0, block += 40, 250, 40);
+               door.setBackground(c2);
+               door.setForeground(TOOLMENU_COLOR1);
 			doors.add(door);
 			leftPanel.add(door);
 		}

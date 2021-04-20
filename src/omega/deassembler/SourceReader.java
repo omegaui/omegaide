@@ -43,7 +43,7 @@ public class SourceReader {
 			read();
 		}
 		catch(Exception e) {
-		     e.printStackTrace();
+		     System.err.println(e);
 	     }
 	}
 
@@ -485,9 +485,11 @@ public class SourceReader {
 		String parent = this.parent;
 		if(!parent.contains("."))
 			parent = getPackage(parent);
+          if(parent == null)
+               return;
 		if(!CodeFramework.isSource(parent)) {
 			ByteReader byteReader = null;
-			if(Assembly.has(parent)) 
+			if(Assembly.has(parent))
 			     byteReader = Assembly.getReader(parent);
 			else 
 			     byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(parent);

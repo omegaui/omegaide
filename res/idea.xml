@@ -2,8 +2,8 @@
 <!DOCTYPE RSyntaxTheme SYSTEM "theme.dtd">
 
 <!--
-	Theme that mimics IntelliJ IDEA's defaults.
-	See theme.dtd and org.fife.ui.rsyntaxtextarea.Theme for more information.
+     Theme that mimics IntelliJ IDEA's defaults.
+     See theme.dtd and org.fife.ui.rsyntaxtextarea.Theme for more information.
 -->
 <RSyntaxTheme version="1.0">
 
