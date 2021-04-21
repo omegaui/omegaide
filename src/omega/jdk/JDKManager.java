@@ -103,6 +103,7 @@ public class JDKManager {
           for(JarLoader loader : jarLoaders){
                for(String className : loader.classNames){
                     if(className.equals(name)){
+                         System.out.println(loader + " has " + name);
                          return loader.loadReader(name);
                     }
                }

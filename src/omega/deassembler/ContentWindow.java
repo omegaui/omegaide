@@ -67,7 +67,7 @@ public class ContentWindow extends JPanel implements KeyListener{
           
      	dataMembers.forEach(d->{
                if(d.getRepresentableValue() != null){
-                    TextComp textComp = new TextComp(d.getRepresentableValue(), c1, c2, c3, ()->{
+                    TextComp textComp = new TextComp(d.getRepresentableValue(), d.isMethod() ? TOOLMENU_COLOR3_SHADE : TOOLMENU_COLOR2_SHADE, c2, d.isMethod() ? TOOLMENU_COLOR3 : TOOLMENU_COLOR2, ()->{
                          ContentWindow.this.setVisible(false);
                          String lCode = CodeFramework.getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
                          if(lCode == null) {
@@ -85,6 +85,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                               }
                          }
                     });
+                    textComp.setName(d.isMethod() + "");
                     textComp.setBounds(0, block, width, optimalHintHeight);
                     textComp.setArc(0, 0);
                     textComp.alignX = 5;
@@ -151,7 +152,7 @@ public class ContentWindow extends JPanel implements KeyListener{
           if(e.getKeyCode() == KeyEvent.VK_DOWN){
                if(index < hints.size() - 1){
                     hints.get(index).setEnter(false);
-                    hints.get(index).color3 = c3;
+                    hints.get(index).color3 = Boolean.valueOf(hints.get(index).getName()) ? TOOLMENU_COLOR3 : TOOLMENU_COLOR2;
                     hints.get(++index).setEnter(true);
                     hints.get(index).color3 = highlightColor;
                     scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
@@ -160,7 +161,7 @@ public class ContentWindow extends JPanel implements KeyListener{
           else if(e.getKeyCode() == KeyEvent.VK_UP){
                if(index > 0){
                     hints.get(index).setEnter(false);
-                    hints.get(index).color3 = c3;
+                    hints.get(index).color3 = Boolean.valueOf(hints.get(index).getName()) ? TOOLMENU_COLOR3 : TOOLMENU_COLOR2;
                     hints.get(--index).setEnter(true);
                     hints.get(index).color3 = highlightColor;
                     scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);

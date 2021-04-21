@@ -5,6 +5,20 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.lang.reflect.*;
+/**
+ * Please Note that JavaFX Runtime SDK above 8 cannot be loaded correctly.
+ * As there are multiple modular jars in the SDK that depend on each other.
+ * This means you can edit the code and can run it without exceptions.
+ * But the content-assist, Getter-Setter(s) and the Override-Implement(s) features will not work correctly.
+ * Except the Auto-Imports.
+ * 
+ * Example : Launch the IDE in a terminal session, 
+ *           Try creating a class whose parent is javafx.application.Application, and try calling 
+ *           the Content-Assist(JavaType),
+ *           This will throw an exception in which the modular jar javafx.graphics is trying to call
+ *           the class javafx.event.EventTarget of javafx.base.jar which is out of its scope, 
+ *           thus, this throws NoClassDefFoundException.
+*/
 public class JarLoader {
 	public String jarPath;
 	public LinkedList<ByteReader> readers = new LinkedList<>();
@@ -36,13 +50,11 @@ public class JarLoader {
 			loader = URLClassLoader.newInstance(new URL[]{
 				file.toURL()
 			});
-			loadAllClasses();
 		}
 		catch(Exception e){
 			System.err.println(e);
 		}
 	}
-	
 	private void loadClassNames(){
 		readJar();
 	}
@@ -83,14 +95,6 @@ public class JarLoader {
 				return br;
 		}
 		return null;
-	}
-	public void loadAllClasses(){
-		try{
-			classNames.forEach(this::loadReader);
-		}
-		catch(Exception e){
-			System.err.println(e);
-		}
 	}
 	public ByteReader loadReader(String className){
 		ByteReader br = null;
@@ -161,10 +165,5 @@ public class JarLoader {
 	@Override
 	public String toString(){
 		return jarPath;
-	}
-	public static void main(String[] args){
-		JarLoader loader = new JarLoader("/home/ubuntu/Documents/Omega IDE/lib/openjfx-11.0.2_linux-x64_bin-sdk/javafx-sdk-11.0.2/lib/javafx.base.jar");
-		System.out.println(loader.getReader("javafx.util.Builder"));
-		loader.getReader("javafx.util.Builder").dataMembers.forEach(System.out::println);
 	}
 }

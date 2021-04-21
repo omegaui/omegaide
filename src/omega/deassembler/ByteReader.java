@@ -69,7 +69,7 @@ public class ByteReader {
 		}
 	}
 	public void loadMethods(){
-		for(Method m : c.getMethods()){
+		for(Method m : c.getMethods()) {
 			String access = "";
 			String modifier = "";
 			String name = "";

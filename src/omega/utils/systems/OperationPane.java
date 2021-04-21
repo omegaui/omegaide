@@ -123,7 +123,7 @@ public class OperationPane extends JPanel{
                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                g.setColor(omega.utils.UIManager.c2);
                g.fillRect(0, 0, getWidth(), getHeight());
-               g.setColor(omega.utils.UIManager.c3);
+               g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
                g.setFont(omega.settings.Screen.PX28);
                FontMetrics f = g.getFontMetrics();
                g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);

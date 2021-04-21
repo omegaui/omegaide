@@ -82,6 +82,10 @@ public class DataMember {
     	     return name + " - " + type;
      }
 
+     public boolean isMethod(){
+     	return parameters != null;
+     }
+
      @Override
      public String toString(){
           if(parameters != null){

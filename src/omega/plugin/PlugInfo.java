@@ -20,4 +20,15 @@ public class PlugInfo {
      public String fileName;
      public String size;
      public String desc = "";
+
+     public PlugInfo(){
+     	
+     }
+
+     public PlugInfo(String name, String fileName, String size, String desc){
+     	this.name = name;
+          this.fileName = fileName;
+          this.size = size;
+          this.desc = desc;
+     }
 }
