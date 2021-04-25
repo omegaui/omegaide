@@ -1,4 +1,5 @@
 package omega.update;
+import omega.utils.*;
 import omega.comp.*;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
@@ -7,7 +8,6 @@ import java.io.File;
 import java.util.Scanner;
 import omega.utils.UIManager;
 import java.awt.Desktop;
-import omega.utils.systems.creators.ChoiceDialog;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -52,7 +52,7 @@ public class Updater extends JDialog {
 
 		downBtn = new Comp("Install Update", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
                new Thread(()->{
-                    int res = Screen.getScreen().getChoiceDialog().show("Download Debian Setup", "Download Jar File");
+                    int res = ChoiceDialog.makeChoice("Installer", "Download Debian Setup", "Download Jar File");
                     if(res == ChoiceDialog.CANCEL)
                          return;
                     clean();
@@ -60,7 +60,7 @@ public class Updater extends JDialog {
                     downBtn.setVisible(false);
                     label.setText("Downloading Update");
                     String fileName = "out/omega-ide_" + version.substring(1) + "_all.deb";
-                    if(res == ChoiceDialog.CHOICE_2)
+                    if(res == ChoiceDialog.CHOICE2)
                          fileName = "out/Omega IDE " + version + ".jar";
                     File debFile = download(fileName);
                     if(debFile == null){

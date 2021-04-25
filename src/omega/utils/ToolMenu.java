@@ -89,9 +89,9 @@ public class ToolMenu extends JPanel {
 	private int pressY;
 	//The window decoration objects
 	
-	public static Color closeWinColor = new Color(255, 0, 0, 150);
-	public static Color maximizeWinColor = new Color(0, 255, 0, 150);
-	public static Color minimizeWinColor = new Color(255, 0, 255, 150);
+	public static Color closeWinColor = TOOLMENU_COLOR2;
+	public static Color maximizeWinColor = TOOLMENU_COLOR4;
+	public static Color minimizeWinColor = TOOLMENU_COLOR3;
 	public TextComp iconComp;
 	public TextComp titleComp;
 	public TextComp minimizeComp;
@@ -627,9 +627,7 @@ public class ToolMenu extends JPanel {
 				java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
 		}catch(Exception e){ System.err.println(e); }
 		})
-		.createItem("Plugin Store", IconManager.ideImage, ()->Screen.getPluginStore().setVisible(true))
-		.createItem("Plugin Manager", IconManager.ideImage, ()->Screen.getPluginView().setVisible(true))
-		.createItem("Check for Update", IconManager.ideImage, ()->Screen.updateIDE())
+		.createItem("Plugin Center & Updates", IconManager.ideImage, ()->Screen.getPluginCenter().setVisible(true))
 		.createItem("About", IconManager.ideImage, ()->{
 			infoScreen.setVisible(true);
 		});

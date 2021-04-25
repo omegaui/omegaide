@@ -1,4 +1,5 @@
 package omega;
+import omega.plugin.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.imageio.ImageIO;
 import omega.utils.BottomPane;
@@ -35,7 +36,6 @@ import omega.plugin.PluginManager;
 import omega.instant.support.Settings;
 import omega.utils.systems.ProjectView;
 import omega.highlightUnit.ErrorHighlighter;
-import omega.utils.systems.creators.ChoiceDialog;
 import omega.utils.RecentsManager;
 import omega.highlightUnit.BasicHighlight;
 import omega.utils.systems.BuildView;
@@ -80,7 +80,6 @@ public class Screen extends JFrame {
      private static BuildView buildView;
      private static BasicHighlight basicHighlight;
 	private static RecentsManager recentsManager;
-     private static ChoiceDialog choiceDialog;
      private static ErrorHighlighter errorHighlighter;
 	private static ProjectView projectView;
      private static omega.settings.Screen settings;
@@ -88,6 +87,7 @@ public class Screen extends JFrame {
 	private static PluginManager pluginManager;
 	private static PluginView pluginView;
 	private static PluginStore pluginStore;
+     private static PluginCenter pluginCenter;
 	private static Updater updater;
      private static TerminalComp terminal;
      private static ThemePicker picker;
@@ -159,7 +159,6 @@ public class Screen extends JFrame {
 	}
 
 	private void init() {
-          choiceDialog = new ChoiceDialog(this);
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
 		updater = new Updater(this);
@@ -255,6 +254,7 @@ public class Screen extends JFrame {
 		pluginManager = new PluginManager();
 		pluginView = new PluginView(this);
 		pluginStore = new PluginStore();
+          pluginCenter = new PluginCenter(this);
 
 		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
@@ -504,7 +504,9 @@ public class Screen extends JFrame {
           try{
                getFileView().getProjectManager().save();
           }
-          catch(Exception e2) {}
+          catch(Exception e2) {
+               
+          }
           super.dispose();
           System.exit(0);
      }
@@ -642,6 +644,10 @@ public class Screen extends JFrame {
 		return pluginManager;
 	}
 
+     public static PluginCenter getPluginCenter(){
+          return pluginCenter;
+     }
+
 	public static PluginView getPluginView() {
 		return pluginView;
 	}
@@ -649,10 +655,6 @@ public class Screen extends JFrame {
 	public static PluginStore getPluginStore() {
 		return pluginStore;
 	}
-
-     public static ChoiceDialog getChoiceDialog() {
-          return choiceDialog;
-     }
 
 	public void saveEssential() {
 		uiManager.save();

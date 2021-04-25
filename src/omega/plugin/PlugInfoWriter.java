@@ -38,8 +38,10 @@ public class PlugInfoWriter {
                     writer.println("----");
                }
                writer.close();
-          }catch(Exception e){ System.err.println(e); }
-          return;
+          }
+          catch(Exception e){ 
+               System.err.println(e);
+          }
      }
      
      public static LinkedList<PlugInfo> read(File file){
@@ -67,7 +69,10 @@ public class PlugInfoWriter {
                     }
                }
                reader.close();
-          }catch(Exception e){ System.err.println(e); }
+          }
+          catch(Exception e){ 
+               System.err.println(e);
+          }
           return infos;
      }
 }

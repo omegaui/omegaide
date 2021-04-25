@@ -1,20 +1,5 @@
 package omega.tree;
-/*
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+import omega.utils.*;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import omega.Screen;
@@ -103,10 +88,10 @@ public class FileTree extends JComponent{
           if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
           
           //Doing move or copy operation
-          int res = Screen.getScreen().getChoiceDialog().show("Move", "Copy");
+          int res = ChoiceDialog.makeChoice("Select an action!", "Move", "Copy");
           if(res == ChoiceDialog.CANCEL)
                return;
-          if(res == ChoiceDialog.CHOICE_1)
+          if(res == ChoiceDialog.CHOICE1)
                FileOperationManager.move(pressedBranch.file, selection.file);
           else 
                FileOperationManager.copy(pressedBranch.file, selection.file);

@@ -96,13 +96,24 @@ public class PluginManager {
 		init_plugs.add(getPlug(name));
 	}
 
+     public void addInitPlug(Plug plug){
+     	for(Plug p : init_plugs){
+               if(p.name.equals(plug.name))
+                    return;
+     	}
+          init_plugs.add(plug);
+     }
+
 	public void save(){
 		try{
 			if(plugs.isEmpty()) return;
 			final PrintWriter writer = new PrintWriter(plugFile);
 			plugs.forEach(writer::println);
 			writer.close();
-		}catch(Exception e){ System.err.println(e); }
+		}
+		catch(Exception e){ 
+		     System.err.println(e);
+	     }
 	}
 
 	public void offer(Plugin p, String fileName){

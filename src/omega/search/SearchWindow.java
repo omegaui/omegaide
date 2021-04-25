@@ -131,8 +131,8 @@ public class SearchWindow extends JDialog{
 		omega.utils.UIManager.setData(panel);
           
           //Creating File Image of size 32, 32 here
-          writeImage(textImage, Branch.LINUX_COLOR, c2);
-          writeImage(imageImage, Branch.IMAGE_COLOR, c2);
+          writeImage(textImage, TOOLMENU_COLOR2, c2);
+          writeImage(imageImage, TOOLMENU_COLOR3, c2);
           writeImage(allImage, IconManager.getBackground(), IconManager.getForeground());
 	}
 
@@ -175,8 +175,8 @@ public class SearchWindow extends JDialog{
                     door.setToolTipText(file.getAbsolutePath());
                     door.setBackground(c2);
                     door.setForeground(switch(ext){
-                         case ".txt", ".groovy", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> Branch.LINUX_COLOR;
-                         case ".png", ".jpg", ".bmp", ".jpeg" -> Branch.IMAGE_COLOR;
+                         case ".txt", ".groovy", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> TOOLMENU_COLOR2;
+                         case ".png", ".jpg", ".bmp", ".jpeg" -> TOOLMENU_COLOR3;
                          default -> c3;
                     });
 				panel.add(door);

@@ -151,7 +151,7 @@ public class PluginStore extends JFrame{
 		try{
 			ready = true;
 			file.delete();
-			String url = "https://raw.githubusercontent.com/omegaui/omegaide-plugins/main/"+name;
+			String url = "https://raw.githubusercontent.com/omegaui/omegaide-plugins/main/" + name;
 			Process pull = new ProcessBuilder("wget", url, "--output-document=omega-ide-plugins" + File.separator + name).start();
 			Scanner out = new Scanner(pull.getInputStream());
 			Scanner err = new Scanner(pull.getErrorStream());
