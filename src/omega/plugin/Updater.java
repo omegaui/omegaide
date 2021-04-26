@@ -13,7 +13,6 @@ public class Updater extends JDialog{
      private TextComp titleComp;
      private TextComp changesComp;
      private String version;
-     private LinkedList<String> changes = new LinkedList<>();
      private int block;
      private LinkedList<TextComp> items = new LinkedList<>();
      private TextComp closeComp;
@@ -32,12 +31,7 @@ public class Updater extends JDialog{
      }
 
      public void init(){
-          changes.add("New Plugin Center");
-          changes.add("Better Visuals");
-          changes.add("Super Light Mode");
-          changes.add("Intense Dark Mode");
-          
-     	titleComp = new TextComp("Omega IDE v1.8", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
+     	titleComp = new TextComp("Omega IDE", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
           titleComp.setBounds(0, 0, getWidth(), 30);
           titleComp.setFont(PX14);
           titleComp.setClickable(false);
@@ -68,17 +62,24 @@ public class Updater extends JDialog{
           closeComp.setFont(PX14);
           add(closeComp);
 
-          installComp = new TextComp("Install", "Open Github Release Section", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR4, null);
+          installComp = new TextComp("Install", "Click to begin Download", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR4, null);
           installComp.setBounds(getWidth()/2, getHeight() - 30, getWidth()/2, 30);
           installComp.setFont(PX14);
           add(installComp);
      }
 
-     public void genView(){
+     public void genView(String title, String size, LinkedList<String> changes, Runnable installAction){
+          installComp.setRunnable(installAction);
+          
+          titleComp.setText(title);
+          
           items.forEach(this::remove);
           items.clear();
           
           block = 90;
+          
+          changes.add("Download Size : " + size);
+          
           changes.forEach(change->{
                TextComp item = new TextComp(change, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
                item.setBounds(5, block, getWidth() - 10, 30);
@@ -88,13 +89,7 @@ public class Updater extends JDialog{
                items.add(item);
                block += 40;
           });
-     }
-
-     @Override
-     public void setVisible(boolean value){
-     	super.setVisible(value);
-          if(value){
-               genView();
-          }
+          
+          setVisible(true);
      }
 }

@@ -26,7 +26,7 @@ public class ChoiceDialog extends JDialog{
      }
 
      public void init(){
-          headerComp = new TextComp("", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
+          headerComp = new TextComp("", TOOLMENU_COLOR2, c2, c2, null);
           headerComp.setFont(PX14);
           headerComp.setClickable(false);
           headerComp.setArc(0, 0);

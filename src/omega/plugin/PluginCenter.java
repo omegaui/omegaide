@@ -28,6 +28,7 @@ public class PluginCenter extends JDialog{
 	private LinkedList<PluginComp> manageItems = new LinkedList<>();
 	private LinkedList<PluginComp> storeItems = new LinkedList<>();
 	private short viewState = 1;
+     
 	
 	public PluginCenter(Screen screen){
 		super(screen, true);
@@ -45,7 +46,7 @@ public class PluginCenter extends JDialog{
 		init();
 	}
 	public void init(){
-		installer = new Installer(this, "", "");
+		installer = new Installer(this);
 		
 		titleComp = new TextComp("Plugin Center", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
 		titleComp.setBounds(0, 0, getWidth() - 30, 30);
@@ -252,7 +253,7 @@ public class PluginCenter extends JDialog{
 	@Override
 	public void setVisible(boolean value){
 		if(value)
-			setStoreView();
+			setManageView();
 		else
 			Screen.getPluginManager().save();
 		super.setVisible(value);
