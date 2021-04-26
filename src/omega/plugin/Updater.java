@@ -7,7 +7,6 @@ import javax.swing.*;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 public class Updater extends JDialog{
-
      private int pressX;
      private int pressY;
      private TextComp titleComp;

@@ -34,7 +34,7 @@ public class ImportResolver extends JDialog {
           scrollPane.setBounds(0, 40, getWidth(), getHeight() - 40);
           add(scrollPane);
           
-     	TextComp titleComp = new TextComp("Select The Imports And Click \'x\'", c1, c2, c3, ()->{});
+     	TextComp titleComp = new TextComp("Select The Imports And Click \'x\'", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
           titleComp.setBounds(40, 0, getWidth() - 40, 40);
           titleComp.setFont(PX16);
           titleComp.setClickable(false);
@@ -54,7 +54,7 @@ public class ImportResolver extends JDialog {
           });
           add(titleComp);
 
-          TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(0, 0, 40, 40);
           closeComp.setFont(PX16);
           closeComp.setArc(0, 0);
@@ -79,7 +79,7 @@ public class ImportResolver extends JDialog {
                     maxW = w;
           }
           for(Import im : imports){
-               TextComp comp = new TextComp(im.getImport(), c1, c2, c3, ()->{});
+               TextComp comp = new TextComp(im.getImport(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
                comp.setRunnable(()->{
                     comp.setColors(comp.color1, comp.color3, comp.color2);
                });

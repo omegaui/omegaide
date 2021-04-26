@@ -34,13 +34,13 @@ public class SDKSelector extends JDialog {
 		setLocationRelativeTo(f);
 		setLayout(null);
          
-		TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
 		closeComp.setBounds(0, 0, 40, 40);
 		closeComp.setFont(PX16);
 		closeComp.setArc(0, 0);
 		add(closeComp);
           
-		TextComp titleComp = new TextComp("Select Your JDK Environment", c1, c2, c3, null);
+		TextComp titleComp = new TextComp("Select Your JDK Environment", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
 		titleComp.setBounds(40, 0, getWidth() - 40, 40);
 		titleComp.setFont(PX16);
 		titleComp.setClickable(false);
@@ -70,7 +70,7 @@ public class SDKSelector extends JDialog {
 					g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 					g.setColor(c2);
 					g.fillRect(0, 0, getWidth(), getHeight());
-					g.setColor(c3);
+					g.setColor(TOOLMENU_COLOR3);
 					g.setFont(PX14);
 					g.drawString("No JDKs found at the specified path!", getWidth()/2 - g.getFontMetrics().stringWidth("No JDKs found at the specified path!")/2,
      					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() - 15);
@@ -102,7 +102,7 @@ public class SDKSelector extends JDialog {
 				continue;
 			String release = getRelease(file.getAbsolutePath());
 			if(release != null) {
-				TextComp box = new TextComp(file.getName() + "(" + release + ")", c1, c2, c3, ()->{
+				TextComp box = new TextComp(file.getName() + "(" + release + ")", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 					selection = file.getAbsolutePath();
 					SDKSelector.this.setVisible(false);
 				});

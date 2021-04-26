@@ -64,7 +64,7 @@ public class SearchWindow extends JDialog{
           scrollPane.setBounds(0, 60, getWidth(), getHeight() - 60);
           add(scrollPane);
 
-          TextComp titleComp = new TextComp(getTitle(), c1, c3, c2, null);
+          TextComp titleComp = new TextComp(getTitle(), TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, null);
           titleComp.setBounds(0, 0, getWidth() - 60, 30);
           titleComp.setClickable(false);
           titleComp.setFont(PX14);
@@ -84,19 +84,19 @@ public class SearchWindow extends JDialog{
           });
           add(titleComp);
 
-          TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(getWidth() - 30, 0, 30, 30);
           closeComp.setFont(PX14);
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", c1, c2, c3, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
+          TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
           reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
           reloadComp.setArc(0, 0);
           reloadComp.setFont(PX14);
           add(reloadComp);
 
-          field = new NoCaretField("", "Type File Name", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3);
+          field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           field.setBounds(0, 30, getWidth(), 30);
           field.setFont(PX16);
 		addKeyListener(new KeyAdapter() {

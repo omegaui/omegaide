@@ -31,7 +31,7 @@ public class Terminal extends JComponent{
           textField = new JTextField();
           textField.setFont(PX16);
           textField.setBackground(omega.utils.UIManager.c2);
-          textField.setForeground(omega.utils.UIManager.c3);
+          textField.setForeground(omega.utils.UIManager.glow);
           add(textField, BorderLayout.SOUTH);
           textField.addKeyListener(new KeyAdapter(){
                @Override

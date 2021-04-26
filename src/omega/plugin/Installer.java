@@ -104,6 +104,7 @@ public class Installer extends JDialog {
 				else {
 					reader.close();
 					setHeader("No Updates Required!");
+                         notify("Click to Close");
 					enableClose();
 				}
 			}
@@ -113,49 +114,53 @@ public class Installer extends JDialog {
 		}).start();
 	}
 	public void update(){
-		updater.setVisible(false);
-		setHeader("Updating to version " + versionInfo);
-		notify("Pulling Java Archive");
-		disableClose();
-		try{
-               BufferedInputStream in = new BufferedInputStream(Download.openStream("https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega IDE.jar"));
-               File file = new File("Omega IDE.jar");
-               FileOutputStream fileOutputStream = new FileOutputStream(file);
-               byte dataBuffer[] = new byte[1024];
-               int bytesRead;
-               double length = Double.parseDouble(size.substring(size.indexOf(' ')));
-               while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                    fileOutputStream.write(dataBuffer, 0, bytesRead);
-                    fileOutputStream.flush();
-                    try{
-                         double currentLength = file.length() / 1000000;
-                         int percentage = (int)((currentLength * 100) / length);
-                         notify("Pulling Java Archive " + percentage + "%");
+          new Thread(()->{
+     		updater.setVisible(false);
+     		setHeader("Updating to version " + versionInfo);
+     		notify("Pulling Java Archive");
+     		disableClose();
+     		try{
+                    BufferedInputStream in = new BufferedInputStream(Download.openStream("https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE.jar"));
+                    File file = new File("Omega IDE.jar");
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    byte dataBuffer[] = new byte[1024];
+                    int bytesRead;
+                    double length = Double.parseDouble(size.substring(0, size.indexOf(' ')));
+                    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                         fileOutputStream.write(dataBuffer, 0, bytesRead);
+                         fileOutputStream.flush();
+                         try{
+                              double currentLength = file.length() / 1000000;
+                              int percentage = (int)((currentLength * 100) / length);
+                              notify("Pulling Java Archive " + percentage + "%");
+                         }
+                         catch(Exception e){
+                              e.printStackTrace();
+                         }
                     }
-                    catch(Exception e){
-                         e.printStackTrace();
+                    in.close();
+                    fileOutputStream.close();
+                    
+                    String osName = System.getProperty("os.name");
+     			if(osName.contains("inux")){
+     				setHeader("Downloaded Omega IDE.jar");
+                         enableClose();
+                         notify("Click to Close");
+                         ChoiceDialog.makeChoice("Move ~/Omega IDE.jar to /usr/bin", "Ok", "Don't Update");
+     			}
+                    else {
+                         setHeader("Updated to version " + versionInfo);
+                         enableClose();
+                         notify("Click to Close");
                     }
-               }
-               in.close();
-               fileOutputStream.close();
-               
-               String osName = System.getProperty("os.name");
-			if(osName.contains("inux")){
-				setHeader("Download Omega IDE.jar");
-                    notify("Click to Close");
-                    ChoiceDialog.makeChoice("Move ~/Omega IDE.jar to /usr/bin", "Ok", "Don't Update");
-			}
-               else {
-                    setHeader("Updated to version " + versionInfo);
+     		}
+     		catch(Exception e){
+     			setHeader("Falied to Update!");
                     enableClose();
                     notify("Click to Close");
-               }
-		}
-		catch(Exception e){
-			notify("Falied to Update!");
-			enableClose();
-			e.printStackTrace();
-		}
+     			e.printStackTrace();
+     		}
+          }).start();
 	}
 	public void notify(String msg){
 		msgComp.setText(msg);
