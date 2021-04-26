@@ -24,7 +24,7 @@ public class PluginCenter extends JDialog{
 	private JPanel storePanel;
 	private JScrollPane manageScrollPane;
 	private JScrollPane storeScrollPane;
-	private Updater updater;
+	private Installer installer;
 	private LinkedList<PluginComp> manageItems = new LinkedList<>();
 	private LinkedList<PluginComp> storeItems = new LinkedList<>();
 	private short viewState = 1;
@@ -45,7 +45,7 @@ public class PluginCenter extends JDialog{
 		init();
 	}
 	public void init(){
-		updater = new Updater(this);
+		installer = new Installer(this, "", "");
 		
 		titleComp = new TextComp("Plugin Center", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
 		titleComp.setBounds(0, 0, getWidth() - 30, 30);
@@ -73,7 +73,7 @@ public class PluginCenter extends JDialog{
 		closeComp.setArc(0, 0);
 		add(closeComp);
 		
-		updateComp = new TextComp("Update IDE", "Check for IDE Updates", TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR4, c2, ()->updater.setVisible(true));
+		updateComp = new TextComp("Update IDE", "Check for IDE Updates", TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR4, c2, installer::checkForUpdates);
 		updateComp.setBounds(getWidth() - 100, 40, 90, 25);
 		updateComp.setFont(PX14);
 		add(updateComp);
@@ -225,6 +225,8 @@ public class PluginCenter extends JDialog{
                }
                if(block == 10)
                     notify("No Matches Found!");
+               else
+                    notify("Plugin Center");
                repaint();
      	}
           else{
@@ -239,6 +241,8 @@ public class PluginCenter extends JDialog{
                }
                if(block == 10)
                     notify("No Matches Found!");
+               else
+                    notify("Plugin Center");
                repaint();
           }
      }

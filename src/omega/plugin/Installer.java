@@ -12,8 +12,8 @@ public class Installer extends JDialog {
      private TextComp headerComp;
      private TextComp imageComp;
      private BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
-     public Installer(String msg, String header){
-          super(Screen.getScreen(), true);
+     public Installer(PluginCenter pluginCenter, String msg, String header){
+          super(pluginCenter, true);
           setTitle("Omega IDE -- Installer");
           setUndecorated(true);
           setLayout(null);
@@ -22,7 +22,6 @@ public class Installer extends JDialog {
           setLocationRelativeTo(null);
           paintImage();
           init(msg, header);
-          setVisible(true);
      }
      public void init(String msg, String header){
           headerComp = new TextComp(header, TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
@@ -74,6 +73,9 @@ public class Installer extends JDialog {
                x2 += 30;
           }
           g.dispose();
+     }
+     public void checkForUpdates(){
+     	
      }
      public void notify(String msg){
           msgComp.setText(msg);

@@ -164,16 +164,29 @@ public class PluginComp extends JComponent{
 					try{
 						pluginCenter.notify("Downloading Plugin ... ");
 						BufferedInputStream in = new BufferedInputStream(Download.openStream("https://raw.githubusercontent.com/omegaui/omegaide-plugins/main/" + plugInfo.fileName));
-						FileOutputStream fileOutputStream = new FileOutputStream("omega-ide-plugins" + File.separator + plugInfo.fileName);
+						File file = new File("omega-ide-plugins" + File.separator + plugInfo.fileName);
+						FileOutputStream fileOutputStream = new FileOutputStream(file);
 						byte dataBuffer[] = new byte[1024];
 						int bytesRead;
 						while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 							fileOutputStream.write(dataBuffer, 0, bytesRead);
+							fileOutputStream.flush();
+							try{
+								double currentLength = file.length() / 1000;
+								double length = Double.parseDouble(plugInfo.size.substring(0, plugInfo.size.indexOf(' ')));
+								if(plugInfo.size.endsWith("MB"))
+									currentLength /= 1000;
+                                        int percentage = (int)((currentLength * 100) / length);
+                                        pluginCenter.notify("Downloading Plugin " + percentage + "%");
+							}
+							catch(Exception e){
+								e.printStackTrace();
+							}
 						}
-                              in.close();
-                              fileOutputStream.close();
-                              
-                              pluginCenter.notify("Done! You should restart the IDE Now!");
+						in.close();
+						fileOutputStream.close();
+						
+						pluginCenter.notify("Done! You should restart the IDE Now!");
 					}
 					catch(Exception e){
 						pluginCenter.notify("Unable to Download Plugin!");
@@ -184,7 +197,7 @@ public class PluginComp extends JComponent{
 		installComp.setBounds(780 - 110, 100/2 - 15, 100, 30);
 		installComp.setFont(PX14);
 		add(installComp);
-          
+		
 		if(!inStore) {
 			enableComp = new TextComp(plug.enabled ? "Disable" : "Enable", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 				plug.enabled = !plug.enabled;

@@ -22,7 +22,7 @@ public class Updater extends JDialog{
      public Updater(PluginCenter pluginCenter){
           super(pluginCenter, false);
           setUndecorated(true);
-          setTitle("Omega IDE -- Release Updater");
+          setTitle("Omega IDE -- Update Available");
      	setSize(600, 500);
           setLocationRelativeTo(null);
           JPanel panel = new JPanel(null);
