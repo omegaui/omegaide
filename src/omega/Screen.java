@@ -103,8 +103,8 @@ public class Screen extends JFrame {
                Color y = null;
                if(UIManager.isDarkMode()) {
                     FlatDarkLaf.install();
-                    x = Color.decode("#8400FF");
-                    y = Color.decode("#1B1A48");
+                    x = Color.decode("#27AA55");
+                    y = Color.decode("#282828");
                     javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
                     javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
                     javax.swing.UIManager.put("Button.foreground", new ColorUIResource(y));

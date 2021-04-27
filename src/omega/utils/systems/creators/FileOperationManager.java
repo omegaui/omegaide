@@ -59,7 +59,7 @@ public class FileOperationManager extends JDialog {
 	}
 
      public void init(){
-     	titleComp = new TextComp("File Operation Manager", c1, c2, c3, ()->{});
+     	titleComp = new TextComp("File Operation Manager", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
           titleComp.setBounds(40, 0, getWidth() - 40, 40);
           titleComp.setFont(omega.settings.Screen.PX16);
           titleComp.setArc(0, 0);
@@ -79,19 +79,19 @@ public class FileOperationManager extends JDialog {
           });
           add(titleComp);
 
-          closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
+          closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(0, 0, 40, 40);
           closeComp.setFont(omega.settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          nameField = new NoCaretField("", "type file name", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3);
+          nameField = new NoCaretField("", "type file name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           nameField.setBounds(0, 40, getWidth(), 40);
           nameField.setFont(omega.settings.Screen.PX14);
           add(nameField);
           addKeyListener(nameField);
 
-          actionComp = new TextComp("", c1, c2, c3, ()->{});
+          actionComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
           actionComp.setBounds(0, 80, getWidth(), 40);
           actionComp.setFont(omega.settings.Screen.PX16);
           actionComp.setArc(0, 0);

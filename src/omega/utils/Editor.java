@@ -98,10 +98,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				try {
 					if(screen.getCurrentEditor() != null)
 						screen.getCurrentEditor().readCode();
-     			}
-     			catch(Exception e) {
-                         e.printStackTrace();
-     		     }
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}
@@ -182,7 +182,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".ini"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_INI);
 		else if(f.getName().endsWith(".java"))
-               e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
 		else if(f.getName().endsWith(".js"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
 		else if(f.getName().endsWith(".json"))
@@ -231,26 +231,26 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_XML);
 		else if(f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
-          else if(f.getName().endsWith(".rs"))
-               RustTokenMaker.apply(e);
+		else if(f.getName().endsWith(".rs"))
+			RustTokenMaker.apply(e);
 	}
 	public void loadTheme() {
 		try {
 			String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
 			theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
 			theme.apply(this);
-	     }
-	     catch (Exception e) { 
-               
-          }
+		}
+		catch (Exception e) {
+			
+		}
 		try {
 			screen.getUIManager().loadData();
 			setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 			UIManager.setData(screen.getTabPanel());
-	     }
-	     catch(Exception e) { 
-               
-          }
+		}
+		catch(Exception e) {
+			
+		}
 	}
 	
 	public static Theme getTheme() {
@@ -259,13 +259,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
 				theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
 			}
-		     catch(Exception e) {
-		          e.printStackTrace();
-	          }
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return theme;
 	}
-    
+	
 	public synchronized void loadFile(File file) {
 		if(file == null)
 			return;
@@ -286,10 +286,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			savedText = getText();
 			setStyle(this, currentFile);
 			setCaretPosition(0);
-	     }
-          catch(Exception e) {
-               e.printStackTrace();
-          }
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void saveCurrentFile()
 	{
@@ -315,10 +315,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			PrintWriter writer = new PrintWriter(new FileOutputStream(currentFile));
 			writer.print(text);
 			writer.close();
-	     }
-	     catch(Exception e) {
-	          e.printStackTrace();
-	     }
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	public void saveImage() {
 		try {
@@ -347,10 +347,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				writer.println(getText());
 				writer.close();
 				Screen.getProjectView().reload();
-		     }
-		     catch(Exception e) {
-		          e.printStackTrace();
-		     }
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	public void closeFile()
@@ -372,7 +372,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				savedText = getText();
 				setStyle(this, currentFile);
 				setCaretPosition(0);
-		     }catch(Exception e) {System.out.println(e);}
+		}catch(Exception e) {System.out.println(e);}
 		}
 	}
 	public void deleteFile() {
@@ -382,10 +382,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(!currentFile.exists())
 				return;
 			
-			Screen.getProjectView().setVisible(false);
-			int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
-			if(res0 != JOptionPane.YES_OPTION)
+			int res0 = ChoiceDialog.makeChoice("Do you want to delete " + currentFile.getName() + "?", "Yes", "No!");
+			if(res0 != ChoiceDialog.CHOICE1)
 				return;
+			
 			closeFile();
 			if(!currentFile.delete()) {
 				printArea.print("File is Open Somewhere, Unable to delete "+currentFile.getName()+" -Located in \""+currentFile.getAbsolutePath().substring(0, currentFile.getAbsolutePath().lastIndexOf('/'))+"\"");
@@ -423,21 +423,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(currentFile == null)
 					return;
 				if(currentFile.isDirectory()) {
-					int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
-					if(res0 != JOptionPane.YES_OPTION)
+					int res0 = ChoiceDialog.makeChoice("Do you want to delete " + currentFile.getName() + "?", "Yes", "No!");
+					if(res0 != ChoiceDialog.CHOICE1)
 						return;
 					try {
 						deleteDir(currentFile);
 						Screen.getProjectView().reload();
-				}catch(Exception e) { }
+					}
+					catch(Exception e) {
+						
+					}
 					return;
 				}
 				if(!currentFile.exists())
 					return;
-				Screen.getProjectView().setVisible(false);
-				int res0 = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+currentFile.getName()+"?", "Delete or not?", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);;
-				if(res0 != JOptionPane.YES_OPTION)
-					return;
+				int res0 = ChoiceDialog.makeChoice("Do you want to delete " + currentFile.getName() + "?", "Yes", "No!");
+                    if(res0 != ChoiceDialog.CHOICE1)
+                         return;
 				if(currentFile.delete()) {
 					Screen.getProjectView().reload();
 				}

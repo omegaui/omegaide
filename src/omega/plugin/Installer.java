@@ -109,7 +109,9 @@ public class Installer extends JDialog {
 				}
 			}
 			catch(Exception e){
-				notify("An Error Occurred");
+                    setHeader("Network Error Occured");
+				notify("Click to Close");
+                    enableClose();
 			}
 		}).start();
 	}

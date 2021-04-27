@@ -33,9 +33,9 @@ import omega.database.DataEntry;
 public class UIManager extends DataBase {
 
 	public static String fontName = "Ubuntu Mono";
-     public static int fontSize = 20;
+     public static int fontSize = 16;
      public static int fontState = Font.BOLD;
-	private static final Font font = new Font("Ubuntu Mono", Font.BOLD, 12);
+	private static final Font font = omega.settings.Screen.PX12;
 	public static Color glow;
 	public static Color c1;
 	public static Color c2;
@@ -77,9 +77,17 @@ public class UIManager extends DataBase {
 				c2 = Color.WHITE;
 			}
 			else {
-                    c1 = Color.decode("#8400FF");
-                    c2 = Color.decode("#1B1A48");
-                    c3 = Color.decode("#F5AA1C");
+                    c1 = Color.decode("#563F2E");
+                    c2 = Color.decode("#282828");
+                    c3 = Color.decode("#ABB0BC");
+                    TOOLMENU_COLOR1 = Color.decode("#f0b40f");
+                    TOOLMENU_COLOR1_SHADE = new Color(TOOLMENU_COLOR1.getRed(), TOOLMENU_COLOR1.getGreen(), TOOLMENU_COLOR1.getBlue(), 40);
+                    TOOLMENU_COLOR2 = Color.decode("#D34D42");
+                    TOOLMENU_COLOR2_SHADE = new Color(TOOLMENU_COLOR2.getRed(), TOOLMENU_COLOR2.getGreen(), TOOLMENU_COLOR2.getBlue(), 40);
+                    TOOLMENU_COLOR3 = Color.decode("#27AA55");
+                    TOOLMENU_COLOR3_SHADE = new Color(TOOLMENU_COLOR3.getRed(), TOOLMENU_COLOR3.getGreen(), TOOLMENU_COLOR3.getBlue(), 40);
+                    TOOLMENU_COLOR4 = Color.decode("#EB7201");
+                    TOOLMENU_COLOR4_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 			}
 		}
 		catch(Exception e) {
@@ -89,7 +97,7 @@ public class UIManager extends DataBase {
 	
 	public static void reset() {
 		fontName = "Ubuntu Mono";
-		fontSize = 18;
+		fontSize = 16;
           fontState = Font.BOLD;
 	}
 
