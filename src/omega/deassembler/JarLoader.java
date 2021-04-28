@@ -5,20 +5,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.lang.reflect.*;
-/**
- * Please Note that JavaFX Runtime SDK above 8 cannot be loaded correctly.
- * As there are multiple modular jars in the SDK that depend on each other.
- * This means you can edit the code and can run it without exceptions.
- * But the content-assist, Getter-Setter(s) and the Override-Implement(s) features will not work correctly.
- * Except the Auto-Imports.
- * 
- * Example : Launch the IDE in a terminal session, 
- *           Try creating a class whose parent is javafx.application.Application, and try calling 
- *           the Content-Assist(JavaType),
- *           This will throw an exception in which the modular jar javafx.graphics is trying to call
- *           the class javafx.event.EventTarget of javafx.base.jar which is out of its scope, 
- *           thus, this throws NoClassDefFoundException.
-*/
 public class JarLoader {
 	public String jarPath;
 	public LinkedList<ByteReader> readers = new LinkedList<>();
@@ -28,6 +14,19 @@ public class JarLoader {
 		this.jarPath = jarPath;
 		load();
 	}
+     public JarLoader(LinkedList<String> paths){
+     	try{
+     		URL[] urls = new URL[paths.size()];
+               for(int i = 0; i < urls.length; i++){
+               	urls[i] = new File(paths.get(i)).toURL();
+                    readJar(paths.get(i));
+               }
+               loader = URLClassLoader.newInstance(urls);
+     	}
+     	catch(Exception e){ 
+     		System.err.println(e); 
+     	}
+     }
 	public JarLoader(){
 		try{
 			this.jarPath = "System JMods";
@@ -59,25 +58,44 @@ public class JarLoader {
 		readJar();
 	}
 	
-	public void readJar(){
-		try{
-			try(JarFile rtJarFile = new JarFile(jarPath)){
-				for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
-					JarEntry jarEntry = enums.nextElement();
-					String name = jarEntry.getName();
-					if(!name.endsWith("/")) {
-						String classPath = convertJarPathToPackagePath(name);
-						if(classPath != null) {
-							classNames.add(classPath);
-						}
-					}
-				}
-			}
-		}
-		catch(Exception e) {
-			System.err.println(e);
-		}
-	}
+     public void readJar(){
+          try{
+               try(JarFile rtJarFile = new JarFile(jarPath)){
+                    for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
+                         JarEntry jarEntry = enums.nextElement();
+                         String name = jarEntry.getName();
+                         if(!name.endsWith("/")) {
+                              String classPath = convertJarPathToPackagePath(name);
+                              if(classPath != null) {
+                                   classNames.add(classPath);
+                              }
+                         }
+                    }
+               }
+          }
+          catch(Exception e) {
+               System.err.println(e);
+          }
+     }
+     public void readJar(String jarPath){
+          try{
+               try(JarFile rtJarFile = new JarFile(jarPath)){
+                    for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
+                         JarEntry jarEntry = enums.nextElement();
+                         String name = jarEntry.getName();
+                         if(!name.endsWith("/")) {
+                              String classPath = convertJarPathToPackagePath(name);
+                              if(classPath != null) {
+                                   classNames.add(classPath);
+                              }
+                         }
+                    }
+               }
+          }
+          catch(Exception e) {
+               System.err.println(e);
+          }
+     }
 	public static String convertJarPathToPackagePath(String zipPath){
 		if(zipPath == null || zipPath.contains("$") || !zipPath.endsWith(".class") || zipPath.startsWith("META-INF"))
 			return null;

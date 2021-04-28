@@ -94,7 +94,7 @@ public class ImportResolver extends JDialog {
           panel.setPreferredSize(new Dimension(maxW, block));
           setVisible(true);
           comps.forEach(comp->{
-               if(comp.color2 == c3)
+               if(comp.color2 == TOOLMENU_COLOR3)
                     selections.add(new Import(comp.getText(), "", false));
           });
 		return selections;

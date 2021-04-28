@@ -15,13 +15,13 @@ public class JDKManager {
 	public static LinkedList<Import> imports = new LinkedList<>();
 	public static LinkedList<Import> javaLangPack = new LinkedList<>();
 	public static LinkedList<Import> sources = new LinkedList<>();
-     public static LinkedList<JarLoader> jarLoaders = new LinkedList<>();
+	public static JarLoader systemJarLoader;
+	public static JarLoader dependencyJarLoader;
 	public JDKManager(File jdkDir){
-          imports.clear();
-          modules.clear();
-          javaLangPack.clear();
-          sources.clear();
-          jarLoaders.clear();
+		imports.clear();
+		modules.clear();
+		javaLangPack.clear();
+		sources.clear();
 		this.jdkDir = jdkDir;
 		String ext  = File.separator.equals("\\") ? ".exe" : "";
 		this.java   = jdkDir.getAbsolutePath() + File.separator + "bin" + File.separator + "java" + ext;
@@ -31,46 +31,29 @@ public class JDKManager {
 		if(isModularJDK())
 			readModules();
 		else
-		     readRTJarFile();
+			readRTJarFile();
 	}
-
-     public void writeToFile(Import im){
-     	try{
-               new File("byte-codes").mkdir();
-               Process p = new ProcessBuilder("javap", "-public", im.toString()).start();
-               Scanner reader = new Scanner(p.getInputStream());
-               PrintWriter writer = new PrintWriter("byte-codes" + File.separator + im.toString() + ".assist");
-               while(p.isAlive()){
-                    while(reader.hasNextLine())
-                         writer.println(reader.nextLine());
-               }
-               writer.close();
-               reader.close();
-     	}
-     	catch(Exception e){ 
-     		e.printStackTrace();
-     	}
-     }
-    
 	public void readRTJarFile(){
 		Screen.setStatus("Reading JDK v" + version, 10);
 		String rtJarPath = jdkDir.getAbsolutePath() + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar";
 		try{
-		     try(JarFile rtJarFile = new JarFile(rtJarPath)){
-		          for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();) {
-          			JarEntry jarEntry = enums.nextElement();
-          			String name = jarEntry.getName();
-          			if(!name.endsWith("/")){
-          				String classPath = Module.convertJarPathToPackagePath(name);
-          				if(classPath != null)
-          					addImport(classPath, rtJarPath, false);
-          			}
-          		}
-		     }
-               jarLoaders.add(new JarLoader(rtJarPath));
+               systemJarLoader = new JarLoader(rtJarPath);
+			try(JarFile rtJarFile = new JarFile(rtJarPath)){
+				for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();) {
+					JarEntry jarEntry = enums.nextElement();
+					String name = jarEntry.getName();
+					if(!name.endsWith("/")){
+						String classPath = Module.convertJarPathToPackagePath(name);
+						if(classPath != null){
+							addImport(classPath, rtJarPath, false);
+                                   systemJarLoader.putClassName(classPath);
+						}
+					}
+				}
+			}
 		}
 		catch(Exception e) {
-			Screen.setStatus("Exception while Reading the JDK v" + version, 99);
+			Screen.setStatus("Exception while Reading JDK v" + version, 99);
 			e.printStackTrace();
 		}
 		Screen.setStatus("", 100);
@@ -81,14 +64,13 @@ public class JDKManager {
 			return;
 		for(File moduleFile : modulesFiles)
 			modules.add(new Module(moduleFile));
-          final JarLoader moduleLoader = JarLoader.prepareSystemModuleLoader();
+		systemJarLoader = JarLoader.prepareSystemModuleLoader();
 		modules.forEach((module)->{
-	          module.classes.forEach(c->{
-                    addImport(c);
-                    moduleLoader.putClassName(c.toString());
-               });
-	     });
-          jarLoaders.add(moduleLoader);
+			module.classes.forEach(c->{
+				addImport(c);
+                    systemJarLoader.putClassName(c.getImport());
+			});
+		});
 	}
 	public void addModule(File moduleFile){
 		for(Module module : modules){
@@ -99,17 +81,21 @@ public class JDKManager {
 		module.classes.forEach(this::addImport);
 		modules.add(module);
 	}
-     public ByteReader prepareReader(String name){
-          for(JarLoader loader : jarLoaders){
-               for(String className : loader.classNames){
+	public ByteReader prepareReader(String name){
+          for(String className : systemJarLoader.classNames){
+               if(className.equals(name)){
+                    return systemJarLoader.loadReader(name);
+               }
+          }
+          if(dependencyJarLoader != null) {
+               for(String className : dependencyJarLoader.classNames){
                     if(className.equals(name)){
-                         System.out.println(loader + " has " + name);
-                         return loader.loadReader(name);
+                         return dependencyJarLoader.loadReader(name);
                     }
                }
           }
-	     return null;
-     }
+		return null;
+	}
 	public void loadVersionInfo(){
 		try{
 			Scanner reader = new Scanner(new File(jdkDir.getAbsolutePath() + File.separator + "release"));
@@ -166,18 +152,17 @@ public class JDKManager {
 		Screen.setStatus("Reading Jar : " + new File(path).getName(), 10);
 		try{
 			try(JarFile rtJarFile = new JarFile(path)){
-     			for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
-     				JarEntry jarEntry = enums.nextElement();
-     				String name = jarEntry.getName();
-     				if(!name.endsWith("/")) {
-     					String classPath = Module.convertJarPathToPackagePath(name);
-     					if(classPath != null) {
-     						addImport(classPath, path, module);
-     					}
-     				}
-     			}
+				for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
+					JarEntry jarEntry = enums.nextElement();
+					String name = jarEntry.getName();
+					if(!name.endsWith("/")) {
+						String classPath = Module.convertJarPathToPackagePath(name);
+						if(classPath != null) {
+							addImport(classPath, path, module);
+						}
+					}
+				}
 			}
-               jarLoaders.add(new JarLoader(path));
 		}
 		catch(Exception e) {
 			Screen.setStatus("Exception while Reading Jar : " + new File(path).getName(), 12);
@@ -209,19 +194,19 @@ public class JDKManager {
 		version = version.substring(version.indexOf('\"') + 1, version.lastIndexOf('\"'));
 		if(version.startsWith("1."))
 			return Integer.parseInt(version.charAt(2) + "");
-          else if(version.contains("."))
-               return Integer.parseInt(version.substring(0, version.indexOf('.')));
-          else 
-               return Integer.parseInt(version);
+		else if(version.contains("."))
+			return Integer.parseInt(version.substring(0, version.indexOf('.')));
+		else
+			return Integer.parseInt(version);
 	}
 	public void loadFiles(File dir, LinkedList<File> files, String ext){
 		File[] F = dir.listFiles();
 		if(F == null || F.length == 0) return;
-			for(File f : F){
+		for(File f : F){
 			if(f.isDirectory())
 				loadFiles(f, files, ext);
 			else if(f.getName().endsWith(ext))
-			files.add(f);
+				files.add(f);
 		}
 	}
 	public void addImport(String packagePath, String jarPath, boolean module){
@@ -248,30 +233,30 @@ public class JDKManager {
 	public static LinkedList<Import> getSources() {
 		return sources;
 	}
-
-     public static LinkedList<JarLoader> getJarLoaders(){
-          return jarLoaders;
-     }
 	
 	public String getVersion() {
 		return version;
 	}
+     
 	public int getVersionAsInt(){
 		String version = this.version;
 		version = version.substring(version.indexOf('\"') + 1, version.lastIndexOf('\"'));
 		if(version.startsWith("1."))
 			return Integer.parseInt(version.charAt(2) + "");
-          else if(version.contains("."))
-               return Integer.parseInt(version.substring(0, version.indexOf('.')));
-          else
-               return Integer.parseInt(version);
+		else if(version.contains("."))
+			return Integer.parseInt(version.substring(0, version.indexOf('.')));
+		else
+			return Integer.parseInt(version);
 	}
 	public void clear(){
 		modules.clear();
 		imports.clear();
 		sources.clear();
-          jarLoaders.forEach(loader->loader.close());
-          jarLoaders.clear();
+          if(dependencyJarLoader != null)
+               dependencyJarLoader.close();
 	}
-	
+
+     public void prepareDependencyLoader(LinkedList<String> paths){
+     	dependencyJarLoader = new JarLoader(paths);
+     }
 }

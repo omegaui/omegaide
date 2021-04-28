@@ -77,8 +77,10 @@ public class CodeFramework{
 			if(!isAvailable) 
 			     return false;
 			ByteReader reader = null;
-			if(has(className)) reader = getReader(className);
-			else reader = Screen.getFileView().getJDKManager().prepareReader(className);
+			if(has(className)) 
+			     reader = getReader(className);
+			else 
+			     reader = Screen.getFileView().getJDKManager().prepareReader(className);
 			dataMembers = reader.getDataMembers("static");
 			//Checking whether if there is data after className
 			if(code.indexOf('.', ix + 1) >= 0){
@@ -611,7 +613,8 @@ public class CodeFramework{
 			//Generating from static hints
 			String modCode =  dataMember.type + "." + code;
 			value = genFullPathHints(modCode);
-		}else{
+		}
+		else{
 			String type = dataMember.type;
 			if(type.contains(".")){
 				String cType = type;

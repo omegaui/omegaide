@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import java.util.*;
 import omega.utils.BuildPathManager;
 import omega.jdk.JDKManager;
 import omega.instant.support.ArgumentManager;
@@ -57,12 +58,17 @@ public class FileView extends View {
 
      public void readDependencies(){
      	if(jdkManager == null) return;
+          LinkedList<String> paths = new LinkedList<>();
           projectManager.jars.forEach(path->{
                jdkManager.readJar(path, false);
+               paths.add(path);
           });
           projectManager.modules.forEach(path->{
                jdkManager.readJar(path, true);
+               paths.add(path);
           });
+          jdkManager.prepareDependencyLoader(paths);
+          paths.clear();
      }
 	
 	public void setProjectPath(String path) {
