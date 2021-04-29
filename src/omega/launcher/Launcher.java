@@ -69,7 +69,7 @@ public class Launcher extends JFrame{
           closeComp.setArc(0, 0);
 		add(closeComp);
 
-          imageComp = new TextComp("", c1, c3, c2, ()->{}){
+          imageComp = new TextComp("", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{}){
                @Override
                public void paint(Graphics graphics){
                	Graphics2D g = (Graphics2D)graphics;
@@ -83,7 +83,7 @@ public class Launcher extends JFrame{
           imageComp.setClickable(false);
           add(imageComp);
 
-          textComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, c3, ()->{});
+          textComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, TOOLMENU_COLOR1, ()->{});
           textComp.setBounds(getWidth()/2 - 200, 140, 400, 50);
           textComp.setClickable(false);
           textComp.setFont(new Font("Ubuntu Mono", Font.BOLD, 40));
@@ -95,6 +95,7 @@ public class Launcher extends JFrame{
 				setVisible(false);
 		});
 		openDoor.setBounds(0, 0, getWidth(), 40);
+          openDoor.setForeground(TOOLMENU_COLOR3);
 		panel.add(openDoor);
 		
           Door newDoor = new Door(File.separator + "ide" + File.separator + "Project" + File.separator + "New", icon, ()->{
@@ -102,6 +103,7 @@ public class Launcher extends JFrame{
                Screen.hideNotif();
           });
           newDoor.setBounds(0, 40, getWidth(), 40);
+          newDoor.setForeground(TOOLMENU_COLOR3);
           panel.add(newDoor);
           
           Door bmanDoor = new Door(File.separator + "ide" + File.separator + "Non-Java Project"  + File.separator + "New", icon, ()->{
@@ -109,6 +111,7 @@ public class Launcher extends JFrame{
                Screen.hideNotif();
           });
           bmanDoor.setBounds(0, 80, getWidth(), 40);
+          bmanDoor.setForeground(TOOLMENU_COLOR3);
           panel.add(bmanDoor);
           
           Door stuckDoor = new Door(File.separator + "ide" + File.separator + "See Tutorial Videos"  + File.separator + "Stucked or need Help?", icon, ()->{
@@ -118,6 +121,7 @@ public class Launcher extends JFrame{
                Screen.hideNotif();
           });
           stuckDoor.setBounds(0, 120, getWidth(), 40);
+          stuckDoor.setForeground(TOOLMENU_COLOR3);
           panel.add(stuckDoor);
 
 		//Creating Doors
@@ -132,6 +136,7 @@ public class Launcher extends JFrame{
 					omega.Screen.getScreen().setVisible(true);
 				});
 				door.setBounds(0, y, getWidth(), 40);
+                    door.setForeground(TOOLMENU_COLOR1);
 				panel.add(door);
 				y += 40;
 			}

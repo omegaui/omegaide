@@ -127,7 +127,7 @@ public class BuildLog extends JPanel {
 			fixedComp.setFont(PX12);
 			fixedComp.setRunnable(()->{
 				fixedComp.setClickable(false);
-				errorComp.setColors(c1, c3, c2);
+				errorComp.setColors(TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2);
 				errorSet.solved = true;
 			});
 			errorComp.add(fixedComp);
