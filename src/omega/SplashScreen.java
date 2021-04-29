@@ -35,7 +35,8 @@ public class SplashScreen extends JFrame{
 		pack();
 		createBufferStrategy(3);
 		setSize(300, 300);
-		setBackground(Color.WHITE);
+		setBackground(BACK_COLOR);
+          setIconImage(image);
 		setLocationRelativeTo(null);
 		addMouseListener(new MouseAdapter(){
 			@Override
@@ -127,9 +128,7 @@ public class SplashScreen extends JFrame{
 
 	@Override
 	public void paint(Graphics g){
-          //g.setColor(BACK);
-          //g.fillRect(getWidth()/2 - 64, 20, 128, 128);
-		//g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
+          
 	}
 
 	public void setProgress(int progress, String status){

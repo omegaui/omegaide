@@ -1,4 +1,5 @@
 package omega.gset;
+import omega.comp.NoCaretField;
 import java.awt.event.MouseEvent;
 import omega.Screen;
 import java.awt.Dimension;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 import javax.swing.JDialog;
 import omega.gset.OverView;
 import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 public class OverView extends JDialog{
      private int mouseX;
      private int mouseY;
@@ -29,7 +31,7 @@ public class OverView extends JDialog{
           setModal(false);
           setLayout(null);
           setUndecorated(true);
-          setSize(600, 500);
+          setSize(600, 530);
           setLocationRelativeTo(screen);
           setResizable(false);
           init();
@@ -37,7 +39,7 @@ public class OverView extends JDialog{
 
      public void init(){
           scrollPane = new JScrollPane(panel = new JPanel(null));
-          scrollPane.setBounds(0, 30, getWidth(), getHeight() - 60);
+          scrollPane.setBounds(0, 30, getWidth(), getHeight() - 90);
           panel.setBackground(c2);
           add(scrollPane);
           
@@ -68,10 +70,33 @@ public class OverView extends JDialog{
           add(titleComp);
 
           TextComp genComp = new TextComp("Implement", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::generate);
-          genComp.setBounds(0, getHeight() - 30, getWidth(), 30);
+          genComp.setBounds(0, getHeight() - 60, getWidth(), 30);
           genComp.setFont(omega.settings.Screen.PX16);
           genComp.setArc(0, 0);
           add(genComp);
+          
+          NoCaretField searchField = new NoCaretField("", "search any method here", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+          searchField.setBounds(0, getHeight() - 30, getWidth(), 30);
+          searchField.setFont(PX14);
+          searchField.setOnAction(()->search(searchField.getText()));
+          add(searchField);
+          addKeyListener(searchField);
+     }
+
+     public synchronized void search(String text){
+          comps.forEach(panel::remove);
+          int y = 0;
+          for(TextComp comp : comps) {
+               if(comp.getName().contains(text)){
+                    comp.setBounds(0, y, getWidth(), 30);
+                    panel.add(comp);
+                    y += 30;
+               }
+          }
+          panel.setPreferredSize(new Dimension(getWidth(), y));
+          scrollPane.getVerticalScrollBar().setVisible(true);
+          scrollPane.getVerticalScrollBar().setValue(0);
+          scrollPane.repaint();
      }
 
      public void generate(){
@@ -129,13 +154,14 @@ public class OverView extends JDialog{
                     txComp.setBounds(0, y, getWidth(), 30);
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);
-                    txComp.setFont(omega.settings.Screen.PX14);
+                    txComp.setFont(PX14);
+                    txComp.setName(b.className);
                     panel.add(txComp);
                     comps.add(txComp);
                     members.add(new DataMember("", "", "", "", ""));
                     y += 30;
                     for(DataMember d : b.dataMembers){
-                         if(d.parameters != null && !Generator.isMemberOfObject(d)){
+                         if(d.parameters != null && !Generator.isMemberOfObject(d) && d.modifier != null && !d.modifier.contains("final")){
                               String rep = d.getRepresentableValue();
                               if(rep == null) continue;
                               TextComp textComp = new TextComp(rep, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
@@ -146,6 +172,7 @@ public class OverView extends JDialog{
                               textComp.setArc(0, 0);
                               textComp.alignX = 5;
                               textComp.setFont(omega.settings.Screen.PX14);
+                              textComp.setName(rep);
                               panel.add(textComp);
                               comps.add(textComp);
                               members.add(d);
@@ -159,15 +186,16 @@ public class OverView extends JDialog{
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);
                     txComp.setFont(omega.settings.Screen.PX14);
+                    txComp.setName(s.className);
                     panel.add(txComp);
                     comps.add(txComp);
                     members.add(new DataMember("", "", "", "", ""));
                     y += 30;
                     for(DataMember d : s.dataMembers){
-                         if(d.parameters != null && !Generator.isMemberOfObject(d)){
+                         if(d.parameters != null && !Generator.isMemberOfObject(d) && d.modifier != null && !d.modifier.contains("final")){
                               String rep = d.getRepresentableValue();
                               if(rep == null) continue;
-                              TextComp textComp = new TextComp(rep, c1, c2, c3, ()->{});
+                              TextComp textComp = new TextComp(rep, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
                               textComp.setRunnable(()->{
                                    textComp.setColors(textComp.color1, textComp.color3, textComp.color2);
                               });
@@ -175,6 +203,7 @@ public class OverView extends JDialog{
                               textComp.setArc(0, 0);
                               textComp.alignX = 5;
                               textComp.setFont(omega.settings.Screen.PX14);
+                              textComp.setName(rep);
                               panel.add(textComp);
                               comps.add(textComp);
                               members.add(d);

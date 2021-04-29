@@ -62,7 +62,7 @@ public class SideMenu extends JPanel {
                public void draw(Graphics2D g) {
                     g.setColor(color3);
                     g.fillOval(6, 6, 20, 20);
-                    g.setColor(UIManager.isDarkMode() ? color1 : color2);
+                    g.setColor(color2);
                     g.fillOval(10, 10, 12, 12);
                     g.setColor(color3);
                     g.drawLine(34, 34, 22, 22);

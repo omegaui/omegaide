@@ -17,6 +17,7 @@ import omega.comp.TextComp;
 import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 import static omega.instant.support.ProjectWizard.addHoverEffect;
 import static omega.instant.support.ProjectWizard.createSRCFile;
 import static omega.instant.support.ProjectWizard.setData;
@@ -35,8 +36,7 @@ public class FileWizard extends JDialog{
 	}
 
 	private void init(){
-		NoCaretField nameField = new NoCaretField("", "type file name", UIManager.isDarkMode() ? c1 : Color.BLACK, c2, c3);
-		nameField.setForeground(UIManager.c3);
+		NoCaretField nameField = new NoCaretField("", "type file name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
 		nameField.setToolTipText("Enter name of the File or Source");
 		nameField.setBounds(0, 0, getWidth() - 40, 40);
 		add(nameField);
@@ -48,7 +48,7 @@ public class FileWizard extends JDialog{
 		fileC.setApproveButtonText("Select");
 		fileC.setDialogTitle("Select a directory as source root");
           
-		parentRoot = new TextComp(":", c1, c3, c2, ()->{
+		parentRoot = new TextComp(":", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{
 			int res = fileC.showOpenDialog(this);
 			if(res == JFileChooser.APPROVE_OPTION){
 				parentRoot.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
@@ -59,7 +59,7 @@ public class FileWizard extends JDialog{
 		add(parentRoot);
 
 		final OPopupWindow popup = new OPopupWindow("File-Type Menu", this, 0, false).width(210);
-		typeBtn = new TextComp("class", c1, c2, c3, ()->{});
+		typeBtn = new TextComp("class", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		typeBtn.setBounds(0, nameField.getHeight(), getWidth(), 40);
           popup.createItem("Directory", IconManager.projectImage, ()->typeBtn.setText("directory"))
           .createItem("Class", IconManager.classImage, ()->typeBtn.setText("class"))
@@ -78,13 +78,13 @@ public class FileWizard extends JDialog{
           typeBtn.setArc(0, 0);
 		add(typeBtn);
 
-		TextComp cancelBtn = new TextComp("Close", c1, c2, c3, ()->setVisible(false));
+		TextComp cancelBtn = new TextComp("Close", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
 		cancelBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
 		setData(cancelBtn);
           cancelBtn.setArc(0, 0);
 		add(cancelBtn);
 
-		TextComp createBtn = new TextComp("Create", c1, c2, c3, ()->{
+		TextComp createBtn = new TextComp("Create", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			if(parentRoot.getToolTipText() == null) return;
 			if(!new File(parentRoot.getToolTipText()).exists()) {
 				nameField.setText("The Root Directory Does not exists");

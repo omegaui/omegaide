@@ -51,7 +51,7 @@ public class Screen extends JDialog {
      }
 
      public void init(){
-     	textComp = new TextComp("Structure View", c3, c1, c2, ()->{});
+     	textComp = new TextComp("Structure View", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{});
           textComp.setClickable(false);
           textComp.setFont(omega.settings.Screen.PX18);
           textComp.setArc(0, 0);
@@ -71,7 +71,7 @@ public class Screen extends JDialog {
           textComp.setBounds(0, 0, getWidth() - 40, 40);
           add(textComp);
 
-          TextComp closeComp = new TextComp("X", c1, c2, c3, ()->setVisible(false));
+          TextComp closeComp = new TextComp("X", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setArc(0, 0);
           closeComp.setBounds(getWidth() - 40, 0, 40, 40);
           closeComp.setFont(omega.settings.Screen.PX14);
@@ -83,7 +83,7 @@ public class Screen extends JDialog {
           scrollPane.setBounds(0, 70, getWidth()/3, getHeight() - 40);
           add(scrollPane);
 
-          TextComp sep0 = new TextComp("", c1, c3, c3, ()->{});
+          TextComp sep0 = new TextComp("", c1, TOOLMENU_COLOR2, TOOLMENU_COLOR2, ()->{});
           sep0.setBounds(getWidth()/3, 40, 2, getHeight() - 40);
           add(sep0);
 
@@ -91,7 +91,7 @@ public class Screen extends JDialog {
           searchClassField.setBackground(c2);
           searchClassField.setBounds(0, 40, getWidth()/3, 30);
           searchClassField.setFont(omega.settings.Screen.PX16);
-          searchClassField.setForeground(c3);
+          searchClassField.setForeground(glow);
           searchClassField.addActionListener((e)->new Thread(()->find(e.getActionCommand())).start());
           add(searchClassField);
           
@@ -104,11 +104,11 @@ public class Screen extends JDialog {
           searchContentField.setBackground(c2);
           searchContentField.setBounds(getWidth()/3 + 2, 40, rightPane.getWidth() - 10 - 30, 30);
           searchContentField.setFont(omega.settings.Screen.PX16);
-          searchContentField.setForeground(c3);
+          searchContentField.setForeground(glow);
           searchContentField.addActionListener((e)->new Thread(()->search(e.getActionCommand())).start());
           add(searchContentField);
 
-          toggleComp = new TextComp("~", c1, c2, c3, ()->{
+          toggleComp = new TextComp("~", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                nameTypeView = !nameTypeView;
                search(lastSearch);
                toggleComp.setText(nameTypeView ? "~" : "$");
@@ -166,7 +166,9 @@ public class Screen extends JDialog {
                     if(text.length() > 35)
                          text = text.substring(0, 35) + "..";
                     
-                    TextComp codeComp = new TextComp(text, c1, c2, c3, ()->{new Thread(()->genView(im)).start();});
+                    TextComp codeComp = new TextComp(text, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+                         new Thread(()->genView(im)).start();
+                    });
                     codeComp.setBounds(0, leftBlock, getWidth()/3, 30);
                     
                     if(TEXT.length() > 35)

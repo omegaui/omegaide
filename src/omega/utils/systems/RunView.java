@@ -809,7 +809,7 @@ public class RunView extends View {
                if(runProcess != null && runProcess.isAlive()) {
                     runProcess.destroyForcibly();
                     runProcess.destroyForcibly();
-                    printText("\'Destroy Command\' Sent to process id \"" + runProcess.pid() + "\"");
+                    printText("\"Destroy Command\" Sent to process id \"" + runProcess.pid() + "\"");
                }
 		}
 
@@ -835,11 +835,13 @@ public class RunView extends View {
 					PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
 					writer.println(inputField.getText());
 					writer.flush();
-				}catch(Exception e1) {e1.printStackTrace();}
+				}
+				catch(Exception e1) {e1.printStackTrace();}
 				inputField.setText("");
 			});
-			inputField.setCaretColor(java.awt.Color.YELLOW);
-			UIManager.setData(inputField);
+			inputField.setCaretColor(omega.utils.UIManager.glow);
+               inputField.setBackground(omega.utils.UIManager.c2);
+               inputField.setForeground(omega.utils.UIManager.glow);
                inputField.setFont(omega.settings.Screen.PX18);
 			add(inputField, BorderLayout.SOUTH);
 			comps.add(inputField);

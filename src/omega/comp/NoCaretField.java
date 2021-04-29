@@ -19,6 +19,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import static java.awt.event.KeyEvent.*;
+/** 
+ *  Only one NoCaretField can be embedded into a Window.
+ */
 public class NoCaretField extends JComponent implements KeyListener, FocusListener{
 	public Color color1;
 	public Color color2;

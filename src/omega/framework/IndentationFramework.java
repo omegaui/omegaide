@@ -10,19 +10,30 @@ public class IndentationFramework {
           int tabs = 0;
           int lineN = 0;
           boolean needsExtraTab = false;
+          boolean containsEqual = false;
           while(tok.hasMoreTokens()){
                String token = tok.nextToken().trim();
                lineN++;
                if(lineN <= caretLineNumber)
                     caretPos += (tabs/textArea.getTabSize());
-               tabs -= count('}', token);
+               
+               if(count('{', token) == count('}', token))
+                    containsEqual = true;
+               else
+                    containsEqual = false;
+               
+               if(!containsEqual)
+                    tabs -= count('}', token);
+               
                if(!needsExtraTab)
                     textArea.append(getTabs(tabs) + token + "\n");
                else{
                     textArea.append(getTabs(tabs) + getTabs(1) + token + "\n");
                     needsExtraTab = false;
                }
-               tabs += count('{', token);
+
+               if(!containsEqual)
+                    tabs += count('{', token);
                
                if((token.startsWith("if") && !token.contains(";")) || token.startsWith("while") || token.startsWith("for") || token.startsWith("else")){
                     if(count('{', token) == 0 && count('(', token) == count(')', token))

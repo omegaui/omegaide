@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 public class UniversalProjectWizard extends JDialog{
      private TextComp titleComp;
      private JTextField nameField;
@@ -27,22 +28,22 @@ public class UniversalProjectWizard extends JDialog{
      	super(screen);
           setModal(true);
           setLayout(null);
-          setSize(500, 400);
+          setSize(500, 410);
           setLocationRelativeTo(null);
           setUndecorated(true);
           init();
      }
 
      public void init(){
-     	TextComp closeComp = new TextComp("x", c1, c2, c3, ()->setVisible(false));
-          closeComp.setBounds(0, 0, 40, 40);
-          closeComp.setFont(omega.settings.Screen.PX16);
+     	TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+          closeComp.setBounds(0, 0, 30, 30);
+          closeComp.setFont(PX14);
           closeComp.setArc(0, 0);
           add(closeComp);
           
-          titleComp = new TextComp("Project Wizard", c1, c2, c3, ()->{});
-          titleComp.setBounds(40, 0, getWidth() - 40, 40);
-          titleComp.setFont(omega.settings.Screen.PX16);
+          titleComp = new TextComp("Project Wizard", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
+          titleComp.setBounds(30, 0, getWidth() - 30, 30);
+          titleComp.setFont(PX14);
           titleComp.setArc(0, 0);
           titleComp.setClickable(false);
           titleComp.addMouseListener(new MouseAdapter(){
@@ -55,16 +56,16 @@ public class UniversalProjectWizard extends JDialog{
           titleComp.addMouseMotionListener(new MouseAdapter(){
                @Override
                public void mouseDragged(MouseEvent e){
-                    setLocation(e.getXOnScreen() - mouseX - 40, e.getYOnScreen() - mouseY);
+                    setLocation(e.getXOnScreen() - mouseX - 30, e.getYOnScreen() - mouseY);
                }
           });
           add(titleComp);
 
           nameField = new JTextField();
-          nameField.setBounds(0, 40, getWidth() - 40, 40);
-          nameField.setFont(omega.settings.Screen.PX18);
+          nameField.setBounds(0, 30, getWidth() - 30, 30);
+          nameField.setFont(PX16);
           nameField.setBackground(c2);
-          nameField.setForeground(c3);
+          nameField.setForeground(glow);
           ProjectWizard.addHoverEffect(nameField, "Enter Project Name (do not include \'" + File.separator + "\')");
           add(nameField);
 
@@ -73,26 +74,26 @@ public class UniversalProjectWizard extends JDialog{
           fc.setApproveButtonText("Select");
           fc.setDialogTitle("Choose Project Workspace Directory");
 
-          rootComp = new TextComp(":", c1, c3, c2, ()->{
+          rootComp = new TextComp(":", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, ()->{
                int res = fc.showOpenDialog(UniversalProjectWizard.this);
                if(res == JFileChooser.APPROVE_OPTION)
                     rootComp.setToolTipText(fc.getSelectedFile().getAbsolutePath());
           });
-          rootComp.setBounds(getWidth() - 40, 40, 40, 40);
-          rootComp.setFont(omega.settings.Screen.PX18);
+          rootComp.setBounds(getWidth() - 30, 30, 30, 30);
+          rootComp.setFont(PX16);
           rootComp.setArc(0, 0);
           add(rootComp);
 
           dirArea = new RTextArea();
           JScrollPane scrollPane = new JScrollPane(dirArea);
-          scrollPane.setBounds(0, 80, getWidth(), getHeight() - 50 - 80);
+          scrollPane.setBounds(0, 60, getWidth(), getHeight() - 40 - 60);
           dirArea.setBackground(c2);
-          dirArea.setForeground(c3);
-          dirArea.setFont(omega.settings.Screen.PX14);
+          dirArea.setForeground(TOOLMENU_COLOR3);
+          dirArea.setFont(PX14);
           ProjectWizard.addHoverEffect(dirArea, "Enter the names of the directories that you want to create.\nFor Example:\nbin\nsrc\nlib\nThey will be created when you create the Project!");
           add(scrollPane);
 
-          Comp createBtn = new Comp("Create", c1, c2, c3, ()->{
+          Comp createBtn = new Comp("Create", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                String proName = rootComp.getToolTipText() + File.separator + nameField.getText();
                LinkedList<String> dirs = new LinkedList<>();
                if(!dirArea.getText().equals(dirArea.getToolTipText())){
@@ -106,8 +107,8 @@ public class UniversalProjectWizard extends JDialog{
                     Screen.getScreen().loadProject(new File(proName));
                }
           });
-          createBtn.setBounds(0, getHeight() - 50, getWidth(), 50);
-          createBtn.setFont(omega.settings.Screen.PX18);
+          createBtn.setBounds(0, getHeight() - 40, getWidth(), 40);
+          createBtn.setFont(PX16);
           createBtn.setArc(0, 0);
           add(createBtn);
      }
