@@ -60,8 +60,14 @@ public class PluginComp extends JComponent{
 			public void draw(Graphics2D g){
 				if(image != null){
 					g.setColor(color2);
-					g.fillRoundRect(100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), 40, 40);
-					g.drawImage(image, 100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), null);
+                         if(image.getWidth() < 90){
+     					g.fillRoundRect(100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), 40, 40);
+     					g.drawImage(image, 100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), null);
+                         }
+                         else {
+                              g.fillRoundRect(100/2 - 64/2, 100/2 - 64/2, 64, 64, 40, 40);
+                              g.drawImage(image, 100/2 - 64/2, 100/2 - 64/2, 64, 64, null);
+                         }
 				}
 			}
 		};

@@ -42,6 +42,7 @@ public class ListComp extends JComponent{
      	extField = new JTextField();
           extField.setBounds(0, 0, 210, 40);
           extField.setBackground(c2);
+          extField.setForeground(glow);
           extField.setFont(PX14);
           extField.addActionListener((e)->r.run());
           add(extField);
@@ -49,6 +50,7 @@ public class ListComp extends JComponent{
           containerField = new JTextField();
           containerField.setBounds(210, 0, 210, 40);
           containerField.setBackground(c2);
+          containerField.setForeground(glow);
           containerField.setFont(PX14);
           containerField.addActionListener((e)->r.run());
           add(containerField);
@@ -59,7 +61,7 @@ public class ListComp extends JComponent{
           fc.setDialogTitle("Choose a directory which will be searched for (.) files");
           fc.setApproveButtonText("Select");
 
-          rootComp = new TextComp(":", c1, c3, c2, ()->{
+          rootComp = new TextComp(":", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{
                fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));
                int res = fc.showOpenDialog(ListComp.this);
                if(res == JFileChooser.APPROVE_OPTION){
@@ -72,7 +74,7 @@ public class ListComp extends JComponent{
           rootComp.setToolTipText("Select Source Directory");
           add(rootComp);
           
-          chComp = new TextComp("-", c1, c3, c2, ()->{});
+          chComp = new TextComp("-", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, ()->{});
           chComp.setRunnable(()->{
                validComp = !validComp;
                chComp.setText(validComp ? "-" : "+");
@@ -83,7 +85,7 @@ public class ListComp extends JComponent{
           chComp.setArc(0, 0);
           add(chComp);
 
-          surComp = new TextComp("\"", "Click to surround file paths within \" double quotes", c1, c2, c3, ()->{});
+          surComp = new TextComp("\"", "Click to surround file paths within \" double quotes", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
           surComp.setRunnable(()->{
                sur = !sur;
                surComp.setToolTipText(sur ? "Click to do not surround file paths within \" double quotes" : "Click to surround file paths within \" double quotes");

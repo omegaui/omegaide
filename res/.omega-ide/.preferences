@@ -2,6 +2,8 @@
 -
 >Content Assist Real-Time
 -true
+>Content Mode Java
+-true
 >Use Star Imports
 -false
 >Folder Containing Java Development Kits and Environments

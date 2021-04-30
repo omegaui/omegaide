@@ -12,14 +12,15 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JDialog;
+
+import static omega.settings.Screen.*;
 public class ThemePicker extends JDialog {
-     private Color c1 = new Color(0, 0, 255, 40);
+     private Color c1 = new Color(126, 20, 219, 40);
      private Color c2 = Color.WHITE;
-     private Color c3 = new Color(0, 0, 255, 130);
-     private Color b1 = Color.decode("#8400FF");
-     private Color b2 = Color.decode("#1B1A48");
-     private Color b3 = Color.decode("#F5AA1C");
-     private Font PX20 = new Font("Ubuntu Mono", Font.BOLD, 20);
+     private Color c3 = new Color(126, 20, 219);
+     private Color b1 = Color.decode("#27AA55");
+     private Color b2 = Color.decode("#282828");
+     private Color b3 = Color.decode("#f0b40f");
      private int pressX;
      private int pressY;
      private BufferedImage image;

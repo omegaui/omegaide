@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import org.fife.ui.rtextarea.RTextArea;
 import java.awt.image.BufferedImage;
 import javax.swing.JDialog;
+import static omega.utils.UIManager.*;
 public class Startup extends JDialog {
 	private static BufferedImage image;
 	private TextComp closeBtn;
@@ -31,7 +32,10 @@ public class Startup extends JDialog {
 				LICENSE_TEXT += reader.nextLine() + "\n";
 			}
 			reader.close();
-	}catch(Exception e){ e.printStackTrace(); }
+		}
+		catch(Exception e){
+		     e.printStackTrace();
+	     }
 		setUndecorated(true);
 		setSize(800, 550);
 		JPanel panel = new JPanel(null);
@@ -45,30 +49,35 @@ public class Startup extends JDialog {
 		setVisible(true);
 	}
 	public void init(){
-		closeBtn = new TextComp("x", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->System.exit(0));
+		closeBtn = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
 		closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
 		closeBtn.setFont(omega.settings.Screen.PX18);
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
+      
 		textArea = new RTextArea(LICENSE_TEXT);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
-		textArea.setBackground(omega.utils.UIManager.c2);
-		textArea.setForeground(omega.utils.UIManager.c3);
+		textArea.setBackground(c2);
+		textArea.setForeground(TOOLMENU_COLOR3);
 		textArea.setFont(omega.settings.Screen.PX18);
 		textArea.setCaretPosition(0);
 		textArea.setEditable(false);
 		add(scrollPane);
-		acceptComp = new TextComp("I Accept", omega.utils.UIManager.c1, omega.utils.UIManager.c2, omega.utils.UIManager.c3, ()->{
+		acceptComp = new TextComp("I Accept", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			try{
 				new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
 				setVisible(false);
-		}catch(Exception e){ e.printStackTrace(); }
+	          }
+		     catch(Exception e){ 
+		          e.printStackTrace();
+	          }
 		});
 		acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
 		acceptComp.setFont(omega.settings.Screen.PX16);
 		add(acceptComp);
-	TextComp imageComp = new TextComp("", omega.utils.UIManager.c2, omega.utils.UIManager.c2, omega.utils.UIManager.c2, ()->{}){
+          
+	     TextComp imageComp = new TextComp("", c2, c2, c2, null){
 			@Override
 			public void paint(Graphics graphics){
 				super.paint(graphics);
@@ -82,14 +91,15 @@ public class Startup extends JDialog {
 		imageComp.setBounds(0, 0, 66, 66);
 		imageComp.setClickable(false);
 		add(imageComp);
-	TextComp textComp = new TextComp("Omega IDE", omega.utils.UIManager.c2, omega.utils.UIManager.c3, omega.utils.UIManager.c3, ()->{});
+          
+		TextComp textComp = new TextComp("Omega IDE", c2, TOOLMENU_COLOR1, TOOLMENU_COLOR1, null);
 		textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
 		textComp.setClickable(false);
 		textComp.setFont(omega.settings.Screen.PX28);
 		textComp.setArc(0, 0);
 		add(textComp);
 		
-	TextComp licComp = new TextComp("license agreement", omega.utils.UIManager.c2, omega.utils.UIManager.c3, omega.utils.UIManager.c3, ()->{});
+		TextComp licComp = new TextComp("license agreement", c2, TOOLMENU_COLOR2, TOOLMENU_COLOR2, ()->{});
 		licComp.setBounds(getWidth()/2 - 150, 50, 300, 30);
 		licComp.setClickable(false);
 		licComp.setFont(omega.settings.Screen.PX18);
@@ -114,7 +124,7 @@ public class Startup extends JDialog {
 				if(UIManager.isDarkMode())
 					FlatDarkLaf.install();
 				else
-				     FlatLightLaf.install();
+					FlatLightLaf.install();
 			}
 			catch(Exception e) {
 				System.err.println(e);

@@ -28,13 +28,13 @@ public class WorkspaceSelector extends JDialog{
      }
 
      public void init(){
-          TextComp closeComp = new TextComp("x", c1, c2, c3, ()->dispose());
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->dispose());
           closeComp.setBounds(0, 0, 40, 40);
           closeComp.setFont(omega.settings.Screen.PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp titleComp = new TextComp("Select Workspace Directory", c1, c2, c3, ()->{
+          TextComp titleComp = new TextComp("Select Workspace Directory", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
                setVisible(false);
           });
           titleComp.addMouseMotionListener(new MouseAdapter(){
@@ -60,7 +60,7 @@ public class WorkspaceSelector extends JDialog{
           textField.setBounds(20, 50, getWidth() - 40, 40);
           textField.setFont(omega.settings.Screen.PX18);
           textField.setBackground(c2);
-          textField.setForeground(c3);
+          textField.setForeground(glow);
           textField.setEditable(false);
           add(textField);
 
@@ -70,7 +70,7 @@ public class WorkspaceSelector extends JDialog{
           chooser.setApproveButtonText("Select");
           chooser.setDialogTitle("Choose only one directory");
 
-          TextComp chooseComp = new TextComp("select", c1, c2, c3, ()->{
+          TextComp chooseComp = new TextComp("select", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                int res = chooser.showOpenDialog(WorkspaceSelector.this);
                if(res == JFileChooser.APPROVE_OPTION){
                     DataManager.setProjectsHome(chooser.getSelectedFile().getAbsolutePath());

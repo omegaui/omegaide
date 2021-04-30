@@ -29,9 +29,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.io.File;
 import omega.terminal.TerminalComp;
-import omega.update.Updater;
-import omega.plugin.PluginStore;
-import omega.plugin.PluginView;
 import omega.plugin.PluginManager;
 import omega.instant.support.Settings;
 import omega.utils.systems.ProjectView;
@@ -85,10 +82,7 @@ public class Screen extends JFrame {
      private static omega.settings.Screen settings;
      private static Settings universalSettings;
 	private static PluginManager pluginManager;
-	private static PluginView pluginView;
-	private static PluginStore pluginStore;
      private static PluginCenter pluginCenter;
-	private static Updater updater;
      private static TerminalComp terminal;
      private static ThemePicker picker;
 
@@ -161,7 +155,6 @@ public class Screen extends JFrame {
 	private void init() {
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
-		updater = new Updater(this);
 		errorHighlighter = new ErrorHighlighter();
 		basicHighlight = new BasicHighlight();
 
@@ -252,8 +245,6 @@ public class Screen extends JFrame {
 		splash.setProgress(83, "plugging in");
 
 		pluginManager = new PluginManager();
-		pluginView = new PluginView(this);
-		pluginStore = new PluginStore();
           pluginCenter = new PluginCenter(this);
 
 		splash.setProgress(100, "");
@@ -635,10 +626,6 @@ public class Screen extends JFrame {
      public TabPanel getBottomTabPanel() {
           return bottomTabPanel;
      }
-     
-	public static void updateIDE() {
-		updater.setVisible(true);
-	}
 
 	public static PluginManager getPluginManager() {
 		return pluginManager;
@@ -647,14 +634,6 @@ public class Screen extends JFrame {
      public static PluginCenter getPluginCenter(){
           return pluginCenter;
      }
-
-	public static PluginView getPluginView() {
-		return pluginView;
-	}
-
-	public static PluginStore getPluginStore() {
-		return pluginStore;
-	}
 
 	public void saveEssential() {
 		uiManager.save();

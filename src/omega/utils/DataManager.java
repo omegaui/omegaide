@@ -51,7 +51,7 @@ public class DataManager extends DataBase {
                setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
 		}
 		catch(Exception e) { 
-		     System.err.println(e);
+		     e.printStackTrace();
 	     }
 	}
 

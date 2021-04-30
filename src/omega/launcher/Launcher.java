@@ -63,7 +63,7 @@ public class Launcher extends JFrame{
 		scrollPane.setBounds(0, 220, getWidth(), getHeight() - 220);
 		add(scrollPane);
 
-		closeComp = new TextComp("X", c1, c2, c3, ()->System.exit(0));
+		closeComp = new TextComp("X", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
 		closeComp.setBounds(getWidth() - 40, 0, 40, 40);
           closeComp.setFont(omega.settings.Screen.PX18);
           closeComp.setArc(0, 0);
