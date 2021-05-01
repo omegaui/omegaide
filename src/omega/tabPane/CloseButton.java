@@ -206,7 +206,14 @@ public class CloseButton extends JComponent {
 			return "Mac";
 		else if(ext.equals(".sh") || ext.equals(".run"))
 			return "Linux";
-		return "?";
+          else if(ext.equals(".md"))
+               return "MD";
+          if(ext.length() >= 3)
+		     return Character.toUpperCase(ext.charAt(1)) + "" + ext.charAt(2);
+          else if(ext.length() >= 2)
+               return Character.toUpperCase(ext.charAt(1)) + "";
+          else
+               return "?";
 	}
 
 }

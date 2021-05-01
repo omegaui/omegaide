@@ -92,7 +92,8 @@ public class ProjectView extends JDialog{
 	public void reload() {
 		tree = tree.reload();
 		organizeProjectViewDefaults();
-          Screen.getFileView().getJDKManager().readSources(tree.getRoot().getAbsolutePath());
+          if(Screen.getFileView().getJDKManager() != null)
+               Screen.getFileView().getJDKManager().readSources(tree.getRoot().getAbsolutePath());
 		Screen.getFileView().getSearchWindow().cleanAndLoad(new File(Screen.getFileView().getProjectPath()));
 	}
 

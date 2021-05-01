@@ -311,7 +311,7 @@ public abstract class TokenMakerBase implements TokenMaker {
 
 
 	/**
-	 * Deletes the linked list of tokens so we can begin anew.  This should
+	 * Deletes the linked list of tokens so we can begin a new.  This should
 	 * never have to be called by the programmer, as it is automatically
 	 * called whenever the user calls
 	 * {@link #getLastTokenTypeOnLine(Segment, int)} or
@@ -322,6 +322,9 @@ public abstract class TokenMakerBase implements TokenMaker {
 		tokenFactory.resetAllTokens();
 	}
 
+     protected boolean getNoTokensIdentifiedYet() {
+          return firstToken == null;
+     }
 
 	/**
 	 * Sets the language index to assign to tokens moving forward.  This

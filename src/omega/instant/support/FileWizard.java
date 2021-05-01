@@ -120,9 +120,17 @@ public class FileWizard extends JDialog{
 				if(!file.exists()){
 					try{
 						file.createNewFile();
-						Screen.getProjectView().reload();
+					}
+					catch(Exception ex){
+					     nameField.setText("Access Denied");
+				     }
+                         try{
+                              Screen.getProjectView().reload();
                               Screen.getScreen().loadFile(file);
-					}catch(Exception ex){nameField.setText("Access Denied");}
+                         }
+                         catch(Exception e){ 
+                         	System.err.println(e); 
+                         }
 				}
 				else
 					nameField.setText("File Already Exists");

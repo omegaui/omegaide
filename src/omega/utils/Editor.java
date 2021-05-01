@@ -1,4 +1,5 @@
 package omega.utils;
+import org.fife.ui.rsyntaxtextarea.modes.*;
 import omega.token.factory.*;
 import omega.highlightUnit.BasicHighlight;
 import org.fife.ui.rtextarea.SearchResult;
@@ -186,8 +187,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".js"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
 		else if(f.getName().endsWith(".json"))
-			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON);
-		else if(f.getName().endsWith(".json"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON_WITH_COMMENTS);
 		else if(f.getName().endsWith(".hjson"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSP);
@@ -233,6 +232,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
 		else if(f.getName().endsWith(".rs"))
 			RustTokenMaker.apply(e);
+          else if(f.getName().endsWith(".md"))
+               MarkdownTokenMaker.apply(e);
 	}
 	public void loadTheme() {
 		try {

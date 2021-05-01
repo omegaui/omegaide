@@ -169,7 +169,8 @@ public class Branch extends JComponent{
 		g.fillRect(enter ? (OPTIMAL_X - 2) : 0, 0, getWidth(), getHeight());
 		g.setColor(getForeground());
 		g.drawString(name, OPTIMAL_X, (getHeight()/2) + 2);
-		g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
+          if(!type.equals("?"))
+		     g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
 		g.drawImage(icon, 16, 8, 16, 16, null);
 		if(enter){
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + FONT.getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
