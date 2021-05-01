@@ -255,7 +255,7 @@ Want to Donate for the Project?
 
 **Google Pay** : UPI ID 1 -> **arhamfar22@okaxis**
 
-**Google Pay** : UPI ID 1 -> **arhamfar22@okicici**
+**Google Pay** : UPI ID 2 -> **arhamfar22@okicici**
 
 **QR Code**
 
