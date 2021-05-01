@@ -5,18 +5,15 @@
 ![](/images/dark.png)
 
 
-⏩ Omega IDE is a blazing fast Java IDE promising performance even on minimal resource environment with a least available RAM of 210 MB. 
+⏩ Omega IDE is a blazing fast Java IDE promising performance even on minimal resource environment 
+with a least available RAM of 210 MB. 
 
 Here is a proof, 
 
 OS - Deepin Linux
-
 RAM - 2GB
-
 Storage - 320 GB
-
 GPU - Intel Integrated
-
 CPU - Intel Pentium Duo 2 cores 2 logical processors 2 x 2.20 GHz
 
 ![](/images/p1.png)
@@ -37,7 +34,7 @@ It tries to reassemble a material look so that it is easy to adapt the customize
 
 It has a elegant UI filled with custom components(have a look at sources at src/omega/comp).
 
-**The component library of Omega IDE is independent of any other IDE component. **
+**The component library of Omega IDE is independent of any other IDE component**
 
 **As a result You can use this component library under the terms of GNU GPL v3**
 
@@ -125,11 +122,11 @@ It serves a major role when you want you have multiple source files to create or
 What it actually does is that it creates the source files specified as soon as the project wizard prepares the project.
 
 write there,
-
+```
 main.Tutorial -class
 
 main.Demo -interface
-
+```
 
 Now leaving the dependency part.
 
@@ -209,7 +206,7 @@ This component can be used to make a list of paths of source files before compil
 
 Like the one we need in compiling a groovy project.
 
-The first field is asking the type of file and the second one is asking the file name in which the paths will be written.
+The first field is asking the extension of the file and the second one is asking the file name in which the paths will be written.
 The **"** component is for surrounding the paths within double-quotes if you want.
 
 Don't forget to Click Apply else you will lose changes.
@@ -256,7 +253,7 @@ Want to Donate for the Project?
 
 **QR Code**
 
-![](/images/qr_code.png)
+![](/images/qr_code.jpg)
 
 
 
