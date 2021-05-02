@@ -162,6 +162,10 @@ public class BuildView extends View {
                     createClassList();
                     if(classess.isEmpty())
                          return;
+                    if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+                         Screen.setStatus("Please first select a valid JDK for the project", 10);
+                         return;
+                    }
                     Screen.getErrorHighlighter().removeAllHighlights();
                     optimizeProjectOutputs();
                     getScreen().getToolMenu().buildComp.setClickable(false);

@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import omega.jdk.*;
 import omega.utils.BuildLog;
 import omega.utils.UIManager;
 import omega.Screen;
@@ -45,8 +46,7 @@ public class RunView extends View {
           buildLog = new BuildLog();
 	}
 
-	public void setMainClass(String mainClass)
-	{
+	public void setMainClass(String mainClass) {
 		this.mainClass = mainClass;
 		Screen.getProjectView().setTitleMainClass();
 	}
@@ -476,6 +476,10 @@ public class RunView extends View {
 			String mainClassPath = this.mainClassPath; 
 			try {
 				try {
+                         if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+                              Screen.setStatus("Please first select a valid JDK for the project", 10);
+                              return;
+                         }
 					if(printA != null)
 						getScreen().getOperationPanel().removeTab("Compilation");
 					Screen.getBuildView().createClassList();
@@ -598,7 +602,10 @@ public class RunView extends View {
 						return;
 					}
 					Screen.getErrorHighlighter().removeAllHighlights();
-				}catch(Exception e2) {e2.printStackTrace();}
+				}
+				catch(Exception e2) {
+				     e2.printStackTrace();
+			     }
 
 				getScreen().getOperationPanel().removeTab("Compilation");
                   

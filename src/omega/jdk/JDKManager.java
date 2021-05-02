@@ -259,4 +259,9 @@ public class JDKManager {
      public void prepareDependencyLoader(LinkedList<String> paths){
      	dependencyJarLoader = new JarLoader(paths);
      }
+
+     public static boolean isJDKPathValid(String path){
+          File file = new File(path);
+     	return path != null && file.exists() && isJDK(file);
+     }
 }

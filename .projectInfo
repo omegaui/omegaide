@@ -5,6 +5,11 @@
 >Run_Time
 -
 >Main Class
--
+-Omega.IDE
 >Non-Java Project
 -false
+>Project Classpath : Required Jars
+-/home/arham/Documents/omegaide/lib/flatlaf-0.46.jar
+-/home/arham/Documents/omegaide/lib/jfontchooser-1.0.5.jar
+>Project Classpath : Required Resource Roots
+-/home/arham/Documents/omegaide/res
