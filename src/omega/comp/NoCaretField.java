@@ -69,6 +69,15 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			lastText = text;
 		}
 		else {
+               if(lastText == null || lastText.equals("")){
+                    lastText = "";
+                    int i = 0;
+                    x = getWidth()/2 - g.getFontMetrics().stringWidth(lastText)/2 - 10;
+                    while(x > BORDER_GAP && i < text.length()){
+                         x = getWidth()/2 - g.getFontMetrics().stringWidth(lastText)/2 - 10;
+                         lastText += text.charAt(i++);
+                    }
+               }
 			String tempText = ".." + text.substring(text.length() - lastText.length() + 5);
 			x = getWidth()/2 - g.getFontMetrics().stringWidth(tempText)/2;
 			g.drawString(tempText, x, y);

@@ -30,19 +30,63 @@ import omega.Screen;
 import omega.database.DataBase;
 import omega.database.DataEntry;
 
+/**
+ * omega.utils.UIManager class
+ * This class is responsible for managing the ui colors, theming and editor's font
+ * extends omega.database.DataBase class
+ * <link>>see omega.settings.Screen for managing the font data</link>
+*/
+
 public class UIManager extends DataBase {
 
+     /**
+      * The field carrying the default font name which was registered in omega.Screen
+     */
 	public static String fontName = "Ubuntu Mono";
+    
+     /**
+      * The field carrying the default font size
+     */
      public static int fontSize = 16;
+     
+     /**
+      * The field carrying the default font state
+     */
      public static int fontState = Font.BOLD;
+     
+     /**
+      * The font of the ui elements in the omega.utils.ToolMenu
+     */
 	private static final Font font = omega.settings.Screen.PX12;
+     
+     /**
+      * The Foreground Color of any text area
+     */
 	public static Color glow;
+     
+     /**
+      * The Base Shade of UI Elements
+     */
 	public static Color c1;
+     
+     /**
+      * The Background of UI Elements
+     */
 	public static Color c2;
+  
+     /**
+      * The Base Solid Color of UI Elements
+     */
 	public static Color c3;
 
      // IDE Component Colors -- Default Mode -- LIGHT
 
+     /**
+      * The Following Colors are distributed according to the positions of the Buttons along with the separators in the omega.utils.ToolMenu class
+      * Containing Four Solid Colors and their shades
+      * By Default they are assigned Light Mode Values so that 
+      * if the system didn't permits the IDE to read UI files(happens when in a locked directory), the IDE still have its colors and can launch without exceptions.
+     */
      public static Color TOOLMENU_COLOR1 = new Color(26, 36, 219);
      public static Color TOOLMENU_COLOR1_SHADE = new Color(26, 36, 219, 40);
      public static Color TOOLMENU_COLOR2 = new Color(223, 33, 15);
@@ -52,7 +96,7 @@ public class UIManager extends DataBase {
      public static Color TOOLMENU_COLOR4 = new Color(255, 158, 14);
      public static Color TOOLMENU_COLOR4_SHADE = new Color(255, 158, 14, 40);
      
-
+     
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
           loadData();
@@ -95,7 +139,10 @@ public class UIManager extends DataBase {
 		     e.printStackTrace();
 	     }
 	}
-	
+
+     /**
+      * This methods resets the font data if any exception occurs during reading the database file (.ui)
+     */
 	public static void reset() {
 		fontName = "Ubuntu Mono";
 		fontSize = 16;
@@ -126,7 +173,7 @@ public class UIManager extends DataBase {
           addEntry("Font", fontState+"");
 		super.save();
 	}
-
+     
      public static File loadDefaultFile(String fileName, String resName){
           File file = new File(fileName);
      	try{
@@ -156,5 +203,4 @@ public class UIManager extends DataBase {
      public static void setFontState(int fontState) {
           UIManager.fontState = fontState;
      }
-
 }
