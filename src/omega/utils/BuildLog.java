@@ -181,10 +181,8 @@ public class BuildLog extends JPanel {
 	}
 	@Override
 	public void paint(Graphics graphics){
-		if(fileComps.isEmpty() && headComp.getText().contains("following")){
-			headComp.setText("Build Process was interrupted before it could finish!");
-		}
 		if(fileComps.isEmpty()){
+               removeThem();
 			Graphics2D g = (Graphics2D)graphics;
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -197,9 +195,19 @@ public class BuildLog extends JPanel {
 			getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		}
 		else{
+               addThem();
 			super.paint(graphics);
+               splitPane.setDividerLocation(maxW + 65);
 		}
 	}
+     public void removeThem(){
+     	remove(headComp);
+          remove(splitPane);
+     }
+     public void addThem(){
+     	add(headComp, BorderLayout.NORTH);
+          add(splitPane, BorderLayout.CENTER);
+     }
 	private class Error {
 		private String filePath;
 		private int line;

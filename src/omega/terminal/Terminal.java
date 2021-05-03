@@ -90,8 +90,8 @@ public class Terminal extends JComponent{
                     print("Shell Closed, To relaunch the shell enter " + LAUNCH_COMMAND);
                }).start();
                if(File.separator.equals("/")){
-                    currentDir = new File(omega.Screen.getFileView().getProjectPath() + File.separator + "bin");
-                    textArea.setText("Current Directory : "+ omega.Screen.getFileView().getProjectPath() + File.separator + "bin\n\n");
+                    currentDir = new File(USER_HOME);
+                    textArea.setText("Current Directory : " + USER_HOME + "\n\n");
                }
                textField.setText("");
           }catch(Exception e){ 

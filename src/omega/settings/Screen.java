@@ -1,4 +1,5 @@
 package omega.settings;
+import omega.jdk.JDKManager;
 import omega.utils.UIManager;
 import omega.utils.ToolMenu;
 import omega.utils.DataManager;
@@ -267,7 +268,7 @@ public class Screen extends JDialog {
           try{
      		suggestionComp.setToggle(realTime = DataManager.isContentAssistRealTime());
      		asteriskComp.setToggle(asterisk = DataManager.isUsingStarImports());
-     		if(omega.Screen.getFileView().getProjectManager().jdkPath != null)
+     		if(JDKManager.isJDKPathValid(omega.Screen.getFileView().getProjectManager().jdkPath))
      			jdkComp.setText("Using JDK v" + omega.Screen.getFileView().getJDKManager().getVersionAsInt());
      		else
      			jdkComp.setText("Select a Java SE Environment");

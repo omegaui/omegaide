@@ -153,6 +153,7 @@ public class BuildPathManager extends JDialog {
 		add(nativePanel);
 		add(resourceRootPanel);
 		add(modulePanel);
+          
 		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, ()->setVisible(false));
 		closeComp.setBounds(0, getHeight() - 30, 160, 30);
 		closeComp.setFont(PX16);
@@ -425,7 +426,7 @@ public class BuildPathManager extends JDialog {
 			setView(state);
 		}
 		else{
-			Screen.getFileView().readJDK();
+			new Thread(Screen.getFileView()::readJDK).start();
 		}
 		super.setVisible(value);
 	}

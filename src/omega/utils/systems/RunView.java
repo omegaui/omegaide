@@ -40,6 +40,7 @@ public class RunView extends View {
 	private Process compileProcess = null;
 	private Process runProcess = null;
      private BuildLog buildLog;
+     private volatile boolean wasKilled = false;
 
 	public RunView(String title, Screen window, boolean canRun) {
 		super(title, window);
@@ -485,6 +486,7 @@ public class RunView extends View {
 					Screen.getBuildView().createClassList();
 					if(Screen.getBuildView().classess.isEmpty())
 						return;
+                         getScreen().getOperationPanel().removeTab("Compilation");
 					Screen.getErrorHighlighter().removeAllHighlights();
 					BuildView.optimizeProjectOutputs();
 					getScreen().getToolMenu().buildComp.setClickable(false);
@@ -492,13 +494,18 @@ public class RunView extends View {
 					errorlog = "";
 					
 					int percent = 70;
-                     
+                         
+                         wasKilled = false;
 					Screen.setStatus("Building Project -- Double Click to kill this process", percent);
                          Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
-                              Screen.setStatus("Killing Build Process", 10);
-                              if(compileProcess != null && compileProcess.isAlive())
-                                   compileProcess.destroyForcibly();
-                              Screen.setStatus("", 100);
+                              new Thread(()->{
+                                   wasKilled = true;
+                                   Screen.setStatus("Killing Build Process", 10);
+                                   if(compileProcess != null && compileProcess.isAlive())
+                                        compileProcess.destroyForcibly();
+                                   Screen.setStatus("", 100);
+                                   getScreen().getOperationPanel().removeTab("Compilation");
+                              }).start();
                          });
                       
 					String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
@@ -592,13 +599,15 @@ public class RunView extends View {
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					Screen.getProjectView().reload();
 					if(compileProcess.exitValue() != 0) {
-						Screen.setStatus("Building Project Failed", 100);
+						Screen.setStatus("", 100);
 						runningApps.remove(compileProcess);
 						getScreen().getToolMenu().runComp.setClickable(true);
-						Screen.getErrorHighlighter().loadErrors(errorlog);
-                              buildLog.setHeading("Build Resulted in following Error(s)");
-                              buildLog.genView(errorlog);
-						getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+                              if(!wasKilled) {
+     						Screen.getErrorHighlighter().loadErrors(errorlog);
+                                   buildLog.setHeading("Build Resulted in following Error(s)");
+                                   buildLog.genView(errorlog);
+     						getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+                              }
 						return;
 					}
 					Screen.getErrorHighlighter().removeAllHighlights();

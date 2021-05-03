@@ -33,7 +33,7 @@ public class SDKSelector extends JDialog {
 		setSize(500, 400);
 		setLocationRelativeTo(f);
 		setLayout(null);
-         
+          
 		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
 		closeComp.setBounds(0, 0, 40, 40);
 		closeComp.setFont(PX16);
@@ -126,7 +126,7 @@ public class SDKSelector extends JDialog {
 			while(reader.hasNextLine()){
 				String s = reader.nextLine();
 				String cmd = "JAVA_VERSION=";
-				if(s.startsWith("JAVA_VERSION=")){
+				if(s.startsWith(cmd)){
 					s = s.substring(s.indexOf(cmd) + cmd.length());
 					s = s.substring(s.indexOf('\"') + 1, s.lastIndexOf('\"'));
 					reader.close();
@@ -144,7 +144,13 @@ public class SDKSelector extends JDialog {
 	public String getSelection() {
 		return selection;
 	}
-	
+
+     @Override
+     public void paint(Graphics g){
+     	super.paint(g);
+          scrollPane.repaint();
+     }
+     
 	@Override
 	public void setVisible(boolean value) {
 		if(value) {

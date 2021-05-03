@@ -166,6 +166,7 @@ public class BuildView extends View {
                          Screen.setStatus("Please first select a valid JDK for the project", 10);
                          return;
                     }
+                    buildLog.genView("");
                     Screen.getErrorHighlighter().removeAllHighlights();
                     optimizeProjectOutputs();
                     getScreen().getToolMenu().buildComp.setClickable(false);
@@ -267,6 +268,7 @@ public class BuildView extends View {
                          buildLog.setHeading("Build Resulted in following Error(s)");
                          buildLog.genView(errorlog);
                          Screen.getErrorHighlighter().loadErrors(errorlog);
+                         buildLog.repaint();
                     }
                     else{
                          buildLog.setHeading("Build Completed Successfully");
