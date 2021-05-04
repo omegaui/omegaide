@@ -99,23 +99,33 @@ public class ContentTokenizer {
 					dataMembers.add(m);
 				}
 			}
+               
 			String reducedText = e.getText().substring(0, e.getCaretPosition());
 			reducedText = CodeFramework.completeCode(reducedText);
 			reader = new SourceReader(reducedText);
 			DataBlock block = null;
                if(!reader.dataBlocks.isEmpty())
                     block = reader.dataBlocks.getLast();
+               
 			if(!reader.recordingInternal) {
 				if(block != null) {
 					for(DataMember m : block.depthMembers) {
 						if(m.name.startsWith(text)) {
+                                   inner:
+                                        for(DataMember mx : dataMembers){
+                                             if(mx.name.equals(m.name) && mx.parameterCount == m.parameterCount){
+                                                  dataMembers.remove(mx);
+                                                  break inner;
+                                             }
+                                        }
 							dataMembers.add(m);
 						}
 					}
 				}
 			}
-			if(!dataMembers.isEmpty())
+			if(!dataMembers.isEmpty()){
 				CodeFramework.gen(dataMembers, e);
+			}
 			else {
      			e.contentWindow.setVisible(false);
 			}

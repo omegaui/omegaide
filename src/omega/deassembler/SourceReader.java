@@ -1,4 +1,7 @@
 package omega.deassembler;
+import java.io.File;
+import omega.Screen;
+import java.util.StringTokenizer;
 import omega.jdk.JDKManager;
 import omega.framework.CodeFramework;
 import java.util.LinkedList;
@@ -145,6 +148,7 @@ public class SourceReader {
 				continue;
 			}
 		}
+	     addNeighbourImports();
 	}
 
 	public void read(){
@@ -366,7 +370,7 @@ public class SourceReader {
 				internalReaders.add(new SourceReader(internalCode));
 				internalCode = "";
 			}
-			//Unpacking Global _Variables and _Functions
+			//Unpacking Global Variables and Functions
 			if(readBlock && !recordingInternal){
 				blockCode += line + "\n";
 			}
@@ -396,7 +400,7 @@ public class SourceReader {
                                              name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
                                              if(type != null)
 									     dataMembers.add(new DataMember(access, mods, type, name + "()", parameters));
-									dataBlocks.add(new DataBlock(dataMembers.getLast()));
+									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
 								}
@@ -411,21 +415,25 @@ public class SourceReader {
                                              name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
                                              if(type != null)
 									     dataMembers.add(new DataMember(access, "", type, name + "()", parameters));
-									dataBlocks.add(new DataBlock(dataMembers.getLast()));
+									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
 								}
 							}
 							else{
 								String type = cL;
-                                        if(name.contains(".")) continue;
+                                        if(name.contains(".")) 
+                                             continue;
 								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters));
-								dataBlocks.add(new DataBlock(dataMembers.getLast()));
+								dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 								readBlock = true;
 								blockCode += line + "\n";
 							}
 						}
-					}catch(Exception e) {}
+					}
+					catch(Exception e) {
+                              
+				     }
 				}
 				else if(openBracesCount == 0){
                          if(cL.startsWith("final ")){
@@ -517,12 +525,12 @@ public class SourceReader {
 				}
 			}
 		}
+          addNeighbourImports();
 	}
 
 	public void offer(DataMember d) {
 		for(DataMember dx : dataMembers) {
 			if(dx.name.equals(d.name) && dx.parameterCount == d.parameterCount && dx.type.equals(d.type)) {
-				if(dx.parameters != null && d.parameters != null && !dx.parameters.equals(d.parameters)) continue;
 				return;
 			}
 		}
@@ -572,7 +580,8 @@ public class SourceReader {
 
 	public String getType(String name){
 		for(DataMember m : dataMembers){
-			if(m.name.equals(name)) return m.type;
+			if(m.name.equals(name)) 
+			     return m.type;
 		}
 		return null;
 	}
@@ -586,7 +595,7 @@ public class SourceReader {
 	}
 
      public String evaluateType(String type){
-	     if(" byte short int float double boolean long char void ".contains(type))
+	     if(type != null && !type.equals("") && " byte short int float double boolean long char void ".contains(type))
                return type;
           type = getPackage(type);
           return (type != null && !type.equals("")) ? type : null;
@@ -604,6 +613,27 @@ public class SourceReader {
 		}
 		return null;
 	}
+
+     public void addNeighbourImports(){
+     	String pack = this.pack;
+          StringTokenizer tok = new StringTokenizer(pack, ".");
+          String path = Screen.getFileView().getProjectPath();
+          if(path == null)
+               return;
+          pack = path + File.separator + "src";
+          while(tok.hasMoreTokens()){
+               pack += File.separator + tok.nextToken();
+          }
+          File file = new File(pack);
+          File[] F = file.listFiles();
+          for(File f : F){
+               String name = f.getName();
+               if(name.endsWith(".java")){
+                    name = name.substring(0, name.indexOf('.'));
+                    imports.add(new Import(this.pack, name));
+               }
+          }
+     }
 
 	public LinkedList<DataMember> getConstructors(){
 		LinkedList<DataMember> constructors = new LinkedList<>();
