@@ -1,13 +1,13 @@
 package omega.instant.support;
+import omega.utils.SDKSelector;
 import omega.popup.*;
 import omega.Screen;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.utils.UIManager;
 import omega.utils.ProjectDataBase;
 import java.lang.reflect.Member;
 import omega.comp.Comp;
 import omega.utils.DataManager;
-import omega.ui.SDKSelector;
 import omega.comp.TextComp;
 
 import java.awt.Color;

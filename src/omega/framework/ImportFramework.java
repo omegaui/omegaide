@@ -1,10 +1,10 @@
 package omega.framework;
+import omega.utils.ImportResolver;
 import omega.jdk.JDKManager;
 import omega.jdk.Import;
 import omega.utils.DataManager;
 import omega.utils.Editor;
 import omega.deassembler.SourceReader;
-import omega.ui.ImportResolver;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 

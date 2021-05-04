@@ -1,9 +1,9 @@
 package omega.tree;
 import omega.popup.*;
 import omega.Screen;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.utils.UIManager;
-import omega.tabPane.PopupManager;
+import omega.utils.PopupManager;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 import java.awt.Color;

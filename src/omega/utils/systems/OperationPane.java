@@ -1,6 +1,6 @@
 package omega.utils.systems;
 import omega.popup.*;
-import omega.tabPane.CloseButton;
+import omega.utils.TabComp;
 import omega.tabPane.TabPaneUI;
 import java.awt.FontMetrics;
 import java.awt.RenderingHints;
@@ -46,7 +46,7 @@ public class OperationPane extends JPanel{
 		}
 		names.add(name);
 		tabPane.addTab(name, c);
-		tabPane.setTabComponentAt(tabPane.indexOfTab(name), CloseButton.create(c,
+		tabPane.setTabComponentAt(tabPane.indexOfTab(name), TabComp.create(c,
 				name, ()->{
 					r.run();
 					removeTab(name);
@@ -64,7 +64,7 @@ public class OperationPane extends JPanel{
 		}
 		names.add(name);
 		tabPane.addTab(name, c);
-		tabPane.setTabComponentAt(tabPane.indexOfTab(name), CloseButton.create(c,
+		tabPane.setTabComponentAt(tabPane.indexOfTab(name), TabComp.create(c,
 				name, ()->{
 					r.run();
 					removeTab(name);

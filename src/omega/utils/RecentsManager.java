@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import javax.swing.JMenuItem;
 
 import omega.Screen;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 
 public class RecentsManager {
 

@@ -2,7 +2,7 @@ package omega.instant.support;
 import java.awt.Color;
 import omega.comp.NoCaretField;
 import omega.popup.*;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.Screen;
 import java.awt.event.MouseEvent;
 import omega.utils.UIManager;

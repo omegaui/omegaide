@@ -116,8 +116,9 @@ public class ContentTokenizer {
 			}
 			if(!dataMembers.isEmpty())
 				CodeFramework.gen(dataMembers, e);
-			else
+			else {
      			e.contentWindow.setVisible(false);
+			}
 		}
 	}
 }

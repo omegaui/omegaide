@@ -4,7 +4,7 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import omega.popup.OPopupWindow;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.Screen;
 import omega.gset.Generator;
 import java.net.URL;
@@ -81,7 +81,7 @@ public class ToolMenu extends JPanel {
 	public static JMenu openFileMenu;
 	public static JMenu openProjectMenu;
 	public static InfoScreen infoScreen;
-	public static omega.structure.Screen structureView;
+	public static StructureWindow structureView;
 	public boolean hidden;
 	public static ProjectWizard projectWizard;
 	public static UniversalProjectWizard universalProjectWizard;
@@ -107,7 +107,7 @@ public class ToolMenu extends JPanel {
 			projectWizard = new ProjectWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
 			infoScreen = new InfoScreen(screen);
-			structureView = new omega.structure.Screen(screen);
+			structureView = new StructureWindow(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 90);

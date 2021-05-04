@@ -1,10 +1,10 @@
 package omega.settings;
+import omega.utils.SDKSelector;
 import omega.jdk.JDKManager;
 import omega.utils.UIManager;
 import omega.utils.ToolMenu;
 import omega.utils.DataManager;
 import java.io.File;
-import omega.ui.SDKSelector;
 import omega.comp.TextComp;
 import omega.comp.Comp;
 import static omega.utils.UIManager.*;

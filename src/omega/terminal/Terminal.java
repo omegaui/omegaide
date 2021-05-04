@@ -136,7 +136,7 @@ public class Terminal extends JComponent{
                     else
                          currentDir = originalPath;
                }
-               else if(text.equals("cd ~") && File.separator.equals("/")){
+               else if((text.equals("cd ~") || text.equals("cd")) && File.separator.equals("/")){
                     File originalPath = currentDir;
                     currentDir = new File(USER_HOME);
                     if(currentDir.exists())
@@ -165,7 +165,10 @@ public class Terminal extends JComponent{
                     print("OmegaIDE:\""+ currentDir.getAbsolutePath() + "\"$ " + text);
      		writer.println(text);
                writer.flush();
-     	}catch(Exception e){ System.err.println(e); }
+     	}
+     	catch(Exception e){ 
+     	     System.err.println(e);
+	     }
      }
 
      public synchronized void print(String text){

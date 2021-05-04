@@ -6,7 +6,7 @@ import omega.utils.BottomPane;
 import omega.utils.SideMenu;
 import omega.utils.ThemePicker;
 import java.awt.event.*;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.utils.systems.FileView;
 import omega.startup.Startup;
 import omega.utils.UIManager;

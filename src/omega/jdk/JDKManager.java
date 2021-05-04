@@ -180,6 +180,10 @@ public class JDKManager {
 		Screen.setStatus("", 100);
 	}
 	public static int calculateVersion(File jdkDir){
+          if(!isJDKPathValid(jdkDir.getAbsolutePath())) {
+               Screen.setStatus("Please first select a valid JDK for the project", 10);
+               return 0;
+          }
 		String version = "";
 		try{
 			Scanner reader = new Scanner(new File(jdkDir.getAbsolutePath() + File.separator + "release"));

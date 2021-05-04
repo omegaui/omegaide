@@ -1,5 +1,5 @@
 package omega.launcher;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.Screen;
 import java.awt.event.MouseEvent;
 import java.awt.Dimension;

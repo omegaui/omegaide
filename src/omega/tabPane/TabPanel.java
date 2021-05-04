@@ -1,4 +1,6 @@
 package omega.tabPane;
+import omega.utils.TabComp;
+import omega.utils.PopupManager;
 import omega.popup.*;
 import omega.utils.UIManager;
 import omega.Screen;
@@ -77,7 +79,7 @@ public class TabPanel extends JPanel{
 		tabPane.addTab(name, panel);
 		if(editor.currentFile == null)
 		{
-			tabPane.setTabComponentAt(editors.indexOf(editor), CloseButton.create(editor, name, ()->{
+			tabPane.setTabComponentAt(editors.indexOf(editor), TabComp.create(editor, name, ()->{
 				editor.closeFile();
 				remove(editor);
 			}, ()->{
@@ -85,7 +87,7 @@ public class TabPanel extends JPanel{
 			},toolTip, createMenu(editor)));
 			return;
 		}
-		tabPane.setTabComponentAt(editors.indexOf(editor), CloseButton.create(editor, name, ()->{
+		tabPane.setTabComponentAt(editors.indexOf(editor), TabComp.create(editor, name, ()->{
 			remove(editor);
 		}, ()->{
 			tabPane.setSelectedIndex(editors.indexOf(editor));

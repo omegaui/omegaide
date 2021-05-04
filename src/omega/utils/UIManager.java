@@ -85,7 +85,7 @@ public class UIManager extends DataBase {
       * The Following Colors are distributed according to the positions of the Buttons along with the separators in the omega.utils.ToolMenu class
       * Containing Four Solid Colors and their shades
       * By Default they are assigned Light Mode Values so that 
-      * if the system didn't permits the IDE to read UI files(happens when in a locked directory), the IDE still have its colors and can launch without exceptions.
+      * if the system didn't permits the IDE to read UI files(happens when in a locked directory), the IDE will still have its colors and can launch without exceptions.
      */
      public static Color TOOLMENU_COLOR1 = new Color(26, 36, 219);
      public static Color TOOLMENU_COLOR1_SHADE = new Color(26, 36, 219, 40);
@@ -129,7 +129,7 @@ public class UIManager extends DataBase {
                     TOOLMENU_COLOR1_SHADE = new Color(TOOLMENU_COLOR1.getRed(), TOOLMENU_COLOR1.getGreen(), TOOLMENU_COLOR1.getBlue(), 40);
                     TOOLMENU_COLOR2 = Color.decode("#D34D42");
                     TOOLMENU_COLOR2_SHADE = new Color(TOOLMENU_COLOR2.getRed(), TOOLMENU_COLOR2.getGreen(), TOOLMENU_COLOR2.getBlue(), 40);
-                    TOOLMENU_COLOR3 = Color.decode("#27AA55");
+                    TOOLMENU_COLOR3 = Color.decode("#22d5d5");
                     TOOLMENU_COLOR3_SHADE = new Color(TOOLMENU_COLOR3.getRed(), TOOLMENU_COLOR3.getGreen(), TOOLMENU_COLOR3.getBlue(), 40);
                     TOOLMENU_COLOR4 = Color.decode("#EB7201");
                     TOOLMENU_COLOR4_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);

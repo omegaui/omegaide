@@ -18,7 +18,7 @@ public class SplashScreen extends JFrame{
      private static Color VERSION_COLOR;
      private static Color EDITION_COLOR;
      private static Color PROGRESS_COLOR;
-	private static BufferedImage image = (BufferedImage)omega.tabPane.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
+	private static BufferedImage image = (BufferedImage)omega.utils.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
 	private volatile boolean ground = false;

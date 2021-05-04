@@ -1,6 +1,6 @@
 package omega.snippet;
 import omega.utils.UIManager;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.Screen;
 import omega.launcher.Door;
 import omega.utils.Editor;

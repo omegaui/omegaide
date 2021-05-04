@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import omega.comp.TextComp;
 import omega.launcher.Door;
-import omega.tabPane.IconManager;
+import omega.utils.IconManager;
 import omega.utils.UIManager;
 import omega.Screen;
 import omega.tree.FileTree;
