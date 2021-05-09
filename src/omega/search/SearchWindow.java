@@ -108,7 +108,7 @@ public class SearchWindow extends JDialog{
 						doors.get(--pointer).set(true);
 						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 40);
 					}
-					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer < doors.size()) {
+					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1< doors.size()) {
 						doors.get(pointer).set(false);
 						doors.get(++pointer).set(true);
 						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 40);
@@ -131,27 +131,10 @@ public class SearchWindow extends JDialog{
 		omega.utils.UIManager.setData(panel);
           
           //Creating File Image of size 32, 32 here
-          writeImage(textImage, TOOLMENU_COLOR2, c2);
-          writeImage(imageImage, TOOLMENU_COLOR3, c2);
-          writeImage(allImage, IconManager.getBackground(), IconManager.getForeground());
+          textImage = IconManager.fluentfileImage;
+          imageImage = textImage;
+          allImage = imageImage;
 	}
-
-     public void writeImage(BufferedImage image, Color f, Color b){
-          Graphics graphics = image.getGraphics();
-          Graphics2D g = (Graphics2D)graphics;
-          g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-          g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(f);
-          g.fillRoundRect(0, 0, 32, 32, 5, 5);
-          g.setColor(b);
-          g.fillRect(4, 4, 4, 2);
-          g.fillRect(8, 4, 4, 2);
-          g.fillRect(6, 8, 4, 2);
-          g.fillRect(10, 8, 4, 2);
-          g.fillRect(4, 12, 4, 2);
-          g.fillRect(8, 12, 4, 2);
-          g.dispose();
-     }
 
 	public void list(String text){
 		doors.forEach(panel::remove);

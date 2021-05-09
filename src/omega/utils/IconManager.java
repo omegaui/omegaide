@@ -14,9 +14,9 @@ public class IconManager {
 
      //Fluent Icon Pack
      public static BufferedImage fluentfolderImage = getFluentIcon("program-50.png");
-     public static BufferedImage fluentfileImage = getFluentIcon("outline-50.png");
+     public static BufferedImage fluentfileImage = getFluentIcon("code-file-50.png");
      public static BufferedImage fluentnewfolderImage = getFluentIcon("add-folder-50.png");
-     public static BufferedImage fluentnewfileImage = getFluentIcon("code-file-50.png");
+     public static BufferedImage fluentnewfileImage = getFluentIcon("add-file-50.png");
      public static BufferedImage fluentconsoleImage = getFluentIcon("console-50.png");
      public static BufferedImage fluenthelpImage = getFluentIcon("help-50.png");
      public static BufferedImage fluentinfoImage = getFluentIcon("info-popup-50.png");
