@@ -1,3 +1,5 @@
+
+package org.fife.print;
 /*
  * 11/14/2003
  *
@@ -7,8 +9,7 @@
  * This library is distributed under a modified BSD license.  See the included
  * LICENSE file for details.
  */
-package org.fife.print;
-
+import omega.utils.UIManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -106,7 +107,7 @@ public abstract class RPrintUtilities {
 							PageFormat pageFormat, int tabSize) {
 
 		g.setColor(Color.BLACK);
-		g.setFont(new Font("Monospaced", Font.PLAIN, fontSize));
+		g.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 
 		// Initialize our static variables (these are used by our tab expander below).
 		tabSizeInSpaces = tabSize;
@@ -231,7 +232,7 @@ public abstract class RPrintUtilities {
 								PageFormat pageFormat, int tabSize) {
 
 		g.setColor(Color.BLACK);
-		g.setFont(new Font("Monospaced", Font.PLAIN, fontSize));
+		g.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 
 		// Initialize our static variables (these are used by our tab expander below).
 		tabSizeInSpaces = tabSize;

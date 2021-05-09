@@ -1,4 +1,5 @@
 package omega.utils.systems.creators;
+import java.awt.Graphics;
 import omega.utils.UIManager;
 import java.awt.Color;
 import omega.comp.NoCaretField;
@@ -236,6 +237,15 @@ public class FileOperationManager extends JDialog {
                     out.write(in.read());
                in.close();
                out.close();
-          }catch(Exception e) { e.printStackTrace(); }
+          }
+          catch(Exception e) { 
+               e.printStackTrace();
+          }
+     }
+
+     @Override
+     public void paint(Graphics g){
+     	super.paint(g);
+          getContentPane().repaint();
      }
 }

@@ -16,9 +16,11 @@ public class ChoiceDialog extends JDialog{
      public static int CANCEL = 2;
      public int choice = CANCEL;
      private static ChoiceDialog choiceDialog;
+     private JPanel panel = new JPanel(null);
      public ChoiceDialog(JFrame frame){
           super(frame, true);
           setUndecorated(true);
+          setContentPane(panel);
           setTitle("Choice Dialog");
           setBackground(c2);
           setLayout(null);
@@ -26,14 +28,14 @@ public class ChoiceDialog extends JDialog{
      }
 
      public void init(){
-          headerComp = new TextComp("", TOOLMENU_COLOR2, c2, c2, null);
+          headerComp = new TextComp("", c2, c2, TOOLMENU_COLOR3, null);
           headerComp.setFont(PX14);
           headerComp.setClickable(false);
           headerComp.setArc(0, 0);
           headerComp.setLayout(null);
           add(headerComp);
 
-          choice1Comp = new TextComp("", TOOLMENU_COLOR3, TOOLMENU_COLOR1, c2, ()->{
+          choice1Comp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                choice = CHOICE1;
                setVisible(false);
           });
@@ -41,7 +43,7 @@ public class ChoiceDialog extends JDialog{
           choice1Comp.setArc(0, 0);
           add(choice1Comp);
           
-          choice2Comp = new TextComp("", TOOLMENU_COLOR3, TOOLMENU_COLOR1, c2, ()->{
+          choice2Comp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                choice = CHOICE2;
                setVisible(false);
           });
@@ -81,5 +83,11 @@ public class ChoiceDialog extends JDialog{
           choiceDialog.plotComps();
           choiceDialog.setVisible(true);
           return choiceDialog.choice;
+     }
+
+     @Override
+     public void paint(Graphics g){
+     	super.paint(g);
+          panel.repaint();
      }
 }

@@ -1,4 +1,5 @@
 package omega.comp;
+import java.awt.image.BufferedImage;
 /*
 Copyright (C) 2021 Omega UI. All Rights Reserved.
 This program is free software: you can redistribute it and/or modify
@@ -28,6 +29,9 @@ public class TextComp extends JComponent{
 	public Color color2;
 	public Color color3;
 	public Runnable runnable;
+	public BufferedImage image;
+	public int w;
+	public int h;
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
 		this.color1 = color1;
@@ -38,7 +42,7 @@ public class TextComp extends JComponent{
 			@Override
 			public void mouseEntered(MouseEvent e){
 				if(!clickable) return;
-					enter = true;
+				enter = true;
 				repaint();
 			}
 			@Override
@@ -50,7 +54,7 @@ public class TextComp extends JComponent{
 			@Override
 			public void mousePressed(MouseEvent e){
 				if(!clickable) return;
-					press = true;
+				press = true;
 				repaint();
 				enter = false;
 				press = false;
@@ -67,9 +71,29 @@ public class TextComp extends JComponent{
 		});
 	}
 	
+	public TextComp(BufferedImage image, int width, int height, Color color1, Color color2, Color color3, Runnable runnable){
+		this("", color1, color2, color3, runnable);
+		this.image = image;
+		w = width;
+		h = height;
+		if(w == 0){
+			w = image.getWidth();
+			h = image.getHeight();
+		}
+	}
 	public TextComp(String text, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
 		this(text, color1, color2, color3, runnable);
 		setToolTipText(toolTip);
+	}
+	public TextComp(BufferedImage image, int width, int height, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
+		this("", toolTip, color1, color2, color3, runnable);
+		this.image = image;
+		w = width;
+		h = height;
+		if(w == 0){
+			w = image.getWidth();
+			h = image.getHeight();
+		}
 	}
 	public void setColors(Color c1, Color c2, Color c3){
 		color1 = c1;
@@ -79,8 +103,11 @@ public class TextComp extends JComponent{
 	}
 	
 	public void draw(Graphics2D g) {
-		
+		if(image != null){
+			g.drawImage(image, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
+		}
 	}
+	
 	public void setArc(int x, int y){
 		this.arcX = x;
 		this.arcY = y;
@@ -113,12 +140,11 @@ public class TextComp extends JComponent{
 	public boolean isClickable() {
 		return clickable;
 	}
-
-     public void doClick(){
-     	if(runnable != null)
-               runnable.run();
-     }
-    
+	public void doClick(){
+		if(runnable != null)
+			runnable.run();
+	}
+	
 	@Override
 	public void paint(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;
@@ -131,8 +157,8 @@ public class TextComp extends JComponent{
 		g.setColor(color2);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		if(enter || !clickable) paintEnter(g);
-			if(press) paintPress(g);
-			draw(g, x, y);
+		if(press) paintPress(g);
+		draw(g, x, y);
 		draw(g);
 		super.paint(graphics);
 	}
@@ -140,9 +166,9 @@ public class TextComp extends JComponent{
 		g.setColor(color3);
 		if(x < alignX){
 			String temp = ".." + dir.substring(dir.length()/2);
-               x = getWidth()/2 - g.getFontMetrics().stringWidth(temp)/2;
-               g.drawString(temp, alignX < 0 ? x : alignX, y);
-               setToolTipText(dir);
+			x = getWidth()/2 - g.getFontMetrics().stringWidth(temp)/2;
+			g.drawString(temp, alignX < 0 ? x : alignX, y);
+			setToolTipText(dir);
 		}
 		else
 			g.drawString(dir, alignX < 0 ? x : alignX, y);

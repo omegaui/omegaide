@@ -20,8 +20,8 @@ public class PopupManager {
                })
                .createItem("Run Project", IconManager.runImage, ()->Screen.getRunView().run())
                .createItem("Build Project", IconManager.buildImage, ()->Screen.getBuildView().compileProject())
-               .createItem("Save", IconManager.fileImage, ()->editor.saveCurrentFile())
-               .createItem("Save As", IconManager.fileImage, ()->{
+               .createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
+               .createItem("Save As", IconManager.fluentsaveImage, ()->{
                     editor.saveFileAs();
                     Screen.getProjectView().reload();
                })

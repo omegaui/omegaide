@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import omega.utils.IconManager;
 import omega.jdk.*;
 import omega.utils.BuildLog;
 import omega.utils.UIManager;
@@ -882,17 +883,17 @@ public class RunView extends View {
 				setPreferredSize(new Dimension(40, 100));
 				Dimension size = new Dimension(30, 30);
 
-                    TextComp runComp = new TextComp(">", UIManager.c2, UIManager.TOOLMENU_COLOR3_SHADE, UIManager.TOOLMENU_COLOR3, r);
+                    TextComp runComp = new TextComp(IconManager.fluentrunImage, 25, 25, "Re-Run", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
                     runComp.setFont(omega.settings.Screen.PX18);
                     runComp.setPreferredSize(size);
                     add(runComp);
                     
-                    TextComp clrComp = new TextComp("(-)", UIManager.c2, UIManager.TOOLMENU_COLOR3_SHADE, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
+                    TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
                     clrComp.setFont(omega.settings.Screen.PX18);
                     clrComp.setPreferredSize(size);
                     add(clrComp);
                     
-				TextComp terComp = new TextComp("x", UIManager.c2, UIManager.TOOLMENU_COLOR3_SHADE, UIManager.TOOLMENU_COLOR3, r0);
+				TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
 				terComp.setFont(omega.settings.Screen.PX18);
 				terComp.setPreferredSize(size);
 				add(terComp);

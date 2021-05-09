@@ -16,6 +16,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+
+import static omega.settings.Screen.*;
 public class Branch extends JComponent{
 	public File file;
 	private String name;
@@ -25,8 +27,6 @@ public class Branch extends JComponent{
 	public volatile boolean enter;
 	private boolean expand;
 	private Locale l;
-	private static final Font FONT = new Font("Ubuntu Mono", Font.BOLD, 18);
-	private static final Font FONT_BOLD = new Font("Ubuntu Mono", Font.BOLD, 16);
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 40;
 	public static final Color ANY_COLOR = omega.utils.UIManager.TOOLMENU_COLOR2;
@@ -48,8 +48,8 @@ public class Branch extends JComponent{
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
-		this.icon = expand ? IconManager.projectImage : IconManager.fileImage;
-		setFont(FONT);
+		this.icon = expand ? IconManager.fluentfolderImage : IconManager.fluentfileImage;
+		setFont(PX16);
 		if(expand){
 			type = "";
 			if(file.listFiles().length == 0){
@@ -59,7 +59,7 @@ public class Branch extends JComponent{
 		}
 		else{
 			setForeground(ANY_COLOR);
-			setFont(FONT_BOLD);
+			setFont(PX14);
 			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
 			|| file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
@@ -173,7 +173,7 @@ public class Branch extends JComponent{
 		     g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
 		g.drawImage(icon, 16, 8, 16, 16, null);
 		if(enter){
-			g.fillRect(OPTIMAL_X, (getHeight()/2) + FONT.getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
+			g.fillRect(OPTIMAL_X, (getHeight()/2) + getFont().getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
 		}
 	}
 	public static Color getColor(String fileName){

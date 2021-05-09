@@ -293,44 +293,47 @@ public class FileTree extends JComponent{
 
 	public static synchronized void sort(LinkedList<File> files){
           try{
-          	final LinkedList<File> tempFiles = new LinkedList<>();
-          	final LinkedList<File> tempDirs = new LinkedList<>();
-          	files.forEach(f->{
-          		if(f.isDirectory()) tempDirs.add(f);
-          		else tempFiles.add(f);
-          	});
-          	files.clear();
-          	File[] F = new File[tempFiles.size()];
-          	int k = -1;
-          	for(File fx : tempFiles)
-          		F[++k] = fx;
-          	File[] D = new File[tempDirs.size()];
-          	k = -1;
-          	for(File fx : tempDirs)
-          		D[++k] = fx;
-          	sort(F);
-          	sort(D);
-          	LinkedList<File> dots = new LinkedList<>();
-          	for(File f : D){
-          		if(f.getName().startsWith(".")) dots.add(f);
-          		else files.add(f);
-          	}
-          	for(File f : dots){
-          		files.add(f);
-          	}
-          	dots.clear();
-          	for(File f : F){
-          		if(f.getName().startsWith(".")) dots.add(f);
-          		else files.add(f);
-          	}
-          	for(File f : dots){
-          		files.add(f);
-          	}
-          	tempFiles.clear();
-          	tempDirs.clear();
-          	dots.clear();
-          }catch(Exception exception){}
-	}
+               final LinkedList<File> tempFiles = new LinkedList<>();
+               final LinkedList<File> tempDirs = new LinkedList<>();
+               files.forEach(f->{
+                    if(f.isDirectory()) tempDirs.add(f);
+                    else tempFiles.add(f);
+               });
+               files.clear();
+               File[] F = new File[tempFiles.size()];
+               int k = -1;
+               for(File fx : tempFiles)
+                    F[++k] = fx;
+               File[] D = new File[tempDirs.size()];
+               k = -1;
+               for(File fx : tempDirs)
+                    D[++k] = fx;
+               sort(F);
+               sort(D);
+               LinkedList<File> dots = new LinkedList<>();
+               for(File f : D){
+                    if(f.getName().startsWith(".")) dots.add(f);
+                    else files.add(f);
+               }
+               for(File f : dots){
+                    files.add(f);
+               }
+               dots.clear();
+               for(File f : F){
+                    if(f.getName().startsWith(".")) dots.add(f);
+                    else files.add(f);
+               }
+               for(File f : dots){
+                    files.add(f);
+               }
+               tempFiles.clear();
+               tempDirs.clear();
+               dots.clear();
+          }
+          catch(Exception exception){
+               
+          }
+     }
 	
 	@Override
 	public void addKeyListener(KeyListener k) {

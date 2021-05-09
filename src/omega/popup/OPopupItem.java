@@ -23,6 +23,8 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
+
+import static omega.settings.Screen.*;
 public class OPopupItem extends JComponent{
      private String name;
      private Runnable run;
@@ -32,14 +34,13 @@ public class OPopupItem extends JComponent{
      private OPopupWindow popup;
      private volatile boolean enter;
      private volatile boolean clickable = true;
-     private static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
 
      public OPopupItem(OPopupWindow popup, String name, BufferedImage image, Runnable run){
           this.popup = popup;
      	this.name = name;
           this.image = image;
           this.run = run;
-          setFont(PX16);
+          setFont(PX14);
           setBackground(popup.getBackground());
           setForeground(popup.getForeground());
           addMouseListener(new MouseAdapter(){
