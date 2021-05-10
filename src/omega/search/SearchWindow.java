@@ -132,8 +132,8 @@ public class SearchWindow extends JDialog{
           
           //Creating File Image of size 32, 32 here
           textImage = IconManager.fluentfileImage;
-          imageImage = textImage;
-          allImage = imageImage;
+          imageImage = IconManager.fluentimagefileImage;
+          allImage = IconManager.fluentanyfileImage;
 	}
 
 	public void list(String text){

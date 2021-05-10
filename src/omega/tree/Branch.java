@@ -48,7 +48,7 @@ public class Branch extends JComponent{
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
-		this.icon = expand ? IconManager.fluentfolderImage : IconManager.fluentfileImage;
+		this.icon = expand ? IconManager.fluentfolderImage : IconManager.fluentanyfileImage;
 		setFont(PX16);
 		if(expand){
 			type = "";
@@ -64,10 +64,12 @@ public class Branch extends JComponent{
 			|| file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
 				type = "SourceCode";
+                    icon = IconManager.fluentfileImage;
 			}
 			else if(file.getName().endsWith(".class")){
 				setForeground(BYTE_COLOR);
 				type = "ByteCode";
+                    icon = IconManager.fluentfileImage;
 			}
 			else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
 				type = "Windows";
@@ -108,6 +110,7 @@ public class Branch extends JComponent{
 			|| file.getName().endsWith(".ico") || file.getName().endsWith(".svg")){
 				setForeground(IMAGE_COLOR);
 				type = "Image";
+                    icon = IconManager.fluentimagefileImage;
 			}
 			else if(file.getName().endsWith(".zip") || file.getName().endsWith(".7z") ||
 			file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz")

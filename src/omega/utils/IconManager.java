@@ -25,12 +25,15 @@ public class IconManager {
      public static BufferedImage fluentupdateImage = getFluentIcon("installing-updates-50.png");
      public static BufferedImage fluentclearImage = getFluentIcon("broom-50.png");
      public static BufferedImage fluentrunImage = getFluentIcon("play-50.png");
-     public static BufferedImage fluentbuildImage = getFluentIcon("brick-wall-50.png");
+     public static BufferedImage fluentbuildImage = getFluentIcon("hammer-50.png");
      public static BufferedImage fluentstructureImage = getFluentIcon("unit-50.png");
      public static BufferedImage fluentsearchImage = getFluentIcon("inspect-code-50.png");
      public static BufferedImage fluentprojectstructureImage = getFluentIcon("goto-50.png");
      public static BufferedImage fluentcloseImage = getFluentIcon("close-window-50.png");
      public static BufferedImage fluentsettingsImage = getFluentIcon("gear-50.png");
+     public static BufferedImage fluentanyfileImage = getFluentIcon("file-50.png");
+     public static BufferedImage fluentimagefileImage = getFluentIcon("image-file-50.png");
+     
 
      //The Default Icon Pack -- mixed
      public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
