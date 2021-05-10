@@ -54,6 +54,14 @@ See whats new in the latest release on the official channel!
 
 Dependency **JDK 16** or above
 
+I recommend using the latest available pre-release instead of using stable-versions because 
+the pre-release versions are debugged daily while that of stable-releases contain 
+more bugs than a pre-release versions because of lack of testers. 
+The Pre-releases are well tested daily, they are like rolling versions.
+
+If you get some trouble in a stable version then using the latest pre-release version is the fix.
+Just Head over to Releases Pages to see a pre-release version.
+
 Just download the **Omega IDE.jar** file (or .deb installer if you are on debian) from the release section and run.
 
 # Please Read -- For Java Projects Only
