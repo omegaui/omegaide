@@ -269,8 +269,10 @@ public class Screen extends JFrame {
 			compilancePane.setDividerLocation(Screen.this.getHeight() - 400);
 			projectView.organizeProjectViewDefaults();
 			if(projectView.tree.getRoot() == null || !projectView.tree.getRoot().getAbsolutePath().equals(Screen.getFileView().getProjectPath())) {
-				projectView.tree = new FileTree(Screen.getFileView().getProjectPath());
-				projectView.tree.gen(projectView.tree.getRoot());
+				if(Screen.getFileView().getProjectPath() != null){
+     				projectView.tree = new FileTree(Screen.getFileView().getProjectPath());
+     				projectView.tree.gen(projectView.tree.getRoot());
+				}
 			}
 			projectView.tree.repaint();
 

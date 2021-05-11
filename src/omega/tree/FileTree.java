@@ -107,7 +107,7 @@ public class FileTree extends JComponent{
 			max = layoutX;
           
           //Also Adding the Project Root Directory
-          Branch bx = new Branch(root, (branch)->{});
+          Branch bx = new Branch(file, (branch)->{});
           bx.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
           panel.add(bx);
           branches.add(bx);
