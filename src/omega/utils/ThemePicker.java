@@ -18,9 +18,9 @@ public class ThemePicker extends JDialog {
      private Color c1 = new Color(126, 20, 219, 40);
      private Color c2 = Color.WHITE;
      private Color c3 = new Color(126, 20, 219);
-     private Color b1 = Color.decode("#27AA55");
-     private Color b2 = Color.decode("#282828");
-     private Color b3 = Color.decode("#f0b40f");
+     private Color b2 = Color.decode("#0A0A28");
+     private Color b3 = Color.decode("#22d5d5");
+     private Color b1 = new Color(b3.getRed(), b3.getGreen(), b3.getBlue(), 40);
      private int pressX;
      private int pressY;
      private BufferedImage image;
@@ -35,6 +35,7 @@ public class ThemePicker extends JDialog {
      public ThemePicker(Screen screen){
           super(screen);
           setTitle("Theme Picker");
+          c
           setModal(true);
           panel = new JPanel(null){
                @Override
