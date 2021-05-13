@@ -192,7 +192,10 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	public void setOnAction(Runnable action) {
 		this.action = action;
 	}
-	
+	public void notify(String message){
+          setText("");
+          setMessage(message);
+     }
 	public String getMessage() {
 		return message;
 	}

@@ -56,7 +56,7 @@ public class WorkspaceSelector extends JDialog{
           titleComp.setArc(0, 0);
           add(titleComp);
           
-          JTextField textField = new JTextField(DataManager.getProjectsHome().equals("") ? "e.g : user.home/Documents/Omega Projects" : DataManager.getProjectsHome());
+          JTextField textField = new JTextField(DataManager.getWorkspace().equals("") ? "e.g : user.home/Documents/Omega Projects" : DataManager.getWorkspace());
           textField.setBounds(20, 50, getWidth() - 40, 40);
           textField.setFont(omega.settings.Screen.PX18);
           textField.setBackground(c2);
@@ -73,8 +73,8 @@ public class WorkspaceSelector extends JDialog{
           TextComp chooseComp = new TextComp("select", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                int res = chooser.showOpenDialog(WorkspaceSelector.this);
                if(res == JFileChooser.APPROVE_OPTION){
-                    DataManager.setProjectsHome(chooser.getSelectedFile().getAbsolutePath());
-                    textField.setText(DataManager.getProjectsHome());
+                    DataManager.setWorkspace(chooser.getSelectedFile().getAbsolutePath());
+                    textField.setText(DataManager.getWorkspace());
                     setTitle("Lets Proceed Forward");
                     titleComp.setText(getTitle());
                     titleComp.setClickable(true);

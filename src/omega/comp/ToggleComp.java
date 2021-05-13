@@ -8,15 +8,17 @@ public class ToggleComp extends TextComp {
      
      private volatile boolean state = false;
      private ToggleListener toggleListener = (value)->{};
+     public boolean toggleEnabled = true;
      
      public ToggleComp(String text, Color c1, Color c2, Color c3, boolean state){
-     	super(text, c1, c2, c3, null);
+          super(text, c1, c2, c3, null);
           setArc(6, 6);
           this.state = state;
           addMouseListener(new MouseAdapter(){
                @Override
                public void mousePressed(MouseEvent e){
-               	ToggleComp.this.state = !ToggleComp.this.state;
+                    if(toggleEnabled)
+                         ToggleComp.this.state = !ToggleComp.this.state;
                     repaint();
                     if(ToggleComp.this.toggleListener != null && e.getButton() == 1)
                          ToggleComp.this.toggleListener.toggle(ToggleComp.this.state);
@@ -44,7 +46,7 @@ public class ToggleComp extends TextComp {
      @Override
      public void paint(Graphics graphics){
           alignX = getHeight() + 4;
-     	super.paint(graphics);
+          super.paint(graphics);
      }
 
      @Override

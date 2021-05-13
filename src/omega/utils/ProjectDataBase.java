@@ -140,7 +140,10 @@ public class ProjectDataBase extends DataBase{
                writer.println(">Non-Java Project");
                writer.println("-" + non_java);
                writer.close();
-     	}catch(Exception e){ System.err.println(e); }
+     	}
+     	catch(Exception e){ 
+     	     e.printStackTrace();
+	     }
      }
 
      public void setJDKPath(String path){

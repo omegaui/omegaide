@@ -84,7 +84,7 @@ public class RecentsManager {
                     ToolMenu.recentProjectPopup.setVisible(false);
                     removeAllProjects();
                });
-               File home = new File(DataManager.getProjectsHome());
+               File home = new File(DataManager.getWorkspace());
                if(home.exists()){
                     ToolMenu.allProjectsPopup.trash();
                     File[] files = home.listFiles();

@@ -250,7 +250,7 @@ public class Screen extends JFrame {
 		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
        
-          if(DataManager.getProjectsHome().equals("") || !new File(DataManager.getProjectsHome()).exists())
+          if(DataManager.getWorkspace().equals("") || !new File(DataManager.getWorkspace()).exists())
                new WorkspaceSelector(this).setVisible(true);
           
 		if(file.exists() && file.isDirectory()) {

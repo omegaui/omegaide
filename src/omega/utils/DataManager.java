@@ -46,7 +46,7 @@ public class DataManager extends DataBase {
 			setContentAssistRealTime(getEntryAt("Content Assist Real-Time", 0).getValueAsBoolean());
 			setUseStarImports(getEntryAt("Use Star Imports", 0).getValueAsBoolean());
                setPathToJava(getEntryAt("Folder Containing Java Development Kits and Environments", 0).getValue());
-               setProjectsHome(getEntryAt("Projects Home", 0).getValue());
+               setWorkspace(getEntryAt("Projects Home", 0).getValue());
                setTheme(getEntryAt("Theme", 0).getValue());
                setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
 		}
@@ -62,7 +62,7 @@ public class DataManager extends DataBase {
           addEntry("Content Mode Java", isContentModeJava()+"");
 		addEntry("Use Star Imports", isUsingStarImports()+"");
           addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
-          addEntry("Projects Home", getProjectsHome());
+          addEntry("Projects Home", getWorkspace());
           addEntry("Theme", getTheme());
 		save();
 	}
@@ -99,11 +99,11 @@ public class DataManager extends DataBase {
 		return useStarImports;
 	}
 
-     public static void setProjectsHome(String home){
+     public static void setWorkspace(String home){
           projectsHome = home;
      }
 
-     public static String getProjectsHome(){
+     public static String getWorkspace(){
      	return projectsHome;
      }
 

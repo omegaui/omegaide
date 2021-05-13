@@ -1,4 +1,6 @@
 package omega.instant.support;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.awt.Color;
 import omega.comp.NoCaretField;
 import omega.popup.*;
@@ -18,9 +20,6 @@ import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
-import static omega.instant.support.ProjectWizard.addHoverEffect;
-import static omega.instant.support.ProjectWizard.createSRCFile;
-import static omega.instant.support.ProjectWizard.setData;
 
 public class FileWizard extends JDialog{
 	public TextComp parentRoot;
@@ -39,6 +38,7 @@ public class FileWizard extends JDialog{
 		NoCaretField nameField = new NoCaretField("", "type file name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
 		nameField.setToolTipText("Enter name of the File or Source");
 		nameField.setBounds(0, 0, getWidth() - 40, 40);
+          nameField.setFont(PX16);
 		add(nameField);
           addKeyListener(nameField);
 
@@ -55,6 +55,7 @@ public class FileWizard extends JDialog{
 			}
 		});
           parentRoot.setArc(0, 0);
+          parentRoot.setFont(PX16);
 		parentRoot.setBounds(nameField.getWidth(), 0, 40, 40);
 		add(parentRoot);
 
@@ -75,12 +76,13 @@ public class FileWizard extends JDialog{
 				popup.setVisible(true);
 			}
 		});
+          typeBtn.setFont(PX16);
           typeBtn.setArc(0, 0);
 		add(typeBtn);
 
 		TextComp cancelBtn = new TextComp("Close", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
 		cancelBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
-		setData(cancelBtn);
+          cancelBtn.setFont(PX16);
           cancelBtn.setArc(0, 0);
 		add(cancelBtn);
 
@@ -115,7 +117,8 @@ public class FileWizard extends JDialog{
 				}
 				File src = new File(path+text.substring(text.lastIndexOf('.') + 1)+".java");
 				createSRCFile(src, type, PATH, text.substring(text.lastIndexOf('.') + 1));
-			}else{
+			}
+			else{
 				File file = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
 				if(!file.exists()){
 					try{
@@ -137,7 +140,7 @@ public class FileWizard extends JDialog{
 			}
 		});
 		createBtn.setBounds(getWidth()/2, getHeight() - 40, getWidth()/2, 40);
-		setData(createBtn);
+		createBtn.setFont(PX16);
           createBtn.setArc(0, 0);
 		add(createBtn);
 	}
@@ -149,10 +152,20 @@ public class FileWizard extends JDialog{
 		setVisible(true);
 	}
 
-	@Override
-	public Component add(Component c){
-		super.add(c);
-		setData(c);
-		return c;
-	}
+     public static void createSRCFile(File file, String type, String pack, String name){
+          try{
+               PrintWriter writer = new PrintWriter(new FileOutputStream(file));
+               String header = type;
+               if(!header.equals("")){
+                    writer.println("package " + pack + ";");
+                    writer.println("public " + header + " " + name + " {\n}");
+               }
+               writer.close();
+               omega.Screen.getScreen().loadFile(file);
+               Screen.getProjectView().reload();
+          }
+          catch(Exception e){ 
+               e.printStackTrace();
+          }
+     }
 }

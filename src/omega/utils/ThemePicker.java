@@ -35,7 +35,6 @@ public class ThemePicker extends JDialog {
      public ThemePicker(Screen screen){
           super(screen);
           setTitle("Theme Picker");
-          c
           setModal(true);
           panel = new JPanel(null){
                @Override

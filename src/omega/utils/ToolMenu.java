@@ -1,4 +1,6 @@
 package omega.utils;
+import omega.instant.support.universal.UniversalProjectWizard;
+import omega.instant.support.java.ProjectWizard;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Dimension;
@@ -10,8 +12,6 @@ import omega.gset.Generator;
 import java.net.URL;
 import java.awt.Desktop;
 import omega.framework.CodeFramework;
-import omega.instant.support.UniversalProjectWizard;
-import omega.instant.support.ProjectWizard;
 import omega.comp.TextComp;
 import omega.popup.OPopupItem;
 import java.awt.Panel;
