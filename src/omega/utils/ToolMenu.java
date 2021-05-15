@@ -576,81 +576,11 @@ public class ToolMenu extends JPanel {
 		.createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()));
 	}
 	private void initProjectPopup() {
-		FileFilter allFileFilter = new FileFilter() {
-			@Override
-			public String getDescription() {
-				return "All Files And Directories";
-			}
-			@Override
-			public boolean accept(File arg0) {
-				return true;
-			}
-		};
 		JFileChooser fileC = new JFileChooser();
 		projectPopup.createItem("Manage Class-Path", IconManager.projectImage, ()->Screen.getFileView().getDependencyView().setVisible(true))
 		.createItem("Manage Module-Path", IconManager.projectImage, ()->{
 			Screen.getFileView().getDependencyView().setVisible(true);
 			Screen.getFileView().getDependencyView().setView(3);
-		})
-		.createItem("Delete Files", IconManager.closeImage,
-		()->{
-			fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
-			fileC.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			fileC.setApproveButtonText("Delete");
-			fileC.setFileFilter(allFileFilter);
-			fileC.setMultiSelectionEnabled(true);
-			
-			int res = fileC.showOpenDialog(screen);
-			if(res == JFileChooser.APPROVE_OPTION) {
-				File f = fileC.getSelectedFile();
-				File[] files = fileC.getSelectedFiles();
-				String names = "";
-				boolean v = false;
-				for(File file : files)
-					{
-					names += file.getName() + " ";
-					v = true;
-				}
-				if(v) names = names.substring(0, names.length() - 4);
-					
-				int del = JOptionPane.showConfirmDialog(screen, "Do you want to delete "+names+"?", "Delete or not?", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-				if(del == JOptionPane.OK_OPTION)
-					{
-					new Thread(()->{
-						for(File file : files) {
-							try{
-								deleteDir(file);
-						}catch(Exception e2) {}
-						}
-					}).start();
-				}
-			}
-		})
-		.createItem("Mark As Main Class", IconManager.fileImage,
-		()->{
-			
-			if(Screen.getFileView().getProjectManager().non_java) return;
-				fileC.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
-			fileC.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileC.setApproveButtonText("Mark This As Main");
-			fileC.setFileFilter(new FileFilter() {
-				@Override
-				public String getDescription() {
-					return "Select a java class";
-				}
-				
-				@Override
-				public boolean accept(File f) {
-					if(f.isDirectory()) return false;
-						else if(f.getName().endsWith(".java")) return true;
-						return false;
-				}
-			});
-			fileC.setMultiSelectionEnabled(false);
-			
-			int res = fileC.showOpenDialog(screen);
-			if(res == JFileChooser.APPROVE_OPTION)
-				Screen.getRunView().setMainClassPath(fileC.getSelectedFile().getAbsolutePath());
 		})
 		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload());
 	}

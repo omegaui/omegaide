@@ -1,4 +1,5 @@
 package omega.instant.support;
+import java.awt.Graphics;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.awt.Color;
@@ -167,5 +168,11 @@ public class FileWizard extends JDialog{
           catch(Exception e){ 
                e.printStackTrace();
           }
+     }
+
+     @Override
+     public void paint(Graphics g){
+     	super.paint(g);
+          typeBtn.repaint();
      }
 }

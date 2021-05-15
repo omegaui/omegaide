@@ -16,7 +16,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
-
 import static omega.settings.Screen.*;
 public class Branch extends JComponent{
 	public File file;
@@ -48,7 +47,7 @@ public class Branch extends JComponent{
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
-		this.icon = expand ? IconManager.fluentfolderImage : IconManager.fluentanyfileImage;
+		this.icon = getPreferredImage(file);
 		setFont(PX16);
 		if(expand){
 			type = "";
@@ -64,12 +63,10 @@ public class Branch extends JComponent{
 			|| file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
 				type = "SourceCode";
-                    icon = IconManager.fluentfileImage;
 			}
 			else if(file.getName().endsWith(".class")){
 				setForeground(BYTE_COLOR);
 				type = "ByteCode";
-                    icon = IconManager.fluentfileImage;
 			}
 			else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
 				type = "Windows";
@@ -110,7 +107,6 @@ public class Branch extends JComponent{
 			|| file.getName().endsWith(".ico") || file.getName().endsWith(".svg")){
 				setForeground(IMAGE_COLOR);
 				type = "Image";
-                    icon = IconManager.fluentimagefileImage;
 			}
 			else if(file.getName().endsWith(".zip") || file.getName().endsWith(".7z") ||
 			file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz")
@@ -172,18 +168,18 @@ public class Branch extends JComponent{
 		g.fillRect(enter ? (OPTIMAL_X - 2) : 0, 0, getWidth(), getHeight());
 		g.setColor(getForeground());
 		g.drawString(name, OPTIMAL_X, (getHeight()/2) + 2);
-          if(!type.equals("?"))
-		     g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
+		if(!type.equals("?"))
+			g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
 		g.drawImage(icon, 16, 8, 16, 16, null);
 		if(enter){
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + getFont().getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
 		}
 	}
 	public static Color getColor(String fileName){
-          Color res = ANY_COLOR;
-          if(!fileName.contains("."))
-               return res;
-          File file = new File(fileName);
+		Color res = ANY_COLOR;
+		if(!fileName.contains("."))
+			return res;
+		File file = new File(fileName);
 		if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
 		|| file.getName().endsWith(".groovy")) {
 			res = SOURCE_COLOR;
@@ -192,13 +188,13 @@ public class Branch extends JComponent{
 			res = BYTE_COLOR;
 		}
 		else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
-               res = UIManager.TOOLMENU_COLOR1;
+			res = UIManager.TOOLMENU_COLOR1;
 		}
 		else if(file.getName().endsWith(".dmg")){
-               res = UIManager.TOOLMENU_COLOR1;
+			res = UIManager.TOOLMENU_COLOR1;
 		}
 		else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
-               res = UIManager.TOOLMENU_COLOR2;
+			res = UIManager.TOOLMENU_COLOR2;
 		}
 		else if(file.getName().endsWith(".deb") || file.getName().endsWith(".run")
 		|| file.getName().endsWith(".sh")){
@@ -208,10 +204,10 @@ public class Branch extends JComponent{
 		|| file.getName().endsWith(".natives") || file.getName().endsWith(".resources")
 		|| file.getName().endsWith(".projectInfo") || file.getName().endsWith(".modules")
 		|| file.getName().endsWith(".snippets") || file.getName().endsWith(".args")){
-               res = UIManager.TOOLMENU_COLOR1;
+			res = UIManager.TOOLMENU_COLOR1;
 		}
 		else if(file.getName().startsWith(".")){
-               res = UIManager.TOOLMENU_COLOR4;
+			res = UIManager.TOOLMENU_COLOR4;
 		}
 		else if(file.getName().endsWith(".js") || file.getName().endsWith(".html")){
 			res = WEB_COLOR;
@@ -220,7 +216,7 @@ public class Branch extends JComponent{
 			res = XML_COLOR;
 		}
 		else if(file.getName().endsWith(".txt")){
-               res = UIManager.TOOLMENU_COLOR3;
+			res = UIManager.TOOLMENU_COLOR3;
 		}
 		else if(file.getName().endsWith(".png") || file.getName().endsWith(".jpg")
 		|| file.getName().endsWith(".jpeg") || file.getName().endsWith(".gif")
@@ -233,6 +229,35 @@ public class Branch extends JComponent{
 		|| file.getName().endsWith(".jar")){
 			res = ARCHIVE_COLOR;
 		}
-          return res;
+		return res;
+	}
+	public BufferedImage getPreferredImage(File file){
+		if(file.isDirectory()){
+			File[] files = file.listFiles();
+			for(File fx : files){
+				if(fx.getName().equals(".projectInfo"))
+					return IconManager.fluentfolderImage;
+			}
+			return IconManager.fluentplainfolderImage;
+		}
+		if(file.getName().contains(".")){
+			String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp")
+			|| ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
+			     return IconManager.fluentimagefileImage;
+			else if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class"))
+				return IconManager.fluentfileImage;
+			else if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
+				return IconManager.fluentwebImage;
+			else if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
+				return IconManager.fluentshellImage;
+			else if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
+				return IconManager.fluentlinuxImage;
+			else if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
+				return IconManager.fluentwindowsImage;
+			else if(ext.equals(".dmg"))
+				return IconManager.fluentmacImage;
+		}
+		return IconManager.fluentanyfileImage;
 	}
 }

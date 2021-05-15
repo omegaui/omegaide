@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import omega.utils.FileSelectionDialog;
 import java.util.*;
 import omega.utils.BuildPathManager;
 import omega.jdk.JDKManager;
@@ -93,7 +94,10 @@ public class FileView extends View {
 				Screen.getProjectView().organizeProjectViewDefaults();
 				getScreen().setVisible(true);
 			}
-		}catch(Exception ex) {System.out.println(ex);}
+		}
+		catch(Exception ex) {
+		     ex.printStackTrace();
+	     }
 		getScreen().getTabPanel().closeAllTabs();
 		projectManager = new ProjectDataBase();
           getScreen().manageTools(projectManager);
@@ -132,31 +136,26 @@ public class FileView extends View {
 	}
 
 	public boolean open(String type) {
-		JFileChooser ch = new JFileChooser();
-		UIManager.setData(ch);
+		FileSelectionDialog fs = new FileSelectionDialog(getScreen());
 		if(type.equals("Project")) {
-			ch.setDialogTitle("Open Project -Select/Create an empty folder to create a new poject");
-			ch.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			ch.setMultiSelectionEnabled(false);
-			int res = ch.showOpenDialog(getScreen());
-			if(res == JFileChooser.APPROVE_OPTION) {
+			fs.setTitle("Select a project directory");
+			LinkedList<File> files = fs.selectDirectories();
+			if(!files.isEmpty()) {
 				if(Screen.launcher != null)
 					Screen.launcher.setVisible(false);
 				Screen.getScreen().setVisible(true);
 				saveAll();
 				getScreen().closeCurrentProject();
-				setProjectPath(ch.getSelectedFile().getPath());
+				setProjectPath(files.get(0).getAbsolutePath());
 				return true;
 			}
 		}
 		else {
-			ch.setDialogTitle("Open File");
-			ch.setMultiSelectionEnabled(true);
-			ch.setCurrentDirectory(new File(projectPath));
-			ch.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			int res = ch.showOpenDialog(getScreen());
-			if(res == JFileChooser.APPROVE_OPTION) {
-				for(File file : ch.getSelectedFiles())
+			fs.setTitle("Open File");
+			fs.setCurrentDirectory(new File(projectPath));
+               LinkedList<File> files = fs.selectFiles();
+			if(!files.isEmpty()) {
+				for(File file : files)
 					getScreen().loadFile(file);
 			}
 		}

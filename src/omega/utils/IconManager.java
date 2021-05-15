@@ -34,6 +34,15 @@ public class IconManager {
      public static BufferedImage fluentanyfileImage = getFluentIcon("file-50.png");
      public static BufferedImage fluentimagefileImage = getFluentIcon("image-file-50.png");
      
+     public static BufferedImage fluentlevelupImage = getFluentIcon("up-3-50.png");
+     public static BufferedImage fluentplainfolderImage = getFluentIcon("folder-50.png");
+     public static BufferedImage fluenthomeImage = getFluentIcon("person-at-home-50.png");
+     public static BufferedImage fluentwebImage = getFluentIcon("web-shield-50.png");
+     public static BufferedImage fluentwindowsImage = getFluentIcon("windows-10-50.png");
+     public static BufferedImage fluentlinuxImage = getFluentIcon("penguin-50.png");
+     public static BufferedImage fluentshellImage = getFluentIcon("snail-50.png");
+     public static BufferedImage fluentmacImage = getFluentIcon("apple-logo-50.png");
+     
 
      //The Default Icon Pack -- mixed
      public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);

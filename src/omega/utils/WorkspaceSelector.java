@@ -1,4 +1,6 @@
 package omega.utils;
+import java.io.File;
+import java.util.LinkedList;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import javax.swing.JPanel;
@@ -64,16 +66,13 @@ public class WorkspaceSelector extends JDialog{
           textField.setEditable(false);
           add(textField);
 
-          JFileChooser chooser = new JFileChooser();
-          chooser.setMultiSelectionEnabled(false);
-          chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-          chooser.setApproveButtonText("Select");
-          chooser.setDialogTitle("Choose only one directory");
+          FileSelectionDialog fs = new FileSelectionDialog(this);
+          fs.setTitle("Choose only one directory");
 
           TextComp chooseComp = new TextComp("select", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
-               int res = chooser.showOpenDialog(WorkspaceSelector.this);
-               if(res == JFileChooser.APPROVE_OPTION){
-                    DataManager.setWorkspace(chooser.getSelectedFile().getAbsolutePath());
+               LinkedList<File> files = fs.selectDirectories();
+               if(!files.isEmpty()){
+                    DataManager.setWorkspace(files.get(0).getAbsolutePath());
                     textField.setText(DataManager.getWorkspace());
                     setTitle("Lets Proceed Forward");
                     titleComp.setText(getTitle());

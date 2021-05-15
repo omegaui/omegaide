@@ -1,4 +1,6 @@
 package omega.utils;
+
+import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -7,6 +9,7 @@ import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
+
 public class FileSelectionDialog extends JDialog{
 
      private TextComp titleComp;
@@ -16,7 +19,7 @@ public class FileSelectionDialog extends JDialog{
      private JPanel panel;
      private NoCaretField selectionField;
      private TextComp levelComp;
-     private TextComp createDirComp;
+     private TextComp homeComp;
 
      private LinkedList<TextComp> items = new LinkedList<>();
      private LinkedList<File> selections = new LinkedList<>();
@@ -49,6 +52,19 @@ public class FileSelectionDialog extends JDialog{
           init();
      }
 
+     public FileSelectionDialog(JDialog d){
+     	super(d, true);
+          setUndecorated(true);
+          JPanel panel = new JPanel(null);
+          panel.setBackground(c2);
+          setContentPane(panel);
+          setSize(500, 400);
+          setLocationRelativeTo(null);
+          setBackground(c2);
+          setLayout(null);
+          init();
+     }
+
      public void init(){
           titleComp = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
           titleComp.setBounds(0, 0, getWidth() - 50 - 60, 30);
@@ -70,13 +86,16 @@ public class FileSelectionDialog extends JDialog{
           });
           add(titleComp);
 
-          cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+          cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+               selections.clear();
+               setVisible(false);
+          });
           cancelComp.setBounds(getWidth() - 50, 0, 50, 30);
           cancelComp.setFont(PX14);
           cancelComp.setArc(0, 0);
           add(cancelComp);
 
-          levelComp = new TextComp("^", "Move One Level Up", c2, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, ()->{
+          levelComp = new TextComp(IconManager.fluentlevelupImage, 25, 25, "Move One Level Up", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                if(currentDir == null)
                     return;
                String path = currentDir.getAbsolutePath();
@@ -108,11 +127,19 @@ public class FileSelectionDialog extends JDialog{
           levelComp.setArc(0, 0);
           add(levelComp);
 
-          createDirComp = new TextComp("D", "Create New Directory", c2, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, null);
-          createDirComp.setBounds(getWidth() - 50 - 30, 0, 30, 30);
-          createDirComp.setFont(PX14);
-          createDirComp.setArc(0, 0);
-          add(createDirComp);
+          homeComp = new TextComp(IconManager.fluenthomeImage, 25, 25, "Go Home", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+               currentDir = new File(System.getProperty("user.home"));
+               if(state == 0)
+                    selectFiles();
+               else if(state == 1)
+                    selectDirectories();
+               else if(state == 2)
+                    selectFilesAndDirectories();
+          });
+          homeComp.setBounds(getWidth() - 50 - 30, 0, 30, 30);
+          homeComp.setFont(PX14);
+          homeComp.setArc(0, 0);
+          add(homeComp);
 
           selectionField = new NoCaretField("", "or Enter the path manually and hit enter", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           selectionField.setBounds(0, getHeight() - 30, getWidth() - 50, 30);
@@ -250,7 +277,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
                     if(!file.isDirectory()){
                          comp.setOnToggle((value)->{
                               comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -326,7 +353,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
                     if(file.isDirectory()){
                          comp.setOnToggle((value)->{
                               comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -401,7 +428,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
                     comp.setOnToggle((value)->{
                          comp.setColors(comp.color1, comp.color3, comp.color2);
                          if(value)
@@ -512,7 +539,6 @@ public class FileSelectionDialog extends JDialog{
      public synchronized void triggerRepaint(){
           new Thread(()->{
                try{
-                    Thread.sleep(100);
                     scrollPane.repaint();
                     panel.repaint();
                     items.forEach(item->item.repaint());
@@ -521,5 +547,35 @@ public class FileSelectionDialog extends JDialog{
                     
                }
           }).start();
+     }
+
+     public BufferedImage getPreferredImage(File file){
+     	if(file.isDirectory()){
+               File[] files = file.listFiles();
+               for(File fx : files){
+                    if(fx.getName().equals(".projectInfo"))
+                         return IconManager.fluentfolderImage;
+               }
+               return IconManager.fluentplainfolderImage;
+     	}
+          if(file.getName().contains(".")){
+               String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+               if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp")
+                  || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
+                    return IconManager.fluentimagefileImage;
+               else if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class"))
+                    return IconManager.fluentfileImage;
+               else if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
+                    return IconManager.fluentwebImage;
+               else if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
+                    return IconManager.fluentshellImage;
+               else if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
+                    return IconManager.fluentlinuxImage;
+               else if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
+                    return IconManager.fluentwindowsImage;
+               else if(ext.equals(".dmg"))
+                    return IconManager.fluentmacImage;
+          }
+          return IconManager.fluentanyfileImage;
      }
 }

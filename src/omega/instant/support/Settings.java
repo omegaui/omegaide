@@ -81,10 +81,7 @@ public class Settings extends JDialog{
           add(runTimeField);
 
           JFileChooser fc = new JFileChooser();
-          fc.setMultiSelectionEnabled(false);
-          fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
           fc.setDialogTitle("Select Working Directory");
-          fc.setApproveButtonText("Select");
 
           ctDirComp = new TextComp(":", "Working Directory When Building", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
                fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));

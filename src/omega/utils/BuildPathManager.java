@@ -31,36 +31,7 @@ public class BuildPathManager extends JDialog {
 	private int state = 0;
      private int pressX;
      private int pressY;
-	private FileFilter jarFilter = new FileFilter(){
-		@Override
-		public boolean accept(File file){
-			return file.isDirectory() || file.getName().endsWith(".jar");
-		}
-		@Override
-		public String getDescription(){
-			return "Java Archive(.jar only)";
-		}
-	};
-	private FileFilter moduleFilter = new FileFilter(){
-		@Override
-		public boolean accept(File file){
-			return file.isDirectory() || file.getName().endsWith(".jar");
-		}
-		@Override
-		public String getDescription(){
-			return "Java Module(.jar only), a jar file with module-info.class file attached!";
-		}
-	};
-	private FileFilter dirFilter = new FileFilter(){
-		@Override
-		public boolean accept(File file){
-			return file.isDirectory();
-		}
-		@Override
-		public String getDescription(){
-			return "Directories Only";
-		}
-	};
+	private FileSelectionDialog fs;
 	
 	public BuildPathManager(omega.Screen screen){
 		super(screen);
@@ -75,9 +46,7 @@ public class BuildPathManager extends JDialog {
 		init();
 	}
 	public void init(){
-		fileChooser = new JFileChooser();
-		fileChooser.setAcceptAllFileFilterUsed(false);
-          fileChooser.setMultiSelectionEnabled(true);
+		fs = new FileSelectionDialog(this);
 		
 		jarTab = new TextComp("Jars", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(0)){
                @Override
@@ -194,49 +163,41 @@ public class BuildPathManager extends JDialog {
 	}
 	public void addPath(){
 		if(state == 0){
-			fileChooser.setFileFilter(jarFilter);
-			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileChooser.setDialogTitle("Select Jar Files");
-			fileChooser.setApproveButtonText("Select");
-			int res = fileChooser.showOpenDialog(this);
-			if(res == 0){
-				for(File file : fileChooser.getSelectedFiles()){
+			fs.setFileExtensions(".jar");
+			fs.setTitle("Select Jar Files");
+			LinkedList<File> files = fs.selectFiles();
+			if(!files.isEmpty()){
+				for(File file : files){
 					Screen.getFileView().getProjectManager().jars.add(file.getAbsolutePath());
 				}
 			}
 		}
 		else if(state == 1){
-			fileChooser.setFileFilter(dirFilter);
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fileChooser.setDialogTitle("Select Native Library Roots");
-			fileChooser.setApproveButtonText("Select");
-			int res = fileChooser.showOpenDialog(this);
-			if(res == 0){
-				for(File file : fileChooser.getSelectedFiles()){
+			fs.setFileExtensions(FileSelectionDialog.ALL_EXTENSIONS);
+			fs.setTitle("Select Native Library Roots");
+			LinkedList<File> files = fs.selectDirectories();
+               if(!files.isEmpty()){
+                    for(File file : files){
 					Screen.getFileView().getProjectManager().natives.add(file.getAbsolutePath());
 				}
 			}
 		}
 		else if(state == 2){
-			fileChooser.setFileFilter(dirFilter);
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fileChooser.setDialogTitle("Select Resource Roots");
-			fileChooser.setApproveButtonText("Select");
-			int res = fileChooser.showOpenDialog(this);
-			if(res == 0){
-				for(File file : fileChooser.getSelectedFiles()){
+               fs.setFileExtensions(FileSelectionDialog.ALL_EXTENSIONS);
+			fs.setTitle("Select Resource Roots");
+               LinkedList<File> files = fs.selectDirectories();
+               if(!files.isEmpty()){
+                    for(File file : files){
 					Screen.getFileView().getProjectManager().resourceRoots.add(file.getAbsolutePath());
 				}
 			}
 		}
 		else{
-			fileChooser.setFileFilter(moduleFilter);
-			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileChooser.setDialogTitle("Select Module Files");
-			fileChooser.setApproveButtonText("Select");
-			int res = fileChooser.showOpenDialog(this);
-			if(res == 0){
-				for(File file : fileChooser.getSelectedFiles()){
+			fs.setFileExtensions(".jar");
+			fs.setTitle("Select Module Files");
+			LinkedList<File> files = fs.selectFiles();
+               if(!files.isEmpty()){
+                    for(File file : files){
 					Screen.getFileView().getProjectManager().modules.add(file.getAbsolutePath());
 				}
 			}
