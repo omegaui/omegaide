@@ -64,6 +64,7 @@ public class IconManager {
      public static BufferedImage methImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage varImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage ideImage = getImage("/omega_ide_icon32.png");
+     public static BufferedImage ideImage64 = getImage("/omega_ide_icon64.png");
      static{
           paintNewImage(newImage.getGraphics());
           paintShowImage(showImage.getGraphics());

@@ -31,7 +31,7 @@ public class OPopupWindow extends JDialog{
           addFocusListener(new FocusAdapter(){
                @Override
                public void focusLost(FocusEvent e){
-               	setVisible(false);
+                    dispose();
                }
           });
           if(scrollable) {

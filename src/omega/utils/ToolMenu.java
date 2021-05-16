@@ -86,6 +86,7 @@ public class ToolMenu extends JPanel {
 	public boolean hidden;
 	public static ProjectWizard projectWizard;
 	public static UniversalProjectWizard universalProjectWizard;
+     public static MadeWithScreen madeWithScreen;
 	private int pressX;
 	private int pressY;
 	//The window decoration objects
@@ -109,6 +110,7 @@ public class ToolMenu extends JPanel {
 			universalProjectWizard = new UniversalProjectWizard(screen);
 			infoScreen = new InfoScreen(screen);
 			structureView = new StructureWindow(screen);
+               madeWithScreen = new MadeWithScreen(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 90);
@@ -566,9 +568,12 @@ public class ToolMenu extends JPanel {
 	          }
 		})
 		.createItem("Plugin Center & Updates", IconManager.fluentupdateImage, ()->Screen.getPluginCenter().setVisible(true))
-		.createItem("About", IconManager.fluentinfoImage, ()->{
-			infoScreen.setVisible(true);
-		});
+          .createItem("Made With", IconManager.fluentinfoImage, ()->{
+               madeWithScreen.setVisible(true);
+          })
+          .createItem("About", IconManager.fluentinfoImage, ()->{
+               infoScreen.setVisible(true);
+          });
 	}
 	private void initToolMenu() {
 		toolsPopup.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
