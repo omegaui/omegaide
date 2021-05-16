@@ -125,7 +125,12 @@ public class TabComp extends JComponent {
           TextComp iconButton = null;
           
           Color alpha = new Color(FORE.getRed(), FORE.getGreen(), FORE.getBlue(), 40);
-          iconButton = new TextComp(getPreferredImage(((Editor)c).currentFile), 25, 25, toolTip, textField.getBackground(), alpha, FORE, ()->{});
+          BufferedImage image = null;
+          if(c instanceof Editor)
+               image = getPreferredImage(((Editor)c).currentFile);
+          else
+               image = IconManager.fluentshellImage;
+          iconButton = new TextComp(image, 25, 25, toolTip, textField.getBackground(), alpha, FORE, ()->{});
 		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 20, 28));
 		iconButton.setFont(omega.settings.Screen.PX16);
 		
@@ -173,7 +178,7 @@ public class TabComp extends JComponent {
           if(ext.contains("Run("))
                return "JVM";
                
-          if(ext.contains("Run ") || ext.contains("Run") || ext.contains("Build"))
+          if((ext.contains("Run ") || ext.contains("Run") || ext.contains("Build")) )
                return "IDE";
 
           if(!ext.contains("."))
@@ -181,38 +186,10 @@ public class TabComp extends JComponent {
 
           if(ext.equals(".projectInfo") || ext.equals(".sources")|| ext.equals(".args") || ext.equals(".preferences") || ext.equals(".recents") || ext.equals(".firststartup") || ext.equals(".ui") || ext.equals(".plugs") || ext.equals(".snippets"))
                return "IDE";
-
-		ext = ext.substring(ext.lastIndexOf('.'));
-		
-		if(ext.equals(".java") || ext.equals(".class"))
-			return "J";
-          else if(ext.equals(".py"))
-               return "Py";
-          else if(ext.equals(".groovy"))
-               return "G";
-		else if(ext.equals(".js") || ext.equals(".html"))
-			return "Web";
-		else if(ext.equals(".rs"))
-			return "R";
-		else if(ext.equals(".txt"))
-			return "T";
-		else if(ext.equals(".exe") || ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".dll"))
-			return "Win";
-		else if(ext.equals(".xml") || ext.equals(".fxml"))
-			return "Xml";
-		else if(ext.equals(".dmg"))
-			return "Mac";
-		else if(ext.equals(".sh") || ext.equals(".run"))
-			return "Linux";
-          else if(ext.equals(".md"))
-               return "MD";
-          if(ext.length() >= 3)
-		     return Character.toUpperCase(ext.charAt(1)) + "" + ext.charAt(2);
-          else if(ext.length() >= 2)
-               return Character.toUpperCase(ext.charAt(1)) + "";
-          else
-               return "?";
+          
+          return "?";
 	}
+     
      public static BufferedImage getPreferredImage(File file){
           if(file.isDirectory()){
                File[] files = file.listFiles();

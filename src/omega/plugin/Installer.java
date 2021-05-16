@@ -17,7 +17,7 @@ public class Installer extends JDialog {
 	private TextComp imageComp;
 	private String versionInfo;
      private String size;
-	private BufferedImage image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
+	private BufferedImage image;
 	public Installer(PluginCenter pluginCenter){
 		super(pluginCenter, false);
 		setTitle("Omega IDE -- Installer");
@@ -27,7 +27,7 @@ public class Installer extends JDialog {
 		setSize(400, 460);
 		setLocationRelativeTo(null);
 		updater = new Updater(pluginCenter);
-		paintImage();
+		image = IconManager.fluentupdateImage;
 		init();
 	}
 	public void init(){
@@ -47,39 +47,11 @@ public class Installer extends JDialog {
 		msgComp.setArc(0, 0);
 		msgComp.setClickable(false);
 		add(msgComp);
-		imageComp = new TextComp("", c2, c2, c2, null){
-			@Override
-			public void draw(Graphics2D g){
-				g.drawImage(image, 0, 0, this);
-			}
-		};
+		imageComp = new TextComp(image, 50, 50, c2, c2, c2, null);
 		imageComp.setBounds(0, 60, getWidth(), 400);
 		imageComp.setArc(0, 0);
 		imageComp.setClickable(false);
 		add(imageComp);
-	}
-	public void paintImage(){
-		Graphics2D g = (Graphics2D)image.getGraphics();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		//Drawing Levels
-		int x = getWidth()/2 - 40;
-		int x2 = x + 80;
-		int y = 100;
-		for(int i = 0; i < 8; i++){
-			drawBox(g, x, y, 80, 30);
-			y += 30;
-		}
-		x = getWidth()/2 - 80;
-		drawBox(g, x, y, 160, 30);
-		for(int i = 0; i < 3; i++){
-			x -= 30;
-			y -= 30;
-			drawBox(g, x, y, 70, 30);
-			drawBox(g, x2, y, 70, 30);
-			x2 += 30;
-		}
-		g.dispose();
 	}
 	public void checkForUpdates(){
 		setVisible(true);

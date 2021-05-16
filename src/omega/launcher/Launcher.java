@@ -1,156 +1,163 @@
 package omega.launcher;
-import omega.utils.IconManager;
-import omega.Screen;
-import java.awt.event.MouseEvent;
-import java.awt.Dimension;
-import omega.utils.RecentsManager;
-import java.net.URL;
-import java.awt.Desktop;
+import omega.utils.WorkspaceSelector;
 import omega.utils.ToolMenu;
+import omega.Screen;
 import java.io.File;
-import java.awt.Font;
-import java.awt.RenderingHints;
+import omega.utils.RecentsManager;
+import omega.utils.IconManager;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
-import omega.comp.TextComp;
+import java.util.LinkedList;
 import javax.swing.JScrollPane;
-import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
+import omega.comp.TextComp;
+import javax.swing.JPanel;
+import omega.comp.FlexPanel;
 import javax.swing.JFrame;
 import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 public class Launcher extends JFrame{
-     private static final BufferedImage icon = getImage("/omega_ide_icon32.png");
-     private static final BufferedImage drawIcon = getImage("/omega_ide_icon128.png");
-	private final JPanel panel = new JPanel(null);
-	private final JScrollPane scrollPane = new JScrollPane(panel);
-     private TextComp closeComp;
-     private TextComp imageComp;
-     private TextComp textComp;
-     private int mouseX;
-     private int mouseY;
+	private FlexPanel leftPanel;
+	private JPanel rightPanel;
+	private JScrollPane scrollPane;
+	private int pressX;
+	private int pressY;
+	private int block;
+	private LinkedList<TextComp> items = new LinkedList<>();
+	
 	public Launcher(){
-          JPanel p = new JPanel(null);
-          p.setBackground(c2);
-          setContentPane(p);
+		super("Launcher");
 		setUndecorated(true);
-          setBackground(c2);
-		setLayout(null);
-		setSize(600, 500);
+		setSize(700, 400);
 		setLocationRelativeTo(null);
-		setResizable(false);
-		setIconImage(icon);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		addMouseMotionListener(new MouseAdapter(){
-               @Override
-               public void mouseDragged(MouseEvent e) {
-                  setLocation(e.getXOnScreen() - mouseX, e.getYOnScreen() - mouseY);
-               }
-          });
-          addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e) {
-                    mouseX = e.getX();
-                    mouseY = e.getY();
-               }
-          });
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		JPanel panel = new JPanel(null);
+		panel.setBackground(c2);
+		setContentPane(panel);
+		setBackground(c2);
+		setLayout(null);
 		init();
 		setVisible(true);
 	}
-
-	private void init(){
-		panel.setBackground(getBackground());
-		scrollPane.setBounds(0, 220, getWidth(), getHeight() - 220);
-		add(scrollPane);
-
-		closeComp = new TextComp("X", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
-		closeComp.setBounds(getWidth() - 40, 0, 40, 40);
-          closeComp.setFont(omega.settings.Screen.PX18);
-          closeComp.setArc(0, 0);
+	public void init(){
+		TextComp closeComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Click to Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
+		closeComp.setBounds(0, 0, 30, 30);
+		closeComp.setArc(0, 0);
 		add(closeComp);
-
-          imageComp = new TextComp("", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{}){
-               @Override
-               public void paint(Graphics graphics){
-               	Graphics2D g = (Graphics2D)graphics;
-               	g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-               	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-               	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-               	g.drawImage(drawIcon, 0, 0, null);
-               }
-          };
-          imageComp.setBounds(getWidth()/2 - 64, 10, 128, 128);
-          imageComp.setClickable(false);
-          add(imageComp);
-
-          textComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, TOOLMENU_COLOR1, ()->{});
-          textComp.setBounds(getWidth()/2 - 200, 140, 400, 50);
-          textComp.setClickable(false);
-          textComp.setFont(new Font("Ubuntu Mono", Font.BOLD, 40));
-          textComp.setArc(0, 0);
-          add(textComp);
 		
-		Door openDoor = new Door(File.separator + "ide" + File.separator + "Project" + File.separator + "Open", icon, ()->{
-			if(Screen.getFileView().open("Project"))
-				setVisible(false);
-		});
-		openDoor.setBounds(0, 0, getWidth(), 40);
-          openDoor.setForeground(TOOLMENU_COLOR3);
-		panel.add(openDoor);
-		
-          Door newDoor = new Door(File.separator + "ide" + File.separator + "Project" + File.separator + "New", icon, ()->{
-               ToolMenu.projectWizard.setVisible(true);
-               Screen.hideNotif();
-          });
-          newDoor.setBounds(0, 40, getWidth(), 40);
-          newDoor.setForeground(TOOLMENU_COLOR3);
-          panel.add(newDoor);
-          
-          Door bmanDoor = new Door(File.separator + "ide" + File.separator + "Non-Java Project"  + File.separator + "New", icon, ()->{
-               ToolMenu.universalProjectWizard.setVisible(true);
-               Screen.hideNotif();
-          });
-          bmanDoor.setBounds(0, 80, getWidth(), 40);
-          bmanDoor.setForeground(TOOLMENU_COLOR3);
-          panel.add(bmanDoor);
-          
-          Door stuckDoor = new Door(File.separator + "ide" + File.separator + "See Tutorial Videos"  + File.separator + "Stucked or need Help?", icon, ()->{
-               try{
-                    java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
-               }catch(Exception e){ System.err.println(e); }
-               Screen.hideNotif();
-          });
-          stuckDoor.setBounds(0, 120, getWidth(), 40);
-          stuckDoor.setForeground(TOOLMENU_COLOR3);
-          panel.add(stuckDoor);
-
-		//Creating Doors
-		int y = 160;
-		for(int i = RecentsManager.RECENTS.size() - 1; i >= 0; i--) {
-			String path = RecentsManager.RECENTS.get(i);
-			File file = new File(path);
-			if(file.exists() && file.isDirectory()) {
-				Door door = new Door(path, icon, ()->{
-					setVisible(false);
-					omega.Screen.getScreen().loadProject(file);
-					omega.Screen.getScreen().setVisible(true);
-				});
-				door.setBounds(0, y, getWidth(), 40);
-                    door.setForeground(TOOLMENU_COLOR1);
-				panel.add(door);
-				y += 40;
+		TextComp imageComp = new TextComp((BufferedImage)IconManager.getImageIcon("/omega_ide_icon128.png").getImage(), 128, 128, c2, c2, c2, null);
+		imageComp.setBounds(50, 50, 200, 150);
+		imageComp.setClickable(false);
+		imageComp.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				pressX = e.getX();
+				pressY = e.getY();
 			}
-		}
-		panel.setPreferredSize(new Dimension(getWidth(), y));
+		});
+		imageComp.addMouseMotionListener(new MouseAdapter(){
+			@Override
+			public void mouseDragged(MouseEvent e){
+				setLocation(e.getXOnScreen() - pressX - 50, e.getYOnScreen() - pressY - 50);
+			}
+		});
+		add(imageComp);
+          
+		leftPanel = new FlexPanel(null, TOOLMENU_COLOR2, TOOLMENU_COLOR1);
+		leftPanel.setPaintGradientEnabled(true);
+		leftPanel.setBounds(50, 200, 200, getHeight() - 210);
+		add(leftPanel);
+          
+		//Left Final Components
+		TextComp openComp = new TextComp("Open a Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
+               Screen.getFileView().open("Project");
+	     });
+		openComp.setBounds(10, 10, 180, 25);
+		openComp.setFont(PX14);
+		leftPanel.add(openComp);
+		
+		TextComp njComp = new TextComp("New Java Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
+               ToolMenu.projectWizard.setVisible(true);
+	     });
+		njComp.setBounds(10, 40, 180, 25);
+		njComp.setFont(PX14);
+		leftPanel.add(njComp);
+		
+		TextComp nuComp = new TextComp("New Universal Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
+               ToolMenu.universalProjectWizard.setVisible(true);
+	     });
+		nuComp.setBounds(10, 70, 180, 25);
+		nuComp.setFont(PX14);
+		leftPanel.add(nuComp);
+		
+		TextComp allComp = new TextComp("All Projects", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
+               ToolMenu.allProjectsPopup.setLocationRelativeTo(null);
+               ToolMenu.allProjectsPopup.setVisible(true);
+	     });
+		allComp.setBounds(10, 100, 180, 25);
+		allComp.setFont(PX14);
+		leftPanel.add(allComp);
+		
+		TextComp workComp = new TextComp("Change Workspace", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
+               new WorkspaceSelector(Screen.getScreen()).setVisible(true);
+	     });
+		workComp.setBounds(10, 130, 180, 25);
+		workComp.setFont(PX14);
+		leftPanel.add(workComp);
+          
+		TextComp infoComp = new TextComp("About", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
+               ToolMenu.infoScreen.setVisible(true);
+	     });
+		infoComp.setBounds(10, 160, 180, 25);
+		infoComp.setFont(PX14);
+		leftPanel.add(infoComp);
+		
+		//Right Panel
+		scrollPane = new JScrollPane(rightPanel = new JPanel(null));
+		scrollPane.setBounds(300, 0, getWidth() - 300, getHeight());
+		scrollPane.setBackground(c2);
+		rightPanel.setBackground(c2);
+		add(scrollPane);
 	}
-
-     @Override
-     public void setVisible(boolean value){
-     	super.setVisible(value);
-          repaint();
-     }
-
-	public static BufferedImage getImage(String path){
-		return (BufferedImage)IconManager.getImageIcon(path).getImage();
+	public void resolveItems(){
+		items.forEach(rightPanel::remove);
+		items.clear();
+		block = 0;
+		for(String path : RecentsManager.RECENTS){
+               File file = new File(path);
+               if(!file.exists() || !file.isDirectory())
+                    continue;
+			TextComp comp = new TextComp(file.getName(), file.getAbsolutePath(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+                    setVisible(false);
+                    Screen.getScreen().loadProject(file);
+		     }){
+				@Override
+				public void draw(Graphics2D g){
+					g.drawImage(IconManager.fluentfolderImage, 5, getHeight()/2 - 25/2, 25, 25, this);
+				}
+			};
+			comp.alignX = 50;
+			comp.setBounds(0, block, 400, 40);
+			comp.setFont(PX16);
+			comp.setArc(0, 0);
+			items.add(comp);
+			rightPanel.add(comp);
+			block += 40;
+		}
+		rightPanel.setPreferredSize(new Dimension(395, block));
+	}
+	@Override
+	public void setVisible(boolean value){
+		if(value){
+			resolveItems();
+			setSize(items.isEmpty() ? 300 : 700, 400);
+			setLocationRelativeTo(null);
+		}
+		super.setVisible(value);
+	}
+	public static void main(String[] args){
+		new Launcher();
 	}
 }

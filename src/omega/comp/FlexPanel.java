@@ -1,4 +1,5 @@
 package omega.comp;
+import javax.swing.JComponent;
 import java.awt.GradientPaint;
 import java.awt.Color;
 import java.awt.RenderingHints;
@@ -6,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import javax.swing.JPanel;
-public class FlexPanel extends JPanel{
+public class FlexPanel extends JComponent{
      
      private int arcX = 40;
      private int arcY = 40;
@@ -16,11 +17,19 @@ public class FlexPanel extends JPanel{
      private boolean paintGradientEnabled = false;
      
      public FlexPanel(LayoutManager layout, Color background, Color accentColor){
-          super(layout);
+          setLayout(layout);
           setBackground(background);
           this.accentColor = accentColor;
      }
 
+     public boolean isPaintGradientEnabled() {
+          return paintGradientEnabled;
+     }
+     public void setPaintGradientEnabled(boolean paintGradientEnabled) {
+          this.paintGradientEnabled = paintGradientEnabled;
+          repaint();
+     }
+     
      public Color getAccentColor() {
           return accentColor;
      }
