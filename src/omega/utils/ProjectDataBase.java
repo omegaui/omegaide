@@ -34,7 +34,10 @@ public class ProjectDataBase extends DataBase{
                jdk = new File(jdkPath != null ? jdkPath : "");
      		try {
      			Screen.getRunView().mainClass = mainClass;
-     		}catch(Exception e) {}
+     		}
+     		catch(Exception e) {
+                    
+		     }
           }
           LinkedList<DataEntry> mainEditors = getEntries("Opened Editors on Main Tab Panel");
           LinkedList<DataEntry> rightEditors = getEntries("Opened Editors on Right Tab Panel");

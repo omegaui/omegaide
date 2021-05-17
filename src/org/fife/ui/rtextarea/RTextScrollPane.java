@@ -88,7 +88,7 @@ public class RTextScrollPane extends JScrollPane {
 	 * @param lineNumbers Whether line numbers should be enabled.
 	 */
 	public RTextScrollPane(RTextArea textArea, boolean lineNumbers) {
-		this(textArea, lineNumbers, Color.GRAY);
+		this(textArea, lineNumbers, omega.utils.UIManager.TOOLMENU_COLOR1);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class RTextScrollPane extends JScrollPane {
 	 * @param lineNumbers Whether line numbers should be enabled.
 	 */
 	public RTextScrollPane(Component comp, boolean lineNumbers) {
-		this(comp, lineNumbers, Color.GRAY);
+		this(comp, lineNumbers, omega.utils.UIManager.TOOLMENU_COLOR1);
 	}
 
 
@@ -130,18 +130,17 @@ public class RTextScrollPane extends JScrollPane {
 		RTextArea textArea = getFirstRTextAreaDescendant(comp);
 
 		// Create the gutter for this document.
-		Font defaultFont = new Font(omega.utils.UIManager.fontName, Font.PLAIN, 12);
+		Font defaultFont = new Font(omega.utils.UIManager.fontName, omega.utils.UIManager.fontState, omega.utils.UIManager.fontSize);
 		gutter = new Gutter(textArea);
 		gutter.setLineNumberFont(defaultFont);
 		gutter.setLineNumberColor(lineNumberColor);
 		setLineNumbersEnabled(lineNumbers);
+          setFont(defaultFont);
 
 		// Set miscellaneous properties.
 		setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
 		setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
 	}
-
 
 	/**
 	 * Ensures the gutter is visible if it's showing anything.

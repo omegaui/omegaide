@@ -68,10 +68,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public Editor(Screen screen) {
 		super();
 		Editor.screen = screen;
-		scrollPane = new RTextScrollPane(this);
-		scrollPane.setLineNumbersEnabled(true);
+          
+		scrollPane = new RTextScrollPane(this, true);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
+          
 		fAndR = new FindAndReplace();
 		initView();
 		printArea = new PrintArea("File Operation Log", screen);

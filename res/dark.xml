@@ -16,8 +16,8 @@
    <currentLineHighlight color="2F393C" fade="false"/>
    <marginLine fg="394448"/>
    <markAllHighlight color="6b8189"/> <!-- TODO: Fix me -->
-   <markOccurrencesHighlight color="5b7179" border="false"/>
-   <matchedBracket fg="6A8088" bg="6b8189" highlightBoth="false" animate="true"/>
+   <markOccurrencesHighlight color="5b7179" border="true"/>
+   <matchedBracket fg="6A8088" bg="6b8189" highlightBoth="true" animate="true"/>
    <hyperlinks fg="a082bd"/>
    <secondaryLanguages>
       <language index="1" bg="333344"/>
@@ -25,11 +25,11 @@
       <language index="3" bg="332222"/>
    </secondaryLanguages>
    
-   <!-- Gutter styling. -->
-   <gutterBorder color="81969A"/>
-   <lineNumbers fg="81969A"/>
-   <foldIndicator fg="6A8088" iconBg="2f383c"/>
-   <iconRowHeader activeLineRange="3399ff"/>
+     <!-- Gutter styling. -->
+     <gutterBorder color="293134" />
+     <lineNumbers fg="ffffff" />
+     <foldIndicator fg="ffffff" iconBg="293134" iconArmedBg="293134" />
+     <iconRowHeader activeLineRange="3399ff" />
    
    <!-- Syntax tokens. F93800-->
    <tokenStyles>

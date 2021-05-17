@@ -8,7 +8,7 @@
 <RSyntaxTheme version="1.0">
 
    <!-- Omitting baseFont will use a system-appropriate monospaced. -->
-   <!--<baseFont family="..." size="12"/>-->
+   <baseFont family="Ubuntu Mono" size="16"/>
    
    <!--  General editor colors. -->
    <background color="ffffff" />
@@ -17,8 +17,8 @@
    <currentLineHighlight color="ffffd7" fade="false" />
    <marginLine fg="b0b4b9" />
    <markAllHighlight color="ccccff" />
-   <markOccurrencesHighlight color="ccccff" border="false" />
-   <matchedBracket fg="99ccff" bg="99ccff" highlightBoth="true" animate="false" />
+   <markOccurrencesHighlight color="ccccff" border="true" />
+   <matchedBracket fg="99ccff" bg="99ccff" highlightBoth="true" animate="true" />
    <hyperlinks fg="0000ff" />
    <secondaryLanguages>
       <language index="1" bg="fff0cc" />
@@ -27,9 +27,9 @@
    </secondaryLanguages>
 
    <!-- Gutter styling. -->
-   <gutterBorder color="dddddd" />
-   <lineNumbers fg="787878" />
-   <foldIndicator fg="808080" iconBg="ffffff" />
+   <gutterBorder color="ffffff" />
+   <lineNumbers fg="363636"/>
+   <foldIndicator fg="363636" iconBg="ffffff" />
    <iconRowHeader activeLineRange="3399ff" />
 
    <!-- Syntax tokens. -->
