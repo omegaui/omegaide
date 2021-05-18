@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 import omega.utils.IconManager;
 import omega.jdk.*;
 import omega.utils.BuildLog;
@@ -798,7 +799,7 @@ public class RunView extends View {
 
 		private void init() {
 			textArea = new RSyntaxTextArea("......................");
-			textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
+               MarkdownTokenMaker.apply(textArea);
 			textArea.setAutoscrolls(true);
 			textArea.setCaretColor(java.awt.Color.WHITE);
 			Editor.getTheme().apply(textArea);
@@ -836,7 +837,7 @@ public class RunView extends View {
 			textArea.addMouseListener(l);
 		}
 		
-		public void launchAsTerminal() 		{
+		public void launchAsTerminal() {
 			setAction(()->{
 				textArea.setEditable(false);
 				UIManager.setData(PrintArea.this);

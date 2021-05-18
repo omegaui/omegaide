@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.instant.support.build.gradle.GradleProcessManager;
 import org.fife.ui.rsyntaxtextarea.modes.*;
 import omega.token.factory.*;
 import omega.highlightUnit.BasicHighlight;
@@ -68,11 +69,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public Editor(Screen screen) {
 		super();
 		Editor.screen = screen;
-          
+		
 		scrollPane = new RTextScrollPane(this, true);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
-          
+		
 		fAndR = new FindAndReplace();
 		initView();
 		printArea = new PrintArea("File Operation Log", screen);
@@ -233,8 +234,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
 		else if(f.getName().endsWith(".rs"))
 			RustTokenMaker.apply(e);
-          else if(f.getName().endsWith(".md"))
-               MarkdownTokenMaker.apply(e);
+		else if(f.getName().endsWith(".md"))
+			MarkdownTokenMaker.apply(e);
 	}
 	public void loadTheme() {
 		try {
@@ -440,12 +441,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(!currentFile.exists())
 					return;
 				int res0 = ChoiceDialog.makeChoice("Do you want to delete " + currentFile.getName() + "?", "Yes", "No!");
-                    if(res0 != ChoiceDialog.CHOICE1)
-                         return;
+				if(res0 != ChoiceDialog.CHOICE1)
+					return;
 				if(currentFile.delete()) {
 					Screen.getProjectView().reload();
 				}
-			}catch(Exception e) {
+				}catch(Exception e) {
 				e.printStackTrace();
 			}
 		}).start();
@@ -488,7 +489,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			shift = false;
 		}
 		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
-			Screen.getBuildView().compileProject();
+			if(GradleProcessManager.isGradleProject())
+				GradleProcessManager.build();
+			else
+				Screen.getBuildView().compileProject();
 			b = false;
 			ctrl = false;
 			shift = false;
@@ -559,7 +563,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				shift = false;
 			}
 			if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
-				Screen.getRunView().run();
+				if(GradleProcessManager.isGradleProject())
+					GradleProcessManager.run();
+				else
+					Screen.getRunView().run();
 				r = false;
 				ctrl = false;
 				shift = false;

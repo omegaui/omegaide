@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.instant.support.build.gradle.GradleProcessManager;
 import omega.popup.*;
 import omega.Screen;
 import javax.swing.JOptionPane;
@@ -50,6 +51,8 @@ public class PopupManager {
 	}
 
 	public static void createTreePopup(OPopupWindow popup, File file) {
+          if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath()))
+               popup.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init);
           popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
           .createItem("New File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().showFileView(file.getAbsolutePath()))
           .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("class"))
@@ -57,10 +60,12 @@ public class PopupManager {
           .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().show("interface"))
           .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
-          .createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file))
-          .createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
-          .createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file))
-          .createItem("Delete", IconManager.closeImage, ()->{
+          .createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file));
+          if(!file.isDirectory()) {
+               popup.createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
+               .createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
+          }
+          popup.createItem("Delete", IconManager.closeImage, ()->{
                if(file.isDirectory()){
                     try{
                          int res0 = ChoiceDialog.makeChoice("Do you want to delete Directory " + file.getName() + "?", "Yes", "No");
@@ -76,11 +81,13 @@ public class PopupManager {
                     Editor.deleteFile(file);
                Screen.getProjectView().reload();
           })
-          .createItem("Refresh", null, ()->Screen.getProjectView().reload())
-          .createItem("Rename", IconManager.fileImage, ()->{
-               Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
-               Screen.getProjectView().reload();
-          });
+          .createItem("Refresh", null, ()->Screen.getProjectView().reload());
+          if(!file.isDirectory()) {
+               popup.createItem("Rename", IconManager.fileImage, ()->{
+                    Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
+                    Screen.getProjectView().reload();
+               });
+          }
 		
           popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"" + file.getAbsolutePath() + "\""), null));
           popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));

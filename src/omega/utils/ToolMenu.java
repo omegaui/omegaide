@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.instant.support.build.gradle.GradleProcessManager;
 import omega.instant.support.universal.UniversalProjectWizard;
 import omega.instant.support.java.ProjectWizard;
 import java.awt.Point;
@@ -295,9 +296,13 @@ public class ToolMenu extends JPanel {
 		sep0.setBounds(130, 50, 2, 40);
 		addComp(sep0);
        
-          runComp = new TextComp(fluentrunImage, 25, 25, "Run Project, Right Click to launch without build!", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-               if(runComp.isClickable() && buildComp.isClickable())
-                    Screen.getRunView().run();
+          runComp = new TextComp(fluentrunImage, 25, 25, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+               if(runComp.isClickable() && buildComp.isClickable()){
+                    if(GradleProcessManager.isGradleProject())
+                         GradleProcessManager.run();
+                    else
+                         Screen.getRunView().run();
+               }
           });
           runComp.setBounds(140, 55, 30, 30);
           runComp.addMouseListener(new MouseAdapter(){
@@ -313,8 +318,12 @@ public class ToolMenu extends JPanel {
           add(runComp);
 		
 		buildComp = new TextComp(fluentbuildImage, 25, 25, "Time to Build", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-			if(runComp.isClickable() && buildComp.isClickable())
-				Screen.getBuildView().compileProject();
+			if(runComp.isClickable() && buildComp.isClickable()){
+                    if(GradleProcessManager.isGradleProject())
+                         GradleProcessManager.build();
+                    else
+				     Screen.getBuildView().compileProject();
+			}
 		});
 		buildComp.setBounds(172, 55, 30, 30);
 		buildComp.setFont(omega.settings.Screen.PX18);
@@ -544,7 +553,7 @@ public class ToolMenu extends JPanel {
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
 		typeItem.setAction(()->{
 			omega.Screen.getFileView().getProjectManager().non_java = !omega.Screen.getFileView().getProjectManager().non_java;
-			typeItem.setName(omega.Screen.getFileView().getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
+			typeItem.setName(omega.Screen.getFileView().getProjectManager().non_java ? "Project Type : Other/Gradle" : "Project Type : Java");
 			omega.Screen.getScreen().manageTools(omega.Screen.getFileView().getProjectManager());
 			omega.Screen.getFileView().getProjectManager().save();
 			typeItem.setToolTipText("Please Relaunch the IDE");
@@ -639,8 +648,9 @@ public class ToolMenu extends JPanel {
 				for(Process p : Screen.getRunView().runningApps) {
 					if(p.isAlive())
 						p.destroyForcibly();
-				}
-		}catch(Exception e2) {}
+     				}
+     		}
+     		catch(Exception e2) {}
 			Screen.notify("Saving UI and Data");
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();

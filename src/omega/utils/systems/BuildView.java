@@ -1,4 +1,5 @@
 package omega.utils.systems;
+import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 import omega.utils.BuildLog;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -449,10 +450,9 @@ public class BuildView extends View {
 			init();
 		}
 
-		private void init()
-		{
+		private void init() {
 			textArea = new RSyntaxTextArea("Build Starting...");
-			textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
+			MarkdownTokenMaker.apply(textArea);
 			textArea.setAutoscrolls(true);
 			Editor.getTheme().apply(textArea);
 			textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
@@ -480,8 +480,7 @@ public class BuildView extends View {
 			return textArea.getText();
 		}
 
-		public void print(String text)
-		{
+		public void print(String text) {
 			textArea.append("\n" + text);
 			p.repaint();
 			p.getVerticalScrollBar().setValue(p.getVerticalScrollBar().getMaximum());
@@ -502,7 +501,10 @@ public class BuildView extends View {
 			if(v) {
 				try {
 					Editor.getTheme().apply(textArea);
-				}catch(Exception e) {}
+				}
+				catch(Exception e) {
+                         
+			     }
 			}
 			super.setVisible(v);
 		}
