@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.build.gradle.GradleProcessManager;
 import omega.instant.support.universal.UniversalProjectWizard;
 import omega.instant.support.java.ProjectWizard;
@@ -88,6 +89,7 @@ public class ToolMenu extends JPanel {
 	public static ProjectWizard projectWizard;
 	public static UniversalProjectWizard universalProjectWizard;
      public static MadeWithScreen madeWithScreen;
+     public static GradleModuleWizard gradleModuleWizard;
 	private int pressX;
 	private int pressY;
 	//The window decoration objects
@@ -112,6 +114,7 @@ public class ToolMenu extends JPanel {
 			infoScreen = new InfoScreen(screen);
 			structureView = new StructureWindow(screen);
                madeWithScreen = new MadeWithScreen(screen);
+               gradleModuleWizard = new GradleModuleWizard(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 90);

@@ -178,7 +178,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_FORTRAN);
 		else if(f.getName().endsWith(".go"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GO);
-		else if(f.getName().endsWith(".groovy"))
+		else if(f.getName().endsWith(".groovy") || f.getName().endsWith(".gradle") || f.getName().endsWith(".gradle.kts"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GROOVY);
 		else if(f.getName().endsWith(".html") || f.getName().endsWith(".svg"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
@@ -235,7 +235,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".rs"))
 			RustTokenMaker.apply(e);
 		else if(f.getName().endsWith(".md"))
-			MarkdownTokenMaker.apply(e);
+               MarkdownTokenMaker.apply(e);
 	}
 	public void loadTheme() {
 		try {

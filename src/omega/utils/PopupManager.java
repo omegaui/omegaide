@@ -51,8 +51,10 @@ public class PopupManager {
 	}
 
 	public static void createTreePopup(OPopupWindow popup, File file) {
-          if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath()))
+          if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath())){
                popup.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init);
+               popup.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true));
+          }
           popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
           .createItem("New File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().showFileView(file.getAbsolutePath()))
           .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("class"))
@@ -62,7 +64,8 @@ public class PopupManager {
           .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
           .createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file));
           if(!file.isDirectory()) {
-               popup.createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
+               popup
+               .createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
                .createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
           }
           popup.createItem("Delete", IconManager.closeImage, ()->{
