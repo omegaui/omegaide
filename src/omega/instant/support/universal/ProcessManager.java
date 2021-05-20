@@ -11,7 +11,6 @@ public class ProcessManager extends DataBase{
      public ProcessManager(){
      	super(".omega-ide" + File.separator + ".processExecutionData");
           load();
-          l
      }
 
      public void load(){
