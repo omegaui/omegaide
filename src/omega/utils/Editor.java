@@ -65,7 +65,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile boolean s; // Save
 	private volatile boolean c; // Click Editor Image
 	private volatile boolean g; // getters and setters
-	private volatile boolean i; // override methods
+     private volatile boolean i; // override methods
+     private volatile boolean l; // instant launch
 	public Editor(Screen screen) {
 		super();
 		Editor.screen = screen;
@@ -375,8 +376,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				savedText = getText();
 				setStyle(this, currentFile);
 				setCaretPosition(0);
-		}catch(Exception e) {System.out.println(e);}
-		}
+	          }
+		     catch(Exception e) { 
+		          System.out.println(e);
+	          }
+	     }
 	}
 	public void deleteFile() {
 		try {
@@ -474,7 +478,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(code == KeyEvent.VK_G)
 			g = true;
 		else if(code == KeyEvent.VK_I)
-			i = true;
+               i = true;
+          else if(code == KeyEvent.VK_L)
+               l = true;
+          
 		
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
@@ -571,6 +578,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				ctrl = false;
 				shift = false;
 			}
+               if(ctrl && shift && l){
+                    ToolMenu.processWizard.launch(currentFile);
+                    l = false;
+                    ctrl = false;
+                    shift = false;
+               }
 			if(contentWindow.isVisible()) {
 				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
 				|| ";:|\\`~!".contains(e.getKeyChar() + "")) {
@@ -627,6 +640,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			g = false;
 		else if(code == KeyEvent.VK_I)
 			i = false;
+          else if(code == KeyEvent.VK_L)
+               l = false;
 		if(currentFile != null) {
 			if(!screen.isVisible()) {
 				return;

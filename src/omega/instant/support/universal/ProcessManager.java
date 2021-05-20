@@ -11,6 +11,7 @@ public class ProcessManager extends DataBase{
      public ProcessManager(){
      	super(".omega-ide" + File.separator + ".processExecutionData");
           load();
+          l
      }
 
      public void load(){
@@ -44,13 +45,14 @@ public class ProcessManager extends DataBase{
      public synchronized void launch(File file){
           new Thread(()->{
           	try{
+                    Screen.getScreen().saveAllEditors();
           		PrintArea printArea = new PrintArea();
                     printArea.launchAsTerminal(()->launch(file));
                     Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", printArea, ()->printArea.stopProcess());
                     printArea.print("# Starting Shell ... ");
                     String shell = "sh";
                     if(File.pathSeparator.equals(";"))
-                         shell = "cmd.exe";
+                         shell = "cmd";
                     Process launchInShellProcess = new ProcessBuilder(shell).directory(file.getParentFile()).start();
                     printArea.print("# Shell Started!");
                     printArea.setProcess(launchInShellProcess);
