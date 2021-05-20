@@ -23,6 +23,8 @@ public class TextComp extends JComponent{
 	
 	public int arcX = 20;
 	public int arcY = 20;
+     public int pressX;
+     public int pressY;
 	public int alignX = -1;
 	private String dir;
 	public Color color1;
@@ -32,6 +34,7 @@ public class TextComp extends JComponent{
 	public BufferedImage image;
 	public int w;
 	public int h;
+     public Window window;
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
 		this.color1 = color1;
@@ -45,6 +48,7 @@ public class TextComp extends JComponent{
 				enter = true;
 				repaint();
 			}
+               
 			@Override
 			public void mouseExited(MouseEvent e){
 				enter = false;
@@ -53,6 +57,10 @@ public class TextComp extends JComponent{
 			
 			@Override
 			public void mousePressed(MouseEvent e){
+                    if(window != null){
+                         pressX = e.getX();
+                         pressY = e.getY();
+                    }
 				if(!clickable) return;
 				press = true;
 				repaint();
@@ -69,6 +77,14 @@ public class TextComp extends JComponent{
 				repaint();
 			}
 		});
+          addMouseMotionListener(new MouseAdapter(){
+               @Override
+               public void mouseDragged(MouseEvent e){
+               	if(window != null){
+                         window.setLocation(e.getXOnScreen() - pressX - getX(), e.getYOnScreen() - pressY - getY());
+               	}
+               }
+          });
 	}
 	
 	public TextComp(BufferedImage image, int width, int height, Color color1, Color color2, Color color3, Runnable runnable){
@@ -101,7 +117,11 @@ public class TextComp extends JComponent{
 		color3 = c3;
 		repaint();
 	}
-	
+
+     public void attachDragger(Window window){
+     	this.window = window;
+     }
+     
 	public void draw(Graphics2D g) {
 		if(image != null){
 			g.drawImage(image, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);

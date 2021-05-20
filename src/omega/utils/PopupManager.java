@@ -33,6 +33,8 @@ public class PopupManager {
                .createItem("Reload", null, ()->editor.reloadFile()).width(200);
 		}
 		else {
+               if(editor.currentFile != null && editor.currentFile.getName().contains("."))
+			     popup.createItem("Launch", IconManager.fluentlaunchImage, ()->ToolMenu.processWizard.launch(editor.currentFile));
 			popup.createItem("Save", IconManager.fileImage, ()->editor.saveCurrentFile())
                .createItem("Save As", IconManager.fileImage, ()->{
                     editor.saveFileAs();

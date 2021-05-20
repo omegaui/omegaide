@@ -1,4 +1,5 @@
 package omega.comp;
+import java.awt.event.*;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.DataFlavor;
 import java.io.InputStream;
@@ -19,9 +20,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import static java.awt.event.KeyEvent.*;
-/** 
- *  Only one NoCaretField can be embedded into a Window.
- */
 public class NoCaretField extends JComponent implements KeyListener, FocusListener{
 	public Color color1;
 	public Color color2;
@@ -46,6 +44,12 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 		this.lines = new LinkedList<>();
 		addKeyListener(this);
 		addFocusListener(this);
+          addMouseListener(new MouseAdapter(){
+               @Override
+               public void mousePressed(MouseEvent e){
+               	grabFocus();
+               }
+          });
 		setColors(c1, c2, c3);
 	}
 	public NoCaretField(String text, String message, Color c1, Color c2, Color c3){
@@ -86,8 +90,11 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 		if(text == null || text.equals("")){
 			g.drawString(message, getWidth()/2 - g.getFontMetrics().stringWidth(message)/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		}
-		else
+		else {
+               if(!isFocusOwner())
+                    g.setColor(color3);
 			g.fillRoundRect(getWidth()/2 + g.getFontMetrics().stringWidth(lastText)/2 - 1, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1 + BORDER_GAP, BORDER_GAP, BORDER_GAP, BORDER_GAP, BORDER_GAP);
+		}
 	}
 	public void setColors(Color c1, Color c2, Color c3){
 		this.color1 = c1;
@@ -192,10 +199,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	public void setOnAction(Runnable action) {
 		this.action = action;
 	}
-	public void notify(String message){
-          setText("");
-          setMessage(message);
-     }
+	
 	public String getMessage() {
 		return message;
 	}
@@ -203,6 +207,10 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 		this.message = message;
 		repaint();
 	}
+     public void notify(String text){
+     	message = text;
+          setText("");
+     }
 	public char[] getIgnorableCharacters() {
 		return ignorableCharacters;
 	}

@@ -1,4 +1,6 @@
 package omega.instant.support;
+import java.util.LinkedList;
+import omega.utils.FileSelectionDialog;
 import omega.Screen;
 import omega.instant.support.ListUnit;
 import omega.comp.TextComp;
@@ -55,17 +57,14 @@ public class ListComp extends JComponent{
           containerField.addActionListener((e)->r.run());
           add(containerField);
 
-          JFileChooser fc = new JFileChooser();
-          fc.setMultiSelectionEnabled(false);
-          fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-          fc.setDialogTitle("Choose a directory which will be searched for (.) files");
-          fc.setApproveButtonText("Select");
+          FileSelectionDialog fc = new FileSelectionDialog(Screen.getScreen());
+          fc.setTitle("Choose a directory which will be searched for (.) files");
 
           rootComp = new TextComp(":", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{
                fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));
-               int res = fc.showOpenDialog(ListComp.this);
-               if(res == JFileChooser.APPROVE_OPTION){
-                    rootComp.setToolTipText(fc.getSelectedFile().getAbsolutePath());
+               LinkedList<File> selections = fc.selectDirectories();
+               if(!selections.isEmpty()){
+                    rootComp.setToolTipText(selections.get(0).getAbsolutePath());
                }
           });
           rootComp.setBounds(420, 0, 40, 40);

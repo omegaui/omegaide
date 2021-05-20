@@ -1,4 +1,5 @@
 package omega.utils;
+import omega.instant.support.universal.*;
 import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.build.gradle.GradleProcessManager;
 import omega.instant.support.universal.UniversalProjectWizard;
@@ -90,6 +91,7 @@ public class ToolMenu extends JPanel {
 	public static UniversalProjectWizard universalProjectWizard;
      public static MadeWithScreen madeWithScreen;
      public static GradleModuleWizard gradleModuleWizard;
+     public static ProcessWizard processWizard;
 	private int pressX;
 	private int pressY;
 	//The window decoration objects
@@ -115,6 +117,7 @@ public class ToolMenu extends JPanel {
 			structureView = new StructureWindow(screen);
                madeWithScreen = new MadeWithScreen(screen);
                gradleModuleWizard = new GradleModuleWizard(screen);
+               processWizard = new ProcessWizard(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 90);
@@ -588,7 +591,9 @@ public class ToolMenu extends JPanel {
           });
 	}
 	private void initToolMenu() {
-		toolsPopup.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
+		toolsPopup
+		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
+          .createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
 		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->omega.gset.Generator.gsView.genView(screen.getCurrentEditor()))
 		.createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()));
 	}

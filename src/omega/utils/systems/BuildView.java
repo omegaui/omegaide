@@ -84,7 +84,6 @@ public class BuildView extends View {
                     
                     PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
                     writer.println(args);
-                    writer.println("exit");
                     writer.close();
                     
                     new Thread(()->{
@@ -106,8 +105,10 @@ public class BuildView extends View {
                          }
                     }
                     inputReader.close();
-                    errorReader.close();
-               }catch(Exception e){  }
+               }
+               catch(Exception e){ 
+                    
+               }
                getScreen().getToolMenu().buildComp.setClickable(true);
                getScreen().getToolMenu().runComp.setClickable(true);
                getScreen().getProjectView().reload();

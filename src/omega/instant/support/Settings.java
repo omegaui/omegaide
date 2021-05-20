@@ -1,4 +1,5 @@
 package omega.instant.support;
+import omega.utils.FileSelectionDialog;
 import omega.Screen;
 import omega.comp.Comp;
 import omega.comp.TextComp;
@@ -80,14 +81,14 @@ public class Settings extends JDialog{
           runTimeField.setFont(PX14);
           add(runTimeField);
 
-          JFileChooser fc = new JFileChooser();
-          fc.setDialogTitle("Select Working Directory");
+          FileSelectionDialog fc = new FileSelectionDialog(this);
+          fc.setTitle("Select Working Directory");
 
           ctDirComp = new TextComp(":", "Working Directory When Building", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
                fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));
-               int res = fc.showOpenDialog(Settings.this);
-               if(res == JFileChooser.APPROVE_OPTION)
-                    ctDirComp.setToolTipText(fc.getSelectedFile().getAbsolutePath());
+               LinkedList<File> selections = fc.selectDirectories();
+               if(!selections.isEmpty())
+                    ctDirComp.setToolTipText(selections.get(0).getAbsolutePath());
           });
           ctDirComp.setBounds(getWidth() - 40, 40, 40, 40);
           ctDirComp.setFont(PX16);
@@ -96,9 +97,9 @@ public class Settings extends JDialog{
 
           rtDirComp = new TextComp(":", "Working Directory When Running", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
                fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));
-               int res = fc.showOpenDialog(Settings.this);
-               if(res == JFileChooser.APPROVE_OPTION)
-                    rtDirComp.setToolTipText(fc.getSelectedFile().getAbsolutePath());
+               LinkedList<File> selections = fc.selectDirectories();
+               if(!selections.isEmpty())
+                    rtDirComp.setToolTipText(selections.get(0).getAbsolutePath());
           });
           rtDirComp.setBounds(getWidth() - 40, 80, 40, 40);
           rtDirComp.setFont(PX16);

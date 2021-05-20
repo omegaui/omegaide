@@ -24,6 +24,7 @@ public class IconManager {
      public static BufferedImage fluentyoutubeImage = getFluentIcon("youtube-studio-50.png");
      public static BufferedImage fluentupdateImage = getFluentIcon("installing-updates-50.png");
      public static BufferedImage fluentclearImage = getFluentIcon("broom-50.png");
+     public static BufferedImage fluentlaunchImage = getFluentIcon("launch-50.png");
      public static BufferedImage fluentrunImage = getFluentIcon("play-50.png");
      public static BufferedImage fluentbuildImage = getFluentIcon("hammer-50.png");
      public static BufferedImage fluentstructureImage = getFluentIcon("unit-50.png");

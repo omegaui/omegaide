@@ -42,6 +42,11 @@ public class PrintArea extends JPanel {
                writer.close();
           writer = new PrintWriter(process.getOutputStream());
 	}
+     public void sendToProcess(String text){
+     	writer.println(text);
+          writer.flush();
+          System.out.println(writer != null);
+     }
 	public void stopProcess() {
 		if(process != null)
 			process.destroyForcibly();
@@ -105,6 +110,7 @@ public class PrintArea extends JPanel {
                     action.run();
 	     } ,()->stopProcess());
 		add(actionCenter, BorderLayout.WEST);
+          doLayout();
 	}
 	private class ActionCenter extends JComponent{
 		protected ActionCenter(Runnable r, Runnable r0) {
