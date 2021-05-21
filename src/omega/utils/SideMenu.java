@@ -56,6 +56,16 @@ public class SideMenu extends JPanel {
           add(searchComp);
      }
 
+     public void changeLocations(boolean non_java){
+          if(non_java)
+               searchComp.setBounds(0, 80, 40, 40);
+          else{
+               structureComp.setBounds(0, 80, 40, 40);
+               searchComp.setBounds(0, 120, 40, 40);
+          }
+          repaint();
+     }
+
      @Override
      public void paint(Graphics g){
           sep.setBounds(40, 0, 2, getHeight());

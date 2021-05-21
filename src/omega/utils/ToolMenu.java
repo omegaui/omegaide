@@ -542,6 +542,25 @@ public class ToolMenu extends JPanel {
 		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
 		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
 	}
+     public void changeLocations(boolean non_java){
+     	if(non_java){
+               structureComp.setBounds(316 - 64, 55, 30, 30);
+               operateComp.setBounds(348 - 64, 55, 30, 30);
+               sep3.setBounds(382 - 64, 50, 2, 40);
+               shellComp.setBounds(392 - 64, 55, 60, 30);
+               sep5.setBounds(457 - 64, 50, 2, 40);
+               themeComp.setBounds(472 - 64, 55, 60, 30);
+     	}
+          else {
+               structureComp.setBounds(316, 55, 30, 30);
+               operateComp.setBounds(348, 55, 30, 30);
+               sep3.setBounds(382, 50, 2, 40);
+               shellComp.setBounds(392, 55, 60, 30);
+               sep5.setBounds(457, 50, 2, 40);
+               themeComp.setBounds(472, 55, 60, 30);
+          }
+          repaint();
+     }
 	private void initSetMenu() {
 		JFontChooser fontC = new JFontChooser();
 		setPopup.createItem("Change Font", IconManager.settingsImage, ()->{
