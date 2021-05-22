@@ -21,7 +21,7 @@ public class CodeFramework{
 	private static Editor editor;
 
 	public static boolean think(Editor e, String text, int caret){
-		boolean var = false;
+		boolean value = false;
 		CodeFramework.editor = e;
 		CodeFramework.text = text;
 		String code = getCode(text, caret);
@@ -30,33 +30,35 @@ public class CodeFramework{
 			resolving = true;
 			CodeFramework.caret = caret;
 			try{
-				var = createHints(code);
+				value = createHints(code);
 			}
 			catch(Exception ex){
-                    
+                    Screen.notify("Content-Assist Algorithm Crashed!");
+                    ex.printStackTrace();
 		     }
 			finally {
 				resolving = false;
 			}
 		}
-		else editor.contentWindow.setVisible(false);
+		else 
+		     editor.contentWindow.setVisible(false);
 		CodeFramework.editor = null;
-		return var;
+		return value;
 	}
 
 	public static boolean createHints(String code){
-		boolean var = false;
+		boolean value = false;
 		if(Character.isLowerCase(code.charAt(0))){
-			if(!(var = genFullPathHints(code))){
-				var = genInstanceHints(code);
+			if(!(value = genFullPathHints(code))){
+				value = genInstanceHints(code);
 			}
 		}
 		else if(Character.isUpperCase(code.charAt(0))){
-			if(!(var = genClassHints(code))) {
-				var = genInstanceHints(code);
+			if(!(value = genClassHints(code))) {
+				value = genInstanceHints(code);
 			}
 		}
-		return var;
+		return value;
 	}
 
 	public static boolean genFullPathHints(String code){
@@ -700,15 +702,15 @@ public class CodeFramework{
 								continue inner;
 							}
 						}
-				if(in == 0) {
-					for(ByteReader r : reader.internalReaders) {
-						if(r.className.equals(member)) {
-							dataMembers = r.dataMembers;
-							least = true;
-						}
-					}
-				} 
-				in = 1;
+     				if(in == 0) {
+     					for(ByteReader r : reader.internalReaders) {
+     						if(r.className.equals(member)) {
+     							dataMembers = r.dataMembers;
+     							least = true;
+     						}
+     					}
+     				} 
+				     in = 1;
 				}
 				if(least) gen(dataMembers);
 				else System.out.println("Not at least one match found for "+code);
@@ -814,15 +816,15 @@ public class CodeFramework{
 								continue inner;
 							}
 						}
-				if(in == 0) {
-					for(SourceReader r : reader.internalReaders) {
-						if(r.className.equals(member)) {
-							dataMembers = r.dataMembers;
-							least = true;
-						}
-					}
-				} 
-				in = 1;
+     				if(in == 0) {
+     					for(SourceReader r : reader.internalReaders) {
+     						if(r.className.equals(member)) {
+     							dataMembers = r.dataMembers;
+     							least = true;
+     						}
+     					}
+     				} 
+     				in = 1;
 				}
 				if(least) 
 				     gen(dataMembers);
@@ -1026,6 +1028,24 @@ public class CodeFramework{
                text = text.substring(text.lastIndexOf('>') + 1).trim();
           if(text.contains(";"))
                text = text.substring(text.lastIndexOf(';') + 1).trim();
+          if(text.contains("|"))
+               text = text.substring(text.lastIndexOf('|') + 1).trim();
+          if(text.contains("!"))
+               text = text.substring(text.lastIndexOf('!') + 1).trim();
+          if(text.contains("?"))
+               text = text.substring(text.lastIndexOf('?') + 1).trim();
+          if(text.contains(":"))
+               text = text.substring(text.lastIndexOf(':') + 1).trim();
+          if(text.contains("&"))
+               text = text.substring(text.lastIndexOf('&') + 1).trim();
+          if(text.contains("%"))
+               text = text.substring(text.lastIndexOf('%') + 1).trim();
+          if(text.contains("@"))
+               text = text.substring(text.lastIndexOf('@') + 1).trim();
+          if(text.startsWith("new"))
+               text = text.substring(text.lastIndexOf("new") + 3).trim();
+          if(text.startsWith("return"))
+               text = text.substring(text.lastIndexOf("return") + 6).trim();
           return text;
      }
 

@@ -109,7 +109,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}).start();
 	}
-	public synchronized void readCode() {
+	public void readCode() {
 		if(call) {
 			call = false;
 			if(!CodeFramework.resolving) {
@@ -154,7 +154,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".asm"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_ASSEMBLER_6502);
 		else if(f.getName().endsWith(".html"))
-			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_BBCODE);
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
 		else if(f.getName().endsWith(".c"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_C);
 		else if(f.getName().endsWith(".clj") || f.getName().endsWith(".cljs") || f.getName().endsWith(".cljc") || f.getName().endsWith(".edn"))
@@ -299,17 +299,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	{
 		if(savedText.equals(getText()))
 			return;
-		if(currentFile == null)
+		if(currentFile == null || !currentFile.exists())
 			{
-			int res = JOptionPane.showConfirmDialog(screen, "Data in the editor does not corresponds to any existing file. Do you want to save it as a type?", "Save or not?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);;
-			if(res == JOptionPane.OK_OPTION)
-				saveFileAs();
-			return;
-		}
-		if(!currentFile.exists())
-			{
-			int res = JOptionPane.showConfirmDialog(screen, "Data in the editor does not corresponds to any existing file. Do you want to save it as a type?", "Save or not?", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);;
-			if(res == JOptionPane.OK_OPTION)
+			int res = ChoiceDialog.makeChoice("Data in the editor does not corresponds to any existing file. Do you want to save it?", "Save", "Lose");
+			if(res == ChoiceDialog.CHOICE1)
 				saveFileAs();
 			return;
 		}
@@ -357,8 +350,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
-	public void closeFile()
-	{
+	public void closeFile() {
 		if(currentFile == null)
 			return;
 		saveCurrentFile();
@@ -450,9 +442,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(currentFile.delete()) {
 					Screen.getProjectView().reload();
 				}
-				}catch(Exception e) {
-				e.printStackTrace();
 			}
+               catch(Exception e) {
+			     e.printStackTrace();
+		     }
 		}).start();
 	}
 	@Override
@@ -657,6 +650,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
+     
 	//Managing Smart type code completion
 	private void autoSymbolExclusion(KeyEvent e) {
 		try {
@@ -683,7 +677,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				break;
 				default:
 			}
-	}catch(Exception ex){ System.err.println(ex); }
+	     }
+	     catch(Exception ex){ 
+	          System.err.println(ex); 
+	     }
 	}
 	private void autoSymbolCompletion(KeyEvent e) {
 		try {
@@ -715,7 +712,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				default:
 				break;
 			}
-	}catch(Exception ex) { System.err.println(ex); }
+	     }
+	     catch(Exception ex) { 
+	          System.err.println(ex);
+          }
 	}
 	public class FindAndReplace extends JComponent{
 		private ReplaceToolBar replaceToolBar;

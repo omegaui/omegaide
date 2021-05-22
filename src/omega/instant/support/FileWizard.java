@@ -1,4 +1,6 @@
 package omega.instant.support;
+import java.util.LinkedList;
+import omega.utils.FileSelectionDialog;
 import java.awt.Graphics;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -43,16 +45,13 @@ public class FileWizard extends JDialog{
 		add(nameField);
           addKeyListener(nameField);
 
-		final JFileChooser fileC = new JFileChooser();
-		fileC.setMultiSelectionEnabled(false);
-		fileC.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fileC.setApproveButtonText("Select");
-		fileC.setDialogTitle("Select a directory as source root");
+		final FileSelectionDialog fileC = new FileSelectionDialog(this);
+		fileC.setTitle("Select a directory as source root");
           
 		parentRoot = new TextComp(":", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{
-			int res = fileC.showOpenDialog(this);
-			if(res == JFileChooser.APPROVE_OPTION){
-				parentRoot.setToolTipText(fileC.getSelectedFile().getAbsolutePath());
+			LinkedList<File> selections = fileC.selectFiles();
+			if(!selections.isEmpty()){
+				parentRoot.setToolTipText(selections.get(0).getAbsolutePath());
 			}
 		});
           parentRoot.setArc(0, 0);

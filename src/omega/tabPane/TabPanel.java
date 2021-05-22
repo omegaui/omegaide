@@ -31,6 +31,7 @@ public class TabPanel extends JPanel{
      private static final String TITLE = "Open a text file to start editing here";
      private static final String HINT = "Navigate the File Tree (on left)";
      private static final String HINT1 = "Open the File tree by clicking the fourth ";
+     private static final String HINT1_2 = "Open the File tree by clicking the second ";
 
      private BufferedImage image = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
 
@@ -237,6 +238,7 @@ public class TabPanel extends JPanel{
                g.setFont(omega.settings.Screen.PX28);
                FontMetrics f = g.getFontMetrics();
                String hint = screen.getToolMenu().hidden ? HINT1 : HINT;
+               hint = Screen.getFileView().getProjectManager().non_java ? HINT1_2 : hint;
                g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
                g.setColor(omega.utils.UIManager.TOOLMENU_COLOR1);
                g.drawString(hint, getWidth()/2 - f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());

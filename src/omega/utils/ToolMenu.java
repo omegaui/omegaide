@@ -586,6 +586,10 @@ public class ToolMenu extends JPanel {
 		setPopup.addItem(typeItem);
 		
 		setPopup.createItem("All Settings", IconManager.settingsImage, ()->{
+               if(GradleProcessManager.isGradleProject()){
+                    Screen.getScreen().loadFile(new File(Screen.getFileView().getProjectPath(), "settings.gradle"));
+                    return;
+               }
 			if(Screen.getFileView().getProjectManager().non_java)
 				Screen.getUniversalSettingsView().setVisible(true);
 			else

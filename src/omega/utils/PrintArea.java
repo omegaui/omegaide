@@ -1,4 +1,5 @@
 package omega.utils;
+import java.awt.image.BufferedImage;
 import java.io.PrintWriter;
 import javax.swing.JTextField;
 import omega.comp.TextComp;
@@ -81,6 +82,39 @@ public class PrintArea extends JPanel {
 		}
 		super.setVisible(v);
 	}
+     
+     public void launchAsTerminal(Runnable action, BufferedImage image, String toolTip) {
+          JTextField inputField = new JTextField();
+          inputField.setText("Input? From Here");
+          inputField.addActionListener((e)->{
+               if(process == null)
+                    return;
+               else if(!process.isAlive())
+                    return;
+               try {
+                    writer.println(inputField.getText());
+                    writer.flush();
+               }
+               catch(Exception e1) {
+                    e1.printStackTrace();
+               }
+               inputField.setText("");
+          });
+          inputField.setCaretColor(omega.utils.UIManager.glow);
+          inputField.setBackground(omega.utils.UIManager.c2);
+          inputField.setForeground(omega.utils.UIManager.glow);
+          inputField.setFont(omega.settings.Screen.PX18);
+          add(inputField, BorderLayout.SOUTH);
+          
+          ActionCenter actionCenter = new ActionCenter(()->{
+               stopProcess();
+               if(action != null)
+                    action.run();
+          } ,()->stopProcess(), image, toolTip);
+          add(actionCenter, BorderLayout.WEST);
+          doLayout();
+     }
+     
 	public void launchAsTerminal(Runnable action) {
 		JTextField inputField = new JTextField();
 		inputField.setText("Input? From Here");
@@ -113,26 +147,47 @@ public class PrintArea extends JPanel {
           doLayout();
 	}
 	private class ActionCenter extends JComponent{
-		protected ActionCenter(Runnable r, Runnable r0) {
+         protected ActionCenter(Runnable r, Runnable r0) {
                setBackground(omega.utils.UIManager.c2);
-			setLayout(new FlowLayout());
-			UIManager.setData(this);
-			setPreferredSize(new Dimension(40, 100));
-			Dimension size = new Dimension(30, 30);
-			TextComp runComp = new TextComp(IconManager.fluentrunImage, 25, 25, "Re-Run", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
-			runComp.setFont(omega.settings.Screen.PX18);
-			runComp.setPreferredSize(size);
-			add(runComp);
-			
-			TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
-			clrComp.setFont(omega.settings.Screen.PX18);
-			clrComp.setPreferredSize(size);
-			add(clrComp);
-			
-			TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
-			terComp.setFont(omega.settings.Screen.PX18);
-			terComp.setPreferredSize(size);
-			add(terComp);
-		}
+               setLayout(new FlowLayout());
+               UIManager.setData(this);
+               setPreferredSize(new Dimension(40, 100));
+               Dimension size = new Dimension(30, 30);
+               TextComp runComp = new TextComp(IconManager.fluentrunImage, 25, 25, "Re-Run", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
+               runComp.setFont(omega.settings.Screen.PX18);
+               runComp.setPreferredSize(size);
+               add(runComp);
+               
+               TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
+               clrComp.setFont(omega.settings.Screen.PX18);
+               clrComp.setPreferredSize(size);
+               add(clrComp);
+               
+               TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
+               terComp.setFont(omega.settings.Screen.PX18);
+               terComp.setPreferredSize(size);
+               add(terComp);
+          }
+          protected ActionCenter(Runnable r, Runnable r0, BufferedImage image, String toolTip) {
+               setBackground(omega.utils.UIManager.c2);
+               setLayout(new FlowLayout());
+               UIManager.setData(this);
+               setPreferredSize(new Dimension(40, 100));
+               Dimension size = new Dimension(30, 30);
+               TextComp runComp = new TextComp(image, 25, 25, toolTip, UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
+               runComp.setFont(omega.settings.Screen.PX18);
+               runComp.setPreferredSize(size);
+               add(runComp);
+               
+               TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
+               clrComp.setFont(omega.settings.Screen.PX18);
+               clrComp.setPreferredSize(size);
+               add(clrComp);
+               
+               TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
+               terComp.setFont(omega.settings.Screen.PX18);
+               terComp.setPreferredSize(size);
+               add(terComp);
+          }
 	}
 }

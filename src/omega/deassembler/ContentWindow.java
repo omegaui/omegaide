@@ -55,9 +55,6 @@ public class ContentWindow extends JPanel implements KeyListener{
           dataMembers.forEach(data->{
                String text = data.getRepresentableValue();
                if(text != null){
-                    String z = text.trim();
-                    if(z.charAt(z.length() - 1) == '-')
-                         System.out.println(text);
                     int w = g.getFontMetrics().stringWidth(text);
                     if(w > width)
                          width = w;

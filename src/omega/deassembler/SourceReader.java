@@ -374,6 +374,7 @@ public class SourceReader {
 			if(readBlock && !recordingInternal){
 				blockCode += line + "\n";
 			}
+               line = line.trim();
 			if(line.contains(" ") && !isInnerLine(line)){
 				String cL = line;
 				if(cL.contains("=")) cL = cL.substring(0, cL.indexOf('=')).trim();
@@ -595,13 +596,15 @@ public class SourceReader {
 	}
 
      public String evaluateType(String type){
-	     if(type != null && !type.equals("") && " byte short int float double boolean long char void ".contains(type))
+	     if(type != null && !type.equals("") && " var byte short int float double boolean long char void ".contains(type))
                return type;
           type = getPackage(type);
           return (type != null && !type.equals("")) ? type : null;
      }
 
 	public String getPackage(String className){
+          if(className.contains("."))
+               return className;
 		for(Import im : imports){
 			if(im.name.equals(className)) return im.get();
 		}

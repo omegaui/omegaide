@@ -62,6 +62,7 @@ public class GradleProcessManager {
 	public static void run(){
 		new Thread(()->{
 			try{
+                    Screen.getScreen().saveAllEditors();
 				PrintArea printArea = new PrintArea();
 				printArea.launchAsTerminal(GradleProcessManager::run);
 				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, ()->printArea.stopProcess());
@@ -105,6 +106,7 @@ public class GradleProcessManager {
 	public static void build(){
 		new Thread(()->{
 			try{
+                    Screen.getScreen().saveAllEditors();
 				PrintArea printArea = new PrintArea();
 				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, ()->printArea.stopProcess());
 				if(!Screen.getFileView().getProjectManager().non_java){

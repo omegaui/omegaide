@@ -59,34 +59,36 @@ public class PopupManager {
           }
           popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
           .createItem("New File", IconManager.fileImage, ()->Screen.getFileView().getFileCreator().showFileView(file.getAbsolutePath()))
-          .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("class"))
-          .createItem("New Record", IconManager.classImage, ()->Screen.getFileView().getFileCreator().show("record"))
-          .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().show("interface"))
-          .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().show("enum"))
-          .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().show("@interface"))
+          .createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().showFileView("class", file.getAbsolutePath()))
+          .createItem("New Record", IconManager.classImage, ()->Screen.getFileView().getFileCreator().showFileView("record", file.getAbsolutePath()))
+          .createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().showFileView("interface", file.getAbsolutePath()))
+          .createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().showFileView("enum", file.getAbsolutePath()))
+          .createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().showFileView("@interface", file.getAbsolutePath()))
           .createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file));
           if(!file.isDirectory()) {
                popup
                .createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
                .createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
           }
-          popup.createItem("Delete", IconManager.closeImage, ()->{
-               if(file.isDirectory()){
-                    try{
-                         int res0 = ChoiceDialog.makeChoice("Do you want to delete Directory " + file.getName() + "?", "Yes", "No");
-                         if(res0 != ChoiceDialog.CHOICE1)
-                              return;
-                         Editor.deleteDir(file);
+          if(!file.getAbsolutePath().equals(Screen.getFileView().getProjectPath())){
+               popup.createItem("Delete", IconManager.closeImage, ()->{
+                    if(file.isDirectory()){
+                         try{
+                              int res0 = ChoiceDialog.makeChoice("Do you want to delete Directory " + file.getName() + "?", "Yes", "No");
+                              if(res0 != ChoiceDialog.CHOICE1)
+                                   return;
+                              Editor.deleteDir(file);
+                         }
+                         catch(Exception e){ 
+                              System.err.println(e);
+                         }
                     }
-                    catch(Exception e){ 
-                         System.err.println(e);
-                    }
-               }
-               else
-                    Editor.deleteFile(file);
-               Screen.getProjectView().reload();
-          })
-          .createItem("Refresh", null, ()->Screen.getProjectView().reload());
+                    else
+                         Editor.deleteFile(file);
+                    Screen.getProjectView().reload();
+               });
+          }
+          popup.createItem("Refresh", null, ()->Screen.getProjectView().reload());
           if(!file.isDirectory()) {
                popup.createItem("Rename", IconManager.fileImage, ()->{
                     Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);

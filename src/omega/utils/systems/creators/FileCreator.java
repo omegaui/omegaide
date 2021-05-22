@@ -31,4 +31,10 @@ public class FileCreator {
           fileWizard.typeBtn.setText("Custom File");
           fileWizard.setVisible(true);
      }
+     
+     public void showFileView(String type, String path){
+          fileWizard.parentRoot.setToolTipText(path);
+          fileWizard.typeBtn.setText(type);
+          fileWizard.setVisible(true);
+     }
 }
