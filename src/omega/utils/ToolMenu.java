@@ -17,6 +17,13 @@
 */
 
 package omega.utils;
+import omega.utils.WorkspaceSelector;
+import omega.utils.FontChooser;
+import omega.utils.DataManager;
+import omega.utils.MadeWithScreen;
+import omega.utils.StructureWindow;
+import omega.utils.InfoScreen;
+import omega.utils.ToolMenu;
 import omega.instant.support.universal.*;
 import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.build.gradle.GradleProcessManager;
@@ -57,12 +64,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
-import say.swing.JFontChooser;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 import static omega.utils.IconManager.*;
 /**
-* This is not only the tool menu but also contains IDE's custom window decorator
+* This is not only the tool menu but also the IDE's custom window decorator
 */
 public class ToolMenu extends JPanel {
 	private Screen screen;
@@ -580,17 +586,12 @@ public class ToolMenu extends JPanel {
           repaint();
      }
 	private void initSetMenu() {
-		JFontChooser fontC = new JFontChooser();
+		FontChooser fontC = new FontChooser(screen);
 		setPopup.createItem("Change Font", IconManager.settingsImage, ()->{
-			UIManager.setData(fontC);
-			fontC.setSelectedFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
-			int res = fontC.showDialog(screen);
-			if(res ==JFontChooser.OK_OPTION) {
-				Font font = fontC.getSelectedFont();
-				UIManager.setData(font.getSize(), font.getName(), font.getStyle());
-				screen.getUIManager().save();
-				screen.loadThemes();
-			}
+			Font font = fontC.chooseFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
+			UIManager.setData(font.getSize(), font.getName(), font.getStyle());
+			screen.getUIManager().save();
+			screen.loadThemes();
 		})
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new omega.utils.WorkspaceSelector(screen).setVisible(true));
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);

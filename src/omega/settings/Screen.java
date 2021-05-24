@@ -17,6 +17,7 @@
 */
 
 package omega.settings;
+import omega.utils.FontChooser;
 import omega.utils.SDKSelector;
 import omega.jdk.JDKManager;
 import omega.utils.UIManager;
@@ -36,8 +37,6 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import say.swing.JFontChooser;
 public class Screen extends JDialog {
 	//Light + Dark Mode
 	public static final Color color1 = new Color(255, 0, 0, 20);
@@ -230,18 +229,12 @@ public class Screen extends JDialog {
 		add(asteriskComp);
 		ideComps.add(asteriskComp);
 
-		JFontChooser fontC = new JFontChooser();
+		FontChooser fontC = new FontChooser((omega.Screen)getOwner());
 		fontComp = new Comp("Change Editor Font\'s Name and Size", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
-			UIManager.setData(fontC);
-			fontC.setSelectedFontStyle(Font.BOLD);
-			fontC.setSelectedFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
-			int res = fontC.showDialog(this);
-			if(res == JFontChooser.OK_OPTION) {
-				Font font = fontC.getSelectedFont();
-                    UIManager.setData(font.getSize(), font.getName(), font.getStyle());
-				omega.Screen.getFileView().getScreen().getUIManager().save();
-				omega.Screen.getFileView().getScreen().loadThemes();
-			}
+               Font font = fontC.chooseFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
+               UIManager.setData(font.getSize(), font.getName(), font.getStyle());
+               omega.Screen.getFileView().getScreen().getUIManager().save();
+               omega.Screen.getFileView().getScreen().loadThemes();
 		});
 		fontComp.setBounds(0, 190, getWidth(), 40);
 		fontComp.setFont(PX16);
