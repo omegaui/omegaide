@@ -74,7 +74,6 @@ public class ContentTokenizer {
                return;
           }
 		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
-               System.out.println("Itss me");
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
 			//Searching whether you need Class names as suggestion

@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * Executes run, build and init gradle processess.
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,11 @@ import java.util.Scanner;
 import java.io.PrintWriter;
 import java.io.File;
 public class GradleProcessExecutor {
+     private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";
 	public static Process init(File dir){
 		Process p = null;
 		try{
-			p = new ProcessBuilder("gradle", "init").directory(dir).start();
+			p = new ProcessBuilder("gradle" + ext, "init").directory(dir).start();
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -34,7 +35,7 @@ public class GradleProcessExecutor {
 	public static Process run(File dir){
 		Process p = null;
 		try{
-			return new ProcessBuilder("gradle", "run").directory(dir).start();
+			return new ProcessBuilder("gradlew" + ext, "run").directory(dir).start();
 			
 		}
 		catch(Exception e){
@@ -45,7 +46,7 @@ public class GradleProcessExecutor {
 	public static Process build(File dir){
 		Process p = null;
 		try{
-			return new ProcessBuilder("gradle", "build").directory(dir).start();
+			return new ProcessBuilder("gradlew" + ext, "build").directory(dir).start();
 		}
 		catch(Exception e){
 			e.printStackTrace();

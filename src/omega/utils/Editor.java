@@ -347,7 +347,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 		catch(Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 	public void saveFileAs() {
@@ -388,7 +388,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				setCaretPosition(0);
 	          }
 		     catch(Exception e) { 
-		          System.out.println(e);
+		          e.printStackTrace();
 	          }
 	     }
 	}
@@ -417,7 +417,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 		catch(Exception e) {
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	public static void deleteDir(File file) throws Exception {
@@ -432,7 +432,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					file.delete();
 				}
 			}
-		}else file.delete();
+		}
+		else 
+		     file.delete();
 	}
 	public static void deleteFile(File currentFile) {
 		new Thread(()->{
@@ -697,7 +699,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 	     }
 	     catch(Exception ex){ 
-	          System.err.println(ex); 
+	          //ex.printStackTrace();
 	     }
 	}
 	private void autoSymbolCompletion(KeyEvent e) {
@@ -732,7 +734,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 	     }
 	     catch(Exception ex) { 
-	          System.err.println(ex);
+	          //ex.printStackTrace();
           }
 	}
 	public class FindAndReplace extends JComponent{

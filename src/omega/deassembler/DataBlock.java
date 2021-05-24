@@ -103,7 +103,7 @@ public class DataBlock {
 				continue;
 			}
 			//Unpacking DataMembers from _for$loop
-			if(line.contains("for")){
+			if(line.contains("for") && (line.contains(";") || line.contains(":")) && line.trim().charAt(line.trim().length() - 1) != ';'){
 				if(line.contains("(") && line.contains(")")){
 					line = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
 					if(line.contains(";")){

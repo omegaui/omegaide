@@ -64,7 +64,7 @@ public class SourceReader {
 			read();
 		}
 		catch(Exception e) {
-		     System.err.println(e);
+		     e.printStackTrace();
 	     }
 	}
 
@@ -320,7 +320,6 @@ public class SourceReader {
 					if(line.contains("{"))
 						indexAfter = line.indexOf("{");
 					if(line.indexOf(' ', index + 1) > -1){
-
 						indexAfter = line.indexOf(' ', index + 1);
 					}
 					className = line.substring(index + 1, indexAfter);
