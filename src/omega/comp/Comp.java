@@ -116,6 +116,7 @@ public class Comp extends JComponent{
 		this.color2 = color2;
 		this.color3 = color3;
 		this.runnable = runnable;
+          
 		addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseEntered(MouseEvent e){

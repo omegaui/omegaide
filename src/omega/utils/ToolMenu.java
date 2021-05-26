@@ -116,6 +116,7 @@ public class ToolMenu extends JPanel {
      public static MadeWithScreen madeWithScreen;
      public static GradleModuleWizard gradleModuleWizard;
      public static ProcessWizard processWizard;
+     public static ToolMenuPathBox pathBox;
 	private int pressX;
 	private int pressY;
 	//The window decoration objects
@@ -144,7 +145,7 @@ public class ToolMenu extends JPanel {
                processWizard = new ProcessWizard(screen);
 		}
 		setLayout(null);
-		setSize(screen.getWidth(), 90);
+		setSize(screen.getWidth(), 120);
 		setPreferredSize(getSize());
 		UIManager.setData(this);
 		addMouseListener(new MouseAdapter(){
@@ -363,7 +364,7 @@ public class ToolMenu extends JPanel {
 		sep1.setBounds(210, 50, 2, 40);
 		addComp(sep1);
           
-		contentComp = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		contentComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
 			contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 			contentComp.repaint();
@@ -384,7 +385,7 @@ public class ToolMenu extends JPanel {
 		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 		addComp(contentComp);
           
-		contentModeComp = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		contentModeComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			DataManager.setContentModeJava(!DataManager.isContentModeJava());
 			contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 			contentModeComp.repaint();
@@ -405,7 +406,7 @@ public class ToolMenu extends JPanel {
 		contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 		addComp(contentModeComp);
           
-		asteriskComp = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		asteriskComp = new TextComp("", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
 			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
 			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 			asteriskComp.repaint();
@@ -522,7 +523,10 @@ public class ToolMenu extends JPanel {
 		themeComp.setFont(omega.settings.Screen.PX16);
 		themeComp.setBounds(472, 55, 60, 30);
 		add(themeComp);
-		
+
+          pathBox = new ToolMenuPathBox();
+          add(pathBox);
+          
 		reshapeComp();
 	}
      
@@ -551,6 +555,9 @@ public class ToolMenu extends JPanel {
 		taskMenu.setText(task);
 		taskMenu.repaint();
 	}
+     public static omega.utils.ToolMenuPathBox getPathBox() {
+          return pathBox;
+     }
 	public void setMsg(String msg) {
 		taskMenu.setMsg(msg);
 		taskMenu.repaint();
@@ -560,6 +567,7 @@ public class ToolMenu extends JPanel {
 		sep4.setBounds(getWidth() - 40, 50, 2, 40);
 		structureViewComp.setBounds(getWidth() - 110, 55, 60, 30);
 		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 30);
+          pathBox.setBounds(0, 90, getWidth(), 25);
 		//Window Decorations
 		titleComp.setBounds(30, 0, getWidth() - (30 * 4), 30);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);

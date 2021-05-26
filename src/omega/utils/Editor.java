@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * The IDE's Default Editor
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -279,7 +279,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(theme == null){
 			try {
 				String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
-				theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
+				theme = Theme.load(Editor.class.getResourceAsStream("/" + name + ".xml"));
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -839,6 +839,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
+          ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {

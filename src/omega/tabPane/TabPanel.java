@@ -17,6 +17,8 @@
 */
 
 package omega.tabPane;
+import omega.utils.*;
+import omega.tabPane.*;
 import omega.utils.TabComp;
 import omega.utils.PopupManager;
 import omega.popup.*;
@@ -96,8 +98,7 @@ public class TabPanel extends JPanel{
 		names.add(name);
 		editors.add(editor);
 		tabPane.addTab(name, panel);
-		if(editor.currentFile == null)
-		{
+		if(editor.currentFile == null) {
 			tabPane.setTabComponentAt(editors.indexOf(editor), TabComp.create(editor, name, ()->{
 				editor.closeFile();
 				remove(editor);
@@ -182,6 +183,8 @@ public class TabPanel extends JPanel{
 		editors.remove(editor);
 		if(tabPane.getTabCount() > 0)
 			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
+          else
+               ToolMenu.getPathBox().setPath(null);
           removeAction.run();
 	}
 	
@@ -209,6 +212,7 @@ public class TabPanel extends JPanel{
 		panels.clear();
 		tabPane.removeAll();
           removeAction.run();
+          ToolMenu.getPathBox().setPath(null);
 	}
 	
 	public JPanel getPanel(Editor e) {
