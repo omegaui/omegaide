@@ -1,3 +1,4 @@
+package omega.deassembler;
 /**
   * <one line to give the program's name and a brief idea of what it does.>
   * Copyright (C) 2021 Omega UI
@@ -16,7 +17,6 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package omega.deassembler;
 import java.io.File;
 import omega.Screen;
 import java.util.StringTokenizer;

@@ -256,6 +256,10 @@ public class Branch extends JComponent{
 				if(fx.getName().equals(".projectInfo"))
 					return IconManager.fluentfolderImage;
 			}
+               if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
+                    return IconManager.fluentsourceImage;
+               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+                    return IconManager.fluentbinaryImage;
 			return IconManager.fluentplainfolderImage;
 		}
 		if(file.getName().contains(".")){

@@ -1,5 +1,6 @@
+package omega.utils;
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * The Default File Selection Dialog of Omega IDE
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -16,8 +17,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package omega.utils;
 
+import omega.Screen;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.event.*;
@@ -568,18 +569,22 @@ public class FileSelectionDialog extends JDialog{
      }
 
      public BufferedImage getPreferredImage(File file){
-     	if(file.isDirectory()){
+          if(file.isDirectory()){
                File[] files = file.listFiles();
                for(File fx : files){
                     if(fx.getName().equals(".projectInfo"))
                          return IconManager.fluentfolderImage;
                }
+               if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
+                    return IconManager.fluentsourceImage;
+               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+                    return IconManager.fluentbinaryImage;
                return IconManager.fluentplainfolderImage;
-     	}
+          }
           if(file.getName().contains(".")){
                String ext = file.getName().substring(file.getName().lastIndexOf('.'));
                if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp")
-                  || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
+               || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
                     return IconManager.fluentimagefileImage;
                else if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class"))
                     return IconManager.fluentfileImage;
