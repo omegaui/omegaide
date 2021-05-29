@@ -4,7 +4,7 @@ import omega.Screen;
     Omega.IDE, this class launhces a new instance of Omega IDE.
     This is the main-class of the project.
     This is named like Omega.IDE to make it overcome the StartUPWMClassName
-          warning/problem on the Linux Desktop without any illegal reflection.
+          problem on the Linux Desktop without any illegal reflection.
     
     Copyright (C) 2021 Omega UI. All Rights Reserved.
 

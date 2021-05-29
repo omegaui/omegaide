@@ -1,24 +1,6 @@
-/**
-  * <one line to give the program's name and a brief idea of what it does.>
-  * Copyright (C) 2021 Omega UI
-
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
-
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 package omega.comp;
-
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -41,6 +23,7 @@ public class TextComp extends JComponent{
 	public int w;
 	public int h;
      public Window window;
+     public LinkedList<Object> extras = new LinkedList<>();
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
 		this.color1 = color1;
@@ -210,5 +193,9 @@ public class TextComp extends JComponent{
 		g.setColor(color2);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 	}
+
+     public LinkedList<Object> getExtras(){
+     	return extras;
+     }
 }
 

@@ -1,29 +1,4 @@
-/**
-  * <one line to give the program's name and a brief idea of what it does.>
-  * Copyright (C) 2021 Omega UI
-
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
-
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
-
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 package omega.utils;
-import omega.utils.WorkspaceSelector;
-import omega.utils.FontChooser;
-import omega.utils.DataManager;
-import omega.utils.MadeWithScreen;
-import omega.utils.StructureWindow;
-import omega.utils.InfoScreen;
-import omega.utils.ToolMenu;
 import omega.instant.support.universal.*;
 import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.build.gradle.GradleProcessManager;
@@ -109,7 +84,7 @@ public class ToolMenu extends JPanel {
 	public static JMenu openFileMenu;
 	public static JMenu openProjectMenu;
 	public static InfoScreen infoScreen;
-	public static StructureWindow structureView;
+	public static StructureView structureView;
 	public boolean hidden;
 	public static ProjectWizard projectWizard;
 	public static UniversalProjectWizard universalProjectWizard;
@@ -139,7 +114,7 @@ public class ToolMenu extends JPanel {
 			projectWizard = new ProjectWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
 			infoScreen = new InfoScreen(screen);
-			structureView = new StructureWindow(screen);
+			structureView = new StructureView(screen);
                madeWithScreen = new MadeWithScreen(screen);
                gradleModuleWizard = new GradleModuleWizard(screen);
                processWizard = new ProcessWizard(screen);
