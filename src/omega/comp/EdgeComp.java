@@ -2,7 +2,7 @@ package omega.comp;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
-public class EdgeComp extends JComponent{
+public class EdgeComp extends JComponent {
      private String text = "";
      public Color color1;
      public Color color2;
@@ -59,6 +59,7 @@ public class EdgeComp extends JComponent{
                g.drawPolygon(ex, ey, ex.length);
           }
      }
+     
      public void setColors(Color c1, Color c2, Color c3){
           color1 = c1;
           color2 = c2;

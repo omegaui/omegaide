@@ -111,8 +111,8 @@ public class UIManager extends DataBase {
      public static Color TOOLMENU_COLOR2_SHADE = new Color(223, 33, 15, 40);
      public static Color TOOLMENU_COLOR3 = new Color(126, 20, 219);
      public static Color TOOLMENU_COLOR3_SHADE = new Color(126, 20, 219, 40);
-     public static Color TOOLMENU_COLOR4 = new Color(255, 158, 14);
-     public static Color TOOLMENU_COLOR4_SHADE = new Color(255, 158, 14, 40);
+     public static Color TOOLMENU_COLOR4 = new Color(200, 103, 0);
+     public static Color TOOLMENU_COLOR4_SHADE = new Color(200, 103, 0, 40);
      
      
 	public UIManager(Screen screen) {
