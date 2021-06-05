@@ -119,6 +119,7 @@ public class StructureView extends JDialog {
                setDesiredColor(comp);
                comp.setFont(PX14);
                comp.setArc(0, 0);
+               comp.alignX = 5;
                classContentPanel.add(comp);
                classComps.add(comp);
                
@@ -145,6 +146,7 @@ public class StructureView extends JDialog {
                     setDesiredColor(comp);
                     comp.setClickable(false);
                     comp.setArc(0, 0);
+               	comp.alignX = 5;
                     memberContentPanel.add(comp);
                     memberComps.add(comp);
                     block += 25;
@@ -165,6 +167,7 @@ public class StructureView extends JDialog {
                     comp.setFont(PX14);
                     setDesiredColor(comp);
                     comp.setArc(0, 0);
+               	comp.alignX = 5;
                     memberContentPanel.add(comp);
                     memberComps.add(comp);
                     block += 25;

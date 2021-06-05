@@ -30,7 +30,7 @@ import static omega.utils.UIManager.*;
 public class InfoScreen extends JDialog{
 
      private String title = "Omega IDE";
-     private String version = "1.8";
+     private String version = Screen.VERSION;
      private String h1 = "omegaui";
      private String h2 = "github.com/omegaui/omegaide";
      private String p1 = "the blazing fast java IDE";
