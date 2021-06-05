@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * The Snippet Base System
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -179,7 +179,7 @@ public class SnippetBase {
 		String res = "";
 		for(char ch : tabs.toCharArray()) {
 			if(ch == '\t')
-				res += "    ";
+				res += "\t";
 			else
 				res += ch;
 		}
@@ -194,7 +194,8 @@ public class SnippetBase {
 
 	public static boolean hasSnippet(String base){
 		for(Snippet s : snipps){
-			if(s.base.equals(base)) return true;
+			if(s.base.equals(base)) 
+			     return true;
 		}
 		return false;
 	}

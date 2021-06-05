@@ -64,6 +64,7 @@ public class IconManager {
      public static BufferedImage fluentgradleImage = getFluentIcon("elephant-50.png");
      public static BufferedImage fluentsourceImage = getFluentIcon("source-code-50.png");
      public static BufferedImage fluentbinaryImage = getFluentIcon("venn-diagram-50.png");
+     public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
      
 
      //The Default Icon Pack -- mixed

@@ -1,5 +1,6 @@
+package omega.instant.support;
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * The Universal Projects Manager
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -16,24 +17,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package omega.instant.support;
 import omega.Screen;
-/*
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+import omega.instant.support.universal.*;
 import java.io.PrintWriter;
 import omega.database.DataEntry;
 import java.util.LinkedList;
@@ -45,7 +30,7 @@ public class ArgumentManager extends DataBase{
      public String compile_time_args; // The String containing the compile time command
      public String runDir; // The String containing the working directory of the run-time
      public String compileDir; // The String containing the working directory of the compile-time
-     public LinkedList<ListUnit> units = new LinkedList<>(); //The set of list-units
+     public LinkedList<ListMaker> units = new LinkedList<>(); //The set of list-units
      
      /**
       * The Default constructor.
@@ -76,7 +61,7 @@ public class ArgumentManager extends DataBase{
           LinkedList<DataEntry> bounds = getEntries("Bounds Surrounded");
           if(extensions == null) return;
           for(int i = 0; i < extensions.size(); i++){
-               units.add(new ListUnit(extensions.get(i).getValue(), 
+               units.add(new ListMaker(extensions.get(i).getValue(), 
                                       containers.get(i).getValue(), 
                                       sources.get(i).getValue(), 
                                       bounds.get(i).getValueAsBoolean()));
@@ -89,9 +74,9 @@ public class ArgumentManager extends DataBase{
      public void genLists(){
      	units.forEach(unit->{
                LinkedList<File> files = new LinkedList<>();
-               loadFiles(unit.ext, files, new File(unit.sourceDir));
+               loadFiles(unit.getFileExtension(), files, new File(unit.getWorkingDirectory()));
                if(!files.isEmpty())
-                    writeList(unit.container, files, unit.sur);
+                    writeList(unit.getContainerName(), files, unit.isQuoted());
 	     });
      }
 
@@ -99,7 +84,7 @@ public class ArgumentManager extends DataBase{
       * The method that writes the files specified in the settings
       * @param name = name of the file
       * @param files = the files whose paths are to be written
-      * @param sur = if the files are to be surrounded within (") sur = true else vice versa
+      * @param sur = if the files are to be surrounded within (") sur = true else sur = false
      */
      public void writeList(String name, LinkedList<File> files, boolean sur){
      	try{
@@ -111,11 +96,14 @@ public class ArgumentManager extends DataBase{
                          writer.println(file.getAbsolutePath());
                });
                writer.close();
-     	}catch(Exception e){ System.err.println(e); }
+     	}
+     	catch(Exception e){ 
+     		System.err.println(e);
+		}
      }
 
      /**
-      * The method loads the all the Files of the directory dir in files list
+      * The method loads all the Files of the directory dir in files list
       * which ends with the ext extension
      */
      public void loadFiles(String ext, LinkedList<File> files, File dir){
@@ -136,11 +124,11 @@ public class ArgumentManager extends DataBase{
           updateEntry("Compile Time Working Directory", compileDir, 0);
           updateEntry("Run Time Working Directory", runDir, 0);
           for(int i = 0; i < units.size(); i++){
-               ListUnit u = units.get(i);
-               updateEntry("Extensions", u.ext, i);
-               updateEntry("Containers", u.container, i);
-               updateEntry("Sources", u.sourceDir, i);
-               updateEntry("Bounds Surrounded", String.valueOf(u.sur), i);
+               ListMaker u = units.get(i);
+               updateEntry("Extensions", u.getFileExtension(), i);
+               updateEntry("Containers", u.getContainerName(), i);
+               updateEntry("Sources", u.getWorkingDirectory(), i);
+               updateEntry("Bounds Surrounded", String.valueOf(u.isQuoted()), i);
           }
           super.save();
      }
