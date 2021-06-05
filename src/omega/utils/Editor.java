@@ -1,3 +1,4 @@
+package omega.utils;
 /**
   * The IDE's Default Editor
   * Copyright (C) 2021 Omega UI
@@ -16,7 +17,6 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package omega.utils;
 import omega.instant.support.build.gradle.GradleProcessManager;
 import org.fife.ui.rsyntaxtextarea.modes.*;
 import omega.token.factory.*;
@@ -69,11 +69,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile String savedText = "";
 	public static KeyListener keyListener;
 	private static Theme theme;
-	private static String currentTheme = "no-theme";
+	private static String currentTheme = "light";
 	private FindAndReplace fAndR;
 	private static boolean launched = false;
 	private volatile boolean call = false;
 	public ContentWindow contentWindow;
+	public FileSaveDialog fileSaveDialog;
 	private volatile boolean ctrl;
 	private volatile boolean shift;
 	private volatile boolean o; // Auto-Imports
@@ -96,6 +97,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		fAndR = new FindAndReplace();
 		initView();
 		printArea = new PrintArea("File Operation Log", screen);
+		fileSaveDialog = new FileSaveDialog(screen);
 		addCaretListener((e)-> {
 			String text = getSelectedText();
 			if(text == null || text.equals(""))
@@ -313,8 +315,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-	public void saveCurrentFile()
-	{
+	public void saveCurrentFile() {
 		if(savedText.equals(getText()))
 			return;
 		if(currentFile == null || !currentFile.exists())
@@ -351,14 +352,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 	}
 	public void saveFileAs() {
-		chooser.setCurrentDirectory(new File(Screen.getFileView().getProjectPath() + File.separator + "src"));
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		int res = chooser.showSaveDialog(screen);
-		if(res == JFileChooser.APPROVE_OPTION)
-			{
+		String path = fileSaveDialog.saveFile();
+		if(path != null) {
 			try {
-				File file = chooser.getSelectedFile();
-				PrintWriter writer = new PrintWriter(new FileOutputStream(file));
+				PrintWriter writer = new PrintWriter(new FileOutputStream(path));
 				writer.println(getText());
 				writer.close();
 				Screen.getProjectView().reload();
