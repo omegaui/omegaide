@@ -17,13 +17,14 @@ package omega.deassembler;
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import omega.jdk.Import;
 import omega.Screen;
-import omega.utils.DataManager;
-import omega.framework.CodeFramework;
+import omega.snippet.*;
+import omega.jdk.Import;
 import omega.utils.Editor;
-import java.util.StringTokenizer;
 import java.util.LinkedList;
+import omega.utils.DataManager;
+import java.util.StringTokenizer;
+import omega.framework.CodeFramework;
 public class ContentTokenizer {
 	
 	// obj.setSomeValue(getSomeValue())
@@ -58,16 +59,17 @@ public class ContentTokenizer {
 			if(im == null || className.equals("var"))
 				return false;
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
-			dataMembers.add(new DataMember("", "", "Object Instantiation", "new " + className + "();", ""));
+			dataMembers.addFirst(new DataMember("", "", "Object Instantiation", "new " + className + "();", ""));
 			reader.dataMembers.forEach(dataMember->{
 				String type = dataMember.type;
-				if(type.contains("."))
-					type = type.substring(type.lastIndexOf('.') + 1);
-				if(type.equals(className))
-					dataMembers.addLast(dataMember);
+				if(type.contains(className)) {
+					if(type.contains("."))
+						type = type.substring(type.lastIndexOf('.') + 1).trim();
+					if(type.equals(className.trim()))
+						dataMembers.add(dataMember);
+				}
 			});
-			CodeFramework.gen(dataMembers, e);
-			e.contentWindow.setVisible(true);
+			e.contentWindow.genView(dataMembers, Screen.getScreen().getGraphics());
 			return true;
 		}
 		return false;
@@ -104,6 +106,10 @@ public class ContentTokenizer {
 			dataMembers.add(token);
 		}
 		tokens.clear();
+		
+		SnippetBase.getAll().forEach((snippet)->{
+			dataMembers.add(new DataMember("", "", "Snippet", snippet.toString(), null));
+		});
 		
 		if(!dataMembers.isEmpty())
 			CodeFramework.gen(dataMembers, e);
@@ -195,6 +201,9 @@ public class ContentTokenizer {
 					}
 				}
 			}
+			SnippetBase.getAll().forEach((snippet)->{
+				dataMembers.add(new DataMember("", "", "Snippet", snippet.toString(), null));
+			});
 			if(!dataMembers.isEmpty()){
 				CodeFramework.gen(dataMembers, e);
 			}
