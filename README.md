@@ -1,5 +1,11 @@
 # **Omega IDE**
 
+Omega IDE Current Beta v1.9
+
+![](/images/the-performant.png)
+
+Omega IDE Latest Stable 
+
 ![](/images/light.png)
 
 ![](/images/dark.png)
