@@ -72,7 +72,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static String currentTheme = "light";
 	private FindAndReplace fAndR;
 	private static boolean launched = false;
-	private volatile boolean call = false;
+	public volatile boolean call = false;
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
 	private volatile boolean ctrl;
@@ -606,7 +606,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					return;
 				}
 				if(e.getKeyCode() == KeyEvent.VK_SPACE){
-					contentWindow.setVisible(false);
+					String codeText = getText();
+					codeText = codeText.substring(0, getCaretPosition());
+					codeText = codeText.substring(codeText.lastIndexOf('\n') + 1).trim();
+					if(ContentTokenizer.isConditionalCode(codeText))
+						call = true;
+					else
+						contentWindow.setVisible(false);
 					return;
 				}
 				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_ENTER) {

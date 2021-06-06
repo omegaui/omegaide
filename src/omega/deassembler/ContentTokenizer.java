@@ -1,5 +1,6 @@
+package omega.deassembler;
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * ContentAssist Invoker.
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -16,7 +17,6 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package omega.deassembler;
 import omega.jdk.Import;
 import omega.Screen;
 import omega.utils.DataManager;
@@ -25,6 +25,54 @@ import omega.utils.Editor;
 import java.util.StringTokenizer;
 import java.util.LinkedList;
 public class ContentTokenizer {
+	
+	// obj.setSomeValue(getSomeValue())
+	// Type obj = new Type + matches
+
+	public static boolean isConditionalCode(String code){
+		return isObjectInstantiationCode(code) || isMethodInvocationCode(code);
+	}
+
+	public static boolean isObjectInstantiationCode(String code){
+		boolean hasSpace = code.contains(" ");
+		boolean hasEqual = code.contains("=");
+		boolean hasEqualsAfterSpace = false;
+		boolean hasEqualAtLast = false;
+		if(hasSpace && hasEqual)
+			hasEqualsAfterSpace = code.indexOf(' ') < code.indexOf('=');
+		if(hasEqual)
+			hasEqualAtLast = code.charAt(code.length() - 1) == '=';
+		return hasSpace && hasEqual && hasEqualsAfterSpace && hasEqualAtLast;
+	}
+
+	public static boolean isMethodInvocationCode(String code){
+		
+		return false;
+	}
+	
+	public static boolean genConditionalHints(Editor e, String code){
+		if(isObjectInstantiationCode(code)){
+			String className = code.substring(0, code.indexOf(' ')).trim();
+			SourceReader reader = new SourceReader(e.getText());
+			String im = reader.getPackage(className);
+			if(im == null || className.equals("var"))
+				return false;
+			LinkedList<DataMember> dataMembers = new LinkedList<>();
+			dataMembers.add(new DataMember("", "", "Object Instantiation", "new " + className + "();", ""));
+			reader.dataMembers.forEach(dataMember->{
+				String type = dataMember.type;
+				if(type.contains("."))
+					type = type.substring(type.lastIndexOf('.') + 1);
+				if(type.equals(className))
+					dataMembers.addLast(dataMember);
+			});
+			CodeFramework.gen(dataMembers, e);
+			e.contentWindow.setVisible(true);
+			return true;
+		}
+		return false;
+	}
+	
 	public static void arrangeTokens(Editor e, String text){
 		if(text.equals("")) {
 			e.contentWindow.setVisible(false);
@@ -66,6 +114,12 @@ public class ContentTokenizer {
 	public static void arrangeTokens(Editor e) {
 		if(!e.currentFile.getName().endsWith(".java") || Screen.getFileView().getProjectManager().non_java || !DataManager.isContentModeJava()){
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
+			return;
+		}
+		String code = e.getText();
+		code = code.substring(0, e.getCaretPosition());
+		code = code.substring(code.lastIndexOf('\n') + 1).trim();
+		if(isConditionalCode(code) && genConditionalHints(e, code)) {
 			return;
 		}
 		String text = CodeFramework.getCodeDoNotEliminateDot(e.getText(), e.getCaretPosition());

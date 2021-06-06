@@ -165,6 +165,87 @@ public class SourceReader {
 				}
 				continue;
 			}
+			if(line.startsWith("package ") && line.endsWith(";") && pack == null){
+				pack = line.substring(line.indexOf(' ') + 1, line.indexOf(';')).trim();
+				continue;
+			}
+			if(className == null) {
+				String type = "";
+				if(line.contains("class "))
+					type = "class";
+				else if(line.contains("enum "))
+					type = "enum";
+				else if(line.contains("interface "))
+					type = "interface";
+                    else if(line.contains("record "))
+                         type = "record";
+				if(line.contains("@interface "))
+					type = "@interface";
+				if(!type.equals("")){
+					canReadImports = false;
+					this.type = type;
+					String part = line.substring(0, line.indexOf(type)).trim();
+					if(!line.startsWith(type)){
+						if(part.contains(" ")){
+							access = part.substring(0, part.indexOf(' ')).trim();
+							modifier = part.substring(part.indexOf(' ') + 1).trim();
+						}
+						else access = part;
+					}
+					int index = line.indexOf(type) + type.length();
+					int indexAfter = line.indexOf('\n');
+					if(line.contains("{"))
+						indexAfter = line.indexOf("{");
+					if(line.indexOf(' ', index + 1) > -1){
+						indexAfter = line.indexOf(' ', index + 1);
+					}
+					className = line.substring(index + 1, indexAfter);
+					if(line.contains("extends")){
+						int extendsI = line.indexOf("extends") + 7;
+						if(line.contains("implements")){
+							indexAfter = line.indexOf(' ', extendsI + 1);
+							parent = line.substring(extendsI + 1, indexAfter).trim();
+							int impI = indexAfter + 1 + 10;
+							String x = line.substring(impI).trim();
+							if(x.contains("{"))
+								x = x.substring(0, x.indexOf('{'));
+							else if(x.endsWith("\n"))
+								x = x.substring(0, x.indexOf('\n'));
+							if(!x.contains(",")){
+								features = new String[1];
+								features[0] = x;
+							}
+							else
+								features = x.split(",");
+							for(int ix = 0; ix < features.length; ix++)
+								features[ix] = features[ix].trim();
+						}
+						else{
+							if(line.contains("{"))
+								indexAfter = line.indexOf('{');
+							else indexAfter = line.indexOf('\n');
+							parent = line.substring(extendsI + 1, indexAfter).trim();
+						}
+					}
+					if(line.contains("implements") && !line.contains("extends")){
+						int impI = line.indexOf("implements") + 10;
+						String x = line.substring(impI).trim();
+						if(x.contains("{"))
+							x = x.substring(0, x.indexOf('{'));
+						else if(x.endsWith("\n"))
+							x = x.substring(0, x.indexOf('\n'));
+						if(!x.contains(",")){
+							features = new String[1];
+							features[0] = x;
+						}
+						else
+							features = x.split(",");
+						for(int ix = 0; ix < features.length; ix++)
+							features[ix] = features[ix].trim();
+					}
+					continue;
+				}
+			}
 		}
 	     addNeighbourImports();
 	}
