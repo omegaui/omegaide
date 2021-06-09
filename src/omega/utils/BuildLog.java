@@ -168,7 +168,7 @@ public class BuildLog extends JPanel {
 			//Highlighting
 			String text = errorArea.getText();
 			Highlighter h = errorArea.getHighlighter();
-			Color color = isDarkMode() ? Color.WHITE : ErrorHighlighter.color;
+			Color color = isDarkMode() ? omega.utils.UIManager.TOOLMENU_COLOR2_SHADE : ErrorHighlighter.color;
 			//Highlighting File Path
 			h.addHighlight(text.indexOf(':') + 2, text.indexOf('\n'), new DefaultHighlighter.DefaultHighlightPainter(color));
 			//Highlighting Line Number

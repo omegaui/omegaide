@@ -14,7 +14,7 @@ package omega.deassembler;
   * GNU General Public License for more details.
 
   * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  * along with this program.  If not, see http://www.gnu.org/licenses.
 */
 
 import omega.Screen;
@@ -27,11 +27,8 @@ import java.util.StringTokenizer;
 import omega.framework.CodeFramework;
 public class ContentTokenizer {
 	
-	// obj.setSomeValue(getSomeValue())
-	// Type obj = new Type + matches
-
 	public static boolean isConditionalCode(String code){
-		return isObjectInstantiationCode(code) || isMethodInvocationCode(code);
+		return isObjectInstantiationCode(code);
 	}
 
 	public static boolean isObjectInstantiationCode(String code){
@@ -44,11 +41,6 @@ public class ContentTokenizer {
 		if(hasEqual)
 			hasEqualAtLast = code.charAt(code.length() - 1) == '=';
 		return hasSpace && hasEqual && hasEqualsAfterSpace && hasEqualAtLast;
-	}
-
-	public static boolean isMethodInvocationCode(String code){
-		
-		return false;
 	}
 	
 	public static boolean genConditionalHints(Editor e, String code){
@@ -125,7 +117,7 @@ public class ContentTokenizer {
 		String code = e.getText();
 		code = code.substring(0, e.getCaretPosition());
 		code = code.substring(code.lastIndexOf('\n') + 1).trim();
-		if(isConditionalCode(code) && genConditionalHints(e, code)) {
+		if(genConditionalHints(e, code)) {
 			return;
 		}
 		String text = CodeFramework.getCodeDoNotEliminateDot(e.getText(), e.getCaretPosition());
