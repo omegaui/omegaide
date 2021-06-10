@@ -264,20 +264,19 @@ public class Branch extends JComponent{
 		}
 		if(file.getName().contains(".")){
 			String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp")
-			|| ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
+			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp") || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
 			     return IconManager.fluentimagefileImage;
-			else if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class"))
+			if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class") || ext.equals(".groovy"))
 				return IconManager.fluentfileImage;
-			else if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
+			if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
 				return IconManager.fluentwebImage;
-			else if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
+			if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
 				return IconManager.fluentshellImage;
-			else if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
+			if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
 				return IconManager.fluentlinuxImage;
-			else if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
+			if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
 				return IconManager.fluentwindowsImage;
-			else if(ext.equals(".dmg"))
+			if(ext.equals(".dmg"))
 				return IconManager.fluentmacImage;
 		}
 		return IconManager.fluentanyfileImage;
