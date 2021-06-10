@@ -17,6 +17,7 @@ package omega.utils;
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+import java.nio.charset.*;
 import omega.instant.support.build.gradle.GradleProcessManager;
 import org.fife.ui.rsyntaxtextarea.modes.*;
 import omega.token.factory.*;
@@ -328,7 +329,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		try {
 			String text = getText();
 			savedText = text;
-			PrintWriter writer = new PrintWriter(new FileOutputStream(currentFile));
+			PrintWriter writer = new PrintWriter(currentFile, StandardCharsets.UTF_8);
 			writer.print(text);
 			writer.close();
 		}
@@ -355,7 +356,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		String path = fileSaveDialog.saveFile();
 		if(path != null) {
 			try {
-				PrintWriter writer = new PrintWriter(new FileOutputStream(path));
+				PrintWriter writer = new PrintWriter(new File(path), StandardCharsets.UTF_8);
 				writer.println(getText());
 				writer.close();
 				Screen.getProjectView().reload();

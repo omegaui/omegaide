@@ -11,8 +11,8 @@ public class TextComp extends JComponent{
 	
 	public int arcX = 20;
 	public int arcY = 20;
-     public int pressX;
-     public int pressY;
+	public int pressX;
+	public int pressY;
 	public int alignX = -1;
 	private String dir;
 	public Color color1;
@@ -22,8 +22,8 @@ public class TextComp extends JComponent{
 	public BufferedImage image;
 	public int w;
 	public int h;
-     public Window window;
-     public LinkedList<Object> extras = new LinkedList<>();
+	public Window window;
+	public LinkedList<Object> extras = new LinkedList<>();
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
 		this.color1 = color1;
