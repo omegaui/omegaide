@@ -1,5 +1,5 @@
 /**
-  * Executes run, build and init gradle processess.
+  * Executes run, build and init gradle commands.
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify

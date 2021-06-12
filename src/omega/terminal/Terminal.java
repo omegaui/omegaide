@@ -55,7 +55,6 @@ public class Terminal extends RSyntaxTextArea{
 					write(inputToken);
 					inputToken = "";
 					pointer = -1;
-					e.consume();
 				}
 				else if(Character.isLetterOrDigit(ch) || isSymbol(ch))
 					inputToken += ch;

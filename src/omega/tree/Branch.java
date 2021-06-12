@@ -49,8 +49,8 @@ public class Branch extends JComponent{
 	public static final Color ANY_COLOR = omega.utils.UIManager.TOOLMENU_COLOR2;
 	public static final Color SOURCE_COLOR = ANY_COLOR;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 160);
-	public static final Color IMAGE_COLOR = new Color(50, 250, 50, 160);
-	public static final Color LINUX_COLOR = new Color(250, 50, 50, 160);
+	public static final Color IMAGE_COLOR = new Color(50, 100, 50, 160);
+	public static final Color LINUX_COLOR = new Color(100, 50, 50, 160);
 	public static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
 	public static final Color WEB_COLOR = omega.utils.UIManager.TOOLMENU_COLOR3;
 	public static final Color XML_COLOR = LINUX_COLOR;

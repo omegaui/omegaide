@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * Checks for license agreement and IDE resources.
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public class Startup extends JDialog {
 	public Startup(Screen screen){
 		super(screen, true);
 		try{
-			image = ImageIO.read(getClass().getResourceAsStream(omega.utils.UIManager.isDarkMode() ? "/omega_ide_icon64_dark.png" : "/omega_ide_icon64.png"));
+			image = ImageIO.read(getClass().getResourceAsStream(isDarkMode() ? "/omega_ide_icon64_dark.png" : "/omega_ide_icon64.png"));
 			Scanner reader = new Scanner(getClass().getResourceAsStream("/LICENSE"));
 			while(reader.hasNextLine()){
 				LICENSE_TEXT += reader.nextLine() + "\n";
@@ -57,12 +57,12 @@ public class Startup extends JDialog {
 		setUndecorated(true);
 		setSize(800, 550);
 		JPanel panel = new JPanel(null);
-		panel.setBackground(omega.utils.UIManager.c2);
+		panel.setBackground(c2);
 		setContentPane(panel);
 		setLayout(null);
 		setLocationRelativeTo(null);
 		setAlwaysOnTop(true);
-		setBackground(omega.utils.UIManager.c2);
+		setBackground(c2);
 		init();
 		setVisible(true);
 	}
@@ -73,15 +73,17 @@ public class Startup extends JDialog {
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
       
-		textArea = new RTextArea(LICENSE_TEXT);
-		JScrollPane scrollPane = new JScrollPane(textArea);
+		JScrollPane scrollPane = new JScrollPane(textArea = new RTextArea(LICENSE_TEXT));
 		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
+		scrollPane.setBackground(c2);
+		
 		textArea.setBackground(c2);
 		textArea.setForeground(TOOLMENU_COLOR3);
 		textArea.setFont(omega.settings.Screen.PX18);
 		textArea.setCaretPosition(0);
 		textArea.setEditable(false);
 		add(scrollPane);
+		
 		acceptComp = new TextComp("I Accept", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			try{
 				new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
@@ -95,17 +97,7 @@ public class Startup extends JDialog {
 		acceptComp.setFont(omega.settings.Screen.PX16);
 		add(acceptComp);
           
-	     TextComp imageComp = new TextComp("", c2, c2, c2, null){
-			@Override
-			public void paint(Graphics graphics){
-				super.paint(graphics);
-				Graphics2D g = (Graphics2D)graphics;
-				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				g.drawImage(image, 1, 1, null);
-			}
-		};
+	     TextComp imageComp = new TextComp(image, 64, 64, c2, c2, c2, null);
 		imageComp.setBounds(0, 0, 66, 66);
 		imageComp.setClickable(false);
 		add(imageComp);
@@ -123,15 +115,6 @@ public class Startup extends JDialog {
 		licComp.setFont(omega.settings.Screen.PX18);
 		licComp.setArc(0, 0);
 		add(licComp);
-	}
-	@Override
-	public void paint(Graphics graphics){
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 	
 	public static void checkStartup(Screen screen) {

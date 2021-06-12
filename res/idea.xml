@@ -27,14 +27,14 @@
    </secondaryLanguages>
 
    <!-- Gutter styling. -->
-   <gutterBorder color="ffffff" />
-   <lineNumbers fg="363636"/>
+   <gutterBorder color="D6D2D0" />
+   <lineNumbers fg="000000"/>
    <foldIndicator fg="363636" iconBg="ffffff" />
    <iconRowHeader activeLineRange="3399ff" />
 
    <!-- Syntax tokens. -->
    <tokenStyles>
-      <style token="IDENTIFIER" fg="363636" />
+      <style token="IDENTIFIER" fg="22252B" />
       <style token="RESERVED_WORD" fg="000080" bold="true" />
       <style token="RESERVED_WORD_2" fg="000080" bold="true" />
       <style token="ANNOTATION" fg="808000" />
@@ -46,10 +46,10 @@
       <style token="DATA_TYPE" fg="000080" bold="true" />
       <style token="FUNCTION" fg="000000" />
       <style token="LITERAL_BOOLEAN" fg="000080" bold="true" />
-      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="0000ff" />
+      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="8E561A" />
       <style token="LITERAL_NUMBER_FLOAT" fg="0000ff" />
       <style token="LITERAL_NUMBER_HEXADECIMAL" fg="0000ff" />
-      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="008000" bold="true" />
+      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="DC0000" bold="true" />
       <style token="LITERAL_CHAR" fg="008000" bold="true" />
       <style token="LITERAL_BACKQUOTE" fg="008000" bold="true" />
       <style token="MARKUP_TAG_DELIMITER" fg="363636" bold="true" />
@@ -71,7 +71,7 @@
 
       <style token="ERROR_IDENTIFIER" fg="ff0000" />
       <style token="ERROR_NUMBER_FORMAT" fg="ff0000" />
-      <style token="ERROR_STRING_DOUBLE" fg="ff0000" />
+      <style token="ERROR_STRING_DOUBLE" fg="A13B9B" />
       <style token="ERROR_CHAR" fg="ff0000" />
    </tokenStyles>
 
