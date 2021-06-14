@@ -1,3 +1,5 @@
+package omega.utils;
+
 /**
   * <one line to give the program's name and a brief idea of what it does.>
   * Copyright (C) 2021 Omega UI
@@ -16,7 +18,7 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package omega.utils;
+import omega.token.factory.*;
 import java.awt.image.BufferedImage;
 import java.io.PrintWriter;
 import javax.swing.JTextField;
@@ -24,7 +26,6 @@ import omega.comp.TextComp;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JComponent;
-import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 import omega.Screen;
 import java.awt.event.MouseListener;
 import java.awt.Font;
@@ -45,7 +46,7 @@ public class PrintArea extends JPanel {
 	}
 	private void init() {
 		textArea = new RSyntaxTextArea("Build Starting...");
-		MarkdownTokenMaker.apply(textArea);
+		ShellTokenMaker.apply(textArea);
 		textArea.setAutoscrolls(true);
 		Editor.getTheme().apply(textArea);
 		textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));

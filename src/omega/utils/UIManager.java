@@ -141,7 +141,7 @@ public class UIManager extends DataBase {
 			}
 			else {
                     c1 = Color.decode("#563F2E");
-                    c2 = Color.decode("#0A0A28");
+                    c2 = Color.decode("#09090B");
                     c3 = Color.decode("#ABB0BC");
                     TOOLMENU_COLOR1 = Color.decode("#f0b40f");
                     TOOLMENU_COLOR1_SHADE = new Color(TOOLMENU_COLOR1.getRed(), TOOLMENU_COLOR1.getGreen(), TOOLMENU_COLOR1.getBlue(), 40);

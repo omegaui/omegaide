@@ -17,22 +17,7 @@
 */
 
 package omega.utils;
-/*
-    Copyright (C) 2021 Omega UI. All Rights Reserved.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 import java.io.File;
 
 import omega.Screen;
@@ -48,6 +33,7 @@ public class DataManager extends DataBase {
 	private static String pathToJava = "";
      private static String projectsHome = "";
      private static String theme = "light";
+	private static boolean sourceDefenderEnabled = true;
 	
 	public DataManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".preferences");
@@ -67,6 +53,7 @@ public class DataManager extends DataBase {
                setWorkspace(getEntryAt("Projects Home", 0).getValue());
                setTheme(getEntryAt("Theme", 0).getValue());
                setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
+               setSourceDefenderEnabled(getEntryAt("Source Defender Enabled", 0).getValueAsBoolean());
 		}
 		catch(Exception e) { 
 		     e.printStackTrace();
@@ -76,12 +63,13 @@ public class DataManager extends DataBase {
 	public void saveData() {
 		clear();
 		addEntry("Default Project", defaultProjectPath);
-          addEntry("Content Assist Real-Time", isContentAssistRealTime()+"");
-          addEntry("Content Mode Java", isContentModeJava()+"");
-		addEntry("Use Star Imports", isUsingStarImports()+"");
+          addEntry("Content Assist Real-Time", isContentAssistRealTime() + "");
+          addEntry("Content Mode Java", isContentModeJava() + "");
+		addEntry("Use Star Imports", isUsingStarImports() + "");
           addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
           addEntry("Projects Home", getWorkspace());
           addEntry("Theme", getTheme());
+          addEntry("Source Defender Enabled", isSourceDefenderEnabled() + "");
 		save();
 	}
 	
@@ -139,6 +127,14 @@ public class DataManager extends DataBase {
      
      public static void setContentModeJava(boolean contentModeJava) {
           DataManager.contentModeJava = contentModeJava;
+     }
+
+     public static boolean isSourceDefenderEnabled() {
+          return sourceDefenderEnabled;
+     }
+     
+     public static void setSourceDefenderEnabled(boolean sourceDefenderEnabled) {
+          DataManager.sourceDefenderEnabled = sourceDefenderEnabled;
      }
 }
 

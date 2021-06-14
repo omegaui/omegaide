@@ -99,7 +99,7 @@ public class Screen extends JFrame {
                if(UIManager.isDarkMode()) {
                     FlatDarkLaf.install();
                     x = Color.decode("#D34D42");
-                    y = Color.decode("#0A0A28");
+                    y = Color.decode("#09090B");
                     javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
                     javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
                     javax.swing.UIManager.put("Button.foreground", new ColorUIResource(y));
@@ -464,8 +464,7 @@ public class Screen extends JFrame {
 		String res = "";
 		boolean canRecord = false;
 		StringTokenizer tokenizer = new StringTokenizer(file.getAbsolutePath(), File.separator);
-		while(tokenizer.hasMoreTokens())
-		{
+		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
 			if(canRecord)
 				res += token + ".";
@@ -605,12 +604,22 @@ public class Screen extends JFrame {
           tabPanel.getEditors().forEach(w->w.saveCurrentFile());
           rightTabPanel.getEditors().forEach(w->w.saveCurrentFile());
           bottomTabPanel.getEditors().forEach(w->w.saveCurrentFile());
+          if(DataManager.isSourceDefenderEnabled())
+          	ToolMenu.sourceDefender.backupData();
 	}
 
 	public void loadThemes(){
           tabPanel.getEditors().forEach(w->w.loadTheme());
           rightTabPanel.getEditors().forEach(w->w.loadTheme());
           bottomTabPanel.getEditors().forEach(w->w.loadTheme());
+	}
+
+	public LinkedList<Editor> getAllEditors(){
+		LinkedList<Editor> editors = new LinkedList<>();
+		tabPanel.getEditors().forEach(editors::add);
+		rightTabPanel.getEditors().forEach(editors::add);
+		bottomTabPanel.getEditors().forEach(editors::add);
+		return editors;
 	}
 
 	public Editor getCurrentEditor() {

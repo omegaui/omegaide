@@ -9,8 +9,8 @@
    <!-- Omitting baseFont will use a system-appropriate monospaced. -->
    <baseFont family="Ubuntu Mono" size="16"/>
    
-   <!--  General editor colors.283350 -->
-   <background color="0A0A28"/>
+   <!--  General editor colors.15151A -->
+   <background color="09090B"/>
    <caret color="f0b40f"/>
    <selection useFG="true" bg="800707" roundedEdges="false"/>
    <currentLineHighlight color="2F393C" fade="false"/>
@@ -33,16 +33,16 @@
    
    <!-- Syntax tokens. F93800-->
    <tokenStyles>
-      <style token="IDENTIFIER" fg="dfe4e4"/>
-      <style token="RESERVED_WORD" fg="ABB0BC" bold="true"/>
-      <style token="RESERVED_WORD_2" fg="27AA55" bold="true"/>
+      <style token="IDENTIFIER" fg="EBEAD2"/>
+      <style token="RESERVED_WORD" fg="88580B" bold="true"/>
+      <style token="RESERVED_WORD_2" fg="88580B" bold="true"/>
       <style token="ANNOTATION" fg="17B3DD"/>
       <style token="COMMENT_DOCUMENTATION" fg="F5AA1C"/>
       <style token="COMMENT_EOL" fg="F5AA1C"/>
       <style token="COMMENT_MULTILINE" fg="F5AA1C"/>
       <style token="COMMENT_KEYWORD" fg="7D5AA4" bold="true"/>
       <style token="COMMENT_MARKUP" fg="7D5AA4"/>
-      <style token="FUNCTION" fg="22d5d5"/>
+      <style token="FUNCTION" fg="A19219"/>
       <style token="DATA_TYPE" fg="27AA55" bold="true"/>
       <style token="LITERAL_BOOLEAN" fg="F93800" bold="true"/>
       <style token="LITERAL_NUMBER_DECIMAL_INT" fg="FFCD22"/>

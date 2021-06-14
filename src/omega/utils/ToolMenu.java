@@ -80,20 +80,21 @@ public class ToolMenu extends JPanel {
 	public TextComp sep5;
 	public TextComp themeComp;
 	public LabelMenu taskMenu;
-	public volatile boolean oPHidden = true;
-	public static JMenu openFileMenu;
-	public static JMenu openProjectMenu;
 	public static InfoScreen infoScreen;
-	public static StructureView structureView;
-	public boolean hidden;
+     public static ToolMenuPathBox pathBox;
+     public static SourceDefender sourceDefender;
 	public static ProjectWizard projectWizard;
-	public static UniversalProjectWizard universalProjectWizard;
+     public static ProcessWizard processWizard;
+	public static StructureView structureView;
      public static MadeWithScreen madeWithScreen;
      public static GradleModuleWizard gradleModuleWizard;
-     public static ProcessWizard processWizard;
-     public static ToolMenuPathBox pathBox;
+	public static UniversalProjectWizard universalProjectWizard;
+     
 	private int pressX;
 	private int pressY;
+	
+	public volatile boolean hidden = false;
+	public volatile boolean oPHidden = true;
 	//The window decoration objects
 	
 	public static Color closeWinColor = TOOLMENU_COLOR2;
@@ -111,13 +112,14 @@ public class ToolMenu extends JPanel {
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
 		if(projectWizard == null){
-			projectWizard = new ProjectWizard(screen);
-			universalProjectWizard = new UniversalProjectWizard(screen);
 			infoScreen = new InfoScreen(screen);
+			sourceDefender = new SourceDefender(screen);
+			projectWizard = new ProjectWizard(screen);
+               processWizard = new ProcessWizard(screen);
 			structureView = new StructureView(screen);
                madeWithScreen = new MadeWithScreen(screen);
                gradleModuleWizard = new GradleModuleWizard(screen);
-               processWizard = new ProcessWizard(screen);
+			universalProjectWizard = new UniversalProjectWizard(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -617,8 +619,9 @@ public class ToolMenu extends JPanel {
 	}
 	private void initToolMenu() {
 		toolsPopup
-		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
+		.createItem("Source Defender", IconManager.fluentsourceImage, ()->sourceDefender.setVisible(true))
           .createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
+		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
 		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->omega.gset.Generator.gsView.genView(screen.getCurrentEditor()))
 		.createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()));
 	}
