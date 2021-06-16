@@ -364,8 +364,13 @@ public class HtmlFoldParser implements FoldParser {
 	 * @return Whether this tag can be a foldable region.
 	 */
 	private static boolean isFoldableTag(Token tagNameToken) {
-		return tagNameToken!=null &&
-				FOLDABLE_TAGS.contains(tagNameToken.getLexeme().toLowerCase());
+		try{
+			return tagNameToken!=null && FOLDABLE_TAGS.contains(tagNameToken.getLexeme().toLowerCase());
+		}
+		catch(Exception e){
+			
+		}
+		return false;
 	}
 
 

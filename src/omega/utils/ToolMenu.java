@@ -89,6 +89,8 @@ public class ToolMenu extends JPanel {
      public static MadeWithScreen madeWithScreen;
      public static GradleModuleWizard gradleModuleWizard;
 	public static UniversalProjectWizard universalProjectWizard;
+
+	public static ConsoleSelector consoleSelector;
      
 	private int pressX;
 	private int pressY;
@@ -120,6 +122,7 @@ public class ToolMenu extends JPanel {
                madeWithScreen = new MadeWithScreen(screen);
                gradleModuleWizard = new GradleModuleWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
+			consoleSelector = new ConsoleSelector(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -471,9 +474,19 @@ public class ToolMenu extends JPanel {
 		sep3 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		sep3.setBounds(382, 50, 2, 40);
 		addComp(sep3);
+
+		OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(200);
+		consoleItemWindow
+		.createItem("New System Terminal", IconManager.fluentconsoleImage, consoleSelector::launchTerminal)
+		.createItem("Integrated Terminal", IconManager.fluentconsoleImage, ()->Screen.getTerminalComp().showTerminal(true));
       
-		shellComp = new TextComp(fluentconsoleImage, 25, 25, "Click to open a non-root terminal inside the IDE", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
-			Screen.getTerminalComp().showTerminal(true);
+		shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
+		shellComp.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				consoleItemWindow.setLocation(e.getLocationOnScreen());
+				consoleItemWindow.setVisible(true);
+			}
 		});
 		shellComp.setFont(omega.settings.Screen.PX16);
 		shellComp.setBounds(392, 55, 60, 30);
@@ -492,11 +505,12 @@ public class ToolMenu extends JPanel {
 			l3 = c2;
 		}
 		themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE\'s restart", l1, l2, l3,
-		()->{
-			Screen.pickTheme(DataManager.getTheme());
-			themeComp.setText(DataManager.getTheme());
-			Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
-		});
+			()->{
+				Screen.pickTheme(DataManager.getTheme());
+				themeComp.setText(DataManager.getTheme());
+				Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
+			}
+		);
 		themeComp.setFont(omega.settings.Screen.PX16);
 		themeComp.setBounds(472, 55, 60, 30);
 		add(themeComp);
@@ -578,7 +592,10 @@ public class ToolMenu extends JPanel {
 			screen.getUIManager().save();
 			screen.loadThemes();
 		})
-		.createItem("Change Workspace", IconManager.settingsImage, ()->new omega.utils.WorkspaceSelector(screen).setVisible(true));
+		.createItem("Change Workspace", IconManager.settingsImage, ()->new omega.utils.WorkspaceSelector(screen).setVisible(true))
+		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
+			consoleSelector.setVisible(true);
+		});
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
 		typeItem.setAction(()->{
 			omega.Screen.getFileView().getProjectManager().non_java = !omega.Screen.getFileView().getProjectManager().non_java;

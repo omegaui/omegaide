@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * Handles Foreign Language Execution
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -59,38 +59,46 @@ public class ProcessWizard extends JDialog{
 		titleComp.setClickable(false);
 		titleComp.attachDragger(this);
 		add(titleComp);
+		
 		TextComp closeComp = new TextComp("x", "Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
-		closeComp.setBounds(getWidth() - 25, 0, 25, 25);
+		closeComp.setBounds(getWidth() - 25, 0, 25, 30);
 		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
+		
 		TextComp label1 = new TextComp("File Extension", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
 		label1.setBounds(10, 50, 150, 25);
 		label1.setFont(PX14);
 		label1.setClickable(false);
 		add(label1);
+		
 		extField = new NoCaretField("", "Click Me", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		extField.setBounds(170, 50, getWidth() - 190, 25);
 		extField.setFont(PX14);
 		add(extField);
+		
 		TextComp label2 = new TextComp("Execution Command", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
 		label2.setBounds(10, 100, 150, 25);
 		label2.setFont(PX14);
 		label2.setClickable(false);
 		add(label2);
+		
 		cmdField = new NoCaretField("", "Click Me", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		cmdField.setBounds(170, 100, getWidth() - 190, 25);
 		cmdField.setFont(PX14);
 		add(cmdField);
+		
 		TextComp addComp = new TextComp("Add/Update", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::addCurrent);
 		addComp.setBounds(getWidth()/2 - 75, 150, 150, 25);
 		addComp.setFont(PX14);
 		add(addComp);
+		
 		containerPanel = new FlexPanel(null, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1);
 		containerPanel.setBounds(10, 200, getWidth() - 20, 300);
 		containerPanel.setPaintGradientEnabled(true);
 		containerPanel.setArc(10, 10);
 		add(containerPanel);
+		
 		scrollPane = new JScrollPane(contentPanel = new JPanel(null));
 		scrollPane.setBounds(10, 10, containerPanel.getWidth() - 20, containerPanel.getHeight() - 20);
 		scrollPane.setBackground(c2);

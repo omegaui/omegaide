@@ -1,11 +1,11 @@
 package omega.terminal;
-import omega.utils.*;
-import org.fife.ui.rsyntaxtextarea.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
 import java.io.*;
+import java.awt.*;
+import java.util.*;
 import javax.swing.*;
+import omega.utils.*;
+import java.awt.event.*;
+import org.fife.ui.rsyntaxtextarea.*;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 public class Terminal extends RSyntaxTextArea{
@@ -22,7 +22,6 @@ public class Terminal extends RSyntaxTextArea{
 	public String inputToken = "";
 	public LinkedList<String> inputs = new LinkedList<>();
 	public int pointer = -1;
-	
 	
 	public Terminal(){
 		setFont(new Font(fontName, fontState, fontSize));
@@ -77,18 +76,23 @@ public class Terminal extends RSyntaxTextArea{
 				ProcessBuilder processBuilder = new ProcessBuilder(shell);
 				processBuilder.directory(workingDirectory);
 				processBuilder.environment().put("TERM", "xterm-256color");
+				
 				shellProcess = processBuilder.start();
+				
 				writer = new PrintWriter(shellProcess.getOutputStream());
 				inputReader = new Scanner(shellProcess.getInputStream());
 				errorReader = new Scanner(shellProcess.getErrorStream());
+				
 				new Thread(()->{
 					while(shellProcess.isAlive()){
+						addNewLine();
 						while(errorReader.hasNextLine()){
 							print(errorReader.nextLine());
 						}
 					}
 				}).start();
 				while(shellProcess.isAlive()){
+					addNewLine();
 					while(inputReader.hasNextLine()){
 						print(inputReader.nextLine());
 					}
@@ -111,20 +115,25 @@ public class Terminal extends RSyntaxTextArea{
 				ProcessBuilder processBuilder = new ProcessBuilder(shell);
 				processBuilder.directory(workingDirectory);
 				processBuilder.environment().put("TERM", "xterm-256color");
+				
 				shellProcess = processBuilder.start();
+				
 				writer = new PrintWriter(shellProcess.getOutputStream());
 				inputReader = new Scanner(shellProcess.getInputStream());
 				errorReader = new Scanner(shellProcess.getErrorStream());
+				
 				writer.println(cmd);
 				writer.close();
 				new Thread(()->{
                          while(shellProcess.isAlive()){
+						addNewLine();
                               while(errorReader.hasNextLine()){
                                    print(errorReader.nextLine());
                               }
                          }
                     }).start();
                     while(shellProcess.isAlive()){
+					addNewLine();
                          while(inputReader.hasNextLine()){
                               print(inputReader.nextLine());
                          }
@@ -135,6 +144,17 @@ public class Terminal extends RSyntaxTextArea{
 			}
 		}).start();
 	}
+	public void addNewLine(){
+		System.out.println("I am ON");
+		if(getText() == null || getText().length() == 0)
+			return;
+		String text = getText().substring(0, getCaretPosition());
+		String lastLineAllTokens = text.substring(text.lastIndexOf('\n') + 1);
+		if(!lastLineAllTokens.equals("\n")){
+			append("\n");
+			setCaretPosition(getText().length() - 1);
+		}
+	}
 	public void print(String text){
 		append("\n" + text);
 		inputToken = "";
@@ -143,7 +163,7 @@ public class Terminal extends RSyntaxTextArea{
 	public void write(String text){
 		if(writer == null)
 			return;
-		if(text.equals("clear") || text.equalsIgnoreCase("clr")){
+		if(text.equals("clear") || text.equalsIgnoreCase("cls")){
 			setText("");
 			return;
 		}
@@ -153,7 +173,6 @@ public class Terminal extends RSyntaxTextArea{
 	public java.io.File getWorkingDirectory() {
 		return workingDirectory;
 	}
-	
 	public void setWorkingDirectory(java.io.File workingDirectory) {
 		this.workingDirectory = workingDirectory;
 	}
@@ -168,4 +187,5 @@ public class Terminal extends RSyntaxTextArea{
 	public boolean isSymbol(char ch){
 		return "`~!@#$%^&*()_+-={}|[]\\:\";\'<>?,./]) ".contains(ch + "");
 	}
+
 }

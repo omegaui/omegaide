@@ -27,21 +27,22 @@ import omega.database.DataEntry;
 public class DataManager extends DataBase {
 
 	private static String defaultProjectPath = "No Default Project set yet.";
-	private volatile static boolean realTimeContentAssist = false;
-     private volatile static boolean contentModeJava = true;
-	private static boolean useStarImports = false;
 	private static String pathToJava = "";
      private static String projectsHome = "";
      private static String theme = "light";
-	private static boolean sourceDefenderEnabled = true;
+	private static String consoleCommand = "";
+	
+	private volatile static boolean realTimeContentAssist = false;
+     private volatile static boolean contentModeJava = true;
+	private volatile static boolean useStarImports = false;
+	private volatile static boolean sourceDefenderEnabled;
 	
 	public DataManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".preferences");
 		loadData();
 	}
 	
-	private void loadData()
-	{
+	private void loadData() {
 		try {
 			DataEntry e = getEntryAt("Default Project", 0);
 			if(e == null) return;
@@ -54,6 +55,7 @@ public class DataManager extends DataBase {
                setTheme(getEntryAt("Theme", 0).getValue());
                setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
                setSourceDefenderEnabled(getEntryAt("Source Defender Enabled", 0).getValueAsBoolean());
+               setConsoleCommand(getEntryAt("System Console Launch Command", 0).getValue());
 		}
 		catch(Exception e) { 
 		     e.printStackTrace();
@@ -70,6 +72,7 @@ public class DataManager extends DataBase {
           addEntry("Projects Home", getWorkspace());
           addEntry("Theme", getTheme());
           addEntry("Source Defender Enabled", isSourceDefenderEnabled() + "");
+          addEntry("System Console Launch Command", getConsoleCommand());
 		save();
 	}
 	
@@ -136,5 +139,14 @@ public class DataManager extends DataBase {
      public static void setSourceDefenderEnabled(boolean sourceDefenderEnabled) {
           DataManager.sourceDefenderEnabled = sourceDefenderEnabled;
      }
+
+     public static java.lang.String getConsoleCommand() {
+          return consoleCommand;
+     }
+     
+     public static void setConsoleCommand(java.lang.String consoleCommand) {
+          DataManager.consoleCommand = consoleCommand;
+     }
+     
 }
 

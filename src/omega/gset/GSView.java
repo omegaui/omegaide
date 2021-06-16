@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * The Getter/Setter
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -85,6 +85,7 @@ public class GSView extends JDialog{
 		});
 		titleComp.setArc(0, 0);
 		add(titleComp);
+		
 		accessComp = new TextComp("Use Access : public", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 		accessComp.setBounds(0, getHeight() - 60, 300, 30);
 		accessComp.setRunnable(()->{
@@ -98,6 +99,7 @@ public class GSView extends JDialog{
 		accessComp.setFont(PX16);
 		accessComp.setArc(0, 0);
 		add(accessComp);
+		
 		gsComp = new TextComp("Getter&Setter", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 		gsComp.setBounds(300, getHeight() - 60, 200, 30);
 		gsComp.setRunnable(()->{
@@ -110,11 +112,13 @@ public class GSView extends JDialog{
 		gsComp.setFont(PX16);
 		gsComp.setArc(0, 0);
 		add(gsComp);
+		
 		TextComp genComp = new TextComp("Generate", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::generate);
 		genComp.setBounds(500, getHeight() - 60, getWidth() - 500, 30);
 		genComp.setFont(PX16);
 		genComp.setArc(0, 0);
 		add(genComp);
+		
 		NoCaretField searchField = new NoCaretField("", "search any field here", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
 		searchField.setBounds(0, getHeight() - 30, getWidth(), 30);
 		searchField.setFont(PX14);
@@ -160,6 +164,7 @@ public class GSView extends JDialog{
 		}
 		selections.clear();
 	}
+	
 	public void genView(RSyntaxTextArea textArea){
 		if(omega.Screen.getFileView().getProjectManager().non_java) return;
 		if(textArea == null) return;
@@ -168,10 +173,12 @@ public class GSView extends JDialog{
 			comps.forEach(panel::remove);
 			comps.clear();
 			members.clear();
+			
 			SourceReader reader = new SourceReader(textArea.getText());
 			this.className = reader.className;
 			int y = 0;
-			for(DataMember d : reader.dataMembers){
+			
+			for(DataMember d : reader.dataMembers) {
 				if(d.modifier != null && !d.modifier.contains("final")){
 					if(d.parameters == null){
 						TextComp textComp = new TextComp(d.name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});

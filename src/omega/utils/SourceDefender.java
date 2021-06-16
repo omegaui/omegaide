@@ -18,6 +18,8 @@ public class SourceDefender extends JDialog {
 	private JScrollPane scrollPane;
 	private JPanel panel;
 	private int block;
+
+	private BackupView backupView;
 	
 	public SourceDefender(Screen screen){
 		super(screen, false);
@@ -40,6 +42,8 @@ public class SourceDefender extends JDialog {
 		File backupDir = new File(BACKUP_DIR);
 		if(!backupDir.exists())
 			backupDir.mkdirs();
+
+		backupView = new BackupView();
 		
 		titleComp = new TextComp("Source Defender", "All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()), TOOLMENU_COLOR3, c2, c2, null);
 		titleComp.setBounds(0, 0, getWidth() - 100, 30);
@@ -77,6 +81,7 @@ public class SourceDefender extends JDialog {
 
 		sourceDefenceComp = new SwitchComp(DataManager.isSourceDefenderEnabled(), TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE, (value)->{
 			label0.setText("Automatic Backup - " + (value ? "On" : "Off"));
+			DataManager.setSourceDefenderEnabled(value);
 		});
 		sourceDefenceComp.setBounds(320, 40, 70, 30);
 		sourceDefenceComp.setInBallColor(glow);
@@ -107,7 +112,12 @@ public class SourceDefender extends JDialog {
 			addToBackup(backupTitle, editor.currentFile);
 		});
 		
-		TextComp comp = new TextComp(backupTime, "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->restoreBackup(backupTime));
+		TextComp comp = new TextComp(backupTime, "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+			File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTitle);
+			LinkedList<File> files = new LinkedList<>();
+			loadAllFiles(files, backupChannel);
+			backupView.showView(backupTitle, files);
+		});
 		comp.setBounds(0, block, scrollPane.getWidth(), 25);
 		comp.setFont(PX14);
 		comp.setArc(0, 0);
@@ -160,7 +170,7 @@ public class SourceDefender extends JDialog {
 			printArea.print("If The Files are already opened in the editors then,  reload them.");
 			printArea.print("-----------------------------------------");
 			printArea.print("All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()));
-			printArea.print("You can create, delete or modify backups from there.");
+			printArea.print("You can create full project backups, delete and modify backups from there.");
 		}
 	}
 
@@ -211,7 +221,12 @@ public class SourceDefender extends JDialog {
 			return;
 		
 		for(File backup : backups){
-			TextComp comp = new TextComp(backup.getName(), "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->restoreBackup(backup.getName()));
+			TextComp comp = new TextComp(backup.getName(), "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+				File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backup.getName());
+				LinkedList<File> files = new LinkedList<>();
+				loadAllFiles(files, backupChannel);
+				backupView.showView(backup.getName(), files);
+			});
 			comp.setBounds(0, block, scrollPane.getWidth(), 25);
 			comp.setFont(PX14);
 			comp.setArc(0, 0);
@@ -233,5 +248,90 @@ public class SourceDefender extends JDialog {
 			setLocationRelativeTo(null);
 		}
 		super.setVisible(value);
+	}
+
+	private class BackupView extends JWindow {
+		private TextComp titleComp;
+		private JScrollPane scrollPane;
+		private JPanel panel;
+		private String backupTitle;
+
+		private int block = 0;
+		private LinkedList<TextComp> fileComps = new LinkedList<>();
+		
+		public BackupView(){
+			super(SourceDefender.this);
+			setSize(500, 300);
+			setLocationRelativeTo(null);
+			JPanel panel = new JPanel(null);
+			panel.setBackground(c2);
+			setBackground(c2);
+			setContentPane(panel);
+			setLayout(null);
+			init();
+		}
+
+		public void init(){
+			titleComp = new TextComp("", TOOLMENU_COLOR3, c2, c2, null);
+			titleComp.setBounds(0, 0, getWidth(), 30);
+			titleComp.setFont(PX14);
+			titleComp.setClickable(false);
+			titleComp.setArc(0, 0);
+			titleComp.attachDragger(this);
+			add(titleComp);
+
+			TextComp label0 = new TextComp("Files to be re-written", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
+			label0.setBounds(5, 40, getWidth() - 10, 25);
+			label0.setFont(PX14);
+			label0.setClickable(false);
+			add(label0);
+
+			scrollPane = new JScrollPane(panel = new JPanel(null));
+			scrollPane.setBounds(5, 80, getWidth() - 10, getHeight() - 120);
+			scrollPane.setBackground(c2);
+			panel.setBackground(c2);
+			add(scrollPane);
+
+			TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
+			closeComp.setBounds(0, getHeight() - 27, getWidth()/2, 25);
+			closeComp.setFont(PX14);
+			add(closeComp);
+
+			TextComp applyComp = new TextComp("Restore", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+				SourceDefender.this.setVisible(false);
+				restoreBackup(BackupView.this.backupTitle);
+			});
+			applyComp.setBounds(getWidth()/2, getHeight() - 27, getWidth()/2, 25);
+			applyComp.setFont(PX14);
+			add(applyComp);
+		}
+
+		public void showView(String backupTitle, LinkedList<File> files){
+			this.backupTitle = backupTitle;
+			titleComp.setText(backupTitle);
+			
+			fileComps.forEach(panel::remove);
+			fileComps.clear();
+			block = 0;
+			final String workspace = new File(DataManager.getWorkspace()).getName();
+			final String name = BACKUP_DIR + File.separator + workspace + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTitle;
+			files.forEach(file->{
+				String path = file.getAbsolutePath();
+				path = path.substring(path.lastIndexOf(name) + name.length());
+				
+				TextComp comp = new TextComp(path, TOOLMENU_COLOR4, c2, c2, null);
+				comp.setBounds(0, block, scrollPane.getWidth(), 25);
+				comp.setFont(PX14);
+				comp.setClickable(false);
+				comp.setArc(0, 0);
+				panel.add(comp);
+				fileComps.add(comp);
+
+				block += 25;
+			});
+			panel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));
+			repaint();
+			setVisible(true);
+		}
 	}
 }
