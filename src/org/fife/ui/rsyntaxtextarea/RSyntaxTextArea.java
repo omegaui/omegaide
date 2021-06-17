@@ -1192,6 +1192,9 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
           int style = omega.utils.UIManager.fontState;
           if(type == TokenTypes.RESERVED_WORD_2 || type == TokenTypes.DATA_TYPE || type == TokenTypes.ANNOTATION)
                style = Font.BOLD + Font.ITALIC;
+          if(f == null){
+          	f = new Font(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
+          }
           f = new Font(f.getName(), style, f.getSize());
 		return f != null ? f : getFont();
 	}

@@ -1,191 +1,111 @@
 package omega.terminal;
+import omega.*;
+import java.awt.event.*;
+import java.util.*;
 import java.io.*;
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
-import omega.utils.*;
-import java.awt.event.*;
 import org.fife.ui.rsyntaxtextarea.*;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
-public class Terminal extends RSyntaxTextArea{
-	public Process shellProcess;
-	public PrintWriter writer;
-	public Scanner inputReader;
-	public Scanner errorReader;
-	public String shell = File.pathSeparator.equals(":") ? "sh" : "cmd";
-	public volatile boolean lineChange = false;
-	public volatile boolean launched = false;
-	public volatile boolean printed = false;
-	public File workingDirectory = new File(System.getProperty("user.home"));
-	public String cmd;
-	public String inputToken = "";
-	public LinkedList<String> inputs = new LinkedList<>();
-	public int pointer = -1;
+public class Terminal extends JPanel {
+	public static String shell = File.pathSeparator.equals(":") ? "sh" : "cmd";
+	private String lastText;
+	private RSyntaxTextArea outputArea;
+
+	private Process shellProcess;
+	private Scanner inputReader;
+	private Scanner errorReader;
+	private PrintWriter writer;
 	
 	public Terminal(){
-		setFont(new Font(fontName, fontState, fontSize));
-		setSyntaxEditingStyle(Editor.SYNTAX_STYLE_UNIX_SHELL);
-		addKeyListener(new KeyAdapter(){
+		super(new BorderLayout());
+		init();
+	}
+	
+	public Terminal(String command){
+		this();
+		this.shell = command;
+	}
+
+	public void init(){
+		outputArea = new RSyntaxTextArea();
+		outputArea.setAutoscrolls(true);
+		outputArea.setDragEnabled(false);
+		outputArea.setAutoIndentEnabled(true);
+		outputArea.setHyperlinksEnabled(true);
+		outputArea.setHyperlinkForeground(glow);
+		outputArea.setAntiAliasingEnabled(true);
+		outputArea.setAnimateBracketMatching(true);
+		outputArea.setBracketMatchingEnabled(true);
+		outputArea.setFont(new Font(fontName, fontState, fontSize));
+		outputArea.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed(KeyEvent e){
 				int code = e.getKeyCode();
-				char ch = e.getKeyChar();
-				if(code == KeyEvent.VK_UP){
-					
+				if(code == KeyEvent.VK_UP || code == KeyEvent.VK_DOWN){
 					e.consume();
+					return;
 				}
-				else if(code == KeyEvent.VK_DOWN){
-					
-					e.consume();
+				else if(code == KeyEvent.VK_ENTER){
+					if(writer == null || shellProcess == null || !shellProcess.isAlive())
+						e.consume();
+					String text = outputArea.getText();
+					text = text.substring(0, outputArea.getCaretPosition());
+					text = text.substring(text.lastIndexOf('\n') + 1);
+					writer.println(text);
+					writer.flush();
 				}
-				if(code == KeyEvent.VK_BACK_SPACE){
-					if(inputToken.length() > 0){
-						if(inputToken.length() - 1 == 0)
-							inputToken = "";
-						else
-							inputToken = inputToken.substring(0, inputToken.length() - 1);
-					}
-				}
-				if(code == KeyEvent.VK_ENTER){
-					if(inputToken.equals(""))
-						return;
-					inputs.add(inputToken);
-					write(inputToken);
-					inputToken = "";
-					pointer = -1;
-				}
-				else if(Character.isLetterOrDigit(ch) || isSymbol(ch))
-					inputToken += ch;
 			}
 		});
+		add(new JScrollPane(outputArea), BorderLayout.CENTER);
 	}
-	public Terminal(String cmd){
-		this();
-		this.cmd = cmd;
-	}
-	public void start(){
-		if(launched)
-			return;
-		launched = true;
-		
-		Editor.getTheme().apply(this);
-		
+
+	public void launchTerminal(){
 		new Thread(()->{
 			try{
-				ProcessBuilder processBuilder = new ProcessBuilder(shell);
-				processBuilder.directory(workingDirectory);
-				processBuilder.environment().put("TERM", "xterm-256color");
-				
-				shellProcess = processBuilder.start();
-				
-				writer = new PrintWriter(shellProcess.getOutputStream());
+				shellProcess = new ProcessBuilder(shell).directory(new File(Screen.getFileView().getProjectPath())).start();
 				inputReader = new Scanner(shellProcess.getInputStream());
 				errorReader = new Scanner(shellProcess.getErrorStream());
-				
+				writer = new PrintWriter(shellProcess.getOutputStream());
 				new Thread(()->{
 					while(shellProcess.isAlive()){
-						addNewLine();
-						while(errorReader.hasNextLine()){
-							print(errorReader.nextLine());
-						}
+						while(errorReader.hasNextLine())
+							outputToTerminal(errorReader.nextLine());
 					}
 				}).start();
 				while(shellProcess.isAlive()){
-					addNewLine();
-					while(inputReader.hasNextLine()){
-						print(inputReader.nextLine());
-					}
+					while(inputReader.hasNextLine())
+						outputToTerminal(inputReader.nextLine());
 				}
+				outputToTerminal("Shell Exited!");
 			}
 			catch(Exception e){
 				e.printStackTrace();
 			}
 		}).start();
-	}
-	public void startOnce(){
-		if(launched)
-			return;
-		launched = true;
-		
-		Editor.getTheme().apply(this);
-		
-		new Thread(()->{
-			try{
-				ProcessBuilder processBuilder = new ProcessBuilder(shell);
-				processBuilder.directory(workingDirectory);
-				processBuilder.environment().put("TERM", "xterm-256color");
-				
-				shellProcess = processBuilder.start();
-				
-				writer = new PrintWriter(shellProcess.getOutputStream());
-				inputReader = new Scanner(shellProcess.getInputStream());
-				errorReader = new Scanner(shellProcess.getErrorStream());
-				
-				writer.println(cmd);
-				writer.close();
-				new Thread(()->{
-                         while(shellProcess.isAlive()){
-						addNewLine();
-                              while(errorReader.hasNextLine()){
-                                   print(errorReader.nextLine());
-                              }
-                         }
-                    }).start();
-                    while(shellProcess.isAlive()){
-					addNewLine();
-                         while(inputReader.hasNextLine()){
-                              print(inputReader.nextLine());
-                         }
-                    }
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		}).start();
-	}
-	public void addNewLine(){
-		System.out.println("I am ON");
-		if(getText() == null || getText().length() == 0)
-			return;
-		String text = getText().substring(0, getCaretPosition());
-		String lastLineAllTokens = text.substring(text.lastIndexOf('\n') + 1);
-		if(!lastLineAllTokens.equals("\n")){
-			append("\n");
-			setCaretPosition(getText().length() - 1);
-		}
-	}
-	public void print(String text){
-		append("\n" + text);
-		inputToken = "";
-		setCaretPosition(getText().length());
-	}
-	public void write(String text){
-		if(writer == null)
-			return;
-		if(text.equals("clear") || text.equalsIgnoreCase("cls")){
-			setText("");
-			return;
-		}
-		writer.println(text);
-		writer.flush();
-	}
-	public java.io.File getWorkingDirectory() {
-		return workingDirectory;
-	}
-	public void setWorkingDirectory(java.io.File workingDirectory) {
-		this.workingDirectory = workingDirectory;
-	}
-	public void destroyShell(){
-		shellProcess.destroyForcibly();
-		inputReader.close();
-		errorReader.close();
-		writer.close();
-		setText("");
-		launched = false;
-	}
-	public boolean isSymbol(char ch){
-		return "`~!@#$%^&*()_+-={}|[]\\:\";\'<>?,./]) ".contains(ch + "");
 	}
 
+	public void outputToTerminal(String text){
+		outputArea.append(text + "\n");
+		outputArea.setCaretPosition(outputArea.getText().length());
+	}
+
+	public void exit(){
+		shellProcess.destroyForcibly();
+	}
+
+	public org.fife.ui.rsyntaxtextarea.RSyntaxTextArea getOutputArea() {
+		return outputArea;
+	}
+	public void setOutputArea(org.fife.ui.rsyntaxtextarea.RSyntaxTextArea outputArea) {
+		this.outputArea = outputArea;
+	}
+	public java.lang.Process getShellProcess() {
+		return shellProcess;
+	}
+	public void setShellProcess(java.lang.Process shellProcess) {
+		this.shellProcess = shellProcess;
+	}
+	
 }

@@ -154,9 +154,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setBracketMatchingEnabled(true);
 		setCloseCurlyBraces(true);
 		setPaintMatchedBracketPair(true);
-		//setTabsEmulated(true);
 		setHyperlinksEnabled(true);
-		setHyperlinkForeground(Color.GREEN);
+		setHyperlinkForeground(UIManager.glow);
 		setCodeFoldingEnabled(true);
 		setFadeCurrentLineHighlight(false);
 		setShowMatchedBracketPopup(true);

@@ -56,7 +56,7 @@ public class SideMenu extends JPanel {
           projectTabComp.setArc(2, 2);
           add(projectTabComp);
 
-          shellComp = new TextComp(fluentconsoleImage, 30, 30, TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getTerminalComp().showTerminal(true));
+          shellComp = new TextComp(fluentconsoleImage, 30, 30, TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, Screen.getTerminalComp()::showTerminal);
           shellComp.setBounds(0, 40, 40, 40);
           shellComp.setFont(PX18);
           shellComp.setArc(2, 2);
