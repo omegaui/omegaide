@@ -126,7 +126,7 @@ public class FileSelectionDialog extends JDialog{
                }
                else if(File.pathSeparator.equals(";")){
                     if(path.contains("\\"))
-                         currentDir = new File(path.substring(0, path.lastIndexOf('/')));
+                         currentDir = new File(path.substring(0, path.lastIndexOf('\\')));
                     else{
                          items.forEach(panel::remove);
                          items.clear();
@@ -571,10 +571,12 @@ public class FileSelectionDialog extends JDialog{
      public BufferedImage getPreferredImage(File file){
           if(file.isDirectory()){
                File[] files = file.listFiles();
-               for(File fx : files){
-                    if(fx.getName().equals(".projectInfo"))
-                         return IconManager.fluentfolderImage;
-               }
+			if(files != null && files.length != 0){
+				for(File fx : files){
+					if(fx.getName().equals(".projectInfo"))
+						return IconManager.fluentfolderImage;
+				}
+			}
                if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
                     return IconManager.fluentsourceImage;
                else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))

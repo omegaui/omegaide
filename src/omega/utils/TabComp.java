@@ -211,10 +211,13 @@ public class TabComp extends JComponent {
      public static BufferedImage getPreferredImage(File file){
           if(file.isDirectory()){
                File[] files = file.listFiles();
-               for(File fx : files){
-                    if(fx.getName().equals(".projectInfo"))
-                         return IconManager.fluentfolderImage;
-               }
+               
+			if(files != null && files.length != 0){
+				for(File fx : files){
+					if(fx.getName().equals(".projectInfo"))
+						return IconManager.fluentfolderImage;
+				}
+			}
                return IconManager.fluentplainfolderImage;
           }
           if(file.getName().contains(".")){

@@ -12,3 +12,7 @@
 -
 >Theme
 -light
+>Source Defender Enabled
+-true
+>System Console Launch Command
+-gnome-terminal

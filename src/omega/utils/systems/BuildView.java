@@ -308,9 +308,10 @@ public class BuildView extends View {
 		File outputDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
 		LinkedList<File> files = new LinkedList<>();
 		loadClassFiles(outputDir, files);
-		if(files.isEmpty()) return;
+		if(files.isEmpty()) 
+			return;
 		for(File file : files) {
-				file.delete();
+			file.delete();
 		}
 		FileView.checkDir(outputDir);
 	}
@@ -324,54 +325,30 @@ public class BuildView extends View {
 		}
 	}
 	
-	public void deleteDir(File file)
-	{
+	public void deleteDir(File file) {
 
-		if (file.isDirectory())
-		{
-
-			/*
-			 * If directory is empty, then delete it
-			 */
+		if (file.isDirectory()) {
 			if (file.list().length == 0)
-			{
 				deleteEmptyDir(file);
-			}
-			else
-			{
-				// list all the directory contents
+			else {
+				
 				File files[] = file.listFiles();
-
-				for (File fileDelete : files)
-				{
-					/*
-					 * Recursive delete
-					 */
+				for (File fileDelete : files) {
 					deleteDir(fileDelete);
 				}
 
-				/*
-				 * check the directory again, if empty then 
-				 * delete it.
-				 */
-				if (file.list().length == 0)
-				{
+				if (file.list().length == 0) {
 					deleteEmptyDir(file);
 				}
 			}
 
 		}
-		else
-		{
-			/*
-			 * if file, then delete it
-			 */
+		else {
 			deleteEmptyDir(file);
 		}
 	}
 
-	private void deleteEmptyDir(File file)
-	{
+	private void deleteEmptyDir(File file) {
 		file.delete();
 	}
 
@@ -421,7 +398,8 @@ public class BuildView extends View {
 						}
 						dirs.remove(path);
 					}
-				}catch(Exception e) {}
+				}
+				catch(Exception e) {}
 			}
 
 			LinkedList<String> paths = new LinkedList<>();
@@ -429,14 +407,17 @@ public class BuildView extends View {
 				String res = "";
 				StringTokenizer tokenizer = new StringTokenizer(c, File.separator);
 				while(tokenizer.hasMoreTokens()) {
-					res += tokenizer.nextToken() + File.separator;
+					res += tokenizer.nextToken() + "/";
 				}
 				res = res.substring(0, res.length() - 1);
-				res = "\"" + File.separator + res + "\"";
+				if(Screen.onWindows())
+					res = "\"" + res + "\"";
+				else
+					res = "\"" + File.separator + res + "\"";
 				paths.add(res);
 			});
 			//Creating SourcePath
-			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator +SRC_LIST));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator + SRC_LIST));
 			paths.forEach(path->writer.println(path));
 			writer.close();
 		}catch(Exception e) {e.printStackTrace();}

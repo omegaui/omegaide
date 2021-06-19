@@ -135,7 +135,7 @@ public class Screen extends JFrame {
 		splash.setProgress(37, "welcome");
 
           omega.gset.Generator.init(this);
-		setIconImage(IconManager.getImageIcon("/omega_ide_icon64.png").getImage());
+		setIconImage(IconManager.getImageIcon("/omega_ide_icon500.png").getImage());
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
@@ -656,6 +656,10 @@ public class Screen extends JFrame {
 		notify("Saving Project");
 		saveAllEditors();
 		hideNotif();
+	}
+
+	public static boolean onWindows(){
+		return File.pathSeparator.equals(";");
 	}
 }
 
