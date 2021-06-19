@@ -727,6 +727,8 @@ public class SourceReader {
           }
           File file = new File(pack);
           File[] F = file.listFiles();
+          if(F == null || F.length == 0)
+          	return;
           for(File f : F){
                String name = f.getName();
                if(name.endsWith(".java")){

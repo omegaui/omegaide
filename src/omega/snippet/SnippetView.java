@@ -24,7 +24,7 @@ import omega.launcher.Door;
 import omega.utils.Editor;
 import omega.comp.TextComp;
 import java.io.File;
-import Omega.IDE;
+import omega.IDE;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

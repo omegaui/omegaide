@@ -1,4 +1,4 @@
-package Omega;
+package omega;
 import omega.Screen;
 /*
     Omega.IDE, this class launhces a new instance of Omega IDE.

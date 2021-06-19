@@ -13,7 +13,6 @@ import omega.startup.Startup;
 import omega.utils.UIManager;
 import java.util.StringTokenizer;
 import java.util.LinkedList;
-import Omega.IDE;
 import java.awt.Desktop;
 import java.awt.Color;
 import java.awt.Component;
@@ -435,7 +434,7 @@ public class Screen extends JFrame {
 	}
 
      public static void launchNewWindow(String projectPath){
-     	Omega.IDE.main(null);
+     	IDE.main(null);
      }
 
 	public void loadProject(File file) {
@@ -660,6 +659,10 @@ public class Screen extends JFrame {
 
 	public static boolean onWindows(){
 		return File.pathSeparator.equals(";");
+	}
+	
+	public static void main(String[] args){
+		new Screen();
 	}
 }
 

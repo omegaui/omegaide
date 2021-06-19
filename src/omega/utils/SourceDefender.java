@@ -206,6 +206,7 @@ public class SourceDefender extends JDialog {
 		}
 		catch(Exception e){
 			System.err.println("An Error Occured When Writing Backup File \"" + file.getAbsolutePath() + "\"");
+			e.printStackTrace();
 		}
 	}
 

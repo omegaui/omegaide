@@ -96,10 +96,11 @@ public class BuildLog extends JPanel {
 				if(File.separator.equals("\\"))
 					filePath = line.substring(0, line.indexOf(':', line.indexOf(':') + 1));
 				else
-				filePath = line.substring(0, line.indexOf(':'));
+					filePath = line.substring(0, line.indexOf(':'));
 				if(!filePath.equals("")){
 					if(File.separator.equals("\\")){
-						lineN = Integer.parseInt(line.substring(line.indexOf(':', line.indexOf(':') + 1) + 1, line.indexOf(':', line.indexOf(':', line.indexOf(':') + 1))));
+						String[] splitLine = line.split(":");
+						lineN = Integer.parseInt(splitLine[2]);
 						error = line.substring(line.indexOf(':', line.indexOf(':', line.indexOf(':') + 1)) + 1);
 					}
 					else{
@@ -160,6 +161,7 @@ public class BuildLog extends JPanel {
 	}
 	public void setView(Error errorSet){
 		this.currentError = errorSet;
+		Screen.getScreen().loadFile(new File(errorSet.filePath));
 		String fullLog = "File Path : " + errorSet.filePath + "\n";
 		fullLog += "At Line   : " + errorSet.line + "\n\n";
 		fullLog += errorSet.log;

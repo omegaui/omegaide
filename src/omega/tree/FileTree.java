@@ -102,7 +102,7 @@ public class FileTree extends JComponent{
                     break;
                }
           }
-          if(selection == null) return;
+          if(selection == null || pressedBranch == null) return;
           if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
           
           //Doing move or copy operation
