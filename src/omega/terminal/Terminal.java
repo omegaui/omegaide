@@ -53,6 +53,8 @@ public class Terminal extends JPanel {
 					String text = outputArea.getText();
 					text = text.substring(0, outputArea.getCaretPosition());
 					text = text.substring(text.lastIndexOf('\n') + 1);
+					if(Screen.onWindows())
+						outputArea.append("\n");
 					writer.println(text);
 					writer.flush();
 				}

@@ -81,7 +81,8 @@ public class ProcessManager extends DataBase{
                     
                     PrintWriter writer = new PrintWriter(launchInShellProcess.getOutputStream());
                     writer.println(getExecutionCommand(file) + " " + file.getName());
-                    writer.println("exit");
+                    if(!Screen.onWindows())
+                    	writer.println("exit");
                     writer.flush();
                     
                     new Thread(()->{

@@ -17,6 +17,7 @@
 */
 
 package omega;
+import javax.imageio.*;
 import javax.swing.*;
 import omega.tabPane.*;
 import java.awt.event.*;
@@ -54,7 +55,12 @@ public class SplashScreen extends JFrame{
 		createBufferStrategy(3);
 		setSize(300, 300);
 		setBackground(BACK_COLOR);
-          setIconImage(image);
+          try{
+          	setIconImage(ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
+          }
+          catch(Exception e){
+          	e.printStackTrace();
+          }
 		setLocationRelativeTo(null);
 		addMouseListener(new MouseAdapter(){
 			@Override
