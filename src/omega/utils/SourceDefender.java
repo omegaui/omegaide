@@ -113,7 +113,7 @@ public class SourceDefender extends JDialog {
 		});
 		
 		TextComp comp = new TextComp(backupTime, "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-			File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTitle);
+			File backupChannel = new File(BACKUP_DIR, backupTitle);
 			LinkedList<File> files = new LinkedList<>();
 			loadAllFiles(files, backupChannel);
 			backupView.showView(backupTitle, files);
@@ -197,6 +197,7 @@ public class SourceDefender extends JDialog {
 		File backupFile = new File(BACKUP_DIR, backupPath);
 		try{
 			backupFile.getParentFile().mkdirs();
+			backupFile.createNewFile();
 			InputStream i = new FileInputStream(file);
 			OutputStream o = new FileOutputStream(backupFile);
 			while(i.available() > 0)
@@ -205,7 +206,7 @@ public class SourceDefender extends JDialog {
 			o.close();
 		}
 		catch(Exception e){
-			System.err.println("An Error Occured When Writing Backup File \"" + file.getAbsolutePath() + "\"");
+			System.err.println("An Error Occured When Writing.\nBackup File: \"" + file.getAbsolutePath() + "\" \nTarget Location: " + backupFile.getAbsolutePath());
 			e.printStackTrace();
 		}
 	}

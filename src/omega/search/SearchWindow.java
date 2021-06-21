@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * 
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -92,6 +92,7 @@ public class SearchWindow extends JDialog{
                public void mousePressed(MouseEvent e){
                	pressX = e.getX();
                     pressY = e.getY();
+                    field.grabFocus();
                }
           });
           titleComp.addMouseMotionListener(new MouseAdapter(){
@@ -117,7 +118,7 @@ public class SearchWindow extends JDialog{
           field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           field.setBounds(0, 30, getWidth(), 30);
           field.setFont(PX16);
-		addKeyListener(new KeyAdapter() {
+		field.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(!doors.isEmpty()) {
@@ -234,6 +235,14 @@ public class SearchWindow extends JDialog{
                     return IconManager.fluentmacImage;
           }
           return IconManager.fluentanyfileImage;
+     }
+
+     @Override
+     public void setVisible(boolean value){
+     	if(value){
+     		field.grabFocus();
+     	}
+     	super.setVisible(value);
      }
 }
 

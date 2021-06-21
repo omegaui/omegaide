@@ -1,6 +1,6 @@
 package omega.deassembler;
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * Reads Editors
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -716,6 +716,8 @@ public class SourceReader {
 	}
 
      public void addNeighbourImports(){
+     	if(this.pack == null)
+     		return;
      	String pack = this.pack;
           StringTokenizer tok = new StringTokenizer(pack, ".");
           String path = Screen.getFileView().getProjectPath();

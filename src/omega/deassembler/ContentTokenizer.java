@@ -125,6 +125,8 @@ public class ContentTokenizer {
                e.contentWindow.setVisible(false);
                return;
           }
+          if(Screen.getFileView().getJDKManager() == null && !Screen.getFileView().getProjectManager().non_java)
+          	return;
 		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();

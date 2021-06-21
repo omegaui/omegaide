@@ -134,7 +134,12 @@ public class Screen extends JFrame {
 		splash.setProgress(37, "welcome");
 
           omega.gset.Generator.init(this);
-		setIconImage(IconManager.getImageIcon("/omega_ide_icon500.png").getImage());
+          try{
+          	setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
+          }
+          catch(Exception e){
+          	e.printStackTrace();
+          }
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
