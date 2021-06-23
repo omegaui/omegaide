@@ -33,6 +33,7 @@ public class SplashScreen extends JFrame{
 	private static Color VERSION_COLOR;
 	private static Color EDITION_COLOR;
 	private static Color PROGRESS_COLOR;
+	private static Color SHADE = isDarkMode() ? c1 : new Color(200, 200, 200, 100);
 	private static BufferedImage image = (BufferedImage)omega.utils.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
@@ -104,25 +105,31 @@ public class SplashScreen extends JFrame{
 			createBufferStrategy(3);
 			return;
 		}
+		
 		Graphics graphics = null;
 		try{
 			graphics = bs.getDrawGraphics();
-	}catch(Exception e){ return; }
+		}
+		catch(Exception e){
+			return;
+		}
+		
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(BACK_COLOR);
-		g.fillRoundRect(1, 1, getWidth() - 1, getHeight() - 2, 140, 140);
+		g.setPaint(new GradientPaint(0, 0, c2, getWidth(), getHeight(), SHADE));
+		g.fillRoundRect(1, 1, getWidth() - 1, getHeight() - 2, 100, 100);
 		g.setColor(TITLE_COLOR);
-		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 140, 140);
-		g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
-		g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
-		g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
-		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 140, 140);
-		g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
-		g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
-		g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
+		//g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100);
+		//g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
+		//g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
+		//g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
+		//g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 140, 140);
+		//g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
+		//g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
+		//g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
 		g.setFont(PX40);
 		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 190);
 		g.setFont(PX26);

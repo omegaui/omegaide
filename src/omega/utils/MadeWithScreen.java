@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * MadeWithScreen
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ public class MadeWithScreen extends JDialog{
           setBackground(new Color(0, 0, 0, 0));
           FlexPanel panel = new FlexPanel(null, TOOLMENU_COLOR1, TOOLMENU_COLOR2);
           panel.setPaintGradientEnabled(true);
-          panel.setArc(0, 0);
+          //panel.setArc(0, 0);
           setContentPane(panel);
           addMouseListener(new MouseAdapter(){
                @Override

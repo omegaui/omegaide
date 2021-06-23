@@ -118,7 +118,7 @@ public class SearchWindow extends JDialog{
           field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           field.setBounds(0, 30, getWidth(), 30);
           field.setFont(PX16);
-		addKeyListener(new KeyAdapter() {
+		field.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(!doors.isEmpty()) {
@@ -172,7 +172,7 @@ public class SearchWindow extends JDialog{
                     door.setToolTipText(file.getAbsolutePath());
                     door.setBackground(c2);
                     door.setForeground(switch(ext){
-                         case ".txt", ".groovy", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> TOOLMENU_COLOR2;
+                         case ".txt", ".groovy", ".kt", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> TOOLMENU_COLOR2;
                          case ".png", ".jpg", ".bmp", ".jpeg" -> TOOLMENU_COLOR3;
                          default -> TOOLMENU_COLOR1;
                     });
@@ -239,10 +239,10 @@ public class SearchWindow extends JDialog{
 
      @Override
      public void setVisible(boolean value){
+     	super.setVisible(value);
      	if(value){
      		field.grabFocus();
      	}
-     	super.setVisible(value);
      }
 }
 
