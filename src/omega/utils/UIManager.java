@@ -202,7 +202,10 @@ public class UIManager extends DataBase {
                     out.write(in.read());
                out.close();
                in.close();
-     	}catch(Exception e){ e.printStackTrace(); }
+     	}
+     	catch(Exception e){ 
+     		e.printStackTrace();
+		}
           return file;
      }
 	

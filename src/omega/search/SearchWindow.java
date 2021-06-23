@@ -1,5 +1,5 @@
 /**
-  * SearchWindow
+  * 
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -118,7 +118,7 @@ public class SearchWindow extends JDialog{
           field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           field.setBounds(0, 30, getWidth(), 30);
           field.setFont(PX16);
-		field.addKeyListener(new KeyAdapter() {
+		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(!doors.isEmpty()) {
