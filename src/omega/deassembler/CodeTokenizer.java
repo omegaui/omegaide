@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * Splits Large Texts
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,20 @@ public class CodeTokenizer {
           	char ch = code.charAt(i);
                if(ch == s){
                     tokens.add(token);
+                    token = "";
+               }
+               else
+                    token += ch;
+          }
+          return tokens;
+     }
+     public static LinkedList<String> tokenizeWithoutLoss(String code, char s){
+     	LinkedList<String> tokens = new LinkedList<>();
+          String token = "";
+          for(int i = 0; i < code.length(); i++){
+          	char ch = code.charAt(i);
+               if(ch == s){
+                    tokens.add(token + s);
                     token = "";
                }
                else

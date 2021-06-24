@@ -180,8 +180,11 @@ public class SplashScreen extends JFrame{
 		}
 	}
 	public void setProgress(int progress, String status){
-		if(Screen.onWindows())
+		if(Screen.onWindows()){
+			if(progress >= 100)
+				dispose();
 			return;
+		}
 		this.progress = progress;
 		if(progress < 85)
 			SplashScreen.ENCOURAGE = status;

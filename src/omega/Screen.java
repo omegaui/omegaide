@@ -83,8 +83,8 @@ public class Screen extends JFrame {
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
 	public Screen() {
-		
 		setUndecorated(true);
+		
 		try {
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
@@ -121,15 +121,18 @@ public class Screen extends JFrame {
 		catch (Exception e1) {
 			e1.printStackTrace();
 		}
+		
 		picker = new ThemePicker(this);
 		uiManager = new UIManager(this);
 		Startup.checkStartup(this);
 		UIManager.loadHighlight();
 		UIManager.setData(this);
+		
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
-		splash.setProgress(37, "welcome");
 		omega.gset.Generator.init(this);
+		splash.setProgress(37, "welcome");
+		
 		try{
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
 		}
@@ -139,8 +142,9 @@ public class Screen extends JFrame {
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
-		setMinimumSize(getSize());
 		setLocationRelativeTo(null);
+		
+		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -148,9 +152,11 @@ public class Screen extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		splash.setProgress(60, "initializing");
 		init();
 	}
+	
 	private void init() {
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
@@ -203,21 +209,28 @@ public class Screen extends JFrame {
 		rightTabPanel.setVisible(false);
 		bottomTabPanel.setVisible(false);
 		splitPane.setRightComponent(bottomTabPanelSplitPane);
+		
 		rightTabPanelSplitPane.setLeftComponent(tabPanel);
 		rightTabPanelSplitPane.setRightComponent(rightTabPanel);
+		
 		bottomTabPanelSplitPane.setTopComponent(rightTabPanelSplitPane);
 		bottomTabPanelSplitPane.setBottomComponent(bottomTabPanel);
 		
 		splitPane.setDividerSize(2);
 		rightTabPanelSplitPane.setDividerSize(2);
 		bottomTabPanelSplitPane.setDividerSize(2);
+		
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
+		
 		sideMenu = new SideMenu(this);
 		add(sideMenu, BorderLayout.WEST);
+		
 		bottomPane = new BottomPane(this);
 		add(bottomPane, BorderLayout.SOUTH);
+		
 		recentsManager = new RecentsManager(this);
+		
 		splash.setProgress(77, "initializing");
 		fileView = new FileView("File", this);
 		settings = new omega.settings.Screen(this);
@@ -227,9 +240,11 @@ public class Screen extends JFrame {
 		projectView = new ProjectView("Project", this);
 		splitPane.setLeftComponent(projectView.getProjectView());
 		splitPane.setDividerLocation(300);
+		
 		splash.setProgress(83, "plugging in");
 		pluginManager = new PluginManager();
 		pluginCenter = new PluginCenter(this);
+		
 		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
 		
