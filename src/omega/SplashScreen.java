@@ -89,8 +89,7 @@ public class SplashScreen extends JFrame{
 		setVisible(true);
 		new Thread(()->{
 			while(progress < 100 && isVisible()){
-				if(!Screen.onWindows())
-					render();
+				render();
 				paint(getGraphics());
 			}
 			setVisible(false);
@@ -123,14 +122,6 @@ public class SplashScreen extends JFrame{
 		else
 			g.fillRoundRect(1, 1, getWidth() - 1, getHeight() - 2, 100, 100);
 		g.setColor(TITLE_COLOR);
-		//g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100);
-		//g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
-		//g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
-		//g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
-		//g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 140, 140);
-		//g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
-		//g.drawRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 140, 140);
-		//g.drawRoundRect(3, 3, getWidth() - 7, getHeight() - 7, 140, 140);
 		g.setFont(PX40);
 		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 190);
 		g.setFont(PX26);
@@ -158,7 +149,6 @@ public class SplashScreen extends JFrame{
 		int[] _Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(_X, _Y, X.length);
 		g.setColor(BACK_COLOR);
-		//g.fillRect(getWidth()/2 - 64, 20, 128, 128);
 		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
 	}
