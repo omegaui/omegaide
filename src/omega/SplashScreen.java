@@ -87,20 +87,17 @@ public class SplashScreen extends JFrame{
 			}
 		});
 		setVisible(true);
-		
-		if(!Screen.onWindows()) {
-			new Thread(()->{
-				while(progress < 100 && isVisible()){
-					if(!Screen.onWindows())
-						render();
-					paint(getGraphics());
-				}
-				setVisible(false);
-			}).start();
-		}
+		new Thread(()->{
+			while(progress < 100 && isVisible()){
+				if(!Screen.onWindows())
+					render();
+				paint(getGraphics());
+			}
+			setVisible(false);
+		}).start();
 	}
 	public void render(){
-		setBackground(ALPHA);
+		setBackground(Screen.onWindows() ? BACK_COLOR : ALPHA);
 		BufferStrategy bs = getBufferStrategy();
 		if(bs == null){
 			createBufferStrategy(3);
@@ -121,7 +118,10 @@ public class SplashScreen extends JFrame{
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(BACK_COLOR);
 		g.setPaint(gradient);
-		g.fillRoundRect(1, 1, getWidth() - 1, getHeight() - 2, 100, 100);
+		if(Screen.onWindows())
+			g.fillRect(0, 0, getWidth(), getHeight());
+		else
+			g.fillRoundRect(1, 1, getWidth() - 1, getHeight() - 2, 100, 100);
 		g.setColor(TITLE_COLOR);
 		//g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100);
 		//g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 140, 140);
@@ -149,8 +149,9 @@ public class SplashScreen extends JFrame{
 		if(x == 40) ground = false;
 		else if(x == 60) ground = true;
 			if(ground) x--;
-		else x++;
-			int[] X = {x, x - 15, x, x - 5, x};
+		else 
+			x++;
+		int[] X = {x, x - 15, x, x - 5, x};
 		int[] Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(X, Y, X.length);
 		int[] _X = {getWidth() - x - 1, getWidth() - x - 15 - 1 + 20, getWidth() - x - 1, getWidth() - x + 15 - 1, getWidth() - x - 1};
@@ -161,30 +162,13 @@ public class SplashScreen extends JFrame{
 		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
 	}
+	
 	@Override
 	public void paint(Graphics graphics){
-		if(Screen.onWindows()){
-			Graphics2D g = (Graphics2D)graphics;
-			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setFont(PX40);
-			g.setColor(getBackground());
-			g.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
-			g.drawImage(image, getWidth()/2 - image.getWidth()/2, 10, null);
-			g.setColor(glow);
-			g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 150 + g.getFontMetrics().getAscent());
-			g.setFont(PX14);
-			g.setColor(TOOLMENU_COLOR2);
-			g.drawString(HINT, getWidth()/2 - g.getFontMetrics().stringWidth(HINT)/2, 200 + g.getFontMetrics().getAscent());
-		}
+		
 	}
+	
 	public void setProgress(int progress, String status){
-		if(Screen.onWindows()){
-			if(progress >= 100)
-				dispose();
-			return;
-		}
 		this.progress = progress;
 		if(progress < 85)
 			SplashScreen.ENCOURAGE = status;
