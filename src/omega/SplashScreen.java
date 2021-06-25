@@ -33,7 +33,7 @@ public class SplashScreen extends JFrame{
 	private static Color VERSION_COLOR;
 	private static Color EDITION_COLOR;
 	private static Color PROGRESS_COLOR;
-	private static Color SHADE = isDarkMode() ? c1 : new Color(200, 200, 200, 100);
+	private static Color SHADE = TOOLMENU_GRADIENT;
 	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, Screen.onWindows() ? 250 : 300, SHADE);
 	private static BufferedImage image = (BufferedImage)omega.utils.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;

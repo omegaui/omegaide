@@ -17,30 +17,20 @@
 */
 
 package omega.utils;
-import java.awt.image.BufferedImage;
+import javax.swing.*;
+import omega.*;
+import omega.settings.*;
+import java.io.*;
+import java.awt.image.*;
+import omega.comp.*;
 import omega.tree.*;
-import omega.popup.OPopupWindow;
-import java.io.File;
-import omega.Screen;
-import omega.utils.UIManager;
-import omega.comp.TextComp;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.LinkedList;
+import omega.popup.*;
+import java.util.*;
+import java.awt.event.*;
+import java.awt.*;
+import static omega.utils.UIManager.*;
+import static omega.settings.Screen.*;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTextArea;
 public class TabComp extends JComponent {
 
 	private CloseAction closeAction;
@@ -109,35 +99,41 @@ public class TabComp extends JComponent {
 		void onFocus();
 	}
 
-	private static LinkedList<JTextArea> areas = new LinkedList<>();
+	private static LinkedList<TextComp> areas = new LinkedList<>();
 
-	public static JPanel create(Component c, String name, CloseAction closeAction, FocusAction focusAction, String toolTip, OPopupWindow popUp) {
+	public static FlexPanel create(Component c, String name, CloseAction closeAction, FocusAction focusAction, String toolTip, OPopupWindow popUp) {
 		TabComp closeButton = new TabComp().setOnClose(closeAction);
 		closeButton.setFont(new Font("Ubuntu", Font.BOLD, 14));
 
-		JTextArea textField = new JTextArea(!toolTip.startsWith("src") ? ("{" + name + "}") : name);
-		textField.setForeground(Branch.getColor(name));
-          textField.setBackground(UIManager.c2);
-		final Color FORE = textField.getForeground();
+		String text = !toolTip.startsWith("src") ? ("{" + name + "}") : name;
+		
+		Graphics graphics = omega.Screen.getScreen().getGraphics();
+		Graphics2D g = (Graphics2D)graphics;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(closeButton.getFont());
+		int width = g.getFontMetrics().stringWidth(text) + 10;
+
+		TextComp comp = new TextComp(text, toolTip, TOOLMENU_GRADIENT, c2, Branch.getColor(name), null);
+		comp.setArc(6, 6);
+		final Color FORE = comp.color3;
 		final MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				areas.forEach((a)->{
-					if(a != textField)
-						a.setForeground(FORE);
+					if(a != comp)
+						a.setColors(TOOLMENU_GRADIENT, c2, FORE);
 					else
-						a.setForeground(UIManager.glow);
+						a.setColors(TOOLMENU_GRADIENT, c2, glow);
 					a.repaint();
 				});
 				focusAction.onFocus();
 			}
 		};
-		textField.setBorder(null);
-		textField.setToolTipText(toolTip);
-		textField.setEditable(false);
-		textField.setFont(closeButton.getFont());
-		textField.addMouseListener(mouseAdapter);
-		areas.add(textField);
+		comp.setFont(closeButton.getFont());
+		comp.addMouseListener(mouseAdapter);
+		comp.setPreferredSize(new Dimension(width, 28));
+		areas.add(comp);
 		
 		String baseName = getBaseName(name);
           TextComp iconButton = null;
@@ -148,9 +144,10 @@ public class TabComp extends JComponent {
                image = getPreferredImage(((Editor)c).currentFile);
           else
                image = IconManager.fluentshellImage;
-          iconButton = new TextComp(image, 25, 25, toolTip, textField.getBackground(), alpha, FORE, ()->{});
+
+          iconButton = new TextComp(image, 25, 25, toolTip, c2, alpha, FORE, ()->{});
 		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 20, 28));
-		iconButton.setFont(omega.settings.Screen.PX16);
+		iconButton.setFont(PX16);
 		
 		if(popUp != null) {
 			iconButton.addMouseListener(new MouseAdapter() {
@@ -161,20 +158,19 @@ public class TabComp extends JComponent {
 				}
 			});
 		}
-		JPanel panel = new JPanel();
-		UIManager.setData(panel);
-		panel.setLayout(new FlowLayout());
+		
+		FlexPanel panel = new FlexPanel(new FlowLayout(), c2, null);
+		panel.setArc(5, 5);
 		panel.add(iconButton);
-		panel.add(textField);
+		panel.add(comp);
 		panel.add(closeButton);
 		panel.addMouseListener(mouseAdapter);
 		c.addMouseListener(mouseAdapter);
 		areas.forEach((a)->{
-			if(a != textField) {
-				a.setForeground(FORE);
-			}
+			if(a != comp)
+				a.setColors(TOOLMENU_GRADIENT, c2, FORE);
 			else
-				a.setForeground(UIManager.glow);
+				a.setColors(TOOLMENU_GRADIENT, c2, glow);
 			a.repaint();
 		});
 		return panel;

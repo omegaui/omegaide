@@ -113,6 +113,7 @@ public class UIManager extends DataBase {
      public static Color TOOLMENU_COLOR3_SHADE = new Color(126, 20, 219, 40);
      public static Color TOOLMENU_COLOR4 = new Color(200, 103, 0);
      public static Color TOOLMENU_COLOR4_SHADE = new Color(200, 103, 0, 40);
+     public static Color TOOLMENU_GRADIENT = new Color(200, 200, 200, 100);
      
      
 	public UIManager(Screen screen) {
@@ -151,6 +152,7 @@ public class UIManager extends DataBase {
                     TOOLMENU_COLOR3_SHADE = new Color(TOOLMENU_COLOR3.getRed(), TOOLMENU_COLOR3.getGreen(), TOOLMENU_COLOR3.getBlue(), 40);
                     TOOLMENU_COLOR4 = Color.decode("#EB7201");
                     TOOLMENU_COLOR4_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
+				TOOLMENU_GRADIENT = c1;
 			}
 		}
 		catch(Exception e) {
