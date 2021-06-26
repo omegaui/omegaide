@@ -51,10 +51,9 @@ public class SplashScreen extends JFrame{
 		setUndecorated(true);
 		pack();
 		
-		if(!Screen.onWindows())
-			createBufferStrategy(3);
+		createBufferStrategy(3);
 		
-		setSize(300, Screen.onWindows() ? 250 : 300);
+		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setBackground(BACK_COLOR);
 		
