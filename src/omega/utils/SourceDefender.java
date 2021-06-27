@@ -105,7 +105,10 @@ public class SourceDefender extends JDialog {
 	}
 
 	public void backupData(){
-		final String backupTime = "backup " + (new Date().toString());
+		String backupTime = "backup " + (new Date().toString());
+		if(Screen.onWindows()){
+			backupTime = backupTime.replaceAll(":", ",");
+		}
 		final String backupTitle = new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTime;
 		LinkedList<Editor> editors = Screen.getScreen().getAllEditors();
 		editors.forEach(editor->{

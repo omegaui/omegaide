@@ -717,6 +717,8 @@ public class SourceReader {
 
      public void addNeighbourImports(){
      	String pack = this.pack;
+     	if(pack == null)
+     		return;
           StringTokenizer tok = new StringTokenizer(pack, ".");
           String path = Screen.getFileView().getProjectPath();
           if(path == null)
