@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * Theme Chooser Window
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -36,8 +36,8 @@ public class ThemePicker extends JDialog {
      private Color c1 = new Color(126, 20, 219, 40);
      private Color c2 = Color.WHITE;
      private Color c3 = new Color(126, 20, 219);
-     private Color b2 = Color.decode("#0A0A28");
-     private Color b3 = Color.decode("#22d5d5");
+     private Color b2 = Color.decode("#09090B");
+     private Color b3 = Color.decode("#ABB0BC");
      private Color b1 = new Color(b3.getRed(), b3.getGreen(), b3.getBlue(), 40);
      private int pressX;
      private int pressY;
