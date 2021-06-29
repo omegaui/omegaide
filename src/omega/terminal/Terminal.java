@@ -39,6 +39,12 @@ public class Terminal extends JPanel {
 		outputArea.setAnimateBracketMatching(true);
 		outputArea.setBracketMatchingEnabled(true);
 		outputArea.setFont(new Font(fontName, fontState, fontSize));
+		try{
+			omega.utils.Editor.getTheme().apply(outputArea);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		outputArea.addKeyListener(new KeyAdapter(){
 			@Override
 			public void keyPressed(KeyEvent e){

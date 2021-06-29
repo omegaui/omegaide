@@ -85,9 +85,10 @@ public class UIManager extends DataBase {
 
      /**
       * The Following Colors are distributed according to the positions of the Buttons along with the separators in the omega.utils.ToolMenu class
-      * Containing Four Solid Colors and their shades
+      * Containing Four Solid Colors, their shades and gradient
       * By Default they are assigned Light Mode Values so that 
-      * if the system didn't permits the IDE to read UI files(happens when in a locked directory), the IDE will still have its colors and can launch without exceptions.
+      * if the system didn't permits the IDE to read UI files(happens when in a locked directory), 
+      * the IDE will still have its colors and can launch without exceptions.
      */
      public static Color TOOLMENU_COLOR1 = new Color(26, 36, 219);
      public static Color TOOLMENU_COLOR1_SHADE = new Color(26, 36, 219, 40);

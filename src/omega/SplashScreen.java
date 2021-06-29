@@ -139,7 +139,7 @@ public class SplashScreen extends JFrame{
 		if(x == 40) ground = false;
 		else if(x == 60) ground = true;
 			if(ground) x--;
-		else 
+		else
 			x++;
 		int[] X = {x, x - 15, x, x - 5, x};
 		int[] Y = {y, y + 15, y + 30, y + 15, y};
