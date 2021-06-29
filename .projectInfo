@@ -1,0 +1,14 @@
+>JDK Path
+-/usr/lib/jvm/jdk-16
+>Compile_Time
+-
+>Run_Time
+-
+>Main Class
+-omega.IDE
+>Non-Java Project
+-false
+>Project Classpath : Required Jars
+-project-root$/lib/flatlaf-0.46.jar
+>Project Classpath : Required Resource Roots
+-project-root$/res
