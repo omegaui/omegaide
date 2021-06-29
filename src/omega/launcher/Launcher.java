@@ -1,19 +1,19 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
-  * Copyright (C) 2021 Omega UI
+* Launcher
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.launcher;
@@ -37,12 +37,15 @@ import javax.swing.JFrame;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 public class Launcher extends JFrame{
+	
 	private FlexPanel leftPanel;
 	private JPanel rightPanel;
 	private JScrollPane scrollPane;
+	
 	private int pressX;
 	private int pressY;
 	private int block;
+	
 	private LinkedList<TextComp> items = new LinkedList<>();
 	
 	public Launcher(){
@@ -57,7 +60,6 @@ public class Launcher extends JFrame{
 		setBackground(c2);
 		setLayout(null);
 		init();
-		setVisible(true);
 	}
 	public void init(){
 		TextComp closeComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Click to Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
@@ -82,52 +84,52 @@ public class Launcher extends JFrame{
 			}
 		});
 		add(imageComp);
-          
+		
 		leftPanel = new FlexPanel(null, TOOLMENU_COLOR2, TOOLMENU_COLOR1);
 		leftPanel.setPaintGradientEnabled(true);
 		leftPanel.setBounds(50, 200, 200, getHeight() - 210);
 		add(leftPanel);
-          
+		
 		//Left Final Components
 		TextComp openComp = new TextComp("Open a Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-               Screen.getFileView().open("Project");
-	     });
+			Screen.getFileView().open("Project");
+		});
 		openComp.setBounds(10, 10, 180, 25);
 		openComp.setFont(PX14);
 		leftPanel.add(openComp);
 		
 		TextComp njComp = new TextComp("New Java Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-               ToolMenu.projectWizard.setVisible(true);
-	     });
+			ToolMenu.projectWizard.setVisible(true);
+		});
 		njComp.setBounds(10, 40, 180, 25);
 		njComp.setFont(PX14);
 		leftPanel.add(njComp);
 		
 		TextComp nuComp = new TextComp("New Universal Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-               ToolMenu.universalProjectWizard.setVisible(true);
-	     });
+			ToolMenu.universalProjectWizard.setVisible(true);
+		});
 		nuComp.setBounds(10, 70, 180, 25);
 		nuComp.setFont(PX14);
 		leftPanel.add(nuComp);
 		
 		TextComp allComp = new TextComp("All Projects", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-               ToolMenu.allProjectsPopup.setLocationRelativeTo(null);
-               ToolMenu.allProjectsPopup.setVisible(true);
-	     });
+			ToolMenu.allProjectsPopup.setLocationRelativeTo(null);
+			ToolMenu.allProjectsPopup.setVisible(true);
+		});
 		allComp.setBounds(10, 100, 180, 25);
 		allComp.setFont(PX14);
 		leftPanel.add(allComp);
 		
 		TextComp workComp = new TextComp("Change Workspace", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-               new WorkspaceSelector(Screen.getScreen()).setVisible(true);
-	     });
+			new WorkspaceSelector(Screen.getScreen()).setVisible(true);
+		});
 		workComp.setBounds(10, 130, 180, 25);
 		workComp.setFont(PX14);
 		leftPanel.add(workComp);
-          
+		
 		TextComp infoComp = new TextComp("About", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-               ToolMenu.infoScreen.setVisible(true);
-	     });
+			ToolMenu.infoScreen.setVisible(true);
+		});
 		infoComp.setBounds(10, 160, 180, 25);
 		infoComp.setFont(PX14);
 		leftPanel.add(infoComp);
@@ -144,13 +146,13 @@ public class Launcher extends JFrame{
 		items.clear();
 		block = 0;
 		for(String path : RecentsManager.RECENTS){
-               File file = new File(path);
-               if(!file.exists() || !file.isDirectory())
-                    continue;
+			File file = new File(path);
+			if(!file.exists() || !file.isDirectory())
+				continue;
 			TextComp comp = new TextComp(file.getName(), file.getAbsolutePath(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
-                    setVisible(false);
-                    Screen.getScreen().loadProject(file);
-		     }){
+				setVisible(false);
+				Screen.getScreen().loadProject(file);
+				}){
 				@Override
 				public void draw(Graphics2D g){
 					g.drawImage(IconManager.fluentfolderImage, 5, getHeight()/2 - 25/2, 25, 25, this);
