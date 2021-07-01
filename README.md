@@ -87,8 +87,6 @@ from ![here](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%2
 
 **.jar** Portable Java Archive
 
-**.exe** Windows Executable
-
 **.deb** Debian Setup
 
 
