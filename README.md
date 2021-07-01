@@ -73,6 +73,8 @@ Ctrl + SHIFT + G - To Create Getter/Setter(s)
 
 Ctrl + SHIFT + C - To Click Editor's Image
 
+Ctrl + SHIFT + L - To Launch Current File
+
 
 # Installing
 
