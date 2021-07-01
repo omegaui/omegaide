@@ -1,14 +1,17 @@
 # **Omega IDE**
 
+**Omega IDE v1.9 - Latest Stable**
+
 ![](/images/light.png)
 
 ![](/images/dark.png)
 
 
-⏩ Omega IDE is a blazing fast Java IDE promising performance even on minimal resource environment 
-with a least available RAM of 210 MB. 
+Omega IDE is a **blazing fast Java IDE promising performance** even on minimal resource environment.
 
 Here is a proof, 
+
+Omega IDE Version - 1.8
 
 OS - Deepin Linux
 
@@ -24,37 +27,68 @@ CPU - Intel Pentium Duo 2 cores 2 logical processors 2 x 2.20 GHz
 
 ![](/images/p2.png)
 
+Omega IDE can also be used as a **Instant IDE for any** other **programming language** as well.
 
-Omega IDE when editing its own source code uses at most 150 MB of RAM (only when used extensively) 
+Omega IDE when idle uses at most 119 MB of Available RAM.
+
+Omega IDE when editing its own source code uses at most 210 MB of RAM (only when used extensively) 
 so you can imagine how good it is for small projects 🤩.
 
 Omega IDE has a very small download size.
 
 It has a beautiful text editor with code folding (thanks to rsyntaxtextarea).
 
-Omega IDE can also be used as a **Instant IDE for any** other **programming language** as well.
-
 It tries to reassemble a material look so that it is easy to adapt the customized UI.
 
-It has a elegant UI filled with custom components(have a look at sources at src/omega/comp).
+
+**It has a elegant UI filled with custom components(have a look at sources at src/omega/comp).**
 
 **The component library of Omega IDE is independent of any other IDE component**
 
 **As a result You can use this component library under the terms of GNU GPL v3**
 
+
 Want to have a look before giving a try?
 
-See whats new in the latest release on the official channel!
+See a dry of the latest release on the official channel!
 
 [![](/images/youtube-icon.png)](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg)
 
+
+# Editor Key Bindings
+
+Ctrl + B - To Start Build
+
+Ctrl + I - To Call Auto-Indent (Java Only)
+
+Ctrl + SHIFT + O - To Auto-Import (Java Only)
+
+Ctrl + SHIFT + F - To Auto-Import (Java Only)
+
+Ctrl + SHIFT + R - To Launch the Project
+
+Ctrl + SHIFT + I - To Implement/Override methods from super class
+
+Ctrl + SHIFT + G - To Create Getter/Setter(s)
+
+Ctrl + SHIFT + C - To Click Editor's Image
+
+Ctrl + SHIFT + L - To Launch Current File
 
 
 # Installing
 
 Dependency **JDK 16** or above
 
-Just download the **Omega IDE.jar** file (or .deb installer if you are on debian) from the release section and run.
+If you want to get early access to optimizations and new features you can freely use latest beta available
+from ![here](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
+
+**Available installation formats**
+
+**.jar** Portable Java Archive
+
+**.deb** Debian Setup
+
 
 # Please Read -- For Java Projects Only
 
@@ -67,7 +101,6 @@ All the algorithms of Omega IDE rely on Java Conventions.
 As a result the IDE will not work as intended if you miss so.
 
 You cannot create a class without a package, this means that using default packages
-
 is prohibited in Omega IDE.
 
 Also when creating a source file you have specify the full-qualified name.
@@ -87,98 +120,31 @@ There are separate project wizard for Java and Non-Java Projects.
 
 ![](/images/launcher.png)
 
+
 ## Java
-
-From there click **New Project** with tag *Project*, now a project wizard will appear.
-
-You should see a look like this.
 
 ![](/images/java-wizard.png)
 
-Now Enter the project name.
-
-The colon near the top most field is a component containing the path of workspace directory.
-
-You can change it whenever you want.
-
-
-Now below the project name field you will see a non-editable field
-
-with text "Choose Java Development Kit", just right next to this field you will see a colon component again.
-
-Click that component and it will ask you to specify a directory containing the JVMs
-
-so that the IDE can identify which JDKs are available.
+The Project has a field to set the JDK Root, the place where all the JDKs are located.
 
 On Linux, the path is usually **/usr/lib/jvm**
 
 On Windows, the path is usually like **C:\Program Files\Java** or **C:\Program Files(x86)\Java** based on the architecture.
 
-Just type in the right path in the file chooser dialog or navigate to the directory if you dont know!
+Just type in the right path or navigate in the file chooser dialog or navigate to the directory if you dont know!
 
-After this the wizard will ask to select the available JDKs, select One.
+After you can choose from the available JDKs to be used.
 
-
-Now you will a text area below labeled as **Source Files**.
-
-It serves a major role when you want you have multiple source files to create or just want to use it.
-
-What it actually does is that it creates the source files specified as soon as the project wizard prepares the project.
-
-write there,
-
-```
-main.Tutorial -class
-
-main.Demo -interface
-```
-
-Now leaving the dependency part.
-
-Click create.
-
-Now you can see that your newly created project is ready for editing.
-
-The IDE has created four default directories(listed on the FileTree on left),
-
-and it has also created the two source files Tutorial(class) and Demo(interface),
-
-and they are ready for editing right in the main tab panel.
 
 ## Any Programming Language
 
-If already editing a project, click **File** Menu from the Top.
-
-Now Click the **New Project (non-project)**.
-
-If still in the launcher, click **New Project** with tag *Non-Java*.
-
-A simple Project Wizard will appear,
-
-asking you to specify the Project Name and to select workspace if needed.
-
 ![](/images/non-java-wizard.png)
 
-But Here, this project wizard works different.
+Just Specify your project name and setup things in the IDE itself.
 
-You see a text area below the project name field.
-
-That text area is demanding directory names separated by a new line character.
-
-For example: 
-
-Specify the project name as Demo Python Project
-
-In the text area write
-
-```
-src
-docs
-lib
-```
-On Clicking **Create**, you will see your project ready and opened in the IDE.
 
 # Setting Up a Project
+
 
 ## Java
 
@@ -229,6 +195,29 @@ Right Clicking the Run Button launches the Project without Build.
 
 Well, I recommend using Omega IDE for editing its own sources for a smoother experience.
 
+From Omega IDE v1.9 and onwards,
+
+Omega IDE uses portable project infomation technique (.projectInfo) which means you need not to setup your project classpath whenever you change your working computer if your dependencies are inside the project folder (say all libraries are inside **lib** and all resources are inside **res**).
+
+Looks like this
+
+```
+>JDK Path
+-/usr/lib/jvm/jdk-16
+>Main Class
+-omega.IDE
+>Project Classpath : Required Jars
+-project-root$/lib/flatlaf-0.46.jar
+>Project Classpath : Required Resource Roots
+-project-root$/res
+
+```
+
+Omega IDE will itself recognize and setup the project classpath automatically.
+
+If you prefer using terminal,
+the project classpath is:
+
 The **lib** folder contains the class-path dependenies.
 
 The **res** is the resource-root.
@@ -244,8 +233,6 @@ Omega IDE is not yet totally evolved which means it has no support for any versi
 ![](/images/g3.png)
 ![](/images/g4.png)
 ![](/images/g5.png)
-![](/images/g6.png)
-![](/images/g7.png)
 
 
 # Hope You Like It
