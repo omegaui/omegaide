@@ -55,6 +55,25 @@ See a dry of the latest release on the official channel!
 [![](/images/youtube-icon.png)](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg)
 
 
+# Editor Key Bindings
+
+Ctrl + B - To Start Build
+
+Ctrl + I - To Call Auto-Indent (Java Only)
+
+Ctrl + SHIFT + O - To Auto-Import (Java Only)
+
+Ctrl + SHIFT + F - To Auto-Import (Java Only)
+
+Ctrl + SHIFT + R - To Launch the Project
+
+Ctrl + SHIFT + I - To Implement/Override methods from super class
+
+Ctrl + SHIFT + G - To Create Getter/Setter(s)
+
+Ctrl + SHIFT + C - To Click Editor's Image
+
+
 # Installing
 
 Dependency **JDK 16** or above
