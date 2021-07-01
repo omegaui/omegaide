@@ -38,8 +38,8 @@ Omega IDE has a very small download size.
 
 It has a beautiful text editor with code folding (thanks to rsyntaxtextarea).
 
-
 It tries to reassemble a material look so that it is easy to adapt the customized UI.
+
 
 **It has a elegant UI filled with custom components(have a look at sources at src/omega/comp).**
 
@@ -47,12 +47,12 @@ It tries to reassemble a material look so that it is easy to adapt the customize
 
 **As a result You can use this component library under the terms of GNU GPL v3**
 
+
 Want to have a look before giving a try?
 
 See a dry of the latest release on the official channel!
 
 [![](/images/youtube-icon.png)](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg)
-
 
 
 # Installing
@@ -63,8 +63,11 @@ If you want to get early access to optimizations and new features you can freely
 from ![here](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
 
 **Available installation formats**
+
 **.jar** Portable Java Archive
+
 **.exe** Windows Executable
+
 **.deb** Debian Setup
 
 
