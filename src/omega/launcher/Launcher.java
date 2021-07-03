@@ -1,5 +1,5 @@
 /**
-* Launcher
+* Now a part of SnippetView
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify

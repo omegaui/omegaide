@@ -1,4 +1,3 @@
-package omega.deassembler;
 /**
   * ContentAssist Invoker.
   * Copyright (C) 2021 Omega UI
@@ -17,6 +16,7 @@ package omega.deassembler;
   * along with this program.  If not, see http://www.gnu.org/licenses.
 */
 
+package omega.deassembler;
 import omega.Screen;
 import omega.snippet.*;
 import omega.jdk.Import;

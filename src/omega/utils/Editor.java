@@ -1,4 +1,3 @@
-package omega.utils;
 /**
   * The IDE's Default Editor
   * Copyright (C) 2021 Omega UI
@@ -17,6 +16,7 @@ package omega.utils;
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+package omega.utils;
 import java.nio.charset.*;
 import omega.instant.support.build.gradle.GradleProcessManager;
 import org.fife.ui.rsyntaxtextarea.modes.*;

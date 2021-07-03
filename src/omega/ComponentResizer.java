@@ -1,5 +1,5 @@
 /*
- * There no copyright attached to this file.
+ * There was no copyright attached to this file.
  * This Source is not written by Omega UI.
  * Its somebody else work.
  * I got this file from a link on stackoverflow.

@@ -1,4 +1,3 @@
-package omega.utils;
 /**
   * The Default File Selection Dialog of Omega IDE
   * Copyright (C) 2021 Omega UI
@@ -18,6 +17,7 @@ package omega.utils;
 */
 
 
+package omega.utils;
 import omega.Screen;
 import java.awt.image.BufferedImage;
 import java.awt.*;

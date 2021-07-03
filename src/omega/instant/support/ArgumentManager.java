@@ -1,6 +1,5 @@
-package omega.instant.support;
 /**
-  * The Universal Projects Manager
+  * The Universal Project Manager
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -17,6 +16,7 @@ package omega.instant.support;
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+package omega.instant.support;
 import omega.Screen;
 import omega.instant.support.universal.*;
 import java.io.PrintWriter;

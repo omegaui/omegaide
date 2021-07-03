@@ -1,5 +1,5 @@
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * The About Section
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -27,13 +27,16 @@ import javax.swing.*;
 
 import static omega.settings.Screen.*;
 import static omega.utils.UIManager.*;
-public class InfoScreen extends JDialog{
+public class InfoScreen extends JDialog {
 
      private String title = "Omega IDE";
      private String version = Screen.VERSION;
      private String h1 = "omegaui";
      private String h2 = "github.com/omegaui/omegaide";
      private String p1 = "the blazing fast java IDE";
+     
+	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, TOOLMENU_GRADIENT);
+	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
 
      private BufferedImage image;
      
@@ -48,7 +51,7 @@ public class InfoScreen extends JDialog{
                System.err.println(e); 
           }
           setUndecorated(true);
-          setBackground(new Color(0, 0, 0, 0));
+          setBackground(Screen.onWindows() ? c2 : new Color(0, 0, 0, 0));
           setSize(300, 300);
           setLocationRelativeTo(null);
           addMouseListener(new MouseAdapter(){
@@ -63,7 +66,7 @@ public class InfoScreen extends JDialog{
                image = ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon128" + ext));
           }
           catch(Exception e){ 
-               System.err.println(e); 
+               e.printStackTrace();
           }
      }
 
@@ -73,22 +76,29 @@ public class InfoScreen extends JDialog{
           g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(c2);
-          g.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
-          g.setColor(c3);
-          g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 80, 80);
+          g.setPaint(gradient);
+		if(Screen.onWindows())
+			g.fillRect(0, 0, getWidth(), getHeight());
+		else
+			g.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
+			
           g.drawImage(image, getWidth()/2 - 64, 40, 128, 128, null);
-          g.setFont(PX26);
-          g.setPaint(new GradientPaint(100, 150, c3, getWidth(), getHeight(), c1));
-          g.drawString(title, getWidth()/2 - g.getFontMetrics().stringWidth(title)/2, 160 + g.getFontMetrics().getAscent());
+          
           g.setColor(c3);
+          g.setFont(PX26);
+          g.setPaint(gradient1);          
+          g.drawString(title, getWidth()/2 - g.getFontMetrics().stringWidth(title)/2, 160 + g.getFontMetrics().getAscent());
+          
+          g.setColor(TOOLMENU_COLOR1);
           g.setFont(PX16);
           g.drawString(version, getWidth()/2 - g.getFontMetrics().stringWidth(version)/2, 190 + g.getFontMetrics().getAscent());
+          
           g.setFont(PX14);
           g.setColor(glow);
           g.drawString(h1, getWidth()/2 - g.getFontMetrics().stringWidth(h1)/2, 220 + g.getFontMetrics().getAscent());
           g.drawString(h2, getWidth()/2 - g.getFontMetrics().stringWidth(h2)/2, 240 + g.getFontMetrics().getAscent());
-          g.setColor(c3);
+          
+          g.setColor(TOOLMENU_COLOR4);
           g.drawString(p1, getWidth()/2 - g.getFontMetrics().stringWidth(p1)/2, 260 + g.getFontMetrics().getAscent());
      }
 }

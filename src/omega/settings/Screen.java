@@ -1,5 +1,5 @@
 /**
-  * The Main Window
+  * The Java Project and Universal Settings Window
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify

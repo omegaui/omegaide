@@ -34,7 +34,7 @@ public class SplashScreen extends JFrame{
 	private static Color EDITION_COLOR;
 	private static Color PROGRESS_COLOR;
 	private static Color SHADE = TOOLMENU_GRADIENT;
-	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, Screen.onWindows() ? 250 : 300, SHADE);
+	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, SHADE);
 	private static BufferedImage image = (BufferedImage)omega.utils.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
@@ -119,7 +119,7 @@ public class SplashScreen extends JFrame{
 		if(Screen.onWindows())
 			g.fillRect(0, 0, getWidth(), getHeight());
 		else
-			g.fillRoundRect(1, 1, getWidth() - 1, getHeight() - 2, 100, 100);
+			g.fillRoundRect(1, 1, getWidth(), getHeight(), 100, 100);
 		g.setColor(TITLE_COLOR);
 		g.setFont(PX40);
 		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 190);

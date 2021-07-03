@@ -1,4 +1,3 @@
-package omega.snippet;
 /**
 * Snippet Unit
 * Copyright (C) 2021 Omega UI
@@ -13,6 +12,7 @@ package omega.snippet;
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package omega.snippet;
 public class Snippet {
 	public String base = "";
 	public String code = "";

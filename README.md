@@ -50,7 +50,7 @@ It tries to reassemble a material look so that it is easy to adapt the customize
 
 Want to have a look before giving a try?
 
-See a dry of the latest release on the official channel!
+See a what's new in the latest release on the official channel!
 
 [![](/images/youtube-icon.png)](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg)
 
@@ -63,7 +63,7 @@ Ctrl + I - To Call Auto-Indent (Java Only)
 
 Ctrl + SHIFT + O - To Auto-Import (Java Only)
 
-Ctrl + SHIFT + F - To Auto-Import (Java Only)
+Ctrl + SHIFT + F - To Toggle Find and Replace
 
 Ctrl + SHIFT + R - To Launch the Project
 
@@ -80,8 +80,9 @@ Ctrl + SHIFT + L - To Launch Current File
 
 Dependency **JDK 16** or above
 
-If you want to get early access to optimizations and new features you can freely use latest beta available
-from ![here](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
+If you want to get early access to optimizations and new features you can freely use latest beta available.
+
+![Check out the dailybuild(.jar) now](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
 
 **Available installation formats**
 
@@ -125,15 +126,16 @@ There are separate project wizard for Java and Non-Java Projects.
 
 ![](/images/java-wizard.png)
 
-The Project has a field to set the JDK Root, the place where all the JDKs are located.
+The Project Wizard has a field to set the JDK Root.
+JDK Root is the place where all the JDKs are located.
 
 On Linux, the path is usually **/usr/lib/jvm**
 
 On Windows, the path is usually like **C:\Program Files\Java** or **C:\Program Files(x86)\Java** based on the architecture.
 
-Just type in the right path or navigate in the file chooser dialog or navigate to the directory if you dont know!
+Just type in the right path or navigate in the file chooser dialog.
 
-After you can choose from the available JDKs to be used.
+Then, you can choose from the available JDKs to be used.
 
 
 ## Any Programming Language
@@ -187,7 +189,7 @@ Don't forget to Click Apply else you will lose changes.
 
 If any editor is opened, then by hitting CTRL + SHIFT + R launches the Project.
 
-Else click the Red Colored Run button in the ToolMenu.
+Else click the Run button in the ToolMenu.
 
 Right Clicking the Run Button launches the Project without Build.
 
@@ -199,7 +201,10 @@ From Omega IDE v1.9 and onwards,
 
 Omega IDE uses portable project infomation technique (.projectInfo) which means you need not to setup your project classpath whenever you change your working computer if your dependencies are inside the project folder (say all libraries are inside **lib** and all resources are inside **res**).
 
-Looks like this
+Just clone this repository and open the folder **omegaide** in Omega IDE.
+
+
+Contents of .projectInfo
 
 ```
 >JDK Path
@@ -224,7 +229,7 @@ The **res** is the resource-root.
 
 # Note
 
-Omega IDE is not yet totally evolved which means it has no support for any version control system yet and bugs are likely to come.
+Omega IDE is not yet totally evolved which means it has no integrated support for any version control system yet and bugs are likely to come.
 
 # Small Gallery
 
@@ -247,25 +252,4 @@ Want to Donate for the Project?
 **QR Code**
 
 ![](/images/qr_code.jpg)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

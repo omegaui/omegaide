@@ -1,7 +1,5 @@
-package omega.utils;
-
 /**
-  * <one line to give the program's name and a brief idea of what it does.>
+  * PrintArea
   * Copyright (C) 2021 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,7 @@ package omega.utils;
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+package omega.utils;
 import omega.token.factory.*;
 import java.awt.image.BufferedImage;
 import java.io.PrintWriter;
