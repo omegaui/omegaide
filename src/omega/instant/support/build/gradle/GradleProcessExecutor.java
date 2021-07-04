@@ -17,6 +17,7 @@
 */
 
 package omega.instant.support.build.gradle;
+import omega.utils.*;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.io.File;
@@ -35,7 +36,7 @@ public class GradleProcessExecutor {
 	public static Process run(File dir){
 		Process p = null;
 		try{
-			return new ProcessBuilder("gradlew" + ext, "run").directory(dir).start();
+			return new ProcessBuilder(DataManager.getGradleCommand() + ext, "run").directory(dir).start();
 			
 		}
 		catch(Exception e){
@@ -46,7 +47,7 @@ public class GradleProcessExecutor {
 	public static Process build(File dir){
 		Process p = null;
 		try{
-			return new ProcessBuilder("gradlew" + ext, "build").directory(dir).start();
+			return new ProcessBuilder(DataManager.getGradleCommand() + ext, "build").directory(dir).start();
 		}
 		catch(Exception e){
 			e.printStackTrace();

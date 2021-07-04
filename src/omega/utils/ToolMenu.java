@@ -16,6 +16,7 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import omega.instant.support.build.gradle.*;
 import omega.instant.support.universal.*;
 import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.build.gradle.GradleProcessManager;
@@ -108,6 +109,7 @@ public class ToolMenu extends JPanel {
 	public static UniversalProjectWizard universalProjectWizard;
 
 	public static ConsoleSelector consoleSelector;
+	public static GradleBuildScriptManager gradleBuildScriptManager;
      
 	private int pressX;
 	private int pressY;
@@ -140,6 +142,7 @@ public class ToolMenu extends JPanel {
                gradleModuleWizard = new GradleModuleWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
 			consoleSelector = new ConsoleSelector(screen);
+			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -612,6 +615,9 @@ public class ToolMenu extends JPanel {
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new omega.utils.WorkspaceSelector(screen).setVisible(true))
 		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
 			consoleSelector.setVisible(true);
+		})
+		.createItem("Set Gradle Script", IconManager.fluentbuildImage, ()->{
+			gradleBuildScriptManager.setVisible(true);
 		});
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
 		typeItem.setAction(()->{

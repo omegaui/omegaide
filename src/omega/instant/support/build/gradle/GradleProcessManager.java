@@ -17,6 +17,7 @@
 */
 
 package omega.instant.support.build.gradle;
+import omega.utils.*;
 import omega.utils.PrintArea;
 import java.util.Scanner;
 import omega.utils.Editor;
@@ -91,7 +92,7 @@ public class GradleProcessManager {
 					Screen.getFileView().getProjectManager().save();
 					printArea.print("**Changing Project Type ... Done!**");
 				}
-				printArea.print("# Launching : gradle run");
+				printArea.print("# Launching : " + DataManager.getGradleCommand() +" run");
 				printArea.print("--------------------------------------------------");
 				Process p = GradleProcessExecutor.run(new File(Screen.getFileView().getProjectPath()));
 				printArea.setProcess(p);
@@ -107,7 +108,7 @@ public class GradleProcessManager {
 					}
 					errorReader.close();
 					printArea.print("--------------------------------------------------");
-					printArea.print(errorOccured ? "Error Occured During : gradle run" : "Completed Successfully : gradle run");
+					printArea.print(errorOccured ? "Error Occured During : " + DataManager.getGradleCommand() + " run" : "Completed Successfully : " + DataManager.getGradleCommand() + " run");
 				}).start();
 				while(p.isAlive()){
 					while(inputReader.hasNextLine())
@@ -134,7 +135,7 @@ public class GradleProcessManager {
 					Screen.getFileView().getProjectManager().save();
 					printArea.print("**Changing Project Type ... Done!**");
 				}
-				printArea.print("# Launching : gradle build");
+				printArea.print("# Launching : " + DataManager.getGradleCommand() + " build");
 				printArea.print("--------------------------------------------------");
 				Process p = GradleProcessExecutor.build(new File(Screen.getFileView().getProjectPath()));
 				printArea.setProcess(p);
@@ -150,7 +151,7 @@ public class GradleProcessManager {
 					}
 					errorReader.close();
 					printArea.print("--------------------------------------------------");
-					printArea.print(errorOccured ? "Error Occured During : gradle build" : "Completed Successfully : gradle build");
+					printArea.print(errorOccured ? "Error Occured During : " + DataManager.getGradleCommand() + " build" : "Completed Successfully : " + DataManager.getGradleCommand() + " build");
 				}).start();
 				while(p.isAlive()){
 					while(inputReader.hasNextLine())

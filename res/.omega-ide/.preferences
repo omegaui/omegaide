@@ -16,3 +16,5 @@
 -true
 >System Console Launch Command
 -gnome-terminal
+>Gradle Build Script
+-gradle

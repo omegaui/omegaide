@@ -31,6 +31,7 @@ public class DataManager extends DataBase {
      private static String projectsHome = "";
      private static String theme = "light";
 	private static String consoleCommand = "";
+	private static String gradleCommand = "gradlew";
 	
 	private volatile static boolean realTimeContentAssist = false;
      private volatile static boolean contentModeJava = true;
@@ -56,6 +57,7 @@ public class DataManager extends DataBase {
                setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
                setSourceDefenderEnabled(getEntryAt("Source Defender Enabled", 0).getValueAsBoolean());
                setConsoleCommand(getEntryAt("System Console Launch Command", 0).getValue());
+               setGradleCommand(getEntryAt("Gradle Build Script", 0).getValue());
 		}
 		catch(Exception e) { 
 		     e.printStackTrace();
@@ -73,6 +75,7 @@ public class DataManager extends DataBase {
           addEntry("Theme", getTheme());
           addEntry("Source Defender Enabled", isSourceDefenderEnabled() + "");
           addEntry("System Console Launch Command", getConsoleCommand());
+          addEntry("Gradle Build Script", getGradleCommand());
 		save();
 	}
 	
@@ -146,6 +149,14 @@ public class DataManager extends DataBase {
      
      public static void setConsoleCommand(java.lang.String consoleCommand) {
           DataManager.consoleCommand = consoleCommand;
+     }
+
+     public static java.lang.String getGradleCommand() {
+          return gradleCommand;
+     }
+     
+     public static void setGradleCommand(java.lang.String gradleCommand) {
+          DataManager.gradleCommand = gradleCommand;
      }
      
 }
