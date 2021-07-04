@@ -52,8 +52,6 @@ Want to have a look before giving a try?
 
 See a what's new in the latest release on the official channel!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/OkQLEUWCXMw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 [![](/images/youtube-icon.png)](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg)
 
 
