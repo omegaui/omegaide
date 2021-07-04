@@ -45,7 +45,7 @@ public class ContentWindow extends JPanel implements KeyListener{
      private int height;
      public int index;
      public static int optimalHintHeight = 20;
-     public static Color highlightColor = isDarkMode() ? Color.WHITE : Color.BLACK;
+     public static Color highlightColor = glow;
 
      public ContentWindow(Editor editor){
           this.editor = editor;
