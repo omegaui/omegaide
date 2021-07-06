@@ -177,10 +177,13 @@ public class ToolMenu extends JPanel {
 		iconComp.setArc(0, 0);
 		add(iconComp);
 		
-		titleComp = new TextComp("Omega IDE", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, null);
+		titleComp = new TextComp("Omega IDE", TOOLMENU_COLOR3_SHADE, c2, glow, null);
 		titleComp.setClickable(false);
 		titleComp.setFont(PX16);
 		titleComp.setArc(10, 10);
+		titleComp.setGradientMode(TextComp.GRADIENT_MODE_LINEAR);
+		titleComp.setLinearGradientColors(TOOLMENU_GRADIENT, c2, TOOLMENU_GRADIENT);
+		titleComp.setPaintGradientEnabled(true);
 		titleComp.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){

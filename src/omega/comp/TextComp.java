@@ -1,19 +1,19 @@
 /**
-  * The Base Component for Rendering Text and Images as a button
-  * Copyright (C) 2021 Omega UI
+* The Base Component for Rendering Text and Images as a button
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.comp;
 import java.awt.image.*;
@@ -25,6 +25,11 @@ public class TextComp extends JComponent{
 	private volatile boolean enter;
 	private volatile boolean press;
 	private volatile boolean clickable = true;
+	private volatile boolean paintGradientEnabled = false;
+	
+	public static final int GRADIENT_MODE_DEFAULT = 0;
+	public static final int GRADIENT_MODE_LINEAR = 1;
+	private int gradientMode = GRADIENT_MODE_DEFAULT;
 	
 	public int arcX = 20;
 	public int arcY = 20;
@@ -35,12 +40,15 @@ public class TextComp extends JComponent{
 	public Color color1;
 	public Color color2;
 	public Color color3;
+	public Color colorG;
 	public Runnable runnable;
 	public BufferedImage image;
 	public int w;
 	public int h;
 	public Window window;
 	public LinkedList<Object> extras = new LinkedList<>();
+	public float[] fractions = {0.0f, 0.5f, 1f};
+	public Color[] gradientColors;
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
 		this.color1 = color1;
@@ -54,7 +62,7 @@ public class TextComp extends JComponent{
 				enter = true;
 				repaint();
 			}
-               
+			
 			@Override
 			public void mouseExited(MouseEvent e){
 				enter = false;
@@ -63,10 +71,10 @@ public class TextComp extends JComponent{
 			
 			@Override
 			public void mousePressed(MouseEvent e){
-                    if(window != null){
-                         pressX = e.getX();
-                         pressY = e.getY();
-                    }
+				if(window != null){
+					pressX = e.getX();
+					pressY = e.getY();
+				}
 				if(!clickable) return;
 				press = true;
 				repaint();
@@ -83,14 +91,14 @@ public class TextComp extends JComponent{
 				repaint();
 			}
 		});
-          addMouseMotionListener(new MouseAdapter(){
-               @Override
-               public void mouseDragged(MouseEvent e){
-               	if(window != null){
-                         window.setLocation(e.getXOnScreen() - pressX - getX(), e.getYOnScreen() - pressY - getY());
-               	}
-               }
-          });
+		addMouseMotionListener(new MouseAdapter(){
+			@Override
+			public void mouseDragged(MouseEvent e){
+				if(window != null){
+					window.setLocation(e.getXOnScreen() - pressX - getX(), e.getYOnScreen() - pressY - getY());
+				}
+			}
+		});
 	}
 	
 	public TextComp(BufferedImage image, int width, int height, Color color1, Color color2, Color color3, Runnable runnable){
@@ -123,11 +131,11 @@ public class TextComp extends JComponent{
 		color3 = c3;
 		repaint();
 	}
-
-     public void attachDragger(Window window){
-     	this.window = window;
-     }
-     
+	
+	public void attachDragger(Window window){
+		this.window = window;
+	}
+	
 	public void draw(Graphics2D g) {
 		if(image != null){
 			g.drawImage(image, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
@@ -166,9 +174,63 @@ public class TextComp extends JComponent{
 	public boolean isClickable() {
 		return clickable;
 	}
+	
 	public void doClick(){
 		if(runnable != null)
 			runnable.run();
+	}
+	
+	public boolean isPaintGradientEnabled() {
+		if(!paintGradientEnabled)
+			return false;
+		if(!(gradientMode >= GRADIENT_MODE_DEFAULT && gradientMode <= GRADIENT_MODE_LINEAR))
+			return false;
+		if(gradientMode == GRADIENT_MODE_DEFAULT)
+			return colorG != null;
+		if(gradientMode == GRADIENT_MODE_LINEAR)
+			return fractions != null && gradientColors != null && fractions.length == gradientColors.length;
+		return true;
+	}
+	
+	public void setPaintGradientEnabled(boolean paintGradientEnabled) {
+		this.paintGradientEnabled = paintGradientEnabled;
+		repaint();
+	}
+	
+	public java.awt.Color getGradientColor() {
+		return colorG;
+	}
+	
+	public void setGradientColor(java.awt.Color colorG) {
+		this.colorG = colorG;
+		repaint();
+	}
+	
+	public int getGradientMode() {
+		return gradientMode;
+	}
+	
+	public void setGradientMode(int gradientMode) {
+		this.gradientMode = gradientMode;
+		repaint();
+	}
+
+	public void setLinearGradientFractions(float... fractions){
+		this.fractions = fractions;
+		repaint();
+	}
+
+	public float[] getGradientFractions(){
+		return fractions;
+	}
+
+	public void setLinearGradientColors(Color... colors){
+		this.gradientColors = colors;
+		repaint();
+	}
+
+	public Color[] getLinearGradientColors(){
+		return gradientColors;
 	}
 	
 	@Override
@@ -180,7 +242,14 @@ public class TextComp extends JComponent{
 		g.setFont(getFont());
 		int x = getWidth()/2 - g.getFontMetrics().stringWidth(dir)/2;
 		int y = getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1;
-		g.setColor(color2);
+		if(isPaintGradientEnabled()){
+			if(gradientMode == GRADIENT_MODE_DEFAULT)
+				g.setPaint(new GradientPaint(0, 0, color2, getWidth(), getHeight(), colorG));
+			else if(gradientMode == GRADIENT_MODE_LINEAR)
+				g.setPaint(new LinearGradientPaint(0, 0, getWidth(), getHeight(), fractions, gradientColors));
+		}
+		else
+			g.setColor(color2);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		if(enter || !clickable) paintEnter(g);
 		if(press) paintPress(g);
@@ -200,6 +269,8 @@ public class TextComp extends JComponent{
 			g.drawString(dir, alignX < 0 ? x : alignX, y);
 	}
 	public void paintEnter(Graphics2D g){
+		if(isPaintGradientEnabled() && !clickable)
+			return;
 		g.setColor(color1);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 	}
@@ -210,9 +281,9 @@ public class TextComp extends JComponent{
 		g.setColor(color2);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 	}
-
-     public LinkedList<Object> getExtras(){
-     	return extras;
-     }
+	
+	public LinkedList<Object> getExtras(){
+		return extras;
+	}
 }
 

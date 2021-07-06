@@ -161,7 +161,9 @@ public class BuildLog extends JPanel {
 	}
 	public void setView(Error errorSet){
 		this.currentError = errorSet;
-		Screen.getScreen().loadFile(new File(errorSet.filePath));
+		Editor editorX = Screen.getScreen().loadFile(new File(errorSet.filePath));
+		if(editorX != null)
+			editorX.grabFocus();
 		String fullLog = "File Path : " + errorSet.filePath + "\n";
 		fullLog += "At Line   : " + errorSet.line + "\n\n";
 		fullLog += errorSet.log;

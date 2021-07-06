@@ -44,7 +44,9 @@ public class BottomPane extends JPanel{
 		init();
 	}
 	public void init(){
-		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, null);
+		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, c2, glow, null);
+		messageComp.setGradientColor(TOOLMENU_GRADIENT);
+		messageComp.setPaintGradientEnabled(true);
 		messageComp.setFont(PX14);
 		messageComp.alignX = 15;
 		messageComp.setPreferredSize(new Dimension(100, 25));
@@ -85,7 +87,7 @@ public class BottomPane extends JPanel{
           });
           add(jumpField);
 
-          themeComp = new TextComp(DataManager.getTheme(), "Switching Theme Requires IDE\'s Restart", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, null);
+          themeComp = new TextComp(DataManager.getTheme(), "Switching Theme Requires IDE\'s Restart", TOOLMENU_COLOR1_SHADE, c2, glow, null);
           themeComp.setRunnable(()->{
                Screen.pickTheme(DataManager.getTheme());
                themeComp.setText(DataManager.getTheme());
@@ -93,6 +95,8 @@ public class BottomPane extends JPanel{
           });
           themeComp.setFont(PX14);
           themeComp.setArc(0, 0);
+          themeComp.setGradientColor(TOOLMENU_GRADIENT);
+          themeComp.setPaintGradientEnabled(true);
           add(themeComp);
 	}
 	@Override

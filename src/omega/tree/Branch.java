@@ -17,6 +17,7 @@
 */
 
 package omega.tree;
+import java.awt.*;
 import omega.popup.*;
 import omega.Screen;
 import omega.utils.IconManager;
@@ -156,6 +157,7 @@ public class Branch extends JComponent{
 			}
 		});
 	}
+	
 	public void force() {
 		l.locate(this);
 	}
@@ -182,12 +184,22 @@ public class Branch extends JComponent{
 		int w  = OPTIMAL_X + wx + wy;
 		if(getWidth() < w)
 			setSize(w, getHeight());
-		g.setColor(getBackground());
+		
+		if(file.isDirectory())
+			g.setColor(getBackground());
+		else
+			g.setPaint(new GradientPaint(0, 0, UIManager.c2, getWidth(), getHeight(), getBackground()));
 		g.fillRect(enter ? (OPTIMAL_X - 2) : 0, 0, getWidth(), getHeight());
-		g.setColor(getForeground());
+		
+		if(file.isDirectory())
+			g.setColor(getForeground());
+		else
+			g.setColor(enter ? UIManager.glow : getForeground());
 		g.drawString(name, OPTIMAL_X, (getHeight()/2) + 2);
+		
 		if(!type.equals("?"))
 			g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
+		
 		g.drawImage(icon, 16, 8, 16, 16, null);
 		if(enter){
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + getFont().getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);

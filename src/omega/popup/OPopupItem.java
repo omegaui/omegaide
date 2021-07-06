@@ -17,6 +17,7 @@
 */
 
 package omega.popup;
+import java.awt.*;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.RenderingHints;
@@ -26,6 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
+import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 public class OPopupItem extends JComponent{
      private String name;
@@ -116,12 +118,17 @@ public class OPopupItem extends JComponent{
      	g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
      	g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
      	g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-          g.setColor(enter ? getForeground() : getBackground());
-          g.fillRect((enter && image != null) ? 32 : 0, 0, getWidth(), getHeight());
+     	if(enter){
+          	g.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), TOOLMENU_GRADIENT));
+     	}
+     	else {
+     		g.setColor(getBackground());
+     	}
+     	g.fillRect((enter && image != null) ? 32 : 0, 0, getWidth(), getHeight());
      	if(image != null)
                g.drawImage(image, 8, 8, 16, 16, null);
           g.setFont(getFont());
-          g.setColor(enter ? getBackground() : getForeground());
+          g.setColor(glow);
           int y = (getHeight() - g.getFontMetrics().getHeight())/2 + g.getFontMetrics().getAscent() + g.getFontMetrics().getDescent();
           g.drawString(name, 42, y);
      }
