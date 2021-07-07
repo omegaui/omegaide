@@ -76,6 +76,13 @@ public class InfoScreen extends JDialog {
           g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+          
+          g.setColor(c2);
+		if(Screen.onWindows())
+			g.fillRect(0, 0, getWidth(), getHeight());
+		else
+			g.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
+		
           g.setPaint(gradient);
 		if(Screen.onWindows())
 			g.fillRect(0, 0, getWidth(), getHeight());

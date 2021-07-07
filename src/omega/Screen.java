@@ -113,21 +113,27 @@ public class Screen extends JFrame {
 				FlatDarkLaf.install();
 				x = Color.decode("#D34D42");
 				y = Color.decode("#09090B");
-				javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(y));
-				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(x));
-				javax.swing.UIManager.put("Button.foreground", new ColorUIResource(y));
-				javax.swing.UIManager.put("Button.background", new ColorUIResource(x));
+				javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(y));
+				javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("Button.background", new ColorUIResource(y));
+				javax.swing.UIManager.put("Label.foreground", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("Label.background", new ColorUIResource(y));
 			}
 			else {
 				FlatLightLaf.install();
 				x = UIManager.TOOLMENU_COLOR3;
 				y = Color.WHITE;
-				javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
-				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(UIManager.TOOLMENU_COLOR2));
-				javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.WHITE));
-				javax.swing.UIManager.put("Button.background", new ColorUIResource(UIManager.TOOLMENU_COLOR2));
+				javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
+				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
+				javax.swing.UIManager.put("Button.background", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
+				javax.swing.UIManager.put("Label.background", new ColorUIResource(Color.WHITE));
 			}
 			javax.swing.UIManager.put("ToolTip.font", omega.settings.Screen.PX14);
+			javax.swing.UIManager.put("Button.font", omega.settings.Screen.PX14);
+			javax.swing.UIManager.put("Label.font", omega.settings.Screen.PX14);
 			javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
 			javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
 			javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));

@@ -29,6 +29,7 @@ public class TextComp extends JComponent{
 	
 	public static final int GRADIENT_MODE_DEFAULT = 0;
 	public static final int GRADIENT_MODE_LINEAR = 1;
+	
 	private int gradientMode = GRADIENT_MODE_DEFAULT;
 	
 	public int arcX = 20;
@@ -36,19 +37,28 @@ public class TextComp extends JComponent{
 	public int pressX;
 	public int pressY;
 	public int alignX = -1;
+	public int w;
+	public int h;
+	
 	private String dir;
+	
 	public Color color1;
 	public Color color2;
 	public Color color3;
 	public Color colorG;
+	
 	public Runnable runnable;
+	
 	public BufferedImage image;
-	public int w;
-	public int h;
+	
 	public Window window;
+	
 	public LinkedList<Object> extras = new LinkedList<>();
+	
 	public float[] fractions = {0.0f, 0.5f, 1f};
+	
 	public Color[] gradientColors;
+	
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
 		this.color1 = color1;
