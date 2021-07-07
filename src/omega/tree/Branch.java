@@ -188,7 +188,7 @@ public class Branch extends JComponent{
 		if(file.isDirectory())
 			g.setColor(getBackground());
 		else
-			g.setPaint(new GradientPaint(0, 0, UIManager.c2, getWidth(), getHeight(), getBackground()));
+			g.setPaint(new GradientPaint(enter ? (OPTIMAL_X - 2) : 0, 0, UIManager.c2, getWidth(), getHeight(), getBackground()));
 		g.fillRect(enter ? (OPTIMAL_X - 2) : 0, 0, getWidth(), getHeight());
 		
 		if(file.isDirectory())

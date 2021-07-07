@@ -863,22 +863,22 @@ public class RunView extends View {
 			JTextField inputField = new JTextField();
 			inputField.setText("Input? From Here");
 			inputField.addActionListener((e)->{
-				if(runProcess == null)
-					return;
-				else if(!runProcess.isAlive())
+				if(runProcess == null || !runProcess.isAlive())
 					return;
 				try {						
 					PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
 					writer.println(inputField.getText());
 					writer.flush();
 				}
-				catch(Exception e1) {e1.printStackTrace();}
+				catch(Exception e1) {
+					e1.printStackTrace();
+				}
 				inputField.setText("");
 			});
 			inputField.setCaretColor(omega.utils.UIManager.glow);
                inputField.setBackground(omega.utils.UIManager.c2);
                inputField.setForeground(omega.utils.UIManager.glow);
-               inputField.setFont(omega.settings.Screen.PX18);
+               inputField.setFont(omega.settings.Screen.PX16);
 			add(inputField, BorderLayout.SOUTH);
 			comps.add(inputField);
 
