@@ -30,6 +30,7 @@ import java.awt.event.*;
 import java.awt.*;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
+import static omega.comp.Animations.*;
 
 public class TabComp extends JComponent {
 
@@ -135,6 +136,8 @@ public class TabComp extends JComponent {
 		comp.setPreferredSize(new Dimension(width, 28));
 		areas.add(comp);
 		
+		putPostAnimationLayer(comp, getLineAnimationLayer(1), ACTION_MOUSE_ENTERED);
+		
 		String baseName = getBaseName(name);
           TextComp iconButton = null;
           
@@ -145,7 +148,7 @@ public class TabComp extends JComponent {
           else
                image = IconManager.fluentshellImage;
 
-          iconButton = new TextComp(image, 25, 25, toolTip, c2, alpha, FORE, ()->{});
+          iconButton = new TextComp(image, 25, 25, toolTip, alpha, c2, FORE, ()->{});
 		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 20, 28));
 		iconButton.setFont(PX16);
 		

@@ -22,8 +22,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 public class TextComp extends JComponent{
-	private volatile boolean enter;
-	private volatile boolean press;
+	public volatile boolean enter;
+	public volatile boolean press;
 	private volatile boolean clickable = true;
 	private volatile boolean paintGradientEnabled = false;
 	
@@ -39,6 +39,10 @@ public class TextComp extends JComponent{
 	public int alignX = -1;
 	public int w;
 	public int h;
+	public int textX;
+	public int textY;
+	public int textWidth;
+	public int textHeight;
 	
 	private String dir;
 	
@@ -54,10 +58,14 @@ public class TextComp extends JComponent{
 	public Window window;
 	
 	public LinkedList<Object> extras = new LinkedList<>();
-	
+	public HashMap<Object, Object> map = new HashMap<>();
+
 	public float[] fractions = {0.0f, 0.5f, 1f};
 	
 	public Color[] gradientColors;
+
+	public AnimationLayer preAnimationLayer;
+	public AnimationLayer postAnimationLayer;
 	
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
@@ -147,9 +155,13 @@ public class TextComp extends JComponent{
 	}
 	
 	public void draw(Graphics2D g) {
-		if(image != null){
+		if(isDrawingImage()){
 			g.drawImage(image, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
 		}
+	}
+
+	public boolean isDrawingImage(){
+		return image != null;
 	}
 	
 	public void setArc(int x, int y){
@@ -161,12 +173,15 @@ public class TextComp extends JComponent{
 		this.dir = text;
 		repaint();
 	}
+	
 	public String getText(){
 		return dir;
 	}
+	
 	public void setRunnable(Runnable runnable){
 		this.runnable = runnable;
 	}
+	
 	public void setEnter(boolean enter) {
 		this.enter = enter;
 		repaint();
@@ -242,6 +257,23 @@ public class TextComp extends JComponent{
 	public Color[] getLinearGradientColors(){
 		return gradientColors;
 	}
+
+	public omega.comp.AnimationLayer getPreAnimationLayer() {
+		return preAnimationLayer;
+	}
+	
+	public void setPreAnimationLayer(omega.comp.AnimationLayer preAnimationLayer) {
+		this.preAnimationLayer = preAnimationLayer;
+	}
+	
+	public omega.comp.AnimationLayer getPostAnimationLayer() {
+		return postAnimationLayer;
+	}
+	
+	public void setPostAnimationLayer(omega.comp.AnimationLayer postAnimationLayer) {
+		this.postAnimationLayer = postAnimationLayer;
+	}
+	
 	
 	@Override
 	public void paint(Graphics graphics){
@@ -250,8 +282,18 @@ public class TextComp extends JComponent{
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(getFont());
+		
 		int x = getWidth()/2 - g.getFontMetrics().stringWidth(dir)/2;
 		int y = getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1;
+		
+		textX = x;
+		textY = y;
+		textWidth = g.getFontMetrics().stringWidth(dir);
+		textHeight = g.getFontMetrics().getHeight();
+		
+		if(preAnimationLayer != null)
+			preAnimationLayer.animate(this);
+		
 		if(isPaintGradientEnabled()){
 			if(gradientMode == GRADIENT_MODE_DEFAULT)
 				g.setPaint(new GradientPaint(0, 0, color2, getWidth(), getHeight(), colorG));
@@ -260,12 +302,20 @@ public class TextComp extends JComponent{
 		}
 		else
 			g.setColor(color2);
+		
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
+		
 		if(enter || !clickable) paintEnter(g);
+		
 		if(press) paintPress(g);
+		
 		draw(g, x, y);
 		draw(g);
+		
 		super.paint(graphics);
+		
+		if(postAnimationLayer != null)
+			postAnimationLayer.animate(this);
 	}
 	public void draw(Graphics2D g, int x, int y){
 		g.setColor(color3);
@@ -274,9 +324,13 @@ public class TextComp extends JComponent{
 			x = getWidth()/2 - g.getFontMetrics().stringWidth(temp)/2;
 			g.drawString(temp, alignX < 0 ? x : alignX, y);
 			setToolTipText(dir);
+			textX = alignX < 0 ? x : alignX;
+			textWidth = g.getFontMetrics().stringWidth(temp);
 		}
-		else
+		else {
 			g.drawString(dir, alignX < 0 ? x : alignX, y);
+			textX = alignX < 0 ? x : alignX;
+		}
 	}
 	public void paintEnter(Graphics2D g){
 		if(isPaintGradientEnabled() && !clickable)
@@ -294,6 +348,10 @@ public class TextComp extends JComponent{
 	
 	public LinkedList<Object> getExtras(){
 		return extras;
+	}
+
+	public Object getValue(Object key){
+		return map.get(key);
 	}
 }
 

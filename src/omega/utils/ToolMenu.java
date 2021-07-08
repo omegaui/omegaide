@@ -60,6 +60,7 @@ import javax.swing.filechooser.FileFilter;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 import static omega.utils.IconManager.*;
+import static omega.comp.Animations.*;
 /**
 * This is not only the tool menu but also the IDE's custom window decorator
 */
@@ -542,6 +543,13 @@ public class ToolMenu extends JPanel {
           add(pathBox);
           
 		reshapeComp();
+
+		putPostAnimationLayer(openProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(openFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(newProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(newFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(shellComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(themeComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 	}
      
 	public void minimize(){
