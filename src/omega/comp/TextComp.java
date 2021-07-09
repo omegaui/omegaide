@@ -351,6 +351,8 @@ public class TextComp extends JComponent{
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		g.setColor(Color.WHITE);
 		paintArc(g);
+		g.setColor(color2);
+		paintArc(g);
 		g.setColor(color1);
 		paintArc(g);
 	}
