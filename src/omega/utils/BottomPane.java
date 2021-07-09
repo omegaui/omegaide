@@ -29,20 +29,22 @@ import omega.comp.TextComp;
 import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
-public class BottomPane extends JPanel{
+import static omega.comp.Animations.*;
+public class BottomPane extends JPanel {
 	private Screen screen;
 	public TextComp messageComp;
 	public RTextField jumpField;
      public TextComp themeComp;
      private Runnable r = ()->{};
 	
-	public BottomPane(Screen screen){
+	public BottomPane(Screen screen) {
 		super(null);
 		this.screen = screen;
 		setBackground(c2);
 		setPreferredSize(new Dimension(100, 25));
 		init();
 	}
+	
 	public void init(){
 		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, c2, glow, null);
 		messageComp.setGradientColor(TOOLMENU_GRADIENT);
@@ -98,6 +100,8 @@ public class BottomPane extends JPanel{
           themeComp.setGradientColor(TOOLMENU_GRADIENT);
           themeComp.setPaintGradientEnabled(true);
           add(themeComp);
+          
+		putPostAnimationLayer(themeComp, getLineAnimationLayer(1), ACTION_MOUSE_ENTERED);
 	}
 	@Override
 	public void paint(Graphics g){

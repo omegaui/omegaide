@@ -97,7 +97,8 @@ public class TextComp extends JComponent{
 					pressX = e.getX();
 					pressY = e.getY();
 				}
-				if(!clickable) return;
+				if(!clickable) 
+					return;
 				press = true;
 				repaint();
 				enter = false;

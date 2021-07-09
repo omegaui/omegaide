@@ -379,11 +379,13 @@ public class Screen extends JFrame {
 				try {
 					java.awt.Desktop.getDesktop().open(file);
 				}
-				catch(Exception ex){System.out.println(ex);}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}).start();
 		}
 		catch(Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 	public Editor loadFile(File file) {
@@ -426,8 +428,11 @@ public class Screen extends JFrame {
 		}
 		if(bottomTabPanel.viewImage(file)) return null;
 		if(bottomTabPanel.viewArchive(file)) return null;
-		if(isFileOpened(file))
-			return null;
+		if(isFileOpened(file)){
+			Editor e = getEditor(file);
+			e.grabFocus();
+			return e;
+		}
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
@@ -460,6 +465,21 @@ public class Screen extends JFrame {
 			}
 		}
 		return false;
+	}
+	public Editor getEditor(File file) {
+		LinkedList<Editor> allEditors = new LinkedList<>();
+		tabPanel.getEditors().forEach(allEditors::add);
+		rightTabPanel.getEditors().forEach(allEditors::add);
+		bottomTabPanel.getEditors().forEach(allEditors::add);
+		for(Editor e : allEditors) {
+			if(e.currentFile != null) {
+				if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath())){
+					allEditors.clear();
+					return e;
+				}
+			}
+		}
+		return null;
 	}
 	public String getPackName(File file) {
 		String res = "";
@@ -513,12 +533,10 @@ public class Screen extends JFrame {
 	public static RecentsManager getRecentsManager() {
 		return recentsManager;
 	}
-	public static FileView getFileView()
-	{
+	public static FileView getFileView() {
 		return fileView;
 	}
-	public static BuildView getBuildView()
-	{
+	public static BuildView getBuildView() {
 		return buildView;
 	}
 	public static RunView getRunView() {
@@ -568,14 +586,18 @@ public class Screen extends JFrame {
 			if(robot == null)
 				robot = new Robot();
 			robot.keyPress(code);
-	}catch(Exception e) {}
+		}
+		catch(Exception e) {
+		}
 	}
 	public void moveTo(int x, int y) {
 		try {
 			if(robot == null)
 				robot = new Robot();
 			robot.mouseMove(x, y);
-	}catch(Exception e) {}
+		}
+		catch(Exception e) {
+		}
 	}
 	public static UIManager getUIManager() {
 		return uiManager;

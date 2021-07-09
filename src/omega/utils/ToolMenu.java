@@ -310,21 +310,25 @@ public class ToolMenu extends JPanel {
 		openProjectComp = new TextComp(fluentfolderImage, 25, 25, "Open Project", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
 		openProjectComp.setBounds(0, 55, 30, 30);
 		openProjectComp.setFont(omega.settings.Screen.PX14);
+		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
           
 		openFileComp = new TextComp(fluentfileImage, 25, 25, "Open File", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
 		openFileComp.setBounds(32, 55, 30, 30);
 		openFileComp.setFont(omega.settings.Screen.PX14);
+		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
           
 		newProjectComp = new TextComp(fluentnewfolderImage, 25, 25, "Create New Project", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
 		newProjectComp.setBounds(64, 55, 30, 30);
 		newProjectComp.setFont(omega.settings.Screen.PX14);
+		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
 
           newFileComp = new TextComp(fluentnewfileImage, 25, 25, "Create New File", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
           newFileComp.setBounds(96, 55, 30, 30);
           newFileComp.setFont(PX14);
+          newFileComp.setArcVisible(true, false, true, false);
           addComp(newFileComp);
 		
 		sep0 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
@@ -350,6 +354,7 @@ public class ToolMenu extends JPanel {
                }
           });
           runComp.setFont(omega.settings.Screen.PX28);
+          runComp.setArcVisible(true, false, true, false);
           add(runComp);
 		
 		buildComp = new TextComp(fluentbuildImage, 25, 25, "Time to Build", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
@@ -362,6 +367,7 @@ public class ToolMenu extends JPanel {
 		});
 		buildComp.setBounds(172, 55, 30, 30);
 		buildComp.setFont(omega.settings.Screen.PX18);
+		buildComp.setArcVisible(false, true, false, true);
 		add(buildComp);
 		
 		sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
@@ -387,6 +393,7 @@ public class ToolMenu extends JPanel {
 		};
 		contentComp.setBounds(220, 55, 30, 30);
 		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
+		contentComp.setArcVisible(false, true, false, true);
 		addComp(contentComp);
           
 		contentModeComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
@@ -408,6 +415,7 @@ public class ToolMenu extends JPanel {
 		};
 		contentModeComp.setBounds(252, 55, 30, 30);
 		contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
+		contentModeComp.setArcVisible(false, true, false, true);
 		addComp(contentModeComp);
           
 		asteriskComp = new TextComp("", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
@@ -454,6 +462,7 @@ public class ToolMenu extends JPanel {
 		};
 		structureComp.setBounds(316, 55, 30, 30);
 		structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
+		structureComp.setArcVisible(true, false, true, false);
 		addComp(structureComp);
           
 		operateComp = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
@@ -482,6 +491,7 @@ public class ToolMenu extends JPanel {
 		};
 		operateComp.setBounds(348, 55, 30, 30);
 		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
+		operateComp.setArcVisible(true, false, true, false);
 		addComp(operateComp);
          
 		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
@@ -514,6 +524,7 @@ public class ToolMenu extends JPanel {
 		});
 		shellComp.setFont(omega.settings.Screen.PX16);
 		shellComp.setBounds(392, 55, 60, 30);
+		shellComp.setArcVisible(false, true, false, true);
 		add(shellComp);
           
 		sep5 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
@@ -541,6 +552,8 @@ public class ToolMenu extends JPanel {
 		putPostAnimationLayer(openFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 		putPostAnimationLayer(newProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 		putPostAnimationLayer(newFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(runComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putPostAnimationLayer(buildComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 		putPostAnimationLayer(shellComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 	}
      

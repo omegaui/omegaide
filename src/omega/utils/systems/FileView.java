@@ -92,12 +92,14 @@ public class FileView extends View {
 	
 	public void setProjectPath(String path) {
 		if(projectPath != null) {
-			if(projectPath.equals(path))
+			if(projectPath.equals(path)){
 				return;
+			}
 		}
           if(projectPath != null){
-               if(getScreen().getToolMenu().hidden)
+               if(getScreen().getToolMenu().hidden) {
                     getScreen().getToolMenu().structureComp.doClick();
+               }
           }
 		new Thread(()->Screen.addAndSaveRecents(path)).start();
 		projectPath = path;
@@ -145,7 +147,7 @@ public class FileView extends View {
 	}
 
 	public void saveAll() {
-		if(projectManager != null){
+		if(projectManager != null) {
 			projectManager.save();
                if(projectManager.non_java){
                     argumentManager.save();
@@ -184,6 +186,7 @@ public class FileView extends View {
 		saveAll();
 		getScreen().saveEssential();
 		getScreen().setVisible(false);
+		projectPath = null;
 		DataManager.setDefaultProjectPath("");
 		if(Screen.launcher == null)
 			Screen.launcher = new omega.launcher.Launcher();
@@ -217,7 +220,7 @@ public class FileView extends View {
      public String getProjectName() {
           if(projectPath == null)
                return "";
-          return projectPath.substring(projectPath.lastIndexOf(File.separatorChar)+1);
+          return projectPath.substring(projectPath.lastIndexOf(File.separatorChar) + 1);
      }
 
 	public static void checkDir(File file) {

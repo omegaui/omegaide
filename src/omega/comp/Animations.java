@@ -82,7 +82,7 @@ public class Animations {
 					if(comp.isDrawingImage())
 						g.fillRect(comp.getWidth()/2 - length/2, comp.getHeight()/2 + comp.h/2, length++, 3);
 					else
-						g.fillRect(comp.getWidth()/2 - length/2, comp.textY + 3, length++, 3);
+						g.fillRect(comp.alignX != -1 ? comp.textX : (comp.getWidth()/2 - length/2), comp.textY + 3, length++, 3);
 					
 					try{
 						Thread.sleep(rate);
