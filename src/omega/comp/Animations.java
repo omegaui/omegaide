@@ -99,6 +99,64 @@ public class Animations {
 			}).start();
 		};
 	}
+
+	public static AnimationLayer getImageBoxAnimationLayer(int rate){
+		return (comp)->{
+			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
+			if(animationRunning || !comp.isDrawingImage())
+				return;
+			new Thread(()->{
+				Graphics2D g = (Graphics2D)comp.getGraphics();
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				
+				comp.map.put(ANIMATION_STATE, true);
+				
+				int lengthW = 1;
+				int lengthH = 1;
+				boolean canPaint = true;
+				int width = comp.w;
+				int height = comp.h;
+				
+				g.setColor(comp.color3);
+				
+				while(canPaint){
+					if(comp.isDrawingImage()){
+						//Drawing Horizontal Layer
+						if(lengthW <= width){
+							g.fillRect(comp.getWidth()/2 - lengthW/2, comp.getHeight()/2 + comp.h/2, lengthW, 3);
+							g.fillRect(comp.getWidth()/2 - lengthW/2, comp.getHeight()/2 - comp.h/2, lengthW, 3);
+						}
+						if(lengthH <= height){
+							g.fillRect(comp.getWidth()/2 - comp.w/2, comp.getHeight()/2 - lengthH/2, 3, lengthH);
+							g.fillRect(comp.getWidth()/2 + comp.w/2, comp.getHeight()/2 - lengthH/2, 3, lengthH);
+						}
+					}
+					
+					if(lengthW > width && lengthH > height){
+						g.fillRect(comp.getWidth()/2 - lengthW/2, comp.getHeight()/2 + comp.h/2, lengthW + 2, 3);
+						canPaint = false;
+						comp.map.put(ANIMATION_STATE, false);
+						break;
+					}
+					
+					lengthH++;
+					lengthW++;
+					try{
+						Thread.sleep(rate);
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
+				g.dispose();
+				
+				if(!comp.enter)
+					comp.repaint();
+			}).start();
+		};
+	}
 	
 	public static boolean isActionApplicable(int action){
 		return action >= ACTION_MOUSE_ENTERED && action <= ACTION_MOUSE_DOUBLE_CLICKED;
