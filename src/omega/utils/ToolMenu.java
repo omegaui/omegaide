@@ -520,15 +520,7 @@ public class ToolMenu extends JPanel {
 		sep5.setBounds(457, 50, 2, 40);
 		addComp(sep5);
       
-		Color l1 = TOOLMENU_COLOR1;
-		Color l2 = c1;
-		Color l3 = c2;
-		if(!omega.utils.UIManager.isDarkMode()){
-			l1 = c1;
-			l2 = TOOLMENU_COLOR1;
-			l3 = c2;
-		}
-		themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE\'s restart", l1, l2, l3,
+		themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE\'s restart", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3,
 			()->{
 				Screen.pickTheme(DataManager.getTheme());
 				themeComp.setText(DataManager.getTheme());
@@ -537,6 +529,7 @@ public class ToolMenu extends JPanel {
 		);
 		themeComp.setFont(omega.settings.Screen.PX16);
 		themeComp.setBounds(472, 55, 60, 30);
+		themeComp.setArcVisible(true, false, true, false);
 		add(themeComp);
 
           pathBox = new ToolMenuPathBox();
@@ -549,7 +542,6 @@ public class ToolMenu extends JPanel {
 		putPostAnimationLayer(newProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 		putPostAnimationLayer(newFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 		putPostAnimationLayer(shellComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putPostAnimationLayer(themeComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 	}
      
 	public void minimize(){

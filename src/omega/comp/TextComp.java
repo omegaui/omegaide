@@ -24,6 +24,10 @@ import javax.swing.*;
 public class TextComp extends JComponent{
 	public volatile boolean enter;
 	public volatile boolean press;
+	public volatile boolean topLeftArcVisible = true;
+	public volatile boolean bottomLeftArcVisible = true;
+	public volatile boolean topRightArcVisible = true;
+	public volatile boolean bottomRightArcVisible = true;
 	private volatile boolean clickable = true;
 	private volatile boolean paintGradientEnabled = false;
 	
@@ -274,6 +278,13 @@ public class TextComp extends JComponent{
 		this.postAnimationLayer = postAnimationLayer;
 	}
 	
+	public void setArcVisible(boolean arc1, boolean arc2, boolean arc3, boolean arc4){
+		topLeftArcVisible = arc1;
+		topRightArcVisible = arc2;
+		bottomRightArcVisible = arc3;
+		bottomLeftArcVisible = arc4;
+		repaint();
+	}
 	
 	@Override
 	public void paint(Graphics graphics){
@@ -304,6 +315,7 @@ public class TextComp extends JComponent{
 			g.setColor(color2);
 		
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
+		paintArc(g);
 		
 		if(enter || !clickable) paintEnter(g);
 		
@@ -337,6 +349,10 @@ public class TextComp extends JComponent{
 			return;
 		g.setColor(color1);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
+		g.setColor(Color.WHITE);
+		paintArc(g);
+		g.setColor(color1);
+		paintArc(g);
 	}
 	
 	public void paintPress(Graphics2D g){
@@ -344,6 +360,18 @@ public class TextComp extends JComponent{
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		g.setColor(color2);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
+		paintArc(g);
+	}
+	
+	public void paintArc(Graphics2D g){
+		if(!topLeftArcVisible)
+			g.fillRect(0, 0, arcX, arcY);
+		if(!bottomLeftArcVisible)
+			g.fillRect(0, getHeight() - arcY, arcX, arcY);
+		if(!topRightArcVisible)
+			g.fillRect(getWidth() - arcX, 0, arcX, arcY);
+		if(!bottomRightArcVisible)
+			g.fillRect(getWidth() - arcX, getHeight() - arcY, arcX, arcY);
 	}
 	
 	public LinkedList<Object> getExtras(){
