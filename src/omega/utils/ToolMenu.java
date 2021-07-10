@@ -16,47 +16,38 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
-import omega.instant.support.build.gradle.*;
-import omega.instant.support.universal.*;
-import omega.instant.support.build.gradle.GradleModuleWizard;
-import omega.instant.support.build.gradle.GradleProcessManager;
-import omega.instant.support.universal.UniversalProjectWizard;
-import omega.instant.support.java.ProjectWizard;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import omega.popup.OPopupWindow;
-import omega.utils.IconManager;
+import java.awt.event.MouseEvent;
+import java.awt.Point;
 import omega.Screen;
+import java.awt.RenderingHints;
+import javax.swing.JComponent;
+import java.awt.Graphics;
+import java.awt.Component;
+import javax.swing.JFileChooser;
 import omega.gset.Generator;
 import java.net.URL;
 import java.awt.Desktop;
+import java.io.File;
+import java.awt.Font;
+import omega.instant.support.build.gradle.GradleProcessManager;
 import omega.framework.CodeFramework;
+import java.awt.Menu;
+import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+import java.awt.event.MouseAdapter;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
+import omega.instant.support.build.gradle.GradleBuildScriptManager;
+import omega.instant.support.universal.UniversalProjectWizard;
+import omega.instant.support.build.gradle.GradleModuleWizard;
+import omega.instant.support.universal.ProcessWizard;
+import omega.instant.support.java.ProjectWizard;
 import omega.comp.TextComp;
 import omega.popup.OPopupItem;
-import java.awt.Panel;
-import java.awt.Menu;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import omega.popup.OPopupWindow;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.filechooser.FileFilter;
 import static omega.utils.UIManager.*;
 import static omega.settings.Screen.*;
 import static omega.utils.IconManager.*;
@@ -263,7 +254,7 @@ public class ToolMenu extends JPanel {
 		fileMenu.setBounds(0, 30, 60, 20);
 		addComp(fileMenu);
           
-		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(200);
+		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
 		initProjectPopup();
 		Menu projectMenu = new Menu(projectPopup, "Project");
 		projectMenu.setBounds(60, 30, 60, 20);
@@ -688,7 +679,9 @@ public class ToolMenu extends JPanel {
 			Screen.getFileView().getDependencyView().setVisible(true);
 			Screen.getFileView().getDependencyView().setView(3);
 		})
-		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload());
+		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload())
+          .createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
+          .createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true));
 	}
 	private void initFilePopup() {
 		//New Menu Items

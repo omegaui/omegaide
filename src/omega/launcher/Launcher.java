@@ -152,8 +152,7 @@ public class Launcher extends JFrame{
 			TextComp comp = new TextComp(file.getName(), file.getAbsolutePath(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 				setVisible(false);
 				Screen.getScreen().loadProject(file);
-				})
-			{
+				}) {
 				@Override
 				public void draw(Graphics2D g){
 					g.drawImage(IconManager.fluentfolderImage, 5, getHeight()/2 - 25/2, 25, 25, this);
