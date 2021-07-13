@@ -674,10 +674,9 @@ public class ToolMenu extends JPanel {
 	}
 	private void initProjectPopup() {
 		JFileChooser fileC = new JFileChooser();
-		projectPopup.createItem("Manage Class-Path", IconManager.projectImage, ()->Screen.getFileView().getDependencyView().setVisible(true))
-		.createItem("Manage Module-Path", IconManager.projectImage, ()->{
-			Screen.getFileView().getDependencyView().setVisible(true);
-			Screen.getFileView().getDependencyView().setView(3);
+		projectPopup.createItem("Manage Build-Path", IconManager.projectImage, ()->Screen.getFileView().getDependencyView().setVisible(true))
+		.createItem("Add Additional Flags", IconManager.projectImage, ()->{
+			Screen.getFileView().getExtendedDependencyView().setVisible(true);
 		})
 		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload())
           .createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)

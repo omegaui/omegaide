@@ -17,26 +17,17 @@
 */
 
 package omega.utils.systems;
-import omega.utils.FileSelectionDialog;
+import omega.*;
+import omega.launcher.*;
 import java.util.*;
-import omega.utils.BuildPathManager;
-import omega.jdk.JDKManager;
-import omega.instant.support.ArgumentManager;
-import omega.launcher.Launcher;
-import javax.swing.JOptionPane;
-
-import java.awt.FlowLayout;
-import java.io.File;
-
-import javax.swing.JFileChooser;
-
-import omega.deassembler.Assembly;
-import omega.Screen;
-import omega.utils.DataManager;
-import omega.utils.ProjectDataBase;
-import omega.utils.UIManager;
-import omega.utils.systems.creators.FileCreator;
-import omega.search.SearchWindow;
+import omega.deassembler.*;
+import java.io.*;
+import java.awt.*;
+import omega.jdk.*;
+import omega.search.*;
+import omega.utils.systems.creators.*;
+import omega.instant.support.*;
+import omega.utils.*;
 
 public class FileView extends View {
 
@@ -45,12 +36,14 @@ public class FileView extends View {
      private ArgumentManager argumentManager;
 	private FileCreator fileCreator;
      private BuildPathManager dependencyView;
+     private ExtendedBuildPathManager extendedDependencyView;
 	private SearchWindow searchWindow;
      private JDKManager jdkManager;
 
 	public FileView(String title, Screen window) {
 		super(title, window);
 		dependencyView = new BuildPathManager(window);
+		extendedDependencyView = new ExtendedBuildPathManager(window);
 		searchWindow = new SearchWindow(window);
 		setLayout(new FlowLayout());
 		init();
@@ -207,6 +200,10 @@ public class FileView extends View {
 
      public BuildPathManager getDependencyView() {
           return dependencyView;
+     }
+     
+     public ExtendedBuildPathManager getExtendedDependencyView() {
+          return extendedDependencyView;
      }
 
      public ArgumentManager getArgumentManager() {

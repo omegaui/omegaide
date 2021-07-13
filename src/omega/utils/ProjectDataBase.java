@@ -41,6 +41,8 @@ public class ProjectDataBase extends DataBase{
      public LinkedList<String> natives = new LinkedList<>();
      public LinkedList<String> resourceRoots = new LinkedList<>();
      public LinkedList<String> modules = new LinkedList<>();
+     public LinkedList<String> compileTimeFlags = new LinkedList<>();
+     public LinkedList<String> runTimeFlags = new LinkedList<>();
 
      public ProjectDataBase() {
           super(Screen.getFileView().getProjectPath() + File.separator + ".projectInfo");
@@ -69,6 +71,8 @@ public class ProjectDataBase extends DataBase{
           LinkedList<DataEntry> natives = getEntries("Project Classpath : Required Native Libraries");
           LinkedList<DataEntry> resourceRoots = getEntries("Project Classpath : Required Resource Roots");
           LinkedList<DataEntry> modules = getEntries("Project Classpath : Required Modules");
+          LinkedList<DataEntry> compileTimeFlags = getEntries("Flags : Compile Time");
+          LinkedList<DataEntry> runTimeFlags = getEntries("Flags : Run Time");
           
           if(mainEditors != null){
              for(DataEntry e : mainEditors) {
@@ -133,6 +137,16 @@ public class ProjectDataBase extends DataBase{
                          this.modules.add(value);
                }
           }
+          if(compileTimeFlags != null){
+          	compileTimeFlags.forEach(entry->{
+          		this.compileTimeFlags.add(entry.getValue());
+          	});
+          }
+          if(runTimeFlags != null){
+          	runTimeFlags.forEach(entry->{
+          		this.runTimeFlags.add(entry.getValue());
+          	});
+          }
 	}
 
 	@Override
@@ -170,6 +184,12 @@ public class ProjectDataBase extends DataBase{
           modules.forEach(path->{
                addEntry("Project Classpath : Required Modules", genProjectRootPath(path));
           });
+          Screen.getFileView().getExtendedDependencyView().getCompileTimeFlags().forEach(flag->{
+          	addEntry("Flags : Compile Time", flag);
+     	});
+          Screen.getFileView().getExtendedDependencyView().getRunTimeFlags().forEach(flag->{
+          	addEntry("Flags : Run Time", flag);
+     	});
 		super.save();
 	}
 

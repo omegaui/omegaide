@@ -89,7 +89,7 @@ public class RTextField extends JTextField{
                Graphics2D g2d = (Graphics2D)g;
                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-               g2d.setColor(getForeground());
+               g2d.setColor(color1);
                g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arcX, arcY);
                g2d.drawString(hint, getWidth()/2 - g2d.getFontMetrics().stringWidth(hint)/2, 
                     getHeight()/2 - g2d.getFontMetrics().getHeight()/2 + g2d.getFontMetrics().getAscent() - g2d.getFontMetrics().getDescent() + 1);
@@ -100,7 +100,7 @@ public class RTextField extends JTextField{
      	return !(getText().equals(hint) || getText().equals(pressHint) || getText().equals(""));
      }
 	protected void paintBorder(Graphics g) {
-		g.setColor(getForeground());
+		g.setColor(!getText().equals(hint) ? getForeground() : color1);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arcX, arcY);
 	}
 	public boolean contains(int x, int y) {
