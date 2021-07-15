@@ -115,7 +115,7 @@ public class ExtendedBuildPathManager extends JDialog {
 	}
 
 	public LinkedList<String> getRunTimeFlags(){
-		return compilePanel.getFlags();
+		return runPanel.getFlags();
 	}
 
 	@Override
@@ -126,4 +126,21 @@ public class ExtendedBuildPathManager extends JDialog {
 		}
 	     super.setVisible(value);
 	}
+
+	@Override
+	public void dispose(){
+		try{
+			Screen.getFileView().getProjectManager().compileTimeFlags.clear();
+			Screen.getFileView().getProjectManager().runTimeFlags.clear();
+			
+			getCompileTimeFlags().forEach(Screen.getFileView().getProjectManager().compileTimeFlags::add);
+			getRunTimeFlags().forEach(Screen.getFileView().getProjectManager().runTimeFlags::add);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		super.dispose();
+	}
+
+	
 }

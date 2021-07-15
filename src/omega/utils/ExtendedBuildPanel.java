@@ -42,20 +42,19 @@ public class ExtendedBuildPanel extends JPanel{
 	}
 	
 	public void init(){
-		flagComp = new TextComp("Add a Flag Box", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::addFlagBox);
+		flagComp = new TextComp("Add an Agrument", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::addFlagBox);
 		flagComp.setBounds(extendedBuildPathManager.getWidth()/2 - extendedBuildPathManager.getWidth()/4, 10, extendedBuildPathManager.getWidth()/2, 25);
 		flagComp.setFont(PX14);
 		add(flagComp);
 
-		scrollPane = new JScrollPane(panel = new FlexPanel(null, c2, TOOLMENU_GRADIENT));
+		scrollPane = new JScrollPane(panel = new FlexPanel(null, c2, null));
 		scrollPane.setBounds(0, 40, extendedBuildPathManager.getWidth(), extendedBuildPathManager.getHeight() - 70 - 40);
-		panel.setPaintGradientEnabled(true);
 		panel.setArc(0, 0);
 		add(scrollPane);
 	}
 	
 	public void addFlagBox(){
-		RTextField flagField = new RTextField("Flag", "--", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+		RTextField flagField = new RTextField("Flag", "--", TOOLMENU_COLOR3, c2, glow);
 		flagField.setBounds(0, block, extendedBuildPathManager.getWidth(), 25);
 		flagField.setFont(PX14);
 		flagField.setArc(0, 0);
@@ -76,7 +75,7 @@ public class ExtendedBuildPanel extends JPanel{
 		block = 0;
 
 		textFlags.forEach(text->{
-			RTextField flagField = new RTextField("Flag", "--", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+			RTextField flagField = new RTextField("Flag", "--", TOOLMENU_COLOR3, c2, glow);
 			flagField.setText(text);
 			flagField.setBounds(0, block, extendedBuildPathManager.getWidth(), 25);
 			flagField.setFont(PX14);

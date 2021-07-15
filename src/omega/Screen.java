@@ -653,8 +653,13 @@ public class Screen extends JFrame {
 		saveAllEditors();
 		hideNotif();
 	}
+	
 	public static boolean onWindows(){
 		return File.pathSeparator.equals(";");
+	}
+
+	public synchronized static boolean isNotNull(String text){
+		return text != null && !text.equals("");
 	}
 	
 	public static void main(String[] args){

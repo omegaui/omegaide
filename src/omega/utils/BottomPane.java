@@ -62,7 +62,7 @@ public class BottomPane extends JPanel {
 		});
 		add(messageComp);
 
-          jumpField = new RTextField("Goto Line", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+          jumpField = new RTextField("Goto Line", "", TOOLMENU_COLOR2, c2, glow);
           jumpField.setFont(PX14);
           jumpField.setArc(0, 0);
           jumpField.addActionListener((e)->{
