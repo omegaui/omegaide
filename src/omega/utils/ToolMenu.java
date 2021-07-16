@@ -16,6 +16,7 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import java.util.LinkedList;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
@@ -69,6 +70,9 @@ public class ToolMenu extends JPanel {
 	public static OPopupWindow allProjectsPopup;
 	public static OPopupItem allMenu;
 	public static OPopupItem typeItem;
+	public static OPopupItem allSettingsItem;
+	public static OPopupItem jdkItem;
+	public static OPopupItem jdkRootItem;
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
 	public TextComp newProjectComp;
@@ -609,7 +613,17 @@ public class ToolMenu extends JPanel {
                sep5.setBounds(457, 50, 2, 40);
                themeComp.setBounds(472, 55, 60, 30);
           }
+          reloadItems(non_java);
           repaint();
+     }
+     public void reloadItems(boolean non_java){
+          jdkItem.setEnabled(!non_java);
+		jdkRootItem.setToolTipText(DataManager.getPathToJava());
+          allSettingsItem.setEnabled(non_java);
+		if(Screen.getFileView().getJDKManager() != null)
+			jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
+		else
+			jdkItem.setName("Project JDK : None");
      }
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
@@ -626,6 +640,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Set Gradle Script", IconManager.fluentbuildImage, ()->{
 			gradleBuildScriptManager.setVisible(true);
 		});
+		
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
 		typeItem.setAction(()->{
 			omega.Screen.getFileView().getProjectManager().non_java = !omega.Screen.getFileView().getProjectManager().non_java;
@@ -634,18 +649,42 @@ public class ToolMenu extends JPanel {
 			omega.Screen.getFileView().getProjectManager().save();
 			typeItem.setToolTipText("Please Relaunch the IDE");
 		});
-		setPopup.addItem(typeItem);
+
+		SDKSelector sdkSelector = new SDKSelector(screen);
 		
-		setPopup.createItem("All Settings", IconManager.settingsImage, ()->{
-               if(GradleProcessManager.isGradleProject()){
+		jdkItem = new OPopupItem(setPopup, "Project JDK : None", IconManager.fluentsourceImage, ()->{
+			sdkSelector.setVisible(true);
+			String sel = sdkSelector.getSelection();
+			if(Screen.isNotNull(sel)) {
+				Screen.getFileView().getProjectManager().setJDKPath(sel);
+				jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
+			}
+		});
+
+		FileSelectionDialog fs = new FileSelectionDialog(screen);
+		fs.setTitle("Select JDK Root");
+		
+		jdkRootItem = new OPopupItem(setPopup, "Set JDK Root", IconManager.fluentsourceImage, ()->{
+			LinkedList<File> files = fs.selectDirectories();
+			if(!files.isEmpty()){
+				DataManager.setPathToJava(files.get(0).getAbsolutePath());
+				jdkRootItem.setToolTipText(DataManager.getPathToJava());
+			}
+		});
+		
+		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{
+               if(GradleProcessManager.isGradleProject()) {
                     Screen.getScreen().loadFile(new File(Screen.getFileView().getProjectPath(), "settings.gradle"));
                     return;
                }
 			if(Screen.getFileView().getProjectManager().non_java)
 				Screen.getUniversalSettingsView().setVisible(true);
-			else
-				Screen.getSettingsView().setVisible(true);
 		});
+		
+		setPopup.addItem(typeItem);
+		setPopup.addItem(jdkItem);
+		setPopup.addItem(jdkRootItem);
+		setPopup.addItem(allSettingsItem);
 	}
 	private void initHelpMenu() {
 		helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.fluentyoutubeImage, ()->{
@@ -773,8 +812,7 @@ public class ToolMenu extends JPanel {
 		add(c);
 	}
      
-	public void deleteDir(File file) throws Exception
-	{
+	public void deleteDir(File file) throws Exception {
 		if (file.isDirectory())
 			{
 			/*

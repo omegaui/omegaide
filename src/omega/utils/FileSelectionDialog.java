@@ -225,7 +225,9 @@ public class FileSelectionDialog extends JDialog{
           panel.setPreferredSize(new Dimension(490, 290));
      }
 
+	@Override
      public void setTitle(String title){
+     	super.setTitle(title);
           titleComp.setText(title);
      }
 
