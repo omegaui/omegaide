@@ -69,7 +69,7 @@ public class Startup extends JDialog {
 	public void init(){
 		closeBtn = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
 		closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
-		closeBtn.setFont(omega.settings.Screen.PX18);
+		closeBtn.setFont(PX18);
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
       
@@ -79,7 +79,7 @@ public class Startup extends JDialog {
 		
 		textArea.setBackground(c2);
 		textArea.setForeground(TOOLMENU_COLOR3);
-		textArea.setFont(omega.settings.Screen.PX18);
+		textArea.setFont(PX18);
 		textArea.setCaretPosition(0);
 		textArea.setEditable(false);
 		add(scrollPane);
@@ -94,7 +94,7 @@ public class Startup extends JDialog {
 	          }
 		});
 		acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
-		acceptComp.setFont(omega.settings.Screen.PX16);
+		acceptComp.setFont(PX16);
 		add(acceptComp);
           
 	     TextComp imageComp = new TextComp(image, 64, 64, c2, c2, c2, null);
@@ -105,14 +105,14 @@ public class Startup extends JDialog {
 		TextComp textComp = new TextComp("Omega IDE", c2, TOOLMENU_COLOR1, TOOLMENU_COLOR1, null);
 		textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
 		textComp.setClickable(false);
-		textComp.setFont(omega.settings.Screen.PX28);
+		textComp.setFont(PX28);
 		textComp.setArc(0, 0);
 		add(textComp);
 		
 		TextComp licComp = new TextComp("license agreement", c2, TOOLMENU_COLOR2, TOOLMENU_COLOR2, ()->{});
 		licComp.setBounds(getWidth()/2 - 150, 50, 300, 30);
 		licComp.setClickable(false);
-		licComp.setFont(omega.settings.Screen.PX18);
+		licComp.setFont(PX18);
 		licComp.setArc(0, 0);
 		add(licComp);
 	}

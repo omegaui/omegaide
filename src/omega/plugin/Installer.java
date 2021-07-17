@@ -26,7 +26,6 @@ import java.awt.image.*;
 import java.awt.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class Installer extends JDialog {
 	private Updater updater;
 	

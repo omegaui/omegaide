@@ -19,7 +19,6 @@
 package omega.utils;
 import javax.swing.*;
 import omega.*;
-import omega.settings.*;
 import java.io.*;
 import java.awt.image.*;
 import omega.comp.*;
@@ -29,7 +28,6 @@ import java.util.*;
 import java.awt.event.*;
 import java.awt.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 import static omega.comp.Animations.*;
 
 public class TabComp extends JComponent {

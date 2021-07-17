@@ -775,7 +775,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			textArea.setAutoscrolls(true);
 			textArea.setHighlightCurrentLine(false);
 			UIManager.setData(textArea);
-			textArea.setFont(omega.settings.Screen.PX16);
+			textArea.setFont(omega.utils.UIManager.PX16);
 			JScrollPane p = new JScrollPane(textArea);
 			p.setAutoscrolls(true);
 			add(p, BorderLayout.CENTER);

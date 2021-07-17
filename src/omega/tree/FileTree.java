@@ -40,21 +40,28 @@ import javax.swing.JScrollPane;
 import omega.utils.systems.creators.*;
 public class FileTree extends JComponent{
 	private File root;
+	
 	private LinkedList<Branch> branches = new LinkedList<>();
 	private LinkedList<File> expandedRoots = new LinkedList<>();
+	
 	private JPanel panel;
+	
 	private int layoutX = -Branch.OPTIMAL_HEIGHT;
 	private int layoutY = 0;
-	public JScrollPane scrollPane;
 	private int maxW = 300;
 	private int max = 0;
 	private int pointer;
-     private Branch pressedBranch;
-     private BufferedImage image;
      private int mouseX;
      private int mouseY;
      private int mousePX;
      private int mousePY;
+	
+	public JScrollPane scrollPane;
+     
+     private Branch pressedBranch;
+     
+     private BufferedImage image;
+     
      private volatile boolean dragging;
      private volatile boolean loopRunning;
 

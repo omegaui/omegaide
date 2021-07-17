@@ -27,7 +27,6 @@ import java.util.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 
 public class FileSelectionDialog extends JDialog{
 

@@ -31,7 +31,6 @@ import java.awt.Color;
 import omega.comp.TextComp;
 import java.util.LinkedList;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class BuildPathManager extends JDialog {
 	private LinkedList<TextComp> jarComps = new LinkedList<>();
 	private LinkedList<TextComp> nativeComps = new LinkedList<>();

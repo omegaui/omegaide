@@ -25,7 +25,6 @@ import java.util.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class ProcessWizard extends JDialog{
 	private ProcessManager processManager;
 	private TextComp titleComp;

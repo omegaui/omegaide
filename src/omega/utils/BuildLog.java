@@ -42,7 +42,6 @@ import javax.swing.JScrollPane;
 import java.awt.Color;
 import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class BuildLog extends JPanel {
 	private LinkedList<TextComp> fileComps = new LinkedList<>();
 	private TextComp headComp;

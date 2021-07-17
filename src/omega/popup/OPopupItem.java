@@ -28,7 +28,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class OPopupItem extends JComponent{
 	private String name;
 	private Runnable run;

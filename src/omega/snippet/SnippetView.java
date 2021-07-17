@@ -48,7 +48,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import static omega.utils.UIManager.*;
 public class SnippetView extends JDialog {
-	private static final Font FONT = new Font("Ubuntu Mono", Font.BOLD, 16);
+	private static final Font FONT = PX16;
 	private RSyntaxTextArea textArea;
 	private JTextField textField;
 	private LinkedList<Door> doors = new LinkedList<>();

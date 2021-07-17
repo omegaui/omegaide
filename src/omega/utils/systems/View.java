@@ -71,4 +71,3 @@ public abstract class View extends JDialog {
 		super.setVisible(value);
 	}
 }
-

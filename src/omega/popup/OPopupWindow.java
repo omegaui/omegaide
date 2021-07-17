@@ -119,18 +119,21 @@ public class OPopupWindow extends JDialog{
                if(items.isEmpty()) 
                     return;
                
-               if(scrollable)
-                    panel.setPreferredSize(new Dimension(getWidth() - 15, items.size() * 32));
-               else
-                    setSize(getWidth(), (items.size() * HEIGHT));
-                    
                y = 0;
-               items.forEach(item->{
-                    item.setBounds(0, y, getWidth(), HEIGHT);
-                    y += HEIGHT;
+               items.forEach((item)->{
+               	if(item.isEnabled()) { 
+	                    item.setBounds(0, y, getWidth(), HEIGHT);
+	                    y += HEIGHT;
+               	}
+               	item.setVisible(item.isEnabled());
                });
-               if(scrollable)
+               
+               if(scrollable){
+                    panel.setPreferredSize(new Dimension(getWidth() - 15, y));
                     scrollPane.repaint();
+               }
+               else
+                    setSize(getWidth(), y);
 
                int dy = getY() + getHeight() - (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
                int dx = getX() + getWidth() - (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -148,7 +151,12 @@ public class OPopupWindow extends JDialog{
                     if(animaTime <= 0) return;
                     items.forEach(i->{
                          i.setEnter(true);
-                         try{Thread.sleep(animaTime);}catch(Exception e){}
+                         try{
+                         	Thread.sleep(animaTime);
+                         }
+                         catch(Exception e){
+                         	
+                    	}
                          i.setEnter(false);
                     });
                }).start();

@@ -93,7 +93,6 @@ public class Screen extends JFrame {
 	private static RecentsManager recentsManager;
 	private static ErrorHighlighter errorHighlighter;
 	private static ProjectView projectView;
-	private static omega.settings.Screen settings;
 	private static UniversalSettingsWizard universalSettings;
 	private static PluginManager pluginManager;
 	private static PluginCenter pluginCenter;
@@ -131,9 +130,9 @@ public class Screen extends JFrame {
 				javax.swing.UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
 				javax.swing.UIManager.put("Label.background", new ColorUIResource(Color.WHITE));
 			}
-			javax.swing.UIManager.put("ToolTip.font", omega.settings.Screen.PX14);
-			javax.swing.UIManager.put("Button.font", omega.settings.Screen.PX14);
-			javax.swing.UIManager.put("Label.font", omega.settings.Screen.PX14);
+			javax.swing.UIManager.put("ToolTip.font", omega.utils.UIManager.PX14);
+			javax.swing.UIManager.put("Button.font", omega.utils.UIManager.PX14);
+			javax.swing.UIManager.put("Label.font", omega.utils.UIManager.PX14);
 			javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
 			javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
 			javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
@@ -256,7 +255,6 @@ public class Screen extends JFrame {
 		
 		splash.setProgress(77, "initializing");
 		fileView = new FileView("File", this);
-		settings = new omega.settings.Screen(this);
 		universalSettings = new UniversalSettingsWizard(this);
 		buildView = new BuildView("Build", this);
 		runView = new RunView("Run", this, true);
@@ -550,9 +548,6 @@ public class Screen extends JFrame {
 	}
 	public static BasicHighlight getBasicHighlight() {
 		return basicHighlight;
-	}
-	public static omega.settings.Screen getSettingsView() {
-		return settings;
 	}
 	public static UniversalSettingsWizard getUniversalSettingsView() {
 		return universalSettings;

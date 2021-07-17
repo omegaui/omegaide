@@ -34,7 +34,6 @@ import omega.comp.TextComp;
 import javax.swing.JFrame;
 
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class ProjectWizard extends JDialog{
      private TextComp titleComp;
      private TextComp projectNameLabel;

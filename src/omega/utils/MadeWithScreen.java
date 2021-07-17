@@ -31,7 +31,6 @@ import java.awt.Color;
 import omega.comp.FlexPanel;
 import javax.swing.JFrame;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class MadeWithScreen extends JDialog{
      private TextComp rImageComp;
      private TextComp rLinkComp;

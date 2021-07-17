@@ -47,7 +47,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class SearchWindow extends JDialog{
 	private JPanel panel;
 	private JScrollPane scrollPane;

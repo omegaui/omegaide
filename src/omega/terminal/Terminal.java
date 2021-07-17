@@ -24,7 +24,6 @@ import java.awt.*;
 import javax.swing.*;
 import org.fife.ui.rsyntaxtextarea.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class Terminal extends JPanel {
 	public static String shell = File.pathSeparator.equals(":") ? "sh" : "cmd";
 	private String lastText;

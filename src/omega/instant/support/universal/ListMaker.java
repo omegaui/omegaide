@@ -24,7 +24,6 @@ import omega.utils.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class ListMaker extends JComponent {
      public NoCaretField extField;
      public NoCaretField containerField;

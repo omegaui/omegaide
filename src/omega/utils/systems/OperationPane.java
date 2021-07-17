@@ -38,6 +38,8 @@ import javax.swing.JTabbedPane;
 import omega.Screen;
 import omega.utils.UIManager;
 
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class OperationPane extends JPanel{
 
 	private Screen screen;
@@ -142,7 +144,7 @@ public class OperationPane extends JPanel{
                g.setColor(omega.utils.UIManager.c2);
                g.fillRect(0, 0, getWidth(), getHeight());
                g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
-               g.setFont(omega.settings.Screen.PX28);
+               g.setFont(PX28);
                FontMetrics f = g.getFontMetrics();
                g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
                g.drawString(HINT, getWidth()/2 - f.stringWidth(HINT)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());

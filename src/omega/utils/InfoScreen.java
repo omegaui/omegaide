@@ -25,7 +25,6 @@ import java.awt.image.*;
 import java.awt.*;
 import javax.swing.*;
 
-import static omega.settings.Screen.*;
 import static omega.utils.UIManager.*;
 public class InfoScreen extends JDialog {
 

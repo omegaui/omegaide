@@ -24,7 +24,6 @@ import omega.comp.*;
 import java.awt.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class FileSaveDialog extends JDialog{
 	private NoCaretField nameField;
 	private TextComp dirComp;

@@ -30,8 +30,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JDialog;
-
-import static omega.settings.Screen.*;
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class ThemePicker extends JDialog {
      private Color c1 = new Color(126, 20, 219, 40);
      private Color c2 = Color.WHITE;

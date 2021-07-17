@@ -23,7 +23,6 @@ import omega.comp.*;
 import javax.swing.*;
 
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class ChoiceDialog extends JDialog{
      private TextComp headerComp;
      private TextComp choice1Comp;

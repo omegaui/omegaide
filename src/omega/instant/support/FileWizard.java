@@ -40,7 +40,6 @@ import omega.comp.TextComp;
 import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 
 public class FileWizard extends JDialog{
 	public TextComp parentRoot;

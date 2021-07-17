@@ -800,7 +800,7 @@ public class RunView extends View {
 			inputField.setCaretColor(omega.utils.UIManager.glow);
 			inputField.setBackground(omega.utils.UIManager.c2);
 			inputField.setForeground(omega.utils.UIManager.glow);
-			inputField.setFont(omega.settings.Screen.PX16);
+			inputField.setFont(omega.utils.UIManager.PX16);
 			add(inputField, BorderLayout.SOUTH);
 			comps.add(inputField);
 			
@@ -825,17 +825,17 @@ public class RunView extends View {
 				Dimension size = new Dimension(30, 30);
 				
 				TextComp runComp = new TextComp(IconManager.fluentrunImage, 25, 25, "Re-Run", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
-				runComp.setFont(omega.settings.Screen.PX18);
+				runComp.setFont(omega.utils.UIManager.PX18);
 				runComp.setPreferredSize(size);
 				add(runComp);
 				
 				TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
-				clrComp.setFont(omega.settings.Screen.PX18);
+				clrComp.setFont(omega.utils.UIManager.PX18);
 				clrComp.setPreferredSize(size);
 				add(clrComp);
 				
 				TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
-				terComp.setFont(omega.settings.Screen.PX18);
+				terComp.setFont(omega.utils.UIManager.PX18);
 				terComp.setPreferredSize(size);
 				add(terComp);
 			}

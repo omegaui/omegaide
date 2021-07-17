@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import omega.comp.FlexPanel;
 import javax.swing.JFrame;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class Launcher extends JFrame{
 	
 	private FlexPanel leftPanel;

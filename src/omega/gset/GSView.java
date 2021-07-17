@@ -32,7 +32,7 @@ import omega.comp.TextComp;
 import java.util.LinkedList;
 import javax.swing.JDialog;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
+import static omega.comp.Animations.*;
 public class GSView extends JDialog{
 	private int mouseX;
 	private int mouseY;

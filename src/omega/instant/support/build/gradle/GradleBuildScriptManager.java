@@ -4,7 +4,6 @@ import omega.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class GradleBuildScriptManager extends JDialog{
 	private TextComp titleComp;
 	private TextComp cancelComp;

@@ -28,7 +28,6 @@ import java.awt.Dimension;
 
 import static omega.utils.UIManager.*;
 import static omega.utils.IconManager.*;
-import static omega.settings.Screen.*;
 public class SideMenu extends JPanel {
      private Screen screen;
 

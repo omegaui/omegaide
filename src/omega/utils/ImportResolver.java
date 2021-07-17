@@ -24,8 +24,8 @@ import java.awt.event.*;
 import omega.comp.*;
 import java.util.*;
 import javax.swing.*;
-import static omega.settings.Screen.*;
 import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class ImportResolver extends JDialog {
 	private JScrollPane scrollPane;
 	private LinkedList<TextComp> comps = new LinkedList<>();

@@ -109,7 +109,7 @@ public class IconManager {
           g.setColor(TOOLMENU_COLOR4);
           g.fillRoundRect(0, 0, 16, 16, 5, 5);
           g.setColor(getForeground());
-          g.setFont(omega.settings.Screen.PX16);
+          g.setFont(PX16);
      	g.drawString(ch, 8 - g.getFontMetrics().stringWidth(ch)/2, (16 - g.getFontMetrics().getHeight())/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
      }
 

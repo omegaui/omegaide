@@ -35,8 +35,8 @@ public class Door extends JComponent{
 		this.path = path;
 		this.name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 		this.parent = path.substring(0, path.lastIndexOf(File.separatorChar));
-		this.parent = "<"+this.parent.substring(parent.lastIndexOf(File.separatorChar) + 1)+">";
-		setFont(new Font("Ubuntu Mono", Font.BOLD, 16));
+		this.parent = "<" + this.parent.substring(parent.lastIndexOf(File.separatorChar) + 1) + ">";
+		setFont(PX16);
           setBackground(c2);
           setForeground(c3);
 		addMouseListener(new MouseAdapter(){

@@ -25,7 +25,6 @@ import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class BuildPanel extends JPanel{
 	private JScrollPane scrollPane;
 	private JPanel panel;

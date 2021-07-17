@@ -27,8 +27,6 @@ import omega.database.DataBase;
 import omega.database.DataEntry;
 
 public class ProjectDataBase extends DataBase{
-	public String compile_time_args;
-	public String run_time_args;
 	public String jdkPath;
 	public String mainClass;
 	public static final String PROJECT_ROOT = "project-root$";
@@ -51,8 +49,6 @@ public class ProjectDataBase extends DataBase{
 
 	public void load() {
 		jdkPath = getEntryAt("JDK Path", 0) != null ? getEntryAt("JDK Path", 0).getValue() : null;
-		compile_time_args = getEntryAt("Compile_Time", 0) != null ? getEntryAt("Compile_Time", 0).getValue() : "";
-		run_time_args = getEntryAt("Run_Time", 0) != null ? getEntryAt("Run_Time", 0).getValue() : "";
 		mainClass = getEntryAt("Main Class", 0) != null ? getEntryAt("Main Class", 0).getValue() : "";
           non_java = getEntryAt("Non-Java Project", 0) != null ? getEntryAt("Non-Java Project", 0).getValueAsBoolean() : false;
           if(!non_java) {
@@ -153,8 +149,6 @@ public class ProjectDataBase extends DataBase{
 	public void save() {
 		clear();
 		addEntry("JDK Path", jdkPath);
-		addEntry("Compile_Time", compile_time_args);
-		addEntry("Run_Time", run_time_args);
 		addEntry("Main Class", Screen.getRunView().mainClass != null ? Screen.getRunView().mainClass : "");
           addEntry("Non-Java Project", String.valueOf(non_java));
           Screen.getFileView().getScreen().getTabPanel().getEditors().forEach(editor->{

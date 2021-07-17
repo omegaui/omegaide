@@ -26,7 +26,6 @@ import omega.comp.*;
 import java.awt.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class PluginCenter extends JDialog{
 	private int pressX;
 	private int pressY;

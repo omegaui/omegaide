@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import javax.swing.JDialog;
 import omega.gset.OverView;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class OverView extends JDialog{
      private int mouseX;
      private int mouseY;
@@ -63,13 +62,13 @@ public class OverView extends JDialog{
           
           TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(0, 0, 30, 30);
-          closeComp.setFont(omega.settings.Screen.PX16);
+          closeComp.setFont(PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
           TextComp titleComp = new TextComp("Override/Implement Methods", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
           titleComp.setBounds(30, 0, getWidth() - 30, 30);
-          titleComp.setFont(omega.settings.Screen.PX18);
+          titleComp.setFont(PX18);
           titleComp.setClickable(false);
           titleComp.addMouseMotionListener(new MouseAdapter(){
                @Override
@@ -89,7 +88,7 @@ public class OverView extends JDialog{
 
           TextComp genComp = new TextComp("Implement", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::generate);
           genComp.setBounds(0, getHeight() - 60, getWidth(), 30);
-          genComp.setFont(omega.settings.Screen.PX16);
+          genComp.setFont(PX16);
           genComp.setArc(0, 0);
           add(genComp);
           
@@ -189,7 +188,7 @@ public class OverView extends JDialog{
                               textComp.setBounds(0, y, getWidth(), 30);
                               textComp.setArc(0, 0);
                               textComp.alignX = 5;
-                              textComp.setFont(omega.settings.Screen.PX14);
+                              textComp.setFont(PX14);
                               textComp.setName(rep);
                               panel.add(textComp);
                               comps.add(textComp);
@@ -203,7 +202,7 @@ public class OverView extends JDialog{
                     txComp.setBounds(0, y, getWidth(), 30);
                     txComp.setArc(0, 0);
                     txComp.setClickable(false);
-                    txComp.setFont(omega.settings.Screen.PX14);
+                    txComp.setFont(PX14);
                     txComp.setName(s.className);
                     panel.add(txComp);
                     comps.add(txComp);
@@ -220,7 +219,7 @@ public class OverView extends JDialog{
                               textComp.setBounds(0, y, getWidth(), 30);
                               textComp.setArc(0, 0);
                               textComp.alignX = 5;
-                              textComp.setFont(omega.settings.Screen.PX14);
+                              textComp.setFont(PX14);
                               textComp.setName(rep);
                               panel.add(textComp);
                               comps.add(textComp);

@@ -32,6 +32,8 @@ import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import javax.swing.JPanel;
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class PrintArea extends JPanel {
 	private RSyntaxTextArea textArea;
 	private Process process;
@@ -121,7 +123,7 @@ public class PrintArea extends JPanel {
           inputField.setCaretColor(omega.utils.UIManager.glow);
           inputField.setBackground(omega.utils.UIManager.c2);
           inputField.setForeground(omega.utils.UIManager.glow);
-          inputField.setFont(omega.settings.Screen.PX18);
+          inputField.setFont(PX18);
           add(inputField, BorderLayout.SOUTH);
           
           ActionCenter actionCenter = new ActionCenter(()->{
@@ -153,7 +155,7 @@ public class PrintArea extends JPanel {
 		inputField.setCaretColor(omega.utils.UIManager.glow);
 		inputField.setBackground(omega.utils.UIManager.c2);
 		inputField.setForeground(omega.utils.UIManager.glow);
-		inputField.setFont(omega.settings.Screen.PX18);
+		inputField.setFont(PX18);
 		add(inputField, BorderLayout.SOUTH);
           
 		ActionCenter actionCenter = new ActionCenter(()->{
@@ -172,17 +174,17 @@ public class PrintArea extends JPanel {
                setPreferredSize(new Dimension(40, 100));
                Dimension size = new Dimension(30, 30);
                TextComp runComp = new TextComp(IconManager.fluentrunImage, 25, 25, "Re-Run", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
-               runComp.setFont(omega.settings.Screen.PX18);
+               runComp.setFont(PX18);
                runComp.setPreferredSize(size);
                add(runComp);
                
                TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
-               clrComp.setFont(omega.settings.Screen.PX18);
+               clrComp.setFont(PX18);
                clrComp.setPreferredSize(size);
                add(clrComp);
                
                TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
-               terComp.setFont(omega.settings.Screen.PX18);
+               terComp.setFont(PX18);
                terComp.setPreferredSize(size);
                add(terComp);
           }
@@ -193,17 +195,17 @@ public class PrintArea extends JPanel {
                setPreferredSize(new Dimension(40, 100));
                Dimension size = new Dimension(30, 30);
                TextComp runComp = new TextComp(image, 25, 25, toolTip, UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r);
-               runComp.setFont(omega.settings.Screen.PX18);
+               runComp.setFont(PX18);
                runComp.setPreferredSize(size);
                add(runComp);
                
                TextComp clrComp = new TextComp(IconManager.fluentclearImage, 25, 25, "Clear Text", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, ()->textArea.setText(""));
-               clrComp.setFont(omega.settings.Screen.PX18);
+               clrComp.setFont(PX18);
                clrComp.setPreferredSize(size);
                add(clrComp);
                
                TextComp terComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Instant Kill", UIManager.TOOLMENU_COLOR3_SHADE, UIManager.c2, UIManager.TOOLMENU_COLOR3, r0);
-               terComp.setFont(omega.settings.Screen.PX18);
+               terComp.setFont(PX18);
                terComp.setPreferredSize(size);
                add(terComp);
           }

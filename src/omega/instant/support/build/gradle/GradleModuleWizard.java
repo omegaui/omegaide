@@ -29,7 +29,6 @@ import omega.comp.TextComp;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class GradleModuleWizard extends JDialog{
 	private int pressX;
 	private int pressY;

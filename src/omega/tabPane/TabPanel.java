@@ -74,6 +74,7 @@ public class TabPanel extends JPanel{
 
 		tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		UIManager.setData(tabPane);
+		
           Graphics graphics = image.getGraphics();
           Graphics2D g = (Graphics2D)graphics;
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -257,7 +258,7 @@ public class TabPanel extends JPanel{
                g.setColor(omega.utils.UIManager.c2);
                g.fillRect(0, 0, getWidth(), getHeight());
                g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
-               g.setFont(omega.settings.Screen.PX28);
+               g.setFont(omega.utils.UIManager.PX28);
                FontMetrics f = g.getFontMetrics();
                String hint = screen.getToolMenu().hidden ? HINT1 : HINT;
                if(Screen.getFileView().getProjectManager() != null)

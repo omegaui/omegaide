@@ -23,16 +23,20 @@ import omega.deassembler.*;
 import java.util.*;
 import java.io.*;
 public class JDKManager {
-	private File jdkDir;
-	private String version;
+	public File jdkDir;
+	
+	public String version;
 	public String java;
 	public String javac;
 	public String javap;
+	
 	public static volatile boolean reading = false;
+	
 	public static LinkedList<Module> modules = new LinkedList<>();
 	public static LinkedList<Import> imports = new LinkedList<>();
 	public static LinkedList<Import> javaLangPack = new LinkedList<>();
 	public static LinkedList<Import> sources = new LinkedList<>();
+	
 	public static JarLoader systemJarLoader;
 	public static JarLoader dependencyJarLoader;
 	public JDKManager(File jdkDir){

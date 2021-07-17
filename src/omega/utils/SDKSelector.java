@@ -35,7 +35,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class SDKSelector extends JDialog {
 	private JScrollPane scrollPane;
 	private LinkedList<TextComp> boxs = new LinkedList<>();

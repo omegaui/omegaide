@@ -57,11 +57,6 @@ public class UIManager extends DataBase {
      public static int fontState = Font.BOLD;
      
      /**
-      * The font of the ui elements in the omega.utils.ToolMenu
-     */
-	private static final Font font = omega.settings.Screen.PX12;
-     
-     /**
       * The Foreground Color of any text area
      */
 	public static Color glow;
@@ -100,6 +95,25 @@ public class UIManager extends DataBase {
      public static Color TOOLMENU_COLOR4_SHADE = new Color(200, 103, 0, 40);
      public static Color TOOLMENU_GRADIENT = new Color(200, 200, 200, 100);
      
+	//Some Extra Colors of RGB shades
+	public static final Color color1 = new Color(255, 0, 0, 20);
+	public static final Color color2 = new Color(255, 0, 0, 130);
+	public static final Color color3 = new Color(255, 255, 200, 220);
+	public static final Color color4 = new Color(0, 0, 255, 130);
+	public static final Color color5 = new Color(0, 0, 255, 220);
+	public static final Color color6 = new Color(0, 255, 0, 20);
+	public static final Color color7 = new Color(0, 255, 0, 130);
+
+     // IDE Component Fonts -- Finals
+     public static final Font PX12 = new Font("Ubuntu Mono", Font.BOLD, 12);
+     public static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
+	public static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
+	public static final Font PX18 = new Font("Ubuntu Mono", Font.BOLD, 18);
+     public static final Font PX20 = new Font("Ubuntu Mono", Font.BOLD, 20);
+     public static final Font PX22 = new Font("Ubuntu Mono", Font.BOLD, 22);
+     public static final Font PX26 = new Font("Ubuntu Mono", Font.BOLD, 26);
+	public static final Font PX28 = new Font("Ubuntu Mono", Font.BOLD, 28);
+     public static final Font PX40 = new Font("Ubuntu Mono", Font.BOLD, 40);
      
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
@@ -121,7 +135,7 @@ public class UIManager extends DataBase {
                setFontSize(getEntryAt("Font", 1).getValueAsInt());
                setFontState(getEntryAt("Font", 2).getValueAsInt());
 			if(!isDarkMode()) {
-				c3 = omega.settings.Screen.color4;
+				c3 = color4;
 				c1 = new Color(0, 0, 255, 40);
 				c2 = Color.WHITE;
 			}
@@ -167,7 +181,7 @@ public class UIManager extends DataBase {
 	public static void setData(Component c) {
 		c.setBackground(c2);
 		c.setForeground(c3);
-		c.setFont(font);
+		c.setFont(PX12);
 	}
 
 	@Override

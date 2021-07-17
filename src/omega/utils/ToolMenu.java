@@ -50,7 +50,6 @@ import omega.popup.OPopupItem;
 import omega.popup.OPopupWindow;
 import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 import static omega.utils.IconManager.*;
 import static omega.comp.Animations.*;
 /**
@@ -304,19 +303,19 @@ public class ToolMenu extends JPanel {
         
 		openProjectComp = new TextComp(fluentfolderImage, 25, 25, "Open Project", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
 		openProjectComp.setBounds(0, 55, 30, 30);
-		openProjectComp.setFont(omega.settings.Screen.PX14);
+		openProjectComp.setFont(omega.utils.UIManager.PX14);
 		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
           
 		openFileComp = new TextComp(fluentfileImage, 25, 25, "Open File", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
 		openFileComp.setBounds(32, 55, 30, 30);
-		openFileComp.setFont(omega.settings.Screen.PX14);
+		openFileComp.setFont(omega.utils.UIManager.PX14);
 		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
           
 		newProjectComp = new TextComp(fluentnewfolderImage, 25, 25, "Create New Project", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
 		newProjectComp.setBounds(64, 55, 30, 30);
-		newProjectComp.setFont(omega.settings.Screen.PX14);
+		newProjectComp.setFont(omega.utils.UIManager.PX14);
 		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
 
@@ -348,7 +347,7 @@ public class ToolMenu extends JPanel {
                	}
                }
           });
-          runComp.setFont(omega.settings.Screen.PX28);
+          runComp.setFont(omega.utils.UIManager.PX28);
           runComp.setArcVisible(true, false, true, false);
           add(runComp);
 		
@@ -361,7 +360,7 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		buildComp.setBounds(172, 55, 30, 30);
-		buildComp.setFont(omega.settings.Screen.PX18);
+		buildComp.setFont(omega.utils.UIManager.PX18);
 		buildComp.setArcVisible(false, true, false, true);
 		add(buildComp);
 		
@@ -496,7 +495,7 @@ public class ToolMenu extends JPanel {
 		addComp(sep4);
       
 		structureViewComp = new TextComp(fluentstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
-		structureViewComp.setFont(omega.settings.Screen.PX18);
+		structureViewComp.setFont(omega.utils.UIManager.PX18);
 		structureViewComp.setToolTipText("Lets see that class");
 		addComp(structureViewComp);
           
@@ -517,7 +516,7 @@ public class ToolMenu extends JPanel {
 				consoleItemWindow.setVisible(true);
 			}
 		});
-		shellComp.setFont(omega.settings.Screen.PX16);
+		shellComp.setFont(omega.utils.UIManager.PX16);
 		shellComp.setBounds(392, 55, 60, 30);
 		shellComp.setArcVisible(false, true, false, true);
 		add(shellComp);
@@ -533,7 +532,7 @@ public class ToolMenu extends JPanel {
 				Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
 			}
 		);
-		themeComp.setFont(omega.settings.Screen.PX16);
+		themeComp.setFont(omega.utils.UIManager.PX16);
 		themeComp.setBounds(472, 55, 60, 30);
 		themeComp.setArcVisible(true, false, true, false);
 		add(themeComp);
@@ -749,7 +748,6 @@ public class ToolMenu extends JPanel {
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
 		.createItem("Save All Editors", IconManager.fileImage, ()->screen.saveAllEditors())
-		.createItem("Preferences", IconManager.settingsImage, ()->Screen.getSettingsView().setVisible(true))
 		.createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage,
 		()->{
 			Screen.notify("Saving UI and Data");

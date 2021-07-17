@@ -35,7 +35,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
-import static omega.settings.Screen.*;
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class Branch extends JComponent{
 	public File file;
 	private String name;

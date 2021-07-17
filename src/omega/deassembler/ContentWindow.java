@@ -34,9 +34,10 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 import static omega.utils.UIManager.*;
+
 public class ContentWindow extends JPanel implements KeyListener{
      public LinkedList<TextComp> hints = new LinkedList<>();
-     private static Font PX12 = new Font("Ubuntu", Font.BOLD, 12);
+     private final Font PX12 = new Font("Ubuntu", Font.BOLD, 12);
      private Editor editor;
      private JPanel panel;
      private JScrollPane scrollPane;

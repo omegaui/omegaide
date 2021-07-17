@@ -27,7 +27,6 @@ import omega.comp.*;
 import java.awt.image.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 import omega.plugin.PluginManager.Plug;
 public class PluginComp extends JComponent{
 	private BufferedImage image;

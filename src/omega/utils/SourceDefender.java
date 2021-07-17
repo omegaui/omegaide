@@ -23,7 +23,6 @@ import java.util.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class SourceDefender extends JDialog {
 	private TextComp titleComp;
 	private SwitchComp sourceDefenceComp;

@@ -20,7 +20,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.*;
 import static omega.Screen.VERSION;
-import static omega.settings.Screen.*;
 import static omega.utils.UIManager.*;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";

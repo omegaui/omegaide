@@ -23,7 +23,6 @@ import omega.comp.*;
 import omega.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 import static omega.comp.Animations.*;
 public class ExtendedBuildPathManager extends JDialog {
 	private TextComp titleComp;

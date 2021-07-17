@@ -24,7 +24,6 @@ import java.io.*;
 import omega.deassembler.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class ToolMenuPathBox extends JComponent{
      public String path;
      public LinkedList<EdgeComp> edges = new LinkedList<>();

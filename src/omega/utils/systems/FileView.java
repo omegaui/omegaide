@@ -118,7 +118,6 @@ public class FileView extends View {
                argumentManager = new ArgumentManager();
           }
 		searchWindow.cleanAndLoad(new File(projectPath));
-		getScreen().getToolMenu().reloadItems(projectManager.non_java);
           if(!projectManager.non_java) {
      		if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists())
      			Screen.notify("No JDK Defined for Project " + Screen.getFileView().getProjectName(), 3000, null);
@@ -134,6 +133,7 @@ public class FileView extends View {
                     
 	          }
           }
+		getScreen().getToolMenu().reloadItems(projectManager.non_java);
 	}
 
 	public String getProjectPath() {

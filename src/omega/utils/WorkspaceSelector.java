@@ -50,7 +50,7 @@ public class WorkspaceSelector extends JDialog{
      public void init(){
           TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->dispose());
           closeComp.setBounds(0, 0, 40, 40);
-          closeComp.setFont(omega.settings.Screen.PX16);
+          closeComp.setFont(PX16);
           closeComp.setArc(0, 0);
           add(closeComp);
 
@@ -71,14 +71,14 @@ public class WorkspaceSelector extends JDialog{
                }
           });
           titleComp.setBounds(40, 0, getWidth() - 40, 40);
-          titleComp.setFont(omega.settings.Screen.PX16);
+          titleComp.setFont(PX16);
           titleComp.setClickable(false);
           titleComp.setArc(0, 0);
           add(titleComp);
           
           JTextField textField = new JTextField(DataManager.getWorkspace().equals("") ? "e.g : user.home/Documents/Omega Projects" : DataManager.getWorkspace());
           textField.setBounds(20, 50, getWidth() - 40, 40);
-          textField.setFont(omega.settings.Screen.PX18);
+          textField.setFont(PX18);
           textField.setBackground(c2);
           textField.setForeground(glow);
           textField.setEditable(false);
@@ -98,7 +98,7 @@ public class WorkspaceSelector extends JDialog{
                }
           });
           chooseComp.setBounds(getWidth()/2 - 30, 91, 60, 30);
-          chooseComp.setFont(omega.settings.Screen.PX16);
+          chooseComp.setFont(PX16);
           add(chooseComp);
      }
 }

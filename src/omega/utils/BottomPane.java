@@ -28,7 +28,6 @@ import java.awt.BorderLayout;
 import omega.comp.TextComp;
 import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 import static omega.comp.Animations.*;
 public class BottomPane extends JPanel {
 	private Screen screen;

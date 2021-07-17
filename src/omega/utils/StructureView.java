@@ -25,7 +25,6 @@ import java.util.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 public class StructureView extends JDialog {
      public TextComp titleComp;
      public TextComp closeComp;

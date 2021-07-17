@@ -22,7 +22,6 @@ import java.util.*;
 import omega.comp.*;
 import javax.swing.*;
 import static omega.utils.UIManager.*;
-import static omega.settings.Screen.*;
 import static omega.comp.Animations.*;
 public class ExtendedBuildPanel extends JPanel{
 	
