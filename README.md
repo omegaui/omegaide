@@ -1,5 +1,12 @@
 # **Omega IDE**
 
+**Omega IDE v2.0 - Current Beta**
+
+![](/images/beta-light.png)
+
+![](/images/beta-dark.png)
+
+
 **Omega IDE v1.9 - Latest Stable**
 
 ![](/images/light.png)
