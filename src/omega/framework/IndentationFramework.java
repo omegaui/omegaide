@@ -62,7 +62,7 @@ public class IndentationFramework {
 		textArea.setCaretPosition(caretPos + 1);
 	}
 	/**
-	* Counts the char 'c' in specified line excluded the strings and characters
+	* Counts the char 'c' in specified line excluding the strings and characters
 	*/
 	public static int count(char c, String line){
 		int count = 0;

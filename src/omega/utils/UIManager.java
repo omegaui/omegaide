@@ -36,7 +36,6 @@ import omega.database.DataEntry;
  * omega.utils.UIManager class
  * This class is responsible for managing the ui colors, theming and editor's font
  * extends omega.database.DataBase class
- * <link>see omega.settings.Screen for managing the font data</link>
 */
 
 public class UIManager extends DataBase {
