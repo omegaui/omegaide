@@ -394,8 +394,12 @@ public class Screen extends JFrame {
 		}
 		if(tabPanel.viewImage(file)) return null;
 		if(tabPanel.viewArchive(file)) return null;
-		if(isFileOpened(file))
-			return null;
+		if(isFileOpened(file)){
+			Editor e = getEditor(file);
+			tabPanel.setActiveEditor(e);
+			e.grabFocus();
+			return e;
+		}
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
@@ -428,6 +432,7 @@ public class Screen extends JFrame {
 		if(bottomTabPanel.viewArchive(file)) return null;
 		if(isFileOpened(file)){
 			Editor e = getEditor(file);
+			tabPanel.setActiveEditor(e);
 			e.grabFocus();
 			return e;
 		}

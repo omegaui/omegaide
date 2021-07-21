@@ -953,6 +953,27 @@ public class CodeFramework{
 		return code;
 	}
 
+	public static File getFile(String className){
+		File file = null;
+		if(className.contains(".")) {
+			LinkedList<String> files = new LinkedList<>();
+			StringTokenizer tok = new StringTokenizer(className, ".");
+			while(tok.hasMoreTokens())
+				files.add(tok.nextToken());
+			String path = Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator;
+			for(String f : files) {
+				path += f + File.separator;
+			}
+			path = path.substring(0, path.length() - 1).trim();
+			files.clear();
+			file =  new File(path + ".java");
+		}
+		else {
+			file = new File(Screen.getFileView().getProjectPath() + File.separator + "src" + File.separator + className + ".java");
+		}
+		return file.exists() ? file : null;
+	}
+
 	public static boolean isSource(String className){
 		if(className == null) return false;
 		if(Screen.getFileView().getProjectPath() == null) return false;

@@ -144,7 +144,8 @@ public class TabPanel extends JPanel{
 			ZipFile zipFile = new ZipFile(root);
 			zipFile.close();
 			return true;
-		}catch(Exception e){}
+		}
+		catch(Exception e){}
 		return false;
 	}
 	
@@ -159,8 +160,7 @@ public class TabPanel extends JPanel{
 	}
 	
 	public Editor findEditor(File file) {
-		for(Editor e : editors)
-		{
+		for(Editor e : editors) {
 			if(e != null) {
 				if(e.currentFile != null) {
 					if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath()))
@@ -206,7 +206,8 @@ public class TabPanel extends JPanel{
 					if(editor.currentFile != null) {
 						editor.saveCurrentFile();
 				}
-			}catch(Exception e) {}
+			}
+			catch(Exception e) {}
 		});
 		editors.clear();
 		names.clear();
@@ -247,6 +248,13 @@ public class TabPanel extends JPanel{
      public void setRemoveAction(Runnable removeAction) {
           this.removeAction = removeAction;
      }
+
+	public void setActiveEditor(Editor editor){
+		int index = editors.indexOf(editor);
+		if(index < 0)
+			return;
+		tabPane.setSelectedIndex(index);
+	}
      
      @Override
      public void paint(Graphics graphics){

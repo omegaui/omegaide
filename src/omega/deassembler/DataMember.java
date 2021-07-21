@@ -25,6 +25,7 @@ public class DataMember {
      public String name;
      public String parameters;
      public int parameterCount = 0;
+     public int lineNumber;
      private LinkedList<String> modifiers = new LinkedList<>();
      public DataMember(String access, String modifier, String type, String name, String parameters){
           this.access = access;
@@ -62,6 +63,10 @@ public class DataMember {
           }
      }
 
+     public DataMember(String access, String modifier, String type, String name, String parameters, int lineN){
+     	this(access, modifier, type, name, parameters);
+     	setLineNumber(lineN);
+     }
      public String getData(){
           String name = this.name;
           if(name.contains("()")){
@@ -93,6 +98,10 @@ public class DataMember {
                return "access - "+access+", modifier - "+modifier+", type - "+type+", name - "+name+", parameters - " + parameters + ", parameterCount - " + parameterCount;
           }
           return "access - "+access+", modifier - "+modifier+", type - "+type+", name - "+name;
+     }
+
+     public void setLineNumber(int lineN){
+     	lineNumber = lineN;
      }
 }
 

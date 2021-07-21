@@ -17,15 +17,14 @@
 */
 
 package omega.utils;
-import java.nio.charset.*;
-import omega.instant.support.build.gradle.GradleProcessManager;
-import org.fife.ui.rsyntaxtextarea.modes.*;
-import omega.token.factory.*;
-import omega.highlightUnit.BasicHighlight;
-import org.fife.ui.rtextarea.SearchResult;
+import org.fife.ui.rsyntaxtextarea.Token;
 import java.awt.event.MouseEvent;
+import org.fife.ui.rtextarea.SearchResult;
 import omega.utils.systems.View;
+import java.nio.charset.StandardCharsets;
 import omega.Screen;
+import omega.deassembler.DataMember;
+import omega.deassembler.SourceReader;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.rsta.ui.search.SearchEvent;
@@ -39,20 +38,23 @@ import omega.framework.IndentationFramework;
 import omega.gset.Generator;
 import omega.framework.ImportFramework;
 import omega.snippet.SnippetBase;
+import omega.instant.support.build.gradle.GradleProcessManager;
+import omega.highlightUnit.BasicHighlight;
 import java.awt.event.KeyEvent;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import javax.swing.JOptionPane;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.awt.Font;
+import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
+import omega.token.factory.RustTokenMaker;
+import org.fife.ui.rsyntaxtextarea.modes.KotlinTokenMaker;
 import javax.swing.DropMode;
-import java.awt.Color;
-import omega.deassembler.*;
+import omega.deassembler.ContentTokenizer;
 import omega.framework.CodeFramework;
 import java.awt.Image;
+import omega.deassembler.ContentWindow;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import javax.swing.JFileChooser;
 import java.io.File;
@@ -845,6 +847,78 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
           ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
+          
+          //Invoking Code Navigation
+          if(ctrl){
+          	Token token = viewToToken(arg0.getPoint());
+          	if(token == null)
+          		return;
+          	if(token.isIdentifier() && currentFile.getName().endsWith(".java")) {
+          		new Thread(()->{
+          			try{
+		          		String text = token.getLexeme();
+		          		int offset = token.getOffset();
+		          		if(getText().charAt(token.getEndOffset()) == '(')
+		          			text += "()";
+		          		//Checking if the token is a part of an object
+		          		if(getText().charAt(offset - 1) == '.'){
+		          			
+		          		}
+		          		else {
+		          			//Checking for data members/methods, navigation to local members not included
+		          			SourceReader reader = new SourceReader(getText());
+		          			DataMember dataMember = null;
+		          			for(DataMember d : reader.dataMembers){
+		          				if(d.name.equals(text)){
+		          					dataMember = d;
+		          					break;
+		          				}
+		          			}
+		          			if(dataMember != null) {
+		          				//Navigating to the DataMember Prototype
+		          				int pos = 0;
+		          				int line = dataMember.lineNumber;
+		          				String wholeText = getText();
+					               for(char c : wholeText.toCharArray()) {
+					                    if(line <= 0)
+					                         break;
+					                    if(c == '\n')
+					                         line--;
+					                    pos++;
+					               }
+					               setCaretPosition(pos - 1);
+		          			}
+		          			else{
+		          				//Checking for Imports
+		          				SourceReader.Import im = null;
+		          				for(SourceReader.Import ix : reader.imports){
+		          					if(ix.name.equals(text)){
+		          						im = ix;
+		          						break;
+		          					}
+		          				}
+		          				if(im != null){
+		          					String imPath = im.toString();
+		          					if(CodeFramework.isSource(imPath)){
+		          						File file = CodeFramework.getFile(imPath);
+		          						Editor editor = Screen.getScreen().loadFile(file);
+		          					}
+		          					else {
+		          						
+		          					}
+		          				}
+		          				else{
+		          					System.out.println("Couldn't find any matches");
+		          				}
+		          			}
+		          		}
+          			}
+          			catch(Exception e){
+          				System.err.println("Code Navigation Encountered an Exception");
+          			}
+     			}).start();
+          	}
+          }
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {

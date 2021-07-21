@@ -44,6 +44,11 @@ public class SourceReader {
 		public String get(){
 			return pack + "." + name;
 		}
+
+		@Override
+		public String toString(){
+			return get();
+		}
 	}
 	private String code;
 	public String pack;
@@ -82,7 +87,9 @@ public class SourceReader {
 		boolean commentStarts = false;
 		boolean canReadImports = true;
           LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
+          int lineN = 0;
 		for(String line : tokens){
+			lineN++;
                //Skippings Single Character like }, etc
                if(line.trim().length() <= 1 && !line.trim().equals("}"))
                     continue;
@@ -223,7 +230,8 @@ public class SourceReader {
 						else{
 							if(line.contains("{"))
 								indexAfter = line.indexOf('{');
-							else indexAfter = line.indexOf('\n');
+							else 
+								indexAfter = line.indexOf('\n');
 							parent = line.substring(extendsI + 1, indexAfter).trim();
 						}
 					}
@@ -269,13 +277,13 @@ public class SourceReader {
                imports.add(new Import(im.getPackage(), im.getClassName()));
           });
           for(int i = 0; i < tokens.size(); i++){
+               lineN++;
                String line = tokens.get(i);
                //Skipping Single Words
                if(line.trim().length() <= 1 && !line.trim().equals("}")){
                     continue;
                }
 			//Skipping Strings and characters
-               lineN++;
 			String cLine = line;
 			line = "";
 			boolean r = true;
@@ -498,7 +506,7 @@ public class SourceReader {
                                              type = evaluateType(type);
                                              name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
                                              if(type != null)
-									     dataMembers.add(new DataMember(access, mods, type, name + "()", parameters));
+									     dataMembers.add(new DataMember(access, mods, type, name + "()", parameters, lineN));
 									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -513,7 +521,7 @@ public class SourceReader {
                                              type = evaluateType(type);
                                              name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
                                              if(type != null)
-									     dataMembers.add(new DataMember(access, "", type, name + "()", parameters));
+									     dataMembers.add(new DataMember(access, "", type, name + "()", parameters, lineN));
 									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -523,7 +531,7 @@ public class SourceReader {
 								String type = cL;
                                         if(name.contains(".")) 
                                              continue;
-								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters));
+								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters, lineN));
 								dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 								readBlock = true;
 								blockCode += line + "\n";
@@ -554,14 +562,14 @@ public class SourceReader {
                                    if(name.contains(".")) continue;
                                    type = evaluateType(type);
                                    if(type != null)
-							     dataMembers.add(new DataMember(access, mods, type, name, null));
+							     dataMembers.add(new DataMember(access, mods, type, name, null, lineN));
 						}
 						else{
 							String access = cL;
                                    if(name.contains(".")) continue;
                                    type = evaluateType(type);
                                    if(type != null)
-							     dataMembers.add(new DataMember(access, "", type, name, null));
+							     dataMembers.add(new DataMember(access, "", type, name, null, lineN));
 						}
 					}
 					else{
@@ -570,7 +578,7 @@ public class SourceReader {
                                    continue;
                               type = evaluateType(type);
                               if(type != null)
-						     dataMembers.add(new DataMember("", "", type, name, null));
+						     dataMembers.add(new DataMember("", "", type, name, null, lineN));
 					}
 				}
 			}
