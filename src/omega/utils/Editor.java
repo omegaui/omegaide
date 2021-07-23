@@ -17,6 +17,7 @@
 */
 
 package omega.utils;
+import omega.instant.support.java.JavaCodeNavigator;
 import omega.deassembler.ByteReader;
 import omega.jdk.Import;
 import java.util.LinkedList;
@@ -118,9 +119,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		addCaretListener((e)-> {
 			String text = getSelectedText();
 			if(text == null || text.equals(""))
-				Screen.getScreen().getBottomPane().jumpField.setText("Goto Line");
+				screen.getBottomPane().jumpField.setText("Goto Line");
 			else
-				Screen.getScreen().getBottomPane().jumpField.setText(text.length() + "");
+				screen.getBottomPane().jumpField.setText(text.length() + "");
 		});
 		createNewContent();
 	}
@@ -132,16 +133,39 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		add(contentWindow);
 	}
 	public static void launchContentAssist() {
-		if(launched) return;
+		if(launched) 
+			return;
 		launched = true;
 		new Thread(()->{
-			while(screen.active) {
-				try {
-					if(screen.getCurrentEditor() != null)
-						screen.getCurrentEditor().readCode();
+			long lastTime = System.nanoTime();
+			double ns = 1000000000 / 30;
+			double delta = 0;
+			int updates = 0;
+			int frames = 0;
+			long timer = System.currentTimeMillis();
+			long now = 0;
+			while(screen.active){
+				now = System.nanoTime();
+				delta += (now - lastTime) / ns;
+				lastTime = now;
+				if(delta >= 1){
+					try {
+						if(screen.getCurrentEditor() != null)
+							screen.getCurrentEditor().readCode();
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+					updates++;
+					delta--;
 				}
-				catch(Exception e) {
-					e.printStackTrace();
+				
+				frames++;
+	
+				if(System.currentTimeMillis() - timer > 1000){
+					timer += 1000;
+					updates = 0;
+					frames = 0;
 				}
 			}
 		}).start();
@@ -313,8 +337,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(file == null)
 			return;
 		try {
-			if(currentFile != null)
-				{
+			if(currentFile != null) {
 				saveCurrentFile();
 			}
 			currentFile = file;
@@ -329,6 +352,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			savedText = getText();
 			setStyle(this, currentFile);
 			setCaretPosition(0);
+			JavaCodeNavigator.install(this);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -862,107 +886,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
-		
-		//Invoking Code Navigation
-		if(ctrl){
-			Token token = viewToToken(arg0.getPoint());
-			if(token == null)
-				return;
-			if((token.isIdentifier() || token.getType() == TokenTypes.FUNCTION) && currentFile.getName().endsWith(".java")) {
-				new Thread(()->{
-					try{
-						String text = token.getLexeme();
-						int offset = token.getOffset();
-						if(getText().charAt(token.getEndOffset()) == '(')
-							text += "()";
-						SourceReader reader = new SourceReader(getText());
-						//Checking if the token is a part of an object
-						if(getText().charAt(offset - 1) == '.'){
-							String code = CodeFramework.getCodeDoNotEliminateDot(getText(), token.getEndOffset());
-							if(text.endsWith("()") && !code.endsWith("()"))
-								code += "()";
-							//Checking if the <base> is a Class
-							Import im = null;
-							for(Import imj : JDKManager.sources){
-								if(imj.toString().equals(code)){
-									im = imj;
-									break;
-								}
-							}
-							if(im != null){
-								String imPath = im.toString();
-								if(CodeFramework.isSource(imPath)){
-									File file = CodeFramework.getFile(imPath);
-									Screen.getScreen().loadFile(file);
-								}
-							}
-							else {
-								//Checking if base is a data member
-								DataMember d = null;
-								for(DataMember dx : reader.dataMembers){
-									if(dx.name.equals(text)){
-										d = dx;
-										break;
-									}
-								}
-								System.out.println("Code >" + code);
-							}
-						}
-						else {
-							//Checking for data members/methods, navigation to local members not included
-							DataMember dataMember = null;
-							for(DataMember d : reader.dataMembers){
-								if(d.name.equals(text)){
-									dataMember = d;
-									break;
-								}
-							}
-							if(dataMember != null) {
-								//Navigating to the DataMember Prototype
-								int pos = 0;
-								int line = dataMember.lineNumber;
-								String wholeText = getText();
-								for(char c : wholeText.toCharArray()) {
-									if(line <= 0)
-										break;
-									if(c == '\n')
-										line--;
-									pos++;
-								}
-								setCaretPosition(pos - 1);
-							}
-							else{
-								//Checking for Imports
-								SourceReader.Import im = null;
-								for(SourceReader.Import ix : reader.imports){
-									if(ix.name.equals(text)){
-										im = ix;
-										break;
-									}
-								}
-								if(im != null){
-									String imPath = im.toString();
-									if(CodeFramework.isSource(imPath)){
-										File file = CodeFramework.getFile(imPath);
-										Screen.getScreen().loadFile(file);
-									}
-									else {
-										//Nothing Designed for this situation yet!
-									}
-								}
-								else{
-									Screen.notify("Couldn't find any matches");
-								}
-							}
-						}
-						System.out.println(text);
-					}
-					catch(Exception e){
-						Screen.notify("Code Navigation Encountered an Exception");
-					}
-				}).start();
-			}
-		}
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {

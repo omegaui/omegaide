@@ -86,9 +86,32 @@ public class SplashScreen extends JFrame{
 		});
 		setVisible(true);
 		new Thread(()->{
+			long lastTime = System.nanoTime();
+			double ns = 1000000000 / 30;
+			double delta = 0;
+			int updates = 0;
+			int frames = 0;
+			long timer = System.currentTimeMillis();
+			long now = 0;
 			while(progress < 100 && isVisible()){
-				render();
-				paint(getGraphics());
+				now = System.nanoTime();
+				delta += (now - lastTime) / ns;
+				lastTime = now;
+				if(delta >= 1){
+					render();
+					paint(getGraphics());
+					
+					updates++;
+					delta--;
+				}
+				
+				frames++;
+	
+				if(System.currentTimeMillis() - timer > 1000){
+					timer += 1000;
+					updates = 0;
+					frames = 0;
+				}
 			}
 			setVisible(false);
 		}).start();
