@@ -1,22 +1,28 @@
 /**
-  * The IDE's Default Editor
-  * Copyright (C) 2021 Omega UI
+* The IDE's Default Editor
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
 package omega.utils;
+import omega.deassembler.ByteReader;
+import omega.jdk.Import;
+import java.util.LinkedList;
+import omega.jdk.JDKManager;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import java.awt.event.MouseMotionListener;
 import org.fife.ui.rsyntaxtextarea.Token;
 import java.awt.event.MouseEvent;
 import org.fife.ui.rtextarea.SearchResult;
@@ -63,21 +69,28 @@ import org.fife.rsta.ui.search.SearchListener;
 import java.awt.event.MouseListener;
 import java.awt.event.KeyListener;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, SearchListener {
+import static omega.deassembler.Assembly.*;
+public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, MouseMotionListener, SearchListener {
 	private static Screen screen;
-	private RTextScrollPane scrollPane;
-	public volatile File currentFile;
 	private static PrintArea printArea;
-	private volatile JFileChooser chooser = new JFileChooser();
-	private volatile String savedText = "";
-	public static KeyListener keyListener;
 	private static Theme theme;
 	private static String currentTheme = "light";
+	
+	private RTextScrollPane scrollPane;
 	private FindAndReplace fAndR;
-	private static boolean launched = false;
+	
+	private volatile String savedText = "";
+	
+	public static KeyListener keyListener;
+	
+	public volatile File currentFile;
 	public volatile boolean call = false;
+	
+	private static boolean launched = false;
+	
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
+	
 	private volatile boolean ctrl;
 	private volatile boolean shift;
 	private volatile boolean o; // Auto-Imports
@@ -87,8 +100,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile boolean s; // Save
 	private volatile boolean c; // Click Editor Image
 	private volatile boolean g; // getters and setters
-     private volatile boolean i; // override methods
-     private volatile boolean l; // instant launch
+	private volatile boolean i; // override methods
+	private volatile boolean l; // instant launch
+	
 	public Editor(Screen screen) {
 		super();
 		Editor.screen = screen;
@@ -149,6 +163,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private void initView() {
 		addKeyListener((keyListener = this));
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		setAnimateBracketMatching(true);
 		setAntiAliasingEnabled(true);
 		setAutoIndentEnabled(true);
@@ -260,7 +275,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".rs"))
 			RustTokenMaker.apply(e);
 		else if(f.getName().endsWith(".md"))
-               MarkdownTokenMaker.apply(e);
+			MarkdownTokenMaker.apply(e);
 	}
 	public void loadTheme() {
 		try {
@@ -387,11 +402,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				savedText = getText();
 				setStyle(this, currentFile);
 				setCaretPosition(0);
-	          }
-		     catch(Exception e) { 
-		          e.printStackTrace();
-	          }
-	     }
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	public void deleteFile() {
 		try {
@@ -434,8 +449,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				}
 			}
 		}
-		else 
-		     file.delete();
+		else
+			file.delete();
 	}
 	public static void deleteFile(File currentFile) {
 		new Thread(()->{
@@ -464,9 +479,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					Screen.getProjectView().reload();
 				}
 			}
-               catch(Exception e) {
-			     e.printStackTrace();
-		     }
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}).start();
 	}
 	@Override
@@ -492,10 +507,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(code == KeyEvent.VK_G)
 			g = true;
 		else if(code == KeyEvent.VK_I)
-               i = true;
-          else if(code == KeyEvent.VK_L)
-               l = true;
-          
+			i = true;
+		else if(code == KeyEvent.VK_L)
+			l = true;
+		
 		
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
@@ -592,12 +607,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				ctrl = false;
 				shift = false;
 			}
-               if(ctrl && shift && l){
-                    ToolMenu.processWizard.launch(currentFile);
-                    l = false;
-                    ctrl = false;
-                    shift = false;
-               }
+			if(ctrl && shift && l){
+				ToolMenu.processWizard.launch(currentFile);
+				l = false;
+				ctrl = false;
+				shift = false;
+			}
 			if(contentWindow.isVisible()) {
 				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
 				|| ";:|\\`~!".contains(e.getKeyChar() + "")) {
@@ -660,8 +675,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			g = false;
 		else if(code == KeyEvent.VK_I)
 			i = false;
-          else if(code == KeyEvent.VK_L)
-               l = false;
+		else if(code == KeyEvent.VK_L)
+			l = false;
 		if(currentFile != null) {
 			if(!screen.isVisible()) {
 				return;
@@ -677,7 +692,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
-     
+	
 	//Managing Smart type code completion
 	private void autoSymbolExclusion(KeyEvent e) {
 		try {
@@ -704,10 +719,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				break;
 				default:
 			}
-	     }
-	     catch(Exception ex){ 
-	          //ex.printStackTrace();
-	     }
+		}
+		catch(Exception ex){
+			//ex.printStackTrace();
+		}
 	}
 	private void autoSymbolCompletion(KeyEvent e) {
 		try {
@@ -739,10 +754,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				default:
 				break;
 			}
-	     }
-	     catch(Exception ex) { 
-	          //ex.printStackTrace();
-          }
+		}
+		catch(Exception ex) {
+			//ex.printStackTrace();
+		}
 	}
 	public class FindAndReplace extends JComponent{
 		private ReplaceToolBar replaceToolBar;
@@ -846,82 +861,119 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
-          ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
-          
-          //Invoking Code Navigation
-          if(ctrl){
-          	Token token = viewToToken(arg0.getPoint());
-          	if(token == null)
-          		return;
-          	if(token.isIdentifier() && currentFile.getName().endsWith(".java")) {
-          		new Thread(()->{
-          			try{
-		          		String text = token.getLexeme();
-		          		int offset = token.getOffset();
-		          		if(getText().charAt(token.getEndOffset()) == '(')
-		          			text += "()";
-		          		//Checking if the token is a part of an object
-		          		if(getText().charAt(offset - 1) == '.'){
-		          			
-		          		}
-		          		else {
-		          			//Checking for data members/methods, navigation to local members not included
-		          			SourceReader reader = new SourceReader(getText());
-		          			DataMember dataMember = null;
-		          			for(DataMember d : reader.dataMembers){
-		          				if(d.name.equals(text)){
-		          					dataMember = d;
-		          					break;
-		          				}
-		          			}
-		          			if(dataMember != null) {
-		          				//Navigating to the DataMember Prototype
-		          				int pos = 0;
-		          				int line = dataMember.lineNumber;
-		          				String wholeText = getText();
-					               for(char c : wholeText.toCharArray()) {
-					                    if(line <= 0)
-					                         break;
-					                    if(c == '\n')
-					                         line--;
-					                    pos++;
-					               }
-					               setCaretPosition(pos - 1);
-		          			}
-		          			else{
-		          				//Checking for Imports
-		          				SourceReader.Import im = null;
-		          				for(SourceReader.Import ix : reader.imports){
-		          					if(ix.name.equals(text)){
-		          						im = ix;
-		          						break;
-		          					}
-		          				}
-		          				if(im != null){
-		          					String imPath = im.toString();
-		          					if(CodeFramework.isSource(imPath)){
-		          						File file = CodeFramework.getFile(imPath);
-		          						Editor editor = Screen.getScreen().loadFile(file);
-		          					}
-		          					else {
-		          						
-		          					}
-		          				}
-		          				else{
-		          					System.out.println("Couldn't find any matches");
-		          				}
-		          			}
-		          		}
-          			}
-          			catch(Exception e){
-          				System.err.println("Code Navigation Encountered an Exception");
-          			}
-     			}).start();
-          	}
-          }
+		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
+		
+		//Invoking Code Navigation
+		if(ctrl){
+			Token token = viewToToken(arg0.getPoint());
+			if(token == null)
+				return;
+			if((token.isIdentifier() || token.getType() == TokenTypes.FUNCTION) && currentFile.getName().endsWith(".java")) {
+				new Thread(()->{
+					try{
+						String text = token.getLexeme();
+						int offset = token.getOffset();
+						if(getText().charAt(token.getEndOffset()) == '(')
+							text += "()";
+						SourceReader reader = new SourceReader(getText());
+						//Checking if the token is a part of an object
+						if(getText().charAt(offset - 1) == '.'){
+							String code = CodeFramework.getCodeDoNotEliminateDot(getText(), token.getEndOffset());
+							if(text.endsWith("()") && !code.endsWith("()"))
+								code += "()";
+							//Checking if the <base> is a Class
+							Import im = null;
+							for(Import imj : JDKManager.sources){
+								if(imj.toString().equals(code)){
+									im = imj;
+									break;
+								}
+							}
+							if(im != null){
+								String imPath = im.toString();
+								if(CodeFramework.isSource(imPath)){
+									File file = CodeFramework.getFile(imPath);
+									Screen.getScreen().loadFile(file);
+								}
+							}
+							else {
+								//Checking if base is a data member
+								DataMember d = null;
+								for(DataMember dx : reader.dataMembers){
+									if(dx.name.equals(text)){
+										d = dx;
+										break;
+									}
+								}
+								System.out.println("Code >" + code);
+							}
+						}
+						else {
+							//Checking for data members/methods, navigation to local members not included
+							DataMember dataMember = null;
+							for(DataMember d : reader.dataMembers){
+								if(d.name.equals(text)){
+									dataMember = d;
+									break;
+								}
+							}
+							if(dataMember != null) {
+								//Navigating to the DataMember Prototype
+								int pos = 0;
+								int line = dataMember.lineNumber;
+								String wholeText = getText();
+								for(char c : wholeText.toCharArray()) {
+									if(line <= 0)
+										break;
+									if(c == '\n')
+										line--;
+									pos++;
+								}
+								setCaretPosition(pos - 1);
+							}
+							else{
+								//Checking for Imports
+								SourceReader.Import im = null;
+								for(SourceReader.Import ix : reader.imports){
+									if(ix.name.equals(text)){
+										im = ix;
+										break;
+									}
+								}
+								if(im != null){
+									String imPath = im.toString();
+									if(CodeFramework.isSource(imPath)){
+										File file = CodeFramework.getFile(imPath);
+										Screen.getScreen().loadFile(file);
+									}
+									else {
+										//Nothing Designed for this situation yet!
+									}
+								}
+								else{
+									Screen.notify("Couldn't find any matches");
+								}
+							}
+						}
+						System.out.println(text);
+					}
+					catch(Exception e){
+						Screen.notify("Code Navigation Encountered an Exception");
+					}
+				}).start();
+			}
+		}
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 	}
 }
