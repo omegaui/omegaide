@@ -187,15 +187,16 @@ public class UIManager extends DataBase {
 	public void save() {
 		clear();
 		addEntry("Font", fontName);
-          addEntry("Font", fontSize+"");
-          addEntry("Font", fontState+"");
+          addEntry("Font", fontSize + "");
+          addEntry("Font", fontState+ "");
 		super.save();
 	}
      
      public static File loadDefaultFile(String fileName, String resName){
           File file = new File(fileName);
      	try{
-               if(file.exists()) return file;
+               if(file.exists()) 
+               	return file;
                InputStream in = UIManager.class.getResourceAsStream("/" + resName);
                OutputStream out = new FileOutputStream(file);
                while(in.available() > 0)

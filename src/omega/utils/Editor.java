@@ -17,6 +17,7 @@
 */
 
 package omega.utils;
+import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 import omega.instant.support.java.JavaCodeNavigator;
 import omega.deassembler.ByteReader;
 import omega.jdk.Import;
@@ -88,7 +89,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public volatile boolean call = false;
 	
 	private static boolean launched = false;
-	
+
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
 	
@@ -104,9 +105,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile boolean i; // override methods
 	private volatile boolean l; // instant launch
 	
+	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
+
+	public static SpellingParser englishSpellingParser = null;
+	static {
+		try{
+			englishSpellingParser = SpellingParser.createEnglishSpellingParser(ENG_DICTIONARY_FILE, true);
+			englishSpellingParser.setUserDictionary(ENG_DICTIONARY_FILE);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	public Editor(Screen screen) {
-		super();
 		Editor.screen = screen;
+
+		englishSpellingParser.setSquiggleUnderlineColor(omega.utils.UIManager.TOOLMENU_COLOR2);
 		
 		scrollPane = new RTextScrollPane(this, true);
 		scrollPane.setFoldIndicatorEnabled(true);
@@ -124,7 +139,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				screen.getBottomPane().jumpField.setText(text.length() + "");
 		});
 		createNewContent();
+		addParser(englishSpellingParser);
 	}
+	
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);
 		addKeyListener(contentWindow);
@@ -132,6 +149,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setLayout(null);
 		add(contentWindow);
 	}
+	
 	public static void launchContentAssist() {
 		if(launched) 
 			return;
@@ -170,6 +188,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}).start();
 	}
+	
 	public void readCode() {
 		if(call) {
 			call = false;
@@ -178,12 +197,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
+	
 	public FindAndReplace getFAndR() {
 		return fAndR;
 	}
+	
 	public RTextScrollPane getAttachment() {
 		return scrollPane;
 	}
+	
 	private void initView() {
 		addKeyListener((keyListener = this));
 		addMouseListener(this);
@@ -205,6 +227,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setDropMode(DropMode.USE_SELECTION);
 		UIManager.setData(this);
 	}
+	
 	public static void setStyle(Editor e, File f) {
 		if(!f.getName().contains(".") || f.getName().endsWith(".txt"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NONE);
@@ -301,6 +324,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".md"))
 			MarkdownTokenMaker.apply(e);
 	}
+	
 	public void loadTheme() {
 		try {
 			String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
@@ -358,6 +382,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
+	
 	public void saveCurrentFile() {
 		if(savedText.equals(getText()))
 			return;
@@ -379,6 +404,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
+	
 	public void saveImage() {
 		try {
 			BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -394,6 +420,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
+	
 	public void saveFileAs() {
 		String path = fileSaveDialog.saveFile();
 		if(path != null) {
@@ -408,6 +435,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
+	
 	public void closeFile() {
 		if(currentFile == null)
 			return;
@@ -416,6 +444,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setText("");
 		savedText = "";
 	}
+	
 	public void reloadFile() {
 		if(currentFile != null) {
 			try {
@@ -432,6 +461,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
+	
 	public void deleteFile() {
 		try {
 			if(currentFile == null)
@@ -460,6 +490,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
+	
 	public static void deleteDir(File file) throws Exception {
 		if (file.isDirectory()) {
 			if (file.list().length == 0)
@@ -476,6 +507,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else
 			file.delete();
 	}
+	
 	public static void deleteFile(File currentFile) {
 		new Thread(()->{
 			try {
@@ -508,6 +540,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}).start();
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		BasicHighlight.highlightJava(this);
@@ -669,6 +702,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			
 		}
 	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch(e.getKeyChar()){
@@ -713,8 +747,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
+	
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+		
 	}
 	
 	//Managing Smart type code completion
@@ -748,6 +784,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			//ex.printStackTrace();
 		}
 	}
+	
 	private void autoSymbolCompletion(KeyEvent e) {
 		try {
 			switch (e.getKeyChar()) {
@@ -783,6 +820,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			//ex.printStackTrace();
 		}
 	}
+	
 	public class FindAndReplace extends JComponent{
 		private ReplaceToolBar replaceToolBar;
 		public FindAndReplace(){
@@ -800,6 +838,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			super.setVisible(value);
 		}
 	}
+	
 	private class PrintArea extends View {
 		private RTextArea textArea;
 		public PrintArea(String title, Screen window) {
@@ -826,6 +865,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			textArea.append("\n" + text);
 		}
 	}
+	
 	@Override
 	public void searchEvent(SearchEvent e) {
 		SearchEvent.Type type = e.getType();

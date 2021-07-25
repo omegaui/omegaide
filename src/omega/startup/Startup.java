@@ -138,17 +138,22 @@ public class Startup extends JDialog {
 		if(!f.exists()){
 			f.mkdir();
 		}
-		f = new File(".omega-ide" + File.separator + "out");
+		f = new File(".omega-ide", "out");
 		if(!f.exists())
 			f.mkdir();
-		if(!new File(".omega-ide" + File.separator + ".ui").exists()){
+		if(!new File(".omega-ide", ".ui").exists()){
 			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
 		}
-		if(!new File(".omega-ide" + File.separator + ".preferences").exists()){
+		if(!new File(".omega-ide", ".preferences").exists()){
 			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".preferences", ".omega-ide/.preferences");
 		}
-		if(!new File(".omega-ide" + File.separator + ".snippets").exists()){
+		if(!new File(".omega-ide", ".snippets").exists()){
 			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".snippets", ".omega-ide/.snippets");
+		}
+		f = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
+		if(!f.exists()){
+			f.getParentFile().mkdirs();
+			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + "dictionary" + File.separator + "english_dic.zip", ".omega-ide/dictionary/english_dic.zip");
 		}
 	}
 }
