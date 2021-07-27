@@ -57,11 +57,13 @@ import static omega.comp.Animations.*;
 */
 public class ToolMenu extends JPanel {
 	private Screen screen;
+	
 	public OPopupWindow filePopup;
 	public OPopupWindow projectPopup;
 	public OPopupWindow toolsPopup;
 	public OPopupWindow setPopup;
 	public OPopupWindow helpPopup;
+	
 	public static OPopupWindow recentFilePopup;
 	public static OPopupItem fileMenu;
 	public static OPopupWindow recentProjectPopup;
@@ -72,6 +74,7 @@ public class ToolMenu extends JPanel {
 	public static OPopupItem allSettingsItem;
 	public static OPopupItem jdkItem;
 	public static OPopupItem jdkRootItem;
+	
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
 	public TextComp newProjectComp;
@@ -93,6 +96,7 @@ public class ToolMenu extends JPanel {
 	public TextComp sep5;
 	public TextComp themeComp;
 	public LabelMenu taskMenu;
+	
 	public static InfoScreen infoScreen;
      public static ToolMenuPathBox pathBox;
      public static SourceDefender sourceDefender;
@@ -102,7 +106,7 @@ public class ToolMenu extends JPanel {
      public static MadeWithScreen madeWithScreen;
      public static GradleModuleWizard gradleModuleWizard;
 	public static UniversalProjectWizard universalProjectWizard;
-
+	public static ProjectDistructionWizard projectDistructionWizard;
 	public static ConsoleSelector consoleSelector;
 	public static GradleBuildScriptManager gradleBuildScriptManager;
      
@@ -116,14 +120,19 @@ public class ToolMenu extends JPanel {
 	public static Color closeWinColor = TOOLMENU_COLOR2;
 	public static Color maximizeWinColor = TOOLMENU_COLOR4;
 	public static Color minimizeWinColor = TOOLMENU_COLOR3;
+	
 	public TextComp iconComp;
 	public TextComp titleComp;
 	public TextComp minimizeComp;
 	public TextComp maximizeComp;
 	public TextComp closeComp;
+	
 	private BufferedImage image;
+	
 	private Point lastLocation;
+	
 	private Dimension lastSize;
+	
 	private boolean maximized = false;
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
@@ -138,6 +147,7 @@ public class ToolMenu extends JPanel {
 			universalProjectWizard = new UniversalProjectWizard(screen);
 			consoleSelector = new ConsoleSelector(screen);
 			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
+			projectDistructionWizard = new ProjectDistructionWizard(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -718,7 +728,8 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload())
           .createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
-          .createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true));
+          .createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
+          .createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));
 	}
 	private void initFilePopup() {
 		//New Menu Items

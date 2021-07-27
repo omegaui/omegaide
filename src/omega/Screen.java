@@ -152,7 +152,7 @@ public class Screen extends JFrame {
 		
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
-		omega.gset.Generator.init(this);
+		Generator.init(this);
 		splash.setProgress(37, "welcome");
 		
 		try{
@@ -161,11 +161,12 @@ public class Screen extends JFrame {
 		catch(Exception e){
 			e.printStackTrace();
 		}
+		
 		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
 		setLocationRelativeTo(null);
-		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -173,7 +174,6 @@ public class Screen extends JFrame {
 				dispose();
 			}
 		});
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		splash.setProgress(60, "initializing");
 		init();
@@ -280,6 +280,7 @@ public class Screen extends JFrame {
 			launcher.setVisible(true);
 		}
 	}
+	
 	@Override
 	public void setVisible(boolean value) {
 		if(value & screenHasProjectView) {
@@ -304,23 +305,29 @@ public class Screen extends JFrame {
 		}
 		super.setVisible(value);
 	}
+	
 	public void justVisible(boolean value){
 		super.setVisible(value);
 	}
+	
 	public void setToView() {
 		int x = splitPane.getDividerLocation();
 		splitPane.setLeftComponent(projectView.getProjectView());
 		Screen.getProjectView().getProjectView().setVisible(true);
 	}
+	
 	public void setToNull() {
 		splitPane.remove(projectView.getProjectView());
 	}
+	
 	public static void notify(String text) {
 		getScreen().setTitle(text);
 	}
+	
 	public static void hideNotif() {
 		getScreen().loadTitle(getFileView().getProjectName());
 	}
+	
 	public static void notify(String text, long time, Runnable task) {
 		getScreen().setTitle(text);
 		new Thread(()->{
@@ -335,6 +342,7 @@ public class Screen extends JFrame {
 				task.run();
 		}).start();
 	}
+	
 	public void manageTools(ProjectDataBase manager){
 		toolMenu.structureViewComp.setVisible(!manager.non_java);
 		toolMenu.sep4.setVisible(!manager.non_java);
@@ -345,23 +353,27 @@ public class Screen extends JFrame {
 		toolMenu.changeLocations(manager.non_java);
 		sideMenu.changeLocations(manager.non_java);
 	}
+	
 	public static void setStatus(String status, int value) {
 		if(value != 100)
 			Screen.getScreen().getBottomPane().setMessage(status);
 		else
 			Screen.getScreen().getBottomPane().setMessage("Status of any process running will appear here!");
 	}
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		for(Component c : getComponents())
 			c.repaint();
 	}
+	
 	public static void reverseColors(Component c) {
 		Color l = c.getBackground();
 		c.setBackground(c.getForeground());
 		c.setForeground(l);
 	}
+	
 	public void loadTitle(String projectName) {
 		setTitle(projectName+" -Omega IDE "+VERSION);
 		toolMenu.titleComp.setText(getTitle());
@@ -371,6 +383,7 @@ public class Screen extends JFrame {
 		loadTitle(projectName);
 		splitPane.setDividerLocation(300);
 	}
+	
 	public static void openInDesktop(File file) {
 		try {
 			new Thread(()->{
@@ -386,6 +399,7 @@ public class Screen extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	
 	public Editor loadFile(File file) {
 		String fn = file.getName();
 		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
@@ -406,6 +420,7 @@ public class Screen extends JFrame {
 		tabPanel.addTab(file.getName(), editor, getPackName(file));
 		return editor;
 	}
+	
 	public Editor loadFileOnRightTabPanel(File file) {
 		String fn = file.getName();
 		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
@@ -422,6 +437,7 @@ public class Screen extends JFrame {
 		rightTabPanel.addTab(file.getName(), editor, getPackName(file));
 		return editor;
 	}
+	
 	public Editor loadFileOnBottomTabPanel(File file) {
 		String fn = file.getName();
 		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
@@ -442,18 +458,22 @@ public class Screen extends JFrame {
 		bottomTabPanel.addTab(file.getName(), editor, getPackName(file));
 		return editor;
 	}
+	
 	public static void addAndSaveRecents(String path) {
 		RecentsManager.add(path);
 		recentsManager.saveData();
 	}
+	
 	public static void launchNewWindow(String projectPath){
 		IDE.main(null);
 	}
+	
 	public void loadProject(File file) {
 		fileView.saveAll();
 		fileView.setProjectPath(file.getAbsolutePath());
 		Screen.hideNotif();
 	}
+	
 	public boolean isFileOpened(File file) {
 		LinkedList<Editor> allEditors = new LinkedList<>();
 		tabPanel.getEditors().forEach(allEditors::add);
@@ -469,6 +489,7 @@ public class Screen extends JFrame {
 		}
 		return false;
 	}
+	
 	public Editor getEditor(File file) {
 		LinkedList<Editor> allEditors = new LinkedList<>();
 		tabPanel.getEditors().forEach(allEditors::add);
@@ -484,6 +505,7 @@ public class Screen extends JFrame {
 		}
 		return null;
 	}
+	
 	public String getPackName(File file) {
 		String res = "";
 		boolean canRecord = false;
@@ -501,6 +523,7 @@ public class Screen extends JFrame {
 			res = res.substring(0,res.length() - 1);
 		return res;
 	}
+	
 	@Override
 	public void dispose(){
 		active = false;
@@ -533,27 +556,35 @@ public class Screen extends JFrame {
 	public static final Screen getScreen() {
 		return Screen.getFileView().getScreen();
 	}
+	
 	public static RecentsManager getRecentsManager() {
 		return recentsManager;
 	}
+	
 	public static FileView getFileView() {
 		return fileView;
 	}
+	
 	public static BuildView getBuildView() {
 		return buildView;
 	}
+	
 	public static RunView getRunView() {
 		return runView;
 	}
+	
 	public static ProjectView getProjectView() {
 		return projectView;
 	}
+	
 	public static ErrorHighlighter getErrorHighlighter() {
 		return errorHighlighter;
 	}
+	
 	public static BasicHighlight getBasicHighlight() {
 		return basicHighlight;
 	}
+	
 	public static UniversalSettingsWizard getUniversalSettingsView() {
 		return universalSettings;
 	}
@@ -561,15 +592,18 @@ public class Screen extends JFrame {
 	public static TerminalComp getTerminalComp(){
 		return terminal;
 	}
+	
 	public static void pickTheme(String defaultTheme){
 		picker.lightMode = defaultTheme.equals("light");
 		picker.loadImage(defaultTheme + ".png");
 		picker.manageTheme();
 		picker.setVisible(true);
 	}
+	
 	public ToolMenu getToolMenu() {
 		return toolMenu;
 	}
+	
 	public SideMenu getSideMenu() {
 		return sideMenu;
 	}
@@ -581,6 +615,7 @@ public class Screen extends JFrame {
 	public OperationPane getOperationPanel() {
 		return operationPane;
 	}
+	
 	public void pressKey(int code){
 		try {
 			if(robot == null)
@@ -588,8 +623,10 @@ public class Screen extends JFrame {
 			robot.keyPress(code);
 		}
 		catch(Exception e) {
+			
 		}
 	}
+	
 	public void moveTo(int x, int y) {
 		try {
 			if(robot == null)
@@ -597,14 +634,18 @@ public class Screen extends JFrame {
 			robot.mouseMove(x, y);
 		}
 		catch(Exception e) {
+			
 		}
 	}
+	
 	public static UIManager getUIManager() {
 		return uiManager;
 	}
+	
 	public static DataManager getDataManager(){
 		return dataManager;
 	}
+	
 	public void saveAllEditors() {
 		tabPanel.getEditors().forEach(w->w.saveCurrentFile());
 		rightTabPanel.getEditors().forEach(w->w.saveCurrentFile());
@@ -612,11 +653,13 @@ public class Screen extends JFrame {
 		if(DataManager.isSourceDefenderEnabled())
 			ToolMenu.sourceDefender.backupData();
 	}
+	
 	public void loadThemes(){
 		tabPanel.getEditors().forEach(w->w.loadTheme());
 		rightTabPanel.getEditors().forEach(w->w.loadTheme());
 		bottomTabPanel.getEditors().forEach(w->w.loadTheme());
 	}
+	
 	public LinkedList<Editor> getAllEditors(){
 		LinkedList<Editor> editors = new LinkedList<>();
 		tabPanel.getEditors().forEach(editors::add);
@@ -624,15 +667,19 @@ public class Screen extends JFrame {
 		bottomTabPanel.getEditors().forEach(editors::add);
 		return editors;
 	}
+	
 	public Editor getCurrentEditor() {
 		return focussedEditor;
 	}
+	
 	public void closeCurrentProject() {
 		tabPanel.closeAllTabs();
 	}
+	
 	public TabPanel getTabPanel() {
 		return tabPanel;
 	}
+	
 	public TabPanel getRightTabPanel() {
 		return rightTabPanel;
 	}
@@ -640,12 +687,15 @@ public class Screen extends JFrame {
 	public TabPanel getBottomTabPanel() {
 		return bottomTabPanel;
 	}
+	
 	public static PluginManager getPluginManager() {
 		return pluginManager;
 	}
+	
 	public static PluginCenter getPluginCenter(){
 		return pluginCenter;
 	}
+	
 	public void saveEssential() {
 		uiManager.save();
 		dataManager.saveData();

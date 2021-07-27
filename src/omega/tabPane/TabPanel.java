@@ -268,13 +268,11 @@ public class TabPanel extends JPanel{
                g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
                g.setFont(omega.utils.UIManager.PX28);
                FontMetrics f = g.getFontMetrics();
-               String hint = screen.getToolMenu().hidden ? HINT1 : HINT;
-               if(Screen.getFileView().getProjectManager() != null)
-                    hint = Screen.getFileView().getProjectManager().non_java ? HINT1_2 : hint;
+               String hint = screen.getToolMenu().hidden ? ((Screen.getFileView().getProjectManager() != null && Screen.getFileView().getProjectManager().non_java) ? HINT1_2 : HINT1) : HINT;
                g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
                g.setColor(omega.utils.UIManager.TOOLMENU_COLOR1);
                g.drawString(hint, getWidth()/2 - f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());
-               if(hint.equals(HINT1)){
+               if(hint.equals(HINT1) || hint.equals(HINT1_2)){
                     g.drawImage(image, getWidth()/2 + f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 - 13 + f.getAscent() - f.getDescent() + f.getHeight(), null);
                }
                g.dispose();

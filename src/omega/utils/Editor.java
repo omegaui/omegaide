@@ -122,15 +122,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		Editor.screen = screen;
 
 		englishSpellingParser.setSquiggleUnderlineColor(omega.utils.UIManager.TOOLMENU_COLOR2);
+		addParser(englishSpellingParser);
 		
 		scrollPane = new RTextScrollPane(this, true);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
 		
 		fAndR = new FindAndReplace();
+		
 		initView();
+		
 		printArea = new PrintArea("File Operation Log", screen);
 		fileSaveDialog = new FileSaveDialog(screen);
+		
 		addCaretListener((e)-> {
 			String text = getSelectedText();
 			if(text == null || text.equals(""))
@@ -138,8 +142,30 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			else
 				screen.getBottomPane().jumpField.setText(text.length() + "");
 		});
+		
 		createNewContent();
-		addParser(englishSpellingParser);
+	}
+	
+	private void initView() {
+		addKeyListener((keyListener = this));
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		setAnimateBracketMatching(true);
+		setAntiAliasingEnabled(true);
+		setAutoIndentEnabled(true);
+		setAutoscrolls(true);
+		setBracketMatchingEnabled(true);
+		setCloseCurlyBraces(true);
+		setPaintMatchedBracketPair(true);
+		setHyperlinksEnabled(true);
+		setHyperlinkForeground(UIManager.glow);
+		setCodeFoldingEnabled(true);
+		setFadeCurrentLineHighlight(false);
+		setShowMatchedBracketPopup(true);
+		setHighlightSecondaryLanguages(true);
+		setDragEnabled(true);
+		setDropMode(DropMode.USE_SELECTION);
+		UIManager.setData(this);
 	}
 	
 	private void createNewContent() {
@@ -196,36 +222,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				ContentTokenizer.arrangeTokens(this);
 			}
 		}
-	}
-	
-	public FindAndReplace getFAndR() {
-		return fAndR;
-	}
-	
-	public RTextScrollPane getAttachment() {
-		return scrollPane;
-	}
-	
-	private void initView() {
-		addKeyListener((keyListener = this));
-		addMouseListener(this);
-		addMouseMotionListener(this);
-		setAnimateBracketMatching(true);
-		setAntiAliasingEnabled(true);
-		setAutoIndentEnabled(true);
-		setAutoscrolls(true);
-		setBracketMatchingEnabled(true);
-		setCloseCurlyBraces(true);
-		setPaintMatchedBracketPair(true);
-		setHyperlinksEnabled(true);
-		setHyperlinkForeground(UIManager.glow);
-		setCodeFoldingEnabled(true);
-		setFadeCurrentLineHighlight(false);
-		setShowMatchedBracketPopup(true);
-		setHighlightSecondaryLanguages(true);
-		setDragEnabled(true);
-		setDropMode(DropMode.USE_SELECTION);
-		UIManager.setData(this);
 	}
 	
 	public static void setStyle(Editor e, File f) {
@@ -938,6 +934,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+	}
+	
+	public FindAndReplace getFAndR() {
+		return fAndR;
+	}
+	
+	public RTextScrollPane getAttachment() {
+		return scrollPane;
 	}
 }
 
