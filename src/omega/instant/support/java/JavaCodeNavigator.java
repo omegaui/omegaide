@@ -96,6 +96,7 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 					break;
 				}
 			}
+			//For this case, hmm ... the code is quite lengthy
 			//System.out.println("Code >" + code);
 		}
 	}

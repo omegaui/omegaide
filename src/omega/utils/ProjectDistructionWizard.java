@@ -61,7 +61,7 @@ public class ProjectDistructionWizard extends JDialog{
 			try{
 				dispose();
 				File projectDir = new File(Screen.getFileView().getProjectPath());
-				Screen.getScreen().closeCurrentProject();
+				Screen.getFileView().closeProject();
 				Editor.deleteDir(projectDir);
 			}
 			catch(Exception e){
