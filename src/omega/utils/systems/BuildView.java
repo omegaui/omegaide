@@ -413,7 +413,8 @@ public class BuildView extends View {
 			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator + SRC_LIST));
 			paths.forEach(path->writer.println(path));
 			writer.close();
-		}catch(Exception e) {e.printStackTrace();}
+		}
+		catch(Exception e) {e.printStackTrace();}
 	}
 
 	private static void loadData(LinkedList<String> paths, File[] files) {

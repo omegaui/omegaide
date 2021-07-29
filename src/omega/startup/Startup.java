@@ -155,6 +155,12 @@ public class Startup extends JDialog {
 			f.getParentFile().mkdirs();
 			omega.utils.UIManager.loadDefaultFile(".omega-ide" + File.separator + "dictionary" + File.separator + "english_dic.zip", ".omega-ide/dictionary/english_dic.zip");
 		}
+		f = new File(".omega-ide", "buildspace");
+		f.mkdir();
+		f = new File(".omega-ide" + File.separator + "buildspace", "src");
+		f.mkdir();
+		f = new File(".omega-ide" + File.separator + "buildspace", "bin");
+		f.mkdir();
 	}
 }
 

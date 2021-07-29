@@ -17,6 +17,7 @@
 */
 
 package omega.utils;
+import omega.instant.support.SyntaxParsers;
 import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 import omega.instant.support.java.JavaCodeNavigator;
 import omega.deassembler.ByteReader;
@@ -701,6 +702,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
+		SyntaxParsers.javaSyntaxParser.parse();
 		switch(e.getKeyChar()){
 			case ',':
 			insert(" ", getCaretPosition());
