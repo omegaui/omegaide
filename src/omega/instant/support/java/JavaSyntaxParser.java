@@ -1,4 +1,9 @@
 package omega.instant.support.java;
+import javax.tools.SimpleJavaFileObject;
+import java.util.Locale;
+import java.util.List;
+import javax.tools.Diagnostic;
+import omega.highlightUnit.Highlight;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -7,7 +12,6 @@ import java.util.zip.ZipOutputStream;
 import omega.utils.systems.BuildView;
 import java.io.PrintWriter;
 import omega.startup.Startup;
-import omega.utils.systems.creators.FileOperationManager;
 import omega.Screen;
 import omega.utils.Editor;
 import java.io.File;
@@ -19,9 +23,17 @@ import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.StandardJavaFileManager;
+import omega.utils.systems.creators.FileOperationManager;
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class JavaSyntaxParser {
 	private JavaCompiler compiler;
 	private StandardJavaFileManager fileManager;
+
+	private static LinkedList<Highlight> highlights = new LinkedList<>();
+	
 	private static volatile boolean parsing = false;
 
 	private static final File BUILDSPACE_DIR = new File(".omega-ide", "buildspace");
@@ -133,10 +145,49 @@ public class JavaSyntaxParser {
 			parsing = false;
 			if(diagnostics.getDiagnostics() == null)
 				return;
-			diagnostics.getDiagnostics().forEach(d->{
-				System.out.println(d.getKind() + "\t" + d.getLineNumber());
-			});
+			
+			highlights.forEach(h -> h.remove());
+			highlights.clear();
+			
+			List<Diagnostic<? extends JavaFileObject>> diagnosticList = diagnostics.getDiagnostics();
+			System.out.println("\nAny Diagnostics? " + (!diagnosticList.isEmpty()));
+			for(Diagnostic d : diagnosticList) {
+				if(d.getKind() != Diagnostic.Kind.ERROR)
+					continue;
+				int start = (int)d.getStartPosition();
+				int end = (int)d.getEndPosition();
+				if(start == end)
+					end++;
+				
+				JavaFileObject fileObject = (JavaFileObject)d.getSource();
+				String filePath = fileObject.toUri().getPath();
+				String srcDir = BUILDSPACE_DIR.getAbsolutePath();
+				filePath = Screen.getFileView().getProjectPath() + filePath.substring(srcDir.length());
+				Editor editor = Screen.getScreen().getEditor(new File(filePath));
+				
+				if(editor == null){
+					editor = Screen.getScreen().loadFile(new File(filePath));
+				}
+				
+				SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(TOOLMENU_COLOR2);
+				painter.setUseFlatLine(true);
+				
+				Highlight h = new Highlight(editor, painter, start, end);
+				h.latest = true;
+				h.apply();
+				highlights.add(h);
+			}
+			
+			System.out.println("Total Diagnostics : " + diagnosticList.size() + "\nTotal Highlights : " + highlights.size());
 		}).start();
+	}
+
+	public static Highlight doesOffsetAlreadyExists(int start, int end){
+		for(Highlight h : highlights){
+			if(h.equals(start, end))
+				return h;
+		}
+		return null;
 	}
 
 	public static void prepareBuildSpace(LinkedList<String> compilationUnitFiles){
@@ -144,9 +195,6 @@ public class JavaSyntaxParser {
 			//Cleaning BuildSpace
 			Editor.deleteDir(BUILDSPACE_DIR);
 			Startup.writeUIFiles();
-
-			//Writing Source List
-			File sourceListFile = new File(BUILDSPACE_DIR, ".sources");
 		
 			//Generating BuildSpace
 			LinkedList<Editor> editors = Screen.getScreen().getAllEditors();
@@ -160,7 +208,7 @@ public class JavaSyntaxParser {
 					File targetDir = new File(targetPath);
 					targetDir.mkdirs();
 					File targetFile = new File(targetPath, file.getName());
-					FileOperationManager.copyFile(file, targetFile);
+					FileOperationManager.writeNewTextToFile(editor.getText(), targetFile);
 					compilationUnitFiles.add(targetFile.getAbsolutePath());
 				}
 			}

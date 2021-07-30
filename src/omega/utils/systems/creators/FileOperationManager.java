@@ -17,6 +17,7 @@
 */
 
 package omega.utils.systems.creators;
+import java.io.PrintWriter;
 import java.awt.Graphics;
 import omega.utils.UIManager;
 import java.awt.Color;
@@ -244,7 +245,8 @@ public class FileOperationManager extends JDialog {
                     out.write(in.read());
                in.close();
                out.close();
-          }catch(Exception e) { logArea.append("\n" + e); }
+          }
+          catch(Exception e) { logArea.append("\n" + e); }
      }
      
      public static void copyFile(File file, File target) {
@@ -260,6 +262,17 @@ public class FileOperationManager extends JDialog {
                e.printStackTrace();
           }
      }
+
+	public static void writeNewTextToFile(String text, File targetFile){
+		try{
+			PrintWriter writer = new PrintWriter(targetFile);
+			writer.println(text);
+			writer.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
      @Override
      public void paint(Graphics g){

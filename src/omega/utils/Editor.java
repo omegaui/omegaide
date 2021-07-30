@@ -702,7 +702,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		SyntaxParsers.javaSyntaxParser.parse();
+		new Thread(()->{
+			try{Thread.sleep(250);}catch(Exception exp){}
+			SyntaxParsers.javaSyntaxParser.parse();
+		}).start();
+		
 		switch(e.getKeyChar()){
 			case ',':
 			insert(" ", getCaretPosition());

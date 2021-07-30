@@ -22,17 +22,26 @@ import omega.utils.Editor;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
-
 public class Highlight {
 	public Editor editor;
 	public HighlightPainter highlightPainter;
 	public int start;
 	public int end;
+	public boolean latest = false;
 	public Highlight(Editor e, HighlightPainter h, int start, int end) {
 		this.editor = e;
 		this.highlightPainter = h;
 		this.start = start;
 		this.end = end;
+	}
+
+	public void apply(){
+		try{
+			editor.getHighlighter().addHighlight(start, end, highlightPainter);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void remove() {
@@ -42,6 +51,10 @@ public class Highlight {
 			if(hs[i].getPainter() == highlightPainter)
 				h.removeHighlight(hs[i]);
 		}
+	}
+
+	public boolean equals(int start, int end){
+		return start == start && end == end;
 	}
 }
 

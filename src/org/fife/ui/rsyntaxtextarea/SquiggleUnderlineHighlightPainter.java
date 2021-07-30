@@ -35,7 +35,8 @@ import org.fife.ui.rtextarea.ChangeableHighlightPainter;
 public class SquiggleUnderlineHighlightPainter
 				extends ChangeableHighlightPainter {
 
-	private static final int AMT			= 2;
+	private static final int AMT = 2;
+	private boolean useFlatLine = false;
 
 	/**
 	 * Constructor.
@@ -48,6 +49,13 @@ public class SquiggleUnderlineHighlightPainter
 		setPaint(color);
 	}
 
+	public boolean isUsingFlatLine(){
+		return useFlatLine;
+	}
+
+	public void setUseFlatLine(boolean value){
+		this.useFlatLine = value;
+	}
 
 	/**
 	 * Paints a portion of a highlight.
@@ -90,15 +98,15 @@ public class SquiggleUnderlineHighlightPainter
 						(Rectangle)shape : shape.getBounds();
 			paintSquiggle(g, r);
 			return r;
-		} catch (BadLocationException e) {
-			e.printStackTrace(); // can't render
+		} 
+		catch (BadLocationException e) {
+			//e.printStackTrace();// can't render
 		}
 
 		// Only if exception
 		return null;
 
 	}
-
 
 	/**
 	 * Paints a squiggle underneath text in the specified rectangle.
@@ -107,10 +115,14 @@ public class SquiggleUnderlineHighlightPainter
 	 * @param r The rectangle containing the text.
 	 */
 	protected void paintSquiggle(Graphics g, Rectangle r) {
+		if(isUsingFlatLine()){
+			g.fillRect(r.x + 1, r.y + r.height - 2 , r.width - 2, 2);
+			return;
+		}
 		int x = r.x;
 		int y = r.y + r.height - AMT;
 		int delta = -AMT;
-		while (x<r.x+r.width) {
+		while (x<r.x+r.width){
 			g.drawLine(x,y, x+AMT,y+delta);
 			y += delta;
 			delta = -delta;
