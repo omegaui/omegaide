@@ -17,6 +17,7 @@
 */
 
 package omega.utils.systems;
+import omega.instant.support.java.JavaSyntaxParser;
 import omega.*;
 import omega.launcher.*;
 import java.util.*;
@@ -128,6 +129,16 @@ public class FileView extends View {
      		
      		try {
      		     Screen.getProjectView().reload();
+     		     new Thread(()->{
+     		     	try{
+     		     		Editor.deleteDir(JavaSyntaxParser.BUILDSPACE_DIR);
+     		     	}
+     		     	catch(Exception e){
+     		     		e.printStackTrace();
+     		     	}
+	     		     if(!projectManager.non_java)
+						JavaSyntaxParser.packCompiledCodes();
+		     	}).start();
 		     }
 		     catch(Exception e) {
                     

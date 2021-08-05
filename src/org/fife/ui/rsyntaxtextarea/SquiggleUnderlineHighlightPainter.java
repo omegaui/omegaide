@@ -116,13 +116,13 @@ public class SquiggleUnderlineHighlightPainter
 	 */
 	protected void paintSquiggle(Graphics g, Rectangle r) {
 		if(isUsingFlatLine()){
-			g.fillRect(r.x + 1, r.y + r.height - 2 , r.width - 2, 2);
+			g.drawRect(r.x, r.y, r.width - 1, r.height - 1);
 			return;
 		}
 		int x = r.x;
 		int y = r.y + r.height - AMT;
 		int delta = -AMT;
-		while (x<r.x+r.width){
+		while (x < r.x+r.width){
 			g.drawLine(x,y, x+AMT,y+delta);
 			y += delta;
 			delta = -delta;

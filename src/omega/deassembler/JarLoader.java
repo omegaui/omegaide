@@ -42,7 +42,7 @@ public class JarLoader {
                loader = URLClassLoader.newInstance(urls);
      	}
      	catch(Exception e){ 
-     		System.err.println(e); 
+     		System.err.println(e);
      	}
      }
 	public JarLoader(){

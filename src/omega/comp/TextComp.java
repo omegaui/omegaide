@@ -329,6 +329,9 @@ public class TextComp extends JComponent{
 		
 		if(postAnimationLayer != null)
 			postAnimationLayer.animate(this);
+		
+		g.dispose();
+		graphics.dispose();
 	}
 	public void draw(Graphics2D g, int x, int y){
 		g.setColor(color3);

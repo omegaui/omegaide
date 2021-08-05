@@ -32,7 +32,8 @@ public class JDKManager {
 	
 	public static volatile boolean reading = false;
 	
-	public static LinkedList<Module> modules = new LinkedList<>();
+	private static LinkedList<Module> modules = new LinkedList<>();
+	
 	public static LinkedList<Import> imports = new LinkedList<>();
 	public static LinkedList<Import> javaLangPack = new LinkedList<>();
 	public static LinkedList<Import> sources = new LinkedList<>();
@@ -100,6 +101,10 @@ public class JDKManager {
 				systemJarLoader.putClassName(c.getImport());
 			});
 		});
+
+		//Losing Not Needed Memory
+		modules.forEach(module->module.classes.clear());
+		modules.clear();
 	}
 	public void addModule(File moduleFile){
 		for(Module module : modules){

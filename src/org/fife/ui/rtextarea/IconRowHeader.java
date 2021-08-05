@@ -63,7 +63,7 @@ public class IconRowHeader extends AbstractGutterComponent implements MouseListe
 	/**
 	 * The width of this component.
 	 */
-	protected int width;
+	public int width;
 
 	/**
 	 * Whether this component listens for mouse clicks and toggles "bookmark"

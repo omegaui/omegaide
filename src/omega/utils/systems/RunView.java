@@ -17,6 +17,8 @@
 */
 
 package omega.utils.systems;
+import omega.instant.support.java.JavaSyntaxParser;
+import omega.utils.PrintArea;
 import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 import omega.utils.IconManager;
 import omega.jdk.*;
@@ -173,7 +175,8 @@ public class RunView extends View {
 						getScreen().getToolMenu().runComp.setClickable(true);
 						return;
 					}
-			}catch(Exception e){ System.err.println(e); }
+				}
+				catch(Exception e){ System.err.println(e); }
 			}
 			
 			getScreen().getToolMenu().buildComp.setClickable(true);
@@ -605,6 +608,10 @@ public class RunView extends View {
 				
 				System.gc();
 				
+                   	new Thread(()->{
+                   		JavaSyntaxParser.packCompiledCodes();
+               	}).start();
+               	
 				Screen.setStatus("Running Project", 23);
 				
 				NATIVE_PATH = "";

@@ -56,6 +56,9 @@ public class IconManager {
      public static BufferedImage fluentdemonImage = getFluentIcon("demon-48.png");
      public static BufferedImage fluentpoisonImage = getFluentIcon("poison-48.png");
      public static BufferedImage fluentevilImage = getFluentIcon("evil-48.png");
+     public static BufferedImage fluentbrokenbotImage = getFluentIcon("broken-robot-50.png");
+     public static BufferedImage fluentwarningImage = getFluentIcon("warning-48.png");
+     public static BufferedImage fluenterrorImage = getFluentIcon("error-30.png");
      
      public static BufferedImage fluentlevelupImage = getFluentIcon("up-3-50.png");
      public static BufferedImage fluentplainfolderImage = getFluentIcon("folder-50.png");

@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import java.awt.Toolkit;
+import java.awt.geom.RoundRectangle2D;
 import omega.instant.support.universal.*;
 import omega.plugin.*;
 import javax.swing.plaf.ColorUIResource;
@@ -280,7 +282,15 @@ public class Screen extends JFrame {
 			launcher.setVisible(true);
 		}
 	}
-	
+
+	@Override
+	public void setSize(int w, int h){
+		super.setSize(w, h);
+		int arc = 20;
+		if(w == (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth() && h >= (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 1)
+			arc = 0;
+		setShape(new RoundRectangle2D.Double(0, 0, w, h, arc, arc));
+	}
 	@Override
 	public void setVisible(boolean value) {
 		if(value & screenHasProjectView) {
@@ -471,7 +481,6 @@ public class Screen extends JFrame {
 	public void loadProject(File file) {
 		fileView.saveAll();
 		fileView.setProjectPath(file.getAbsolutePath());
-		Screen.hideNotif();
 	}
 	
 	public boolean isFileOpened(File file) {

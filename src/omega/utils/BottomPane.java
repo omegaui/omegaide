@@ -46,8 +46,8 @@ public class BottomPane extends JPanel {
 	
 	public void init(){
 		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, c2, glow, null);
-		messageComp.setGradientColor(TOOLMENU_GRADIENT);
-		messageComp.setPaintGradientEnabled(true);
+		//messageComp.setGradientColor(TOOLMENU_GRADIENT);
+		//messageComp.setPaintGradientEnabled(true);
 		messageComp.setFont(PX14);
 		messageComp.alignX = 15;
 		messageComp.setPreferredSize(new Dimension(100, 25));
@@ -97,10 +97,7 @@ public class BottomPane extends JPanel {
           themeComp.setFont(PX14);
           themeComp.setArc(0, 0);
           themeComp.setGradientColor(TOOLMENU_GRADIENT);
-          themeComp.setPaintGradientEnabled(true);
           add(themeComp);
-          
-		putPostAnimationLayer(themeComp, getLineAnimationLayer(1), ACTION_MOUSE_ENTERED);
 	}
 	@Override
 	public void paint(Graphics g){

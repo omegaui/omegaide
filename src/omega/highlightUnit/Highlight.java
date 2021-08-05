@@ -40,7 +40,7 @@ public class Highlight {
 			editor.getHighlighter().addHighlight(start, end, highlightPainter);
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			
 		}
 	}
 	

@@ -103,7 +103,7 @@ public class Gutter extends JPanel {
 	/**
 	 * Renders bookmark icons, breakpoints, error icons, etc.
 	 */
-	private IconRowHeader iconArea;
+	public IconRowHeader iconArea;
 
 	/**
 	 * Whether the icon area inherits the gutter background (as opposed to
@@ -160,7 +160,6 @@ public class Gutter extends JPanel {
 			bg = textArea.getBackground(); // May return null if image bg
 		}
 		setBackground(bg!=null ? bg : Color.WHITE);
-
 	}
 
 
@@ -688,7 +687,7 @@ public class Gutter extends JPanel {
 	 * @param enabled Whether the icon row header is enabled.
 	 * @see #isIconRowHeaderEnabled()
 	 */
-	void setIconRowHeaderEnabled(boolean enabled) {
+	public void setIconRowHeaderEnabled(boolean enabled) {
 		if (iconArea!=null) {
 			if (enabled) {
 				add(iconArea, BorderLayout.LINE_START);
@@ -713,7 +712,7 @@ public class Gutter extends JPanel {
 	public void setIconRowHeaderInheritsGutterBackground(boolean inherits) {
 		if (inherits!=iconRowHeaderInheritsGutterBackground) {
 			iconRowHeaderInheritsGutterBackground = inherits;
-			if (iconArea!=null) {
+			if (iconArea != null) {
 				iconArea.setInheritsGutterBackground(inherits);
 			}
 		}

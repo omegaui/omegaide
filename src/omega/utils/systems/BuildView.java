@@ -17,6 +17,8 @@
 */
 
 package omega.utils.systems;
+import omega.instant.support.java.JavaSyntaxParser;
+import omega.utils.PrintArea;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -290,6 +292,10 @@ public class BuildView extends View {
                     getScreen().getToolMenu().buildComp.setClickable(true);
                     getScreen().getToolMenu().runComp.setClickable(true);
                     Screen.getProjectView().reload();
+
+                   	new Thread(()->{
+                   		JavaSyntaxParser.packCompiledCodes();
+               	}).start();
                }
                catch(Exception e) {
                     e.printStackTrace();
