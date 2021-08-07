@@ -27,12 +27,13 @@ public class Highlight {
 	public HighlightPainter highlightPainter;
 	public int start;
 	public int end;
-	public boolean latest = false;
-	public Highlight(Editor e, HighlightPainter h, int start, int end) {
+	public boolean warning = false;
+	public Highlight(Editor e, HighlightPainter h, int start, int end, boolean warning) {
 		this.editor = e;
 		this.highlightPainter = h;
 		this.start = start;
 		this.end = end;
+		this.warning = warning;
 	}
 
 	public void apply(){

@@ -37,7 +37,7 @@ public class BasicHighlight {
 		try{
 			HighlightPainter hp = new DefaultHighlighter.DefaultHighlightPainter(color);
 			editor.getHighlighter().addHighlight(start, end, hp);
-			highlights.add(new Highlight(editor, hp, start, end));
+			//highlights.add(new Highlight(editor, hp, start, end));
 		}
 		catch(Exception e){
 			System.err.println(e);

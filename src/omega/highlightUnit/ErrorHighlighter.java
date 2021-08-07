@@ -84,7 +84,7 @@ public class ErrorHighlighter {
 					int start = text.indexOf(code, index+1);
 					int end = start + code.length();
 				     h.addHighlight(start, end, hp);
-				     highlights.add(new Highlight(e, hp, start, end));
+				     highlights.add(new Highlight(e, hp, start, end, false));
 					canRecord = false;
 				}
 			}

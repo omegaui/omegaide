@@ -60,7 +60,11 @@ public class JavaSyntaxParser {
 	private StandardJavaFileManager fileManager;
 
 	private static LinkedList<Highlight> highlights = new LinkedList<>();
+	private static LinkedList<JavaErrorData> datas = new LinkedList<>();
 	private static LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos = new LinkedList<>();
+
+	private int errorCount;
+	private int warningCount;
 	
 	private static volatile boolean parsing = false;
 	private static volatile boolean packingCodes = false;
@@ -77,6 +81,10 @@ public class JavaSyntaxParser {
 		if(parsing || packingCodes)
 			return;
 		new Thread(()->{
+			
+			errorCount = 0;
+			warningCount = 0;
+			
 			parsing = true;
 			DiagnosticCollector<JavaFileObject> diagnostics = compile();
 			parsing = false;
@@ -123,10 +131,35 @@ public class JavaSyntaxParser {
 				SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(getSuitableColor(d.getKind()));
 				painter.setUseFlatLine(d.getKind() == Kind.WARNING);
 				
-				Highlight h = new Highlight(editor, painter, start, end);
+				Highlight h = new Highlight(editor, painter, start, end, d.getKind() != Kind.ERROR);
 				h.apply();
 				highlights.add(h);
 			}
+			
+			datas.forEach(data->data.resetData());
+			datas.clear();
+			
+			main:
+				for(Highlight h : highlights){
+					for(JavaErrorData data : datas){
+						if(data.editor == h.editor)
+							continue main;
+					}
+					JavaErrorData data = new JavaErrorData();
+					data.editor = h.editor;
+					datas.add(data);
+				}
+
+			for(Highlight h : highlights){
+				for(JavaErrorData data : datas){
+					data.add(h);
+				}
+			}
+
+			datas.forEach(data->{
+				data.setData();
+			});
+			
 			System.gc();
 		}).start();
 	}

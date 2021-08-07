@@ -17,6 +17,7 @@
 */
 
 package omega.utils;
+import omega.instant.support.java.JavaErrorPanel;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import omega.instant.support.SyntaxParsers;
@@ -95,6 +96,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
+
+	public JavaErrorPanel javaErrorPanel;
 	
 	private volatile boolean ctrl;
 	private volatile boolean shift;
@@ -148,6 +151,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		});
 		
 		createNewContent();
+
+		javaErrorPanel = new JavaErrorPanel(this);
+		add(javaErrorPanel);
 	}
 	
 	private void initView() {
@@ -546,6 +552,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				e.printStackTrace();
 			}
 		}).start();
+	}
+
+	@Override
+	public void setSize(int width, int height){
+		super.setSize(width, height);
+		javaErrorPanel.relocate();
 	}
 	
 	@Override
