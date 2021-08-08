@@ -17,6 +17,10 @@
 */
 
 package omega.utils.systems;
+import javax.tools.Diagnostic;
+import javax.tools.JavaFileObject;
+import javax.tools.DiagnosticCollector;
+import omega.instant.support.SyntaxParsers;
 import omega.instant.support.java.JavaSyntaxParser;
 import omega.utils.PrintArea;
 import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
@@ -247,7 +251,8 @@ public class RunView extends View {
 				inputReader.close();
 				errorReader.close();
 				Screen.getProjectView().reload();
-		}catch(Exception e){ e.printStackTrace(); }
+			}
+			catch(Exception e){ e.printStackTrace(); }
 		}).start();
 	}
 	
@@ -326,7 +331,8 @@ public class RunView extends View {
 				inputReader.close();
 				errorReader.close();
 				Screen.getProjectView().reload();
-		}catch(Exception e){ e.printStackTrace(); }
+			}
+			catch(Exception e){ e.printStackTrace(); }
 		}).start();
 	}
 	
@@ -462,6 +468,56 @@ public class RunView extends View {
 				Screen.getProjectView().reload();
 			}
 			catch(Exception e) {e.printStackTrace();}
+		}).start();
+	}
+
+	public void instantRun(){
+		getScreen().saveAllEditors();
+		if(omega.Screen.getFileView().getProjectManager().non_java){
+			return;
+		}
+
+		new Thread(()->{
+			try{
+				String mainClass = this.mainClass;
+				
+				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+					Screen.setStatus("Please first select a valid JDK for the project", 10);
+					return;
+				}
+
+				Screen.setStatus("Building Project -- Instant Run", 0);
+				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin();
+
+				boolean passed = true;
+				for(Diagnostic d : diagnostics.getDiagnostics()){
+					if(d.getKind() == Diagnostic.Kind.ERROR){
+						passed = false;
+						break;
+					}
+				}
+
+				if(!passed){
+					String errorLog = "";
+
+					for(Diagnostic d : diagnostics.getDiagnostics()){
+						errorLog += d.toString() + "\n";
+					}
+					
+					Screen.getErrorHighlighter().loadErrors(errorlog);
+					buildLog.setHeading("Build Resulted in following Error(s)");
+					buildLog.genView(errorlog);
+					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+					return;
+				}
+
+				Screen.setStatus("Running Project -- Instant Run", 50);
+				justRun();
+				Screen.setStatus("Running Project", 100);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}).start();
 	}
 	

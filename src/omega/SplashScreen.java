@@ -55,6 +55,7 @@ public class SplashScreen extends JFrame{
 		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setBackground(BACK_COLOR);
+		setResizable(false);
 		
 		try{
 			setIconImage(ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));

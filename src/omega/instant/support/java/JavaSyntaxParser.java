@@ -170,7 +170,7 @@ public class JavaSyntaxParser {
 			LinkedList<String> files = prepareBuildSystem();
 
 			if(files.isEmpty()) {
-				Screen.setStatus("You Must Have Build Your Project At Least Once, For Correct Syntax Parsing!", 0);
+				Screen.setStatus("You Must Have Build Your Project At Least Once, For Correct Syntax Parsing & Instant Run!", 0);
 				return null;
 			}
 
@@ -179,6 +179,32 @@ public class JavaSyntaxParser {
 			LinkedList<String> options = new LinkedList<>();
 			options.add("-d");
 			options.add(".omega-ide" + File.separator + "buildspace" + File.separator + "bin");
+			
+			getArgs().forEach(options::add);
+
+			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return diagnostics;
+	}
+	
+	public DiagnosticCollector<JavaFileObject> compileAndSaveToProjectBin(){
+		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+		try{
+			LinkedList<String> files = prepareBuildSystem();
+
+			if(files.isEmpty()) {
+				Screen.setStatus("You Must Have Build Your Project At Least Once, For Correct Syntax Parsing & Instant Run!", 0);
+				return null;
+			}
+
+			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
+			
+			LinkedList<String> options = new LinkedList<>();
+			options.add("-d");
+			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
 

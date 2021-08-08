@@ -59,7 +59,6 @@ public class IconManager {
      public static BufferedImage fluentbrokenbotImage = getFluentIcon("broken-robot-50.png");
      public static BufferedImage fluentwarningImage = getFluentIcon("warning-48.png");
      public static BufferedImage fluenterrorImage = getFluentIcon("error-30.png");
-     
      public static BufferedImage fluentlevelupImage = getFluentIcon("up-3-50.png");
      public static BufferedImage fluentplainfolderImage = getFluentIcon("folder-50.png");
      public static BufferedImage fluenthomeImage = getFluentIcon("person-at-home-50.png");
@@ -72,6 +71,11 @@ public class IconManager {
      public static BufferedImage fluentsourceImage = getFluentIcon("source-code-50.png");
      public static BufferedImage fluentbinaryImage = getFluentIcon("venn-diagram-50.png");
      public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
+     public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");
+     public static BufferedImage fluentrocketImage = getFluentIcon("rocket-64.png");
+     public static BufferedImage fluentlightningboltImage = getFluentIcon("lightning-bolt-48.png");
+     public static BufferedImage fluentquickmodeonImage = getFluentIcon("quick-mode-on-48.png");
+     public static BufferedImage fluentphoenixImage = getFluentIcon("phoenix-48.png");
      
 
      //The Default Icon Pack -- mixed
