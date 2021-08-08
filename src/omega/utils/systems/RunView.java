@@ -471,16 +471,30 @@ public class RunView extends View {
 		}).start();
 	}
 
+	public boolean isRunCapable(File dir){
+		boolean value = false;
+		File[] F = dir.listFiles();
+		if(F != null && F.length != 0){
+			for(File f : F){
+				if(f.isDirectory())
+					value = isRunCapable(f);
+				else if(f.getName().endsWith(".class")){
+					value = true;
+					break;
+				}
+			}
+		}
+		return value;
+	}
+
 	public void instantRun(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getFileView().getProjectManager().non_java){
+		if(omega.Screen.getFileView().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
 			return;
 		}
 
 		new Thread(()->{
 			try{
-				String mainClass = this.mainClass;
-				
 				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
 					Screen.setStatus("Please first select a valid JDK for the project", 10);
 					return;
@@ -488,14 +502,29 @@ public class RunView extends View {
 
 				Screen.setStatus("Building Project -- Instant Run", 0);
 				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin();
-
+				if(diagnostics == null){
+					if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
+						Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);
+						return;
+					}
+					else{
+						justRun();
+						Screen.setStatus("Nothing to Build, Launching Project -- Instant Run", 0);
+					}
+					return;
+				}
+				
 				boolean passed = true;
-				for(Diagnostic d : diagnostics.getDiagnostics()){
-					if(d.getKind() == Diagnostic.Kind.ERROR){
-						passed = false;
-						break;
+				if(diagnostics.getDiagnostics() != null){
+					for(Diagnostic d : diagnostics.getDiagnostics()){
+						if(d.getKind() == Diagnostic.Kind.ERROR){
+							passed = false;
+							break;
+						}
 					}
 				}
+				else
+					passed = false;
 
 				if(!passed){
 					String errorLog = "";
@@ -503,17 +532,24 @@ public class RunView extends View {
 					for(Diagnostic d : diagnostics.getDiagnostics()){
 						errorLog += d.toString() + "\n";
 					}
-					
 					Screen.getErrorHighlighter().loadErrors(errorlog);
-					buildLog.setHeading("Build Resulted in following Error(s)");
+					buildLog.setHeading("A Full Project Rebuild is required");
 					buildLog.genView(errorlog);
 					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10);
 					return;
 				}
 
+				if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
+					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);
+					return;
+				}
+				
 				Screen.setStatus("Running Project -- Instant Run", 50);
 				justRun();
 				Screen.setStatus("Running Project", 100);
+
+				JavaSyntaxParser.packCompiledCodes();
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -757,10 +793,8 @@ public class RunView extends View {
 				
 				new Thread(()->{
 					String status = "No Errors";
-					while(runProcess.isAlive())
-						{
-						while(errorReader.hasNextLine())
-							{
+					while(runProcess.isAlive()) {
+						while(errorReader.hasNextLine()) {
 							if(!status.equals("Errors")) status = "Errors";
 							terminal.printText(errorReader.nextLine());
 						}
@@ -771,10 +805,8 @@ public class RunView extends View {
 				}).start();
 				
 				getScreen().getToolMenu().runComp.setClickable(true);
-				while(runProcess.isAlive())
-					{
-					while(inputReader.hasNextLine())
-						{
+				while(runProcess.isAlive()) 	{
+					while(inputReader.hasNextLine()) {
 						String data = inputReader.nextLine();
 						terminal.printText(data);
 					}

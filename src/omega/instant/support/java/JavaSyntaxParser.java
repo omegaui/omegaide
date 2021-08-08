@@ -66,8 +66,8 @@ public class JavaSyntaxParser {
 	private int errorCount;
 	private int warningCount;
 	
-	private static volatile boolean parsing = false;
-	private static volatile boolean packingCodes = false;
+	public static volatile boolean parsing = false;
+	public static volatile boolean packingCodes = false;
 
 	public static final File BUILDSPACE_DIR = new File(".omega-ide", "buildspace");
 	
@@ -170,7 +170,6 @@ public class JavaSyntaxParser {
 			LinkedList<String> files = prepareBuildSystem();
 
 			if(files.isEmpty()) {
-				Screen.setStatus("You Must Have Build Your Project At Least Once, For Correct Syntax Parsing & Instant Run!", 0);
 				return null;
 			}
 
@@ -196,7 +195,6 @@ public class JavaSyntaxParser {
 			LinkedList<String> files = prepareBuildSystem();
 
 			if(files.isEmpty()) {
-				Screen.setStatus("You Must Have Build Your Project At Least Once, For Correct Syntax Parsing & Instant Run!", 0);
 				return null;
 			}
 
@@ -305,7 +303,8 @@ public class JavaSyntaxParser {
 			loadFiles(compiledCodes, new File(Screen.getFileView().getProjectPath() + File.separator + "bin"), ".class");
 
 			if(compiledCodes.isEmpty()){
-				Screen.setStatus("JavaSyntaxParser > Your Must Have Build the Whole Project at least Once if it hasn\'t been built yet.", 0);
+				Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
+				packingCodes = false;
 				return;
 			}
 
