@@ -163,8 +163,5 @@ public class AssistanceIconPanel extends DecorativeIconPanel
 		public void focusLost(FocusEvent e) {
 			setShowIcon(false);
 		}
-
 	}
-
-
 }

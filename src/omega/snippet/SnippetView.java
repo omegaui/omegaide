@@ -48,6 +48,8 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import static omega.utils.UIManager.*;
 public class SnippetView extends JDialog {
+	private TextComp titleComp;
+	
 	private static final Font FONT = PX16;
 	private RSyntaxTextArea textArea;
 	private JTextField textField;
@@ -78,20 +80,28 @@ public class SnippetView extends JDialog {
 	}
 
 	private void init(){
+		titleComp = new TextComp("Snippet Manager", TOOLMENU_COLOR3, c2, c2, null);
+		titleComp.setBounds(0, 0, getWidth() - 30, 30);
+		titleComp.setFont(PX14);
+		titleComp.setArc(0, 0);
+		titleComp.setClickable(false);
+		titleComp.attachDragger(this);
+		add(titleComp);
+		
 		//Door System
           image = IconManager.buildImage;
 		leftPanel = new JPanel(null);
 		pane = new JScrollPane(leftPanel);
-		pane.setBounds(0, 0, 250, getHeight());
+		pane.setBounds(0, 30, 250, getHeight() - 30);
 		add(pane);
 
 		//View System
 		textField = new JTextField();
-		textField.setBounds(250, 0, getWidth() - 250 - 120, 40);
+		textField.setBounds(250, 30, getWidth() - 250 - 60, 30);
 		textField.setToolTipText("Enter Snippet Name with alphabets, numbers and symbols(except \';\') without whitespaces");
 		add(textField);
 
-		TextComp add = new TextComp("+", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		TextComp add = new TextComp("+", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                if(textField.getText().contains(" ") || textField.getText().equals("")) {
                     textField.setText("See Tooltip for Naming the Snippets");
                     return;
@@ -100,19 +110,19 @@ public class SnippetView extends JDialog {
                setView(SnippetBase.getAll().getLast());
                loadDoors();
 	     });
-		add.setBounds(getWidth() - 120, 0, 40, 40);
+		add.setBounds(getWidth() - 60, 30, 30, 30);
 		add.setFont(FONT);
           add.setArc(0, 0);
 		add(add);
 
-		TextComp rem = new TextComp("-", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		TextComp rem = new TextComp("-", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
                SnippetBase.remove(textField.getText());
                loadDoors();
                textField.setText("");
                textArea.setText("");
                this.snip = null;
 	     });
-		rem.setBounds(getWidth() - 80, 0, 40, 40);
+		rem.setBounds(getWidth() - 30, 30, 30, 30);
 		rem.setFont(FONT);
           rem.setArc(0, 0);
 		add(rem);
@@ -121,7 +131,7 @@ public class SnippetView extends JDialog {
                dispose();
                saveView();
 	     });
-		close.setBounds(getWidth() - 40, 0, 40, 40);
+		close.setBounds(getWidth() - 30, 0, 30, 30);
 		close.setFont(FONT);
           close.setArc(0, 0);
 		add(close);
@@ -140,18 +150,20 @@ public class SnippetView extends JDialog {
 			leftPanel.setBackground(c2);
 			try {
 			     Theme.load(Editor.class.getResourceAsStream("/idea.xml")).apply(textArea);
-			}catch(Exception e) {}
+			}
+			catch(Exception e) {}
 		}
 		else {
 			omega.utils.UIManager.setData(textField);
 			omega.utils.UIManager.setData(leftPanel);
 			try {
 			     Theme.load(Editor.class.getResourceAsStream("/dark.xml")).apply(textArea);
-			}catch(Exception e) {}
+			}
+			catch(Exception e) {}
 		}
 		textField.setFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
 		RTextScrollPane scrollPane = new RTextScrollPane(textArea);
-		scrollPane.setBounds(250, 40, getWidth() - 250, getHeight() - 40);
+		scrollPane.setBounds(250, 60, getWidth() - 250, getHeight() - 60);
 		add(scrollPane);
 	}
 	
