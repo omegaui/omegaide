@@ -94,7 +94,8 @@ public class OperationPane extends JPanel{
 
 		try {
 			tabPane.setSelectedIndex(tabPane.getTabCount() - 1);
-		}catch(Exception e) {}
+		}
+		catch(Exception e) {}
           setVisible(true);
 	}
 	
@@ -127,8 +128,9 @@ public class OperationPane extends JPanel{
 	public void removeTab(String name) {
 		if(names.indexOf(name) < 0) return;
 		try {
-		tabPane.removeTabAt(tabPane.indexOfTab(name));
-		}catch(Exception e) {}
+			tabPane.removeTabAt(tabPane.indexOfTab(name));
+		}
+		catch(Exception e) {}
 		names.remove(name);
 		if(names.isEmpty())
 			setVisible(false);

@@ -88,13 +88,14 @@ public class JavaSyntaxParser {
 			parsing = true;
 			DiagnosticCollector<JavaFileObject> diagnostics = compile();
 			parsing = false;
-			if(diagnostics.getDiagnostics() == null)
-				return;
 			
 			highlights.forEach(h -> h.remove());
 			highlights.clear();
 			
 			gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
+			
+			if(diagnostics == null || diagnostics.getDiagnostics() == null)
+				return;
 			
 			List<Diagnostic<? extends JavaFileObject>> diagnosticList = diagnostics.getDiagnostics();
 			for(Diagnostic d : diagnosticList) {

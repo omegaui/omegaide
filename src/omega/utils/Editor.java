@@ -340,7 +340,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void loadTheme() {
 		try {
 			String name = omega.utils.UIManager.isDarkMode() ? "dark" : "idea";
-			theme = Theme.load(Editor.class.getResourceAsStream("/"+name+".xml"));
+			theme = Theme.load(Editor.class.getResourceAsStream("/" + name + ".xml"));
 			theme.apply(this);
 		}
 		catch (Exception e) {
@@ -741,6 +741,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				new Thread(()->{
 					SyntaxParsers.javaSyntaxParser.parse();
 				}).start();
+				return;
 			}
 		}
 		if(code == KeyEvent.VK_CONTROL)

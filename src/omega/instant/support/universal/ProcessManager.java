@@ -63,8 +63,8 @@ public class ProcessManager extends DataBase{
      public synchronized void launch(File file){
           new Thread(()->{
           	try{
-                    Screen.getScreen().saveAllEditors();
-          		PrintArea printArea = new PrintArea();
+				Screen.getScreen().saveAllEditors();
+				PrintArea printArea = new PrintArea();
                     printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
                     Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", printArea, ()->printArea.stopProcess());
                     printArea.print("# Starting Shell ... ");

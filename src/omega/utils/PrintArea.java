@@ -49,7 +49,6 @@ public class PrintArea extends JPanel {
 		textArea = new RSyntaxTextArea("Build Starting...");
 		ShellTokenMaker.apply(textArea);
 		textArea.setAutoscrolls(true);
-		Editor.getTheme().apply(textArea);
 		textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 		textArea.setHighlightCurrentLine(false);
           
@@ -82,8 +81,7 @@ public class PrintArea extends JPanel {
 	}
 	public void clear() {
 		textArea.setText("");
-	}
-	
+	}	
 	@Override
 	public void addMouseListener(MouseListener l) {
 		super.addMouseListener(l);
@@ -123,7 +121,7 @@ public class PrintArea extends JPanel {
           inputField.setCaretColor(omega.utils.UIManager.glow);
           inputField.setBackground(omega.utils.UIManager.c2);
           inputField.setForeground(omega.utils.UIManager.glow);
-          inputField.setFont(PX18);
+          inputField.setFont(PX16);
           add(inputField, BorderLayout.SOUTH);
           
           ActionCenter actionCenter = new ActionCenter(()->{
@@ -155,7 +153,7 @@ public class PrintArea extends JPanel {
 		inputField.setCaretColor(omega.utils.UIManager.glow);
 		inputField.setBackground(omega.utils.UIManager.c2);
 		inputField.setForeground(omega.utils.UIManager.glow);
-		inputField.setFont(PX18);
+		inputField.setFont(PX16);
 		add(inputField, BorderLayout.SOUTH);
           
 		ActionCenter actionCenter = new ActionCenter(()->{
@@ -211,4 +209,3 @@ public class PrintArea extends JPanel {
           }
 	}
 }
-
