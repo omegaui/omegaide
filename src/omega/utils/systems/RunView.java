@@ -75,7 +75,6 @@ public class RunView extends View {
 	
 	public void setMainClass(String mainClass) {
 		this.mainClass = mainClass;
-		Screen.getProjectView().setTitleMainClass();
 	}
 	
 	public void setMainClassPath(String mainClassPath) {
@@ -92,7 +91,6 @@ public class RunView extends View {
 				canRecord = true;
 		}
 		mainClass = mainClass.substring(0, mainClass.length() - 6);
-		Screen.getProjectView().setTitleMainClass();
 	}
 	
 	public void setMainClass() {
@@ -112,7 +110,6 @@ public class RunView extends View {
 				canRecord = true;
 		}
 		mainClass = mainClass.substring(0, mainClass.length() - 6);
-		Screen.getProjectView().setTitleMainClass();
 	}
 	
 	public void runNJ(){

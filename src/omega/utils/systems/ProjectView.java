@@ -114,15 +114,6 @@ public class ProjectView extends JDialog{
                Screen.getFileView().getJDKManager().readSources(tree.getRoot().getAbsolutePath());
 		Screen.getFileView().getSearchWindow().cleanAndLoad(new File(Screen.getFileView().getProjectPath()));
 	}
-
-	public void setTitleMainClass()
-	{
-		String mainClass = Screen.getRunView().mainClass;
-		if(mainClass == null || mainClass.equals(""))
-			setTitle("Project Structure -No Main Class");
-		else
-			setTitle("Project Structure -Main Class : "+ mainClass);
-	}	   
 	
 	public Screen getScreen() {
 		return screen;

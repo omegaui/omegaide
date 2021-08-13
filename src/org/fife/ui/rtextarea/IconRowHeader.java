@@ -286,7 +286,13 @@ public class IconRowHeader extends AbstractGutterComponent implements MouseListe
 
 
 	protected GutterIconImpl getTrackingIcon(int index) {
-		return trackingIcons.get(index);
+		try{
+			return trackingIcons.get(index);
+		}
+		catch(Exception e){
+			
+		}
+		return null;
 	}
 
 

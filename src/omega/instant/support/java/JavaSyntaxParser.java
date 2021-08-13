@@ -1,19 +1,19 @@
 /**
-  * The Java Syntax Parser
-  * Copyright (C) 2021 Omega UI
+* The Java Syntax Parser
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.instant.support.java;
@@ -58,17 +58,17 @@ import static omega.comp.Animations.*;
 public class JavaSyntaxParser {
 	private JavaCompiler compiler;
 	private StandardJavaFileManager fileManager;
-
+	
 	private static LinkedList<Highlight> highlights = new LinkedList<>();
 	private static LinkedList<JavaErrorData> datas = new LinkedList<>();
 	private static LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos = new LinkedList<>();
-
+	
 	private int errorCount;
 	private int warningCount;
 	
 	public static volatile boolean parsing = false;
 	public static volatile boolean packingCodes = false;
-
+	
 	public static final File BUILDSPACE_DIR = new File(".omega-ide", "buildspace");
 	
 	public JavaSyntaxParser(){
@@ -76,7 +76,7 @@ public class JavaSyntaxParser {
 		
 		fileManager = compiler.getStandardFileManager(null, null, null);
 	}
-
+	
 	public synchronized void parse(){
 		if(parsing || packingCodes)
 			return;
@@ -141,25 +141,37 @@ public class JavaSyntaxParser {
 			datas.clear();
 			
 			main:
-				for(Highlight h : highlights){
-					for(JavaErrorData data : datas){
-						if(data.editor == h.editor)
-							continue main;
-					}
-					JavaErrorData data = new JavaErrorData();
-					data.editor = h.editor;
-					datas.add(data);
+			for(Highlight h : highlights){
+				for(JavaErrorData data : datas){
+					if(data.editor == h.editor)
+						continue main;
 				}
-
+				JavaErrorData data = new JavaErrorData();
+				data.editor = h.editor;
+				datas.add(data);
+			}
+			
 			for(Highlight h : highlights){
 				for(JavaErrorData data : datas){
 					data.add(h);
 				}
 			}
-
+			
 			datas.forEach(data->{
 				data.setData();
 			});
+			
+			int totalErrors = 0;
+			int totalWarnings = 0;
+			for(JavaErrorData data : datas){
+				totalErrors += data.errorCount;
+				totalErrors += data.warningCount;
+			}
+			
+			if(totalErrors > 0 || totalWarnings > 0)
+				Screen.setStatus(totalErrors + " Error(s), " + totalWarnings + " Warning(s)", 0);
+			else
+				Screen.setStatus("Currently Opened Codes are Error Free!", 0);
 			
 			System.gc();
 		}).start();
@@ -169,11 +181,11 @@ public class JavaSyntaxParser {
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		try{
 			LinkedList<String> files = prepareBuildSystem();
-
+			
 			if(files.isEmpty()) {
 				return null;
 			}
-
+			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
 			
 			LinkedList<String> options = new LinkedList<>();
@@ -181,7 +193,7 @@ public class JavaSyntaxParser {
 			options.add(".omega-ide" + File.separator + "buildspace" + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
-
+			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
 		}
 		catch(Exception e){
@@ -194,11 +206,11 @@ public class JavaSyntaxParser {
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		try{
 			LinkedList<String> files = prepareBuildSystem();
-
+			
 			if(files.isEmpty()) {
 				return null;
 			}
-
+			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
 			
 			LinkedList<String> options = new LinkedList<>();
@@ -206,7 +218,7 @@ public class JavaSyntaxParser {
 			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
-
+			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
 		}
 		catch(Exception e){
@@ -221,7 +233,7 @@ public class JavaSyntaxParser {
 		try{
 			//Preparing Buildspace ...
 			prepareBuildSpace(files);
-
+			
 			//Packing Compiled Codes
 			if(!new File(".omega-ide" + File.separator + "buildspace", "compiled.jar").exists())
 				packCompiledCodes();
@@ -229,7 +241,7 @@ public class JavaSyntaxParser {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-
+		
 		return files;
 	}
 	
@@ -237,7 +249,7 @@ public class JavaSyntaxParser {
 		try{
 			//Cleaning BuildSpace
 			Startup.writeUIFiles();
-		
+			
 			//Generating BuildSpace
 			LinkedList<Editor> editors = Screen.getScreen().getAllEditors();
 			for(Editor editor : editors){
@@ -260,40 +272,40 @@ public class JavaSyntaxParser {
 		}
 	}
 	
-     public static LinkedList<String> getArgs(){
-     	String depenPath = "";
-          
-          if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {	
-               for(String d : Screen.getFileView().getProjectManager().jars)
-                    depenPath += d + omega.Screen.PATH_SEPARATOR;
-               
-               if(new File(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar").exists()) {
-               	depenPath += BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar" + omega.Screen.PATH_SEPARATOR;
-               }
-               
-               if(Screen.isNotNull(depenPath))
-                    depenPath = depenPath.substring(0, depenPath.length() - 1);
-          }
-          
-     	LinkedList<String> commands = new LinkedList<>();
-     	if(Screen.isNotNull(depenPath)){
-          	commands.add("-classpath");
-          	commands.add(depenPath);
-     	}
-
+	public static LinkedList<String> getArgs(){
+		String depenPath = "";
+		
+		if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
+			for(String d : Screen.getFileView().getProjectManager().jars)
+				depenPath += d + omega.Screen.PATH_SEPARATOR;
+			
+			if(new File(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar").exists()) {
+				depenPath += BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar" + omega.Screen.PATH_SEPARATOR;
+			}
+			
+			if(Screen.isNotNull(depenPath))
+				depenPath = depenPath.substring(0, depenPath.length() - 1);
+		}
+		
+		LinkedList<String> commands = new LinkedList<>();
+		if(Screen.isNotNull(depenPath)){
+			commands.add("-classpath");
+			commands.add(depenPath);
+		}
+		
 		String modulePath = Screen.getFileView().getDependencyView().getModulePath();
 		String modules = Screen.getFileView().getDependencyView().getModules();
-          if(Screen.isNotNull(modulePath)){
-          	commands.add("--module-path");
-          	commands.add(modulePath);
-          	commands.add("--add-modules");
-          	commands.add(modules);
-          }
-
+		if(Screen.isNotNull(modulePath)){
+			commands.add("--module-path");
+			commands.add(modulePath);
+			commands.add("--add-modules");
+			commands.add(modules);
+		}
+		
 		Screen.getFileView().getProjectManager().compileTimeFlags.forEach(commands::add);
-     	return commands;
-     }
-
+		return commands;
+	}
+	
 	public static void packCompiledCodes(){
 		if(packingCodes)
 			return;
@@ -302,15 +314,15 @@ public class JavaSyntaxParser {
 		try{
 			LinkedList<String> compiledCodes = new LinkedList<>();
 			loadFiles(compiledCodes, new File(Screen.getFileView().getProjectPath() + File.separator + "bin"), ".class");
-
+			
 			if(compiledCodes.isEmpty()){
 				Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
 				packingCodes = false;
 				return;
 			}
-
+			
 			Startup.writeUIFiles();
-
+			
 			if(zipFile.exists())
 				zipFile.delete();
 			
@@ -325,7 +337,7 @@ public class JavaSyntaxParser {
 				entry.setCompressedSize(-1);
 				
 				out.putNextEntry(entry);
-
+				
 				InputStream in = new FileInputStream(new File(path));
 				while(in.available() > 0)
 					out.write(in.read());
@@ -344,7 +356,7 @@ public class JavaSyntaxParser {
 		}
 		packingCodes = false;
 	}
-     
+	
 	public static void loadFiles(LinkedList<String> files, File dir, String ext){
 		File[] F = dir.listFiles();
 		if(F == null || F.length == 0)
@@ -356,13 +368,13 @@ public class JavaSyntaxParser {
 				files.add(file.getAbsolutePath());
 		}
 	}
-
+	
 	public static Color getSuitableColor(Kind kind){
 		if(kind == Kind.ERROR || kind == Kind.MANDATORY_WARNING)
 			return TOOLMENU_COLOR2;
 		return TOOLMENU_COLOR4;
 	}
-
+	
 	public static BufferedImage getSuitableIcon(Kind kind){
 		if(kind == Kind.ERROR || kind == Kind.MANDATORY_WARNING)
 			return IconManager.fluenterrorImage;
