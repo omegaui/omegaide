@@ -73,6 +73,7 @@ public class IconManager {
      public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
      public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");
      public static BufferedImage fluentrocketImage = getFluentIcon("rocket-64.png");
+     public static BufferedImage fluentrocketbuildImage = getFluentIcon("rocket-build-64.png");
      public static BufferedImage fluentlightningboltImage = getFluentIcon("lightning-bolt-48.png");
      public static BufferedImage fluentquickmodeonImage = getFluentIcon("quick-mode-on-48.png");
      public static BufferedImage fluentphoenixImage = getFluentIcon("phoenix-48.png");

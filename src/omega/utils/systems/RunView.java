@@ -484,6 +484,63 @@ public class RunView extends View {
 		return value;
 	}
 
+	public void instantBuild(){
+		getScreen().saveAllEditors();
+		if(omega.Screen.getFileView().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
+			return;
+		}
+
+		new Thread(()->{
+			try{
+				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+					Screen.setStatus("Please first select a valid JDK for the project", 10);
+					return;
+				}
+
+				Screen.setStatus("Building Project -- Instant Build", 0);
+				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileFullProject();
+				if(diagnostics == null){
+					Screen.setStatus("", 100);
+					return;
+				}
+				
+				boolean passed = true;
+				if(diagnostics.getDiagnostics() != null){
+					for(Diagnostic d : diagnostics.getDiagnostics()){
+						if(d.getKind() == Diagnostic.Kind.ERROR){
+							passed = false;
+							break;
+						}
+					}
+				}
+				else
+					passed = false;
+
+				if(!passed){
+					String errorLog = "";
+
+					for(Diagnostic d : diagnostics.getDiagnostics()){
+						errorLog += d.toString() + "\n";
+					}
+					Screen.getErrorHighlighter().removeAllHighlights();
+					Screen.getErrorHighlighter().loadErrors(errorLog);
+					buildLog.setHeading("Build Resulted in following Error(s)");
+					buildLog.genView(errorLog);
+					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+					return;
+				}
+				Screen.getErrorHighlighter().removeAllHighlights();
+				
+				Screen.setStatus("Building Project, Accomplished Successfully -- Instant Build", 0);
+				
+				JavaSyntaxParser.packCompiledCodes();
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}).start();
+	}
+	
 	public void instantRun(){
 		getScreen().saveAllEditors();
 		if(omega.Screen.getFileView().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
@@ -529,13 +586,14 @@ public class RunView extends View {
 					for(Diagnostic d : diagnostics.getDiagnostics()){
 						errorLog += d.toString() + "\n";
 					}
-					Screen.getErrorHighlighter().loadErrors(errorlog);
-					buildLog.setHeading("A Full Project Rebuild is required");
-					buildLog.genView(errorlog);
+					Screen.getErrorHighlighter().loadErrors(errorLog);
+					buildLog.setHeading("Build Resulted in following Error(s)");
+					buildLog.genView(errorLog);
 					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
 					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10);
 					return;
 				}
+				Screen.getErrorHighlighter().removeAllHighlights();
 
 				if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
 					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);

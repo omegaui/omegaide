@@ -233,11 +233,11 @@ public class JavaSyntaxParser {
 		try{
 			LinkedList<String> files = new LinkedList<>();
 			Screen.getBuildView().createClassList();
-			Scanner reader = new Scanner(new File(Screen.getFileView().getProjectPath()));
+			Scanner reader = new Scanner(new File(Screen.getFileView().getProjectPath() + File.separator + ".sources"));
 			while(reader.hasNextLine()){
 				String line = reader.nextLine();
 				if(!line.startsWith("\""))
-				continue;
+					continue;
 				files.add(line.substring(1, line.length() - 1));
 			}
 			
