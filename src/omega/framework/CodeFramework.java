@@ -51,7 +51,6 @@ public class CodeFramework{
 				value = createHints(code);
 			}
 			catch(Exception ex){
-                    Screen.notify("Content-Assist Algorithm Crashed!");
                     ex.printStackTrace();
 		     }
 			finally {
@@ -1186,6 +1185,23 @@ public class CodeFramework{
 				c++;
 		}
 		return c;
+	}
+	
+	public static int getUnpairedParanthesis(String text){
+		int index = -1;
+		for(int i = 0; i < text.length() - 1; i++){
+			char c1 = text.charAt(i);
+			char c2 = text.charAt(i + 1);
+			
+			if(c1 == '(' && Character.isLetterOrDigit(c2))
+				index = i + 1;
+		}
+		return index;
+	}
+
+	public static String checkUnpairedParanthesis(String text){
+		int index = getUnpairedParanthesis(text);
+		return index > -1 ? text.substring(index) : text;
 	}
 }
 

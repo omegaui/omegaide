@@ -639,6 +639,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				index += codeX.lastIndexOf('\t') + 1;
 				codeX = codeX.substring(codeX.lastIndexOf('\t') + 1);
 			}
+			codeX = codeX.trim();
 			if(SnippetBase.hasSnippet(codeX)){
 				SnippetBase.insertSnippet(this, codeX, index = getCaretPosition() - codeX.length(), cx.substring(0, cx.indexOf(codeX)));
 				e.consume();
@@ -688,7 +689,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				shift = false;
 			}
 			
-			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()){
+			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
 				Screen.getRunView().instantRun();
 				f1 = false;
 				ctrl = false;
@@ -731,7 +732,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					e.consume();
 				}
 			}
-			
 		}
 	}
 	
@@ -745,18 +745,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 		
 		int code = e.getKeyCode();
-		if(currentFile.getName().endsWith(".java")){
-			if(code != KeyEvent.VK_UP && code != KeyEvent.VK_LEFT
-			&& code != KeyEvent.VK_DOWN && code != KeyEvent.VK_RIGHT
-			&& code != KeyEvent.VK_PAGE_UP && code != KeyEvent.VK_PAGE_DOWN
-			&& code != KeyEvent.VK_END && code != KeyEvent.VK_HOME
-			&& code != KeyEvent.VK_SHIFT && code != KeyEvent.VK_F){
-				new Thread(()->{
-					SyntaxParsers.javaSyntaxParser.parse();
-				}).start();
-				return;
-			}
-		}
 		if(code == KeyEvent.VK_CONTROL)
 			ctrl = false;
 		else if(code == KeyEvent.VK_SHIFT)
@@ -783,14 +771,22 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			f1 = false;
 		
 		if(currentFile != null) {
-			if(!screen.isVisible()) {
-				return;
-			}
 			//Code Assist
 			char c = e.getKeyChar();
 			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
 				if(DataManager.isContentAssistRealTime())
 					call = true;
+			}
+			if(currentFile.getName().endsWith(".java")){
+				if(code != KeyEvent.VK_UP && code != KeyEvent.VK_LEFT
+				&& code != KeyEvent.VK_DOWN && code != KeyEvent.VK_RIGHT
+				&& code != KeyEvent.VK_PAGE_UP && code != KeyEvent.VK_PAGE_DOWN
+				&& code != KeyEvent.VK_END && code != KeyEvent.VK_HOME
+				&& code != KeyEvent.VK_SHIFT && code != KeyEvent.VK_F){
+					new Thread(()->{
+						SyntaxParsers.javaSyntaxParser.parse();
+					}).start();
+				}
 			}
 		}
 	}

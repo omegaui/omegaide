@@ -17,6 +17,7 @@
 */
 
 package omega.instant.support.java;
+import java.util.Scanner;
 import java.util.zip.ZipFile;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -169,9 +170,9 @@ public class JavaSyntaxParser {
 			}
 			
 			if(totalErrors > 0 || totalWarnings > 0)
-				Screen.setStatus(totalErrors + " Error(s), " + totalWarnings + " Warning(s)", 0);
+				omega.Screen.getScreen().getToolMenu().setTask(totalErrors + " Error(s), " + totalWarnings + " Warning(s)");
 			else
-				Screen.setStatus("Currently Opened Codes are Error Free!", 0);
+				omega.Screen.getScreen().getToolMenu().setTask("Currently Opened Codes are Error Free!");
 			
 			System.gc();
 		}).start();
@@ -206,6 +207,39 @@ public class JavaSyntaxParser {
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		try{
 			LinkedList<String> files = prepareBuildSystem();
+			
+			if(files.isEmpty()) {
+				return null;
+			}
+			
+			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
+			
+			LinkedList<String> options = new LinkedList<>();
+			options.add("-d");
+			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
+			
+			getArgs().forEach(options::add);
+			
+			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return diagnostics;
+	}
+	
+	public DiagnosticCollector<JavaFileObject> compileFullProject(){
+		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+		try{
+			LinkedList<String> files = new LinkedList<>();
+			Screen.getBuildView().createClassList();
+			Scanner reader = new Scanner(new File(Screen.getFileView().getProjectPath()));
+			while(reader.hasNextLine()){
+				String line = reader.nextLine();
+				if(!line.startsWith("\""))
+				continue;
+				files.add(line.substring(1, line.length() - 1));
+			}
 			
 			if(files.isEmpty()) {
 				return null;

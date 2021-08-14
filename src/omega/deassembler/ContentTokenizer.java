@@ -1,19 +1,19 @@
 /**
-  * ContentAssist Invoker.
-  * Copyright (C) 2021 Omega UI
+* ContentAssist Invoker.
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see http://www.gnu.org/licenses.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
 */
 
 package omega.deassembler;
@@ -26,11 +26,11 @@ import omega.utils.DataManager;
 import java.util.StringTokenizer;
 import omega.framework.CodeFramework;
 public class ContentTokenizer {
-	
+	// hello().length(hello().
 	public static boolean isConditionalCode(String code){
 		return isObjectInstantiationCode(code);
 	}
-
+	
 	public static boolean isObjectInstantiationCode(String code){
 		boolean hasSpace = code.contains(" ");
 		boolean hasEqual = code.contains("=");
@@ -79,7 +79,7 @@ public class ContentTokenizer {
 		while(tok.hasMoreTokens()){
 			final String token = tok.nextToken().trim();
 			if(token.equals("") || !token.startsWith(text) || token.equals(text)) continue;
-				DataMember d = new DataMember("", "", "", token, null){
+			DataMember d = new DataMember("", "", "", token, null){
 				@Override
 				public String getRepresentableValue(){
 					return token;
@@ -106,7 +106,7 @@ public class ContentTokenizer {
 		if(!dataMembers.isEmpty())
 			CodeFramework.gen(dataMembers, e);
 		else
-		     e.contentWindow.setVisible(false);
+			e.contentWindow.setVisible(false);
 	}
 	
 	public static void arrangeTokens(Editor e) {
@@ -114,19 +114,24 @@ public class ContentTokenizer {
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
 		}
+		
 		String code = e.getText();
 		code = code.substring(0, e.getCaretPosition());
 		code = code.substring(code.lastIndexOf('\n') + 1).trim();
+		
 		if(genConditionalHints(e, code)) {
 			return;
 		}
+		
 		String text = CodeFramework.getCodeDoNotEliminateDot(e.getText(), e.getCaretPosition());
-          if(text == null || text.equals("")) {
-               e.contentWindow.setVisible(false);
-               return;
-          }
-          if(Screen.getFileView().getJDKManager() == null && !Screen.getFileView().getProjectManager().non_java)
-          	return;
+		if(text == null || text.equals("")) {
+			e.contentWindow.setVisible(false);
+			return;
+		}
+		
+		if(Screen.getFileView().getJDKManager() == null && !Screen.getFileView().getProjectManager().non_java)
+			return;
+		
 		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
@@ -171,40 +176,36 @@ public class ContentTokenizer {
 					dataMembers.add(m);
 				}
 			}
-               
+			
 			String reducedText = e.getText().substring(0, e.getCaretPosition());
 			reducedText = CodeFramework.completeCode(reducedText);
 			reader = new SourceReader(reducedText);
 			DataBlock block = null;
-               if(!reader.dataBlocks.isEmpty())
-                    block = reader.dataBlocks.getLast();
-               
+			if(!reader.dataBlocks.isEmpty())
+				block = reader.dataBlocks.getLast();
+			
 			if(!reader.recordingInternal) {
 				if(block != null) {
 					for(DataMember m : block.depthMembers) {
 						if(m.name.startsWith(text)) {
-                                   inner:
-                                        for(DataMember mx : dataMembers){
-                                             if(mx.name.equals(m.name) && mx.parameterCount == m.parameterCount){
-                                                  dataMembers.remove(mx);
-                                                  break inner;
-                                             }
-                                        }
-						     dataMembers.add(m);
+							inner:
+							for(DataMember mx : dataMembers){
+								if(mx.name.equals(m.name) && mx.parameterCount == m.parameterCount){
+									dataMembers.remove(mx);
+									break inner;
+								}
+							}
+							dataMembers.add(m);
 						}
 					}
 				}
 			}
-			SnippetBase.getAll().forEach((snippet)->{
-				dataMembers.add(new DataMember("", "", "Snippet", snippet.toString(), null));
-			});
 			if(!dataMembers.isEmpty()){
 				CodeFramework.gen(dataMembers, e);
 			}
 			else {
-     			e.contentWindow.setVisible(false);
+				e.contentWindow.setVisible(false);
 			}
 		}
 	}
 }
-

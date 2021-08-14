@@ -101,7 +101,10 @@ public class SnippetBase {
 				}
 			}
 			reader.close();
-		}catch(Exception e){ e.printStackTrace(); }
+		}
+		catch(Exception e){ 
+			e.printStackTrace();
+		}
 	}
 
 	public static void save(){
@@ -116,7 +119,10 @@ public class SnippetBase {
 				writer.println(CARET + snip.caret + "," + snip.line);
 			}
 			writer.close();
-		}catch(Exception e){System.err.println(e);}
+		}
+		catch(Exception e){
+			System.err.println(e);
+		}
 	}
 
 	public static void insertSnippet(JTextArea textArea, String base, int index, String tabs){

@@ -153,6 +153,8 @@ public class FoldingAwareIconRowHeader extends IconRowHeader {
 			int lastLine = textArea.getLineCount() - 1;
 			for (int i=trackingIcons.size()-1; i>=0; i--) { // Last to first
 				GutterIconInfo ti = getTrackingIcon(i);
+				if(ti == null)
+					continue;
 				int offs = ti.getMarkedOffset();
 				if (offs>=0 && offs<=doc.getLength()) {
 					int line = root.getElementIndex(offs);
