@@ -103,6 +103,11 @@ public class UIManager extends DataBase {
 	public static final Color color6 = new Color(0, 255, 0, 20);
 	public static final Color color7 = new Color(0, 255, 0, 130);
 
+	//Some Backgrounds
+	public static Color back1 = Color.decode("#dddddd");
+	public static Color back2 = Color.decode("#eeeeee");
+	public static Color back3 = Color.decode("#D3D4D4");
+
      // IDE Component Fonts -- Finals
      public static final Font PX12 = new Font("Ubuntu Mono", Font.BOLD, 12);
      public static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
@@ -151,6 +156,10 @@ public class UIManager extends DataBase {
                     TOOLMENU_COLOR4 = Color.decode("#EB7201");
                     TOOLMENU_COLOR4_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 				TOOLMENU_GRADIENT = c1;
+
+				back1 = Color.decode("#222222");
+				back2 = Color.decode("#111111");
+				back3 = Color.decode("#2c2b2b");
 			}
 		}
 		catch(Exception e) {
