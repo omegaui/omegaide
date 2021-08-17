@@ -196,6 +196,7 @@ public class JavaSyntaxParser {
 			getArgs().forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+			System.gc();
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -221,6 +222,7 @@ public class JavaSyntaxParser {
 			getArgs().forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+			System.gc();
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -254,6 +256,7 @@ public class JavaSyntaxParser {
 			getArgs().forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+			System.gc();
 		}
 		catch(Exception e){
 			e.printStackTrace();

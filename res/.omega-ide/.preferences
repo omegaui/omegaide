@@ -18,3 +18,5 @@
 -gnome-terminal
 >Gradle Build Script
 -gradle
+>Instant Mode
+-instant-mode-speed

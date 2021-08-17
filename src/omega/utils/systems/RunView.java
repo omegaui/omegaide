@@ -17,6 +17,7 @@
 */
 
 package omega.utils.systems;
+import omega.utils.DataManager;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import javax.tools.DiagnosticCollector;
@@ -501,6 +502,7 @@ public class RunView extends View {
 				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileFullProject();
 				if(diagnostics == null){
 					Screen.setStatus("", 100);
+					System.gc();
 					return;
 				}
 				
@@ -527,6 +529,7 @@ public class RunView extends View {
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
 					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+					System.gc();
 					return;
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
@@ -537,6 +540,9 @@ public class RunView extends View {
 			}
 			catch(Exception e){
 				e.printStackTrace();
+			}
+			finally{
+				System.gc();
 			}
 		}).start();
 	}
@@ -553,9 +559,10 @@ public class RunView extends View {
 					Screen.setStatus("Please first select a valid JDK for the project", 10);
 					return;
 				}
-
-				Screen.setStatus("Building Project -- Instant Run", 0);
-				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin();
+				String text = DataManager.getInstantMode() == DataManager.INSTANT_MODE_SPEED ? "instant-mode-speed" : "instant-mode-accuracy";
+				Screen.setStatus("Building Project -- Instant Run : " + text, 0);
+				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode() == DataManager.INSTANT_MODE_SPEED ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
+				
 				if(diagnostics == null){
 					if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
 						Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);
@@ -565,6 +572,7 @@ public class RunView extends View {
 						justRun();
 						Screen.setStatus("Nothing to Build, Launching Project -- Instant Run", 0);
 					}
+					System.gc();
 					return;
 				}
 				
@@ -591,12 +599,14 @@ public class RunView extends View {
 					buildLog.genView(errorLog);
 					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
 					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10);
+					System.gc();
 					return;
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
 
 				if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
 					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);
+					System.gc();
 					return;
 				}
 				
@@ -605,9 +615,13 @@ public class RunView extends View {
 				Screen.setStatus("Running Project", 100);
 
 				JavaSyntaxParser.packCompiledCodes();
+				System.gc();
 			}
 			catch(Exception e){
 				e.printStackTrace();
+			}
+			finally{
+				System.gc();
 			}
 		}).start();
 	}

@@ -74,6 +74,7 @@ public class ToolMenu extends JPanel {
 	public static OPopupItem allSettingsItem;
 	public static OPopupItem jdkItem;
 	public static OPopupItem jdkRootItem;
+	public static OPopupItem instantModeItem;
 	
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
@@ -97,6 +98,7 @@ public class ToolMenu extends JPanel {
 	public TextComp structureViewComp;
 	public TextComp sep5;
 	public TextComp themeComp;
+	
 	public LabelMenu taskMenu;
 	
 	public static InfoScreen infoScreen;
@@ -644,6 +646,10 @@ public class ToolMenu extends JPanel {
 			jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
 		else
 			jdkItem.setName("Project JDK : None");
+		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
+			instantModeItem.setName("Instant Mode : Speed");
+		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+			instantModeItem.setName("Instant Mode : Accuracy");
      }
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
@@ -691,6 +697,21 @@ public class ToolMenu extends JPanel {
 				jdkRootItem.setToolTipText(DataManager.getPathToJava());
 			}
 		});
+
+		String text = "";
+		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
+			text = "Instant Mode : Speed";
+		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+			text = "Instant Mode : Accuracy";
+
+		instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, ()->{
+			DataManager.setInstantMode(DataManager.getInstantMode() == DataManager.INSTANT_MODE_SPEED ? DataManager.INSTANT_MODE_ACCURACY : DataManager.INSTANT_MODE_SPEED);
+			
+			if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
+				instantModeItem.setName("Instant Mode : Speed");
+			if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+				instantModeItem.setName("Instant Mode : Accuracy");
+		});
 		
 		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{
                if(GradleProcessManager.isGradleProject()) {
@@ -704,6 +725,7 @@ public class ToolMenu extends JPanel {
 		setPopup.addItem(typeItem);
 		setPopup.addItem(jdkItem);
 		setPopup.addItem(jdkRootItem);
+		setPopup.addItem(instantModeItem);
 		setPopup.addItem(allSettingsItem);
 	}
 	private void initHelpMenu() {

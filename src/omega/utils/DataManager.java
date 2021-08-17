@@ -26,12 +26,16 @@ import omega.database.DataEntry;
 
 public class DataManager extends DataBase {
 
+	public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
+	public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
+
 	private static String defaultProjectPath = "No Default Project set yet.";
 	private static String pathToJava = "";
      private static String projectsHome = "";
      private static String theme = "light";
 	private static String consoleCommand = "";
 	private static String gradleCommand = "gradlew";
+	private static String instantMode = INSTANT_MODE_SPEED;
 	
 	private volatile static boolean realTimeContentAssist = false;
      private volatile static boolean contentModeJava = true;
@@ -58,6 +62,7 @@ public class DataManager extends DataBase {
                setSourceDefenderEnabled(getEntryAt("Source Defender Enabled", 0).getValueAsBoolean());
                setConsoleCommand(getEntryAt("System Console Launch Command", 0).getValue());
                setGradleCommand(getEntryAt("Gradle Build Script", 0).getValue());
+               setInstantMode(getEntryAt("Instant Mode", 0).getValue());
 		}
 		catch(Exception e) { 
 		     e.printStackTrace();
@@ -76,6 +81,7 @@ public class DataManager extends DataBase {
           addEntry("Source Defender Enabled", isSourceDefenderEnabled() + "");
           addEntry("System Console Launch Command", getConsoleCommand());
           addEntry("Gradle Build Script", getGradleCommand());
+          addEntry("Instant Mode", getInstantMode());
 		save();
 	}
 	
@@ -157,6 +163,19 @@ public class DataManager extends DataBase {
      
      public static void setGradleCommand(java.lang.String gradleCommand) {
           DataManager.gradleCommand = gradleCommand;
+     }
+
+     public static java.lang.String getInstantMode() {
+          return instantMode;
+     }
+     
+     public static void setInstantMode(java.lang.String instantMode) {
+     	if(instantMode.equals(INSTANT_MODE_SPEED) || instantMode.equals(INSTANT_MODE_ACCURACY))
+          	DataManager.instantMode = instantMode;
+     	else{
+     		System.err.println("Invalid \"Instant Mode\" value : " + instantMode);
+     		System.err.println("Must be either \"" + INSTANT_MODE_SPEED + "\" or \"" + INSTANT_MODE_ACCURACY + "\"");
+     	}
      }
      
 }
