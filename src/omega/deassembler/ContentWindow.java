@@ -17,6 +17,8 @@
 */
 
 package omega.deassembler;
+import omega.utils.DataManager;
+import omega.utils.UIManager;
 import omega.framework.CodeFramework;
 import java.awt.Rectangle;
 import omega.utils.Editor;
@@ -45,7 +47,9 @@ public class ContentWindow extends JPanel implements KeyListener{
      private int width;
      private int height;
      public int index;
-     public static int optimalHintHeight = 20;
+     public static final int MINIMUM_HINT_HEIGHT = 20;
+     public int optimalHintHeight = MINIMUM_HINT_HEIGHT;
+     
      public static Color highlightColor = glow;
 
      public ContentWindow(Editor editor){
@@ -70,13 +74,19 @@ public class ContentWindow extends JPanel implements KeyListener{
           block = 0;
           width = 0;
 
-          g.setFont(PX12);
+		Font hintFont = DataManager.getHintFont();
+
+		optimalHintHeight = hintFont.getSize() + 6;
+		optimalHintHeight = optimalHintHeight <  20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;
+		
+          g.setFont(hintFont);
+          
           dataMembers.forEach(data->{
                String text = data.getRepresentableValue();
                if(text != null){
                     int w = g.getFontMetrics().stringWidth(text);
                     if(w > width)
-                         width = w;
+					width = w;
                }
           });
           
@@ -108,7 +118,7 @@ public class ContentWindow extends JPanel implements KeyListener{
                     textComp.setBounds(0, block, width, optimalHintHeight);
                     textComp.setArc(0, 0);
                     textComp.alignX = 5;
-                    textComp.setFont(PX12);
+                    textComp.setFont(hintFont);
                     panel.add(textComp);
                     hints.add(textComp);
                     block += optimalHintHeight;

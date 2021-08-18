@@ -138,9 +138,15 @@ public class Screen extends JFrame {
 			javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
 			javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
 			javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
+			
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Regular.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Light.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Medium.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Italic.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/Ubuntu-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/UbuntuMono-Bold.ttf")));
 		}
 		catch (Exception e1) {
 			e1.printStackTrace();

@@ -40,7 +40,7 @@ import omega.database.DataEntry;
 
 public class UIManager extends DataBase {
 
-     /**
+     /** 
       * The field carrying the default font name which was registered in omega.Screen
      */
 	public static String fontName = "Ubuntu Mono";
@@ -69,7 +69,7 @@ public class UIManager extends DataBase {
       * The Background of UI Elements
      */
 	public static Color c2;
-  
+
      /**
       * The Base Solid Color of UI Elements
      */
@@ -109,19 +109,21 @@ public class UIManager extends DataBase {
 	public static Color back3 = Color.decode("#D3D4D4");
 
      // IDE Component Fonts -- Finals
-     public static final Font PX12 = new Font("Ubuntu Mono", Font.BOLD, 12);
-     public static final Font PX14 = new Font("Ubuntu Mono", Font.BOLD, 14);
-	public static final Font PX16 = new Font("Ubuntu Mono", Font.BOLD, 16);
-	public static final Font PX18 = new Font("Ubuntu Mono", Font.BOLD, 18);
-     public static final Font PX20 = new Font("Ubuntu Mono", Font.BOLD, 20);
-     public static final Font PX22 = new Font("Ubuntu Mono", Font.BOLD, 22);
-     public static final Font PX26 = new Font("Ubuntu Mono", Font.BOLD, 26);
-	public static final Font PX28 = new Font("Ubuntu Mono", Font.BOLD, 28);
-     public static final Font PX40 = new Font("Ubuntu Mono", Font.BOLD, 40);
+     public static final Font PX12 = new Font(fontName, Font.BOLD, 12);
+     public static final Font PX14 = new Font(fontName, Font.BOLD, 14);
+	public static final Font PX16 = new Font(fontName, Font.BOLD, 16);
+	public static final Font PX18 = new Font(fontName, Font.BOLD, 18);
+     public static final Font PX20 = new Font(fontName, Font.BOLD, 20);
+     public static final Font PX22 = new Font(fontName, Font.BOLD, 22);
+     public static final Font PX26 = new Font(fontName, Font.BOLD, 26);
+	public static final Font PX28 = new Font(fontName, Font.BOLD, 28);
+     public static final Font PX40 = new Font(fontName, Font.BOLD, 40);
+     public static final Font JETBRAINS_MONO_PX11 = new Font("JetBrains Mono", Font.BOLD, 11);
      
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
           loadData();
+          
 	}
 
      public static void loadHighlight(){
@@ -134,7 +136,8 @@ public class UIManager extends DataBase {
 	public void loadData() {
 		try {
 			DataEntry e = getEntryAt("Font", 0);
-			if(e == null) return;
+			if(e == null)
+				return;
 			setFontName(e.getValue());
                setFontSize(getEntryAt("Font", 1).getValueAsInt());
                setFontState(getEntryAt("Font", 2).getValueAsInt());

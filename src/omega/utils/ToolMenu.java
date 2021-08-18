@@ -648,9 +648,10 @@ public class ToolMenu extends JPanel {
 			jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
 		else
 			jdkItem.setName("Project JDK : None");
+		
 		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
 			instantModeItem.setName("Instant Mode : Speed");
-		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 			instantModeItem.setName("Instant Mode : Accuracy");
      }
 	private void initSetMenu() {
@@ -660,6 +661,10 @@ public class ToolMenu extends JPanel {
 			UIManager.setData(font.getSize(), font.getName(), font.getStyle());
 			screen.getUIManager().save();
 			screen.loadThemes();
+		})
+		.createItem("Change Content Assist Font", IconManager.settingsImage, ()->{
+			Font font = fontC.chooseFont(DataManager.getHintFont());
+			DataManager.setHintFont(font);
 		})
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new omega.utils.WorkspaceSelector(screen).setVisible(true))
 		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
@@ -707,11 +712,11 @@ public class ToolMenu extends JPanel {
 			text = "Instant Mode : Accuracy";
 
 		instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, ()->{
-			DataManager.setInstantMode(DataManager.getInstantMode() == DataManager.INSTANT_MODE_SPEED ? DataManager.INSTANT_MODE_ACCURACY : DataManager.INSTANT_MODE_SPEED);
-			
+			DataManager.setInstantMode((DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED)) ? DataManager.INSTANT_MODE_ACCURACY : DataManager.INSTANT_MODE_SPEED);
+			System.out.println(DataManager.getInstantMode());
 			if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
 				instantModeItem.setName("Instant Mode : Speed");
-			if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+			else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 				instantModeItem.setName("Instant Mode : Accuracy");
 		});
 		

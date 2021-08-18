@@ -17,6 +17,7 @@
 */
 
 package omega.utils;
+import java.awt.Font;
 
 import java.io.File;
 
@@ -35,7 +36,9 @@ public class DataManager extends DataBase {
      private static String theme = "light";
 	private static String consoleCommand = "";
 	private static String gradleCommand = "gradlew";
-	private static String instantMode = INSTANT_MODE_SPEED;
+	private static String instantMode = "";
+	
+	private static Font hintFont = new Font("Ubuntu", Font.BOLD, 12);
 	
 	private volatile static boolean realTimeContentAssist = false;
      private volatile static boolean contentModeJava = true;
@@ -63,6 +66,10 @@ public class DataManager extends DataBase {
                setConsoleCommand(getEntryAt("System Console Launch Command", 0).getValue());
                setGradleCommand(getEntryAt("Gradle Build Script", 0).getValue());
                setInstantMode(getEntryAt("Instant Mode", 0).getValue());
+               String fontName = getEntryAt("Hint Font", 0).getValue();
+               int style = getEntryAt("Hint Font", 1).getValueAsInt();
+               int size = getEntryAt("Hint Font", 2).getValueAsInt();
+               setHintFont(new Font(fontName, style, size));
 		}
 		catch(Exception e) { 
 		     e.printStackTrace();
@@ -82,6 +89,9 @@ public class DataManager extends DataBase {
           addEntry("System Console Launch Command", getConsoleCommand());
           addEntry("Gradle Build Script", getGradleCommand());
           addEntry("Instant Mode", getInstantMode());
+          addEntry("Hint Font", getHintFont().getName());
+          addEntry("Hint Font", getHintFont().getStyle() + "");
+          addEntry("Hint Font", getHintFont().getSize() + "");
 		save();
 	}
 	
@@ -176,6 +186,18 @@ public class DataManager extends DataBase {
      		System.err.println("Invalid \"Instant Mode\" value : " + instantMode);
      		System.err.println("Must be either \"" + INSTANT_MODE_SPEED + "\" or \"" + INSTANT_MODE_ACCURACY + "\"");
      	}
+     }
+
+     public static java.awt.Font getHintFont() {
+          return hintFont;
+     }
+     
+     public static void setHintFont(java.awt.Font hintFont) {
+     	if(hintFont == null){
+     		System.err.println("Hint Font cannot be null!");
+     		return;
+     	}
+          DataManager.hintFont = hintFont;
      }
      
 }
