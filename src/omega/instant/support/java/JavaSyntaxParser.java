@@ -124,6 +124,7 @@ public class JavaSyntaxParser {
 				try{
 					ImageIcon icon = new ImageIcon(getSuitableIcon(d.getKind()));
 					icon = new ImageIcon(icon.getImage().getScaledInstance(editor.getFont().getSize(), editor.getFont().getSize(), Image.SCALE_SMOOTH));
+					System.out.println("Editor File : " + editor.currentFile.getAbsolutePath());
 					gutterIconInfos.add(new JavaSyntaxParserGutterIconInfo(editor.getAttachment().getGutter().addLineTrackingIcon((int)(d.getLineNumber() - 1), icon, d.getMessage(Locale.ROOT)), editor));
 				}
 				catch(Exception e){
@@ -416,5 +417,13 @@ public class JavaSyntaxParser {
 		if(kind == Kind.ERROR || kind == Kind.MANDATORY_WARNING)
 			return IconManager.fluenterrorImage;
 		return IconManager.fluentwarningImage;
+	}
+
+	public static String convertToProjectPath(String buildSpacePath){
+		if(!buildSpacePath.startsWith(BUILDSPACE_DIR.getAbsolutePath()))
+			return buildSpacePath;
+		String path = Screen.getFileView().getProjectPath();
+		buildSpacePath = buildSpacePath.substring(buildSpacePath.indexOf(BUILDSPACE_DIR.getAbsolutePath()) + BUILDSPACE_DIR.getAbsolutePath().length());
+		return path + buildSpacePath;
 	}
 }

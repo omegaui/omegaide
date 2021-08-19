@@ -17,6 +17,7 @@
 */
 
 package omega.highlightUnit;
+import omega.instant.support.java.JavaSyntaxParser;
 import omega.deassembler.CodeTokenizer;
 import omega.Screen;
 import omega.utils.UIManager;
@@ -59,6 +60,7 @@ public class ErrorHighlighter {
 				if(token.contains(".java") && token.contains(":") && !canRecord) {
 					int e = token.indexOf(':');
 					path = token.substring(0, e);
+					path = JavaSyntaxParser.convertToProjectPath(path);
 					line = Integer.parseInt(token.substring(e + 1, token.indexOf(':', e + 1)));
                          if(new File(path).exists())
                               canRecord = true;
@@ -88,7 +90,10 @@ public class ErrorHighlighter {
 					canRecord = false;
 				}
 			}
-		}catch(Exception e) {System.err.println(e);}
+		}
+		catch(Exception e) {
+			System.err.println(e);
+		}
 	}
 
 	public void removeAllHighlights() {
