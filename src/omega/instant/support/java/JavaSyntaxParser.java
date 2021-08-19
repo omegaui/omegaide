@@ -113,8 +113,10 @@ public class JavaSyntaxParser {
 				
 				JavaFileObject fileObject = (JavaFileObject)d.getSource();
 				String filePath = fileObject.toUri().getPath();
+				System.out.println("Got Source Path : " + filePath);
 				String srcDir = BUILDSPACE_DIR.getAbsolutePath();
 				filePath = Screen.getFileView().getProjectPath() + filePath.substring(srcDir.length());
+				System.out.println("New Path : " + filePath);
 				Editor editor = Screen.getScreen().getEditor(new File(filePath));
 				
 				if(editor == null){
@@ -124,7 +126,6 @@ public class JavaSyntaxParser {
 				try{
 					ImageIcon icon = new ImageIcon(getSuitableIcon(d.getKind()));
 					icon = new ImageIcon(icon.getImage().getScaledInstance(editor.getFont().getSize(), editor.getFont().getSize(), Image.SCALE_SMOOTH));
-					System.out.println("Editor File : " + editor.currentFile.getAbsolutePath());
 					gutterIconInfos.add(new JavaSyntaxParserGutterIconInfo(editor.getAttachment().getGutter().addLineTrackingIcon((int)(d.getLineNumber() - 1), icon, d.getMessage(Locale.ROOT)), editor));
 				}
 				catch(Exception e){
