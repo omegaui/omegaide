@@ -92,7 +92,7 @@ public class ErrorHighlighter {
 			}
 		}
 		catch(Exception e) {
-			System.err.println(e);
+			e.printStackTrace();
 		}
 	}
 

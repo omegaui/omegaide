@@ -113,10 +113,8 @@ public class JavaSyntaxParser {
 				
 				JavaFileObject fileObject = (JavaFileObject)d.getSource();
 				String filePath = fileObject.toUri().getPath();
-				System.out.println("Got Source Path : " + filePath);
 				String srcDir = BUILDSPACE_DIR.getAbsolutePath();
-				filePath = Screen.getFileView().getProjectPath() + filePath.substring(srcDir.length());
-				System.out.println("New Path : " + filePath);
+				filePath = Screen.getFileView().getProjectPath() + filePath.substring(srcDir.length() + (Screen.onWindows() ? 1 : 0));
 				Editor editor = Screen.getScreen().getEditor(new File(filePath));
 				
 				if(editor == null){
@@ -424,7 +422,7 @@ public class JavaSyntaxParser {
 		if(!buildSpacePath.startsWith(BUILDSPACE_DIR.getAbsolutePath()))
 			return buildSpacePath;
 		String path = Screen.getFileView().getProjectPath();
-		buildSpacePath = buildSpacePath.substring(buildSpacePath.indexOf(BUILDSPACE_DIR.getAbsolutePath()) + BUILDSPACE_DIR.getAbsolutePath().length());
+		buildSpacePath = buildSpacePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + (Screen.onWindows() ? 1 : 0));
 		return path + buildSpacePath;
 	}
 }
