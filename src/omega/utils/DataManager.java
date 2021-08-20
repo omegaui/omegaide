@@ -44,6 +44,7 @@ public class DataManager extends DataBase {
      private volatile static boolean contentModeJava = true;
 	private volatile static boolean useStarImports = false;
 	private volatile static boolean sourceDefenderEnabled;
+	private volatile static boolean parsingEnabled = true;
 	
 	public DataManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".preferences");
@@ -70,6 +71,7 @@ public class DataManager extends DataBase {
                int style = getEntryAt("Hint Font", 1).getValueAsInt();
                int size = getEntryAt("Hint Font", 2).getValueAsInt();
                setHintFont(new Font(fontName, style, size));
+               setParsingEnabled(getEntryAt("Parsing Enabled", 0).getValueAsBoolean());
 		}
 		catch(Exception e) { 
 		     e.printStackTrace();
@@ -92,6 +94,7 @@ public class DataManager extends DataBase {
           addEntry("Hint Font", getHintFont().getName());
           addEntry("Hint Font", getHintFont().getStyle() + "");
           addEntry("Hint Font", getHintFont().getSize() + "");
+          addEntry("Parsing Enabled", isParsingEnabled() + "");
 		save();
 	}
 	
@@ -198,6 +201,14 @@ public class DataManager extends DataBase {
      		return;
      	}
           DataManager.hintFont = hintFont;
+     }
+
+     public static boolean isParsingEnabled() {
+          return parsingEnabled;
+     }
+     
+     public static void setParsingEnabled(boolean parsingEnabled) {
+          DataManager.parsingEnabled = parsingEnabled;
      }
      
 }

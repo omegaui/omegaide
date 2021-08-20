@@ -119,9 +119,9 @@ public class ThemePicker extends JDialog {
                loadImage("light.png");
           }){
                @Override
-               public void paint(Graphics graphics){
-                    super.paint(graphics);
+               public void draw(Graphics2D graphics){
                     if(lightMode){
+                    	graphics.setColor(c3);
                          graphics.fillRect(0, getHeight() - 3, getWidth(), 3);
                     }
                }
@@ -137,9 +137,9 @@ public class ThemePicker extends JDialog {
                loadImage("dark.png");
           }){
                @Override
-               public void paint(Graphics graphics){
-                    super.paint(graphics);
+               public void draw(Graphics2D graphics){
                     if(!lightMode){
+                    	graphics.setColor(b3);
                          graphics.fillRect(0, getHeight() - 3, getWidth(), 3);
                     }
                }

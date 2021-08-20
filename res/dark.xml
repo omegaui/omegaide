@@ -7,7 +7,7 @@
 <RSyntaxTheme version="1.0">
 
    <!-- Omitting baseFont will use a system-appropriate monospaced. -->
-   <baseFont family="Ubuntu Mono" size="16"/>
+   <baseFont family="Ubuntu Mono" size="14"/>
    
    <!--  General editor colors.15151A -->
    <background color="09090B"/>

@@ -28,6 +28,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import omega.comp.TextComp;
 import java.util.LinkedList;
 import static omega.utils.UIManager.*;
@@ -67,8 +68,7 @@ public class BuildPathManager extends JDialog {
 		
 		jarTab = new TextComp("Jars", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(0)){
                @Override
-               public void paint(Graphics g){
-               	super.paint(g);
+               public void draw(Graphics2D g){
                     if(state == 0){
                          g.setColor(color3);
                          g.fillRect(0, getHeight() - 3, getWidth(), 3);
@@ -82,8 +82,7 @@ public class BuildPathManager extends JDialog {
 		
 		nativeTab = new TextComp("Native Roots", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(1)){
                @Override
-               public void paint(Graphics g){
-                 super.paint(g);
+               public void draw(Graphics2D g){
                     if(state == 1){
                          g.setColor(color3);
                          g.fillRect(0, getHeight() - 3, getWidth(), 3);
@@ -97,8 +96,7 @@ public class BuildPathManager extends JDialog {
 		
 		resourceRootTab = new TextComp("Resource Roots", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(2)){
                @Override
-               public void paint(Graphics g){
-                   super.paint(g);
+               public void draw(Graphics2D g){
                     if(state == 2){
                          g.setColor(color3);
                          g.fillRect(0, getHeight() - 3, getWidth(), 3);
@@ -112,8 +110,7 @@ public class BuildPathManager extends JDialog {
 		
 		moduleTab = new TextComp("Modules", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(3)){
                @Override
-               public void paint(Graphics g){
-                 super.paint(g);
+               public void draw(Graphics2D g){
                     if(state == 3){
                          g.setColor(color3);
                          g.fillRect(0, getHeight() - 3, getWidth(), 3);

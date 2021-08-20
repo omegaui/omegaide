@@ -22,13 +22,22 @@ public class Import {
 	public String packageName;
 	public String packagePath;
 	public String jarPath;
+	
 	public boolean module;
+
+	public boolean staticImport;
+	
 	public Import(String path, String jarPath, boolean module){
 		this.packagePath = path;
 		this.className = path.substring(path.lastIndexOf('.') + 1);
 		this.packageName = path.substring(0, path.lastIndexOf('.'));
 		this.jarPath = jarPath;
 		this.module = module;
+	}
+
+	public Import(String path, String jarPath, boolean module, boolean isStatic){
+		this(path, jarPath, module);
+		staticImport = isStatic;
 	}
 	
 	public Import(String pack, String name){
@@ -45,6 +54,10 @@ public class Import {
 	
 	public String getPackage() {
 		return packageName;
+	}
+
+	public boolean isStatic(){
+		return staticImport;
 	}
 	
 	@Override

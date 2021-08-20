@@ -17,7 +17,7 @@
 */
 package omega.utils;
 import omega.deassembler.*;
-import omega.framework.*;
+import omega.framework.CodeFramework;
 import omega.jdk.*;
 import omega.*;
 import java.awt.*;

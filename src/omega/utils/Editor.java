@@ -237,6 +237,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			call = false;
 			if(!CodeFramework.resolving) {
 				ContentTokenizer.arrangeTokens(this);
+				new Thread(System::gc).start();
 			}
 		}
 	}
@@ -777,15 +778,17 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(DataManager.isContentAssistRealTime())
 					call = true;
 			}
-			if(currentFile.getName().endsWith(".java")){
-				if(code != KeyEvent.VK_UP && code != KeyEvent.VK_LEFT
-				&& code != KeyEvent.VK_DOWN && code != KeyEvent.VK_RIGHT
-				&& code != KeyEvent.VK_PAGE_UP && code != KeyEvent.VK_PAGE_DOWN
-				&& code != KeyEvent.VK_END && code != KeyEvent.VK_HOME
-				&& code != KeyEvent.VK_SHIFT && code != KeyEvent.VK_F){
-					new Thread(()->{
-						SyntaxParsers.javaSyntaxParser.parse();
-					}).start();
+			if(DataManager.isParsingEnabled()) {
+				if(currentFile.getName().endsWith(".java")){
+					if(code != KeyEvent.VK_UP && code != KeyEvent.VK_LEFT
+					&& code != KeyEvent.VK_DOWN && code != KeyEvent.VK_RIGHT
+					&& code != KeyEvent.VK_PAGE_UP && code != KeyEvent.VK_PAGE_DOWN
+					&& code != KeyEvent.VK_END && code != KeyEvent.VK_HOME
+					&& code != KeyEvent.VK_SHIFT && code != KeyEvent.VK_F){
+						new Thread(()->{
+							SyntaxParsers.javaSyntaxParser.parse();
+						}).start();
+					}
 				}
 			}
 		}

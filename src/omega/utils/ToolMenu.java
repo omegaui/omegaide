@@ -75,6 +75,7 @@ public class ToolMenu extends JPanel {
 	public static OPopupItem jdkItem;
 	public static OPopupItem jdkRootItem;
 	public static OPopupItem instantModeItem;
+	public static OPopupItem parsingEnabledItem;
 	
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
@@ -644,6 +645,8 @@ public class ToolMenu extends JPanel {
           jdkItem.setEnabled(!non_java);
 		jdkRootItem.setToolTipText(DataManager.getPathToJava());
           allSettingsItem.setEnabled(non_java);
+          instantModeItem.setEnabled(!non_java);
+          parsingEnabledItem.setEnabled(!non_java);
 		if(Screen.getFileView().getJDKManager() != null)
 			jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
 		else
@@ -653,6 +656,8 @@ public class ToolMenu extends JPanel {
 			instantModeItem.setName("Instant Mode : Speed");
 		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 			instantModeItem.setName("Instant Mode : Accuracy");
+
+		parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
      }
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
@@ -713,11 +718,16 @@ public class ToolMenu extends JPanel {
 
 		instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, ()->{
 			DataManager.setInstantMode((DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED)) ? DataManager.INSTANT_MODE_ACCURACY : DataManager.INSTANT_MODE_SPEED);
-			System.out.println(DataManager.getInstantMode());
+			
 			if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
 				instantModeItem.setName("Instant Mode : Speed");
 			else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 				instantModeItem.setName("Instant Mode : Accuracy");
+		});
+
+		parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + DataManager.isParsingEnabled(), IconManager.fluentsourceImage, ()->{
+			DataManager.setParsingEnabled(!DataManager.isParsingEnabled());
+			parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
 		});
 		
 		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{
@@ -732,6 +742,7 @@ public class ToolMenu extends JPanel {
 		setPopup.addItem(typeItem);
 		setPopup.addItem(jdkItem);
 		setPopup.addItem(jdkRootItem);
+		setPopup.addItem(parsingEnabledItem);
 		setPopup.addItem(instantModeItem);
 		setPopup.addItem(allSettingsItem);
 	}
