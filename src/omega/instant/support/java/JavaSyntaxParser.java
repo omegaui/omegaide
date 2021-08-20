@@ -42,6 +42,7 @@ import java.io.PrintWriter;
 import omega.startup.Startup;
 import omega.Screen;
 import omega.utils.Editor;
+import omega.utils.DataManager;
 import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -344,7 +345,7 @@ public class JavaSyntaxParser {
 	}
 	
 	public static void packCompiledCodes(){
-		if(packingCodes)
+		if(packingCodes || !DataManager.isParsingEnabled())
 			return;
 		packingCodes = true;
 		File zipFile = new File(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar");

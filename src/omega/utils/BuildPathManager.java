@@ -17,20 +17,24 @@
 */
 
 package omega.utils;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import omega.Screen;
-import javax.swing.JDialog;
-import javax.swing.filechooser.FileFilter;
+
 import java.io.File;
-import javax.swing.JFileChooser;
-import java.awt.Font;
-import java.awt.Color;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Dimension;
+
 import omega.comp.TextComp;
+
 import java.util.LinkedList;
+
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+
 import static omega.utils.UIManager.*;
 public class BuildPathManager extends JDialog {
 	private LinkedList<TextComp> jarComps = new LinkedList<>();
