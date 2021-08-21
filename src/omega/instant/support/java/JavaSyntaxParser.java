@@ -345,7 +345,7 @@ public class JavaSyntaxParser {
 	}
 	
 	public static void packCompiledCodes(){
-		if(packingCodes || !DataManager.isParsingEnabled())
+		if(packingCodes)
 			return;
 		packingCodes = true;
 		File zipFile = new File(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar");
