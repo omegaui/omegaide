@@ -271,10 +271,6 @@ public class JavaSyntaxParser {
 		try{
 			//Preparing Buildspace ...
 			prepareBuildSpace(files);
-			
-			//Packing Compiled Codes
-			if(!new File(".omega-ide" + File.separator + "buildspace", "compiled.jar").exists())
-				packCompiledCodes();
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -316,9 +312,13 @@ public class JavaSyntaxParser {
 		if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
 			for(String d : Screen.getFileView().getProjectManager().jars)
 				depenPath += d + omega.Screen.PATH_SEPARATOR;
-			
-			if(new File(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar").exists()) {
-				depenPath += BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar" + omega.Screen.PATH_SEPARATOR;
+
+			File[] files = new File(Screen.getFileView().getProjectPath() + File.separator + "bin").listFiles();
+			if(files != null && files.length != 0) {
+				depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
+			}
+			else{
+				Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
 			}
 			
 			if(Screen.isNotNull(depenPath))
@@ -342,57 +342,6 @@ public class JavaSyntaxParser {
 		
 		Screen.getFileView().getProjectManager().compileTimeFlags.forEach(commands::add);
 		return commands;
-	}
-	
-	public static void packCompiledCodes(){
-		if(packingCodes)
-			return;
-		packingCodes = true;
-		File zipFile = new File(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar");
-		try{
-			LinkedList<String> compiledCodes = new LinkedList<>();
-			loadFiles(compiledCodes, new File(Screen.getFileView().getProjectPath() + File.separator + "bin"), ".class");
-			
-			if(compiledCodes.isEmpty()){
-				Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
-				packingCodes = false;
-				return;
-			}
-			
-			Startup.writeUIFiles();
-			
-			if(zipFile.exists())
-				zipFile.delete();
-			
-			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(BUILDSPACE_DIR.getAbsolutePath() + File.separator + "compiled.jar"));
-			String binDir = Screen.getFileView().getProjectPath() + File.separator + "bin";
-			for(String path : compiledCodes){
-				int per = ((compiledCodes.indexOf(path) + 1) * 100)/ compiledCodes.size();
-				Screen.setStatus("Packing Compiled Codes for Java Syntax Parsing " + per + "%", per);
-				String metaPath = path.substring(path.lastIndexOf(binDir) + binDir.length() + 1);
-				
-				ZipEntry entry = new ZipEntry(metaPath);
-				entry.setCompressedSize(-1);
-				
-				out.putNextEntry(entry);
-				
-				InputStream in = new FileInputStream(new File(path));
-				while(in.available() > 0)
-					out.write(in.read());
-				
-				out.closeEntry();
-				
-				in.close();
-			}
-			out.flush();
-			out.finish();
-			out.close();
-		}
-		catch(Exception e){
-			if(zipFile.exists())
-				zipFile.delete();
-		}
-		packingCodes = false;
 	}
 	
 	public static void loadFiles(LinkedList<String> files, File dir, String ext){

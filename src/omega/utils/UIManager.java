@@ -126,7 +126,6 @@ public class UIManager extends DataBase {
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
           loadData();
-          
 	}
 
      public static void loadHighlight(){
@@ -150,9 +149,9 @@ public class UIManager extends DataBase {
 				c2 = Color.WHITE;
 			}
 			else {
-                    c1 = Color.decode("#563F2E");
-                    c2 = Color.decode("#09090B");
-                    c3 = Color.decode("#ABB0BC");
+                    c1 = Color.decode("#132162");
+                    c2 = Color.decode("#020E0F");
+                    c3 = Color.decode("#3CE5DD");
                     TOOLMENU_COLOR1 = Color.decode("#f0b40f");
                     TOOLMENU_COLOR1_SHADE = new Color(TOOLMENU_COLOR1.getRed(), TOOLMENU_COLOR1.getGreen(), TOOLMENU_COLOR1.getBlue(), 40);
                     TOOLMENU_COLOR2 = Color.decode("#D34D42");
@@ -164,7 +163,7 @@ public class UIManager extends DataBase {
 				TOOLMENU_GRADIENT = c1;
 
 				back1 = Color.decode("#222222");
-				back2 = Color.decode("#111111");
+				back2 = Color.decode("#060418");
 				back3 = Color.decode("#2c2b2b");
 			}
 		}

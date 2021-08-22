@@ -535,8 +535,6 @@ public class RunView extends View {
 				Screen.getErrorHighlighter().removeAllHighlights();
 				
 				Screen.setStatus("Building Project, Accomplished Successfully -- Instant Build", 0);
-				
-				JavaSyntaxParser.packCompiledCodes();
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -613,8 +611,7 @@ public class RunView extends View {
 				Screen.setStatus("Running Project -- Instant Run", 50);
 				justRun();
 				Screen.setStatus("Running Project", 100);
-
-				JavaSyntaxParser.packCompiledCodes();
+				
 				System.gc();
 			}
 			catch(Exception e){
@@ -768,10 +765,6 @@ public class RunView extends View {
 				Screen.setStatus("Building Project Completed", 100);
 				
 				System.gc();
-				
-                   	new Thread(()->{
-                   		JavaSyntaxParser.packCompiledCodes();
-               	}).start();
                	
 				Screen.setStatus("Running Project", 23);
 				

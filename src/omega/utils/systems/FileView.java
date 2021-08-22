@@ -136,8 +136,6 @@ public class FileView extends View {
      		     	catch(Exception e){
      		     		e.printStackTrace();
      		     	}
-	     		     if(!projectManager.non_java)
-						JavaSyntaxParser.packCompiledCodes();
 		     	}).start();
 		     }
 		     catch(Exception e) {

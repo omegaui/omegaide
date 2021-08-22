@@ -292,10 +292,6 @@ public class BuildView extends View {
                     getScreen().getToolMenu().buildComp.setClickable(true);
                     getScreen().getToolMenu().runComp.setClickable(true);
                     Screen.getProjectView().reload();
-
-                   	new Thread(()->{
-                   		JavaSyntaxParser.packCompiledCodes();
-               	}).start();
                }
                catch(Exception e) {
                     e.printStackTrace();
