@@ -16,6 +16,8 @@ e
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import omega.launcher.InstructionWindow;
+
 import java.util.LinkedList;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -114,6 +116,7 @@ public class ToolMenu extends JPanel {
 	public static ProjectDistructionWizard projectDistructionWizard;
 	public static ConsoleSelector consoleSelector;
 	public static GradleBuildScriptManager gradleBuildScriptManager;
+	public static InstructionWindow instructionWindow;
      
 	private int pressX;
 	private int pressY;
@@ -153,6 +156,7 @@ public class ToolMenu extends JPanel {
 			consoleSelector = new ConsoleSelector(screen);
 			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
 			projectDistructionWizard = new ProjectDistructionWizard(screen);
+			instructionWindow = new InstructionWindow(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -756,6 +760,9 @@ public class ToolMenu extends JPanel {
 	          }
 		})
 		.createItem("Plugin Center & Updates", IconManager.fluentupdateImage, ()->Screen.getPluginCenter().setVisible(true))
+          .createItem("Instructions", IconManager.fluentinfoImage, ()->{
+               instructionWindow.setVisible(true);
+          })
           .createItem("Made With", IconManager.fluentinfoImage, ()->{
                madeWithScreen.setVisible(true);
           })

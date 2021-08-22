@@ -77,6 +77,9 @@ public class IconManager {
      public static BufferedImage fluentlightningboltImage = getFluentIcon("lightning-bolt-48.png");
      public static BufferedImage fluentquickmodeonImage = getFluentIcon("quick-mode-on-48.png");
      public static BufferedImage fluentphoenixImage = getFluentIcon("phoenix-48.png");
+     public static BufferedImage fluentbriefImage = getFluentIcon("brief-48.png");
+     public static BufferedImage fluentbulletedlistImage = getFluentIcon("bulleted-list-64.png");
+     public static BufferedImage fluentusermanualImage = getFluentIcon("user-manual-64.png");
      
 
      //The Default Icon Pack -- mixed

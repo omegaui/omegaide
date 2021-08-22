@@ -119,6 +119,9 @@ public class UIManager extends DataBase {
 	public static final Font PX28 = new Font(fontName, Font.BOLD, 28);
      public static final Font PX40 = new Font(fontName, Font.BOLD, 40);
      public static final Font JETBRAINS_MONO_PX11 = new Font("JetBrains Mono", Font.BOLD, 11);
+	public static final Font UBUNTU_PX12 = new Font("Ubuntu", Font.BOLD, 12);
+	public static final Font UBUNTU_PX14 = new Font("Ubuntu", Font.BOLD, 14);
+	public static final Font UBUNTU_PX16 = new Font("Ubuntu", Font.BOLD, 16);
      
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
