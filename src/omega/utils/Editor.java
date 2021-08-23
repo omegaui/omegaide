@@ -111,6 +111,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile boolean i; // override methods
 	private volatile boolean l; // instant launch
 	private volatile boolean f1; // instant run
+	private volatile boolean d; // duplicate
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -590,19 +591,32 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			l = true;
 		else if(code == KeyEvent.VK_F1)
 			f1 = true;
+		else if(code == KeyEvent.VK_D)
+			d = true;
 		
 		
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
 			f = false;
-			ctrl = false;
-			shift = false;
 		}
 		if(ctrl && s){
 			saveCurrentFile();
 			s = false;
-			ctrl = false;
-			shift = false;
+		}
+		if(ctrl && d){
+			if(getSelectedText() == null || getSelectedText().equals("")){
+				String text = getText();
+				text = text.substring(0, getCaretPosition());
+				if(text.contains("\n"))
+					text = text.substring(text.lastIndexOf('\n') + 1);
+				insert("\n" + text, getCaretPosition());
+			}
+			else{
+				String text = getSelectedText();
+				insert(text, getCaretPosition());
+			}
+			d = false;
+			e.consume();
 		}
 		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
 			if(GradleProcessManager.isGradleProject())
@@ -610,14 +624,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			else
 				Screen.getBuildView().compileProject();
 			b = false;
-			ctrl = false;
-			shift = false;
 		}
 		if(ctrl && shift && c){
 			saveImage();
 			c = false;
-			ctrl = false;
-			shift = false;
 		}
 		if(code == KeyEvent.VK_TAB){
 			String codeX = getText();
@@ -655,29 +665,21 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
 				ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
 				o = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
 				Generator.gsView.genView(this);
 				g = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && !shift && i && currentFile.getName().endsWith(".java")) {
 				IndentationFramework.indent(this);
 				i = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && i && currentFile.getName().endsWith(".java")) {
 				Generator.overView.genView(this);
 				i = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
@@ -686,22 +688,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				else
 					Screen.getRunView().run();
 				r = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
 				Screen.getRunView().instantRun();
 				f1 = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && l){
 				ToolMenu.processWizard.launch(currentFile);
 				l = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(contentWindow.isVisible()) {
@@ -770,6 +766,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			l = false;
 		else if(code == KeyEvent.VK_F1)
 			f1 = false;
+		else if(code == KeyEvent.VK_D)
+			d = false;
 		
 		if(currentFile != null) {
 			//Code Assist

@@ -39,6 +39,9 @@ public class PopupManager {
                })
                .createItem("Run Project", IconManager.runImage, ()->Screen.getRunView().run())
                .createItem("Build Project", IconManager.buildImage, ()->Screen.getBuildView().compileProject())
+               .createItem("Mark As Main", IconManager.fluentrocketImage, ()->{
+                    Screen.getRunView().setMainClassPath(editor.currentFile.getAbsolutePath());
+          	})
                .createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
                .createItem("Save As", IconManager.fluentsaveImage, ()->{
                     editor.saveFileAs();

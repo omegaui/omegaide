@@ -42,6 +42,8 @@ public class InstructionWindow extends JDialog{
 	private int pointer = 0;
 
 	private static GradientPaint titlePaint = new GradientPaint(0, 100, TOOLMENU_COLOR1, 400, 300, TOOLMENU_COLOR2);
+	private static GradientPaint textPaint = new GradientPaint(0, 100, TOOLMENU_COLOR3, 400, 300, TOOLMENU_COLOR4);
+	private static GradientPaint bodyPaint = new GradientPaint(0, 0, TOOLMENU_COLOR1, 500, 400, TOOLMENU_COLOR3);
 
 	private BufferedImage toolMenuImage = getInstructionImage("toolmenu.png");
 	private BufferedImage sourceDefenderImage = getInstructionImage("source-defender.png");
@@ -117,6 +119,7 @@ public class InstructionWindow extends JDialog{
 			g.setFont(UBUNTU_PX14);
 			g.drawString("Read some instructions before proceeding further", width/2 - g.getFontMetrics().stringWidth("Read Some Instructions before proceeding further")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() - 50);
 			g.drawImage(IconManager.fluentbulletedlistImage, 20, 20, null);
+			g.setPaint(bodyPaint);
 			g.drawString("Click 'Next' to continue", width/2 - g.getFontMetrics().stringWidth("Click 'Next' to continue")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 			g.drawString("Click 'Previous' to go back anytime", width/2 - g.getFontMetrics().stringWidth("Click 'Previous' to go back anytime")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
 			g.drawString("Click 'Skip' to exit", width/2 - g.getFontMetrics().stringWidth("Click 'Skip' to exit")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 100);
@@ -133,6 +136,7 @@ public class InstructionWindow extends JDialog{
 			g.drawImage(toolMenuImage, width/2 - toolMenuImage.getWidth()/6, 60, toolMenuImage.getWidth()/3, toolMenuImage.getHeight()/3, null);
 			g.setFont(PX14);
 			g.setColor(glow);
+			g.setPaint(bodyPaint);
 			g.drawString("This is the ToolMenu of Omega IDE", width/2 - g.getFontMetrics().stringWidth("This is the ToolMenu of Omega IDE")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 			g.drawString("The Entire Project WorkFlow is controlled from here", width/2 - g.getFontMetrics().stringWidth("The Entire Project WorkFlow is controlled from here")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 20);
 			g.drawString("From Creating Files to Building Project", width/2 - g.getFontMetrics().stringWidth("From Creating Files to Building Project")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 46);
@@ -184,6 +188,7 @@ public class InstructionWindow extends JDialog{
 			g.drawImage(IconManager.fluentshellImage, width/2 - IconManager.fluentshellImage.getWidth()/2, 60, null);
 			g.setFont(PX14);
 			g.setColor(glow);
+			g.setPaint(bodyPaint);
 			g.drawString("Double Click the IDE's Title to Toggle Maximize State", width/2 - g.getFontMetrics().stringWidth("Double Click the IDE's Title to Toggle Maximize State")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 			g.drawString("Hold Down Blank Area around Tool Menu to Drag the Window", width/2 - g.getFontMetrics().stringWidth("Hold Down Blank Area around Tool Menu to Drag the Window")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 20);
 		});
@@ -199,6 +204,7 @@ public class InstructionWindow extends JDialog{
 			g.drawImage(sourceDefenderImage, width/2 - sourceDefenderImage.getWidth()/2, 35, null);
 			g.setFont(PX14);
 			g.setColor(glow);
+			g.setPaint(bodyPaint);
 			g.drawString("The Tool Section contains unique features to", 20, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 10);
 			g.drawString("drive the workflow better.", 60, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
 			g.drawString("One of Which is Source Defender.", 20, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 60);
@@ -213,6 +219,7 @@ public class InstructionWindow extends JDialog{
 
 			int x = 30 + processWizardImage.getWidth()/2;
 			g.drawString("Process Wizard", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
+			g.setPaint(bodyPaint);
 			g.drawString("It lets you to run any file from", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 60);
 			g.drawString("inside the IDE, ", x + 20, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 80);
 			g.drawString("independent of the project.", x + 20, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 100);
@@ -235,7 +242,7 @@ public class InstructionWindow extends JDialog{
 			g.setColor(glow);
 			g.drawString("In Editor KeyBindings", width/2 - g.getFontMetrics().stringWidth("In Editor KeyBindings")/2, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
 			
-			g.setPaint(titlePaint);
+			g.setPaint(textPaint);
 			g.drawString("Ctrl + SHIFT + O - Auto Imports", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
 			g.drawString("Ctrl + SHIFT + F - Find And Replace", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 70);
 			g.drawString("Ctrl + SHIFT + R - Run Project(Non-Dynamic)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 90);
@@ -248,6 +255,7 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Ctrl + B - Build Project", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 220);
 			g.drawString("Ctrl + S - Auto Imports", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 240);
 			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 260);
+			g.drawString("Ctrl + D - Duplicate Current Line or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 280);
 		});
 		
 		paintBoards.add((g, width, height)->{

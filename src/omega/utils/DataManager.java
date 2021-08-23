@@ -183,12 +183,7 @@ public class DataManager extends DataBase {
      }
      
      public static void setInstantMode(java.lang.String instantMode) {
-     	if(instantMode.equals(INSTANT_MODE_SPEED) || instantMode.equals(INSTANT_MODE_ACCURACY))
-          	DataManager.instantMode = instantMode;
-     	else{
-     		System.err.println("Invalid \"Instant Mode\" value : " + instantMode);
-     		System.err.println("Must be either \"" + INSTANT_MODE_SPEED + "\" or \"" + INSTANT_MODE_ACCURACY + "\"");
-     	}
+     	DataManager.instantMode = instantMode;
      }
 
      public static java.awt.Font getHintFont() {

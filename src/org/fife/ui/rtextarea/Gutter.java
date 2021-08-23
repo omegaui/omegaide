@@ -204,7 +204,13 @@ public class Gutter extends JPanel {
 	 */
 	public GutterIconInfo addLineTrackingIcon(int line, Icon icon, String tip)
 											throws BadLocationException {
-		int offs = textArea.getLineStartOffset(line);
+		int offs = 0;
+		try{
+			offs = textArea.getLineStartOffset(line);
+		}
+		catch(Exception e){
+			
+		}
 		return addOffsetTrackingIcon(offs, icon, tip);
 	}
 

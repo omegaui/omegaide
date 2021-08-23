@@ -557,9 +557,9 @@ public class RunView extends View {
 					Screen.setStatus("Please first select a valid JDK for the project", 10);
 					return;
 				}
-				String text = DataManager.getInstantMode() == DataManager.INSTANT_MODE_SPEED ? "instant-mode-speed" : "instant-mode-accuracy";
+				String text = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? "instant-mode-speed" : "instant-mode-accuracy";
 				Screen.setStatus("Building Project -- Instant Run : " + text, 0);
-				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode() == DataManager.INSTANT_MODE_SPEED ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
+				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
 				
 				if(diagnostics == null){
 					if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
@@ -595,7 +595,7 @@ public class RunView extends View {
 					Screen.getErrorHighlighter().loadErrors(errorLog);
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
-					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{});
 					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10);
 					System.gc();
 					return;

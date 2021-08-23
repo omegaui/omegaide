@@ -16,55 +16,75 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
-import java.awt.Toolkit;
-import java.awt.geom.RoundRectangle2D;
-import omega.instant.support.universal.*;
-import omega.plugin.*;
-import javax.swing.plaf.ColorUIResource;
-import javax.imageio.ImageIO;
-import omega.utils.BottomPane;
-import omega.utils.SideMenu;
-import omega.utils.ThemePicker;
-import java.awt.event.*;
-import omega.utils.IconManager;
-import omega.utils.systems.FileView;
 import omega.startup.Startup;
-import omega.utils.UIManager;
-import java.util.StringTokenizer;
+
 import java.util.LinkedList;
-import java.awt.Desktop;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import omega.utils.ProjectDataBase;
+import java.util.StringTokenizer;
+
 import omega.tree.FileTree;
-import omega.utils.WorkspaceSelector;
-import omega.snippet.SnippetBase;
-import java.awt.BorderLayout;
+
+import java.awt.geom.RoundRectangle2D;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.imageio.ImageIO;
+
 import omega.gset.Generator;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import com.formdev.flatlaf.FlatLightLaf;
+
+import javax.swing.plaf.ColorUIResource;
+
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import java.io.File;
+
 import omega.terminal.TerminalComp;
+
 import omega.plugin.PluginManager;
-import omega.utils.systems.ProjectView;
-import omega.highlightUnit.ErrorHighlighter;
-import omega.utils.RecentsManager;
+import omega.plugin.PluginCenter;
+
+import omega.instant.support.universal.UniversalSettingsWizard;
+
 import omega.highlightUnit.BasicHighlight;
-import omega.utils.systems.BuildView;
-import omega.utils.systems.RunView;
-import omega.utils.DataManager;
+import omega.highlightUnit.ErrorHighlighter;
+
 import java.awt.Robot;
+import java.awt.Color;
+import java.awt.GraphicsEnvironment;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.Toolkit;
+
 import omega.utils.ToolMenu;
-import omega.tabPane.TabPanel;
-import omega.utils.systems.OperationPane;
-import omega.snippet.SnippetView;
-import omega.launcher.Launcher;
+import omega.utils.SideMenu;
+import omega.utils.BottomPane;
+import omega.utils.DataManager;
+import omega.utils.RecentsManager;
+import omega.utils.ThemePicker;
+import omega.utils.WorkspaceSelector;
+import omega.utils.ProjectDataBase;
 import omega.utils.Editor;
-import javax.swing.JSplitPane;
+import omega.utils.UIManager;
+
+import omega.tabPane.TabPanel;
+
+import omega.utils.systems.OperationPane;
+import omega.utils.systems.RunView;
+import omega.utils.systems.BuildView;
+import omega.utils.systems.ProjectView;
+import omega.utils.systems.FileView;
+
+import omega.snippet.SnippetView;
+import omega.snippet.SnippetBase;
+
+import omega.launcher.Launcher;
+
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 public class Screen extends JFrame {
 	public JSplitPane splitPane;
 	public JSplitPane compilancePane;
@@ -140,14 +160,8 @@ public class Screen extends JFrame {
 			javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
 			
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Regular.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Light.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Medium.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Bold.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/JetBrainsMono-Italic.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/Ubuntu-Bold.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/fonts/UbuntuMono-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 		}
 		catch (Exception e1) {
 			e1.printStackTrace();
