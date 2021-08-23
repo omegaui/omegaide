@@ -59,6 +59,8 @@ public class ErrorHighlighter {
 				String token = tokenizer.nextToken();
 				if(token.contains(".java") && token.contains(":") && !canRecord) {
 					int e = token.indexOf(':');
+					if(Screen.onWindows())
+						e = token.indexOf(':', e + 1);
 					path = token.substring(0, e);
 					path = JavaSyntaxParser.convertToProjectPath(path);
 					line = Integer.parseInt(token.substring(e + 1, token.indexOf(':', e + 1)));
