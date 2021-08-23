@@ -13,6 +13,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.utils.IconManager;
+
+import java.awt.geom.RoundRectangle2D;
+
 import javax.imageio.*;
 import javax.swing.*;
 import omega.tabPane.*;
@@ -56,6 +60,7 @@ public class SplashScreen extends JFrame{
 		setLocationRelativeTo(null);
 		setBackground(BACK_COLOR);
 		setResizable(false);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 100, 100));
 		
 		try{
 			setIconImage(ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
@@ -139,10 +144,7 @@ public class SplashScreen extends JFrame{
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(BACK_COLOR);
 		g.setPaint(gradient);
-		if(Screen.onWindows())
-			g.fillRect(0, 0, getWidth(), getHeight());
-		else
-			g.fillRoundRect(1, 1, getWidth(), getHeight(), 100, 100);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(TITLE_COLOR);
 		g.setFont(PX40);
 		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 190);
