@@ -6,7 +6,7 @@
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
-*
+* 
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -95,11 +95,11 @@ public class ImportFramework {
 	}
 	
 	/**
-	* The method adds the imports in the editor after rectifying the classess
-	* @param classess = The list of classess to be imported
+	* The method adds the imports in the editor after rectifying the classes
+	* @param classes = The list of classes to be imported
 	* @param editor = The Editor in which the imports are to be inserted
 	*/
-	public static synchronized void addImports(LinkedList<String> classess, Editor editor){
+	public static synchronized void addImports(LinkedList<String> classes, Editor editor){
 		if(JDKManager.reading) return;
 		String PACK = "";
 		if(isPackageInformationPresent(editor)) {
@@ -111,7 +111,7 @@ public class ImportFramework {
 		LinkedList<String> unimported = new LinkedList<>();
 		
 		//Removing Java Lang Classess
-		for(String classX : classess) {
+		for(String classX : classes) {
 			boolean found = false;
 			for(Import xm : JDKManager.javaLangPack) {
 				String className = xm.getClassName();
@@ -123,7 +123,7 @@ public class ImportFramework {
 			if(!found)
 				unimported.add(classX);
 		}
-		classess.clear();
+		classes.clear();
 		//Managing Classess with Same Name but different Package
 		LinkedList<LinkedList<String>> coexistingClassess = new LinkedList<>();
 		main:
@@ -159,7 +159,7 @@ public class ImportFramework {
 			}
 		}
 		//Managing Classess with Multi and Single Base Package
-		//Inserting the single bases and storing the multi bases classess
+		//Inserting the single bases and storing the multi bases classes
 		LinkedList<Import> multiBases = new LinkedList<>();
 		main:
 		for(LinkedList<String> bases : coexistingClassess) {

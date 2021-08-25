@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import java.awt.geom.RoundRectangle2D;
+
 import javax.swing.JDialog;
 import java.net.URL;
 import java.awt.Desktop;
@@ -52,7 +54,8 @@ public class MadeWithScreen extends JDialog{
           setBackground(new Color(0, 0, 0, 0));
           FlexPanel panel = new FlexPanel(null, TOOLMENU_COLOR1, TOOLMENU_COLOR2);
           panel.setPaintGradientEnabled(true);
-          //panel.setArc(0, 0);
+          panel.setArc(0, 0);
+          setShape(new RoundRectangle2D.Float(0, 0, 400, 400, 40, 40));
           setContentPane(panel);
           addMouseListener(new MouseAdapter(){
                @Override

@@ -28,7 +28,6 @@ import static omega.utils.UIManager.*;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
-	private static final String HINT = "Animation not supported on Windows!";
 	private static String ENCOURAGE = "lets code";
 	private static final Color ALPHA = new Color(0, 0, 0, 0);
 	private static Color BACK_COLOR;

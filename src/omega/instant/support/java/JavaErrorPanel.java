@@ -1,9 +1,12 @@
 package omega.instant.support.java;
-import java.awt.Rectangle;
 import omega.utils.Editor;
+
 import java.awt.Dimension;
-import omega.comp.TextComp;
+import java.awt.Rectangle;
+
 import omega.comp.FlexPanel;
+import omega.comp.TextComp;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class JavaErrorPanel extends FlexPanel{

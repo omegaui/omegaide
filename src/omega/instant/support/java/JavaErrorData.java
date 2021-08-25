@@ -1,6 +1,8 @@
 package omega.instant.support.java;
-import omega.highlightUnit.Highlight;
 import omega.utils.Editor;
+
+
+import omega.highlightUnit.Highlight;
 public class JavaErrorData {
 	public Editor editor;
 	public int errorCount;
