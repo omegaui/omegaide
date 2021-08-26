@@ -1,13 +1,6 @@
 # **Omega IDE**
 
-**Omega IDE v2.0 - Current Beta**
-
-![](/images/beta-light.png)
-
-![](/images/beta-dark.png)
-
-
-**Omega IDE v1.9 - Latest Stable**
+**Omega IDE v2.0 - Latest Stable**
 
 ![](/images/light.png)
 
@@ -64,23 +57,7 @@ See a what's new in the latest release on the official channel!
 
 # Editor Key Bindings
 
-Ctrl + B - To Start Build
-
-Ctrl + I - To Call Auto-Indent (Java Only)
-
-Ctrl + SHIFT + O - To Auto-Import (Java Only)
-
-Ctrl + SHIFT + F - To Toggle Find and Replace
-
-Ctrl + SHIFT + R - To Launch the Project
-
-Ctrl + SHIFT + I - To Implement/Override methods from super class
-
-Ctrl + SHIFT + G - To Create Getter/Setter(s)
-
-Ctrl + SHIFT + C - To Click Editor's Image
-
-Ctrl + SHIFT + L - To Launch Current File
+Page 12, Instruction Panel, Help Section.
 
 
 # Installing
@@ -100,7 +77,7 @@ If you want to get early access to optimizations and new features you can freely
 
 # Please Read -- For Java Projects Only
 
-After opening a project which was not created with Omega IDE don't forget to select the JDK from Preferences first else the tools may not work as expected.
+After opening a project which was not created with Omega IDE don't forget to select the JDK from Settings first else the tools may not work as expected.
 
 ![](/images/java-settings.png)
 
@@ -248,6 +225,7 @@ Omega IDE is not yet totally evolved which means it has no integrated support fo
 
 
 # Hope You Like It
+
 instagram @i_am_arham_92
 
 Want to Donate for the Project?
