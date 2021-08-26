@@ -93,7 +93,7 @@ public class Screen extends JFrame {
 	public Editor focussedEditor;
 	public static Launcher launcher;
 	public static SnippetView snippetView;
-	public static final String VERSION = "v2.0";
+	public static final String VERSION = "v2.1";
 	public static String PATH_SEPARATOR = ":";
 	public volatile boolean active = true;
 	public volatile boolean screenHasProjectView = true;
