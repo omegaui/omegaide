@@ -215,6 +215,7 @@ The **res** is the resource-root.
 
 Omega IDE is not yet totally evolved which means it has no integrated support for any version control system yet and bugs are likely to come.
 
+
 # Small Gallery
 
 ![](/images/g1.png)
