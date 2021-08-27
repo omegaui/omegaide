@@ -18,6 +18,7 @@
 
 package omega.utils.systems;
 import omega.utils.DataManager;
+import omega.popup.NotificationPopup;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import javax.tools.DiagnosticCollector;
@@ -52,6 +53,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 
 public class RunView extends View {
 	
@@ -498,6 +502,23 @@ public class RunView extends View {
 					return;
 				}
 
+				File fx = new File(".omega-ide", ".firstaccuracybuild");
+				if(!fx.exists()){
+					fx.createNewFile();
+					NotificationPopup.create(getScreen())
+					.size(530, 120)
+					.title("Instant Dynamic Compilation")
+					.dialogIcon(IconManager.fluentrocketbuildImage)
+					.message("Extremely Fast but Accuracy Mode rapidly increases Memory Footprint")
+					.shortMessage("Use it ony when creating artifacts", TOOLMENU_COLOR1)
+					.iconButton(IconManager.fluentinfoImage, ()->omega.utils.ToolMenu.instructionWindow.setVisible(true), "See Instructions For More Detail on Tools")
+					.build()
+					.locateOnBottomLeft()
+					.showIt();
+				}
+
+				fx = null;
+				
 				Screen.setStatus("Building Project -- Instant Build", 0);
 				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileFullProject();
 				if(diagnostics == null){

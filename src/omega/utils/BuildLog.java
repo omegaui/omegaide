@@ -1,47 +1,55 @@
 /**
-  * Java Error Logger
-  * Copyright (C) 2021 Omega UI
+* Java Error Logger
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.utils;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import omega.Screen;
-import omega.highlightUnit.ErrorHighlighter;
-import org.fife.ui.rtextarea.RTextArea;
-import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
-import omega.highlightUnit.Highlight;
+import javax.swing.text.DefaultHighlighter;
+
+import omega.Screen;
+
+import javax.sound.sampled.Line;
+
+import omega.highlightUnit.ErrorHighlighter;
+
+import java.io.File;
+
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.StringTokenizer;
-import java.util.Scanner;
-import java.util.LinkedList;
-import javax.swing.UIManager;
-import java.awt.Font;
-import omega.comp.TextComp;
-import java.io.File;
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import java.awt.BorderLayout;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import org.fife.ui.rtextarea.RTextArea;
+
+import omega.comp.TextComp;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JScrollPane;
+
+import omega.instant.support.java.JavaSyntaxParser;
+
 import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class BuildLog extends JPanel {
 	private LinkedList<TextComp> fileComps = new LinkedList<>();
 	private TextComp headComp;
@@ -89,7 +97,7 @@ public class BuildLog extends JPanel {
 			String line = tok.nextToken();
 			if(line.contains(".java:")){
 				if(!justStarted)
-					errors.add(new Error(filePath, lineN, error));
+					errors.add(new Error(JavaSyntaxParser.convertToProjectPath(filePath), lineN, error));
 				justStarted = false;
 				filePath = "";
 				if(File.separator.equals("\\"))
@@ -114,7 +122,7 @@ public class BuildLog extends JPanel {
 			}
 		}
 		if(!filePath.equals(""))
-			errors.add(new Error(filePath, lineN, error));
+			errors.add(new Error(JavaSyntaxParser.convertToProjectPath(filePath), lineN, error));
 		
 		if(errors.isEmpty())
 			return;
@@ -203,7 +211,7 @@ public class BuildLog extends JPanel {
 	@Override
 	public void paint(Graphics graphics){
 		if(fileComps.isEmpty()){
-               removeThem();
+			removeThem();
 			Graphics2D g = (Graphics2D)graphics;
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -216,19 +224,19 @@ public class BuildLog extends JPanel {
 			getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		}
 		else{
-               addThem();
+			addThem();
 			super.paint(graphics);
-               splitPane.setDividerLocation(maxW + 65);
+			splitPane.setDividerLocation(maxW + 65);
 		}
 	}
-     public void removeThem(){
-     	remove(headComp);
-          remove(splitPane);
-     }
-     public void addThem(){
-     	add(headComp, BorderLayout.NORTH);
-          add(splitPane, BorderLayout.CENTER);
-     }
+	public void removeThem(){
+		remove(headComp);
+		remove(splitPane);
+	}
+	public void addThem(){
+		add(headComp, BorderLayout.NORTH);
+		add(splitPane, BorderLayout.CENTER);
+	}
 	private class Error {
 		private String filePath;
 		private int line;

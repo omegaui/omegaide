@@ -93,6 +93,7 @@ public class UIManager extends DataBase {
      public static Color TOOLMENU_COLOR4 = new Color(200, 103, 0);
      public static Color TOOLMENU_COLOR4_SHADE = new Color(200, 103, 0, 40);
      public static Color TOOLMENU_GRADIENT = new Color(200, 200, 200, 100);
+     public static Color ALPHA = new Color(0, 0, 0, 0);
      
 	//Some Extra Colors of RGB shades
 	public static final Color color1 = new Color(255, 0, 0, 20);

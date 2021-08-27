@@ -598,10 +598,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
 			f = false;
+			ctrl = false;
+			shift = false;
 		}
 		if(ctrl && s){
 			saveCurrentFile();
 			s = false;
+			ctrl = false;
 		}
 		if(ctrl && d){
 			if(getSelectedText() == null || getSelectedText().equals("")){
@@ -616,6 +619,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				insert(text, getCaretPosition());
 			}
 			d = false;
+			ctrl = false;
 			e.consume();
 		}
 		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
@@ -624,10 +628,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			else
 				Screen.getBuildView().compileProject();
 			b = false;
+			ctrl = false;
 		}
 		if(ctrl && shift && c){
 			saveImage();
 			c = false;
+			ctrl = false;
+			shift = false;
 		}
 		if(code == KeyEvent.VK_TAB){
 			String codeX = getText();
@@ -665,21 +672,28 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
 				ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
 				o = false;
+				ctrl = false;
+				shift = false;
 			}
 			
 			if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
 				Generator.gsView.genView(this);
 				g = false;
+				ctrl = false;
+				shift = false;
 			}
 			
 			if(ctrl && !shift && i && currentFile.getName().endsWith(".java")) {
 				IndentationFramework.indent(this);
 				i = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && shift && i && currentFile.getName().endsWith(".java")) {
 				Generator.overView.genView(this);
 				i = false;
+				ctrl = false;
+				shift = false;
 			}
 			
 			if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
@@ -688,16 +702,22 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				else
 					Screen.getRunView().run();
 				r = false;
+				ctrl = false;
+				shift = false;
 			}
 			
 			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
 				Screen.getRunView().instantRun();
 				f1 = false;
+				ctrl = false;
+				shift = false;
 			}
 			
 			if(ctrl && shift && l){
 				ToolMenu.processWizard.launch(currentFile);
 				l = false;
+				ctrl = false;
+				shift = false;
 			}
 			
 			if(contentWindow.isVisible()) {

@@ -253,7 +253,7 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Ctrl + SHIFT + F1 - Run Project(Dynamic)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 190);
 			
 			g.drawString("Ctrl + B - Build Project", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 220);
-			g.drawString("Ctrl + S - Auto Imports", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 240);
+			g.drawString("Ctrl + S - Save File", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 240);
 			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 260);
 			g.drawString("Ctrl + D - Duplicate Current Line or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 280);
 		});
