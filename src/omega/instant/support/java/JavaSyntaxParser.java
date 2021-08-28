@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.java;
+import omega.popup.NotificationPopup;
+
 import java.util.Scanner;
 import java.util.zip.ZipFile;
 import java.awt.Dimension;
@@ -90,11 +92,8 @@ public class JavaSyntaxParser {
 			parsing = true;
 			DiagnosticCollector<JavaFileObject> diagnostics = compile();
 			parsing = false;
-			
-			highlights.forEach(h -> h.remove());
-			highlights.clear();
-			
-			gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
+
+			resetHighlights();
 			
 			if(diagnostics == null || diagnostics.getDiagnostics() == null)
 				return;
@@ -318,6 +317,17 @@ public class JavaSyntaxParser {
 				depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
 			}
 			else{
+				NotificationPopup.create(Screen.getScreen())
+				.size(400, 120)
+				.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
+				.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
+				.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
+				.dialogIcon(IconManager.fluenterrorImage)
+				.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
+				
 				Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
 			}
 			
@@ -374,5 +384,12 @@ public class JavaSyntaxParser {
 		String path = Screen.getFileView().getProjectPath();
 		buildSpacePath = buildSpacePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + (Screen.onWindows() ? 1 : 0));
 		return path + buildSpacePath;
+	}
+
+	public static void resetHighlights(){
+		highlights.forEach(h -> h.remove());
+		highlights.clear();
+		
+		gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
 	}
 }

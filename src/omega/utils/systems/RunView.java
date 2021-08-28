@@ -584,14 +584,34 @@ public class RunView extends View {
 				
 				if(diagnostics == null){
 					if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
-						Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);
+						NotificationPopup.create(Screen.getScreen())
+						.size(400, 120)
+						.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
+						.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
+						.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
+						.dialogIcon(IconManager.fluenterrorImage)
+						.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
+						.build()
+						.locateOnBottomLeft()
+						.showIt();
+						
+						Screen.setStatus("", 100);
 						return;
 					}
 					else{
 						justRun();
-						Screen.setStatus("Nothing to Build, Launching Project -- Instant Run", 0);
+						NotificationPopup.create(Screen.getScreen())
+						.size(350, 120)
+						.title("Instant Dynamic Compiler", TOOLMENU_COLOR3)
+						.message("No Editor Present in the current session", TOOLMENU_COLOR4)
+						.shortMessage("Proceeding Without Build")
+						.dialogIcon(IconManager.fluentwarningImage)
+						.build()
+						.locateOnBottomLeft()
+						.showIt();
 					}
 					System.gc();
+					Screen.setStatus("", 100);
 					return;
 				}
 				

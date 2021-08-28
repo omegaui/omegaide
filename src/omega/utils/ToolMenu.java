@@ -47,9 +47,11 @@ import omega.instant.support.universal.UniversalProjectWizard;
 import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.universal.ProcessWizard;
 import omega.instant.support.java.ProjectWizard;
+import omega.instant.support.java.JavaSyntaxParser;
 import omega.comp.TextComp;
 import omega.popup.OPopupItem;
 import omega.popup.OPopupWindow;
+import omega.popup.NotificationPopup;
 import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
 import static omega.utils.IconManager.*;
@@ -679,7 +681,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
 			consoleSelector.setVisible(true);
 		})
-		.createItem("Set Gradle Script", IconManager.fluentbuildImage, ()->{
+		.createItem("Set Gradle Script", IconManager.fluentgradleImage, ()->{
 			gradleBuildScriptManager.setVisible(true);
 		});
 		
@@ -690,6 +692,38 @@ public class ToolMenu extends JPanel {
 			omega.Screen.getScreen().manageTools(omega.Screen.getFileView().getProjectManager());
 			omega.Screen.getFileView().getProjectManager().save();
 			typeItem.setToolTipText("Please Relaunch the IDE");
+			NotificationPopup.create(screen)
+			.title("Project Management")
+			.dialogIcon(IconManager.fluentfolderImage)
+			.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+			.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
+			.iconButton(IconManager.fluentcloseImage, ()->{
+				Screen.notify("Terminating Running Applications");
+				try{
+					for(Process p : Screen.getRunView().runningApps) {
+						if(p.isAlive())
+							p.destroyForcibly();
+					}
+			     }
+			     catch(Exception e2) {
+	               
+		          }
+				Screen.notify("Saving UI and Data");
+				screen.getUIManager().save();
+				screen.getDataManager().saveData();
+				Screen.notify("Saving Project");
+				screen.saveAllEditors();
+		          try{
+		               Screen.getFileView().getProjectManager().save();
+		          }
+		          catch(Exception e2) {
+	               
+	               }
+				System.exit(0);
+			}, "You need to start the IDE again manually!")
+			.build()
+			.locateOnBottomLeft()
+			.showIt();
 		});
 
 		SDKSelector sdkSelector = new SDKSelector(screen);
@@ -732,6 +766,9 @@ public class ToolMenu extends JPanel {
 		parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + DataManager.isParsingEnabled(), IconManager.fluentsourceImage, ()->{
 			DataManager.setParsingEnabled(!DataManager.isParsingEnabled());
 			parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
+			if(!DataManager.isParsingEnabled()){
+				JavaSyntaxParser.resetHighlights();
+			}
 		});
 		
 		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{

@@ -13,7 +13,6 @@ import java.awt.Color;
 import javax.swing.JInternalFrame;
 import javax.swing.JDialog;
 
-import static java.awt.Window.Type.*;
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class NotificationPopup extends JDialog{
@@ -39,7 +38,7 @@ public class NotificationPopup extends JDialog{
 		setLayout(null);
 		setBackground(back2);
 		setSize(MINIMUM_SIZE);
-		setType(UTILITY);
+		setType(Type.UTILITY);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		init();

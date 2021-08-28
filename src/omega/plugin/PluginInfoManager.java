@@ -17,9 +17,15 @@
 */
 
 package omega.plugin;
-import java.util.*;
-import java.net.*;
-import java.io.*;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+import java.net.URLClassLoader;
+import java.net.URL;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.InputStream;
 public class PluginInfoManager {
      public static void write(){
           File dir = new File("/home/arham/omega-ide-plugins");
