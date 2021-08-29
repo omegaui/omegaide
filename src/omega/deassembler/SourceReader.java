@@ -776,6 +776,21 @@ public class SourceReader {
 		return members;
 	}
 
+	public boolean isSubClass(String className){
+		boolean value = false;
+		String path = getPackage(parent);
+		if(path == null)
+			return false;
+		if(!path.equals("java.lang.Object")){
+			if(CodeFramework.isSource(path))
+				value = new SourceReader(CodeFramework.getContent(path)).isSubClass(className);
+			else{
+				value = Screen.getFileView().getJDKManager().prepareReader(path).isSubClass(className);
+			}
+		}
+		return isInternalReader(className) || value;
+	}
+
 	@Override
 	public String toString(){
 		String f = "";

@@ -135,6 +135,31 @@ public class ByteReader {
 		});
 		return members;
 	}
+	
+	public boolean isInternalReader(String className) {
+		for(ByteReader r : internalReaders) {
+			String name = r.className.contains("$") ? r.className.substring(r.className.lastIndexOf('$') + 1) : r.className;
+			if(name.equals(className))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isSubClass(String className){
+		boolean value = false;
+		
+		Class superClass = c.getSuperclass();
+		
+		String name = superClass.getName();
+		if(name.contains(" "))
+			name = name.substring(name.indexOf(' ') + 1);
+		
+		if(!name.equals("java.lang.Object"))
+			value = Screen.getFileView().getJDKManager().prepareReader(name).isSubClass(className);
+		
+		return isInternalReader(className) || value;
+	}
+	
 	@Override
 	public String toString(){
 		return "[type - " + type + ", name - " + className + ", modifier - " + modifier + ", access - " + access + "]";

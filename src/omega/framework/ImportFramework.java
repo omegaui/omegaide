@@ -109,20 +109,19 @@ public class ImportFramework {
 			PACK = text.substring(text.lastIndexOf(" ") + 1, text.lastIndexOf(';'));
 		}
 		LinkedList<String> unimported = new LinkedList<>();
+		SourceReader reader = new SourceReader(editor.getText());
 		
-		//Removing Java Lang Classess
-		for(String classX : classes) {
-			boolean found = false;
-			for(Import xm : JDKManager.javaLangPack) {
-				String className = xm.getClassName();
-				if(className.equals(classX)) {
-					found = true;
-					break;
+		//Removing Java Lang Classess & SubClasses
+		main:
+			for(String classX : classes) {
+				for(Import xm : JDKManager.javaLangPack) {
+					if(xm.getClassName().equals(classX))
+						continue main;
 				}
-			}
-			if(!found)
+				if(reader.isSubClass(classX))
+					continue main;
 				unimported.add(classX);
-		}
+			}
 		classes.clear();
 		//Managing Classess with Same Name but different Package
 		LinkedList<LinkedList<String>> coexistingClassess = new LinkedList<>();

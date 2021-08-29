@@ -33,14 +33,18 @@ import omega.utils.UIManager;
 import omega.Screen;
 import omega.comp.TextComp;
 import omega.utils.Editor;
+
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+
 import java.awt.event.MouseListener;
+
 import java.io.File;
 import java.io.PrintWriter;
+
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -347,6 +351,19 @@ public class RunView extends View {
 		new Thread(()->{
 			String mainClass = this.mainClass;
 			String mainClassPath = this.mainClassPath;
+
+			if(!Screen.isNotNull(mainClass)){
+				NotificationPopup.create(getScreen())
+				.size(500, 120)
+				.title("Project Management")
+				.message("No Main-Class Specified, Cancelling Run Operation", TOOLMENU_COLOR2)
+				.shortMessage("Click Editor's Tab Icon to Mark a class as Main-Class", TOOLMENU_COLOR1)
+				.dialogIcon(IconManager.fluentfolderImage)
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
+				return;
+			}
 			try {
 				Screen.setStatus("Running Project", 23);
 				
@@ -673,6 +690,20 @@ public class RunView extends View {
 		new Thread(()->{
 			String mainClass = this.mainClass;
 			String mainClassPath = this.mainClassPath;
+
+			if(!Screen.isNotNull(mainClass)){
+				NotificationPopup.create(getScreen())
+				.size(500, 120)
+				.title("Project Management")
+				.message("No Main-Class Specified, Cancelling Run Operation", TOOLMENU_COLOR2)
+				.shortMessage("Click Editor's Tab Icon to Mark a class as Main-Class", TOOLMENU_COLOR1)
+				.dialogIcon(IconManager.fluentfolderImage)
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
+				return;
+			}
+			
 			try {
 				try {
 					if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
