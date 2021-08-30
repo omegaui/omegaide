@@ -527,7 +527,7 @@ public class RunView extends View {
 					.title("Instant Dynamic Compilation")
 					.dialogIcon(IconManager.fluentrocketbuildImage)
 					.message("Extremely Fast but Accuracy Mode rapidly increases Memory Footprint")
-					.shortMessage("Use it ony when creating artifacts", TOOLMENU_COLOR1)
+					.shortMessage("Use it only when creating artifacts", TOOLMENU_COLOR1)
 					.iconButton(IconManager.fluentinfoImage, ()->omega.utils.ToolMenu.instructionWindow.setVisible(true), "See Instructions For More Detail on Tools")
 					.build()
 					.locateOnBottomLeft()

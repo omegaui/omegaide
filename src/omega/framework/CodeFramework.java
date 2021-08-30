@@ -17,19 +17,25 @@
 */
 
 package omega.framework;
-import omega.jdk.Import;
-import omega.jdk.JDKManager;
 import omega.Screen;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.util.StringTokenizer;
-import java.io.File;
-import omega.deassembler.DataBlock;
-import omega.deassembler.SourceReader;
-import omega.deassembler.ByteReader;
-import omega.deassembler.DataMember;
-import java.util.LinkedList;
+
 import omega.utils.Editor;
+
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import omega.jdk.JDKManager;
+import omega.jdk.Import;
+
+import omega.deassembler.DataMember;
+import omega.deassembler.ByteReader;
+import omega.deassembler.SourceReader;
+import omega.deassembler.DataBlock;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
 import static omega.deassembler.Assembly.*;
 public class CodeFramework{
 	private static String text;
