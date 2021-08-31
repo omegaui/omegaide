@@ -91,16 +91,19 @@ public class PluginComp extends JComponent{
 		imageComp.setClickable(false);
 		imageComp.setBounds(0, 0, 100, 100);
 		add(imageComp);
+		
 		nameComp = new TextComp(plugin.getName(), plugin.getDescription(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
 		nameComp.setBounds(110, 10, 200, 30);
 		nameComp.setFont(PX14);
 		nameComp.setClickable(false);
 		add(nameComp);
+		
 		versionComp = new TextComp(plugin.getVersion(), TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
 		versionComp.setBounds(320, 10, 50, 30);
 		versionComp.setFont(PX14);
 		versionComp.setClickable(false);
 		add(versionComp);
+		
 		sizeComp = new TextComp(switch(plugin.getSize()){
 			case "-1" -> "Needs Restart : " + plugin.needsRestart();
 			default -> plugin.getSize();
@@ -112,11 +115,13 @@ public class PluginComp extends JComponent{
 		sizeComp.setFont(PX14);
 		sizeComp.setClickable(false);
 		add(sizeComp);
+		
 		authorComp = new TextComp("Author : " + plugin.getAuthor(), plugin.getCopyright(), TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR4, null);
 		authorComp.setBounds(110, 50, 150, 30);
 		authorComp.setFont(PX14);
 		authorComp.setClickable(false);
 		add(authorComp);
+		
 		installComp = new TextComp(inStore ? "Install" : "Uninstall", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			String fileName = plug.fileName;
 			int res = ChoiceDialog.makeChoice("Do you want to uninstall " + plugin.getName() + "? This Operation requires IDE restart!", "Yes", "No");
@@ -126,6 +131,7 @@ public class PluginComp extends JComponent{
 		installComp.setBounds(780 - 110, 100/2 - 15, 100, 30);
 		installComp.setFont(PX14);
 		add(installComp);
+		
 		enableComp = new TextComp(plug.enabled ? "Disable" : "Enable", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			plug.enabled = !plug.enabled;
 			if(plug.enabled){
@@ -158,22 +164,26 @@ public class PluginComp extends JComponent{
 		imageComp.setClickable(false);
 		imageComp.setBounds(0, 0, 100, 100);
 		add(imageComp);
+		
 		nameComp = new TextComp(plugInfo.name, plugInfo.desc, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
 		nameComp.setBounds(110, 10, 200, 30);
 		nameComp.setFont(PX14);
 		nameComp.setClickable(false);
 		add(nameComp);
+		
 		versionComp = new TextComp(plugInfo.version, TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
 		versionComp.setBounds(320, 10, 50, 30);
 		versionComp.setFont(PX14);
 		versionComp.setClickable(false);
 		add(versionComp);
+		
 		sizeComp = new TextComp(plugInfo.size, TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
 		sizeComp.setBounds(380, 10, 80, 30);
 		sizeComp.setFont(PX14);
 		sizeComp.setClickable(false);
 		sizeComp.setVisible(!plugInfo.size.equals("-1"));
 		add(sizeComp);
+		
 		authorComp = new TextComp("Author : " + plugInfo.author, plugInfo.copyright, TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR4, null);
 		authorComp.setBounds(110, 50, 150, 30);
 		authorComp.setFont(PX14);
