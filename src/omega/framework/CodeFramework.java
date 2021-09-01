@@ -1016,9 +1016,29 @@ public class CodeFramework{
           text = text.trim();
           //Checking whether <text> is frame-able or not
           if(count(text, '(') > count(text, ')')){
-               text = text.substring(text.lastIndexOf('(') + 1).trim();
-               if(text.contains(","))
-                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+          	int openParenthesisCount = count(text, '(');
+			int closeParenthesisCount = count(text, ')');
+			if(closeParenthesisCount < openParenthesisCount && closeParenthesisCount != 0){
+				int extraParenthesis = openParenthesisCount - closeParenthesisCount;
+				int index = text.indexOf('(');
+				if(extraParenthesis > 1){
+					index = 0;
+					while(extraParenthesis-- > 0){
+						index = text.indexOf("(", index + 1);
+					}
+				}
+				else {
+					while(--extraParenthesis > 0){
+						index = text.indexOf("(", index + 1);
+					}
+				}
+				text = text.substring(index + 1);
+			}
+			else {
+	               text = text.substring(text.lastIndexOf('(') + 1).trim();
+	               if(text.contains(","))
+	                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+			}
           }
           if(text.contains("="))
                text = text.substring(text.lastIndexOf('=') + 1).trim();
@@ -1042,7 +1062,7 @@ public class CodeFramework{
                text = null;
           return text;
      }
-    public static String getCodeDoNotEliminateDot(String text, int caret){
+    	public static String getCodeDoNotEliminateDot(String text, int caret){
           text = text.substring(0, caret);
           if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
           if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);

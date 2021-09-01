@@ -186,6 +186,7 @@ public class Screen extends JFrame {
 		}
 		
 		setTitle("Omega Integrated Development Environment " + VERSION);
+		setResizable(false);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
 		setLocationRelativeTo(null);
