@@ -366,7 +366,7 @@ public class ImportFramework {
 			}
 		}
 		else{
-			startChar = "\n";
+			startChar = "";
 			endChar = "\n";
 		}
 		//Releasing MX-Bean-Memory
