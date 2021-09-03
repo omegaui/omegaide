@@ -17,6 +17,8 @@
 */
 
 package omega.plugin;
+import java.awt.geom.RoundRectangle2D;
+
 import java.util.*;
 import omega.*;
 import javax.imageio.*;
@@ -50,10 +52,12 @@ public class PluginCenter extends JDialog{
 	public PluginCenter(Screen screen){
 		super(screen, true);
 		setTitle("Plugin Center");
+		setResizable(false);
 		setIconImage(screen.getIconImage());
 		setUndecorated(true);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
 		setBackground(c2);
 		
 		JPanel panel = new JPanel(null);
@@ -65,7 +69,7 @@ public class PluginCenter extends JDialog{
 	public void init(){
 		installer = new Installer(this);
 		
-		titleComp = new TextComp("Plugin Center", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
+		titleComp = new TextComp("Plugin Center", TOOLMENU_COLOR3, c2, c2, null);
 		titleComp.setBounds(0, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX16);
 		titleComp.setClickable(false);
@@ -95,6 +99,7 @@ public class PluginCenter extends JDialog{
 		updateComp.setBounds(getWidth() - 100, 40, 90, 25);
 		updateComp.setFont(PX14);
 		add(updateComp);
+
 		
 		manageComp = new TextComp("Manage", "Manage Installed Plugins", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::setManageView){
 			@Override

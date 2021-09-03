@@ -116,7 +116,8 @@ public class Terminal extends JPanel {
 	}
 
 	public void exit(){
-		shellProcess.destroyForcibly();
+		if(shellProcess != null)
+			shellProcess.destroyForcibly();
 	}
 
 	public org.fife.ui.rsyntaxtextarea.RSyntaxTextArea getOutputArea() {

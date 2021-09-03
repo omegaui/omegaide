@@ -17,28 +17,39 @@
 */
 
 package omega.startup;
-import com.formdev.flatlaf.FlatLightLaf;
+import java.util.Scanner;
+
+import omega.Screen;
+
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import omega.utils.DataManager;
 import omega.utils.UIManager;
-import omega.Screen;
+
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 import omega.comp.TextComp;
-import java.util.Scanner;
+
+import java.awt.image.BufferedImage;
+
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.io.File;
-import javax.imageio.ImageIO;
-import org.fife.ui.rtextarea.RTextArea;
-import java.awt.image.BufferedImage;
-import javax.swing.JDialog;
+
+import java.awt.geom.RoundRectangle2D;
+
+import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import static omega.utils.UIManager.*;
 public class Startup extends JDialog {
 	private static BufferedImage image;
 	private TextComp closeBtn;
-	private RTextArea textArea;
+	private RSyntaxTextArea textArea;
 	private TextComp acceptComp;
 	private static String LICENSE_TEXT = "";
 	public Startup(Screen screen){
@@ -50,12 +61,14 @@ public class Startup extends JDialog {
 				LICENSE_TEXT += reader.nextLine() + "\n";
 			}
 			reader.close();
+			LICENSE_TEXT += "\n**Copyright 2021 Omega UI. All Right Reserved.**\n";
 		}
 		catch(Exception e){
 		     e.printStackTrace();
 	     }
 		setUndecorated(true);
-		setSize(800, 550);
+		setSize(650, 550);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
 		JPanel panel = new JPanel(null);
 		panel.setBackground(c2);
 		setContentPane(panel);
@@ -73,15 +86,16 @@ public class Startup extends JDialog {
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
       
-		JScrollPane scrollPane = new JScrollPane(textArea = new RTextArea(LICENSE_TEXT));
+		JScrollPane scrollPane = new JScrollPane(textArea = new RSyntaxTextArea(LICENSE_TEXT));
 		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
 		scrollPane.setBackground(c2);
 		
 		textArea.setBackground(c2);
 		textArea.setForeground(TOOLMENU_COLOR3);
-		textArea.setFont(PX18);
+		textArea.setFont(PX14);
 		textArea.setCaretPosition(0);
 		textArea.setEditable(false);
+		MarkdownTokenMaker.apply(textArea);
 		add(scrollPane);
 		
 		acceptComp = new TextComp("I Accept", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{

@@ -1034,10 +1034,26 @@ public class CodeFramework{
 				}
 				text = text.substring(index + 1);
 			}
-			else {
-	               text = text.substring(text.lastIndexOf('(') + 1).trim();
-	               if(text.contains(","))
-	                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+			if(text.contains(",")){
+				String mockText = text.substring(text.lastIndexOf(',') + 1);
+				openParenthesisCount = count(mockText, '(');
+				closeParenthesisCount = count(mockText, ')');
+				if(closeParenthesisCount == openParenthesisCount) {
+		               if(text.contains(","))
+		                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+				}
+			}
+			else if(text.contains("(")){
+	          	openParenthesisCount = count(text, '(');
+				closeParenthesisCount = count(text, ')');
+                    int extraParenthesis = openParenthesisCount - closeParenthesisCount;
+				int index = -1;
+				if(extraParenthesis >= 1){
+					while(extraParenthesis-- > 0){
+						index = text.indexOf("(", index + 1);
+					}
+				}
+				text = text.substring(index + 1);
 			}
           }
           if(text.contains("="))

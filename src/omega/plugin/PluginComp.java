@@ -56,7 +56,7 @@ public class PluginComp extends JComponent{
 	public PluginComp(PluginCenter pluginCenter, BufferedImage image, Plugin plugin, Plug plug){
 		this.pluginCenter = pluginCenter;
 		this.plug = plug;
-		this.image = (image == null) ? IDE_IMAGE : image;
+		this.image = ((image == null) ? IDE_IMAGE : image);
 		this.plugin = plugin;
 		this.inStore = false;
 		setLayout(null);
@@ -75,15 +75,15 @@ public class PluginComp extends JComponent{
 		imageComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null){
 			@Override
 			public void draw(Graphics2D g){
-				if(image != null){
+				if(PluginComp.this.image != null){
 					g.setColor(color2);
-                         if(image.getWidth() < 90){
-     					g.fillRoundRect(100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), 40, 40);
-     					g.drawImage(image, 100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), null);
+                         if(PluginComp.this.image.getWidth() < 90){
+     					g.fillRoundRect(100/2 - PluginComp.this.image.getWidth()/2, 100/2 - PluginComp.this.image.getHeight()/2, PluginComp.this.image.getWidth(), PluginComp.this.image.getHeight(), 20, 20);
+     					g.drawImage(PluginComp.this.image, 100/2 - PluginComp.this.image.getWidth()/2, 100/2 - PluginComp.this.image.getHeight()/2, PluginComp.this.image.getWidth(), PluginComp.this.image.getHeight(), null);
                          }
                          else {
-                              g.fillRoundRect(100/2 - 64/2, 100/2 - 64/2, 64, 64, 40, 40);
-                              g.drawImage(image, 100/2 - 64/2, 100/2 - 64/2, 64, 64, null);
+                              g.fillRoundRect(100/2 - 64/2, 100/2 - 64/2, 64, 64, 20, 20);
+                              g.drawImage(PluginComp.this.image, 100/2 - 64/2, 100/2 - 64/2, 64, 64, null);
                          }
 				}
 			}
@@ -154,10 +154,10 @@ public class PluginComp extends JComponent{
 		imageComp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null){
 			@Override
 			public void draw(Graphics2D g){
-				if(image != null){
+				if(PluginComp.this.image != null){
 					g.setColor(color2);
-					g.fillRoundRect(100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), 40, 40);
-					g.drawImage(image, 100/2 - image.getWidth()/2, 100/2 - image.getHeight()/2, image.getWidth(), image.getHeight(), null);
+					g.fillRoundRect(100/2 - PluginComp.this.image.getWidth()/2, 100/2 - PluginComp.this.image.getHeight()/2, PluginComp.this.image.getWidth(), PluginComp.this.image.getHeight(), 20, 20);
+					g.drawImage(PluginComp.this.image, 100/2 - PluginComp.this.image.getWidth()/2, 100/2 - PluginComp.this.image.getHeight()/2, PluginComp.this.image.getWidth(), PluginComp.this.image.getHeight(), null);
 				}
 			}
 		};
