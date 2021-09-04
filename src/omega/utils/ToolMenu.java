@@ -854,6 +854,44 @@ public class ToolMenu extends JPanel {
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
 		.createItem("Save All Editors", IconManager.fileImage, ()->screen.saveAllEditors())
+		.createItem("Restart", IconManager.fluentcloseImage, ()->{
+			
+			Screen.notify("Terminating Running Applications");
+			try{
+				for(Process p : Screen.getRunView().runningApps) {
+					if(p.isAlive())
+						p.destroyForcibly();
+				}
+		     }
+		     catch(Exception e2) {
+               
+	          }
+			Screen.notify("Saving UI and Data");
+			screen.getUIManager().save();
+			screen.getDataManager().saveData();
+			Screen.notify("Saving Project");
+			screen.saveAllEditors();
+	          try{
+	               Screen.getFileView().getProjectManager().save();
+	          }
+	          catch(Exception e2) {
+               
+               }
+
+               new Thread(()->{
+               	try{
+               		if(Screen.onWindows())
+               			new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
+          			else
+          				new ProcessBuilder("omega-ide").start();
+               	}
+               	catch(Exception e){
+               		e.printStackTrace();
+               	}
+          	}).start();
+          	
+               screen.dispose();
+		})
 		.createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage,
 		()->{
 			Screen.notify("Saving UI and Data");
@@ -882,9 +920,10 @@ public class ToolMenu extends JPanel {
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			try{
-          		Screen.getFileView().getProjectManager().save();}catch(Exception e2) {}
-          			System.exit(0);
-          		})
+          		Screen.getFileView().getProjectManager().save();
+     		}catch(Exception e2) {}
+			System.exit(0);
+		})
 		.createItem("Exit", IconManager.closeImage,
 		()->{
 			Screen.notify("Terminating Running Applications");

@@ -569,7 +569,7 @@ public class FileSelectionDialog extends JDialog{
           }).start();
      }
 
-     public BufferedImage getPreferredImage(File file){
+     public static BufferedImage getPreferredImage(File file){
           if(file.isDirectory()){
                File[] files = file.listFiles();
 			if(files != null && files.length != 0){

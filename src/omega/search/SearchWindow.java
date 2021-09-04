@@ -17,6 +17,8 @@
 */
 
 package omega.search;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.tree.*;
 import java.awt.Color;
 import omega.comp.NoCaretField;
@@ -48,32 +50,39 @@ import javax.swing.JTextField;
 
 import static omega.utils.UIManager.*;
 public class SearchWindow extends JDialog{
-	private JPanel panel;
-	private JScrollPane scrollPane;
-	private LinkedList<File> files;
-	private int blocks = -40;
-	private NoCaretField field;
-	private LinkedList<Door> doors;
-	private int pointer;
-     private BufferedImage textImage;
-     private BufferedImage imageImage;
-     private BufferedImage allImage;
 	private Screen screen;
-
+	
+	private JPanel panel;
+	
+	private JScrollPane scrollPane;
+	
+	private NoCaretField field;
+	
+	private LinkedList<File> files;
+	
+	private int blocks = -50;
+	
+	private LinkedList<SearchComp> searchComps;
+	
+	private int pointer;
      private int pressX;
      private int pressY;
      
 	public SearchWindow(Screen f){
 		super(f, false);
+		
 		this.screen = f;
+          
           files = new LinkedList<>();
-          doors = new LinkedList<>();
+          searchComps = new LinkedList<>();
+          
           setLayout(null);
           setUndecorated(true);
 		setTitle("Search Files across the Project");
 		setIconImage(f.getIconImage());
-		setSize(500, 300);
+		setSize(400, 400);
 		setLocationRelativeTo(null);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 10, 10));
           setResizable(false);
           
 		scrollPane = new JScrollPane(panel = new JPanel(null));
@@ -114,26 +123,25 @@ public class SearchWindow extends JDialog{
           reloadComp.setFont(PX14);
           add(reloadComp);
 
-          field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, back2, TOOLMENU_COLOR3);
+          field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           field.setBounds(0, 30, getWidth(), 30);
           field.setFont(PX16);
 		field.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(!doors.isEmpty()) {
+				if(!searchComps.isEmpty()) {
 					if(e.getKeyCode() == KeyEvent.VK_UP && pointer > 0) {
-						doors.get(pointer).set(false);
-						doors.get(--pointer).set(true);
-						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 40);
+						searchComps.get(pointer).set(false);
+						searchComps.get(--pointer).set(true);
+						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 50);
 					}
-					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1< doors.size()) {
-						doors.get(pointer).set(false);
-						doors.get(++pointer).set(true);
-						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 40);
+					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1< searchComps.size()) {
+						searchComps.get(pointer).set(false);
+						searchComps.get(++pointer).set(true);
+						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 50);
 					}
 					else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						setVisible(false);
-						screen.loadFile(new File(doors.get(pointer).getPath()));
+						searchComps.get(pointer).mousePressed(null);
 					}
 				}
 			}
@@ -147,47 +155,33 @@ public class SearchWindow extends JDialog{
           addKeyListener(field);
           
 		omega.utils.UIManager.setData(panel);
-		panel.setBackground(back2);
-          
-          //Creating File Image of size 32, 32 here
-          textImage = IconManager.fluentfileImage;
-          imageImage = IconManager.fluentimagefileImage;
-          allImage = IconManager.fluentanyfileImage;
+		panel.setBackground(c2);
 	}
 
 	public void list(String text){
-		doors.forEach(panel::remove);
-		doors.clear();
-		blocks = -40;
+		searchComps.forEach(panel::remove);
+		searchComps.clear();
+		blocks = -50;
 		files.forEach(file->{
 			if(file.getName().contains(text)){
                     String ext = file.getName();
                     if(ext.contains("."))
                          ext = ext.substring(ext.lastIndexOf('.'));
-				Door door = new Door(file.getAbsolutePath(), getPreferredImage(file), ()->{
-					setVisible(false);
-					screen.loadFile(file);
-				});
-				door.setBounds(0, blocks += 40, getWidth(), 40);
-                    door.setToolTipText(file.getAbsolutePath());
-                    door.setBackground(back2);
-                    door.setForeground(switch(ext){
-                         case ".txt", ".groovy", ".kt", ".java", ".xml", "properties", ".rs", ".py", ".js", ".html", ".sh", ".c", ".cpp" -> TOOLMENU_COLOR2;
-                         case ".png", ".jpg", ".bmp", ".jpeg" -> TOOLMENU_COLOR3;
-                         default -> TOOLMENU_COLOR1;
-                    });
-				panel.add(door);
-				doors.add(door);
+				SearchComp comp = new SearchComp(this, file);
+				comp.setBounds(0, blocks += 50, getWidth(), 50);
+				comp.initUI();
+				panel.add(comp);
+				searchComps.add(comp);
 			}
 		});
-		panel.setPreferredSize(new Dimension(getWidth(), blocks));
+		panel.setPreferredSize(new Dimension(getWidth(), blocks + 50));
 		scrollPane.repaint();
 		scrollPane.getVerticalScrollBar().setVisible(true);
 		scrollPane.getVerticalScrollBar().setValue(0);
 		scrollPane.getVerticalScrollBar().repaint();
 		repaint();
-		if(!doors.isEmpty()) {
-			doors.get(pointer = 0).set(true);
+		if(!searchComps.isEmpty()) {
+			searchComps.get(pointer = 0).set(true);
 		}
 		doLayout();
 	}
