@@ -134,7 +134,7 @@ public class TabComp extends JComponent {
 		comp.setPreferredSize(new Dimension(width, 28));
 		areas.add(comp);
 		
-		putPostAnimationLayer(comp, getLineAnimationLayer(1), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(comp, getLineAnimationLayer(1), ACTION_MOUSE_ENTERED);
 		
 		String baseName = getBaseName(name);
           TextComp iconButton = null;

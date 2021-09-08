@@ -576,11 +576,11 @@ public class ToolMenu extends JPanel {
           
 		reshapeComp();
 
-		putPostAnimationLayer(openProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putPostAnimationLayer(openFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putPostAnimationLayer(newProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putPostAnimationLayer(newFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putPostAnimationLayer(shellComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(shellComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
 	}
      
 	public void minimize(){

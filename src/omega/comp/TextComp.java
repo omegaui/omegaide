@@ -67,9 +67,6 @@ public class TextComp extends JComponent{
 	public float[] fractions = {0.0f, 0.5f, 1f};
 	
 	public Color[] gradientColors;
-
-	public AnimationLayer preAnimationLayer;
-	public AnimationLayer postAnimationLayer;
 	
 	public TextComp(String text, Color color1, Color color2, Color color3, Runnable runnable){
 		this.dir = text;
@@ -134,10 +131,12 @@ public class TextComp extends JComponent{
 			h = image.getHeight();
 		}
 	}
+	
 	public TextComp(String text, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
 		this(text, color1, color2, color3, runnable);
 		setToolTipText(toolTip);
 	}
+	
 	public TextComp(BufferedImage image, int width, int height, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
 		this("", toolTip, color1, color2, color3, runnable);
 		this.image = image;
@@ -148,6 +147,7 @@ public class TextComp extends JComponent{
 			h = image.getHeight();
 		}
 	}
+	
 	public void setColors(Color c1, Color c2, Color c3){
 		color1 = c1;
 		color2 = c2;
@@ -262,22 +262,6 @@ public class TextComp extends JComponent{
 	public Color[] getLinearGradientColors(){
 		return gradientColors;
 	}
-
-	public omega.comp.AnimationLayer getPreAnimationLayer() {
-		return preAnimationLayer;
-	}
-	
-	public void setPreAnimationLayer(omega.comp.AnimationLayer preAnimationLayer) {
-		this.preAnimationLayer = preAnimationLayer;
-	}
-	
-	public omega.comp.AnimationLayer getPostAnimationLayer() {
-		return postAnimationLayer;
-	}
-	
-	public void setPostAnimationLayer(omega.comp.AnimationLayer postAnimationLayer) {
-		this.postAnimationLayer = postAnimationLayer;
-	}
 	
 	public void setArcVisible(boolean arc1, boolean arc2, boolean arc3, boolean arc4){
 		topLeftArcVisible = arc1;
@@ -303,9 +287,6 @@ public class TextComp extends JComponent{
 		textWidth = g.getFontMetrics().stringWidth(dir);
 		textHeight = g.getFontMetrics().getHeight();
 		
-		if(preAnimationLayer != null)
-			preAnimationLayer.animate(this);
-		
 		if(isPaintGradientEnabled()){
 			if(gradientMode == GRADIENT_MODE_DEFAULT)
 				g.setPaint(new GradientPaint(0, 0, color2, getWidth(), getHeight(), colorG));
@@ -327,12 +308,10 @@ public class TextComp extends JComponent{
 		
 		super.paint(graphics);
 		
-		if(postAnimationLayer != null)
-			postAnimationLayer.animate(this);
-		
 		g.dispose();
 		graphics.dispose();
 	}
+	
 	public void draw(Graphics2D g, int x, int y){
 		g.setColor(color3);
 		if(x < alignX){
@@ -348,6 +327,7 @@ public class TextComp extends JComponent{
 			textX = alignX < 0 ? x : alignX;
 		}
 	}
+	
 	public void paintEnter(Graphics2D g){
 		if(isPaintGradientEnabled() && !clickable)
 			return;

@@ -45,6 +45,7 @@ public class IconManager {
      public static BufferedImage fluentlaunchImage = getFluentIcon("launch-50.png");
      public static BufferedImage fluentrunImage = getFluentIcon("play-50.png");
      public static BufferedImage fluentbuildImage = getFluentIcon("hammer-50.png");
+     public static BufferedImage fluentpackageImage = getFluentIcon("box-64.png");
      public static BufferedImage fluentstructureImage = getFluentIcon("unit-50.png");
      public static BufferedImage fluentsearchImage = getFluentIcon("inspect-code-50.png");
      public static BufferedImage fluentprojectstructureImage = getFluentIcon("goto-50.png");

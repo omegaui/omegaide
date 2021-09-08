@@ -582,6 +582,8 @@ public class FileSelectionDialog extends JDialog{
                     return IconManager.fluentsourceImage;
                else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
                     return IconManager.fluentbinaryImage;
+               else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+               	return IconManager.fluentpackageImage;
                return IconManager.fluentplainfolderImage;
           }
           if(file.getName().contains(".")){

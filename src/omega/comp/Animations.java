@@ -14,7 +14,7 @@ public class Animations {
 		comp.map.put(ANIMATION_STATE, false);
 	}
 	
-	public static void putPostAnimationLayer(TextComp comp, AnimationLayer layer, int action){
+	public static void putAnimationLayer(TextComp comp, AnimationLayer layer, int action){
 		if(!isActionApplicable(action))
 			return;
 		prepareTextComp(comp);
@@ -91,6 +91,7 @@ public class Animations {
 						e.printStackTrace();
 					}
 				}
+				
 				comp.map.put(ANIMATION_STATE, false);
 				g.dispose();
 
