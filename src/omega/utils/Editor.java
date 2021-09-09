@@ -256,6 +256,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);
 		else if(f.getName().endsWith(".c"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_C);
+		else if(f.getName().endsWith(".vala"))
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CPLUSPLUS);
 		else if(f.getName().endsWith(".clj") || f.getName().endsWith(".cljs") || f.getName().endsWith(".cljc") || f.getName().endsWith(".edn"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_CLOJURE);
 		else if(f.getName().endsWith(".cpp"))
