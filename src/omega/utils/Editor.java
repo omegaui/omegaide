@@ -960,7 +960,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 		String text;
 		if (result.wasFound()) {
-			text = "Text found; occurrences marked: " + result.getMarkedCount();
+			text = "Text found. occurrences marked: " + result.getMarkedCount();
 		}
 		else if (type == SearchEvent.Type.MARK_ALL) {
 			if (result.getMarkedCount() > 0) {

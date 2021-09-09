@@ -72,7 +72,7 @@ public final class SearchEngine {
 		boolean doMarkAll = textArea instanceof RTextArea && context.getMarkAll();
 
 		String text = context.getSearchFor();
-		if (text==null || text.length()==0) {
+		if (text == null || text.length() == 0) {
 			if (doMarkAll) {
 				// Force "mark all" event to be broadcast so listeners know to
 				// clear their mark-all markers.  The RSTA already cleared its
@@ -114,10 +114,12 @@ public final class SearchEngine {
 			}
 			RSyntaxUtilities.selectAndPossiblyCenter(textArea,
 					result.getMatchRange(), true);
-		} else if (context.getSearchWrap() && !result.wasFound()) {
+		} 
+		else if (context.getSearchWrap() && !result.wasFound()) {
 			if (forward) {
 				start = 0;
-			} else {
+			}
+			else {
 				start = textArea.getDocument().getLength() - 1;
 			}
 

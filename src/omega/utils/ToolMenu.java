@@ -6,7 +6,7 @@
   * it under the terms of the GNU General Public License as published by
   * the Free Software Foundation, either version 3 of the License, or
   * (at your option) any later version.
-e
+
   * This program is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -42,6 +42,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.GradientPaint;
 import omega.instant.support.build.gradle.GradleBuildScriptManager;
 import omega.instant.support.universal.UniversalProjectWizard;
 import omega.instant.support.build.gradle.GradleModuleWizard;
@@ -200,6 +201,7 @@ public class ToolMenu extends JPanel {
 		titleComp.setGradientMode(TextComp.GRADIENT_MODE_LINEAR);
 		titleComp.setLinearGradientColors(TOOLMENU_GRADIENT, back2, TOOLMENU_GRADIENT);
 		titleComp.setPaintGradientEnabled(true);
+		titleComp.setArc(0, 0);
 		titleComp.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
@@ -270,6 +272,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
+		minimizeComp.setArc(0, 0);
 		add(minimizeComp);
 		
 		filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(510);
@@ -1006,6 +1009,7 @@ public class ToolMenu extends JPanel {
 		private String text;
 		private String msg;
 		private volatile boolean enter;
+
 		public LabelMenu(String text, Runnable r, Runnable x) {
 			this.text = "";
 			setToolTipText(text);
@@ -1060,7 +1064,7 @@ public class ToolMenu extends JPanel {
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
-			g.setColor(getForeground());
+			g.setPaint(new GradientPaint(0, 0, TOOLMENU_COLOR2, getWidth(), getHeight(), TOOLMENU_COLOR4));
 			g.setFont(getFont());
 			int x = g.getFontMetrics().stringWidth(text);
 			int cx = x;
@@ -1077,6 +1081,7 @@ public class ToolMenu extends JPanel {
 			}
 		}
 	}
+	
 	public class Menu extends JComponent {
 		private String text;
 		private volatile boolean enter;

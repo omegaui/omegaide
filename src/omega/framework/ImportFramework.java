@@ -40,7 +40,9 @@ public class ImportFramework {
 		try {
 			text = text.substring(text.indexOf("public"));
 		}
-		catch(Exception e) {return cls;}
+		catch(Exception e) {
+			return cls;
+		}
 		int pos = 0;
 		for(int i = 0; i < text.length(); i++){
 			char ch = text.charAt(i);
@@ -208,6 +210,7 @@ public class ImportFramework {
 		return editor.getText().contains("import " + packName + ".*;") ||
 		editor.getText().contains("import " + packName + "." + className + ";");
 	}
+	
 	/**
 	* The method checks whether the source contains documentation or not.
 	* @param editor = The Editor, the contents of which is to be examined.
@@ -223,6 +226,7 @@ public class ImportFramework {
 		}
 		return false;
 	}
+	
 	/**
 	* The method finds the index of package information end
 	* Like for The Current Class the index is : 719
@@ -238,6 +242,7 @@ public class ImportFramework {
 		}
 		return index;
 	}
+	
 	/**
 	* The method inserts the imports in the specified editor
 	* @param editor = The Editor in which the import to be inserted
