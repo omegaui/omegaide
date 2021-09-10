@@ -49,6 +49,7 @@ public class CodeFramework{
 		CodeFramework.editor = e;
 		CodeFramework.text = text;
 		String code = getCode(text, caret);
+		System.out.println(code);
 		lCode = "";
 		if(code != null){
 			resolving = true;
@@ -1074,6 +1075,20 @@ public class CodeFramework{
                text = text.substring(text.lastIndexOf('>') + 1).trim();
           if(text.contains(";"))
                text = text.substring(text.lastIndexOf(';') + 1).trim();
+          if(text.startsWith("return "))
+          	text = text.substring("return ".length()).trim();
+          if(text.startsWith("continue "))
+          	text = text.substring("continue ".length()).trim();
+          if(text.startsWith("break "))
+          	text = text.substring("break ".length()).trim();
+          if(text.contains("this."))
+          	text = text.substring(text.lastIndexOf("this.") + "this.".length()).trim();
+          if(text.startsWith("!"))
+          	text = text.substring(text.lastIndexOf('!') + 1).trim();
+          if(text.contains("?"))
+          	text = text.substring(text.lastIndexOf('?') + 1).trim();
+          if(text.contains(":"))
+          	text = text.substring(text.lastIndexOf(':') + 1).trim();
           if(!text.contains("."))
                text = null;
           return text;
@@ -1110,22 +1125,28 @@ public class CodeFramework{
                text = text.substring(text.lastIndexOf(';') + 1).trim();
           if(text.contains("|"))
                text = text.substring(text.lastIndexOf('|') + 1).trim();
-          if(text.contains("!"))
-               text = text.substring(text.lastIndexOf('!') + 1).trim();
-          if(text.contains("?"))
-               text = text.substring(text.lastIndexOf('?') + 1).trim();
-          if(text.contains(":"))
-               text = text.substring(text.lastIndexOf(':') + 1).trim();
           if(text.contains("&"))
                text = text.substring(text.lastIndexOf('&') + 1).trim();
           if(text.contains("%"))
                text = text.substring(text.lastIndexOf('%') + 1).trim();
           if(text.contains("@"))
                text = text.substring(text.lastIndexOf('@') + 1).trim();
-          if(text.startsWith("new"))
-               text = text.substring(text.lastIndexOf("new") + 3).trim();
-          if(text.startsWith("return"))
-               text = text.substring(text.lastIndexOf("return") + 6).trim();
+          if(text.startsWith("new "))
+               text = text.substring(text.lastIndexOf("new ") + 3).trim();
+          if(text.startsWith("return "))
+          	text = text.substring("return ".length()).trim();
+          if(text.startsWith("continue "))
+          	text = text.substring("continue ".length()).trim();
+          if(text.startsWith("break "))
+          	text = text.substring("break ".length()).trim();
+          if(text.contains("this."))
+          	text = text.substring(text.lastIndexOf("this.") + "this.".length()).trim();
+          if(text.startsWith("!"))
+          	text = text.substring(text.lastIndexOf('!') + 1).trim();
+          if(text.contains("?"))
+          	text = text.substring(text.lastIndexOf('?') + 1).trim();
+          if(text.contains(":"))
+          	text = text.substring(text.lastIndexOf(':') + 1).trim();
           return text;
      }
 

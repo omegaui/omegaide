@@ -17,63 +17,77 @@
 */
 
 package omega.utils;
-import omega.instant.support.java.JavaErrorPanel;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import omega.instant.support.SyntaxParsers;
-import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
-import omega.instant.support.java.JavaCodeNavigator;
-import omega.deassembler.ByteReader;
-import omega.jdk.Import;
-import java.util.LinkedList;
-import omega.jdk.JDKManager;
-import org.fife.ui.rsyntaxtextarea.TokenTypes;
-import java.awt.event.MouseMotionListener;
-import org.fife.ui.rsyntaxtextarea.Token;
-import java.awt.event.MouseEvent;
-import org.fife.ui.rtextarea.SearchResult;
 import omega.utils.systems.View;
+
 import omega.Screen;
-import omega.deassembler.DataMember;
-import omega.deassembler.SourceReader;
-import org.fife.ui.rtextarea.SearchEngine;
-import org.fife.ui.rtextarea.SearchContext;
-import org.fife.rsta.ui.search.SearchEvent;
-import javax.swing.JScrollPane;
-import org.fife.ui.rtextarea.RTextArea;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import org.fife.rsta.ui.search.ReplaceToolBar;
-import javax.swing.JComponent;
-import omega.framework.IndentationFramework;
+
+import omega.instant.support.SyntaxParsers;
+
 import omega.gset.Generator;
-import omega.framework.ImportFramework;
+
 import omega.snippet.SnippetBase;
+
 import omega.instant.support.build.gradle.GradleProcessManager;
+
 import omega.highlightUnit.BasicHighlight;
-import java.awt.event.KeyEvent;
+
 import javax.imageio.ImageIO;
+
 import java.awt.image.BufferedImage;
-import java.io.PrintWriter;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.awt.Font;
-import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
+
 import omega.token.factory.RustTokenMaker;
+
 import org.fife.ui.rsyntaxtextarea.modes.KotlinTokenMaker;
-import javax.swing.DropMode;
-import omega.deassembler.ContentTokenizer;
+import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
+
 import omega.framework.CodeFramework;
+import omega.framework.ImportFramework;
+import omega.framework.IndentationFramework;
+
+import javax.swing.DropMode;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+
+import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
+
 import java.awt.Image;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import omega.instant.support.java.JavaErrorPanel;
+import omega.instant.support.java.JavaCodeNavigator;
+
 import omega.deassembler.ContentWindow;
-import org.fife.ui.rsyntaxtextarea.Theme;
-import javax.swing.JFileChooser;
+import omega.deassembler.ContentTokenizer;
+
 import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.PrintWriter;
+
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.SearchContext;
+import org.fife.ui.rtextarea.SearchEngine;
+import org.fife.ui.rtextarea.SearchResult;
+
 import org.fife.rsta.ui.search.SearchListener;
-import java.awt.event.MouseListener;
+import org.fife.rsta.ui.search.ReplaceToolBar;
+import org.fife.rsta.ui.search.SearchEvent;
+
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Theme;
+
+
 import static omega.deassembler.Assembly.*;
 import static java.nio.charset.StandardCharsets.UTF_8;
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, MouseMotionListener, SearchListener, FocusListener {
@@ -99,19 +113,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	public JavaErrorPanel javaErrorPanel;
 	
-	private volatile boolean ctrl;
-	private volatile boolean shift;
-	private volatile boolean o; // Auto-Imports
-	private volatile boolean f; // Find and Replace
-	private volatile boolean r; // Run
-	private volatile boolean b; // Build
-	private volatile boolean s; // Save
-	private volatile boolean c; // Click Editor Image
-	private volatile boolean g; // getters and setters
-	private volatile boolean i; // override methods
-	private volatile boolean l; // instant launch
-	private volatile boolean f1; // instant run
-	private volatile boolean d; // duplicate
+	private static volatile boolean ctrl;
+	private static volatile boolean shift;
+	private static volatile boolean o; // Auto-Imports
+	private static volatile boolean f; // Find and Replace
+	private static volatile boolean r; // Run
+	private static volatile boolean b; // Build
+	private static volatile boolean s; // Save
+	private static volatile boolean c; // Click Editor Image
+	private static volatile boolean g; // getters and setters
+	private static volatile boolean i; // override methods
+	private static volatile boolean l; // instant launch
+	private static volatile boolean f1; // instant run
+	private static volatile boolean d; // duplicate
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -600,14 +614,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
 			f = false;
-			ctrl = false;
-			shift = false;
 		}
+		
 		if(ctrl && s){
 			saveCurrentFile();
 			s = false;
-			ctrl = false;
 		}
+		
 		if(ctrl && d){
 			if(getSelectedText() == null || getSelectedText().equals("")){
 				String text = getText();
@@ -621,23 +634,22 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				insert(text, getCaretPosition());
 			}
 			d = false;
-			ctrl = false;
 			e.consume();
 		}
+		
 		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
 			if(GradleProcessManager.isGradleProject())
 				GradleProcessManager.build();
 			else
 				Screen.getBuildView().compileProject();
 			b = false;
-			ctrl = false;
 		}
+		
 		if(ctrl && shift && c){
 			saveImage();
 			c = false;
-			ctrl = false;
-			shift = false;
 		}
+		
 		if(code == KeyEvent.VK_TAB){
 			String codeX = getText();
 			codeX = codeX.substring(0, getCaretPosition());
@@ -665,37 +677,32 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				e.consume();
 			}
 		}
+		
 		if(code == KeyEvent.VK_BACK_SPACE)
 			autoSymbolExclusion(e);
 		else
 			autoSymbolCompletion(e);
+		
 		if(currentFile != null) {
 			//Managing KeyBoard Shortcuts
 			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
 				ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
 				o = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
 				Generator.gsView.genView(this);
 				g = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && !shift && i && currentFile.getName().endsWith(".java")) {
 				IndentationFramework.indent(this);
 				i = false;
-				ctrl = false;
 			}
 			
 			if(ctrl && shift && i && currentFile.getName().endsWith(".java")) {
 				Generator.overView.genView(this);
 				i = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
@@ -704,22 +711,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				else
 					Screen.getRunView().run();
 				r = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
 				Screen.getRunView().instantRun();
 				f1 = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(ctrl && shift && l){
 				ToolMenu.processWizard.launch(currentFile);
 				l = false;
-				ctrl = false;
-				shift = false;
 			}
 			
 			if(contentWindow.isVisible()) {

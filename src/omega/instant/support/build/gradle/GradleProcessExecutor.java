@@ -17,10 +17,12 @@
 */
 
 package omega.instant.support.build.gradle;
-import omega.utils.*;
 import java.util.Scanner;
-import java.io.PrintWriter;
+
+import omega.utils.DataManager;
+
 import java.io.File;
+import java.io.PrintWriter;
 public class GradleProcessExecutor {
      private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";
 	public static Process init(File dir){
