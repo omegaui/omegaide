@@ -389,7 +389,7 @@ public class ToolMenu extends JPanel {
 				     Screen.getBuildView().compileProject();
 			}
 		});
-		buildComp.setBounds(202, 55, 30, 30);
+		buildComp.setBounds(204, 55, 30, 30);
 		buildComp.setFont(omega.utils.UIManager.PX18);
 		buildComp.setArcVisible(false, true, false, true);
 		add(buildComp);
@@ -397,12 +397,12 @@ public class ToolMenu extends JPanel {
           instantBuildComp = new TextComp(fluentrocketbuildImage, 25, 25, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
                Screen.getRunView().instantBuild();
           });
-          instantBuildComp.setBounds(234, 55, 30, 30);
+          instantBuildComp.setBounds(236, 55, 30, 30);
      	instantBuildComp.setArcVisible(false, true, false, true);
           add(instantBuildComp);
           
 		sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep1.setBounds(270, 50, 2, 40);
+		sep1.setBounds(272, 50, 2, 40);
 		addComp(sep1);
           
 		contentComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
@@ -422,7 +422,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		contentComp.setBounds(280, 55, 30, 30);
+		contentComp.setBounds(282, 55, 30, 30);
 		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 		contentComp.setArcVisible(false, true, false, true);
 		addComp(contentComp);
@@ -444,7 +444,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		contentModeComp.setBounds(312, 55, 30, 30);
+		contentModeComp.setBounds(314, 55, 30, 30);
 		contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 		contentModeComp.setArcVisible(false, true, false, true);
 		addComp(contentModeComp);
@@ -466,7 +466,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		asteriskComp.setBounds(344, 55, 30, 30);
+		asteriskComp.setBounds(346, 55, 30, 30);
 		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		addComp(asteriskComp);
           
@@ -520,7 +520,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		};
-		operateComp.setBounds(408, 55, 30, 30);
+		operateComp.setBounds(410, 55, 30, 30);
 		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
 		operateComp.setArcVisible(true, false, true, false);
 		addComp(operateComp);
@@ -537,7 +537,7 @@ public class ToolMenu extends JPanel {
 		addComp(structureViewComp);
           
 		sep3 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep3.setBounds(442, 50, 2, 40);
+		sep3.setBounds(444, 50, 2, 40);
 		addComp(sep3);
 
 		OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(200);
@@ -554,12 +554,12 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		shellComp.setFont(omega.utils.UIManager.PX16);
-		shellComp.setBounds(452, 55, 60, 30);
+		shellComp.setBounds(454, 55, 60, 30);
 		shellComp.setArcVisible(false, true, false, true);
 		add(shellComp);
           
 		sep5 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep5.setBounds(517, 50, 2, 40);
+		sep5.setBounds(521, 50, 2, 40);
 		addComp(sep5);
       
 		themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE\'s restart", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3,
@@ -640,11 +640,11 @@ public class ToolMenu extends JPanel {
                themeComp.setBounds(472 - 4, 55, 60, 30);
      	}
           else {
-               structureComp.setBounds(376, 55, 30, 30);
-               operateComp.setBounds(408, 55, 30, 30);
-               sep3.setBounds(442, 50, 2, 40);
-               shellComp.setBounds(452, 55, 60, 30);
-               sep5.setBounds(517, 50, 2, 40);
+               structureComp.setBounds(378, 55, 30, 30);
+               operateComp.setBounds(410, 55, 30, 30);
+               sep3.setBounds(444, 50, 2, 40);
+               shellComp.setBounds(454, 55, 60, 30);
+               sep5.setBounds(521, 50, 2, 40);
                themeComp.setBounds(532, 55, 60, 30);
           }
           reloadItems(non_java);

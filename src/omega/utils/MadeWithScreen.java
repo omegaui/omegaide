@@ -83,7 +83,7 @@ public class MadeWithScreen extends JDialog{
           rLinkComp.setFont(PX20);
           add(rLinkComp);
           
-          TextComp rMessage = new TextComp("with theming tweaks", c2, c2, c3, null);
+          TextComp rMessage = new TextComp("with theming tweaks", c2, c2, TOOLMENU_COLOR4, null);
           rMessage.setBounds(0, rLinkComp.getHeight() - 20, rLinkComp.getWidth(), 20);
           rMessage.setArc(0, 0);
           rMessage.setFont(PX14);
@@ -103,7 +103,7 @@ public class MadeWithScreen extends JDialog{
           lafImageComp.setClickable(false);
           add(lafLinkComp);
           
-          TextComp lafMessage = new TextComp("with minor tweaks", c2, c2, c3, null);
+          TextComp lafMessage = new TextComp("with minor tweaks", c2, c2, TOOLMENU_COLOR4, null);
           lafMessage.setBounds(0, lafLinkComp.getHeight() - 25, lafLinkComp.getWidth(), 25);
           lafMessage.setArc(0, 0);
           lafMessage.setFont(PX14);
@@ -132,7 +132,7 @@ public class MadeWithScreen extends JDialog{
           fluentLinkComp.setClickable(false);
           add(fluentLinkComp);
           
-          TextComp fluentMessage = new TextComp("without any tweaks", c2, c2, c3, null);
+          TextComp fluentMessage = new TextComp("without any tweaks", c2, c2, TOOLMENU_COLOR4, null);
           fluentMessage.setBounds(0, fluentLinkComp.getHeight() - 25, fluentLinkComp.getWidth(), 25);
           fluentMessage.setArc(0, 0);
           fluentMessage.setFont(PX14);
@@ -151,7 +151,7 @@ public class MadeWithScreen extends JDialog{
           omegauiLinkComp.setClickable(false);
           add(omegauiLinkComp);
           
-          TextComp omegaMessage = new TextComp("super flexible ui elements", c2, c2, c3, null);
+          TextComp omegaMessage = new TextComp("super flexible ui elements", c2, c2, TOOLMENU_COLOR4, null);
           omegaMessage.setBounds(0, omegauiLinkComp.getHeight() - 25, omegauiLinkComp.getWidth(), 25);
           omegaMessage.setArc(0, 0);
           omegaMessage.setFont(PX14);
