@@ -17,14 +17,14 @@
 */
 
 package omega.utils;
-import java.awt.RenderingHints;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import omega.comp.TextComp;
-import javax.swing.JPanel;
 import omega.Screen;
+
 import java.awt.Dimension;
+import java.awt.Graphics;
+
+import omega.comp.TextComp;
+
+import javax.swing.JPanel;
 
 import static omega.utils.UIManager.*;
 import static omega.utils.IconManager.*;

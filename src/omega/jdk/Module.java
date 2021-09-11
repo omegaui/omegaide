@@ -17,10 +17,15 @@
 */
 
 package omega.jdk;
+import java.util.zip.ZipFile;
+
+import java.util.LinkedList;
+import java.util.Enumeration;
+import java.util.StringTokenizer;
+
+import java.io.File;
+
 import omega.Screen;
-import java.util.zip.*;
-import java.util.*;
-import java.io.*;
 public class Module {
 	public File moduleFile;
 	public String name;

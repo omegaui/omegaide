@@ -17,14 +17,16 @@
 */
 
 package omega.popup;
-import java.awt.*;
-import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.GradientPaint;
+
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.awt.image.BufferedImage;
+
 import javax.swing.JComponent;
 
 import static omega.utils.UIManager.*;

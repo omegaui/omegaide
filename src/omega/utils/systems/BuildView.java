@@ -17,7 +17,10 @@
 */
 
 package omega.utils.systems;
+import omega.jdk.JDKManager;
+
 import omega.instant.support.java.JavaSyntaxParser;
+
 import omega.utils.PrintArea;
 
 import java.awt.BorderLayout;
@@ -46,13 +49,11 @@ import javax.swing.JScrollPane;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 
-import omega.jdk.*;
 import omega.Screen;
 import omega.utils.Editor;
 import omega.utils.UIManager;
 import omega.utils.BuildLog;
 import omega.utils.systems.creators.FileOperationManager;
-
 public class BuildView extends View {
 
 	public volatile Process compileProcess;

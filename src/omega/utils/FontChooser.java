@@ -17,18 +17,22 @@
 */
 package omega.utils;
 import omega.Screen;
-import javax.swing.JDialog;
+
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+
 import java.util.LinkedList;
-import java.awt.Dimension;
-import javax.swing.JScrollPane;
-import omega.comp.SwitchComp;
-import omega.comp.NoCaretField;
-import omega.comp.FlexPanel;
+
 import omega.comp.TextComp;
+import omega.comp.FlexPanel;
+import omega.comp.NoCaretField;
+import omega.comp.SwitchComp;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
+
 import static omega.utils.UIManager.*;
 public class FontChooser extends JDialog{
      private TextComp titleComp;

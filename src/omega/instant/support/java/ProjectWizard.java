@@ -17,21 +17,27 @@
 */
 
 package omega.instant.support.java;
+import omega.Screen;
+
 import java.util.LinkedList;
+
+import java.io.File;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import omega.utils.SDKSelector;
 import omega.utils.FileSelectionDialog;
 import omega.utils.WorkspaceSelector;
-import omega.utils.SDKSelector;
-import omega.utils.ProjectDataBase;
 import omega.utils.DataManager;
-import omega.Screen;
-import javax.swing.JDialog;
-import java.io.File;
-import omega.comp.NoCaretField;
-import javax.swing.JPanel;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
+import omega.utils.ProjectDataBase;
+
 import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import static omega.utils.UIManager.*;
 public class ProjectWizard extends JDialog{

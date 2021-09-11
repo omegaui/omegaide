@@ -18,11 +18,14 @@
 
 package omega.gset;
 import omega.Screen;
+
 import java.util.StringTokenizer;
-import omega.deassembler.Assembly;
-import omega.deassembler.DataMember;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import omega.deassembler.ByteReader;
+import omega.deassembler.DataMember;
+import omega.deassembler.Assembly;
 public class Generator {
      public static GSView gsView;
      public static OverView overView;

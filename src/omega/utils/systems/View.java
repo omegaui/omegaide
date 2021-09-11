@@ -17,15 +17,16 @@
 */
 
 package omega.utils.systems;
+import omega.utils.UIManager;
+
+import omega.Screen;
+
 import java.awt.Component;
 import java.awt.Graphics;
+
 import java.util.LinkedList;
 
 import javax.swing.JDialog;
-
-import omega.Screen;
-import omega.utils.UIManager;
-
 public abstract class View extends JDialog {
 
 	public LinkedList<Component> comps = new LinkedList<>();

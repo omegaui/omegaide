@@ -16,9 +16,9 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.terminal;
-import omega.*;
-import omega.token.factory.*;
+import omega.Screen;
 
+import omega.token.factory.ShellTokenMaker;
 public class TerminalComp {
      private Terminal terminal;
 

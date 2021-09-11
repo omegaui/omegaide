@@ -17,23 +17,33 @@
 */
 
 package omega.gset;
-import omega.comp.NoCaretField;
-import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.Screen;
-import java.awt.Dimension;
-import omega.deassembler.Assembly;
+
 import omega.framework.CodeFramework;
-import omega.deassembler.ByteReader;
-import omega.deassembler.SourceReader;
+
+import java.awt.Dimension;
+
 import java.awt.event.MouseAdapter;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.awt.event.MouseEvent;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import omega.deassembler.DataMember;
+import omega.deassembler.SourceReader;
+import omega.deassembler.ByteReader;
+import omega.deassembler.Assembly;
+
 import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+
 import java.util.LinkedList;
+
 import javax.swing.JDialog;
-import omega.gset.OverView;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 public class OverView extends JDialog{
      private int mouseX;
@@ -50,6 +60,7 @@ public class OverView extends JDialog{
           setUndecorated(true);
           setSize(600, 530);
           setLocationRelativeTo(screen);
+          setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
           setResizable(false);
           init();
      }
@@ -68,7 +79,7 @@ public class OverView extends JDialog{
 
           TextComp titleComp = new TextComp("Override/Implement Methods", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
           titleComp.setBounds(30, 0, getWidth() - 30, 30);
-          titleComp.setFont(PX18);
+          titleComp.setFont(PX16);
           titleComp.setClickable(false);
           titleComp.addMouseMotionListener(new MouseAdapter(){
                @Override

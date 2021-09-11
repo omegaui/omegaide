@@ -22,13 +22,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintWriter;
+
 import java.util.LinkedList;
 
 import javax.swing.JMenuItem;
 
 import omega.Screen;
-import omega.utils.IconManager;
 
+import omega.utils.IconManager;
 public class RecentsManager {
 
 	public final static LinkedList<String> RECENTS = new LinkedList<>();

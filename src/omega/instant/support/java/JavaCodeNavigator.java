@@ -16,20 +16,27 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.instant.support.java;
-import omega.jdk.Import;
-import org.fife.ui.rsyntaxtextarea.Token;
 import omega.Screen;
-import omega.deassembler.DataMember;
-import java.io.File;
-import omega.jdk.JDKManager;
-import omega.framework.CodeFramework;
-import omega.deassembler.SourceReader;
-import org.fife.ui.rsyntaxtextarea.TokenTypes;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.KeyListener;
+
 import omega.utils.Editor;
+
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.fife.ui.rsyntaxtextarea.Token;
+
+import java.io.File;
+
+import omega.jdk.JDKManager;
+import omega.jdk.Import;
+
+import omega.framework.CodeFramework;
+
+import omega.deassembler.SourceReader;
+import omega.deassembler.DataMember;
+
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 public class JavaCodeNavigator implements KeyListener, MouseListener{
 	private Editor editor;
 

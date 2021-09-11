@@ -18,16 +18,21 @@
 
 package omega.instant.support.build.gradle;
 import omega.Screen;
-import javax.swing.JDialog;
-import java.io.PrintWriter;
+
 import java.io.File;
+import java.io.PrintWriter;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import omega.comp.TextComp;
 import omega.comp.NoCaretField;
 import omega.comp.FlexPanel;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import omega.comp.TextComp;
-import javax.swing.JPanel;
+
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 public class GradleModuleWizard extends JDialog{
 	private int pressX;

@@ -17,34 +17,39 @@
 */
 
 package omega.snippet;
-import omega.utils.UIManager;
 import omega.utils.IconManager;
-import omega.Screen;
-import omega.launcher.Door;
+import omega.utils.UIManager;
 import omega.utils.Editor;
-import omega.comp.TextComp;
+
+import omega.Screen;
+
 import java.io.File;
-import omega.IDE;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+
+import org.fife.ui.rtextarea.RTextScrollPane;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.util.LinkedList;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import java.awt.image.BufferedImage;
+
+import omega.launcher.Door;
+
+import java.util.LinkedList;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
-import org.fife.ui.rtextarea.RTextScrollPane;
+
+import java.awt.Font;
+import java.awt.Dimension;
+
+import omega.comp.TextComp;
+
+import javax.swing.JDialog;
+import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import static omega.utils.UIManager.*;
 public class SnippetView extends JDialog {

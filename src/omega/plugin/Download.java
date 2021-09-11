@@ -17,8 +17,10 @@
 */
 
 package omega.plugin;
-import java.net.*;
-import java.io.*;
+import java.net.URL;
+
+import java.io.InputStream;
+import java.io.BufferedInputStream;
 public class Download {
      public static InputStream openStream(String url){
      	InputStream in = null;

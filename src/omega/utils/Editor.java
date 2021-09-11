@@ -610,7 +610,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(code == KeyEvent.VK_D)
 			d = true;
 		
-		
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
 			f = false;
@@ -710,16 +709,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					GradleProcessManager.run();
 				else
 					Screen.getRunView().run();
+				shift = false;
 				r = false;
 			}
 			
 			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
 				Screen.getRunView().instantRun();
 				f1 = false;
+				shift = false;
 			}
 			
 			if(ctrl && shift && l){
 				ToolMenu.processWizard.launch(currentFile);
+				shift = false;
 				l = false;
 			}
 			

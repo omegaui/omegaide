@@ -16,44 +16,59 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
-import omega.launcher.InstructionWindow;
+import omega.Screen;
+
+import omega.gset.Generator;
+
+import java.net.URL;
+
+import java.io.File;
 
 import java.util.LinkedList;
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.Point;
-import omega.Screen;
-import java.awt.RenderingHints;
-import javax.swing.JComponent;
-import java.awt.Graphics;
-import java.awt.Component;
-import javax.swing.JFileChooser;
-import omega.gset.Generator;
-import java.net.URL;
-import java.awt.Desktop;
-import java.io.File;
-import java.awt.Font;
-import omega.instant.support.build.gradle.GradleProcessManager;
+
 import omega.framework.CodeFramework;
-import java.awt.Menu;
-import java.awt.Graphics2D;
+
 import javax.imageio.ImageIO;
+
 import java.awt.event.MouseAdapter;
-import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+
 import java.awt.image.BufferedImage;
+
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Menu;
+import java.awt.Font;
+import java.awt.Desktop;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.RenderingHints;
 import java.awt.GradientPaint;
-import omega.instant.support.build.gradle.GradleBuildScriptManager;
-import omega.instant.support.universal.UniversalProjectWizard;
+import java.awt.Point;
+import java.awt.Toolkit;
+
+import omega.launcher.InstructionWindow;
+
 import omega.instant.support.build.gradle.GradleModuleWizard;
+import omega.instant.support.build.gradle.GradleBuildScriptManager;
+import omega.instant.support.build.gradle.GradleProcessManager;
+
 import omega.instant.support.universal.ProcessWizard;
+import omega.instant.support.universal.UniversalProjectWizard;
+
 import omega.instant.support.java.ProjectWizard;
 import omega.instant.support.java.JavaSyntaxParser;
+
 import omega.comp.TextComp;
-import omega.popup.OPopupItem;
+
 import omega.popup.OPopupWindow;
+import omega.popup.OPopupItem;
 import omega.popup.NotificationPopup;
+
 import javax.swing.JPanel;
+import javax.swing.JFileChooser;
+import javax.swing.JComponent;
 import static omega.utils.UIManager.*;
 import static omega.utils.IconManager.*;
 import static omega.comp.Animations.*;
@@ -624,6 +639,7 @@ public class ToolMenu extends JPanel {
 		structureViewComp.setBounds(getWidth() - 110, 55, 60, 30);
 		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 30);
           pathBox.setBounds(0, 90, getWidth(), 25);
+          
 		//Window Decorations
 		titleComp.setBounds(30, 0, getWidth() - (30 * 4), 30);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
@@ -632,16 +648,22 @@ public class ToolMenu extends JPanel {
 	}
      public void changeLocations(boolean non_java){
      	if(non_java){
-               structureComp.setBounds(316 - 4, 55, 30, 30);
-               operateComp.setBounds(348 - 4, 55, 30, 30);
-               sep3.setBounds(382 - 4, 50, 2, 40);
-               shellComp.setBounds(392 - 4, 55, 60, 30);
-               sep5.setBounds(457 - 4, 50, 2, 40);
-               themeComp.setBounds(472 - 4, 55, 60, 30);
+     		buildComp.setBounds(204 - 30, 55, 30, 30);
+     		contentComp.setBounds(282 - 62, 55, 30, 30);
+               structureComp.setBounds(316 - 4 - 60, 55, 30, 30);
+               operateComp.setBounds(348 - 4 - 60, 55, 30, 30);
+               sep1.setBounds(272 - 60, 50, 2, 40);
+               sep3.setBounds(382 - 4 - 60, 50, 2, 40);
+               shellComp.setBounds(392 - 4 - 60, 55, 60, 30);
+               sep5.setBounds(457 - 4 - 60, 50, 2, 40);
+               themeComp.setBounds(472 - 4 - 60, 55, 60, 30);
      	}
           else {
+          	buildComp.setBounds(204, 55, 30, 30);
+          	contentComp.setBounds(282, 55, 30, 30);
                structureComp.setBounds(378, 55, 30, 30);
                operateComp.setBounds(410, 55, 30, 30);
+               sep1.setBounds(272, 50, 2, 40);
                sep3.setBounds(444, 50, 2, 40);
                shellComp.setBounds(454, 55, 60, 30);
                sep5.setBounds(521, 50, 2, 40);

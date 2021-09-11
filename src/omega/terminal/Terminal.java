@@ -16,13 +16,26 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.terminal;
-import omega.*;
-import java.awt.event.*;
-import java.util.*;
-import java.io.*;
-import java.awt.*;
-import javax.swing.*;
-import org.fife.ui.rsyntaxtextarea.*;
+import omega.Screen;
+
+import omega.utils.Editor;
+
+import java.util.Scanner;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
+import java.io.File;
+import java.io.PrintWriter;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import static omega.utils.UIManager.*;
 public class Terminal extends JPanel {
 	public static String shell = File.pathSeparator.equals(":") ? "sh" : "cmd";

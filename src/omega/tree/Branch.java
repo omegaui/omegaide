@@ -17,24 +17,31 @@
 */
 
 package omega.tree;
-import java.awt.*;
-import omega.popup.*;
 import omega.Screen;
-import omega.utils.IconManager;
-import omega.utils.UIManager;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import omega.utils.PopupManager;
-import java.awt.image.BufferedImage;
-import java.util.Locale;
+import omega.utils.UIManager;
+import omega.utils.IconManager;
+
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.GradientPaint;
+
+import java.util.Locale;
+
+import java.awt.image.BufferedImage;
+
+import omega.popup.OPopupWindow;
+
 import java.io.File;
+
 import javax.swing.JComponent;
-import javax.swing.JPopupMenu;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class Branch extends JComponent{

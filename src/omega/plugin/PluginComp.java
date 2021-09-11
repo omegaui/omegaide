@@ -17,15 +17,24 @@
 */
 
 package omega.plugin;
-import java.util.*;
-import omega.utils.*;
-import omega.*;
-import java.io.*;
-import javax.imageio.*;
-import java.awt.*;
-import omega.comp.*;
-import java.awt.image.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+
+import omega.utils.ChoiceDialog;
+
+import java.awt.Graphics2D;
+
+import javax.imageio.ImageIO;
+
+import omega.comp.TextComp;
+
+import java.awt.image.BufferedImage;
+
+import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 import omega.plugin.PluginManager.Plug;
 public class PluginComp extends JComponent{

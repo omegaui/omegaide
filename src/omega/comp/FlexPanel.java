@@ -16,14 +16,14 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.comp;
-import javax.swing.JComponent;
-import java.awt.GradientPaint;
 import java.awt.Color;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
+import java.awt.GradientPaint;
 import java.awt.LayoutManager;
-import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JComponent;
 public class FlexPanel extends JComponent{
      
      private int arcX = 40;

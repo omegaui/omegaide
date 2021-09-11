@@ -21,7 +21,6 @@ import omega.utils.Editor;
 
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
-
 public class Highlight {
 	public Editor editor;
 	public HighlightPainter highlightPainter;

@@ -17,8 +17,12 @@
 */
 
 package omega.deassembler;
-import omega.*;
-import java.lang.reflect.*;
+import omega.Screen;
+
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import java.util.LinkedList;
 public class ByteReader {
 	private Class c;

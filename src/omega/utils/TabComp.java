@@ -17,19 +17,37 @@
 */
 
 package omega.utils;
-import javax.swing.*;
-import omega.*;
-import java.io.*;
-import java.awt.image.*;
-import omega.comp.*;
-import omega.tree.*;
-import omega.popup.*;
-import java.util.*;
-import java.awt.event.*;
-import java.awt.*;
+import omega.Screen;
+
+import java.io.File;
+
+import java.awt.image.BufferedImage;
+
+import omega.tree.Branch;
+
+import omega.popup.OPopupWindow;
+
+import omega.comp.TextComp;
+import omega.comp.FlexPanel;
+
+import java.util.LinkedList;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Component;
+import java.awt.FlowLayout;
+
+import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
-
 public class TabComp extends JComponent {
 
 	private CloseAction closeAction;

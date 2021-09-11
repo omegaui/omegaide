@@ -17,13 +17,15 @@
 */
 
 package omega.utils;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Component;
 import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Component;
+
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import static omega.utils.UIManager.*;
 public class BuildPanel extends JPanel{
 	private JScrollPane scrollPane;

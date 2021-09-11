@@ -17,11 +17,19 @@
 */
 
 package omega.jdk;
-import omega.*;
-import java.util.jar.*;
-import omega.deassembler.*;
-import java.util.*;
-import java.io.*;
+import omega.Screen;
+
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
+
+import omega.deassembler.JarLoader;
+import omega.deassembler.ByteReader;
+
+import java.util.LinkedList;
+import java.util.Enumeration;
+import java.util.Scanner;
+
+import java.io.File;
 public class JDKManager {
 	public File jdkDir;
 	

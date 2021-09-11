@@ -16,10 +16,16 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
-import omega.*;
-import java.io.*;
-import omega.comp.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.io.File;
+
+import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 public class ConsoleSelector extends JDialog{
 	private TextComp titleComp;

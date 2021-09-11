@@ -17,9 +17,15 @@
 */
 
 package omega.comp;
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JComponent;
 public class Comp extends JComponent{
      /*
       * A boolean value to check whether the mouse has entered the component or not.

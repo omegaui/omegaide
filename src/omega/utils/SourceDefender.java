@@ -16,12 +16,28 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
-import java.awt.*;
-import omega.*;
-import java.io.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.awt.Desktop;
+import java.awt.Dimension;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+
+import java.util.LinkedList;
+import java.util.Date;
+
+import omega.comp.TextComp;
+import omega.comp.SwitchComp;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
+
 import static omega.utils.UIManager.*;
 public class SourceDefender extends JDialog {
 	private TextComp titleComp;

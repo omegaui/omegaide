@@ -17,7 +17,8 @@
 */
 
 package omega.deassembler;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 public class DataBlock {
 	public LinkedList<DepthMember> depthMembers = new LinkedList<>();
 	public DataMember block;

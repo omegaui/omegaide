@@ -15,16 +15,19 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.framework;
-import omega.deassembler.CodeTokenizer;
-import omega.utils.ImportResolver;
+import javax.swing.text.Document;
+
 import omega.jdk.JDKManager;
 import omega.jdk.Import;
+
+import omega.deassembler.SourceReader;
+import omega.deassembler.CodeTokenizer;
+
+import java.util.LinkedList;
+
+import omega.utils.ImportResolver;
 import omega.utils.DataManager;
 import omega.utils.Editor;
-import omega.deassembler.SourceReader;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-import javax.swing.text.Document;
 public class ImportFramework {
 	//The Object of the Window that lets you choose the imports
 	//when classes in different packages have a same name.
@@ -207,7 +210,9 @@ public class ImportFramework {
 	* @param className = The name of the Class
 	*/
 	public static boolean contains(Editor editor, String packName, String className) {
-		return editor.getText().contains("import " + packName + ".*;") ||
+		return 
+		editor.getText().contains("import " + packName + ".*;") 
+		||
 		editor.getText().contains("import " + packName + "." + className + ";");
 	}
 	
@@ -216,15 +221,8 @@ public class ImportFramework {
 	* @param editor = The Editor, the contents of which is to be examined.
 	*/
 	public static boolean isPackageInformationPresent(Editor e){
-		StringTokenizer tok = new StringTokenizer(e.getText(), "\n");
-		while(tok.hasMoreTokens()){
-			String token = tok.nextToken();
-			if(token.contains("class "))
-				return false;
-			if(token.startsWith("package"))
-				return true;
-		}
-		return false;
+		int index = getPackageInformationIndex(e);
+		return index != 0;
 	}
 	
 	/**

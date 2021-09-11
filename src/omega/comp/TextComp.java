@@ -16,11 +16,23 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.comp;
-import java.awt.image.*;
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.util.LinkedList;
+import java.util.HashMap;
+
+import java.awt.image.BufferedImage;
+
+import java.awt.Color;
+import java.awt.Window;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.RenderingHints;
+import java.awt.GradientPaint;
+import java.awt.LinearGradientPaint;
+
+import javax.swing.JComponent;
 public class TextComp extends JComponent{
 	public volatile boolean enter;
 	public volatile boolean press;

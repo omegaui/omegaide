@@ -16,8 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.deassembler;
-
-import java.util.*;
+import java.util.LinkedList;
 public class DataMember {
      public String access;
      public String modifier;

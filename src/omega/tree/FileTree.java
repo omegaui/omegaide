@@ -17,27 +17,30 @@
 */
 
 package omega.tree;
-import omega.utils.*;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import omega.Screen;
-import omega.utils.UIManager;
-import omega.utils.systems.creators.*;
+
+import omega.utils.systems.creators.FileOperationManager;
+
 import java.awt.event.MouseAdapter;
-import java.awt.image.BufferedImage;
-import java.awt.Component;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.KeyListener;
-import java.io.File;
+import java.awt.event.MouseEvent;
+
+import omega.utils.ChoiceDialog;
+import omega.utils.UIManager;
+
+import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+
+import java.awt.image.BufferedImage;
+
 import java.util.LinkedList;
+
+import java.io.File;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import omega.utils.systems.creators.*;
 public class FileTree extends JComponent{
 	private File root;
 	

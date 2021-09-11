@@ -17,28 +17,31 @@
 */
 
 package omega.tabPane;
-import omega.utils.*;
-import omega.tabPane.*;
-import omega.utils.TabComp;
-import omega.utils.PopupManager;
-import omega.popup.*;
-import omega.utils.UIManager;
 import omega.Screen;
-import omega.utils.Editor;
-import java.awt.image.BufferedImage;
-import java.awt.FontMetrics;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
 
-import java.awt.BorderLayout;
-import java.io.File;
-import java.util.LinkedList;
+import omega.popup.OPopupWindow;
+
 import java.util.zip.ZipFile;
 
-import javax.swing.Icon;
+import java.io.File;
+
+import omega.utils.TabComp;
+import omega.utils.PopupManager;
+import omega.utils.ToolMenu;
+import omega.utils.Editor;
+import omega.utils.UIManager;
+
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.FontMetrics;
+
+import java.awt.image.BufferedImage;
+
+import java.util.LinkedList;
+
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 public class TabPanel extends JPanel{
 

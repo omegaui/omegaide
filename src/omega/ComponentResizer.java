@@ -5,11 +5,23 @@
  * I got this file from a link on stackoverflow.
 */
 package omega;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.JComponent;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Component;
+import java.awt.Window;
+import java.awt.GraphicsEnvironment;
+import java.awt.Cursor;
+import java.awt.Point;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  *  The ComponentResizer allows you to resize a component by dragging a border

@@ -1,9 +1,13 @@
 package omega.utils;
-import java.io.File;
 import omega.Screen;
+
+import java.io.File;
+
 import omega.comp.TextComp;
-import javax.swing.JPanel;
+
 import javax.swing.JDialog;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class ProjectDistructionWizard extends JDialog{

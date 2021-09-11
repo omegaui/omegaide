@@ -16,14 +16,29 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
-import omega.deassembler.*;
+import omega.Screen;
+
+import omega.deassembler.SourceReader;
+import omega.deassembler.ByteReader;
+import omega.deassembler.Assembly;
+import omega.deassembler.DataMember;
+
 import omega.framework.CodeFramework;
-import omega.jdk.*;
-import omega.*;
-import java.awt.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
+
+import omega.jdk.JDKManager;
+import omega.jdk.Import;
+
+import java.awt.Dimension;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+import omega.comp.FlexPanel;
+import omega.comp.NoCaretField;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+
 import static omega.utils.UIManager.*;
 public class StructureView extends JDialog {
      public TextComp titleComp;

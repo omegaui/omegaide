@@ -16,13 +16,20 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
-import java.awt.*;
-import omega.comp.*;
-import java.util.*;
-import omega.*;
-import java.io.*;
-import omega.deassembler.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.awt.Graphics;
+
+import java.io.File;
+
+import omega.deassembler.CodeTokenizer;
+
+import omega.comp.EdgeComp;
+
+import java.util.LinkedList;
+
+import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 public class ToolMenuPathBox extends JComponent{
      public String path;

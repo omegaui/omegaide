@@ -17,21 +17,19 @@
 */
 
 package omega.utils;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.InputStream;
-import java.util.Scanner;
-import java.io.PrintWriter;
-import java.io.File;
+import omega.Screen;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
-import omega.Screen;
 import omega.database.DataBase;
 import omega.database.DataEntry;
-
 /**
  * omega.utils.UIManager class
  * This class is responsible for managing the ui colors, theming and editor's font

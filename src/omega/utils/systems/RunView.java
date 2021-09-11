@@ -17,50 +17,58 @@
 */
 
 package omega.utils.systems;
-import omega.utils.DataManager;
-import omega.popup.NotificationPopup;
-import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
-import javax.tools.DiagnosticCollector;
-import omega.instant.support.SyntaxParsers;
-import omega.instant.support.java.JavaSyntaxParser;
-import omega.utils.PrintArea;
-import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
-import omega.utils.IconManager;
-import omega.jdk.*;
-import omega.utils.BuildLog;
-import omega.utils.UIManager;
 import omega.Screen;
-import omega.comp.TextComp;
-import omega.utils.Editor;
 
-import java.awt.Color;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import omega.comp.TextComp;
 
 import java.awt.event.MouseListener;
+
+import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
+import omega.instant.support.SyntaxParsers;
+
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaFileObject;
+import javax.tools.Diagnostic;
+
+import omega.jdk.JDKManager;
+
+import omega.instant.support.java.JavaSyntaxParser;
+
+import javax.swing.Icon;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JComponent;
+
+import omega.popup.NotificationPopup;
 
 import java.io.File;
 import java.io.PrintWriter;
 
+import omega.utils.PrintArea;
+import omega.utils.BuildLog;
+import omega.utils.ToolMenu;
+import omega.utils.DataManager;
+import omega.utils.IconManager;
+import omega.utils.Editor;
+import omega.utils.UIManager;
+
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.Scanner;
 
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
-
 public class RunView extends View {
 	
 	private static final long serialVersionUID = 1L;

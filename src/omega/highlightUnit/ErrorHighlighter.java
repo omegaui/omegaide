@@ -17,21 +17,25 @@
 */
 
 package omega.highlightUnit;
-import omega.instant.support.java.JavaSyntaxParser;
-import omega.deassembler.CodeTokenizer;
-import omega.Screen;
-import omega.utils.UIManager;
-import omega.utils.Editor;
-import java.awt.Color;
-import java.io.File;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-
-import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
+import javax.swing.text.DefaultHighlighter;
 
+import omega.Screen;
 
+import omega.utils.UIManager;
+import omega.utils.Editor;
+
+import java.io.File;
+
+import omega.instant.support.java.JavaSyntaxParser;
+
+import omega.deassembler.CodeTokenizer;
+
+import java.awt.Color;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 public class ErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;

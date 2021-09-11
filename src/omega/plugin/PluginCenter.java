@@ -17,16 +17,26 @@
 */
 
 package omega.plugin;
-import java.awt.geom.RoundRectangle2D;
+import omega.Screen;
 
-import java.util.*;
-import omega.*;
-import javax.imageio.*;
-import java.awt.image.*;
-import java.awt.event.*;
-import omega.comp.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.RenderingHints;
+import java.awt.Dimension;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import java.awt.geom.RoundRectangle2D;
 import static omega.utils.UIManager.*;
 public class PluginCenter extends JDialog{
 	private int pressX;

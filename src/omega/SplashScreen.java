@@ -15,14 +15,26 @@
 package omega;
 import omega.utils.IconManager;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
+
+import javax.imageio.ImageIO;
+
 import java.awt.geom.RoundRectangle2D;
 
-import javax.imageio.*;
-import javax.swing.*;
-import omega.tabPane.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferStrategy;
+
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JFrame;
+
 import static omega.Screen.VERSION;
 import static omega.utils.UIManager.*;
 public class SplashScreen extends JFrame{

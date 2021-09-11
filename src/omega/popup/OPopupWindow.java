@@ -17,12 +17,27 @@
 */
 
 package omega.popup;
+import omega.utils.UIManager;
+
+import java.awt.image.BufferedImage;
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+import java.util.LinkedList;
+
+import java.awt.Window;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Component;
+import java.awt.Toolkit;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JWindow;
+
 import omega.Screen;
-import java.awt.image.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
 public class OPopupWindow extends JDialog{
      private int y;
      private String name;

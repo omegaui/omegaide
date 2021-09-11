@@ -17,12 +17,20 @@
 */
 
 package omega.instant.support.universal;
-import omega.*;
-import java.util.*;
-import java.io.*;
-import omega.utils.*;
-import omega.comp.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.util.LinkedList;
+
+import omega.utils.FileSelectionDialog;
+import omega.utils.IconManager;
+
+import java.io.File;
+
+import omega.comp.NoCaretField;
+import omega.comp.TextComp;
+
+import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 public class ListMaker extends JComponent {
      public NoCaretField extField;

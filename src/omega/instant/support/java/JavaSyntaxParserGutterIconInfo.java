@@ -1,5 +1,6 @@
 package omega.instant.support.java;
 import omega.utils.Editor;
+
 import org.fife.ui.rtextarea.GutterIconInfo;
 public class JavaSyntaxParserGutterIconInfo {
 	public GutterIconInfo gutterIconInfo;

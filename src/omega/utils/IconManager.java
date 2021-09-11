@@ -17,15 +17,17 @@
 */
 
 package omega.utils;
-import omega.Screen;
-import java.io.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.LinkedList;
-
 import javax.imageio.ImageIO;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Color;
+
+import java.awt.image.BufferedImage;
 
 import static omega.utils.UIManager.*;
 public class IconManager {

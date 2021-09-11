@@ -17,45 +17,43 @@
 */
 
 package omega.instant.support.java;
+import omega.startup.Startup;
+
+import omega.utils.Editor;
+import omega.utils.IconManager;
+
+import omega.Screen;
+
+import java.awt.image.BufferedImage;
+
 import omega.popup.NotificationPopup;
 
-import java.util.Scanner;
-import java.util.zip.ZipFile;
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
+import omega.utils.systems.creators.FileOperationManager;
+
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+
 import java.awt.Image;
-import org.fife.ui.rtextarea.GutterIconInfo;
-import javax.swing.ImageIcon;
-import omega.utils.IconManager;
 import java.awt.Color;
-import javax.tools.SimpleJavaFileObject;
+
+import javax.swing.ImageIcon;
+
+import java.io.File;
+
+import omega.highlightUnit.Highlight;
+
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.tools.StandardJavaFileManager;
+import javax.tools.DiagnosticCollector;
+import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic;
 import javax.tools.Diagnostic.Kind;
-import omega.highlightUnit.Highlight;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-import omega.utils.systems.BuildView;
-import java.io.PrintWriter;
-import omega.startup.Startup;
-import omega.Screen;
-import omega.utils.Editor;
-import omega.utils.DataManager;
-import java.io.File;
-import java.util.Arrays;
-import java.util.LinkedList;
-import javax.tools.JavaFileObject;
-import javax.tools.DiagnosticCollector;
-import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.StandardJavaFileManager;
-import omega.utils.systems.creators.FileOperationManager;
-import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+import javax.tools.ToolProvider;
+
 
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;

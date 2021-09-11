@@ -17,10 +17,17 @@
 */
 
 package omega.utils;
-import java.awt.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
+import java.awt.Dimension;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+import omega.comp.FlexPanel;
+import omega.comp.RTextField;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class ExtendedBuildPanel extends JPanel{

@@ -17,10 +17,15 @@
 */
 
 package omega.plugin;
-import java.awt.event.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 import static omega.utils.UIManager.*;
 public class Updater extends JDialog{

@@ -17,19 +17,25 @@
 */
 
 package omega.utils;
-import java.awt.event.MouseEvent;
 import omega.Screen;
+
 import javax.imageio.ImageIO;
+
 import java.awt.event.MouseAdapter;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+
 import omega.comp.TextComp;
-import javax.swing.JPanel;
+
 import java.awt.image.BufferedImage;
-import java.awt.Font;
+
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 import javax.swing.JDialog;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class ThemePicker extends JDialog {

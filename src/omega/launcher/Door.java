@@ -17,11 +17,20 @@
 */
 
 package omega.launcher;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.io.File;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.awt.*;
-import javax.swing.*;
+
+import java.awt.image.BufferedImage;
+
+import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 public class Door extends JComponent{
 	protected String path;

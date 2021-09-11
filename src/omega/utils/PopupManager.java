@@ -17,13 +17,15 @@
 */
 
 package omega.utils;
-import omega.instant.support.build.gradle.GradleProcessManager;
-import omega.popup.*;
-import omega.Screen;
-import javax.swing.JOptionPane;
-import java.awt.Desktop;
 import java.awt.Toolkit;
+
+import omega.Screen;
+
+import omega.instant.support.build.gradle.GradleProcessManager;
+
 import java.awt.datatransfer.StringSelection;
+
+import omega.popup.OPopupWindow;
 
 import java.io.File;
 public class PopupManager {

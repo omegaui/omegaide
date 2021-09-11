@@ -17,19 +17,14 @@
 */
 
 package omega.instant.support.build.gradle;
-import omega.utils.*;
-import omega.utils.PrintArea;
 import java.util.Scanner;
-import omega.utils.Editor;
-import omega.utils.UIManager;
-import java.awt.event.MouseListener;
-import java.awt.Font;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import javax.swing.JPanel;
+
 import omega.Screen;
+
 import java.io.File;
+
+import omega.utils.PrintArea;
+import omega.utils.DataManager;
 public class GradleProcessManager {
 	private static PrintArea printArea;
 	public static boolean isGradleProject(){

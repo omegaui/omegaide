@@ -18,12 +18,16 @@
 
 package omega.instant.support;
 import omega.Screen;
-import omega.instant.support.universal.*;
-import java.io.PrintWriter;
-import omega.database.DataEntry;
-import java.util.LinkedList;
+
 import java.io.File;
+import java.io.PrintWriter;
+
+import omega.instant.support.universal.ListMaker;
+
+import java.util.LinkedList;
+
 import omega.database.DataBase;
+import omega.database.DataEntry;
 public class ArgumentManager extends DataBase{
      
      public String run_time_args; // The String containing the run time command

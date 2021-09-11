@@ -17,10 +17,16 @@
 */
 
 package omega.utils;
-import omega.*;
-import java.awt.*;
-import omega.comp.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.awt.Graphics;
+
+import omega.comp.TextComp;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+
 
 import static omega.utils.UIManager.*;
 public class ChoiceDialog extends JDialog{

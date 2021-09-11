@@ -17,26 +17,29 @@
 */
 
 package omega.comp;
-import java.awt.event.*;
+import java.io.InputStream;
+
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.DataFlavor;
-import java.io.InputStream;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import java.awt.Dimension;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Font;
+
 import java.util.LinkedList;
+
 import java.awt.Color;
-import java.awt.event.KeyEvent;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+
 import java.awt.event.KeyListener;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
+
 import static java.awt.event.KeyEvent.*;
 public class NoCaretField extends JComponent implements KeyListener, FocusListener{
 	public Color color1;

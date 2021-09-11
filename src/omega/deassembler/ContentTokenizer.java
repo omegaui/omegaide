@@ -17,14 +17,19 @@
 */
 
 package omega.deassembler;
-import omega.Screen;
-import omega.snippet.*;
 import omega.jdk.Import;
-import omega.utils.Editor;
-import java.util.LinkedList;
+
+import omega.Screen;
+
 import omega.utils.DataManager;
-import java.util.StringTokenizer;
+import omega.utils.Editor;
+
 import omega.framework.CodeFramework;
+
+import omega.snippet.SnippetBase;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 public class ContentTokenizer {
 	// hello().length(hello().
 	public static boolean isConditionalCode(String code){

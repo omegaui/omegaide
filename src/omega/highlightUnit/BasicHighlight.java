@@ -17,10 +17,13 @@
 */
 
 package omega.highlightUnit;
-import javax.swing.text.*;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
+
 import omega.utils.Editor;
+
 import java.awt.Color;
+
 import java.util.LinkedList;
 public class BasicHighlight {
 	private static LinkedList<Highlight> highlights = new LinkedList<>();

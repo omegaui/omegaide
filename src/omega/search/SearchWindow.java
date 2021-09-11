@@ -17,37 +17,34 @@
 */
 
 package omega.search;
-import java.awt.geom.RoundRectangle2D;
-
-import omega.tree.*;
-import java.awt.Color;
-import omega.comp.NoCaretField;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import omega.comp.TextComp;
-import omega.launcher.Door;
-import omega.utils.IconManager;
 import omega.utils.UIManager;
+import omega.utils.IconManager;
+
 import omega.Screen;
+
+import java.awt.image.BufferedImage;
+
 import omega.tree.FileTree;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import java.awt.BorderLayout;
+
 import java.awt.Dimension;
+
+import java.awt.event.MouseAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+import java.awt.event.MouseEvent;
+
 import java.io.File;
+
 import java.util.LinkedList;
+
+import omega.comp.NoCaretField;
+import omega.comp.TextComp;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
+import java.awt.geom.RoundRectangle2D;
 import static omega.utils.UIManager.*;
 public class SearchWindow extends JDialog{
 	private Screen screen;

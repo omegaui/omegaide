@@ -17,23 +17,32 @@
 */
 
 package omega.launcher;
-import omega.utils.WorkspaceSelector;
-import omega.utils.ToolMenu;
 import omega.Screen;
+
+import java.awt.Graphics2D;
+import java.awt.Dimension;
+
 import java.io.File;
+
+import omega.utils.ToolMenu;
+import omega.utils.WorkspaceSelector;
 import omega.utils.RecentsManager;
 import omega.utils.IconManager;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
+
 import java.awt.event.MouseAdapter;
-import java.util.LinkedList;
-import javax.swing.JScrollPane;
+import java.awt.event.MouseEvent;
+
 import java.awt.image.BufferedImage;
-import omega.comp.TextComp;
-import javax.swing.JPanel;
+
+import java.util.LinkedList;
+
 import omega.comp.FlexPanel;
+import omega.comp.TextComp;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import static omega.utils.UIManager.*;
 public class Launcher extends JFrame{
 	

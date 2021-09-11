@@ -380,6 +380,8 @@ public class Screen extends JFrame {
 		toolMenu.sep4.setVisible(!manager.non_java);
 		toolMenu.asteriskComp.setVisible(!manager.non_java);
 		toolMenu.contentModeComp.setVisible(!manager.non_java);
+          toolMenu.instantRunComp.setVisible(!manager.non_java);
+          toolMenu.instantBuildComp.setVisible(!manager.non_java);
 		toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
 		sideMenu.structureComp.setVisible(!manager.non_java);
 		toolMenu.changeLocations(manager.non_java);

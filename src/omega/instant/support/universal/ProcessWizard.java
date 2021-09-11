@@ -17,13 +17,25 @@
 */
 
 package omega.instant.support.universal;
+import omega.Screen;
+
+import omega.utils.ChoiceDialog;
+import omega.utils.IconManager;
+
 import java.io.File;
-import omega.*;
-import omega.utils.*;
-import java.awt.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
+
+import java.awt.Dimension;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+import omega.comp.FlexPanel;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 public class ProcessWizard extends JDialog{
 	private ProcessManager processManager;

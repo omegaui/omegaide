@@ -17,26 +17,27 @@
 */
 
 package omega.utils.systems;
-import omega.popup.*;
-import omega.utils.TabComp;
-import omega.tabPane.TabPaneUI;
-import java.awt.FontMetrics;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
+import omega.Screen;
 
+import omega.popup.OPopupWindow;
+
+import omega.utils.TabComp;
+import omega.utils.UIManager;
+
+import omega.tabPane.TabPaneUI;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.FontMetrics;
+
 import java.util.LinkedList;
 
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
-
-import omega.Screen;
-import omega.utils.UIManager;
 
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
@@ -126,14 +127,19 @@ public class OperationPane extends JPanel{
 	}
 	
 	public void removeTab(String name) {
-		if(names.indexOf(name) < 0) return;
+		if(names.indexOf(name) < 0) 
+			return;
 		try {
 			tabPane.removeTabAt(tabPane.indexOfTab(name));
 		}
-		catch(Exception e) {}
-		names.remove(name);
-		if(names.isEmpty())
-			setVisible(false);
+		catch(Exception e) {
+			
+		}
+		finally {
+			names.remove(name);
+			if(names.isEmpty())
+				setVisible(false);
+		}
 	}
 
      @Override
@@ -143,7 +149,7 @@ public class OperationPane extends JPanel{
                g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-               g.setColor(omega.utils.UIManager.c2);
+               g.setColor(omega.utils.UIManager.back2);
                g.fillRect(0, 0, getWidth(), getHeight());
                g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
                g.setFont(PX28);
@@ -152,7 +158,8 @@ public class OperationPane extends JPanel{
                g.drawString(HINT, getWidth()/2 - f.stringWidth(HINT)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());
                g.dispose();
           }
-          else super.paint(graphics);
+          else 
+          	super.paint(graphics);
      }
 
 }

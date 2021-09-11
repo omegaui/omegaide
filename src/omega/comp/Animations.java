@@ -1,6 +1,9 @@
 package omega.comp;
-import java.awt.event.*;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class Animations {
 	public static final String ANIMATION_STATE = "Animation Running";
 	

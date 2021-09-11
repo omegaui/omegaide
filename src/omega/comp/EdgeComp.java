@@ -16,9 +16,15 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.comp;
-import java.awt.event.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JComponent;
 public class EdgeComp extends JComponent {
      private String text = "";
      public Color color1;

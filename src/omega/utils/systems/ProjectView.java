@@ -17,19 +17,23 @@
 */
 
 package omega.utils.systems;
-import java.awt.BorderLayout;
+import omega.utils.UIManager;
+
+import omega.Screen;
+
+import java.io.File;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
+
+import java.awt.BorderLayout;
+
+import omega.utils.systems.creators.FileOperationManager;
+
+import omega.tree.FileTree;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-
-import omega.Screen;
-import omega.utils.UIManager;
-import omega.utils.systems.creators.FileOperationManager;
-import omega.tree.FileTree;
-
 public class ProjectView extends JDialog{
 
 	private static final long serialVersionUID = 1L;

@@ -17,12 +17,20 @@
 */
 
 package omega.utils;
-import omega.*;
-import java.util.*;
-import java.io.*;
-import omega.comp.*;
-import java.awt.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.io.File;
+
+import java.util.LinkedList;
+
+import java.awt.Window;
+
+import omega.comp.NoCaretField;
+import omega.comp.TextComp;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 public class FileSaveDialog extends JDialog{
 	private NoCaretField nameField;

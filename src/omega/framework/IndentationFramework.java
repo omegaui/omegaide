@@ -18,9 +18,11 @@
 */
 
 package omega.framework;
-import java.util.*;
-import omega.deassembler.*;
-import org.fife.ui.rtextarea.*;
+import omega.deassembler.CodeTokenizer;
+
+import java.util.LinkedList;
+
+import org.fife.ui.rtextarea.RTextArea;
 public class IndentationFramework {
 	public static void indent(RTextArea textArea){
 		LinkedList<String> lines = CodeTokenizer.tokenizeWithoutLoss(textArea.getText(), '\n');

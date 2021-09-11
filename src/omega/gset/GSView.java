@@ -17,20 +17,29 @@
 */
 
 package omega.gset;
-import omega.comp.*;
-import omega.utils.UIManager;
-import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.Screen;
+
 import java.awt.Dimension;
-import omega.deassembler.SourceReader;
+
 import java.awt.event.MouseAdapter;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.awt.event.MouseEvent;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import omega.deassembler.DataMember;
+import omega.deassembler.SourceReader;
+
 import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+
 import java.util.LinkedList;
+
 import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class GSView extends JDialog{
@@ -51,6 +60,7 @@ public class GSView extends JDialog{
 		setUndecorated(true);
 		setSize(600, 500);
 		setLocationRelativeTo(screen);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
 		setResizable(false);
 		init();
 	}
@@ -68,7 +78,7 @@ public class GSView extends JDialog{
           
 		TextComp titleComp = new TextComp("Generate Getters/Setters", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		titleComp.setBounds(30, 0, getWidth() - 30, 30);
-		titleComp.setFont(PX18);
+		titleComp.setFont(PX16);
 		titleComp.setClickable(false);
 		titleComp.addMouseMotionListener(new MouseAdapter(){
 			@Override

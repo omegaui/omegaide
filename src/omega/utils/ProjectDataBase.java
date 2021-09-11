@@ -19,13 +19,14 @@
 
 package omega.utils;
 import omega.Screen;
-import omega.deassembler.Assembly;
-import java.io.PrintWriter;
-import java.io.File;
+
 import java.util.LinkedList;
+
+import java.io.File;
+import java.io.PrintWriter;
+
 import omega.database.DataBase;
 import omega.database.DataEntry;
-
 public class ProjectDataBase extends DataBase{
 	public String jdkPath;
 	public String mainClass;

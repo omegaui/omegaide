@@ -17,13 +17,24 @@
 */
 
 package omega.utils;
-import omega.*;
-import java.awt.event.*;
-import omega.comp.*;
-import javax.imageio.*;
-import java.awt.image.*;
-import java.awt.*;
-import javax.swing.*;
+import omega.Screen;
+
+import javax.imageio.ImageIO;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.image.BufferedImage;
+
+import java.awt.GradientPaint;
+import java.awt.GraphicsEnvironment;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
 public class InfoScreen extends JDialog {

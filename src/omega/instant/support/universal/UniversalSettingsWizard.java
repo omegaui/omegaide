@@ -17,13 +17,25 @@
 */
 
 package omega.instant.support.universal;
-import omega.*;
-import java.io.*;
-import omega.utils.*;
-import java.awt.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.io.File;
+
+import omega.utils.FileSelectionDialog;
+
+import java.awt.Window;
+import java.awt.Dimension;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+import omega.comp.FlexPanel;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 public class UniversalSettingsWizard extends JDialog{
 	private TextComp titleComp;

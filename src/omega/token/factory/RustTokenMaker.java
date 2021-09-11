@@ -17,8 +17,16 @@
 */
 
 package omega.token.factory;
-import javax.swing.text.*;
-import org.fife.ui.rsyntaxtextarea.*;
+import javax.swing.text.Segment;
+
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
+import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.Token;
 public class RustTokenMaker extends AbstractTokenMaker {
 	private TokenMap tokenMap;
 	public RustTokenMaker(){

@@ -17,13 +17,16 @@
 */
 
 package omega.deassembler;
-import java.io.File;
 import omega.Screen;
-import java.util.StringTokenizer;
-import omega.jdk.JDKManager;
-import omega.framework.CodeFramework;
-import java.util.LinkedList;
 
+import java.io.File;
+
+import omega.framework.CodeFramework;
+
+import omega.jdk.JDKManager;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 public class SourceReader {
 	public class Import{
 		public String pack;

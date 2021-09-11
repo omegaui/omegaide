@@ -17,14 +17,17 @@
 */
 
 package omega.comp;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
+
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Shape;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
 import javax.swing.JTextField;
 public class RTextField extends JTextField{
 	//R means Round

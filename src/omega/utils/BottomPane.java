@@ -17,16 +17,19 @@
 */
 
 package omega.utils;
-import java.awt.Graphics;
-import omega.comp.RTextField;
-import java.awt.event.MouseEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
 import omega.Screen;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.awt.Dimension;
-import java.awt.BorderLayout;
+import java.awt.Graphics;
+
 import omega.comp.TextComp;
+import omega.comp.RTextField;
+
 import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class BottomPane extends JPanel {

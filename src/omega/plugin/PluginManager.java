@@ -17,9 +17,14 @@
 */
 
 package omega.plugin;
-import java.net.*;
-import java.util.*;
-import java.io.*;
+import java.net.URLClassLoader;
+import java.net.URL;
+
+import java.io.File;
+import java.io.PrintWriter;
+
+import java.util.LinkedList;
+import java.util.Scanner;
 public class PluginManager {
 	public class Plug {
 		public String name;

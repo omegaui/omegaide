@@ -17,12 +17,14 @@
 */
 
 package omega.comp;
-import java.awt.image.BufferedImage;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Color;
+
+import java.awt.image.BufferedImage;
 public class ToggleComp extends TextComp {
 	
 	private volatile boolean state = false;

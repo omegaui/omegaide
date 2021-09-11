@@ -17,14 +17,26 @@
 */
 
 package omega.plugin;
-import java.io.*;
-import java.util.*;
-import omega.*;
-import omega.utils.*;
-import omega.comp.*;
-import java.awt.image.*;
-import java.awt.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.awt.Graphics;
+
+import omega.utils.ChoiceDialog;
+import omega.utils.IconManager;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import java.util.LinkedList;
+import java.util.Scanner;
+
+import java.awt.image.BufferedImage;
+
+import omega.comp.TextComp;
+
+import javax.swing.JDialog;
+
 import static omega.utils.UIManager.*;
 public class Installer extends JDialog {
 	private Updater updater;

@@ -17,11 +17,17 @@
 */
 
 package omega.utils;
-import java.util.*;
-import java.awt.*;
-import omega.comp.*;
-import omega.*;
-import javax.swing.*;
+import omega.Screen;
+
+import java.util.LinkedList;
+
+import java.awt.Graphics2D;
+
+import omega.comp.TextComp;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class ExtendedBuildPathManager extends JDialog {

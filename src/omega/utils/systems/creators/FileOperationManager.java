@@ -17,30 +17,34 @@
 */
 
 package omega.utils.systems.creators;
-import java.io.PrintWriter;
+import omega.Screen;
+
+import omega.utils.Editor;
+
 import java.awt.Graphics;
-import omega.utils.UIManager;
-import java.awt.Color;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
+import omega.comp.TextComp;
 import omega.comp.NoCaretField;
 
-import omega.Screen;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.StringTokenizer;
-import omega.utils.Editor;
-import java.io.File;
-import java.util.LinkedList;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JDialog;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import omega.comp.TextComp;
+import javax.swing.JScrollPane;
 import static omega.utils.UIManager.*;
-
+import static omega.comp.Animations.*;
 public class FileOperationManager extends JDialog {
      private static TextComp titleComp;
      private static TextComp closeComp;

@@ -17,10 +17,16 @@
 */
 
 package omega.snippet;
-import java.io.*;
-import java.util.*;
-import javax.swing.text.*;
-import javax.swing.*;
+import javax.swing.text.Document;
+
+import javax.swing.JTextArea;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+import java.util.Scanner;
+
+import java.io.File;
+import java.io.PrintWriter;
 public class SnippetBase {
 	private static File dataBase = new File(".omega-ide" + File.separator + ".snippets");
 	private static LinkedList<Snippet> snipps = new LinkedList<>();

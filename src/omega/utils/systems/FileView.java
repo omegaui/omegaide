@@ -17,19 +17,34 @@
 */
 
 package omega.utils.systems;
-import omega.instant.support.java.JavaSyntaxParser;
-import omega.*;
-import omega.launcher.*;
-import java.util.*;
-import omega.deassembler.*;
-import java.io.*;
-import java.awt.*;
-import omega.jdk.*;
-import omega.search.*;
-import omega.utils.systems.creators.*;
-import omega.instant.support.*;
-import omega.utils.*;
+import omega.Screen;
 
+import omega.launcher.Launcher;
+
+import omega.instant.support.java.JavaSyntaxParser;
+
+import java.util.LinkedList;
+
+import omega.deassembler.Assembly;
+
+import java.io.File;
+
+import java.awt.FlowLayout;
+
+import omega.jdk.JDKManager;
+
+import omega.search.SearchWindow;
+
+import omega.utils.systems.creators.FileCreator;
+
+import omega.instant.support.ArgumentManager;
+
+import omega.utils.ProjectDataBase;
+import omega.utils.BuildPathManager;
+import omega.utils.ExtendedBuildPathManager;
+import omega.utils.DataManager;
+import omega.utils.FileSelectionDialog;
+import omega.utils.Editor;
 public class FileView extends View {
 
 	private static String projectPath = null;

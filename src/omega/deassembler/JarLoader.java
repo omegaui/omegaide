@@ -17,12 +17,23 @@
 */
 
 package omega.deassembler;
-import java.util.zip.*;
-import java.util.jar.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.lang.reflect.*;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipEntry;
+
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import java.util.LinkedList;
+import java.util.Enumeration;
+import java.util.StringTokenizer;
 public class JarLoader {
 	public String jarPath;
 	public LinkedList<ByteReader> readers = new LinkedList<>();

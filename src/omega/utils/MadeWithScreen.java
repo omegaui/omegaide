@@ -17,21 +17,26 @@
 */
 
 package omega.utils;
-import java.awt.geom.RoundRectangle2D;
+import java.net.URL;
+
+import java.awt.image.BufferStrategy;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Desktop;
+
+import omega.comp.TextComp;
+import omega.comp.FlexPanel;
 
 import javax.swing.JDialog;
-import java.net.URL;
-import java.awt.Desktop;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
-import omega.comp.TextComp;
-import java.awt.image.BufferStrategy;
-import java.awt.Graphics;
-import java.awt.BufferCapabilities;
-import java.awt.Color;
-import omega.comp.FlexPanel;
 import javax.swing.JFrame;
+
+import java.awt.geom.RoundRectangle2D;
+
 import static omega.utils.UIManager.*;
 public class MadeWithScreen extends JDialog{
      private TextComp rImageComp;

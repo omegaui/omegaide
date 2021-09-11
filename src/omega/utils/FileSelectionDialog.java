@@ -19,15 +19,33 @@
 
 package omega.utils;
 import omega.Screen;
-import java.awt.image.BufferedImage;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import omega.comp.*;
-import javax.swing.*;
-import static omega.utils.UIManager.*;
 
+import java.awt.image.BufferedImage;
+
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Dimension;
+import java.awt.Color;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.io.File;
+
+import java.util.LinkedList;
+
+import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+import omega.comp.ToggleComp;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+
+import static omega.utils.UIManager.*;
 public class FileSelectionDialog extends JDialog{
 
      private TextComp titleComp;

@@ -17,26 +17,29 @@
 */
 
 package omega.deassembler;
-import omega.utils.DataManager;
-import omega.utils.UIManager;
 import omega.framework.CodeFramework;
-import java.awt.Rectangle;
+
+import omega.utils.DataManager;
 import omega.utils.Editor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
+
 import java.awt.Font;
-import java.awt.event.KeyEvent;
-import javax.swing.JTextArea;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import omega.comp.TextComp;
+
 import java.util.LinkedList;
+
 import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 
 import static omega.utils.UIManager.*;
-
 public class ContentWindow extends JPanel implements KeyListener{
      public LinkedList<TextComp> hints = new LinkedList<>();
      private final Font PX12 = new Font("Ubuntu", Font.BOLD, 12);

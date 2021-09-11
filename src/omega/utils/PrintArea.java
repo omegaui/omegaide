@@ -17,21 +17,28 @@
 */
 
 package omega.utils;
-import omega.token.factory.*;
-import java.awt.image.BufferedImage;
-import java.io.PrintWriter;
-import javax.swing.JTextField;
 import omega.comp.TextComp;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.JComponent;
-import omega.Screen;
+
+import java.awt.image.BufferedImage;
+
 import java.awt.event.MouseListener;
-import java.awt.Font;
+
+import omega.token.factory.ShellTokenMaker;
+
 import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
+import java.awt.Font;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+
+import java.io.PrintWriter;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class PrintArea extends JPanel {

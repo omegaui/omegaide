@@ -16,17 +16,17 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.comp;
-import java.awt.Component;
-import javax.swing.JPanel;
-import java.awt.GradientPaint;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
-import javax.swing.JFrame;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.GradientPaint;
+
 import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 public class SwitchComp extends JComponent {
      private volatile boolean enter;

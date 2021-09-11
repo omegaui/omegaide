@@ -17,9 +17,13 @@
 */
 
 package omega.database;
+import java.util.LinkedList;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.FileOutputStream;
 public class DataBase{
 	private File dataBaseFile;
 	private LinkedList<DataEntry> entries = new LinkedList<>();

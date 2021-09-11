@@ -17,23 +17,28 @@
 */
 
 package omega.utils;
-import java.awt.*;
-import java.awt.event.*;
-import omega.comp.*;
 import omega.Screen;
-import omega.utils.UIManager;
-import omega.utils.DataManager;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
+
 import java.io.File;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import omega.comp.TextComp;
+
 import java.util.LinkedList;
 import java.util.Scanner;
+
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+
 import static omega.utils.UIManager.*;
 public class SDKSelector extends JDialog {
 	private JScrollPane scrollPane;

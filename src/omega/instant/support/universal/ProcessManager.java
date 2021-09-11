@@ -17,13 +17,17 @@
 */
 
 package omega.instant.support.universal;
-import omega.utils.IconManager;
-import java.io.PrintWriter;
-import java.util.Scanner;
 import omega.Screen;
+
 import omega.utils.PrintArea;
+import omega.utils.IconManager;
+
 import java.io.File;
+import java.io.PrintWriter;
+
 import java.util.LinkedList;
+import java.util.Scanner;
+
 import omega.database.DataBase;
 public class ProcessManager extends DataBase{
      public static LinkedList<ProcessData> dataSet = new LinkedList<>();

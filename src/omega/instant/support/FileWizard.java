@@ -17,30 +17,33 @@
 */
 
 package omega.instant.support;
-import java.util.LinkedList;
-import omega.utils.FileSelectionDialog;
-import java.awt.Graphics;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.awt.Color;
-import omega.comp.NoCaretField;
-import omega.popup.*;
-import omega.utils.IconManager;
 import omega.Screen;
-import java.awt.event.MouseEvent;
-import omega.utils.UIManager;
-import java.awt.Component;
-import java.util.StringTokenizer;
-import java.io.File;
+
+import java.awt.Graphics;
+
 import java.awt.event.MouseAdapter;
-import javax.swing.JFileChooser;
-import javax.swing.JTextField;
-import javax.swing.JFrame;
+import java.awt.event.MouseEvent;
+
+import omega.popup.OPopupWindow;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileOutputStream;
+
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import omega.utils.FileSelectionDialog;
+import omega.utils.IconManager;
+
 import omega.comp.TextComp;
+import omega.comp.NoCaretField;
+
 import javax.swing.JDialog;
+import javax.swing.JFrame;
+
 
 import static omega.utils.UIManager.*;
-
 public class FileWizard extends JDialog{
 	public TextComp parentRoot;
 	public TextComp typeBtn;
@@ -159,6 +162,7 @@ public class FileWizard extends JDialog{
 		createBtn.setBounds(getWidth()/2, getHeight() - 40, getWidth()/2, 40);
 		createBtn.setFont(PX16);
           createBtn.setArc(0, 0);
+          nameField.setOnAction(createBtn.runnable);
 		add(createBtn);
 	}
 

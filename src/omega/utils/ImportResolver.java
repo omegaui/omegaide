@@ -17,13 +17,26 @@
 */
 
 package omega.utils;
-import omega.jdk.*;
-import omega.*;
-import java.awt.*;
-import java.awt.event.*;
-import omega.comp.*;
-import java.util.*;
-import javax.swing.*;
+import omega.jdk.Import;
+
+import omega.Screen;
+
+import java.awt.Graphics;
+import java.awt.Dimension;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import omega.comp.TextComp;
+
+import java.util.LinkedList;
+
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JPanel;
+
+import java.awt.geom.RoundRectangle2D;
+
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class ImportResolver extends JDialog {
@@ -43,6 +56,7 @@ public class ImportResolver extends JDialog {
           setLocationRelativeTo(null);
           setLayout(null);
           setBackground(c2);
+          setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
           init();
 	}
 
@@ -52,7 +66,7 @@ public class ImportResolver extends JDialog {
           scrollPane.setBounds(0, 40, getWidth(), getHeight() - 40);
           add(scrollPane);
           
-     	TextComp titleComp = new TextComp("Select The Imports And Click \'x\'", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
+     	TextComp titleComp = new TextComp("Select the imports and Click \'x\'", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
           titleComp.setBounds(40, 0, getWidth() - 40, 40);
           titleComp.setFont(PX16);
           titleComp.setClickable(false);
