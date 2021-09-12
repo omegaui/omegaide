@@ -15,6 +15,8 @@
 package omega;
 import omega.utils.IconManager;
 
+import javax.swing.JFrame;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -32,8 +34,6 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-
-import javax.swing.JFrame;
 
 import static omega.Screen.VERSION;
 import static omega.utils.UIManager.*;

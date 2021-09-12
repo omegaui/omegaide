@@ -62,6 +62,7 @@ public class SourceReader {
 	public String parent = "Object";
 	public String[] features;
 	public LinkedList<DataMember> dataMembers = new LinkedList<>();
+	public LinkedList<DataMember> ownedDataMembers = new LinkedList<>();
 	public LinkedList<SourceReader> internalReaders = new LinkedList<>();
 	public LinkedList<Import> imports = new LinkedList<>();
 	public LinkedList<DataBlock> dataBlocks = new LinkedList<>();
@@ -508,8 +509,10 @@ public class SourceReader {
                                              if(name.contains(".")) continue;
                                              type = evaluateType(type);
                                              name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
-                                             if(type != null)
+                                             if(type != null){
 									     dataMembers.add(new DataMember(access, mods, type, name + "()", parameters, lineN));
+						     			ownedDataMembers.add(dataMembers.getLast());
+                                             }
 									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -523,8 +526,10 @@ public class SourceReader {
                                              if(name.contains(".")) continue;
                                              type = evaluateType(type);
                                              name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
-                                             if(type != null)
+                                             if(type != null){
 									     dataMembers.add(new DataMember(access, "", type, name + "()", parameters, lineN));
+						     			ownedDataMembers.add(dataMembers.getLast());
+                                             }
 									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -535,6 +540,7 @@ public class SourceReader {
                                         if(name.contains(".")) 
                                              continue;
 								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters, lineN));
+						     	ownedDataMembers.add(dataMembers.getLast());
 								dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 								readBlock = true;
 								blockCode += line + "\n";
@@ -564,15 +570,19 @@ public class SourceReader {
 							String access = cL;
                                    if(name.contains(".")) continue;
                                    type = evaluateType(type);
-                                   if(type != null)
+                                   if(type != null){
 							     dataMembers.add(new DataMember(access, mods, type, name, null, lineN));
+						     	ownedDataMembers.add(dataMembers.getLast());
+                                   }
 						}
 						else{
 							String access = cL;
                                    if(name.contains(".")) continue;
                                    type = evaluateType(type);
-                                   if(type != null)
+                                   if(type != null){
 							     dataMembers.add(new DataMember(access, "", type, name, null, lineN));
+						     	ownedDataMembers.add(dataMembers.getLast());
+                                   }
 						}
 					}
 					else{
@@ -580,8 +590,10 @@ public class SourceReader {
                               if(name.contains(".")) 
                                    continue;
                               type = evaluateType(type);
-                              if(type != null)
+                              if(type != null){
 						     dataMembers.add(new DataMember("", "", type, name, null, lineN));
+						     ownedDataMembers.add(dataMembers.getLast());
+                              }
 					}
 				}
 			}

@@ -49,7 +49,6 @@ public class CodeFramework{
 		CodeFramework.editor = e;
 		CodeFramework.text = text;
 		String code = getCode(text, caret);
-		System.out.println(code);
 		lCode = "";
 		if(code != null){
 			resolving = true;

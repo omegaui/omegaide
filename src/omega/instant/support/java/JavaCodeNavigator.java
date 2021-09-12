@@ -136,17 +136,7 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 		}
 		if(dataMember != null) {
 			//Navigating to the DataMember Prototype
-			int pos = 0;
-			int line = dataMember.lineNumber;
-			String wholeText = editor.getText();
-			for(char c : wholeText.toCharArray()) {
-				if(line <= 0)
-					break;
-				if(c == '\n')
-					line--;
-				pos++;
-			}
-			editor.setCaretPosition(pos - 1);
+			editor.setCaretPosition(getLineOffset(editor, dataMember.lineNumber));
 		}
 		else{
 			//Checking for Imports
@@ -175,6 +165,19 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 
 	public boolean isExaminable(Token token){
 		return token != null && (token.isIdentifier() || token.getType() == TokenTypes.FUNCTION);
+	}
+
+	public static int getLineOffset(Editor editor, int line){
+		int pos = 0;
+		String wholeText = editor.getText();
+		for(char c : wholeText.toCharArray()) {
+			if(line <= 0)
+				break;
+			if(c == '\n')
+				line--;
+			pos++;
+		}
+		return pos - 1;
 	}
 
 	public static void install(Editor editor){

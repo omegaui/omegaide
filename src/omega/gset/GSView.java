@@ -188,7 +188,7 @@ public class GSView extends JDialog{
 			this.className = reader.className;
 			int y = 0;
 			
-			for(DataMember d : reader.dataMembers) {
+			for(DataMember d : reader.ownedDataMembers) {
 				if(d.modifier != null && !d.modifier.contains("final")){
 					if(d.parameters == null){
 						TextComp textComp = new TextComp(d.name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});

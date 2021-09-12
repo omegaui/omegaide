@@ -57,6 +57,8 @@ import java.awt.Dimension;
 
 import omega.instant.support.java.JavaErrorPanel;
 import omega.instant.support.java.JavaCodeNavigator;
+import omega.instant.support.java.JavaJumpToDefinitionPanel;
+import omega.instant.support.java.JavaCommentMarker;
 
 import omega.deassembler.ContentWindow;
 import omega.deassembler.ContentTokenizer;
@@ -113,6 +115,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	public JavaErrorPanel javaErrorPanel;
 	
+	public JavaJumpToDefinitionPanel javaJumpToDefinitionPanel;
+	
 	private static volatile boolean ctrl;
 	private static volatile boolean shift;
 	private static volatile boolean o; // Auto-Imports
@@ -126,6 +130,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static volatile boolean l; // instant launch
 	private static volatile boolean f1; // instant run
 	private static volatile boolean d; // duplicate
+	private static volatile boolean j; // jump-to-definition
+	private static volatile boolean slash; // comment-out
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -170,6 +176,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		
 		javaErrorPanel = new JavaErrorPanel(this);
 		add(javaErrorPanel);
+		
+		javaJumpToDefinitionPanel = new JavaJumpToDefinitionPanel(this);
+		add(javaJumpToDefinitionPanel);
 	}
 	
 	private void initView() {
@@ -609,15 +618,29 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			f1 = true;
 		else if(code == KeyEvent.VK_D)
 			d = true;
-		
+		else if(code == KeyEvent.VK_J)
+			j = true;
+		else if(code == KeyEvent.VK_SLASH)
+			slash = true;
+
 		if(ctrl && shift && f) {
 			fAndR.setVisible(!fAndR.isVisible());
 			f = false;
+			shift = false;
+			ctrl = false;
 		}
 		
 		if(ctrl && s){
 			saveCurrentFile();
 			s = false;
+			ctrl = false;
+		}
+		
+		if(ctrl && j){
+			javaJumpToDefinitionPanel.setVisible(true);
+			j = false;
+			ctrl = false;
+			e.consume();
 		}
 		
 		if(ctrl && d){
@@ -642,11 +665,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			else
 				Screen.getBuildView().compileProject();
 			b = false;
+			ctrl = false;
 		}
 		
 		if(ctrl && shift && c){
 			saveImage();
 			c = false;
+			shift = false;
+			ctrl = false;
 		}
 		
 		if(code == KeyEvent.VK_TAB){
@@ -687,21 +713,29 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
 				ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
 				o = false;
+				shift = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
 				Generator.gsView.genView(this);
 				g = false;
+				shift = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && !shift && i && currentFile.getName().endsWith(".java")) {
 				IndentationFramework.indent(this);
 				i = false;
+				shift = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && shift && i && currentFile.getName().endsWith(".java")) {
 				Generator.overView.genView(this);
 				i = false;
+				shift = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
@@ -711,18 +745,27 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					Screen.getRunView().run();
 				shift = false;
 				r = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
 				Screen.getRunView().instantRun();
 				f1 = false;
 				shift = false;
+				ctrl = false;
 			}
 			
 			if(ctrl && shift && l){
 				ToolMenu.processWizard.launch(currentFile);
 				shift = false;
 				l = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && slash){
+				JavaCommentMarker.markSingleLineComment(this, getCaretLineNumber());
+				slash = false;
+				e.consume();
 			}
 			
 			if(contentWindow.isVisible()) {
@@ -793,6 +836,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			f1 = false;
 		else if(code == KeyEvent.VK_D)
 			d = false;
+		else if(code == KeyEvent.VK_J)
+			j = false;
+		else if(code == KeyEvent.VK_SLASH)
+			slash = false;
 		
 		if(currentFile != null) {
 			//Code Assist
@@ -994,6 +1041,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
+		javaJumpToDefinitionPanel.setVisible(false);
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 	}
 	@Override
