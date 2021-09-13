@@ -135,6 +135,7 @@ public class ToolMenu extends JPanel {
 	public static ConsoleSelector consoleSelector;
 	public static GradleBuildScriptManager gradleBuildScriptManager;
 	public static InstructionWindow instructionWindow;
+	public static ColorPicker colorPicker;
      
 	private int pressX;
 	private int pressY;
@@ -175,6 +176,7 @@ public class ToolMenu extends JPanel {
 			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
 			projectDistructionWizard = new ProjectDistructionWizard(screen);
 			instructionWindow = new InstructionWindow(screen);
+			colorPicker = new ColorPicker();
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -838,7 +840,8 @@ public class ToolMenu extends JPanel {
           .createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
 		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
 		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->omega.gset.Generator.gsView.genView(screen.getCurrentEditor()))
-		.createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()));
+		.createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()))
+		.createItem("Color Picker", IconManager.fluentcolorwheelImage, ()->colorPicker.pickColor());
 	}
 	private void initProjectPopup() {
 		JFileChooser fileC = new JFileChooser();
