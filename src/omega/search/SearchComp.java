@@ -37,7 +37,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	private TextComp bottomComp;
 	
 	public SearchComp(SearchWindow window, File file){
-		super(null, TOOLMENU_GRADIENT, c2);
+		super(null, back1, c2);
 		setArc(0, 0);
 		setPaintGradientEnabled(true);
 
@@ -81,13 +81,13 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		tagComp.addMouseListener(this);
 		add(tagComp);
 
-		rightComp = new TextComp("R", "Open on Right-Tab-Panel", back3, ALPHA, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnRightTabPanel(file));
+		rightComp = new TextComp("R", "Open on Right-Tab-Panel", back1, ALPHA, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnRightTabPanel(file));
 		rightComp.setBounds(getWidth() - 34 - 34, 2, 25, 25);
 		rightComp.setFont(UBUNTU_PX12);
 		rightComp.setArc(0, 0);
 		add(rightComp);
 
-		bottomComp = new TextComp("B", "Open on Bottom-Tab-Panel", back3, ALPHA, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
+		bottomComp = new TextComp("B", "Open on Bottom-Tab-Panel", back1, ALPHA, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
 		bottomComp.setBounds(getWidth() - 37, 2, 25, 25);
 		bottomComp.setFont(UBUNTU_PX12);
 		bottomComp.setArc(0, 0);
@@ -103,13 +103,13 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	
 	@Override
 	public void mouseEntered(MouseEvent e){
-		setBackground(TOOLMENU_COLOR1_SHADE);
-		setAccentColor(TOOLMENU_COLOR2_SHADE);
+		setBackground(back2);
+		setAccentColor(back3);
 	}
 	
 	@Override
 	public void mouseExited(MouseEvent e){
-		setBackground(TOOLMENU_GRADIENT);
+		setBackground(back1);
 		setAccentColor(c2);
 	}
 

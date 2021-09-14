@@ -176,7 +176,7 @@ public class ToolMenu extends JPanel {
 			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
 			projectDistructionWizard = new ProjectDistructionWizard(screen);
 			instructionWindow = new InstructionWindow(screen);
-			colorPicker = new ColorPicker();
+			colorPicker = new ColorPicker(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);

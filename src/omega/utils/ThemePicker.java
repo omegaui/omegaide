@@ -43,7 +43,7 @@ public class ThemePicker extends JDialog {
      private Color c2 = Color.WHITE;
      private Color c3 = new Color(126, 20, 219);
      private Color b1 = Color.decode("#132162");
-     private Color b2 = Color.decode("#020E0F");
+     private Color b2 = Color.decode("#070707");
      private Color b3 = Color.decode("#3CE5DD");
      private int pressX;
      private int pressY;

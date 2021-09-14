@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import omega.Screen;
+
 import java.awt.datatransfer.StringSelection;
 
 import java.awt.geom.RoundRectangle2D;
@@ -36,10 +38,11 @@ import omega.comp.NoCaretField;
 
 import javax.swing.JFrame;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
-public class ColorPicker extends JFrame{
+public class ColorPicker extends JDialog{
 	
 	private Color color;
 	private Color previewColor;
@@ -71,8 +74,9 @@ public class ColorPicker extends JFrame{
 
 	private int alphaValue = 255;
 	
-	public ColorPicker(){
-		super("Color Picker");
+	public ColorPicker(Screen screen){
+		super(screen, false);
+		setTitle("Color Picker");
 		setUndecorated(true);
 		setResizable(false);
 		setSize(400, 320);
@@ -83,7 +87,7 @@ public class ColorPicker extends JFrame{
 		setLayout(null);
 		setBackground(c2);
 		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		init();
 	}
 
@@ -108,7 +112,7 @@ public class ColorPicker extends JFrame{
 		blueTileComp = new ColorComp(Color.BLUE, 255, this::genPreview);
 		blueTileComp.setBounds(60, 40, 20, 256);
 		add(blueTileComp);
-
+		
 		bigPreviewComp = new TextComp("", c2, c2, c2, null){
 			@Override
 			public void draw(Graphics2D g){
@@ -247,7 +251,7 @@ public class ColorPicker extends JFrame{
 		});
 		add(colorCodeField);
 
-		copyHexComp = new TextComp("Copy Hex", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		copyHexComp = new TextComp("Copy Hex", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"#" + Integer.toHexString(previewColor.getRGB()).substring(2) + "\""), null);
 		});
 		copyHexComp.setBounds(getWidth() - 90, getHeight() - 90, 80, 25);
@@ -255,7 +259,7 @@ public class ColorPicker extends JFrame{
 		copyHexComp.setArc(5, 5);
 		add(copyHexComp);
 
-		copyRgbComp = new TextComp("Copy RGB", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
+		copyRgbComp = new TextComp("Copy RGB", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(previewColor.getRed() + ", " + previewColor.getGreen() + ", " + previewColor.getBlue() + ", " + previewColor.getAlpha()), null);
 		});
 		copyRgbComp.setBounds(getWidth() - 90, getHeight() - 60, 80, 25);
@@ -263,7 +267,7 @@ public class ColorPicker extends JFrame{
 		copyRgbComp.setArc(5, 5);
 		add(copyRgbComp);
 		
-		closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+		closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			dispose();
 		});
 		closeComp.setBounds(getWidth() - 90, getHeight() - 30, 80, 25);

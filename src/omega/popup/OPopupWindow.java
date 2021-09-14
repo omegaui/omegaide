@@ -58,7 +58,7 @@ public class OPopupWindow extends JDialog{
           this.scrollable = scrollable;
           setUndecorated(true);
           setLayout(scrollable ? new BorderLayout() : null);
-          setBackground(omega.utils.UIManager.c2);
+          setBackground(omega.utils.UIManager.back1);
           setForeground(omega.utils.UIManager.TOOLMENU_COLOR1);
           setType(JWindow.Type.POPUP);
           addFocusListener(new FocusAdapter(){

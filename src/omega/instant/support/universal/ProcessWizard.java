@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.universal;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.Screen;
 
 import omega.utils.ChoiceDialog;
@@ -55,6 +57,7 @@ public class ProcessWizard extends JDialog{
 		setLocationRelativeTo(null);
 		JPanel panel = new JPanel(null);
 		panel.setBackground(c2);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
 		setContentPane(panel);
 		setBackground(c2);
 		setLayout(null);
