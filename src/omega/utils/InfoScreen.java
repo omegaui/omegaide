@@ -45,7 +45,7 @@ public class InfoScreen extends JDialog {
      private String h2 = "github.com/omegaui/omegaide";
      private String p1 = "the blazing fast java IDE";
      
-	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, TOOLMENU_GRADIENT);
+	private static GradientPaint gradient = new GradientPaint(0, 0, back1, 300, 300, back3);
 	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
 
      private BufferedImage image;
@@ -87,12 +87,6 @@ public class InfoScreen extends JDialog {
           g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
           g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
           
-          g.setColor(c2);
-		if(Screen.onWindows())
-			g.fillRect(0, 0, getWidth(), getHeight());
-		else
-			g.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
-		
           g.setPaint(gradient);
 		if(Screen.onWindows())
 			g.fillRect(0, 0, getWidth(), getHeight());

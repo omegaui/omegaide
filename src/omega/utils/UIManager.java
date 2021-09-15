@@ -103,7 +103,7 @@ public class UIManager extends DataBase {
 	public static final Color color7 = new Color(0, 255, 0, 130);
 
 	//Some Backgrounds
-	public static Color back1 = Color.decode("#fdfdfd");
+	public static Color back1 = Color.decode("#f1f1f1");
 	public static Color back2 = Color.decode("#f0f0f0");
 	public static Color back3 = Color.decode("#D3D4D4");
 

@@ -57,10 +57,10 @@ public class MadeWithScreen extends JDialog{
           setSize(400, 400);
           setLocationRelativeTo(null);
           setBackground(new Color(0, 0, 0, 0));
-          FlexPanel panel = new FlexPanel(null, TOOLMENU_COLOR1, TOOLMENU_COLOR2);
+          FlexPanel panel = new FlexPanel(null, back1, back3);
           panel.setPaintGradientEnabled(true);
           panel.setArc(0, 0);
-          setShape(new RoundRectangle2D.Float(0, 0, 400, 400, 40, 40));
+          setShape(new RoundRectangle2D.Float(0, 0, 400, 400, 20, 20));
           setContentPane(panel);
           addMouseListener(new MouseAdapter(){
                @Override
@@ -71,7 +71,7 @@ public class MadeWithScreen extends JDialog{
           init();
      }
      public void init(){
-          TextComp mes = new TextComp("Made in combination with", getBackground(), getBackground(), c2, null);
+          TextComp mes = new TextComp("Written Using", getBackground(), getBackground(), glow, null);
           mes.setBounds(0, 0, getWidth(), 30);
           mes.setFont(PX20);
           add(mes);
@@ -105,7 +105,6 @@ public class MadeWithScreen extends JDialog{
           });
           lafLinkComp.setBounds(120, 120, getWidth() - 200, 60);
           lafLinkComp.setFont(PX20);
-          lafImageComp.setClickable(false);
           add(lafLinkComp);
           
           TextComp lafMessage = new TextComp("with minor tweaks", c2, c2, TOOLMENU_COLOR4, null);
@@ -129,12 +128,11 @@ public class MadeWithScreen extends JDialog{
           fluentImageComp.setClickable(false);
           add(fluentImageComp);
           
-          fluentLinkComp = new TextComp("Fluent Icons", "icons8.com", c2, c2, TOOLMENU_COLOR2, ()->{
+          fluentLinkComp = new TextComp("Fluent Icons", "https://icons8.com", c2, c2, TOOLMENU_COLOR2, ()->{
                openURl(fluentLinkComp.getToolTipText());
           });
           fluentLinkComp.setBounds(120, 190, getWidth() - 200, 60);
           fluentLinkComp.setFont(PX20);
-          fluentLinkComp.setClickable(false);
           add(fluentLinkComp);
           
           TextComp fluentMessage = new TextComp("without any tweaks", c2, c2, TOOLMENU_COLOR4, null);
@@ -148,12 +146,11 @@ public class MadeWithScreen extends JDialog{
           omegauiImageComp.setClickable(false);
           add(omegauiImageComp);
           
-          omegauiLinkComp = new TextComp("Omega UI", "github.com/omegaui", c2, c2, TOOLMENU_COLOR3, ()->{
+          omegauiLinkComp = new TextComp("Omega UI", "https://github.com/omegaui", c2, c2, TOOLMENU_COLOR3, ()->{
                openURl(omegauiLinkComp.getToolTipText());
           });
           omegauiLinkComp.setBounds(120, 260, getWidth() - 190, 70);
           omegauiLinkComp.setFont(PX26);
-          omegauiLinkComp.setClickable(false);
           add(omegauiLinkComp);
           
           TextComp omegaMessage = new TextComp("super flexible ui elements", c2, c2, TOOLMENU_COLOR4, null);
