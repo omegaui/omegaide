@@ -116,6 +116,7 @@ public class UIManager extends DataBase {
      public static final Font PX22 = new Font(fontName, Font.BOLD, 22);
      public static final Font PX26 = new Font(fontName, Font.BOLD, 26);
 	public static final Font PX28 = new Font(fontName, Font.BOLD, 28);
+	public static final Font PX36 = new Font(fontName, Font.BOLD, 36);
      public static final Font PX40 = new Font(fontName, Font.BOLD, 40);
 	public static final Font UBUNTU_PX12 = new Font("Ubuntu", Font.BOLD, 12);
 	public static final Font UBUNTU_PX14 = new Font("Ubuntu", Font.BOLD, 14);

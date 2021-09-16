@@ -93,7 +93,7 @@ public class InfoScreen extends JDialog {
 		else
 			g.fillRoundRect(0, 0, getWidth(), getHeight(), 80, 80);
 			
-          g.drawImage(image, getWidth()/2 - 64, 40, 128, 128, null);
+          g.drawImage(image, getWidth()/2 - 64, 30, 128, 128, null);
           
           g.setColor(c3);
           g.setFont(PX26);

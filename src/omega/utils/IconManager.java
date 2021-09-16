@@ -105,7 +105,6 @@ public class IconManager {
      public static BufferedImage packImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage methImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
      public static BufferedImage varImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-     public static BufferedImage ideImage = getImage("/omega_ide_icon32.png");
      public static BufferedImage ideImage64 = getImage("/omega_ide_icon64.png");
      static{
           paintNewImage(newImage.getGraphics());
@@ -195,7 +194,10 @@ public class IconManager {
           }
           try {
                return ImageIO.read(IconManager.class.getResource(path));
-          }catch(Exception e) {e.printStackTrace();}
+          }
+          catch(Exception e) {
+          	e.printStackTrace();
+     	}
           return null;
      }
 
@@ -208,7 +210,10 @@ public class IconManager {
 		try {
 			BufferedImage image = ImageIO.read(IconManager.class.getResource(path));
 			return new ImageIcon(image);
-		}catch(Exception e) {e.printStackTrace();}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

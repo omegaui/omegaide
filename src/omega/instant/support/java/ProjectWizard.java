@@ -114,7 +114,7 @@ public class ProjectWizard extends JDialog{
           jdkLabel.setClickable(false);
           add(jdkLabel);
 
-          jdkComp = new TextComp("Select JDK", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+          jdkComp = new TextComp("Select JDK", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
                if(sdkSelector == null)
                     sdkSelector = new SDKSelector(Screen.getScreen());
                sdkSelector.setVisible(true);
@@ -135,7 +135,7 @@ public class ProjectWizard extends JDialog{
           projectWorkspaceLabel.setClickable(false);
           add(projectWorkspaceLabel);
 
-          projectWorkspaceComp = new TextComp("Select Workspace", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()-> new WorkspaceSelector(Screen.getScreen()).setVisible(true));
+          projectWorkspaceComp = new TextComp("Select Workspace", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()-> new WorkspaceSelector(Screen.getScreen()).setVisible(true));
           projectWorkspaceComp.setBounds(170, 150, getWidth() - 190, 25);
           projectWorkspaceComp.setFont(PX14);
           add(projectWorkspaceComp);
@@ -146,7 +146,7 @@ public class ProjectWizard extends JDialog{
           jdkRootLabel.setClickable(false);
           add(jdkRootLabel);
 
-          jdkRootComp = new TextComp("Select JDK Root", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+          jdkRootComp = new TextComp("Select JDK Root", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
                if(fs == null)
                     fs = new FileSelectionDialog(Screen.getScreen());
                fs.setTitle("Select folder containing the JDKs");
@@ -166,12 +166,12 @@ public class ProjectWizard extends JDialog{
           hintLabel.setFont(PX14);
           add(hintLabel);
 
-          closeComp = new TextComp("Close",  TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
+          closeComp = new TextComp("Close",  TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::dispose);
           closeComp.setBounds(10, 300, (getWidth() - 20)/2, 30);
           closeComp.setFont(PX14);
           add(closeComp);
 
-          createComp = new TextComp("Create",  TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, this::create);
+          createComp = new TextComp("Create",  TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::create);
           createComp.setBounds((getWidth() - 20)/2 + 10, 300, (getWidth() - 20)/2, 30);
           createComp.setFont(PX14);
           add(createComp);

@@ -95,7 +95,7 @@ public class FontChooser extends JDialog{
           sampleField.setFont(PX16);
           add(sampleField);
      
-          TextComp label1 = new TextComp("Use Bold Style", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
+          TextComp label1 = new TextComp("Use Bold Style", back3, c2, TOOLMENU_COLOR3, null);
           label1.setBounds(320, 100, 150, 30);
           label1.setClickable(false);
           label1.setFont(PX14);
@@ -109,7 +109,7 @@ public class FontChooser extends JDialog{
           });
           add(buildComp);
 
-          TextComp label2 = new TextComp("Font Size", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
+          TextComp label2 = new TextComp("Font Size", back3, c2, TOOLMENU_COLOR3, null);
           label2.setBounds(320, 140, getWidth() - 340, 30);
           label2.setClickable(false);
           label2.setFont(PX14);
@@ -132,17 +132,19 @@ public class FontChooser extends JDialog{
           });
           add(sizeField);
 
-          closeComp = new TextComp("Close", c2, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, ()->{
+          closeComp = new TextComp("Close", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
                cancel = true;
                dispose();
           });
           closeComp.setBounds(320 + ((getWidth() - 320)/2) - 110, getHeight() - 60, 100, 30);
           closeComp.setFont(PX14);
+          closeComp.setArc(5, 5);
           add(closeComp);
 
-          applyComp = new TextComp("Apply", c2, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, this::dispose);
+          applyComp = new TextComp("Apply", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::dispose);
           applyComp.setBounds(320 + ((getWidth() - 320)/2) + 10, getHeight() - 60, 100, 30);
           applyComp.setFont(PX14);
+          applyComp.setArc(5, 5);
           add(applyComp);
      }
 

@@ -81,13 +81,13 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		tagComp.addMouseListener(this);
 		add(tagComp);
 
-		rightComp = new TextComp("R", "Open on Right-Tab-Panel", back1, ALPHA, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnRightTabPanel(file));
+		rightComp = new TextComp("R", "Open on Right-Tab-Panel", back1, back2, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnRightTabPanel(file));
 		rightComp.setBounds(getWidth() - 34 - 34, 2, 25, 25);
 		rightComp.setFont(UBUNTU_PX12);
 		rightComp.setArc(0, 0);
 		add(rightComp);
 
-		bottomComp = new TextComp("B", "Open on Bottom-Tab-Panel", back1, ALPHA, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
+		bottomComp = new TextComp("B", "Open on Bottom-Tab-Panel", back1, back2, TOOLMENU_COLOR4, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
 		bottomComp.setBounds(getWidth() - 37, 2, 25, 25);
 		bottomComp.setFont(UBUNTU_PX12);
 		bottomComp.setArc(0, 0);

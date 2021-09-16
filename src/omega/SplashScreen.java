@@ -49,6 +49,8 @@ public class SplashScreen extends JFrame{
 	private static Color PROGRESS_COLOR;
 	private static Color SHADE = TOOLMENU_GRADIENT;
 	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, SHADE);
+	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
+	private static GradientPaint gradient2 = new GradientPaint(100, 150, isDarkMode() ? TOOLMENU_COLOR3 : TOOLMENU_COLOR1, 300, 300, TOOLMENU_COLOR4);
 	private static BufferedImage image = (BufferedImage)omega.utils.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
@@ -156,14 +158,13 @@ public class SplashScreen extends JFrame{
 		g.setColor(BACK_COLOR);
 		g.setPaint(gradient);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(TITLE_COLOR);
-		g.setFont(PX40);
-		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 190);
+		g.setPaint(gradient1);
+		g.setFont(PX36);
+		g.drawString(NAME, getWidth()/2 - g.getFontMetrics().stringWidth(NAME)/2, 189);
 		g.setFont(PX26);
-		g.setColor(EDITION_COLOR);
+		g.setPaint(gradient2);
 		g.drawString(EDITION, getWidth()/2 - g.getFontMetrics().stringWidth(EDITION)/2, 190 + 30);
 		g.setFont(PX20);
-		g.setColor(VERSION_COLOR);
 		g.drawString(VERSION, getWidth()/2 - g.getFontMetrics().stringWidth(VERSION)/2, 190 + 30 + 20);
 		g.setFont(PX22);
 		g.setColor(PROGRESS_COLOR);
@@ -172,11 +173,17 @@ public class SplashScreen extends JFrame{
 		g.fillRect(getWidth()/2 - progress/2, getHeight() - 25, progress, 5);
 		g.drawString(ENCOURAGE, getWidth()/2 - g.getFontMetrics().stringWidth(ENCOURAGE)/2, getHeight() - 30);
 		g.setColor(PROGRESS_COLOR);
-		if(x == 40) ground = false;
-		else if(x == 60) ground = true;
-			if(ground) x--;
+		
+		if(x == 30) 
+			ground = false;
+		else if(x == 68) 
+			ground = true;
+			
+		if(ground) 
+			x--;
 		else
 			x++;
+		
 		int[] X = {x, x - 15, x, x - 5, x};
 		int[] Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(X, Y, X.length);

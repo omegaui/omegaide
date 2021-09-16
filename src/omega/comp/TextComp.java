@@ -48,8 +48,8 @@ public class TextComp extends JComponent{
 	
 	private int gradientMode = GRADIENT_MODE_DEFAULT;
 	
-	public int arcX = 20;
-	public int arcY = 20;
+	public int arcX = 10;
+	public int arcY = 10;
 	public int pressX;
 	public int pressY;
 	public int alignX = -1;

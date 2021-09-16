@@ -85,7 +85,7 @@ public class SourceDefender extends JDialog {
 		titleComp.setArc(0, 0);
 		add(titleComp);
 
-		TextComp openBackups = new TextComp("Browse", "Click to open backup folder in your system's shell", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		TextComp openBackups = new TextComp("Browse", "Click to open backup folder in your system's shell", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			try{
 				Desktop.getDesktop().open(new File(BACKUP_DIR));
 			}
@@ -119,7 +119,7 @@ public class SourceDefender extends JDialog {
 		sourceDefenceComp.setInBallColor(glow);
 		add(sourceDefenceComp);
 
-		TextComp createBackupComp = new TextComp("Create Backup", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		TextComp createBackupComp = new TextComp("Create Backup", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			new Thread(()->{
 				backupData();
 				setVisible(true);
