@@ -37,9 +37,9 @@
       <style token="RESERVED_WORD" fg="88580B" bold="true"/>
       <style token="RESERVED_WORD_2" fg="88580B" bold="true"/>
       <style token="ANNOTATION" fg="17B3DD"/>
-      <style token="COMMENT_DOCUMENTATION" fg="F5AA1C"/>
-      <style token="COMMENT_EOL" fg="F5AA1C"/>
-      <style token="COMMENT_MULTILINE" fg="F5AA1C"/>
+      <style token="COMMENT_DOCUMENTATION" fg="5d5d5d"/>
+      <style token="COMMENT_EOL" fg="969ba3"/>
+      <style token="COMMENT_MULTILINE" fg="5d5d5d"/>
       <style token="COMMENT_KEYWORD" fg="7D5AA4" bold="true"/>
       <style token="COMMENT_MARKUP" fg="7D5AA4"/>
       <style token="FUNCTION" fg="A19219"/>

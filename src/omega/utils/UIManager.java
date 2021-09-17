@@ -239,4 +239,3 @@ public class UIManager extends DataBase {
           UIManager.fontState = fontState;
      }
 }
-
