@@ -608,33 +608,28 @@ public class ToolMenu extends JPanel {
 	}
      
 	public void maximize(){
-		Dimension SIZE = Toolkit.getDefaultToolkit().getScreenSize();
-		if(maximized){
-			screen.setLocation(lastLocation);
-			screen.setSize(lastSize);
-		}
-		else{
-			lastLocation = screen.getLocation();
-			lastSize = screen.getSize();
-			screen.setLocation(0, 0);
-			screen.setSize((int)SIZE.getWidth(), (int)SIZE.getHeight() - 1);
-		}
+		screen.setExtendedState(!maximized ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
 		maximized = !maximized;
 	}
+	
 	public void disposeAll(){
 		screen.dispose();
 	}
+	
 	public void setTask(String task) {
 		taskMenu.setText(task);
 		taskMenu.repaint();
 	}
+	
      public static omega.utils.ToolMenuPathBox getPathBox() {
           return pathBox;
      }
+     
 	public void setMsg(String msg) {
 		taskMenu.setMsg(msg);
 		taskMenu.repaint();
 	}
+	
 	public void reshapeComp() {
 		searchComp.setBounds(getWidth() - 30, 55, 30, 30);
 		sep4.setBounds(getWidth() - 40, 50, 2, 40);

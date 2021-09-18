@@ -186,7 +186,6 @@ public class Screen extends JFrame {
 		}
 		
 		setTitle("Omega Integrated Development Environment " + VERSION);
-		setResizable(false);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
 		setLocationRelativeTo(null);
@@ -309,10 +308,11 @@ public class Screen extends JFrame {
 	public void setSize(int w, int h){
 		super.setSize(w, h);
 		int arc = 20;
-		if(w == (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth() && h >= (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 1)
+		if(w == (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth() || h >= (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 1)
 			arc = 0;
 		setShape(new RoundRectangle2D.Double(0, 0, w, h, arc, arc));
 	}
+	
 	@Override
 	public void setVisible(boolean value) {
 		if(value & screenHasProjectView) {
@@ -397,6 +397,7 @@ public class Screen extends JFrame {
 	
 	@Override
 	public void paint(Graphics g) {
+		setSize(getWidth(), getHeight());
 		super.paint(g);
 		for(Component c : getComponents())
 			c.repaint();
