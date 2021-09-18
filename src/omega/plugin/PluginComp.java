@@ -131,7 +131,7 @@ public class PluginComp extends JComponent{
 		authorComp.setClickable(false);
 		add(authorComp);
 		
-		installComp = new TextComp(inStore ? "Install" : "Uninstall", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		installComp = new TextComp(inStore ? "Install" : "Uninstall", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			String fileName = plug.fileName;
 			int res = ChoiceDialog.makeChoice("Do you want to uninstall " + plugin.getName() + "? This Operation requires IDE restart!", "Yes", "No");
 			if(res == ChoiceDialog.CHOICE1)
@@ -141,7 +141,7 @@ public class PluginComp extends JComponent{
 		installComp.setFont(PX14);
 		add(installComp);
 		
-		enableComp = new TextComp(plug.enabled ? "Disable" : "Enable", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		enableComp = new TextComp(plug.enabled ? "Disable" : "Enable", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			plug.enabled = !plug.enabled;
 			if(plug.enabled){
 				if(!plugin.needsRestart()){

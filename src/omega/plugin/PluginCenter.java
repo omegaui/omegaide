@@ -105,13 +105,12 @@ public class PluginCenter extends JDialog{
 		closeComp.setArc(0, 0);
 		add(closeComp);
 		
-		updateComp = new TextComp("Update IDE", "Check for IDE Updates", TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR4, c2, installer::checkForUpdates);
+		updateComp = new TextComp("Update IDE", "Check for IDE Updates", TOOLMENU_COLOR4_SHADE, back2, TOOLMENU_COLOR4, installer::checkForUpdates);
 		updateComp.setBounds(getWidth() - 100, 40, 90, 25);
 		updateComp.setFont(PX14);
 		add(updateComp);
 
-		
-		manageComp = new TextComp("Manage", "Manage Installed Plugins", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::setManageView){
+		manageComp = new TextComp("Manage", "Manage Installed Plugins", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, this::setManageView){
 			@Override
 			public void draw(Graphics2D g){
 				if(viewState == 1){
@@ -129,7 +128,7 @@ public class PluginCenter extends JDialog{
 		sep0.setBounds(getWidth()/2, 40, 2, 40);
 		add(sep0);
 		
-		storeComp = new TextComp("Store", "See Available Plugins", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::setStoreView){
+		storeComp = new TextComp("Store", "See Available Plugins", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, this::setStoreView){
 			@Override
 			public void draw(Graphics2D g){
 				if(viewState == 0){
@@ -200,6 +199,7 @@ public class PluginCenter extends JDialog{
 		storeScrollPane.setBounds(10, 150, getWidth() - 20, getHeight() - 160);
           add(storeScrollPane);
 	}
+	
 	public void loadManageComponents(){
 		block = 10;
 		PluginManager.plugins.forEach(plugin->{
@@ -211,6 +211,7 @@ public class PluginCenter extends JDialog{
 		});
 		managePanel.setPreferredSize(new Dimension(manageScrollPane.getWidth(), block));
 	}
+	
 	public void loadStoreComponents(){
 		notify("Checking Plugin List ... ");
 		LinkedList<PlugInfo> plugInfos = PluginInfoManager.read(Download.openStream("https://raw.githubusercontent.com/omegaui/omegaide-plugins/main/.plugInfos"));
