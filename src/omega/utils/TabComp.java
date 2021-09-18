@@ -23,104 +23,37 @@ import java.io.File;
 
 import java.awt.image.BufferedImage;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import omega.tree.Branch;
 
 import omega.popup.OPopupWindow;
+
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import omega.comp.TextComp;
 import omega.comp.FlexPanel;
 
 import java.util.LinkedList;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.Component;
-import java.awt.FlowLayout;
-
-import javax.swing.JComponent;
-
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
-public class TabComp extends JComponent {
-
-	private CloseAction closeAction;
+public class TabComp {
 	
-	public TabComp() {
-		setFocusable(false);
-		UIManager.setData(this);
-          setForeground(UIManager.TOOLMENU_COLOR1);
-		final Color fore = getForeground();
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setForeground(Color.ORANGE);
-				repaint();
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setForeground(fore);
-				repaint();
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-				setForeground(Color.GREEN);
-				repaint();
-			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				setForeground(fore);
-				repaint();
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				closeAction.onClose();
-			}
-		});
-	}
-	
-	public TabComp setOnClose(CloseAction closeAction) {
-		this.closeAction = closeAction;
-		return this;
-	}
-
-	@Override
-	public void paint(Graphics g2D) {
-		Graphics2D g = (Graphics2D)g2D;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(getForeground());
-		g.setFont(getFont());
-		g.drawString("X", 4, getFont().getSize()-3);
-	}
-
-	@Override
-	public void setFont(Font f) {
-		super.setFont(f);
-		setPreferredSize(new Dimension(16, 16));
-		setSize(getPreferredSize());
-	}
-
-	public interface CloseAction {
-		void onClose();
-	}
-	
-	public interface FocusAction {
-		void onFocus();
-	}
-
 	private static LinkedList<TextComp> areas = new LinkedList<>();
 
-	public static FlexPanel create(Component c, String name, CloseAction closeAction, FocusAction focusAction, String toolTip, OPopupWindow popUp) {
-		TabComp closeButton = new TabComp().setOnClose(closeAction);
-		closeButton.setFont(new Font("Ubuntu", Font.BOLD, 14));
+	public static FlexPanel create(Component c, String name, Runnable closeAction, Runnable focusAction, String toolTip, OPopupWindow popUp) {
+		TextComp closeButton = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR4, closeAction);
+		closeButton.setPreferredSize(new Dimension(15, 15));
+		closeButton.setFont(UBUNTU_PX12);
+		closeButton.setArc(2, 2);
 
 		String text = !toolTip.startsWith("src") ? ("{" + name + "}") : name;
 		
@@ -128,7 +61,7 @@ public class TabComp extends JComponent {
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setFont(closeButton.getFont());
+		g.setFont(UBUNTU_PX14);
 		int width = g.getFontMetrics().stringWidth(text) + 10;
 
 		TextComp comp = new TextComp(text, toolTip, TOOLMENU_GRADIENT, c2, Branch.getColor(name), null);
@@ -144,10 +77,10 @@ public class TabComp extends JComponent {
 						a.setColors(TOOLMENU_GRADIENT, c2, glow);
 					a.repaint();
 				});
-				focusAction.onFocus();
+				focusAction.run();
 			}
 		};
-		comp.setFont(closeButton.getFont());
+		comp.setFont(UBUNTU_PX14);
 		comp.addMouseListener(mouseAdapter);
 		comp.setPreferredSize(new Dimension(width, 28));
 		areas.add(comp);
@@ -165,8 +98,8 @@ public class TabComp extends JComponent {
                image = IconManager.fluentshellImage;
 
           iconButton = new TextComp(image, 25, 25, toolTip, alpha, c2, FORE, ()->{});
+          iconButton.setArc(2, 2);
 		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 20, 28));
-		iconButton.setFont(PX16);
 		
 		if(popUp != null) {
 			iconButton.addMouseListener(new MouseAdapter() {

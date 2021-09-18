@@ -55,6 +55,9 @@ public class OperationPane extends JPanel{
 		setLayout(new BorderLayout());
 		tabPane = new JTabbedPane(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabPane.setUI(new TabPaneUI());
+		tabPane.setOpaque(true);
+		tabPane.setBorder(null);
+		tabPane.setFocusable(false);
 		add(tabPane, BorderLayout.CENTER);
 		setVisible(false);
 		UIManager.setData(tabPane);

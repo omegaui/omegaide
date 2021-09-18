@@ -43,6 +43,9 @@ import java.util.LinkedList;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class TabPanel extends JPanel{
 
 	private static Screen screen;
@@ -76,6 +79,8 @@ public class TabPanel extends JPanel{
 		add(tabPane, BorderLayout.CENTER);
 
 		tabPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabPane.setBorder(null);
+		tabPane.setFocusable(false);
 		UIManager.setData(tabPane);
 		
           Graphics graphics = image.getGraphics();
@@ -102,6 +107,7 @@ public class TabPanel extends JPanel{
 		names.add(name);
 		editors.add(editor);
 		tabPane.addTab(name, panel);
+		tabPane.setBackgroundAt(tabPane.getTabCount() - 1, c2);
 		if(editor.currentFile == null) {
 			tabPane.setTabComponentAt(editors.indexOf(editor), TabComp.create(editor, name, ()->{
 				editor.closeFile();
