@@ -1,4 +1,6 @@
 package omega.search;
+import omega.tree.Branch;
+
 import omega.Screen;
 
 import java.awt.event.MouseAdapter;
@@ -48,7 +50,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	}
 	
 	public void initUI(){
-		iconComp = new TextComp(getPreferredImage(file), getHeight(), getHeight(), ALPHA, ALPHA, ALPHA, null);
+		iconComp = new TextComp(Branch.getPreferredImage(file), getHeight(), getHeight(), ALPHA, ALPHA, ALPHA, null);
 		iconComp.setBounds(0, 0, getHeight(), getHeight());
 		iconComp.setClickable(false);
 		iconComp.setArc(0, 0);
