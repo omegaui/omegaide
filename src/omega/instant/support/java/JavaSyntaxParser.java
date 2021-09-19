@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.java;
+import omega.utils.systems.BuildView;
+
 import omega.startup.Startup;
 
 import omega.utils.Editor;
@@ -210,6 +212,31 @@ public class JavaSyntaxParser {
 			if(files.isEmpty()) {
 				return null;
 			}
+
+			//Removing Old Byte Codes
+			for(String filePath : files){
+				File file = new File(filePath);
+				String name = file.getName();
+				name = name.substring(0, name.indexOf('.'));
+				String simpleName = name;
+				name += ".class";
+				String bytePath = file.getParentFile().getAbsolutePath();
+				bytePath = bytePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + 4);
+				bytePath = Screen.getFileView().getProjectPath() + File.separator + "bin" + bytePath;
+				File[] F = new File(bytePath).listFiles();
+				if(F == null || F.length == 0)
+					continue;
+				for(File fx : F){
+					if(!fx.getName().endsWith(".class"))
+						continue;
+					if(fx.getName().equals(name) || (fx.getName().startsWith(simpleName) && fx.getName().contains("$"))){
+						fx.delete();
+					}
+				}
+				F = null;
+			}
+			
+			System.gc();
 			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
 			
@@ -252,6 +279,8 @@ public class JavaSyntaxParser {
 			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
+
+			BuildView.optimizeProjectOutputs();
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
 			System.gc();
@@ -385,9 +414,13 @@ public class JavaSyntaxParser {
 	}
 
 	public static void resetHighlights(){
-		highlights.forEach(h -> h.remove());
+		highlights.forEach(h->{
+			h.editor.javaErrorPanel.setVisible(false);
+			h.remove();
+		});
 		highlights.clear();
 		
 		gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
+		omega.Screen.getScreen().getToolMenu().setTask("Hover to See Memory Statistics");
 	}
 }

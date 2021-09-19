@@ -131,7 +131,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static volatile boolean f1; // instant run
 	private static volatile boolean d; // duplicate
 	private static volatile boolean j; // jump-to-definition
-	private static volatile boolean slash; // comment-out
+	private static volatile boolean slash; // comment-out (Single-Line Only)
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -217,7 +217,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		add(contentWindow);
 	}
 	
-	public static void launchContentAssist() {
+	public void launchContentAssist() {
 		if(launched)
 			return;
 		launched = true;
@@ -229,14 +229,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			int frames = 0;
 			long timer = System.currentTimeMillis();
 			long now = 0;
+			
 			while(screen.active){
 				now = System.nanoTime();
 				delta += (now - lastTime) / ns;
 				lastTime = now;
 				if(delta >= 1){
 					try {
-						if(screen.getCurrentEditor() != null)
+						if(screen.getCurrentEditor() != null){
 							screen.getCurrentEditor().readCode();
+						}
 					}
 					catch(Exception e) {
 						e.printStackTrace();
@@ -251,6 +253,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					timer += 1000;
 					updates = 0;
 					frames = 0;
+					
+					if(DataManager.isParsingEnabled()) {
+						if(currentFile.getName().endsWith(".java")){
+							SyntaxParsers.javaSyntaxParser.parse();
+						}
+					}
 				}
 			}
 		}).start();
@@ -847,19 +855,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
 				if(DataManager.isContentAssistRealTime())
 					call = true;
-			}
-			if(DataManager.isParsingEnabled()) {
-				if(currentFile.getName().endsWith(".java")){
-					if(code != KeyEvent.VK_UP && code != KeyEvent.VK_LEFT
-					&& code != KeyEvent.VK_DOWN && code != KeyEvent.VK_RIGHT
-					&& code != KeyEvent.VK_PAGE_UP && code != KeyEvent.VK_PAGE_DOWN
-					&& code != KeyEvent.VK_END && code != KeyEvent.VK_HOME
-					&& code != KeyEvent.VK_SHIFT && code != KeyEvent.VK_F){
-						new Thread(()->{
-							SyntaxParsers.javaSyntaxParser.parse();
-						}).start();
-					}
-				}
 			}
 		}
 	}

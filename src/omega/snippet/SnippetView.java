@@ -17,159 +17,124 @@
 */
 
 package omega.snippet;
-import omega.utils.IconManager;
-import omega.utils.UIManager;
 import omega.utils.Editor;
 
 import omega.Screen;
 
-import java.io.File;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
-import org.fife.ui.rtextarea.RTextScrollPane;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-
-import java.awt.image.BufferedImage;
-
-import omega.launcher.Door;
+import java.awt.geom.RoundRectangle2D;
 
 import java.util.LinkedList;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.Theme;
 
-import java.awt.Font;
-import java.awt.Dimension;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import omega.comp.TextComp;
+import omega.comp.FlexPanel;
+import omega.comp.NoCaretField;
 
 import javax.swing.JDialog;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JPanel;
 
 import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class SnippetView extends JDialog {
 	private TextComp titleComp;
-	
-	private static final Font FONT = PX16;
+	private TextComp closeComp;
+
+	private FlexPanel snippetPanel;
+	private JScrollPane scrollPane;
+
+	private RTextScrollPane textScrollPane;
 	private RSyntaxTextArea textArea;
-	private JTextField textField;
-	private LinkedList<Door> doors = new LinkedList<>();
-	private BufferedImage image;
-	private JPanel leftPanel;
-	private int block;
-	private volatile Snippet snip;
-	private JScrollPane pane;
+
+	private NoCaretField textField;
+	private TextComp addComp;
+	private TextComp removeComp;
+
+	private LinkedList<TextComp> snippetComps = new LinkedList<>();
+	private int block = 0;
+
+	private Snippet snip;
+	
 	public SnippetView(omega.Screen screen){
-		super(screen);
+		super(screen, false);
 		setUndecorated(true);
-		setIconImage(screen.getIconImage());
-		setModal(false);
 		setTitle("Snippet Manager");
-		setSize(700, 605);
+		setLayout(null);
+		setSize(600, 400);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		setLayout(null);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				dispose();
-				saveView();
-			}
-		});
+		setIconImage(screen.getIconImage());
+		JPanel panel = new JPanel(null);
+		panel.setBackground(c2);
+		setContentPane(panel);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
 		init();
 	}
 
 	private void init(){
-		titleComp = new TextComp("Snippet Manager", TOOLMENU_COLOR3, c2, c2, null);
+		titleComp = new TextComp("Snippet Manager", c2, c2, TOOLMENU_COLOR3, null);
 		titleComp.setBounds(0, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX14);
 		titleComp.setArc(0, 0);
 		titleComp.setClickable(false);
 		titleComp.attachDragger(this);
 		add(titleComp);
-		
-		//Door System
-          image = IconManager.buildImage;
-		leftPanel = new JPanel(null);
-		pane = new JScrollPane(leftPanel);
-		pane.setBounds(0, 30, 250, getHeight() - 30);
-		add(pane);
 
-		//View System
-		textField = new JTextField();
-		textField.setBounds(250, 30, getWidth() - 250 - 60, 30);
-		textField.setToolTipText("Enter Snippet Name with alphabets, numbers and symbols(except \';\') without whitespaces");
+		closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+			dispose();
+			saveView();
+		});
+		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+		closeComp.setFont(PX14);
+		closeComp.setArc(0, 0);
+		add(closeComp);
+
+		scrollPane = new JScrollPane(snippetPanel = new FlexPanel(null, back2, null));
+		scrollPane.setBounds(10, 40, 200, 300);
+		snippetPanel.setArc(0, 0);
+		add(scrollPane);
+
+		textScrollPane = new RTextScrollPane(textArea = new RSyntaxTextArea());
+		textScrollPane.setBounds(220, 40, getWidth() - 230, 300);
+		textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_NONE);
+		Editor.getTheme().apply(textArea);
+		add(textScrollPane);
+
+		textField = new NoCaretField("", TOOLMENU_COLOR2, back1, TOOLMENU_COLOR3);
+		textField.setBounds(textScrollPane.getX(), textScrollPane.getY() + textScrollPane.getHeight() + 5, textScrollPane.getWidth() - 200, 25);
+		textField.setFont(PX14);
+		textField.setToolTipText("Snippet Name should have alphabets, numbers or symbols(except \';\') but without whitespaces");
 		add(textField);
 
-		TextComp add = new TextComp("+", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
-               if(textField.getText().contains(" ") || textField.getText().equals("")) {
-                    textField.setText("See Tooltip for Naming the Snippets");
+		addComp = new TextComp("Add/Update", TOOLMENU_COLOR4_SHADE, back2, TOOLMENU_COLOR4, ()->{
+			if(textField.getText().contains(" ") || textField.getText().equals("")) {
+                    Toolkit.getDefaultToolkit().beep();
                     return;
                }
                SnippetBase.add(textField.getText(), textArea.getText(), textArea.getCaretPosition(), textArea.getCaretLineNumber());
                setView(SnippetBase.getAll().getLast());
-               loadDoors();
-	     });
-		add.setBounds(getWidth() - 60, 30, 30, 30);
-		add.setFont(FONT);
-          add.setArc(0, 0);
-		add(add);
+               loadSnippets();
+		});
+		addComp.setBounds(textField.getX() + textField.getWidth() + 2, textField.getY(), 120, 25);
+		addComp.setFont(PX14);
+		add(addComp);
 
-		TextComp rem = new TextComp("-", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-               SnippetBase.remove(textField.getText());
-               loadDoors();
+		removeComp = new TextComp("Remove", TOOLMENU_COLOR4_SHADE, back2, TOOLMENU_COLOR4, ()->{
+			SnippetBase.remove(textField.getText());
+               loadSnippets();
                textField.setText("");
                textArea.setText("");
                this.snip = null;
-	     });
-		rem.setBounds(getWidth() - 30, 30, 30, 30);
-		rem.setFont(FONT);
-          rem.setArc(0, 0);
-		add(rem);
-
-		TextComp close = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-               dispose();
-               saveView();
-	     });
-		close.setBounds(getWidth() - 30, 0, 30, 30);
-		close.setFont(FONT);
-          close.setArc(0, 0);
-		add(close);
-
-		textArea = new RSyntaxTextArea();
-		textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
-		textArea.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				saveView();
-			}
 		});
-		if(!omega.utils.UIManager.isDarkMode()) {
-			textField.setBackground(c2);
-			textField.setForeground(glow);
-			leftPanel.setBackground(c2);
-			try {
-			     Theme.load(Editor.class.getResourceAsStream("/idea.xml")).apply(textArea);
-			}
-			catch(Exception e) {}
-		}
-		else {
-			omega.utils.UIManager.setData(textField);
-			omega.utils.UIManager.setData(leftPanel);
-			try {
-			     Theme.load(Editor.class.getResourceAsStream("/dark.xml")).apply(textArea);
-			}
-			catch(Exception e) {}
-		}
-		textField.setFont(new Font(UIManager.fontName, Font.BOLD, UIManager.fontSize));
-		RTextScrollPane scrollPane = new RTextScrollPane(textArea);
-		scrollPane.setBounds(250, 60, getWidth() - 250, getHeight() - 60);
-		add(scrollPane);
+		removeComp.setBounds(addComp.getX() + addComp.getWidth() + 2, textField.getY(), 80, 25);
+		removeComp.setFont(PX14);
+		add(removeComp);
 	}
 	
 	public void setView(Snippet snip) {
@@ -189,23 +154,29 @@ public class SnippetView extends JDialog {
 		snip.line = textArea.getCaretLineNumber();
 		SnippetBase.save();
 	}
-
-	private void loadDoors() {
-		doors.forEach(leftPanel::remove);
-		doors.clear();
-		block = -40;
+	
+	private void loadSnippets() {
+		snippetComps.forEach(snippetPanel::remove);
+		snippetComps.clear();
+		
+		block = 0;
+		
 		for(Snippet snip : SnippetBase.getAll()) {
-			Door door = new Door(File.separator + "\\" + File.separator + snip.base, image, ()->setView(snip));
-			door.setBounds(0, block += 40, 250, 40);
-               door.setBackground(c2);
-               door.setForeground(TOOLMENU_COLOR1);
-			doors.add(door);
-			leftPanel.add(door);
+			TextComp comp = new TextComp(snip.base, snip.code, TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(snip));
+			comp.setBounds(0, block, scrollPane.getWidth() - 2, 25);
+			comp.setFont(PX14);
+			comp.alignX = 5;
+			snippetComps.add(comp);
+			snippetPanel.add(comp);
+
+			block += 25;
 		}
-		if(block == -40) return;
-		leftPanel.setPreferredSize(new Dimension(250, block + 40));
-		pane.getVerticalScrollBar().setVisible(true);
-		pane.getVerticalScrollBar().setValue(0);
+		if(block == 0) 
+			return;
+		
+		snippetPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));
+		scrollPane.getVerticalScrollBar().setVisible(true);
+		scrollPane.getVerticalScrollBar().setValue(0);
 		repaint();
 	}
 	
@@ -213,7 +184,7 @@ public class SnippetView extends JDialog {
 	public void setVisible(boolean value) {
 		super.setVisible(value);
 		if(value) {
-			loadDoors();
+			loadSnippets();
 		}
 	}
 }
