@@ -270,7 +270,8 @@ public class Branch extends JComponent{
 		}
 		return res;
 	}
-	public BufferedImage getPreferredImage(File file){
+	
+	public static BufferedImage getPreferredImage(File file){
 		if(file.isDirectory()){
 			File[] files = file.listFiles();
 			if(files != null && files.length != 0){
@@ -283,6 +284,10 @@ public class Branch extends JComponent{
                     return IconManager.fluentsourceImage;
                else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
                     return IconManager.fluentbinaryImage;
+               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "res"))
+                    return IconManager.fluentresourceImage;
+               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "out"))
+                    return IconManager.fluentoutImage;
                else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
                	return IconManager.fluentpackageImage;
 			return IconManager.fluentplainfolderImage;

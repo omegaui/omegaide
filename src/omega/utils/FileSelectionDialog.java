@@ -18,6 +18,8 @@
 
 
 package omega.utils;
+import omega.tree.Branch;
+
 import omega.Screen;
 
 import java.awt.image.BufferedImage;
@@ -315,7 +317,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
                     if(!file.isDirectory()){
                          comp.setOnToggle((value)->{
                               comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -391,7 +393,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
                     if(file.isDirectory()){
                          comp.setOnToggle((value)->{
                               comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -466,7 +468,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
                     comp.setOnToggle((value)->{
                          comp.setColors(comp.color1, comp.color3, comp.color2);
                          if(value)
@@ -585,44 +587,6 @@ public class FileSelectionDialog extends JDialog{
                     
                }
           }).start();
-     }
-
-     public static BufferedImage getPreferredImage(File file){
-          if(file.isDirectory()){
-               File[] files = file.listFiles();
-			if(files != null && files.length != 0){
-				for(File fx : files){
-					if(fx.getName().equals(".projectInfo"))
-						return IconManager.fluentfolderImage;
-				}
-			}
-               if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
-                    return IconManager.fluentsourceImage;
-               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
-                    return IconManager.fluentbinaryImage;
-               else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
-               	return IconManager.fluentpackageImage;
-               return IconManager.fluentplainfolderImage;
-          }
-          if(file.getName().contains(".")){
-               String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-               if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp")
-               || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
-                    return IconManager.fluentimagefileImage;
-               else if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class") || ext.equals(".groovy"))
-                    return IconManager.fluentfileImage;
-               else if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
-                    return IconManager.fluentwebImage;
-               else if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
-                    return IconManager.fluentshellImage;
-               else if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
-                    return IconManager.fluentlinuxImage;
-               else if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
-                    return IconManager.fluentwindowsImage;
-               else if(ext.equals(".dmg"))
-                    return IconManager.fluentmacImage;
-          }
-          return IconManager.fluentanyfileImage;
      }
 }
 

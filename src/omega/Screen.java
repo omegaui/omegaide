@@ -122,7 +122,6 @@ public class Screen extends JFrame {
 	private static ThemePicker picker;
 	public Screen() {
 		setUndecorated(true);
-		
 		try {
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
