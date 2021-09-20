@@ -169,13 +169,14 @@ public class SourceDefender extends JDialog {
 		int res = ChoiceDialog.makeChoice("Do You Want to Restore this backup? Once started this process cannot be stopped!", "Yes", "No");
 		if(res == ChoiceDialog.CHOICE1){
 			setVisible(false);
-			PrintArea printArea = new PrintArea();
+			RunPanel printArea = new RunPanel();
+			printArea.setLogMode(true);
 			JScrollPane scrollPane = new JScrollPane(printArea);
 			scrollPane.setBackground(c2);
 			Screen.getScreen().getOperationPanel().addTab("Backup Operation", scrollPane, ()->{
 				Screen.setStatus("Backup is still running in background!", 10);
 			});
-			printArea.clear();
+			printArea.clearTerminal();
 			printArea.print("Restoring from backup ... \"" + backupTitle + "\"");
 			LinkedList<File> files = new LinkedList<>();
 			File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTitle);
@@ -202,10 +203,10 @@ public class SourceDefender extends JDialog {
 				}
 			}
 			printArea.print("Backup Restoration Finished!");
-			printArea.print("If The Files are already opened in the editors then,  reload them.");
+			printArea.print("If the Files are already opened in the editors then, reload them.");
 			printArea.print("-----------------------------------------");
 			printArea.print("All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()));
-			printArea.print("You can create full project backups, delete and modify backups from there.");
+			printArea.print("You can create full project backups and also you can delete or modify backups from there.");
 		}
 	}
 

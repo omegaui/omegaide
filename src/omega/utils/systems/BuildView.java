@@ -17,16 +17,21 @@
 */
 
 package omega.utils.systems;
+import omega.token.factory.ShellTokenMaker;
+
+import omega.comp.FlexPanel;
+
 import omega.jdk.JDKManager;
 
 import omega.instant.support.java.JavaSyntaxParser;
 
-import omega.utils.PrintArea;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,17 +59,20 @@ import omega.utils.Editor;
 import omega.utils.UIManager;
 import omega.utils.BuildLog;
 import omega.utils.systems.creators.FileOperationManager;
+
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class BuildView extends View {
 
 	public volatile Process compileProcess;
 	public LinkedList<String> classess = new LinkedList<>();
 	public static final String SRC_LIST = ".sources";
      public BuildLog buildLog;
-     public PrintArea printArea;
+     public RunPanel printArea;
 
 	public BuildView(String title, Screen window) {
 		super(title, window);
-          printArea = new PrintArea();
+          printArea = new RunPanel();
           buildLog = new BuildLog();
 	}
 
@@ -82,10 +90,8 @@ public class BuildView extends View {
      public void compile(){
           new Thread(()->{
                String args = Screen.getFileView().getArgumentManager().compile_time_args;
-               printArea.setVisible(true);
-               printArea.clear();
                printArea.print("Building Project...\n\"" + args + "\"");
-               getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.stopProcess());
+               getScreen().getOperationPanel().addTab("Build", printArea, printArea::killProcess);
                if(args.trim().equals("")){
                     printArea.print("\'No Compile Time Command Specified!!!\'");
                     printArea.print("Click \"Settings\", then Click \"All Settings\"");
@@ -433,77 +439,118 @@ public class BuildView extends View {
 			paths1.add(path0);
 	}
 
-	public class PrintArea extends JPanel {
+	public class RunPanel extends JPanel {
+		private FlexPanel runTextAreaPanel;
+		private JScrollPane scrollPane;
+		private RunTextArea runTextArea;
 
-		private RSyntaxTextArea textArea;
 		private Process process;
-		private JScrollPane p;
-
-		public PrintArea() {
-			setLayout(new BorderLayout());
-			setLocationRelativeTo( null);
-			UIManager.setData(this);
-			setPreferredSize(getSize());
+		private PrintWriter writer;
+		
+		public RunPanel(){
+			super(null);
+			setBackground(c2);
 			init();
 		}
-
-		private void init() {
-			textArea = new RSyntaxTextArea("Build Starting...");
-			MarkdownTokenMaker.apply(textArea);
-			textArea.setAutoscrolls(true);
-			Editor.getTheme().apply(textArea);
-			textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
-			textArea.setHighlightCurrentLine(false);
-			p = new JScrollPane(textArea);
-			p.setAutoscrolls(true);
-			add(p, BorderLayout.CENTER);
-			comps.add(textArea);
+		
+		public void init(){
+			runTextAreaPanel = new FlexPanel(null, back1, null);
+			runTextAreaPanel.setArc(10, 10);
+			scrollPane = new JScrollPane(runTextArea = new RunTextArea());
+			runTextAreaPanel.add(scrollPane);
+			add(runTextAreaPanel);
 		}
 
-		public void setProcess(Process p) {
-			process = p;
-               if(!Screen.getFileView().getProjectManager().non_java)
-			     textArea.setText("Building Project with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
-               else
-                    textArea.setText("Building Project ...");
+		public void setProcess(Process process){
+			this.process = process;
+			writer = new PrintWriter(process.getOutputStream());
 		}
 
-		public void stopProcess() {
-               if(process != null)
-			     process.destroyForcibly();
+		public void print(String text){
+			runTextArea.append(text + "\n");
+		}
+		
+		public void printText(String text){
+			print(text);
 		}
 
-		public String getText() {
-			return textArea.getText();
+		public void clearTerminal(){
+			runTextArea.setText("");
 		}
 
-		public void print(String text) {
-			textArea.append("\n" + text);
-			p.repaint();
-			p.getVerticalScrollBar().setValue(p.getVerticalScrollBar().getMaximum());
+		public void killProcess(){
+			if(process != null && process.isAlive()){
+				try{
+					process.destroyForcibly();
+					writer.close();
+				}
+				catch(Exception e){
+					
+				}
+			}
 		}
-
-		public void clear() {
-			textArea.setText("");
-		}
-
-		@Override
-		public void addMouseListener(MouseListener l) {
-			super.addMouseListener(l);
-			textArea.addMouseListener(l);
+		
+		public void relocate(){
+			runTextAreaPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
+			scrollPane.setBounds(5, 5, runTextAreaPanel.getWidth() - 10, runTextAreaPanel.getHeight() - 10);
 		}
 		
 		@Override
-		public void setVisible(boolean v) {
-			if(v) {
-				try {
-					Editor.getTheme().apply(textArea);
-				}
-				catch(Exception e) {
-                         
-			     }
+		public void paint(Graphics g){
+			relocate();
+			super.paint(g);
+		}
+
+		public class RunTextArea extends RSyntaxTextArea {
+			private static volatile boolean ctrl;
+			private static volatile boolean l;
+			public RunTextArea(){
+				Editor.getTheme().apply(this);
+				ShellTokenMaker.apply(this);
+				addKeyListener(new KeyAdapter(){
+					@Override
+					public void keyPressed(KeyEvent e){
+						int code = e.getKeyCode();
+						if(code == KeyEvent.VK_CONTROL)
+							ctrl = true;
+						else if(code == KeyEvent.VK_L)
+							l = true;
+
+						performShortcuts(e);
+					}
+					@Override
+					public void keyReleased(KeyEvent e){
+						int code = e.getKeyCode();
+						if(code == KeyEvent.VK_CONTROL)
+							ctrl = false;
+						else if(code == KeyEvent.VK_L)
+							l = false;
+					}
+				});
 			}
-			super.setVisible(v);
+
+			public void performShortcuts(KeyEvent e){
+				if(process == null)
+					return;
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					if(writer == null || !process.isAlive())
+						e.consume();
+					
+					String text = getText();
+					text = text.substring(0, getCaretPosition());
+					text = text.substring(text.lastIndexOf('\n') + 1);
+					if(Screen.onWindows())
+						append("\n");
+					writer.println(text);
+					writer.flush();
+				}
+				if(ctrl && l){
+					clearTerminal();
+					ctrl = false;
+					l = false;
+					e.consume();
+				}
+			}
 		}
 	}
 

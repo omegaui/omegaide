@@ -812,7 +812,7 @@ class ParserManager implements DocumentListener, ActionListener,
 		boolean debugParsing;
 		try {
 			debugParsing = Boolean.getBoolean(PROPERTY_DEBUG_PARSING);
-		} catch (AccessControlException ace) {
+		} catch (Exception ace) {
 			// Likely an applet's security manager.
 			debugParsing = false; // FindBugs
 		}

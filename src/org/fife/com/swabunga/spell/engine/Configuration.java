@@ -126,7 +126,8 @@ public abstract class Configuration {
   		String config = System.getProperty("jazzy.config"); // added by bd
   		if (config != null && config.length() > 0)
   			return getConfiguration(config);
-  	} catch (AccessControlException e) {
+  	} 
+  	catch (Exception e) {
   		e.printStackTrace();
   	} 
     return getConfiguration(null);

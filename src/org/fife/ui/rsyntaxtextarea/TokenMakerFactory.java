@@ -47,7 +47,8 @@ public abstract class TokenMakerFactory {
 			String clazz;
 			try {
 				clazz= System.getProperty(PROPERTY_DEFAULT_TOKEN_MAKER_FACTORY);
-			} catch (java.security.AccessControlException ace) {
+			} 
+			catch (Exception ace) {
 				clazz = null; // We're in an applet; take default.
 			}
 			if (clazz==null) {

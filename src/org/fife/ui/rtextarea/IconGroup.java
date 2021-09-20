@@ -239,7 +239,7 @@ public class IconGroup {
 				// URLs that are valid but simply don't exist can create -1x-1 ImageIcons
 				return icon.getIconWidth() == -1 ? null : icon;
 			}
-		} catch (AccessControlException | IOException ace) {
+		} catch (Exception ace) {
 			return null;
 		}
 	}

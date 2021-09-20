@@ -52,6 +52,9 @@ public class IconManager {
      public static BufferedImage fluentsearchImage = getFluentIcon("inspect-code-50.png");
      public static BufferedImage fluentprojectstructureImage = getFluentIcon("goto-50.png");
      public static BufferedImage fluentcloseImage = getFluentIcon("close-window-50.png");
+     public static BufferedImage fluentclearSymbolImage = getFluentIcon("clear-symbol-48.png");
+     public static BufferedImage fluentskipImage = getFluentIcon("skip-48.png");
+     public static BufferedImage fluentpauseImage = getFluentIcon("pause-48.png");
      public static BufferedImage fluentsettingsImage = getFluentIcon("gear-50.png");
      public static BufferedImage fluentresourceImage = getFluentIcon("natural-food-48.png");
      public static BufferedImage fluentoutImage = getFluentIcon("out-48.png");

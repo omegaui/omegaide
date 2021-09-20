@@ -19,8 +19,8 @@
 package omega.instant.support.universal;
 import omega.Screen;
 
-import omega.utils.PrintArea;
 import omega.utils.IconManager;
+import omega.utils.RunPanel;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -68,9 +68,9 @@ public class ProcessManager extends DataBase{
           new Thread(()->{
           	try{
 				Screen.getScreen().saveAllEditors();
-				PrintArea printArea = new PrintArea();
+				RunPanel printArea = new RunPanel();
                     printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
-                    Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", printArea, ()->printArea.stopProcess());
+                    Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", printArea, printArea::killProcess);
                     printArea.print("# Starting Shell ... ");
                     String shell = "sh";
                     if(File.pathSeparator.equals(";"))

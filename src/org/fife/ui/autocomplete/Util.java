@@ -245,7 +245,7 @@ public final class Util {
 		try {
 			return Boolean.getBoolean(
 					PROPERTY_ALLOW_DECORATED_AUTOCOMPLETE_WINDOWS);
-		} catch (AccessControlException ace) { // We're in an applet.
+		} catch (Exception ace) { // We're in an applet.
 			return false;
 		}
 	}
@@ -315,7 +315,7 @@ public final class Util {
 		boolean use;
 		try {
 			use = !Boolean.getBoolean(PROPERTY_DONT_USE_SUBSTANCE_RENDERERS);
-		} catch (AccessControlException ace) { // We're in an applet.
+		} catch (Exception ace) { // We're in an applet.
 			use = true;
 		}
 		USE_SUBSTANCE_RENDERERS = use;

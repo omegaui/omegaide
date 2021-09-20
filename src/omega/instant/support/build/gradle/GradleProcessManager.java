@@ -23,10 +23,11 @@ import omega.Screen;
 
 import java.io.File;
 
-import omega.utils.PrintArea;
 import omega.utils.DataManager;
+import omega.utils.RunPanel;
+import omega.utils.IconManager;
 public class GradleProcessManager {
-	private static PrintArea printArea;
+	private static RunPanel printArea;
 	public static boolean isGradleProject(){
 		File settings = new File(Screen.getFileView().getProjectPath(), "settings.gradle");
 		return settings.exists();
@@ -35,7 +36,7 @@ public class GradleProcessManager {
 		new Thread(()->{
 			try{
 				preparePrintArea();
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, ()->printArea.stopProcess());
+				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, printArea::killProcess);
 				if(!Screen.getFileView().getProjectManager().non_java){
 					printArea.print("**Changing Project Type ...**");
 					Screen.getFileView().getProjectManager().non_java = true;
@@ -77,9 +78,9 @@ public class GradleProcessManager {
 		new Thread(()->{
 			try{
                     Screen.getScreen().saveAllEditors();
-				PrintArea printArea = new PrintArea();
-				printArea.launchAsTerminal(GradleProcessManager::run);
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, ()->printArea.stopProcess());
+				RunPanel printArea = new RunPanel();
+				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, DataManager.getGradleCommand() + " run");
+				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, printArea::killProcess);
 				if(!Screen.getFileView().getProjectManager().non_java){
 					printArea.print("**Changing Project Type ...**");
 					Screen.getFileView().getProjectManager().non_java = true;
@@ -121,8 +122,9 @@ public class GradleProcessManager {
 		new Thread(()->{
 			try{
                     Screen.getScreen().saveAllEditors();
-				PrintArea printArea = new PrintArea();
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, ()->printArea.stopProcess());
+				RunPanel printArea = new RunPanel();
+				printArea.setLogMode(true);
+				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, printArea::killProcess);
 				if(!Screen.getFileView().getProjectManager().non_java){
 					printArea.print("**Changing Project Type ...**");
 					Screen.getFileView().getProjectManager().non_java = true;
@@ -162,7 +164,7 @@ public class GradleProcessManager {
 	}
 	public static void preparePrintArea(){
 		if(printArea == null)
-			printArea = new PrintArea();
+			printArea = new RunPanel();
 	}
 }
 
