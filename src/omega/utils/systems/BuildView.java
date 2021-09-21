@@ -496,9 +496,9 @@ public class BuildView extends View {
 		}
 		
 		@Override
-		public void paint(Graphics g){
+		public void layout(){
 			relocate();
-			super.paint(g);
+			super.layout();
 		}
 
 		public class RunTextArea extends RSyntaxTextArea {

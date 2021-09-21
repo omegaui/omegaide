@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.terminal;
+import omega.comp.FlexPanel;
+
 import omega.Screen;
 
 import omega.utils.Editor;
@@ -27,6 +29,7 @@ import java.awt.event.KeyEvent;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -40,6 +43,8 @@ import static omega.utils.UIManager.*;
 public class Terminal extends JPanel {
 	public static String shell = File.pathSeparator.equals(":") ? "sh" : "cmd";
 	private String lastText;
+	private FlexPanel panel;
+	private JScrollPane scrollPane;
 	private RSyntaxTextArea outputArea;
 
 	private Process shellProcess;
@@ -48,7 +53,8 @@ public class Terminal extends JPanel {
 	private PrintWriter writer;
 	
 	public Terminal(){
-		super(new BorderLayout());
+		super(null);
+		setBackground(c2);
 		init();
 	}
 	
@@ -58,6 +64,10 @@ public class Terminal extends JPanel {
 	}
 
 	public void init(){
+		panel = new FlexPanel(null, back1, null);
+		panel.setArc(10, 10);
+		add(panel);
+		
 		outputArea = new RSyntaxTextArea();
 		outputArea.setAutoscrolls(true);
 		outputArea.setDragEnabled(false);
@@ -95,7 +105,10 @@ public class Terminal extends JPanel {
 				}
 			}
 		});
-		add(new JScrollPane(outputArea), BorderLayout.CENTER);
+		addKeyListener(outputArea.getKeyListeners()[0]);
+		
+		scrollPane = new JScrollPane(outputArea);
+		panel.add(scrollPane);
 	}
 
 	public void launchTerminal(){
@@ -123,6 +136,17 @@ public class Terminal extends JPanel {
 		}).start();
 	}
 
+	public void relocate(){
+		panel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
+		scrollPane.setBounds(5, 5, panel.getWidth() - 10, panel.getHeight() - 10);
+	}
+
+	@Override
+	public void layout(){
+		relocate();
+		super.layout();
+	}
+
 	public void outputToTerminal(String text){
 		outputArea.append(text + "\n");
 		outputArea.setCaretPosition(outputArea.getText().length());
@@ -136,14 +160,16 @@ public class Terminal extends JPanel {
 	public org.fife.ui.rsyntaxtextarea.RSyntaxTextArea getOutputArea() {
 		return outputArea;
 	}
+	
 	public void setOutputArea(org.fife.ui.rsyntaxtextarea.RSyntaxTextArea outputArea) {
 		this.outputArea = outputArea;
 	}
+	
 	public java.lang.Process getShellProcess() {
 		return shellProcess;
 	}
+	
 	public void setShellProcess(java.lang.Process shellProcess) {
 		this.shellProcess = shellProcess;
 	}
-	
 }

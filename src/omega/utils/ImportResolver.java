@@ -86,7 +86,7 @@ public class ImportResolver extends JDialog {
           });
           add(titleComp);
 
-          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
           closeComp.setBounds(0, 0, 40, 40);
           closeComp.setFont(PX16);
           closeComp.setArc(0, 0);
@@ -98,8 +98,6 @@ public class ImportResolver extends JDialog {
 			imports.clear();
 			return imports;
 		}
-          comps.forEach(panel::remove);
-          comps.clear();
 		LinkedList<Import> selections = new LinkedList<>();
           int maxW = getWidth();
           block = 0;
@@ -124,11 +122,17 @@ public class ImportResolver extends JDialog {
                block += 30;
           }
           panel.setPreferredSize(new Dimension(maxW, block));
+          
           setVisible(true);
+          
           comps.forEach(comp->{
                if(comp.color2 == TOOLMENU_COLOR3)
                     selections.add(new Import(comp.getText(), "", false));
           });
+          
+          comps.forEach(panel::remove);
+          comps.clear();
+          repaint();
 		return selections;
 	}
 }

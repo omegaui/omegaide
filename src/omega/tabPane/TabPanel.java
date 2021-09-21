@@ -17,6 +17,8 @@
 */
 
 package omega.tabPane;
+import omega.comp.FlexPanel;
+
 import omega.Screen;
 
 import omega.popup.OPopupWindow;
@@ -100,14 +102,16 @@ public class TabPanel extends JPanel{
 		if(editors.indexOf(editor) >= 0) {
 			remove(editor);
 		}
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(editor.getAttachment(), BorderLayout.CENTER);
-		panel.add(editor.getFAndR(), BorderLayout.NORTH);
+
+		EditorTabHolder panel = new EditorTabHolder(editor);
+		
 		panels.add(panel);
 		names.add(name);
 		editors.add(editor);
+		
 		tabPane.addTab(name, panel);
 		tabPane.setBackgroundAt(tabPane.getTabCount() - 1, c2);
+		
 		if(editor.currentFile == null) {
 			tabPane.setTabComponentAt(editors.indexOf(editor), TabComp.create(editor, name, ()->{
 				editor.closeFile();
@@ -124,6 +128,8 @@ public class TabPanel extends JPanel{
 		},toolTip, createMenu(editor)));
 		tabPane.setSelectedIndex(names.lastIndexOf(name));
           addAction.run();
+          
+          panel.relocate();
 	}
 	
 	public boolean viewImage(File file) {

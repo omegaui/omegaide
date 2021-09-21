@@ -219,7 +219,6 @@ public class RunView extends View {
 				terminal.printText("If your application does terminates on its own or by pressing the \'x\' button (on left)");
 				terminal.printText("Then, In that case you need to manually close it.");
 				terminal.printText("---<>--------------------------------------<>---");
-				terminal.setVisible(true);
 				String status = "Successfully";
 				
 				String name = "Run";
@@ -1076,9 +1075,9 @@ public class RunView extends View {
 		}
 		
 		@Override
-		public void paint(Graphics g){
+		public void layout(){
 			relocate();
-			super.paint(g);
+			super.layout();
 		}
 
 		public class RunTextArea extends RSyntaxTextArea {

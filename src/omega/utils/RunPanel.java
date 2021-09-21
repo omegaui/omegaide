@@ -122,9 +122,9 @@ public class RunPanel extends JPanel {
 	}
 	
 	@Override
-	public void paint(Graphics g){
+	public void layout(){
 		relocate();
-		super.paint(g);
+		super.layout();
 	}
 	
 	public class RunTextArea extends RSyntaxTextArea {
