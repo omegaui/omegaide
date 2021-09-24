@@ -41,7 +41,6 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 		scrollPane.setBackground(c2);
 		panel.setBackground(c2);
 		add(scrollPane, BorderLayout.CENTER);
-
 		setVisible(false);
 	}
 

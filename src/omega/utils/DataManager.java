@@ -198,7 +198,7 @@ public class DataManager extends DataBase {
           DataManager.hintFont = hintFont;
      }
 
-     public static boolean isParsingEnabled() {
+     public static synchronized boolean isParsingEnabled() {
           return parsingEnabled;
      }
      

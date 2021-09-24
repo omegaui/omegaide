@@ -108,7 +108,7 @@ public class SearchWindow extends JDialog{
           });
           add(titleComp);
 
-          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->setVisible(false));
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
           closeComp.setBounds(getWidth() - 30, 0, 30, 30);
           closeComp.setFont(PX14);
           closeComp.setArc(0, 0);

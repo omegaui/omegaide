@@ -72,7 +72,7 @@ public class FileSaveDialog extends JDialog{
 		add(dirComp);
 
 		TextComp saveComp = new TextComp("Save", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-			setVisible(false);
+			dispose();
 		});
 		saveComp.setBounds(getWidth()/2, 30, getWidth()/2, 30);
 		saveComp.setFont(PX14);
@@ -81,7 +81,7 @@ public class FileSaveDialog extends JDialog{
 
 		TextComp closeComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
 			canceled = true;
-			setVisible(false);
+			dispose();
 		});
 		closeComp.setBounds(0, 30, getWidth()/2, 30);
 		closeComp.setFont(PX14);

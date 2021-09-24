@@ -67,7 +67,7 @@ public class InfoScreen extends JDialog {
           addMouseListener(new MouseAdapter(){
                @Override
                public void mousePressed(MouseEvent e){
-                    setVisible(false);
+                    dispose();
                }
           });
           

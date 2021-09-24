@@ -113,7 +113,7 @@ public class UniversalProjectWizard extends JDialog{
           hintLabel.setFont(PX14);
           add(hintLabel);
 
-          closeComp = new TextComp("Close",  TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
+          closeComp = new TextComp("Close",  TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, this::dispose);
           closeComp.setBounds(10, 200, (getWidth() - 20)/2, 30);
           closeComp.setFont(PX14);
           add(closeComp);

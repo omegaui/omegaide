@@ -85,7 +85,7 @@ public class UniversalSettingsWizard extends JDialog{
 		runField.setFont(PX14);
 		add(runField);
 		
-		runWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Building", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR2, ()->{
+		runWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Building", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
 			fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));
 			LinkedList<File> selections = fc.selectDirectories();
 			if(!selections.isEmpty()){
@@ -109,7 +109,7 @@ public class UniversalSettingsWizard extends JDialog{
 		compileField.setFont(PX14);
 		add(compileField);
 		
-		compileWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Running", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR2, ()->{
+		compileWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Running", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
 			fc.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()));
 			LinkedList<File> selections = fc.selectDirectories();
 			if(!selections.isEmpty()){
@@ -121,15 +121,18 @@ public class UniversalSettingsWizard extends JDialog{
 		compileWorkDirComp.setSize(getWidth() - compileWorkDirComp.getX() - 10, 25);
 		compileWorkDirComp.setFont(PX14);
 		add(compileWorkDirComp);
-		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
+		
+		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, back1, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(getWidth()/2 - 100 - 110, 150, 100, 25);
 		closeComp.setFont(PX14);
 		add(closeComp);
-		listMakerComp = new TextComp("Add a List Maker", TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR4, this::addList);
+		
+		listMakerComp = new TextComp("Add a List Maker", TOOLMENU_COLOR4_SHADE, back2, TOOLMENU_COLOR4, this::addList);
 		listMakerComp.setBounds(getWidth()/2 - 100, 150, 200, 25);
 		listMakerComp.setFont(PX14);
 		add(listMakerComp);
-		TextComp applyComp = new TextComp("Apply", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::apply);
+		
+		TextComp applyComp = new TextComp("Apply", TOOLMENU_COLOR2_SHADE, back1, TOOLMENU_COLOR2, this::apply);
 		applyComp.setBounds(getWidth()/2 - 100 + 210, 150, 100, 25);
 		applyComp.setFont(PX14);
 		add(applyComp);
@@ -137,6 +140,8 @@ public class UniversalSettingsWizard extends JDialog{
 		scrollPane = new JScrollPane(panel = new FlexPanel(null, c2, c2));
 		scrollPane.setBounds(0, 200, 600, 300);
 		scrollPane.setBackground(c2);
+		panel.setArc(0, 0);
+		scrollPane.setBorder(null);
 		add(scrollPane);
 	}
 	public void addList(){

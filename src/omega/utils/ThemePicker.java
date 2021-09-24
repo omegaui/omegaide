@@ -90,7 +90,7 @@ public class ThemePicker extends JDialog {
      }
      public void init(){
           applyComp = new TextComp("Apply", c1, c2, c3, ()->{
-               setVisible(false);
+               dispose();
                DataManager.setTheme(lightMode ? "light" : "dark");
                Screen.getDataManager().save();
           });

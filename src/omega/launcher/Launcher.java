@@ -158,7 +158,7 @@ public class Launcher extends JFrame{
 			if(!file.exists() || !file.isDirectory())
 				continue;
 			TextComp comp = new TextComp(file.getName(), file.getAbsolutePath(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
-				setVisible(false);
+				dispose();
 				Screen.getScreen().loadProject(file);
 				}) {
 				@Override

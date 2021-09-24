@@ -101,7 +101,7 @@ public class Startup extends JDialog {
 		acceptComp = new TextComp("I Accept", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			try{
 				new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
-				setVisible(false);
+				dispose();
 	          }
 		     catch(Exception e){ 
 		          e.printStackTrace();

@@ -132,7 +132,7 @@ public class SplashScreen extends JFrame{
 					frames = 0;
 				}
 			}
-			setVisible(false);
+			dispose();
 		}).start();
 	}
 	public void render(){
@@ -193,6 +193,7 @@ public class SplashScreen extends JFrame{
 		g.setColor(BACK_COLOR);
 		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
+		g.dispose();
 	}
 	
 	@Override

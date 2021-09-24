@@ -100,7 +100,7 @@ public class FileWizard extends JDialog{
           typeBtn.setArc(0, 0);
 		add(typeBtn);
 
-		TextComp cancelBtn = new TextComp("Close", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
+		TextComp cancelBtn = new TextComp("Close", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, this::dispose);
 		cancelBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
           cancelBtn.setFont(PX16);
           cancelBtn.setArc(0, 0);

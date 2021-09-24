@@ -73,12 +73,18 @@ public class FileView extends View {
 	public void readJDK(){
           if(projectManager.jdkPath == null)
                return;
+          
           int version = 0;
           if(jdkManager != null)
                version = jdkManager.getVersionAsInt();
+          
           int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
           if(version != versionThis)
                Assembly.deassemble();
+
+          if(jdkManager != null)
+          	jdkManager.clear();
+     	
           jdkManager = new JDKManager(new File(projectManager.jdkPath));
           jdkManager.readSources(projectPath);
           readDependencies();
@@ -113,7 +119,7 @@ public class FileView extends View {
 		new Thread(()->Screen.addAndSaveRecents(path)).start();
 		projectPath = path;
 		if(Screen.launcher != null)
-			Screen.launcher.setVisible(false);
+			Screen.launcher.dispose();
 		DataManager.setDefaultProjectPath(projectPath);
 		Screen.notify("Loading Project \"" + getProjectName() + "\"");
 		getScreen().setProject(getProjectName());
@@ -180,7 +186,7 @@ public class FileView extends View {
 			LinkedList<File> files = fs.selectDirectories();
 			if(!files.isEmpty()) {
 				if(Screen.launcher != null)
-					Screen.launcher.setVisible(false);
+					Screen.launcher.dispose();
 				Screen.getScreen().setVisible(true);
 				saveAll();
 				getScreen().closeCurrentProject();

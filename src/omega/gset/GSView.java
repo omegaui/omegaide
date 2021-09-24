@@ -70,7 +70,7 @@ public class GSView extends JDialog{
 		panel.setBackground(c2);
 		add(scrollPane);
 		
-		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(0, 0, 30, 30);
 		closeComp.setFont(PX16);
 		closeComp.setArc(0, 0);

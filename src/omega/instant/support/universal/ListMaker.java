@@ -82,6 +82,7 @@ public class ListMaker extends JComponent {
      			quoteComp.setColors(TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR2);
      	});
           quoteComp.setBounds(370, 0, 30, 30);
+          quoteComp.setArc(0, 0);
           add(quoteComp);
 
           dirComp = new TextComp("Working Directory", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
@@ -95,9 +96,10 @@ public class ListMaker extends JComponent {
           dirComp.setBounds(410, 0, 150, 30);
           dirComp.setFont(PX14);
           dirComp.setToolTipText("");
+          dirComp.setArc(0, 0);
           add(dirComp);
 
-          TextComp enableComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Remove List Maker", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR2, null);
+          TextComp enableComp = new TextComp(IconManager.fluentcloseImage, 25, 25, "Mark For Removal", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR2, null);
           enableComp.setRunnable(()->{
           	setEnabled(!isEnabled());
           	if(!isEnabled())
@@ -106,6 +108,7 @@ public class ListMaker extends JComponent {
      			enableComp.setColors(TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR2);
           });
           enableComp.setBounds(dirComp.getX() + dirComp.getWidth(), 0, 30, 30);
+          enableComp.setArc(0, 0);
           add(enableComp);
      }
      

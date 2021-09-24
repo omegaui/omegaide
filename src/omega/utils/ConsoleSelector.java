@@ -78,7 +78,7 @@ public class ConsoleSelector extends JDialog{
 	}
 
 	public void apply(){
-		setVisible(false);
+		dispose();
 		DataManager.setConsoleCommand(nameField.getText() != null ? nameField.getText() : getPlatformTerminal());
 	}
 

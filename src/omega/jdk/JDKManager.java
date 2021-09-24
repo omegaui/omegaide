@@ -299,6 +299,7 @@ public class JDKManager {
 	public void clear(){
 		modules.clear();
 		imports.clear();
+		javaLangPack.clear();
 		sources.clear();
 		if(dependencyJarLoader != null)
 			dependencyJarLoader.close();

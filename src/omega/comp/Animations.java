@@ -146,6 +146,7 @@ public class Animations {
 					
 					lengthH++;
 					lengthW++;
+					
 					try{
 						Thread.sleep(rate);
 					}

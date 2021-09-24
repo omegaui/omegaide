@@ -102,22 +102,26 @@ public class GradleModuleWizard extends JDialog{
 		nameLabel.setClickable(false);
 		nameLabel.setFont(PX14);
 		add(nameLabel);
+		
 		nameField = new NoCaretField("", "Start Typing", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		nameField.setBounds(210, 50, getWidth() - 220, 25);
 		nameField.setFont(PX14);
 		nameField.setIgnorableCharacters(' ', File.separatorChar);
 		add(nameField);
 		addKeyListener(nameField);
+		
 		//Project Type Panel
 		projectTypePanel = new FlexPanel(null, c2, c1);
 		projectTypePanel.setBounds(50, 100, (getWidth() - 110)/3, 220);
 		projectTypePanel.setPaintGradientEnabled(true);
 		add(projectTypePanel);
+		
 		TextComp label1 = new TextComp("Project Type", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, null);
 		label1.setBounds(10, 10, projectTypePanel.getWidth() - 20, 25);
 		label1.setFont(PX14);
 		label1.setClickable(false);
 		projectTypePanel.add(label1);
+		
 		basicComp = new TextComp("Basic", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->result1.setText("Basic"));
 		basicComp.setBounds(10, 40, projectTypePanel.getWidth() - 20, 25);
 		basicComp.setFont(PX14);

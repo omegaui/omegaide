@@ -60,7 +60,7 @@ public class ChoiceDialog extends JDialog{
 
           choice1Comp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
                choice = CHOICE1;
-               setVisible(false);
+               dispose();
           });
           choice1Comp.setFont(PX14);
           choice1Comp.setArc(0, 0);

@@ -43,6 +43,7 @@ public class JarLoader {
 		this.jarPath = jarPath;
 		load();
 	}
+	
      public JarLoader(LinkedList<String> paths){
      	try{
      		URL[] urls = new URL[paths.size()];
@@ -56,6 +57,7 @@ public class JarLoader {
      		System.err.println(e);
      	}
      }
+     
 	public JarLoader(){
 		try{
 			this.jarPath = "System JMods";

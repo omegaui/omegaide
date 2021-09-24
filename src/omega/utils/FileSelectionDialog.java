@@ -126,7 +126,7 @@ public class FileSelectionDialog extends JDialog{
 
           cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
                selections.clear();
-               setVisible(false);
+               dispose();
           });
           cancelComp.setBounds(getWidth() - 50, 0, 50, 30);
           cancelComp.setFont(PX14);
@@ -191,20 +191,20 @@ public class FileSelectionDialog extends JDialog{
                          }
                          else{
                               selections.add(file);
-                              setVisible(false);
+                              dispose();
                          }
                     }
                     else if(state == 1){
                          if(file.isDirectory()){
                               selections.add(file);
-                              setVisible(false);
+                              dispose();
                          }
                          else
                               selectionField.notify("Directory Expected!");
                     }
                     else if(state == 2){
                          selections.add(file);
-                         setVisible(false);
+                         dispose();
                     }
                }
           });
@@ -212,7 +212,7 @@ public class FileSelectionDialog extends JDialog{
           add(selectionField);
           addKeyListener(selectionField);
 
-          selectComp = new TextComp("Done", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, ()->setVisible(false));
+          selectComp = new TextComp("Done", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, this::dispose);
           selectComp.setBounds(getWidth() - 50, getHeight() - 30, 50, 30);
           selectComp.setFont(PX14);
           selectComp.setArc(0, 0);

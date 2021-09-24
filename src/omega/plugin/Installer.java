@@ -69,13 +69,14 @@ public class Installer extends JDialog {
 		add(headerComp);
 		
 		msgComp = new TextComp("", TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR2, ()->{
-			setVisible(false);
+			dispose();
 		});
 		msgComp.setBounds(0, 30, getWidth(), 30);
 		msgComp.setFont(PX14);
 		msgComp.setArc(0, 0);
 		msgComp.setClickable(false);
 		add(msgComp);
+		
 		imageComp = new TextComp(image, 50, 50, c2, c2, c2, null);
 		imageComp.setBounds(0, 60, getWidth(), 400);
 		imageComp.setArc(0, 0);

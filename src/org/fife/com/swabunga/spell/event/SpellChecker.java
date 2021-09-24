@@ -78,7 +78,8 @@ public class SpellChecker {
 	public SpellChecker() {
 		try {
 			userdictionary = new SpellDictionaryHashMap();
-			} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new RuntimeException("this exception should never happen because we are using null phonetic file");
 		}
 	}
@@ -646,5 +647,5 @@ public class SpellChecker {
 	private boolean isSupposedToBeCapitalized(String word, WordTokenizer wordTokenizer) {
 		boolean configCapitalize = !config.getBoolean(Configuration.SPELL_IGNORESENTENCECAPITALIZATION);
 		return configCapitalize && wordTokenizer.isNewSentence() && Character.isLowerCase(word.charAt(0));
-	}	
+	}
 }

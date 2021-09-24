@@ -141,7 +141,7 @@ public class BuildPathManager extends JDialog {
 		add(resourceRootPanel);
 		add(modulePanel);
           
-		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, ()->setVisible(false));
+		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, this::dispose);
 		closeComp.setBounds(0, getHeight() - 30, 160, 30);
 		closeComp.setFont(PX16);
 		closeComp.setArc(0, 0);

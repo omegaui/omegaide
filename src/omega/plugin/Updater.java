@@ -78,7 +78,7 @@ public class Updater extends JDialog{
           changesComp.setClickable(false);
           add(changesComp);
 
-          closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+          closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
           closeComp.setBounds(0, getHeight() - 30, getWidth()/2, 30);
           closeComp.setFont(PX14);
           add(closeComp);

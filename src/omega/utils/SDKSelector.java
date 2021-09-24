@@ -56,7 +56,7 @@ public class SDKSelector extends JDialog {
 		setLocationRelativeTo(f);
 		setLayout(null);
           
-		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(0, 0, 40, 40);
 		closeComp.setFont(PX16);
 		closeComp.setArc(0, 0);
