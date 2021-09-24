@@ -706,7 +706,13 @@ public class Screen extends JFrame {
 	}
 	
 	public void closeCurrentProject() {
+		closeAllTabs();
+	}
+
+	public void closeAllTabs(){
 		tabPanel.closeAllTabs();
+		rightTabPanel.closeAllTabs();
+		bottomTabPanel.closeAllTabs();
 	}
 	
 	public TabPanel getTabPanel() {

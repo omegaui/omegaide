@@ -72,6 +72,7 @@ public class PopupManager {
           popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
           popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
 		popup.createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(editor.currentFile));
+		popup.createItem("Close All Tabs", IconManager.closeImage, Screen.getScreen()::closeAllTabs);		
 		return popup;
 	}
 
