@@ -67,7 +67,7 @@ public class JDKManager {
           			readRTJarFile();
                }
           }
-          catch(Exception e){ 
+          catch(Exception e){
           	e.printStackTrace();
           }
 	}
