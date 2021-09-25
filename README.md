@@ -69,7 +69,10 @@ Page 12, Instruction Panel, Help Section.
 
 # Installing
 
-Dependency **JDK 16** or above
+Dependency **JDK 16** or above for stable version
+
+Dependency **JDK 17** or above for current beta version
+
 
 If you want to get early access to optimizations and new features you can freely use latest beta available.
 
