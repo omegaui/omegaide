@@ -134,6 +134,7 @@ public class ExtendedBuildPathManager extends JDialog {
 
 	@Override
 	public void dispose(){
+		super.dispose();
 		try{
 			Screen.getFileView().getProjectManager().compileTimeFlags.clear();
 			Screen.getFileView().getProjectManager().runTimeFlags.clear();
@@ -144,7 +145,6 @@ public class ExtendedBuildPathManager extends JDialog {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		super.dispose();
 	}
 
 	

@@ -24,13 +24,16 @@ public class DataBlock {
 	public DataMember block;
 	public String code;
 	public SourceReader reader;
+	
 	public DataBlock(SourceReader reader, DataMember block){
 		this.reader = reader;
 		this.block = block;
 		depthMembers.clear();
 	}
+	
 	public void read(String code){
-		if(this.code != null && this.code.equals(code)) return;
+		if(this.code != null && this.code.equals(code)) 
+			return;
 		this.code = code;
 		//Unpacking DataMembers from _prototype
 		if(block.parameterCount > 0){
@@ -161,6 +164,7 @@ public class DataBlock {
 			}
 		}
 	}
+	
 	public LinkedList<DepthMember> get(String name){
 		LinkedList<DepthMember> depthMembers = new LinkedList<>();
 		for(DepthMember m : this.depthMembers){
@@ -176,6 +180,7 @@ public class DataBlock {
 		}
 		return null;
 	}
+	
 	public DepthMember getLast(){
 		if(depthMembers.isEmpty()) {
 			System.out.println(block.name + " has no variables");
@@ -183,11 +188,13 @@ public class DataBlock {
 		}
 		return depthMembers.getLast();
 	}
+	
 	public static int calculateDepth(String var, String code){
 		int depth = 1;
 		
 		return depth;
 	}
+	
 	public int count(String line, char ch){
 		int c = 0;
 		for(char cx : line.toCharArray()){

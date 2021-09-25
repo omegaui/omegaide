@@ -398,14 +398,16 @@ public class BuildPathManager extends JDialog {
           moduleNames = moduleNames.substring(0, moduleNames.length() - 1);
           return moduleNames;
      }
+     @Override
+     public void dispose(){
+		super.dispose();
+		new Thread(Screen.getFileView()::readJDK).start();
+     }
 	@Override
 	public void setVisible(boolean value){
 		if(value){
                read();
 			setView(state);
-		}
-		else{
-			new Thread(Screen.getFileView()::readJDK).start();
 		}
 		super.setVisible(value);
 	}

@@ -38,8 +38,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
 import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class ContentWindow extends JPanel implements KeyListener{
      public LinkedList<TextComp> hints = new LinkedList<>();
      private final Font PX12 = new Font("Ubuntu", Font.BOLD, 12);
