@@ -288,7 +288,7 @@ public class SpellingParser extends AbstractParser
 	 */
 	@Override
 	public URL getImageBase() {
-		return getClass().getResource("/org/fife/ui/rsyntaxtextarea/spell/");
+		return getClass().getResource("/fluent-icons/");
 	}
 
 
