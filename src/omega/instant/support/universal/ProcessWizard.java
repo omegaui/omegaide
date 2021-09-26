@@ -107,15 +107,15 @@ public class ProcessWizard extends JDialog{
 		addComp.setFont(PX14);
 		add(addComp);
 		
-		containerPanel = new FlexPanel(null, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1);
+		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(10, 200, getWidth() - 20, 300);
-		containerPanel.setPaintGradientEnabled(true);
 		containerPanel.setArc(10, 10);
 		add(containerPanel);
 		
 		scrollPane = new JScrollPane(contentPanel = new JPanel(null));
 		scrollPane.setBounds(10, 10, containerPanel.getWidth() - 20, containerPanel.getHeight() - 20);
 		scrollPane.setBackground(c2);
+		scrollPane.setBorder(null);
 		containerPanel.add(scrollPane);
 		contentPanel.setBackground(c2);
 		contentPanel.setSize(scrollPane.getWidth(), 300);

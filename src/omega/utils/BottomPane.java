@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import omega.popup.NotificationPopup;
+
 import omega.Screen;
 
 import java.awt.event.MouseAdapter;
@@ -91,9 +93,57 @@ public class BottomPane extends JPanel {
           });
           add(jumpField);
 
-          themeComp = new TextComp(DataManager.getTheme(), "Switching Theme Requires IDE\'s Restart", TOOLMENU_COLOR1_SHADE, back2, glow, null);
+          themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR1_SHADE, back2, glow, null);
           themeComp.setRunnable(()->{
                Screen.pickTheme(DataManager.getTheme());
+               if(!themeComp.getText().equals(DataManager.getTheme())){
+				NotificationPopup.create(screen)
+				.size(300, 120)
+				.title("Theme Manager")
+				.dialogIcon(IconManager.fluentupdateImage)
+				.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+				.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
+				.iconButton(IconManager.fluentcloseImage, ()->{
+					Screen.notify("Terminating Running Applications");
+					try{
+						for(Process p : Screen.getRunView().runningApps) {
+							if(p.isAlive())
+								p.destroyForcibly();
+						}
+				     }
+				     catch(Exception e2) {
+		               
+			          }
+					Screen.notify("Saving UI and Data");
+					screen.getUIManager().save();
+					screen.getDataManager().saveData();
+					Screen.notify("Saving Project");
+					screen.saveAllEditors();
+			          try{
+			               Screen.getFileView().getProjectManager().save();
+			          }
+			          catch(Exception e2) {
+		               
+		               }
+		
+		               new Thread(()->{
+		               	try{
+		               		if(Screen.onWindows())
+		               			new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
+		          			else
+		          				new ProcessBuilder("omega-ide").start();
+		               	}
+		               	catch(Exception e){
+		               		e.printStackTrace();
+		               	}
+		          	}).start();
+		          	
+		               screen.dispose();
+				}, "")
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
+			}
                themeComp.setText(DataManager.getTheme());
                Screen.getScreen().getToolMenu().themeComp.setText(DataManager.getTheme());
           });

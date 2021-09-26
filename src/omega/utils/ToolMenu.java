@@ -579,11 +579,60 @@ public class ToolMenu extends JPanel {
 		sep5.setBounds(521, 50, 2, 40);
 		addComp(sep5);
       
-		themeComp = new TextComp(DataManager.getTheme(), "Switching theme needs IDE\'s restart", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3,
+		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3,
 			()->{
 				Screen.pickTheme(DataManager.getTheme());
+				if(!themeComp.getText().equals(DataManager.getTheme())){
+					NotificationPopup.create(screen)
+					.size(300, 120)
+					.title("Theme Manager")
+					.dialogIcon(IconManager.fluentupdateImage)
+					.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+					.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
+					.iconButton(IconManager.fluentcloseImage, ()->{
+						Screen.notify("Terminating Running Applications");
+						try{
+							for(Process p : Screen.getRunView().runningApps) {
+								if(p.isAlive())
+									p.destroyForcibly();
+							}
+					     }
+					     catch(Exception e2) {
+			               
+				          }
+						Screen.notify("Saving UI and Data");
+						screen.getUIManager().save();
+						screen.getDataManager().saveData();
+						Screen.notify("Saving Project");
+						screen.saveAllEditors();
+				          try{
+				               Screen.getFileView().getProjectManager().save();
+				          }
+				          catch(Exception e2) {
+			               
+			               }
+			
+			               new Thread(()->{
+			               	try{
+			               		if(Screen.onWindows())
+			               			new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
+			          			else
+			          				new ProcessBuilder("omega-ide").start();
+			               	}
+			               	catch(Exception e){
+			               		e.printStackTrace();
+			               	}
+			          	}).start();
+			          	
+			               screen.dispose();
+					}, "")
+					.build()
+					.locateOnBottomLeft()
+					.showIt();
+				}
 				themeComp.setText(DataManager.getTheme());
 				Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
+				
 			}
 		);
 		themeComp.setFont(omega.utils.UIManager.PX16);

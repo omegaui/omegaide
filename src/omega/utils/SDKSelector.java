@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.Screen;
 
 import java.io.File;
@@ -41,30 +43,35 @@ import javax.swing.JFrame;
 
 import static omega.utils.UIManager.*;
 public class SDKSelector extends JDialog {
-	private JScrollPane scrollPane;
-	private LinkedList<TextComp> boxs = new LinkedList<>();
-	private JPanel panel = new JPanel(null);
-	private String selection = null;
 	private static Dimension dimension;
+	
+	private JScrollPane scrollPane;
+	private JPanel panel = new JPanel(null);
+	
+	private LinkedList<TextComp> boxs = new LinkedList<>();
+	private String selection = null;
+	
 	private int block;
 	private int pressX;
 	private int pressY;
+	
 	public SDKSelector(JFrame f) {
 		super(f, true);
 		setUndecorated(true);
 		setSize(500, 400);
 		setLocationRelativeTo(f);
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
 		setLayout(null);
           
 		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
-		closeComp.setBounds(0, 0, 40, 40);
-		closeComp.setFont(PX16);
+		closeComp.setBounds(0, 0, 30, 30);
+		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
           
-		TextComp titleComp = new TextComp("Select Your JDK Environment", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
-		titleComp.setBounds(40, 0, getWidth() - 40, 40);
-		titleComp.setFont(PX16);
+		TextComp titleComp = new TextComp("Select JDK Version", TOOLMENU_COLOR3, TOOLMENU_COLOR3, c2, null);
+		titleComp.setBounds(30, 0, getWidth() - 30, 30);
+		titleComp.setFont(PX14);
 		titleComp.setClickable(false);
 		titleComp.setArc(0, 0);
 		titleComp.addMouseListener(new MouseAdapter(){
@@ -102,7 +109,8 @@ public class SDKSelector extends JDialog {
 				}
 			}
 		};
-		scrollPane.setBounds(0, 40, getWidth(), getHeight());
+		scrollPane.setBounds(0, 30, getWidth(), getHeight() - 30);
+		scrollPane.setBorder(null);
           panel.setBackground(c2);
 		add(scrollPane);
 	}

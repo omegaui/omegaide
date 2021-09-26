@@ -151,16 +151,16 @@ public class Screen extends JFrame {
 				javax.swing.UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
 				javax.swing.UIManager.put("Label.background", new ColorUIResource(Color.WHITE));
 			}
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
+			
 			javax.swing.UIManager.put("ToolTip.font", omega.utils.UIManager.PX14);
 			javax.swing.UIManager.put("Button.font", omega.utils.UIManager.PX14);
 			javax.swing.UIManager.put("Label.font", omega.utils.UIManager.PX14);
 			javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
 			javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
 			javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
-			
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 		}
 		catch (Exception e1) {
 			e1.printStackTrace();
@@ -208,9 +208,14 @@ public class Screen extends JFrame {
 		basicHighlight = new BasicHighlight();
 		operationPane = new OperationPane(this);
 		terminal = new TerminalComp();
+		
 		rightTabPanelSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		bottomTabPanelSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+		rightTabPanelSplitPane.setBorder(null);
+		bottomTabPanelSplitPane.setBorder(null);
+		splitPane.setBorder(null);
 		
 		UIManager.setData(splitPane);
 		UIManager.setData(rightTabPanelSplitPane);

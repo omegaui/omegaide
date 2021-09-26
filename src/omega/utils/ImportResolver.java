@@ -64,6 +64,7 @@ public class ImportResolver extends JDialog {
           scrollPane = new JScrollPane(panel);
           panel.setBackground(c2);
           scrollPane.setBounds(0, 40, getWidth(), getHeight() - 40);
+          scrollPane.setBorder(null);
           add(scrollPane);
           
      	TextComp titleComp = new TextComp("Select the imports and Click \'x\'", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
