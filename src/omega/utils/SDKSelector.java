@@ -23,9 +23,6 @@ import omega.Screen;
 
 import java.io.File;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -52,8 +49,6 @@ public class SDKSelector extends JDialog {
 	private String selection = null;
 	
 	private int block;
-	private int pressX;
-	private int pressY;
 	
 	public SDKSelector(JFrame f) {
 		super(f, true);
@@ -74,19 +69,7 @@ public class SDKSelector extends JDialog {
 		titleComp.setFont(PX14);
 		titleComp.setClickable(false);
 		titleComp.setArc(0, 0);
-		titleComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				pressX = e.getX();
-				pressY = e.getY();
-			}
-		});
-		titleComp.addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e){
-				setLocation(e.getXOnScreen() - pressX - 40, e.getYOnScreen() - pressY);
-			}
-		});
+		titleComp.attachDragger(this);
 		add(titleComp);
 		
 		scrollPane = new JScrollPane(panel){

@@ -267,6 +267,7 @@ public class JavaSyntaxParser {
 					continue;
 				files.add(line.substring(1, line.length() - 1));
 			}
+			reader.close();
 			
 			if(files.isEmpty()) {
 				return null;
@@ -338,7 +339,12 @@ public class JavaSyntaxParser {
 		if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
 			for(String d : Screen.getFileView().getProjectManager().jars)
 				depenPath += d + omega.Screen.PATH_SEPARATOR;
-
+			
+               if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
+                    for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+                         depenPath += d + omega.Screen.PATH_SEPARATOR;
+               }
+               
 			File[] files = new File(Screen.getFileView().getProjectPath() + File.separator + "bin").listFiles();
 			if(files != null && files.length != 0) {
 				depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;

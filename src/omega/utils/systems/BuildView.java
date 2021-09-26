@@ -224,10 +224,15 @@ public class BuildView extends View {
                     	
                          for(String d : Screen.getFileView().getProjectManager().jars)
                               depenPath += d + omega.Screen.PATH_SEPARATOR;
-                         
-                         if(Screen.isNotNull(depenPath))
-                              depenPath = depenPath.substring(0, depenPath.length() - 1);
                     }
+                    
+                    if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
+                         for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+                              depenPath += d + omega.Screen.PATH_SEPARATOR;
+                    }
+                    
+                    if(Screen.isNotNull(depenPath))
+                         depenPath = depenPath.substring(0, depenPath.length() - 1);
                     
                     if(Screen.isNotNull(jdkPath) && new File(jdkPath).exists())
                          cmd = jdkPath + "javac";

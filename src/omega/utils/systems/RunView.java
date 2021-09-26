@@ -760,9 +760,14 @@ public class RunView extends View {
 							depenPath += d + omega.Screen.PATH_SEPARATOR;
 						}
 					}
+	                    if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
+	                         for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+	                              depenPath += d + omega.Screen.PATH_SEPARATOR;
+	                    }
 					if(!depenPath.equals("")) {
 						depenPath = depenPath.substring(0, depenPath.length() - 1);
 					}
+					
 					if(jdkPath != null && new File(jdkPath).exists())
 						cmd = jdkPath + "javac";
 					else
