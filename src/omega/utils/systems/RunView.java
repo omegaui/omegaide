@@ -145,39 +145,33 @@ public class RunView extends View {
 			getScreen().getToolMenu().runComp.setClickable(false);
 			getScreen().getOperationPanel().removeTab("Build");
 			omega.Screen.getFileView().getArgumentManager().genLists();
-			String args = Screen.getFileView().getArgumentManager().compile_time_args;
-			String shell = "sh";
-			if(omega.Screen.PATH_SEPARATOR.equals("\\"))
-				shell = "cmd.exe";
-			if(!args.trim().equals("")){
+			LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
+			if(Screen.isNotNull(Screen.getFileView().getArgumentManager().getCompileCommand())){
 				Screen.setStatus("Building Project", 45);
 				String compileDir = Screen.getFileView().getArgumentManager().compileDir;
 				RunPanel printArea = new RunPanel(false);
 				printArea.setLogMode(true);
 				try {
-					Process compileInShell = new ProcessBuilder(shell).directory(new File(compileDir)).start();
-					Scanner errorReader = new Scanner(compileInShell.getErrorStream());
-					Scanner inputReader = new Scanner(compileInShell.getInputStream());
-					printArea.setProcess(compileInShell);
+					Process compileProcess = new ProcessBuilder(args).directory(new File(compileDir)).start();
+					Scanner errorReader = new Scanner(compileProcess.getErrorStream());
+					Scanner inputReader = new Scanner(compileProcess.getInputStream());
+					printArea.setProcess(compileProcess);
 					printArea.printText("Building Project ...");
-					printArea.printText("Running ... " + args + " ... Directly in your shell!");
+					printArea.printText("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
 					
-					runningApps.add(compileInShell);
+					runningApps.add(compileProcess);
 					
 					Screen.setStatus("Building Project -- Double Click to kill this process", 70);
 					Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
 						Screen.setStatus("Killing Build Process", 10);
-						if(compileInShell.isAlive())
-							compileInShell.destroyForcibly();
+						if(compileProcess.isAlive())
+							compileProcess.destroyForcibly();
 						Screen.setStatus("", 100);
 					});
-					PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
-					writer.println(args);
-					writer.close();
 					
 					new Thread(()->{
 						statusX = "No Errors";
-						while(compileInShell.isAlive()) {
+						while(compileProcess.isAlive()) {
 							while(errorReader.hasNextLine()) {
 								statusX = "Errors";
 								printArea.printText(errorReader.nextLine());
@@ -190,7 +184,7 @@ public class RunView extends View {
 						errorReader.close();
 					}).start();
 					
-					while(compileInShell.isAlive()) {
+					while(compileProcess.isAlive()) {
 						while(inputReader.hasNextLine()) {
 							String data = inputReader.nextLine();
 							printArea.printText(data);
@@ -214,10 +208,8 @@ public class RunView extends View {
 			try{
 				args = Screen.getFileView().getArgumentManager().run_time_args;
 				RunPanel terminal = new RunPanel(false);
-				terminal.printText("Running Project...\n" + args );
+				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
 				terminal.printText("");
-				terminal.printText("If your application does terminates on its own or by pressing the \'x\' button (on left)");
-				terminal.printText("Then, In that case you need to manually close it.");
 				terminal.printText("---<>--------------------------------------<>---");
 				String status = "Successfully";
 				
@@ -226,7 +218,7 @@ public class RunView extends View {
 				if(count > -1)
 					name = name + " " + count;
 				
-				if(args.trim().equals("")){
+				if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
 					terminal.printText("\'No Run Time Command Specified!!!\'");
 					terminal.printText("Click \"Settings\", then Click \"All Settings\"");
 					terminal.printText("And Specify the Run Time Args or Command");
@@ -234,7 +226,7 @@ public class RunView extends View {
 				}
 				String runDir = Screen.getFileView().getArgumentManager().runDir;
 				
-				Process runProcess = new ProcessBuilder(shell).directory(new File(runDir)).start();
+				Process runProcess = new ProcessBuilder(args).directory(new File(runDir)).start();
 				terminal.setProcess(runProcess);
 				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
 				
@@ -242,10 +234,6 @@ public class RunView extends View {
 				
 				Scanner inputReader = new Scanner(runProcess.getInputStream());
 				Scanner errorReader = new Scanner(runProcess.getErrorStream());
-				PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
-				writer.println(args);
-				writer.println("exit");
-				writer.flush();
 				
 				Screen.setStatus("Running Project", 100);
 				getScreen().getToolMenu().runComp.setClickable(true);
@@ -255,7 +243,7 @@ public class RunView extends View {
 					while(runProcess.isAlive()) {
 						while(errorReader.hasNextLine()) {
 							if(!statusX.equals("Errors")) statusX = "Errors";
-							terminal.printText(errorReader.nextLine());
+								terminal.printText(errorReader.nextLine());
 						}
 					}
 					terminal.printText("---<>--------------------------------------<>---");
@@ -270,9 +258,8 @@ public class RunView extends View {
 					}
 				}
 				inputReader.close();
-				runningApps.remove(runProcess);
-				inputReader.close();
 				errorReader.close();
+				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
 			}
 			catch(Exception e){ e.printStackTrace(); }
@@ -284,18 +271,13 @@ public class RunView extends View {
 			getScreen().getToolMenu().runComp.setClickable(false);
 			getScreen().getOperationPanel().removeTab("Build");
 			omega.Screen.getFileView().getArgumentManager().genLists();
-			String args = Screen.getFileView().getArgumentManager().run_time_args;
-			String shell = "sh";
-			if(omega.Screen.PATH_SEPARATOR.equals("\\"))
-				shell = "cmd.exe";
+			LinkedList<String> args = Screen.getFileView().getArgumentManager().run_time_args;
 			
 			Screen.setStatus("Running Project", 56);
 			try{
 				RunPanel terminal = new RunPanel(false);
-				terminal.printText("Running Project...\n" + args );
+				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
 				terminal.printText("");
-				terminal.printText("If your application does terminates on its own or by pressing the \'x\' button (on left)");
-				terminal.printText("Then, In that case you need to manually close it.");
 				terminal.printText("---<>--------------------------------------<>---");
 				String status = "Successfully";
 				
@@ -304,7 +286,7 @@ public class RunView extends View {
 				if(count > -1)
 					name = name + " " + count;
 				
-				if(args.trim().equals("")){
+				if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
 					terminal.printText("\'No Run Time Command Specified!!!\'");
 					terminal.printText("Click \"Settings\", then Click \"All Settings\"");
 					terminal.printText("And Specify the Run Time Args or Command");
@@ -312,7 +294,7 @@ public class RunView extends View {
 				}
 				String runDir = Screen.getFileView().getArgumentManager().runDir;
 				
-				Process runProcess = new ProcessBuilder(shell).directory(new File(runDir)).start();
+				Process runProcess = new ProcessBuilder(args).directory(new File(runDir)).start();
 				terminal.setProcess(runProcess);
 				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
 				
@@ -320,10 +302,6 @@ public class RunView extends View {
 				
 				Scanner inputReader = new Scanner(runProcess.getInputStream());
 				Scanner errorReader = new Scanner(runProcess.getErrorStream());
-				PrintWriter writer = new PrintWriter(runProcess.getOutputStream());
-				writer.println(args);
-				writer.println("exit");
-				writer.flush();
 				
 				Screen.setStatus("Running Project", 100);
 				getScreen().getToolMenu().runComp.setClickable(true);
@@ -348,9 +326,8 @@ public class RunView extends View {
 					}
 				}
 				inputReader.close();
-				runningApps.remove(runProcess);
-				inputReader.close();
 				errorReader.close();
+				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
 			}
 			catch(Exception e){ e.printStackTrace(); }

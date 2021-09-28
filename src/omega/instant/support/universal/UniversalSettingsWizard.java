@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.universal;
+import omega.instant.support.ArgumentWindow;
+
 import omega.Screen;
 
 import java.io.File;
@@ -39,15 +41,21 @@ import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
 public class UniversalSettingsWizard extends JDialog{
 	private TextComp titleComp;
-	private NoCaretField runField;
-	private NoCaretField compileField;
+	
+	private TextComp runField;
+	private TextComp compileField;
 	private TextComp runWorkDirComp;
 	private TextComp compileWorkDirComp;
+	
 	private TextComp listMakerComp;
 	public LinkedList<ListMaker> lists = new LinkedList<>();
+	
 	private JScrollPane scrollPane;
 	private FlexPanel panel;
 	private int block = 0;
+
+	private ArgumentWindow commandWindow;
+	
 	public UniversalSettingsWizard(Window window){
 		super(window, "Universal Settings Wizard");
 		setModal(true);
@@ -63,6 +71,8 @@ public class UniversalSettingsWizard extends JDialog{
 		init();
 	}
 	public void init(){
+		commandWindow = new ArgumentWindow(Screen.getScreen());
+		
 		FileSelectionDialog fc = new FileSelectionDialog(this);
 		fc.setTitle("Select Working Directory");
 		
@@ -80,7 +90,15 @@ public class UniversalSettingsWizard extends JDialog{
 		label0.setClickable(false);
 		add(label0);
 		
-		runField = new NoCaretField("", "Enter Run Command", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+		runField = new TextComp("", "Click to Set Run Command", TOOLMENU_GRADIENT, back1, TOOLMENU_COLOR2, ()->{
+			commandWindow.loadView(Screen.getFileView().getArgumentManager().run_time_args);
+			commandWindow.setVisible(true);
+			if(commandWindow.isSaved()){
+				Screen.getFileView().getArgumentManager().run_time_args = commandWindow.getCommand();
+				Screen.getFileView().getArgumentManager().save();
+				runField.setText(Screen.getFileView().getArgumentManager().getRunCommand());
+			}
+		});
 		runField.setBounds(180, 50, getWidth() - 320, 25);
 		runField.setFont(PX14);
 		add(runField);
@@ -104,7 +122,15 @@ public class UniversalSettingsWizard extends JDialog{
 		label1.setClickable(false);
 		add(label1);
 		
-		compileField = new NoCaretField("", "Enter Compile Command", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+		compileField = new TextComp("", "Click to Set Compile Command", TOOLMENU_GRADIENT, back1, TOOLMENU_COLOR2, ()->{
+			commandWindow.loadView(Screen.getFileView().getArgumentManager().compile_time_args);
+			commandWindow.setVisible(true);
+			if(commandWindow.isSaved()){
+				Screen.getFileView().getArgumentManager().compile_time_args = commandWindow.getCommand();
+				Screen.getFileView().getArgumentManager().save();
+				compileField.setText(Screen.getFileView().getArgumentManager().getCompileCommand());
+			}
+		});
 		compileField.setBounds(180, 100, getWidth() - 320, 25);
 		compileField.setFont(PX14);
 		add(compileField);
@@ -144,6 +170,7 @@ public class UniversalSettingsWizard extends JDialog{
 		scrollPane.setBorder(null);
 		add(scrollPane);
 	}
+	
 	public void addList(){
 		ListMaker listMaker = new ListMaker();
 		listMaker.setLocation(0, block);
@@ -170,8 +197,6 @@ public class UniversalSettingsWizard extends JDialog{
 		}
 		if(!checkPassed)
 			return;
-		Screen.getFileView().getArgumentManager().compile_time_args = compileField.getText();
-		Screen.getFileView().getArgumentManager().run_time_args = runField.getText();
 		Screen.getFileView().getArgumentManager().compileDir = compileWorkDirComp.getToolTipText();
 		Screen.getFileView().getArgumentManager().runDir = runWorkDirComp.getToolTipText();
 		Screen.getFileView().getArgumentManager().units.clear();
@@ -188,8 +213,8 @@ public class UniversalSettingsWizard extends JDialog{
 			block = 0;
 			lists.forEach(panel::remove);
 			lists.clear();
-			compileField.setText(Screen.getFileView().getArgumentManager().compile_time_args);
-			runField.setText(Screen.getFileView().getArgumentManager().run_time_args);
+			compileField.setText(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getCompileCommand()) ? "Click to Enter Compile Command" : Screen.getFileView().getArgumentManager().getCompileCommand());
+			runField.setText(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand()) ? "Click to Enter Run Command" : Screen.getFileView().getArgumentManager().getRunCommand());
 			compileWorkDirComp.setToolTipText(Screen.getFileView().getArgumentManager().compileDir.equals("") ? "Working Directory" : Screen.getFileView().getArgumentManager().compileDir);
 			runWorkDirComp.setToolTipText(Screen.getFileView().getArgumentManager().runDir.equals("") ? "Working Directory" : Screen.getFileView().getArgumentManager().runDir);
 			try{

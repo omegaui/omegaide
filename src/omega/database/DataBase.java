@@ -30,11 +30,13 @@ public class DataBase{
 	private LinkedList<String> names = new LinkedList<>();
 	private static final char VALUE_BORDER = '-';
 	private static final char NAME_BORDER = '>';
+	
 	public DataBase(String baseName){
 		dataBaseFile = new File(baseName);
 		if(dataBaseFile.exists())
 			readDataBase();
 	}
+	
 	private void readDataBase(){
 		try{
 			BufferedReader br = new BufferedReader(new FileReader(dataBaseFile));
@@ -56,10 +58,12 @@ public class DataBase{
 			new Thread(()->e.printStackTrace()).start();
 		}
 	}
+	
 	public void addEntry(String set, String value){
 		entries.add(new DataEntry(set, value));
 		addName(set);
 	}
+	
 	public void updateEntry(String set, String value, int index) {
 		if(!names.contains(set)) {
 			addEntry(set, value);
@@ -68,7 +72,8 @@ public class DataBase{
 		DataEntry e = getEntryAt(set, index);
 		if(e != null) {
 			e.setValue(value);
-			}else {
+		}
+		else {
 			addEntry(set, value);
 		}
 	}
@@ -83,6 +88,7 @@ public class DataBase{
 			names.add(set);
 		}
 	}
+	
 	public synchronized void save(){
 		try{
 			PrintWriter writer = new PrintWriter(new FileOutputStream(dataBaseFile));
@@ -100,6 +106,7 @@ public class DataBase{
 			e.printStackTrace();
 		}
 	}
+	
 	public DataEntry getEntryAt(String setName, int index){
 		int i = -1;
 		for(DataEntry e : entries){
@@ -111,6 +118,7 @@ public class DataBase{
 		}
 		return null;
 	}
+	
 	public LinkedList<DataEntry> getEntries(String set){
 		if(!names.contains(set)) {
 			return null;
@@ -120,14 +128,17 @@ public class DataBase{
 			if(e.getName().equals(set))
 				entriesX.add(e);
 		}
-		return entriesX.isEmpty() ? null : entriesX;
+		return entriesX;
 	}
+	
 	public LinkedList<String> getDataSetNames(){
 		return names;
 	}
+	
 	public LinkedList<DataEntry> getAllEntries(){
 		return entries;
 	}
+	
 	public File getDataBaseFile() {
 		return dataBaseFile;
 	}

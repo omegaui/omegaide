@@ -30,8 +30,8 @@ import omega.database.DataBase;
 import omega.database.DataEntry;
 public class ArgumentManager extends DataBase{
      
-     public String run_time_args; // The String containing the run time command
-     public String compile_time_args; // The String containing the compile time command
+     public LinkedList<String> run_time_args = new LinkedList<>(); // The List containing the run time command
+     public LinkedList<String> compile_time_args = new LinkedList<>(); // The List containing the compile time command
      public String runDir; // The String containing the working directory of the run-time
      public String compileDir; // The String containing the working directory of the compile-time
      public LinkedList<ListMaker> units = new LinkedList<>(); //The set of list-units
@@ -41,16 +41,17 @@ public class ArgumentManager extends DataBase{
      */
      public ArgumentManager(){
      	super(Screen.getFileView().getProjectPath() + File.separator + ".args");
+     	compile_time_args.clear();
+     	run_time_args.clear();
           load();
-          
      }
 
      /**
       * The method that loades data from the DataBase.
      */
      public void load(){
-          compile_time_args = getEntryAt("Compile Time Argument", 0) != null ? getEntryAt("Compile Time Argument", 0).getValue() : "";
-          run_time_args = getEntryAt("Run Time Argument", 0) != null ? getEntryAt("Run Time Argument", 0).getValue() : "";                
+          getEntries("Compile Time Argument").forEach(entry->compile_time_args.add(entry.getValue()));
+          getEntries("Run Time Argument").forEach(entry->run_time_args.add(entry.getValue()));
           compileDir = getEntryAt("Compile Time Working Directory", 0) != null ? getEntryAt("Compile Time Working Directory", 0).getValue() : "";   
           runDir = getEntryAt("Run Time Working Directory", 0) != null ? getEntryAt("Run Time Working Directory", 0).getValue() : "";
 
@@ -121,10 +122,27 @@ public class ArgumentManager extends DataBase{
           }
      }
 
+	public String getCompileCommand(){
+		String command = "";
+		for(String cx : compile_time_args){
+			command += cx + " ";
+		}
+		return command.trim();
+	}
+
+	public String getRunCommand(){
+		String command = "";
+		for(String cx : run_time_args){
+			command += cx + " ";
+		}
+		return command.trim();
+	}
+
      @Override
      public void save(){
-          updateEntry("Compile Time Argument", compile_time_args, 0);
-          updateEntry("Run Time Argument", run_time_args, 0);
+		clear();
+          compile_time_args.forEach(entry->addEntry("Compile Time Argument", entry));
+          run_time_args.forEach(entry->addEntry("Run Time Argument", entry));
           updateEntry("Compile Time Working Directory", compileDir, 0);
           updateEntry("Run Time Working Directory", runDir, 0);
           for(int i = 0; i < units.size(); i++){

@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.universal;
+import omega.instant.support.ArgumentWindow;
+
 import java.awt.geom.RoundRectangle2D;
 
 import omega.Screen;
@@ -41,14 +43,20 @@ import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
 public class ProcessWizard extends JDialog{
 	private ProcessManager processManager;
+	private ArgumentWindow commandWindow;
+	
 	private TextComp titleComp;
 	private NoCaretField extField;
-	private NoCaretField cmdField;
+	private TextComp cmdField;
+	
 	private LinkedList<TextComp> items = new LinkedList<>();
+	private LinkedList<String> cmd;
+	
 	private FlexPanel containerPanel;
 	private JScrollPane scrollPane;
 	private JPanel contentPanel;
 	private int block;
+	
 	public ProcessWizard(Screen screen){
 		super(screen, true);
 		setTitle("Process Wizard");
@@ -61,6 +69,7 @@ public class ProcessWizard extends JDialog{
 		setContentPane(panel);
 		setBackground(c2);
 		setLayout(null);
+		commandWindow = new ArgumentWindow(screen);
 		init();
 	}
 	public void init(){
@@ -86,7 +95,7 @@ public class ProcessWizard extends JDialog{
 		label1.setClickable(false);
 		add(label1);
 		
-		extField = new NoCaretField("", "Click Me", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+		extField = new NoCaretField("Enter File Extension", ".", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		extField.setBounds(170, 50, getWidth() - 190, 25);
 		extField.setFont(PX14);
 		add(extField);
@@ -97,7 +106,15 @@ public class ProcessWizard extends JDialog{
 		label2.setClickable(false);
 		add(label2);
 		
-		cmdField = new NoCaretField("", "Click Me", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+		cmdField = new TextComp("Click to Set Command", TOOLMENU_GRADIENT, back1, TOOLMENU_COLOR2, ()->{
+			if(!Screen.isNotNull(extField.getText()))
+				return;
+			commandWindow.loadView(processManager.getExecutionCommand(new File(extField.getText())));
+			commandWindow.setVisible(true);
+			if(commandWindow.isSaved()){
+				cmd = commandWindow.getCommand();
+			}
+		});
 		cmdField.setBounds(170, 100, getWidth() - 190, 25);
 		cmdField.setFont(PX14);
 		add(cmdField);
@@ -125,7 +142,7 @@ public class ProcessWizard extends JDialog{
 		items.clear();
 		block = 0;
 		ProcessManager.dataSet.forEach(data->{
-			TextComp comp = new TextComp(data.fileExt, data.executionCommand, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setToView(data));
+			TextComp comp = new TextComp(data.fileExt, data.executionCommand.toString(), TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->setToView(data));
 			comp.setBounds(0, block, contentPanel.getWidth(), 25);
 			comp.setFont(PX14);
 			comp.setArc(0, 0);
@@ -152,18 +169,12 @@ public class ProcessWizard extends JDialog{
 	}
 	public void setToView(ProcessData data){
 		extField.setText(data.fileExt);
-		cmdField.setText(data.executionCommand);
 	}
 	public void addCurrent(){
 		String ext = extField.getText();
 		titleComp.setColors(TOOLMENU_COLOR2, c2, c2);
 		if(ext.equals("")){
 			titleComp.setText("Enter a file extension");
-			return;
-		}
-		String cmd = cmdField.getText();
-		if(cmd.equals("")){
-			titleComp.setText("Enter the execution command for " + ext + " files");
 			return;
 		}
 		titleComp.setColors(TOOLMENU_COLOR3, c2, c2);

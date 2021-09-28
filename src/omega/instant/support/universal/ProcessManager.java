@@ -38,7 +38,9 @@ public class ProcessManager extends DataBase{
 
      public void load(){
      	getDataSetNames().forEach(set->{
-               dataSet.add(new ProcessData(set, getEntryAt(set, 0).getValue()));
+			LinkedList<String> cmds = new LinkedList<>();
+     		getEntries(set).forEach(entry->cmds.add(entry.getValue()));
+               dataSet.add(new ProcessData(set, cmds));
 	     });
      }
 
@@ -46,22 +48,22 @@ public class ProcessManager extends DataBase{
      public void save(){
      	clear();
           dataSet.forEach(data->{
-               addEntry(data.fileExt, data.executionCommand);
+               data.executionCommand.forEach(cmd->addEntry(data.fileExt, cmd));
           });
           super.save();
      }
 
-     public void add(String ext, String cmd){
+     public void add(String ext, LinkedList<String> cmd){
      	dataSet.add(new ProcessData(ext, cmd));
      }
 
-     public String getExecutionCommand(File file){
+     public LinkedList<String> getExecutionCommand(File file){
           String ext = file.getName().substring(file.getName().lastIndexOf('.'));
           for(ProcessData data : dataSet){
                if(data.fileExt.equals(ext))
                     return data.executionCommand;
           }
-     	return null;
+     	return new LinkedList<String>();
      }
 
      public synchronized void launch(File file){
@@ -71,23 +73,15 @@ public class ProcessManager extends DataBase{
 				RunPanel printArea = new RunPanel();
                     printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
                     Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", printArea, printArea::killProcess);
-                    printArea.print("# Starting Shell ... ");
-                    String shell = "sh";
-                    if(File.pathSeparator.equals(";"))
-                         shell = "cmd";
-                    Process launchInShellProcess = new ProcessBuilder(shell).directory(file.getParentFile()).start();
-                    printArea.print("# Shell Started!");
+                    LinkedList<String> cmd = (LinkedList<String>)getExecutionCommand(file).clone();
+                    cmd.add(file.getName());
+                    Process launchInShellProcess = new ProcessBuilder(cmd).directory(file.getParentFile()).start();
                     printArea.setProcess(launchInShellProcess);
+                    printArea.print("# File Launched!");
                     printArea.print("-------------------------Execution Begins Here-------------------------");
                     
                     Scanner errorReader = new Scanner(launchInShellProcess.getErrorStream());
                     Scanner inputReader = new Scanner(launchInShellProcess.getInputStream());
-                    
-                    PrintWriter writer = new PrintWriter(launchInShellProcess.getOutputStream());
-                    writer.println(getExecutionCommand(file) + " " + file.getName());
-                    if(!Screen.onWindows())
-                    	writer.println("exit");
-                    writer.flush();
                     
                     new Thread(()->{
                          String statusX = "No Errors";
