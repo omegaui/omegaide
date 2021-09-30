@@ -1,4 +1,6 @@
 package omega.instant.support;
+import omega.utils.IconManager;
+
 import omega.Screen;
 
 import java.awt.Dimension;
@@ -21,6 +23,7 @@ import static omega.comp.Animations.*;
 public class ArgumentWindow extends JDialog{
 
 	private TextComp titleComp;
+	private TextComp infoComp;
 
 	private FlexPanel argContainerPanel;
 	private JScrollPane scrollPane;
@@ -55,13 +58,19 @@ public class ArgumentWindow extends JDialog{
 	}
 
 	public void init(){
-		titleComp = new TextComp("Specify Arguments", c2, c2, glow, null);
-		titleComp.setBounds(0, 0, getWidth(), 30);
+		titleComp = new TextComp("Specify Arguments", back3, back3, glow, null);
+		titleComp.setBounds(0, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX14);
 		titleComp.setClickable(false);
 		titleComp.setArc(0, 0);
 		titleComp.attachDragger(this);
 		add(titleComp);
+
+		infoComp = new TextComp(IconManager.fluentinfoImage, 25, 25, "Enter One Argument per Field", back3, back3, TOOLMENU_COLOR3, null);
+		infoComp.setBounds(getWidth() - 30, 0, 30, 30);
+		infoComp.setArc(0, 0);
+		infoComp.setClickable(false);
+		add(infoComp);
 
 		argContainerPanel = new FlexPanel(null, back1, null);
 		argContainerPanel.setBounds(5, 35, getWidth() - 10, getHeight() - 70);

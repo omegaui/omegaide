@@ -92,7 +92,7 @@ public class ProcessManager extends DataBase{
                               }
                          }
                          printArea.print("-------------------------Execution Ends Here-------------------------");
-                         printArea.print("Launched finished with \"" + statusX + "\"");
+                         printArea.print("Launch finished with \"" + statusX + "\"");
                          errorReader.close();
                     }).start();
 

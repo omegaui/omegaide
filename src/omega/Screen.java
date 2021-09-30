@@ -90,13 +90,19 @@ public class Screen extends JFrame {
 	public JSplitPane compilancePane;
 	public JSplitPane rightTabPanelSplitPane;
 	public JSplitPane bottomTabPanelSplitPane;
+	
 	public Editor focussedEditor;
+	
 	public static Launcher launcher;
+	
 	public static SnippetView snippetView;
+	
 	public static final String VERSION = "v2.1";
 	public static String PATH_SEPARATOR = ":";
+	
 	public volatile boolean active = true;
 	public volatile boolean screenHasProjectView = true;
+	
 	private SplashScreen splash;
 	private OperationPane operationPane;
 	private TabPanel tabPanel;
@@ -105,6 +111,7 @@ public class Screen extends JFrame {
 	private ToolMenu toolMenu;
 	private SideMenu sideMenu;
 	private BottomPane bottomPane;
+	
 	private static Robot robot;
 	private static UIManager uiManager;
 	private static DataManager dataManager;
@@ -120,6 +127,7 @@ public class Screen extends JFrame {
 	private static PluginCenter pluginCenter;
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
+	
 	public Screen() {
 		setUndecorated(true);
 		try {
@@ -403,8 +411,7 @@ public class Screen extends JFrame {
 	public void paint(Graphics g) {
 		setSize(getWidth(), getHeight());
 		super.paint(g);
-		for(Component c : getComponents())
-			c.repaint();
+		g.dispose();
 	}
 	
 	public static void reverseColors(Component c) {
