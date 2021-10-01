@@ -89,10 +89,10 @@ public class BuildView extends View {
 
      public void compile(){
           new Thread(()->{
-               String args = Screen.getFileView().getArgumentManager().compile_time_args;
+               LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
                printArea.print("Building Project...\n\"" + args + "\"");
                getScreen().getOperationPanel().addTab("Build", printArea, printArea::killProcess);
-               if(args.trim().equals("")){
+               if(Screen.getFileView().getArgumentManager().getCompileCommand().trim().equals("")){
                     printArea.print("\'No Compile Time Command Specified!!!\'");
                     printArea.print("Click \"Settings\", then Click \"All Settings\"");
                     printArea.print("And Specify the Compile Time Args or Command");
@@ -102,23 +102,16 @@ public class BuildView extends View {
                getScreen().getToolMenu().runComp.setClickable(false);
                omega.Screen.getFileView().getArgumentManager().genLists();
                String compileDir = Screen.getFileView().getArgumentManager().compileDir;
-               String shell = "bash";
-               if(omega.Screen.PATH_SEPARATOR.equals("\\"))
-                    shell = "cmd.exe";
                try {
-                    Process compileInShell = new ProcessBuilder(shell).directory(new File(compileDir)).start();
-                    Scanner errorReader = new Scanner(compileInShell.getErrorStream());
-                    Scanner inputReader = new Scanner(compileInShell.getInputStream());
-                    printArea.setProcess(compileInShell);
+                    Process compileNJProcess = new ProcessBuilder(args).directory(new File(compileDir)).start();
+                    Scanner errorReader = new Scanner(compileNJProcess.getErrorStream());
+                    Scanner inputReader = new Scanner(compileNJProcess.getInputStream());
+                    printArea.setProcess(compileNJProcess);
                     printArea.print("Running ... " + args + " ...Directly in your shell!");
-                    
-                    PrintWriter writer = new PrintWriter(compileInShell.getOutputStream());
-                    writer.println(args);
-                    writer.close();
                     
                     new Thread(()->{
                          String statusX = "No Errors";
-                         while(compileInShell.isAlive()) {
+                         while(compileNJProcess.isAlive()) {
                               while(errorReader.hasNextLine()) {
                                    statusX = "Errors";
                                    printArea.print(errorReader.nextLine());
@@ -128,7 +121,7 @@ public class BuildView extends View {
                          errorReader.close();
                     }).start();
 
-                    while(compileInShell.isAlive()) {
+                    while(compileNJProcess.isAlive()) {
                          while(inputReader.hasNextLine()) {
                               String data = inputReader.nextLine();
                               printArea.print(data);

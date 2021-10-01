@@ -92,7 +92,7 @@ public class JavaSyntaxParser {
 			parsing = true;
 			DiagnosticCollector<JavaFileObject> diagnostics = compile();
 			parsing = false;
-
+			
 			resetHighlights();
 			
 			if(diagnostics == null || diagnostics.getDiagnostics() == null)
@@ -212,7 +212,7 @@ public class JavaSyntaxParser {
 			if(files.isEmpty()) {
 				return null;
 			}
-
+			
 			//Removing Old Byte Codes
 			for(String filePath : files){
 				File file = new File(filePath);
@@ -264,7 +264,7 @@ public class JavaSyntaxParser {
 			while(reader.hasNextLine()){
 				String line = reader.nextLine();
 				if(!line.startsWith("\""))
-					continue;
+				continue;
 				files.add(line.substring(1, line.length() - 1));
 			}
 			reader.close();
@@ -280,7 +280,7 @@ public class JavaSyntaxParser {
 			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
-
+			
 			BuildView.optimizeProjectOutputs();
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
@@ -339,34 +339,34 @@ public class JavaSyntaxParser {
 		if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
 			for(String d : Screen.getFileView().getProjectManager().jars)
 				depenPath += d + omega.Screen.PATH_SEPARATOR;
-			
-               if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-                    for(String d : Screen.getFileView().getProjectManager().resourceRoots)
-                         depenPath += d + omega.Screen.PATH_SEPARATOR;
-               }
-               
-			File[] files = new File(Screen.getFileView().getProjectPath() + File.separator + "bin").listFiles();
-			if(files != null && files.length != 0) {
-				depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
-			}
-			else{
-				NotificationPopup.create(Screen.getScreen())
-				.size(400, 120)
-				.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
-				.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
-				.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
-				.dialogIcon(IconManager.fluenterrorImage)
-				.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
-				.build()
-				.locateOnBottomLeft()
-				.showIt();
-				
-				Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
-			}
-			
-			if(Screen.isNotNull(depenPath))
-				depenPath = depenPath.substring(0, depenPath.length() - 1);
 		}
+		
+		if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
+			for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+				depenPath += d + omega.Screen.PATH_SEPARATOR;
+		}
+		
+		File[] files = new File(Screen.getFileView().getProjectPath() + File.separator + "bin").listFiles();
+		if(files != null && files.length != 0) {
+			depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
+		}
+		else{
+			NotificationPopup.create(Screen.getScreen())
+			.size(400, 120)
+			.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
+			.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
+			.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
+			.dialogIcon(IconManager.fluenterrorImage)
+			.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
+			.build()
+			.locateOnBottomLeft()
+			.showIt();
+			
+			Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
+		}
+		
+		if(Screen.isNotNull(depenPath))
+			depenPath = depenPath.substring(0, depenPath.length() - 1);
 		
 		LinkedList<String> commands = new LinkedList<>();
 		if(Screen.isNotNull(depenPath)){
@@ -410,7 +410,7 @@ public class JavaSyntaxParser {
 			return IconManager.fluenterrorImage;
 		return IconManager.fluentwarningImage;
 	}
-
+	
 	public static String convertToProjectPath(String buildSpacePath){
 		if(!buildSpacePath.startsWith(BUILDSPACE_DIR.getAbsolutePath()))
 			return buildSpacePath;
@@ -418,7 +418,7 @@ public class JavaSyntaxParser {
 		buildSpacePath = buildSpacePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + (Screen.onWindows() ? 1 : 0));
 		return path + buildSpacePath;
 	}
-
+	
 	public static void resetHighlights(){
 		highlights.forEach(h->{
 			h.editor.javaErrorPanel.setVisible(false);

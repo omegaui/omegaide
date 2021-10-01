@@ -18,6 +18,8 @@
 
 
 package omega.utils;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.tree.Branch;
 
 import omega.Screen;
@@ -86,6 +88,7 @@ public class FileSelectionDialog extends JDialog{
           setSize(500, 400);
           setLocationRelativeTo(null);
           setBackground(c2);
+          setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
           setLayout(null);
           init();
      }
@@ -104,7 +107,7 @@ public class FileSelectionDialog extends JDialog{
      }
 
      public void init(){
-          titleComp = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
+          titleComp = new TextComp("", back2, back2, glow, null);
           titleComp.setBounds(0, 0, getWidth() - 50 - 60, 30);
           titleComp.setFont(PX14);
           titleComp.setClickable(false);
@@ -124,7 +127,7 @@ public class FileSelectionDialog extends JDialog{
           });
           add(titleComp);
 
-          cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+          cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
                selections.clear();
                dispose();
           });
@@ -133,7 +136,7 @@ public class FileSelectionDialog extends JDialog{
           cancelComp.setArc(0, 0);
           add(cancelComp);
 
-          levelComp = new TextComp(IconManager.fluentlevelupImage, 25, 25, "Move One Level Up", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+          levelComp = new TextComp(IconManager.fluentlevelupImage, 25, 25, "Move One Level Up", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
                if(currentDir == null)
                     return;
                String path = currentDir.getAbsolutePath();
@@ -165,7 +168,7 @@ public class FileSelectionDialog extends JDialog{
           levelComp.setArc(0, 0);
           add(levelComp);
 
-          homeComp = new TextComp(IconManager.fluenthomeImage, 25, 25, "Go Home", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+          homeComp = new TextComp(IconManager.fluenthomeImage, 25, 25, "Go Home", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
                currentDir = new File(System.getProperty("user.home"));
                if(state == 0)
                     selectFiles();
@@ -179,7 +182,7 @@ public class FileSelectionDialog extends JDialog{
           homeComp.setArc(0, 0);
           add(homeComp);
 
-          selectionField = new NoCaretField("", "or Enter the path manually and hit enter", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+          selectionField = new NoCaretField("", "or Enter the path manually and hit enter", TOOLMENU_COLOR2, back2, TOOLMENU_COLOR3);
           selectionField.setBounds(0, getHeight() - 30, getWidth() - 50, 30);
           selectionField.setOnAction(()->{
                File file = new File(selectionField.getText());
@@ -212,7 +215,7 @@ public class FileSelectionDialog extends JDialog{
           add(selectionField);
           addKeyListener(selectionField);
 
-          selectComp = new TextComp("Done", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, this::dispose);
+          selectComp = new TextComp("Done", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR3, this::dispose);
           selectComp.setBounds(getWidth() - 50, getHeight() - 30, 50, 30);
           selectComp.setFont(PX14);
           selectComp.setArc(0, 0);
@@ -239,9 +242,12 @@ public class FileSelectionDialog extends JDialog{
                }
           });
           scrollPane.setBounds(0, 30, getWidth(), getHeight() - 60);
+          scrollPane.setBackground(c2);
+          scrollPane.setBorder(null);
           add(scrollPane);
           panel.setBackground(c2);
           panel.setPreferredSize(new Dimension(490, 290));
+          panel.setBorder(null);
      }
 
 	@Override
