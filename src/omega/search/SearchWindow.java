@@ -39,21 +39,27 @@ import java.util.LinkedList;
 
 import omega.comp.NoCaretField;
 import omega.comp.TextComp;
+import omega.comp.FlexPanel;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
 
 import java.awt.geom.RoundRectangle2D;
 import static omega.utils.UIManager.*;
 public class SearchWindow extends JDialog{
 	private Screen screen;
+
+	private FlexPanel containerPanel;
 	
 	private JPanel panel;
 	
 	private JScrollPane scrollPane;
 	
 	private NoCaretField field;
+
+	private TextComp infoComp;
 	
 	private LinkedList<File> files;
 	
@@ -73,52 +79,18 @@ public class SearchWindow extends JDialog{
           files = new LinkedList<>();
           searchComps = new LinkedList<>();
           
-          setLayout(null);
           setUndecorated(true);
 		setTitle("Search Files across the Project");
 		setIconImage(f.getIconImage());
-		setSize(400, 400);
+		setSize(435, 400);
 		setLocationRelativeTo(null);
-		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 10, 10));
+		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
           setResizable(false);
-          
-		scrollPane = new JScrollPane(panel = new JPanel(null));
-          scrollPane.setBackground(back2);
-          scrollPane.setBounds(0, 60, getWidth(), getHeight() - 60);
-          add(scrollPane);
 
-          TextComp titleComp = new TextComp(getTitle(), TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, null);
-          titleComp.setBounds(0, 0, getWidth() - 60, 30);
-          titleComp.setClickable(false);
-          titleComp.setFont(PX14);
-          titleComp.setArc(0, 0);
-          titleComp.addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e){
-               	pressX = e.getX();
-                    pressY = e.getY();
-                    field.grabFocus();
-               }
-          });
-          titleComp.addMouseMotionListener(new MouseAdapter(){
-               @Override
-               public void mouseDragged(MouseEvent e){
-               	setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
-               }
-          });
-          add(titleComp);
-
-          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
-          closeComp.setBounds(getWidth() - 30, 0, 30, 30);
-          closeComp.setFont(PX14);
-          closeComp.setArc(0, 0);
-          add(closeComp);
-
-          TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
-          reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
-          reloadComp.setArc(0, 0);
-          reloadComp.setFont(PX14);
-          add(reloadComp);
+          JPanel panelX = new JPanel(null);
+          panelX.setBackground(c2);
+          setContentPane(panelX);
+          setLayout(null);
 
           field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
           field.setBounds(0, 30, getWidth(), 30);
@@ -151,7 +123,51 @@ public class SearchWindow extends JDialog{
           add(field);
           addKeyListener(field);
           
-		omega.utils.UIManager.setData(panel);
+		containerPanel = new FlexPanel(null, back1, null);
+		containerPanel.setBounds(5, 65, getWidth() - 10, getHeight() - 70 - 30);
+		containerPanel.setArc(10, 10);
+		add(containerPanel);
+          
+		scrollPane = new JScrollPane(panel = new JPanel(null));
+          scrollPane.setBackground(back2);
+          scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
+          scrollPane.setBorder(null);
+		scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){
+			@Override
+			public void setVisible(boolean value){
+				super.setVisible(false);
+			}
+		});
+          containerPanel.add(scrollPane);
+
+          infoComp = new TextComp("", c2, c2, glow, null);
+          infoComp.setBounds(0, getHeight() - 25, getWidth(), 25);
+          infoComp.setFont(PX14);
+          infoComp.setArc(0, 0);
+          infoComp.setClickable(false);
+          infoComp.alignX = 10;
+          add(infoComp);
+
+          TextComp titleComp = new TextComp(getTitle(), back2, back2, glow, field::grabFocus);
+          titleComp.setBounds(0, 0, getWidth() - 60, 30);
+          titleComp.setClickable(false);
+          titleComp.setFont(PX14);
+          titleComp.setArc(0, 0);
+          titleComp.attachDragger(this);
+          add(titleComp);
+
+          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
+          closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+          closeComp.setFont(PX14);
+          closeComp.setArc(0, 0);
+          add(closeComp);
+
+          TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
+          reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
+          reloadComp.setArc(0, 0);
+          reloadComp.setFont(PX14);
+          add(reloadComp);
+
 		panel.setBackground(c2);
 	}
 
@@ -165,20 +181,23 @@ public class SearchWindow extends JDialog{
                     if(ext.contains("."))
                          ext = ext.substring(ext.lastIndexOf('.'));
 				SearchComp comp = new SearchComp(this, file);
-				comp.setBounds(0, blocks += 50, getWidth(), 50);
+				comp.setBounds(0, blocks += 50, scrollPane.getWidth() - 5, 50);
 				comp.initUI();
 				panel.add(comp);
 				searchComps.add(comp);
 			}
 		});
-		panel.setPreferredSize(new Dimension(getWidth(), blocks + 50));
+		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blocks + 50));
 		scrollPane.repaint();
 		scrollPane.getVerticalScrollBar().setVisible(true);
 		scrollPane.getVerticalScrollBar().setValue(0);
-		scrollPane.getVerticalScrollBar().repaint();
 		repaint();
 		if(!searchComps.isEmpty()) {
 			searchComps.get(pointer = 0).set(true);
+			infoComp.setText(searchComps.size() + " File" + (searchComps.size() > 1 ? "s" : "") + " Found!");
+		}
+		else{
+			infoComp.setText("Not at least One File Found!");
 		}
 		doLayout();
 	}
