@@ -23,9 +23,6 @@ import omega.Screen;
 
 import java.awt.Dimension;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import omega.deassembler.DataMember;
@@ -43,16 +40,20 @@ import javax.swing.JPanel;
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class GSView extends JDialog{
-	private int mouseX;
-	private int mouseY;
+	
 	private LinkedList<TextComp> comps = new LinkedList<>();
 	private LinkedList<DataMember> members = new LinkedList<>();
+	
 	private RSyntaxTextArea textArea;
+	
 	private String className;
+	
 	private JScrollPane scrollPane;
 	private JPanel panel;
+	
 	private TextComp accessComp;
 	private TextComp gsComp;
+	
 	public GSView(Screen screen){
 		super(screen);
 		setModal(false);
@@ -64,9 +65,11 @@ public class GSView extends JDialog{
 		setResizable(false);
 		init();
 	}
+	
 	public void init(){
 		scrollPane = new JScrollPane(panel = new JPanel(null));
 		scrollPane.setBounds(0, 30, getWidth(), getHeight() - 90);
+		scrollPane.setBorder(null);
 		panel.setBackground(c2);
 		add(scrollPane);
 		
@@ -76,23 +79,11 @@ public class GSView extends JDialog{
 		closeComp.setArc(0, 0);
 		add(closeComp);
           
-		TextComp titleComp = new TextComp("Generate Getters/Setters", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
+		TextComp titleComp = new TextComp("Generate Getters/Setters", c2, c2, glow, ()->{});
 		titleComp.setBounds(30, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX16);
 		titleComp.setClickable(false);
-		titleComp.addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				setLocation(e.getXOnScreen() - mouseX - 30, e.getYOnScreen() - mouseY);
-			}
-		});
-		titleComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e) {
-				mouseX = e.getX();
-				mouseY = e.getY();
-			}
-		});
+		titleComp.attachDragger(this);
 		titleComp.setArc(0, 0);
 		add(titleComp);
 		

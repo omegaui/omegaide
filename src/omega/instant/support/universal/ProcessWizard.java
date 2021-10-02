@@ -75,7 +75,7 @@ public class ProcessWizard extends JDialog{
 	public void init(){
 		processManager = new ProcessManager();
 		
-		titleComp = new TextComp("Process Wizard", TOOLMENU_COLOR3, c2, c2, null);
+		titleComp = new TextComp("Process Wizard", c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 25, 30);
 		titleComp.setFont(PX14);
 		titleComp.setArc(0, 0);

@@ -78,7 +78,7 @@ public class SnippetView extends JDialog {
 	}
 
 	private void init(){
-		titleComp = new TextComp("Snippet Manager", c2, c2, TOOLMENU_COLOR3, null);
+		titleComp = new TextComp("Snippet Manager", c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX14);
 		titleComp.setArc(0, 0);

@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import java.awt.geom.RoundRectangle2D;
+
 import omega.Screen;
 
 import java.awt.Desktop;
@@ -61,7 +63,8 @@ public class SourceDefender extends JDialog {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLayout(null);
-		var panel = new JPanel(null);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+		JPanel panel = new JPanel(null);
 		panel.setBackground(c2);
 		setContentPane(panel);
 		setBackground(c2);
@@ -77,7 +80,7 @@ public class SourceDefender extends JDialog {
 
 		backupView = new BackupView();
 		
-		titleComp = new TextComp("Source Defender", "All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()), TOOLMENU_COLOR3, c2, c2, null);
+		titleComp = new TextComp("Source Defender", "All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()), c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 100, 30);
 		titleComp.setClickable(false);
 		titleComp.setFont(PX14);
@@ -132,6 +135,7 @@ public class SourceDefender extends JDialog {
 		scrollPane = new JScrollPane(panel = new JPanel(null));
 		scrollPane.setBounds(10, 120, getWidth() - 20, getHeight() - 140);
 		scrollPane.setBackground(c2);
+		scrollPane.setBorder(null);
 		panel.setBackground(c2);
 		add(scrollPane);
 	}
@@ -147,7 +151,7 @@ public class SourceDefender extends JDialog {
 			addToBackup(backupTitle, editor.currentFile);
 		});
 		
-		TextComp comp = new TextComp(backupTime, "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+		TextComp comp = new TextComp(backupTime, "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			File backupChannel = new File(BACKUP_DIR, backupTitle);
 			LinkedList<File> files = new LinkedList<>();
 			loadAllFiles(files, backupChannel);
@@ -259,7 +263,7 @@ public class SourceDefender extends JDialog {
 			return;
 		
 		for(File backup : backups){
-			TextComp comp = new TextComp(backup.getName(), "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+			TextComp comp = new TextComp(backup.getName(), "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 				File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backup.getName());
 				LinkedList<File> files = new LinkedList<>();
 				loadAllFiles(files, backupChannel);
@@ -310,7 +314,7 @@ public class SourceDefender extends JDialog {
 		}
 
 		public void init(){
-			titleComp = new TextComp("", TOOLMENU_COLOR3, c2, c2, null);
+			titleComp = new TextComp("", c2, c2, glow, null);
 			titleComp.setBounds(0, 0, getWidth(), 30);
 			titleComp.setFont(PX14);
 			titleComp.setClickable(false);
@@ -330,12 +334,12 @@ public class SourceDefender extends JDialog {
 			panel.setBackground(c2);
 			add(scrollPane);
 
-			TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
+			TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
 			closeComp.setBounds(0, getHeight() - 27, getWidth()/2, 25);
 			closeComp.setFont(PX14);
 			add(closeComp);
 
-			TextComp applyComp = new TextComp("Restore", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
+			TextComp applyComp = new TextComp("Restore", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 				SourceDefender.this.setVisible(false);
 				restoreBackup(BackupView.this.backupTitle);
 			});

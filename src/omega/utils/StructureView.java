@@ -70,7 +70,7 @@ public class StructureView extends JDialog {
      }
      
      public void init(){
-          titleComp = new TextComp("View Code Strutures", TOOLMENU_COLOR3, c2, c2, null);
+          titleComp = new TextComp("View Code Strutures", back2, back2, glow, null);
           titleComp.setBounds(0, 0, getWidth() - 30, 30);
           titleComp.setFont(PX14);
           titleComp.setClickable(false);
@@ -78,7 +78,7 @@ public class StructureView extends JDialog {
           titleComp.attachDragger(this);
           add(titleComp);
 
-          closeComp = new TextComp("x", "Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->setVisible(false));
+          closeComp = new TextComp("x", "Close", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->setVisible(false));
           closeComp.setBounds(getWidth() - 30, 0, 30, 30);
           closeComp.setArc(0, 0);
           closeComp.setFont(PX14);
@@ -189,6 +189,8 @@ public class StructureView extends JDialog {
                     reader = Assembly.getReader(im.getImport());
                else
                     reader = Screen.getFileView().getJDKManager().prepareReader(im.getImport());
+               if(reader.dataMembers == null)
+               	return;
                reader.dataMembers.forEach(dx->{
                     TextComp comp = new TextComp(dx.getRepresentableValue(), null, null, null, null);
                     comp.setBounds(0, block, memberContentPanel.getWidth(), 25);

@@ -25,9 +25,6 @@ import omega.framework.CodeFramework;
 
 import java.awt.Dimension;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import omega.deassembler.DataMember;
@@ -46,8 +43,6 @@ import javax.swing.JPanel;
 
 import static omega.utils.UIManager.*;
 public class OverView extends JDialog{
-     private int mouseX;
-     private int mouseY;
      private LinkedList<TextComp> comps = new LinkedList<>();
      private LinkedList<DataMember> members = new LinkedList<>();
      private RSyntaxTextArea textArea;
@@ -68,6 +63,7 @@ public class OverView extends JDialog{
      public void init(){
           scrollPane = new JScrollPane(panel = new JPanel(null));
           scrollPane.setBounds(0, 30, getWidth(), getHeight() - 90);
+          scrollPane.setBorder(null);
           panel.setBackground(c2);
           add(scrollPane);
           
@@ -77,23 +73,11 @@ public class OverView extends JDialog{
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp titleComp = new TextComp("Override/Implement Methods", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
+          TextComp titleComp = new TextComp("Override/Implement Methods", c2, c2, glow, ()->{});
           titleComp.setBounds(30, 0, getWidth() - 30, 30);
           titleComp.setFont(PX16);
           titleComp.setClickable(false);
-          titleComp.addMouseMotionListener(new MouseAdapter(){
-               @Override
-               public void mouseDragged(MouseEvent e) {
-                    setLocation(e.getXOnScreen() - mouseX - 30, e.getYOnScreen() - mouseY);
-               }
-          });
-          titleComp.addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e) {
-                    mouseX = e.getX();
-                    mouseY = e.getY();
-               }
-          });
+          titleComp.attachDragger(this);
           titleComp.setArc(0, 0);
           add(titleComp);
 
