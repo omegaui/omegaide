@@ -59,13 +59,14 @@ public class Installer extends JDialog {
 		image = IconManager.fluentupdateImage;
 		init();
 	}
-	public void init(){
-		
+	
+	public void init(){		
 		headerComp = new TextComp("", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, null);
 		headerComp.setBounds(0, 0, getWidth(), 30);
 		headerComp.setFont(PX14);
 		headerComp.setArc(0, 0);
 		headerComp.setClickable(false);
+		headerComp.attachDragger(this);
 		add(headerComp);
 		
 		msgComp = new TextComp("", TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR2, ()->{
@@ -83,6 +84,7 @@ public class Installer extends JDialog {
 		imageComp.setClickable(false);
 		add(imageComp);
 	}
+	
 	public void checkForUpdates(){
 		setVisible(true);
 		new Thread(()->{
@@ -101,7 +103,9 @@ public class Installer extends JDialog {
 					while(reader.hasNextLine())
 						changes.add(reader.nextLine());
 					reader.close();
-					updater.genView(title, size, changes, this::update);
+					int option = updater.genView(title, size, changes, this::update);
+					if(option == Updater.CANCEL_OPTION)
+						setVisible(false);
 				}
 				else {
 					reader.close();
@@ -150,7 +154,7 @@ public class Installer extends JDialog {
      				setHeader("Downloaded Omega IDE.jar");
                          enableClose();
                          notify("Click to Close");
-                         ChoiceDialog.makeChoice("Move ~/Omega IDE.jar to /usr/bin", "Ok", "Don't Update");
+                         ChoiceDialog.makeChoice("Move ~/Omega IDE.jar to /usr/bin", "Ok", "Abort");
      			}
                     else {
                          setHeader("Updated to version " + versionInfo);

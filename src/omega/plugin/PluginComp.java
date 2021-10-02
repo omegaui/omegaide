@@ -199,7 +199,7 @@ public class PluginComp extends JComponent{
 		authorComp.setClickable(false);
 		add(authorComp);
 		
-		installComp = new TextComp(inStore ? "Install" : "Uninstall", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		installComp = new TextComp(inStore ? "Install" : "Uninstall", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			int res = ChoiceDialog.makeChoice("Do you want to install " + plugInfo.name + "? This Operation requires IDE restart!", "Yes", "No");
 			if(res == ChoiceDialog.CHOICE1){
 				new Thread(()->{
@@ -241,7 +241,7 @@ public class PluginComp extends JComponent{
 		add(installComp);
 		
 		if(!inStore) {
-			enableComp = new TextComp(plug.enabled ? "Disable" : "Enable", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+			enableComp = new TextComp(plug.enabled ? "Disable" : "Enable", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 				plug.enabled = !plug.enabled;
 				if(plug.enabled){
 					if(!plugin.needsRestart()){

@@ -79,7 +79,7 @@ public class PluginCenter extends JDialog{
 	public void init(){
 		installer = new Installer(this);
 		
-		titleComp = new TextComp("Plugin Center", TOOLMENU_COLOR3, c2, c2, null);
+		titleComp = new TextComp("Plugin Center", c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX16);
 		titleComp.setClickable(false);
@@ -193,10 +193,12 @@ public class PluginCenter extends JDialog{
       
 		manageScrollPane = new JScrollPane(managePanel);
 		manageScrollPane.setBounds(10, 150, getWidth() - 20, getHeight() - 160);
+		manageScrollPane.setBorder(null);
           add(manageScrollPane);
         
 		storeScrollPane = new JScrollPane(storePanel);
 		storeScrollPane.setBounds(10, 150, getWidth() - 20, getHeight() - 160);
+		storeScrollPane.setBorder(null);
           add(storeScrollPane);
 	}
 	
