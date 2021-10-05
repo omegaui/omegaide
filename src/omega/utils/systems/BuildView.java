@@ -470,6 +470,8 @@ public class BuildView extends View {
 		
 		public void printText(String text){
 			print(text);
+			layout();
+			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 		}
 
 		public void clearTerminal(){

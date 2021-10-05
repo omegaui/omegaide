@@ -1035,6 +1035,8 @@ public class RunView extends View {
 
 		public void print(String text){
 			runTextArea.append(text + "\n");
+			layout();
+			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 		}
 		
 		public void printText(String text){
