@@ -137,7 +137,7 @@ public class StructureView extends JDialog {
                titleComp.setText("No Matches Found!");
                return;
           }
-          titleComp.setColors(TOOLMENU_COLOR3, c2, c2);
+          titleComp.setColors(back2, back2, glow);
           titleComp.setText("View Code Structures");
           
           classComps.forEach(classContentPanel::remove);

@@ -327,7 +327,7 @@ public class TextComp extends JComponent{
 	public void draw(Graphics2D g, int x, int y){
 		g.setColor(color3);
 		if(x < alignX){
-			String temp = ".." + dir.substring(dir.length()/2);
+			String temp = dir.substring(0, dir.length()/2) + "..";
 			x = getWidth()/2 - g.getFontMetrics().stringWidth(temp)/2;
 			g.drawString(temp, alignX < 0 ? x : alignX, y);
 			setToolTipText(dir);
