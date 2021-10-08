@@ -87,6 +87,12 @@ public class OPopupWindow extends JDialog{
           return this;
      }
 
+     public OPopupWindow setEnabled(String name, boolean value){
+     	if(getItem(name) != null)
+     		getItem(name).setEnabled(value);
+     	return this;
+     }
+
      public OPopupWindow removeItem(String name){
           for(OPopupItem i : items){
                if(i.getName().equals(name)){
