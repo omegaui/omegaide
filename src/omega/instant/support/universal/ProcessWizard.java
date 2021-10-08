@@ -221,6 +221,11 @@ public class ProcessWizard extends JDialog{
 		super.dispose();
 	}
 	@Override
+	public void setSize(int width, int height){
+		super.setSize(width, height);
+		setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
+	}
+	@Override
 	public void setVisible(boolean value){
 		if(value){
 			genView();
