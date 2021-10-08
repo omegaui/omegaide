@@ -48,8 +48,6 @@ public class UniversalProjectWizard extends JDialog{
      
      private String hint1 = "Project structure can be created in the IDE";
 
-     private int pressX;
-     private int pressY;
      public UniversalProjectWizard(JFrame frame){
           super(frame, false);
           setTitle("Universal Project Wizard");
@@ -69,19 +67,7 @@ public class UniversalProjectWizard extends JDialog{
           titleComp.setFont(PX14);
           titleComp.setArc(0, 0);
           titleComp.setClickable(false);
-          titleComp.addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e){
-                    pressX = e.getX();
-                    pressY = e.getY();
-               }
-          });
-          titleComp.addMouseMotionListener(new MouseAdapter(){
-               @Override
-               public void mouseDragged(MouseEvent e){
-                    setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
-               }
-          });
+          titleComp.attachDragger(this);
           add(titleComp);
 
           projectNameLabel = new TextComp("Project Name", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
@@ -142,8 +128,8 @@ public class UniversalProjectWizard extends JDialog{
           }
           root.mkdir();
           ProjectDataBase.genInfo(root.getAbsolutePath(), true);
-          Screen.getScreen().loadProject(root);
           setVisible(false);
+          Screen.getScreen().loadProject(root);
      }
 
      public void load(){

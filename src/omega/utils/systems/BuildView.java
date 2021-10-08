@@ -107,7 +107,7 @@ public class BuildView extends View {
                     Scanner errorReader = new Scanner(compileNJProcess.getErrorStream());
                     Scanner inputReader = new Scanner(compileNJProcess.getInputStream());
                     printArea.setProcess(compileNJProcess);
-                    printArea.print("Running ... " + args + " ...Directly in your shell!");
+                    printArea.print("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
                     
                     new Thread(()->{
                          String statusX = "No Errors";
@@ -117,6 +117,16 @@ public class BuildView extends View {
                                    printArea.print(errorReader.nextLine());
                               }
                          }
+		               try{
+		                    if(compileNJProcess.getErrorStream().available() > 0){
+		                    	while(errorReader.hasNextLine()) {
+		                              printArea.print(errorReader.nextLine());
+		                         }
+		                    }
+		               }
+		               catch(Exception e){
+		               	
+		               }
                          printArea.print("Compilation finished with \"" + statusX + "\"");
                          errorReader.close();
                     }).start();
@@ -127,14 +137,30 @@ public class BuildView extends View {
                               printArea.print(data);
                          }
                     }
-                    inputReader.close();
+                    try{
+	                    if(compileNJProcess.getInputStream().available() > 0){
+	                    	while(inputReader.hasNextLine()) {
+	                              printArea.print(inputReader.nextLine());
+	                         }
+	                    }
+                    }
+                    catch(Exception e){
+                    	
+                    }
+                    finally{
+                    	inputReader.close();
+                    }
                }
                catch(Exception e){ 
-                    
+                    printArea.printText("Enter commands correctly!");
+				printArea.printText(e.toString());
+				e.printStackTrace();
                }
-               getScreen().getToolMenu().buildComp.setClickable(true);
-               getScreen().getToolMenu().runComp.setClickable(true);
-               getScreen().getProjectView().reload();
+               finally {
+	               getScreen().getToolMenu().buildComp.setClickable(true);
+	               getScreen().getToolMenu().runComp.setClickable(true);
+	               getScreen().getProjectView().reload();
+               }
           }).start();
      }
 

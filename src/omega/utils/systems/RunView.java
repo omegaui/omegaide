@@ -80,7 +80,7 @@ public class RunView extends View {
 	public String mainClassPath = null;
 	public String mainClass = "";
 	
-	private String statusX = "";
+	private String statusX = "No Errors";
 	
 	public static String NATIVE_PATH = "";
 	
@@ -177,6 +177,18 @@ public class RunView extends View {
 								printArea.printText(errorReader.nextLine());
 							}
 						}
+						
+						try{
+			                    if(compileProcess.getErrorStream().available() > 0){
+			                    	while(errorReader.hasNextLine()) {
+			                    		statusX = "Errors";
+			                              printArea.print(errorReader.nextLine());
+			                         }
+			                    }
+		                    }
+		                    catch(Exception e){
+		                    	
+		                    }
 						if(!statusX.contains("No")){
 							getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
 						}
@@ -190,6 +202,16 @@ public class RunView extends View {
 							printArea.printText(data);
 						}
 					}
+					try{
+		                    if(compileProcess.getInputStream().available() > 0){
+		                    	while(inputReader.hasNextLine()) {
+		                              printArea.print(inputReader.nextLine());
+		                         }
+		                    }
+	                    }
+	                    catch(Exception e){
+	                    	
+	                    }
 					inputReader.close();
 					errorReader.close();
 					Screen.setStatus("Building Project", 100);
@@ -199,15 +221,25 @@ public class RunView extends View {
 						return;
 					}
 				}
-				catch(Exception e){ System.err.println(e); }
+				catch(Exception e){ 
+					printArea.printText("Enter commands correctly!");
+					printArea.printText(e.toString());
+					e.printStackTrace();
+				}
+				finally{
+					getScreen().getToolMenu().buildComp.setClickable(true);
+					getScreen().getToolMenu().runComp.setClickable(true);
+					Screen.setStatus("", 100);
+					statusX = "No Errors";
+				}
 			}
 			
 			getScreen().getToolMenu().buildComp.setClickable(true);
 			
 			Screen.setStatus("Running Project", 56);
+			RunPanel terminal = new RunPanel(false);
 			try{
 				args = Screen.getFileView().getArgumentManager().run_time_args;
-				RunPanel terminal = new RunPanel(false);
 				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
@@ -217,6 +249,8 @@ public class RunView extends View {
 				int count = OperationPane.count(name);
 				if(count > -1)
 					name = name + " " + count;
+
+				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
 				
 				if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
 					terminal.printText("\'No Run Time Command Specified!!!\'");
@@ -228,7 +262,6 @@ public class RunView extends View {
 				
 				Process runProcess = new ProcessBuilder(args).directory(new File(runDir)).start();
 				terminal.setProcess(runProcess);
-				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
 				
 				runningApps.add(runProcess);
 				
@@ -246,23 +279,51 @@ public class RunView extends View {
 								terminal.printText(errorReader.nextLine());
 						}
 					}
-					terminal.printText("---<>--------------------------------------<>---");
-					terminal.printText("Program Execution finished with " + statusX);
+					try{
+		                    if(runProcess.getErrorStream().available() > 0){
+		                    	while(errorReader.hasNextLine()) {
+		                              terminal.print(errorReader.nextLine());
+		                         }
+		                    }
+	                    }
+	                    catch(Exception e){
+	                    	
+	                    }
 					errorReader.close();
 				}).start();
 				
 				while(runProcess.isAlive()) {
 					while(inputReader.hasNextLine()) {
-						String data = inputReader.nextLine();
-						terminal.printText(data);
+						terminal.printText(inputReader.nextLine());
 					}
 				}
+				try{
+	                    if(runProcess.getInputStream().available() > 0){
+	                    	while(inputReader.hasNextLine()) {
+	                              terminal.printText(inputReader.nextLine());
+	                         }
+	                    }
+                    }
+                    catch(Exception e){
+                    	
+                    }
 				inputReader.close();
 				errorReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
+				terminal.printText("---<>--------------------------------------<>---");
+				terminal.printText("Program Execution finished with " + statusX);
 			}
-			catch(Exception e){ e.printStackTrace(); }
+			catch(Exception e){
+				terminal.printText("Enter commands correctly!");
+				terminal.printText(e.toString());
+				terminal.printText("---<>--------------------------------------<>---");
+				e.printStackTrace();
+			}
+			finally{
+				getScreen().getToolMenu().runComp.setClickable(true);
+				Screen.setStatus("", 100);
+			}
 		}).start();
 	}
 	
@@ -274,8 +335,8 @@ public class RunView extends View {
 			LinkedList<String> args = Screen.getFileView().getArgumentManager().run_time_args;
 			
 			Screen.setStatus("Running Project", 56);
+			RunPanel terminal = new RunPanel(false);
 			try{
-				RunPanel terminal = new RunPanel(false);
 				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
@@ -285,6 +346,8 @@ public class RunView extends View {
 				int count = OperationPane.count(name);
 				if(count > -1)
 					name = name + " " + count;
+				
+				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
 				
 				if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
 					terminal.printText("\'No Run Time Command Specified!!!\'");
@@ -296,7 +359,6 @@ public class RunView extends View {
 				
 				Process runProcess = new ProcessBuilder(args).directory(new File(runDir)).start();
 				terminal.setProcess(runProcess);
-				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
 				
 				runningApps.add(runProcess);
 				
@@ -314,8 +376,16 @@ public class RunView extends View {
 							terminal.printText(errorReader.nextLine());
 						}
 					}
-					terminal.printText("---<>--------------------------------------<>---");
-					terminal.printText("Program Execution finished with " + statusX);
+					try{
+		                    if(runProcess.getErrorStream().available() > 0){
+		                    	while(errorReader.hasNextLine()) {
+		                              terminal.print(errorReader.nextLine());
+		                         }
+		                    }
+	                    }
+	                    catch(Exception e){
+	                    	
+	                    }
 					errorReader.close();
 				}).start();
 				
@@ -325,12 +395,33 @@ public class RunView extends View {
 						terminal.printText(data);
 					}
 				}
+				try{
+	                    if(runProcess.getInputStream().available() > 0){
+	                    	while(inputReader.hasNextLine()) {
+	                              terminal.print(inputReader.nextLine());
+	                         }
+	                    }
+                    }
+                    catch(Exception e){
+                    	
+                    }
 				inputReader.close();
 				errorReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
+				terminal.printText("---<>--------------------------------------<>---");
+				terminal.printText("Program Execution finished with " + statusX);
 			}
-			catch(Exception e){ e.printStackTrace(); }
+			catch(Exception e){ 
+				terminal.printText("Enter commands correctly!");
+				terminal.printText(e.toString());
+				terminal.printText("---<>--------------------------------------<>---");
+				e.printStackTrace();
+			}
+			finally{
+				getScreen().getToolMenu().runComp.setClickable(true);
+				Screen.setStatus("", 100);
+			}
 		}).start();
 	}
 	
@@ -477,7 +568,10 @@ public class RunView extends View {
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
 			}
-			catch(Exception e) {e.printStackTrace();}
+			catch(Exception e) {
+				
+				e.printStackTrace();
+			}
 		}).start();
 	}
 	

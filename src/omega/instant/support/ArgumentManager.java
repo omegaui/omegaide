@@ -50,8 +50,10 @@ public class ArgumentManager extends DataBase{
       * The method that loades data from the DataBase.
      */
      public void load(){
-          getEntries("Compile Time Argument").forEach(entry->compile_time_args.add(entry.getValue()));
-          getEntries("Run Time Argument").forEach(entry->run_time_args.add(entry.getValue()));
+     	if(getEntries("Compile Time Argument") != null)
+          	getEntries("Compile Time Argument").forEach(entry->compile_time_args.add(entry.getValue()));
+     	if(getEntries("Run Time Argument") != null)
+          	getEntries("Run Time Argument").forEach(entry->run_time_args.add(entry.getValue()));
           compileDir = getEntryAt("Compile Time Working Directory", 0) != null ? getEntryAt("Compile Time Working Directory", 0).getValue() : "";   
           runDir = getEntryAt("Run Time Working Directory", 0) != null ? getEntryAt("Run Time Working Directory", 0).getValue() : "";
 
