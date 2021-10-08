@@ -43,10 +43,13 @@ so you can imagine how good it is for small projects 🤩.
 
 Omega IDE has a very small download size.
 
-It has a beautiful text editor with code folding (thanks to rsyntaxtextarea).
+It has a beautiful text editor with code folding, thanks to [rsyntaxtextarea](https://github.com/bobbylight/RSyntaxTextArea).
 
-It tries to reassemble a material look so that it is easy to adapt the customized UI.
+The Default Swing Components use the [FlatLaf Layer](https://www.formdev.com/flatlaf)
 
+It tries to reassemble a material look so that it is easy to adapt the highly customized UI.
+
+The credit of having meaningful and beautiful icons goes to [icons8.com](https://icons8.com)
 
 **It has a elegant UI filled with custom components(have a look at sources at src/omega/comp).**
 
