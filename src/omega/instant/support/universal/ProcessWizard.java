@@ -177,7 +177,7 @@ public class ProcessWizard extends JDialog{
 			titleComp.setText("Enter a file extension");
 			return;
 		}
-		titleComp.setColors(TOOLMENU_COLOR3, c2, c2);
+		titleComp.setColors(c2, c2, glow);
 		titleComp.setText("Process Wizard");
 		//Atempting to add the current data
 		boolean done = false;

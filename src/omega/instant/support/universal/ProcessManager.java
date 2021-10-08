@@ -91,6 +91,17 @@ public class ProcessManager extends DataBase{
                                    printArea.print(errorReader.nextLine());
                               }
                          }
+                         try{
+	                         if(launchInShellProcess.getErrorStream().available() > 0){
+	                         	while(errorReader.hasNextLine()) {
+	                                   statusX = "Errors";
+	                                   printArea.print(errorReader.nextLine());
+	                              }
+	                         }
+                         }
+                         catch(Exception e){
+                         	
+                         }
                          printArea.print("-------------------------Execution Ends Here-------------------------");
                          printArea.print("Launch finished with \"" + statusX + "\"");
                          errorReader.close();
@@ -100,6 +111,16 @@ public class ProcessManager extends DataBase{
                          while(inputReader.hasNextLine()) {
                               printArea.print(inputReader.nextLine());
                          }
+                    }
+                    try{
+	                    if(launchInShellProcess.getInputStream().available() > 0){
+	                    	while(inputReader.hasNextLine()) {
+	                              printArea.print(inputReader.nextLine());
+	                         }
+	                    }
+                    }
+                    catch(Exception e){
+                    	
                     }
                     inputReader.close();
           	}
