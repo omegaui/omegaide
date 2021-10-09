@@ -42,6 +42,7 @@ import java.awt.Graphics;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import omega.instant.support.SyntaxParsers;
+import omega.instant.support.ErrorHighlighters;
 
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
@@ -68,6 +69,7 @@ import omega.utils.DataManager;
 import omega.utils.IconManager;
 import omega.utils.Editor;
 import omega.utils.UIManager;
+import omega.utils.RunPanel;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
@@ -168,61 +170,68 @@ public class RunView extends View {
 							compileProcess.destroyForcibly();
 						Screen.setStatus("", 100);
 					});
+
+					errorlog = "";
 					
 					new Thread(()->{
-						statusX = "No Errors";
 						while(compileProcess.isAlive()) {
-							while(errorReader.hasNextLine()) {
-								statusX = "Errors";
-								printArea.printText(errorReader.nextLine());
+							while(inputReader.hasNextLine()) {
+								String data = inputReader.nextLine();
+								errorlog += data + "\n";
+								printArea.printText(data);
 							}
 						}
-						
 						try{
-			                    if(compileProcess.getErrorStream().available() > 0){
-			                    	while(errorReader.hasNextLine()) {
-			                    		statusX = "Errors";
-			                              printArea.print(errorReader.nextLine());
+			                    if(compileProcess.getInputStream().available() > 0){
+			                    	while(inputReader.hasNextLine()) {
+									String data = inputReader.nextLine();
+			                    		errorlog += data + "\n";
+			                              printArea.print(data);
 			                         }
 			                    }
 		                    }
 		                    catch(Exception e){
 		                    	
 		                    }
-						if(!statusX.contains("No")){
-							getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
-						}
-						printArea.printText("Compilation finished with \"" + statusX + "\"");
-						errorReader.close();
+						inputReader.close();
 					}).start();
-					
 					while(compileProcess.isAlive()) {
-						while(inputReader.hasNextLine()) {
-							String data = inputReader.nextLine();
-							printArea.printText(data);
+						while(errorReader.hasNextLine()) {
+							String line = errorReader.nextLine();
+							errorlog += line + "\n";
+							printArea.printText(line);
 						}
 					}
+					
 					try{
-		                    if(compileProcess.getInputStream().available() > 0){
-		                    	while(inputReader.hasNextLine()) {
-		                              printArea.print(inputReader.nextLine());
+		                    if(compileProcess.getErrorStream().available() > 0){
+		                    	while(errorReader.hasNextLine()) {
+		                              String line = errorReader.nextLine();
+								errorlog += line + "\n";
+								printArea.printText(line);
 		                         }
 		                    }
 	                    }
 	                    catch(Exception e){
 	                    	
 	                    }
-					inputReader.close();
 					errorReader.close();
+					
 					Screen.setStatus("Building Project", 100);
-					if(!statusX.contains("No")){
+					
+					ErrorHighlighters.resetAllErrors();
+					
+					if(compileProcess.exitValue() != 0){
+						ErrorHighlighters.showErrors(errorlog);
+						getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
 						getScreen().getToolMenu().buildComp.setClickable(true);
 						getScreen().getToolMenu().runComp.setClickable(true);
+						printArea.printText("Compilation Finished with Exit Code " + compileProcess.exitValue());
 						return;
 					}
 				}
 				catch(Exception e){ 
-					printArea.printText("Enter commands correctly!");
+					printArea.printText("Compilation Failed!\nSystem was unable to find the specified command!");
 					printArea.printText(e.toString());
 					e.printStackTrace();
 				}
@@ -230,7 +239,6 @@ public class RunView extends View {
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					getScreen().getToolMenu().runComp.setClickable(true);
 					Screen.setStatus("", 100);
-					statusX = "No Errors";
 				}
 			}
 			

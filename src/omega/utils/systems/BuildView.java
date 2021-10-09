@@ -17,6 +17,8 @@
 */
 
 package omega.utils.systems;
+import omega.instant.support.ErrorHighlighters;
+
 import omega.token.factory.ShellTokenMaker;
 
 import omega.comp.FlexPanel;
@@ -69,6 +71,7 @@ public class BuildView extends View {
 	public static final String SRC_LIST = ".sources";
      public BuildLog buildLog;
      public RunPanel printArea;
+     public String errorlog = "";
 
 	public BuildView(String title, Screen window) {
 		super(title, window);
@@ -109,50 +112,67 @@ public class BuildView extends View {
                     printArea.setProcess(compileNJProcess);
                     printArea.print("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
                     
-                    new Thread(()->{
-                         String statusX = "No Errors";
-                         while(compileNJProcess.isAlive()) {
-                              while(errorReader.hasNextLine()) {
-                                   statusX = "Errors";
-                                   printArea.print(errorReader.nextLine());
-                              }
-                         }
-		               try{
-		                    if(compileNJProcess.getErrorStream().available() > 0){
-		                    	while(errorReader.hasNextLine()) {
-		                              printArea.print(errorReader.nextLine());
+                    errorlog = "";
+				
+				new Thread(()->{
+					while(compileNJProcess.isAlive()) {
+						while(inputReader.hasNextLine()) {
+							String data = inputReader.nextLine();
+							errorlog += data + "\n";
+							printArea.printText(data);
+						}
+					}
+					try{
+		                    if(compileNJProcess.getInputStream().available() > 0){
+		                    	while(inputReader.hasNextLine()) {
+								String data = inputReader.nextLine();
+		                    		errorlog += data + "\n";
+		                              printArea.print(data);
 		                         }
 		                    }
-		               }
-		               catch(Exception e){
-		               	
-		               }
-                         printArea.print("Compilation finished with \"" + statusX + "\"");
-                         errorReader.close();
-                    }).start();
-
-                    while(compileNJProcess.isAlive()) {
-                         while(inputReader.hasNextLine()) {
-                              String data = inputReader.nextLine();
-                              printArea.print(data);
-                         }
-                    }
-                    try{
-	                    if(compileNJProcess.getInputStream().available() > 0){
-	                    	while(inputReader.hasNextLine()) {
-	                              printArea.print(inputReader.nextLine());
+	                    }
+	                    catch(Exception e){
+	                    	
+	                    }
+					inputReader.close();
+				}).start();
+				while(compileNJProcess.isAlive()) {
+					while(errorReader.hasNextLine()) {
+						String line = errorReader.nextLine();
+						errorlog += line + "\n";
+						printArea.printText(line);
+					}
+				}
+				
+				try{
+	                    if(compileNJProcess.getErrorStream().available() > 0){
+	                    	while(errorReader.hasNextLine()) {
+	                              String line = errorReader.nextLine();
+							errorlog += line + "\n";
+							printArea.printText(line);
 	                         }
 	                    }
                     }
                     catch(Exception e){
                     	
                     }
-                    finally{
-                    	inputReader.close();
-                    }
+				errorReader.close();
+				
+				Screen.setStatus("Building Project", 100);
+				
+				ErrorHighlighters.resetAllErrors();
+				
+				if(compileNJProcess.exitValue() != 0){
+					ErrorHighlighters.showErrors(errorlog);
+					getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+					getScreen().getToolMenu().buildComp.setClickable(true);
+					getScreen().getToolMenu().runComp.setClickable(true);
+					printArea.printText("Compilation Finished with Exit Code " + compileNJProcess.exitValue());
+					return;
+				}
                }
                catch(Exception e){ 
-                    printArea.printText("Enter commands correctly!");
+                    printArea.printText("Compilation Failed!\nSystem was unable to find the specified command!");
 				printArea.printText(e.toString());
 				e.printStackTrace();
                }
