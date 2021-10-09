@@ -24,6 +24,8 @@ import static omega.comp.Animations.*;
 public class JavaJumpToDefinitionPanel extends JPanel{
 	
 	private Editor editor;
+
+	private FlexPanel containerPanel;
 	
 	private JScrollPane scrollPane;
 	
@@ -32,16 +34,30 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 	private LinkedList<TextComp> definitions = new LinkedList<>();
 	
 	public JavaJumpToDefinitionPanel(Editor editor){
-		super(new BorderLayout());
+		super(null);
 		setBackground(c2);
 		
 		this.editor = editor;
 
+		containerPanel = new FlexPanel(null, back1, null);
+		containerPanel.setArc(10, 10);
+		
 		scrollPane = new JScrollPane(panel = new JPanel(null));
+		scrollPane.setBorder(null);
 		scrollPane.setBackground(c2);
+		
 		panel.setBackground(c2);
-		add(scrollPane, BorderLayout.CENTER);
+		
+		containerPanel.add(scrollPane);
+		add(containerPanel);
 		setVisible(false);
+	}
+
+	@Override
+	public void layout(){
+		containerPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
+		scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
+		super.layout();
 	}
 
 	public void genDefinitions(){
@@ -101,7 +117,7 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 			setSize(min_width + 5, block + 10);
 
 			if(getWidth() > 400)
-				setSize(400, getHeight());
+				setSize(400 + 20, getHeight());
 			if(getHeight() > 350)
 				setSize(getWidth(), 350);
 

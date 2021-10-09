@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import omega.instant.support.LanguageTagView;
+
 import omega.Screen;
 
 import omega.gset.Generator;
@@ -136,6 +138,7 @@ public class ToolMenu extends JPanel {
 	public static GradleBuildScriptManager gradleBuildScriptManager;
 	public static InstructionWindow instructionWindow;
 	public static ColorPicker colorPicker;
+	public static LanguageTagView languageTagView;
      
 	private int pressX;
 	private int pressY;
@@ -149,6 +152,7 @@ public class ToolMenu extends JPanel {
 	public static Color minimizeWinColor = TOOLMENU_COLOR3;
 	
 	public TextComp iconComp;
+	public TextComp langComp;
 	public TextComp titleComp;
 	public TextComp minimizeComp;
 	public TextComp maximizeComp;
@@ -177,6 +181,7 @@ public class ToolMenu extends JPanel {
 			projectDistructionWizard = new ProjectDistructionWizard(screen);
 			instructionWindow = new InstructionWindow(screen);
 			colorPicker = new ColorPicker(screen);
+			languageTagView = new LanguageTagView(screen);
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -210,6 +215,11 @@ public class ToolMenu extends JPanel {
 		iconComp.setClickable(false);
 		iconComp.setArc(0, 0);
 		add(iconComp);
+
+		langComp = new TextComp(IconManager.fluentjavaImage, 25, 25, back2, c2, c2, this::changeLang);
+		langComp.setBounds(30, 0, 30, 30);
+		langComp.setArc(0, 0);
+		add(langComp);
 		
 		titleComp = new TextComp("Omega IDE", c2, c2, glow, null);
 		titleComp.setClickable(false);
@@ -230,7 +240,7 @@ public class ToolMenu extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e){
 				if(!maximized)
-					screen.setLocation(e.getXOnScreen() - pressX - 30, e.getYOnScreen() - pressY);
+					screen.setLocation(e.getXOnScreen() - pressX - 60, e.getYOnScreen() - pressY);
 			}
 		});
 		add(titleComp);
@@ -683,9 +693,9 @@ public class ToolMenu extends JPanel {
 		structureViewComp.setBounds(getWidth() - 110, 55, 60, 30);
 		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 30);
           pathBox.setBounds(0, 90, getWidth(), 25);
-          
+          	
 		//Window Decorations
-		titleComp.setBounds(30, 0, getWidth() - (30 * 4), 30);
+		titleComp.setBounds(60, 0, getWidth() - (30 * 5), 30);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
 		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
@@ -734,6 +744,13 @@ public class ToolMenu extends JPanel {
 
 		parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
      }
+     
+     public void changeLang(){
+     	languageTagView.setVisible(true);
+     	langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getFileView().getProjectManager().getLanguageTag());
+     	langComp.repaint();
+     }
+     
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
 		setPopup.createItem("Change Font", IconManager.settingsImage, ()->{

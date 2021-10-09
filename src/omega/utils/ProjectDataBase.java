@@ -18,6 +18,8 @@
 */
 
 package omega.utils;
+import omega.instant.support.LanguageTagView;
+
 import omega.Screen;
 
 import java.util.LinkedList;
@@ -33,6 +35,8 @@ public class ProjectDataBase extends DataBase{
 	public static final String PROJECT_ROOT = "project-root$";
 	
      public File jdk;
+
+     public int languageTag = -1;
      
      public volatile boolean non_java;
      
@@ -70,6 +74,9 @@ public class ProjectDataBase extends DataBase{
           LinkedList<DataEntry> modules = getEntries("Project Classpath : Required Modules");
           LinkedList<DataEntry> compileTimeFlags = getEntries("Flags : Compile Time");
           LinkedList<DataEntry> runTimeFlags = getEntries("Flags : Run Time");
+
+          if(getEntryAt("Language Tag", 0) != null)
+          	setLanguageTag(getEntryAt("Language Tag", 0).getValueAsInt());
           
           if(mainEditors != null){
              for(DataEntry e : mainEditors) {
@@ -152,6 +159,7 @@ public class ProjectDataBase extends DataBase{
 		addEntry("JDK Path", jdkPath);
 		addEntry("Main Class", Screen.getRunView().mainClass != null ? Screen.getRunView().mainClass : "");
           addEntry("Non-Java Project", String.valueOf(non_java));
+          addEntry("Language Tag", getLanguageTag() + "");
           Screen.getFileView().getScreen().getTabPanel().getEditors().forEach(editor->{
                if(editor.currentFile != null) {
                     addEntry("Opened Editors on Main Tab Panel", genProjectRootPath(editor.currentFile.getAbsolutePath()));
@@ -211,6 +219,8 @@ public class ProjectDataBase extends DataBase{
      		PrintWriter writer = new PrintWriter(file);
                writer.println(">Non-Java Project");
                writer.println("-" + non_java);
+               writer.println(">Language Tag");
+               writer.println("-" + (non_java ? LanguageTagView.LANGUAGE_TAG_ANY : LanguageTagView.LANGUAGE_TAG_JAVA));
                writer.close();
      	}
      	catch(Exception e){ 
@@ -222,5 +232,14 @@ public class ProjectDataBase extends DataBase{
      	this.jdkPath = path;
           Screen.getFileView().readJDK();
      }
+
+     public int getLanguageTag() {
+          return languageTag;
+     }
+     
+     public void setLanguageTag(int languageTag) {
+          this.languageTag = languageTag;
+     }
+     
 }
 

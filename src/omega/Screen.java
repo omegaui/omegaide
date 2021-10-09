@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.instant.support.LanguageTagView;
+
 import omega.startup.Startup;
 
 import java.util.LinkedList;
@@ -388,6 +390,8 @@ public class Screen extends JFrame {
 	}
 	
 	public void manageTools(ProjectDataBase manager){
+          toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
+     	toolMenu.langComp.repaint();
 		toolMenu.structureViewComp.setVisible(!manager.non_java);
 		toolMenu.sep4.setVisible(!manager.non_java);
 		toolMenu.asteriskComp.setVisible(!manager.non_java);

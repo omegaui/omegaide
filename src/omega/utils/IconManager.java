@@ -78,6 +78,16 @@ public class IconManager {
      public static BufferedImage fluentgradleImage = getFluentIcon("elephant-50.png");
      public static BufferedImage fluentsourceImage = getFluentIcon("source-code-50.png");
      public static BufferedImage fluentbinaryImage = getFluentIcon("venn-diagram-50.png");
+     
+     public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
+     public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");
+     public static BufferedImage fluentdartImage = getFluentIcon("dart-48.png");
+     public static BufferedImage fluentgroovyImage = getFluentIcon("groovy-48.png");
+     public static BufferedImage fluentjavaImage = getFluentIcon("java-48.png");
+     public static BufferedImage fluentkotlinImage = getFluentIcon("kotlin-48.png");
+     public static BufferedImage fluentpythonImage = getFluentIcon("python-48.png");
+     public static BufferedImage fluentanylangImage = getFluentIcon("any-lang-48.png");
+     
      public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
      public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");
      public static BufferedImage fluentrocketImage = getFluentIcon("rocket-64.png");

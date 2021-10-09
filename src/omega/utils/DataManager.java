@@ -45,6 +45,8 @@ public class DataManager extends DataBase {
 	private volatile static boolean useStarImports = false;
 	private volatile static boolean sourceDefenderEnabled;
 	private volatile static boolean parsingEnabled = true;
+
+	private static int languageTag = -1;
 	
 	public DataManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".preferences");
@@ -205,6 +207,5 @@ public class DataManager extends DataBase {
      public static void setParsingEnabled(boolean parsingEnabled) {
           DataManager.parsingEnabled = parsingEnabled;
      }
-     
 }
 
