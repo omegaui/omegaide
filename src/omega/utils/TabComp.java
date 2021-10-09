@@ -92,8 +92,9 @@ public class TabComp {
           
           Color alpha = new Color(FORE.getRed(), FORE.getGreen(), FORE.getBlue(), 40);
           BufferedImage image = null;
-          if(c instanceof Editor)
-               image = getPreferredImage(((Editor)c).currentFile);
+          if(c instanceof Editor){
+          	image = Branch.getPreferredImage(((Editor)c).currentFile);
+          }
           else
                image = IconManager.fluentshellImage;
 
@@ -155,38 +156,5 @@ public class TabComp {
           
           return "?";
 	}
-     
-     public static BufferedImage getPreferredImage(File file){
-          if(file.isDirectory()){
-               File[] files = file.listFiles();
-               
-			if(files != null && files.length != 0){
-				for(File fx : files){
-					if(fx.getName().equals(".projectInfo"))
-						return IconManager.fluentfolderImage;
-				}
-			}
-               return IconManager.fluentplainfolderImage;
-          }
-          if(file.getName().contains(".")){
-               String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-               if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp")
-               || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
-                    return IconManager.fluentimagefileImage;
-               else if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class") || ext.equals(".groovy"))
-                    return IconManager.fluentfileImage;
-               else if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
-                    return IconManager.fluentwebImage;
-               else if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
-                    return IconManager.fluentshellImage;
-               else if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
-                    return IconManager.fluentlinuxImage;
-               else if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
-                    return IconManager.fluentwindowsImage;
-               else if(ext.equals(".dmg"))
-                    return IconManager.fluentmacImage;
-          }
-          return IconManager.fluentanyfileImage;
-     }
 }
 

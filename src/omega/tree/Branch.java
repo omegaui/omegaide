@@ -75,7 +75,7 @@ public class Branch extends JComponent{
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
-		this.icon = getPreferredImage(file);
+		this.icon = file.getName().endsWith(".java") ? IconManager.fluentfileImage : getPreferredImage(file);
 		setFont(PX16);
 		if(expand){
 			type = "";
@@ -296,7 +296,23 @@ public class Branch extends JComponent{
 			String ext = file.getName().substring(file.getName().lastIndexOf('.'));
 			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp") || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
 			     return IconManager.fluentimagefileImage;
-			if(ext.equals(".txt") || ext.equals(".java") || ext.equals(".cpp") || ext.equals(".py") || ext.equals(".rs") || ext.equals(".class") || ext.equals(".groovy"))
+			if(ext.equals(".java"))
+				return IconManager.fluentjavaImage;
+			if(ext.equals(".py"))
+				return IconManager.fluentpythonImage;
+			if(ext.equals(".kt"))
+				return IconManager.fluentkotlinImage;
+			if(ext.equals(".groovy"))
+				return IconManager.fluentgroovyImage;
+			if(ext.equals(".dart"))
+				return IconManager.fluentdartImage;
+			if(ext.equals(".js") || ext.equals(".css") || ext.equals(".html") || ext.equals(".jsx") || ext.equals(".ts"))
+				return IconManager.fluentwebImage;
+			if(ext.equals(".c"))
+				return IconManager.fluentcImage;
+			if(ext.equals(".cplusplus"))
+				return IconManager.fluentcplusplusImage;
+			if(ext.equals(".rs"))
 				return IconManager.fluentfileImage;
 			if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
 				return IconManager.fluentwebImage;
