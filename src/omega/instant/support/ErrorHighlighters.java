@@ -10,7 +10,7 @@ public class ErrorHighlighters {
 	}
 	
 	public static void showErrors(String errorLog){
-		if(Screen.getFileView().getProjectManager().getLanguageTag() == LanguageTagView.LANGUAGE_TAG_C)
+		if(Screen.getFileView().getProjectManager().getLanguageTag() == LanguageTagView.LANGUAGE_TAG_C || Screen.getFileView().getProjectManager().getLanguageTag() == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
 			cErrorHighlighter.loadErrors(errorLog);
 	}
 }

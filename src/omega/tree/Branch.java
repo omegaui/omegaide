@@ -31,6 +31,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.GradientPaint;
+import java.awt.Image;
 
 import java.util.Locale;
 
@@ -41,6 +42,7 @@ import omega.popup.OPopupWindow;
 import java.io.File;
 
 import javax.swing.JComponent;
+import javax.swing.ImageIcon;
 
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
@@ -55,6 +57,7 @@ public class Branch extends JComponent{
 	private Locale l;
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 40;
+	public static final int IMAGE_SIZE = 16;
 	
 	public static final Color ANY_COLOR = TOOLMENU_COLOR2;
 	public static final Color SOURCE_COLOR = ANY_COLOR;
@@ -75,7 +78,14 @@ public class Branch extends JComponent{
 		this.l = l;
 		this.name = file.getName();
 		this.expand = file.isDirectory();
+		
 		this.icon = file.getName().endsWith(".java") ? IconManager.fluentfileImage : getPreferredImage(file);
+		Image iconX = this.icon.getScaledInstance(IMAGE_SIZE, IMAGE_SIZE, Image.SCALE_SMOOTH);
+		this.icon = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = this.icon.getGraphics();
+		g.drawImage(iconX, 0, 0, null);
+		g.dispose();
+		
 		setFont(PX16);
 		if(expand){
 			type = "";
@@ -209,7 +219,7 @@ public class Branch extends JComponent{
 		if(!type.equals("?"))
 			g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
 		
-		g.drawImage(icon, 16, 8, 16, 16, null);
+		g.drawImage(icon, 12, getHeight()/2 - IMAGE_SIZE/2, IMAGE_SIZE, IMAGE_SIZE, null);
 		if(enter){
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + getFont().getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
 		}
@@ -310,7 +320,7 @@ public class Branch extends JComponent{
 				return IconManager.fluentwebImage;
 			if(ext.equals(".c"))
 				return IconManager.fluentcImage;
-			if(ext.equals(".cplusplus"))
+			if(ext.equals(".cpp"))
 				return IconManager.fluentcplusplusImage;
 			if(ext.equals(".rs"))
 				return IconManager.fluentfileImage;

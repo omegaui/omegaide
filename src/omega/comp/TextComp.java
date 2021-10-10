@@ -31,6 +31,7 @@ import java.awt.Graphics;
 import java.awt.RenderingHints;
 import java.awt.GradientPaint;
 import java.awt.LinearGradientPaint;
+import java.awt.Image;
 
 import javax.swing.JComponent;
 public class TextComp extends JComponent{
@@ -173,7 +174,7 @@ public class TextComp extends JComponent{
 	
 	public void draw(Graphics2D g) {
 		if(isDrawingImage()){
-			g.drawImage(image, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
+			g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
 		}
 	}
 
