@@ -15,7 +15,7 @@
   * You should have received a copy of the GNU General Public License
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package omega.instant.support.c;
+package omega.instant.support.python;
 import javax.swing.ImageIcon;
 
 import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
@@ -47,12 +47,12 @@ import java.awt.Image;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Locale;
-public class CErrorHighlighter {
+public class PythonErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
 	private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
 	
-	public CErrorHighlighter() {
+	public PythonErrorHighlighter() {
 		highlights = new LinkedList<>();
 		gutterIconInfos = new LinkedList<>();
 	}
@@ -63,10 +63,10 @@ public class CErrorHighlighter {
           return log;
      }
      /*
-      	c_test.c: In function ‘main’:
-		c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
-		    6 |  return 2;
-		      |  ^~~~~~
+		File "entry.py", line 43
+			hbox.pack_start(self.icon, True, True, 0).
+		                                   ^
+		SyntaxError: invalid syntax
       */
 	public void loadErrors(String errorLog) {
 		removeAllHighlights();
@@ -79,16 +79,22 @@ public class CErrorHighlighter {
 		try {
 			while(tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
-				if(!canRecord && CodeFramework.count(token, ':') == 4 && !token.startsWith(" ")){
+				if(token.trim().startsWith("Traceback (most recent call last):"))
+					continue;
+				if(!canRecord && token.contains(", line")){
 					int index;
-					path = token.substring(0, index = token.indexOf(':')).trim();
-					line = Integer.parseInt(token.substring(index + 1, index = token.indexOf(':', index + 1)).trim());
-					index = token.indexOf(':', index + 1);
-					message = token.substring(index + 1).trim();
+					path = token.substring(index = token.indexOf('\"') + 1, index = token.indexOf('\"', index + 1)).trim();
+					String lineString = token.substring(token.indexOf(", line") + ", line".length() + 1).trim();
+					if(lineString.contains(","))
+						lineString = lineString.substring(0, lineString.indexOf(',')).trim();
+					line = Integer.parseInt(lineString);
 					canRecord = true;
 				}
-				else if(canRecord && token.contains("|")){
-					code = token.substring(token.indexOf('|') + 1).trim();
+				else if(canRecord){
+					code = token.trim();
+					message = token = tokenizer.nextToken().trim();
+					if(token.equals("^"))
+						message = token = tokenizer.nextToken().trim();
 
 					if(!path.contains(File.separator)){
 						path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;

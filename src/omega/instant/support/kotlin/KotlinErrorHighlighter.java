@@ -15,10 +15,10 @@
   * You should have received a copy of the GNU General Public License
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package omega.instant.support.c;
-import javax.swing.ImageIcon;
-
+package omega.instant.support.kotlin;
 import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+
+import javax.swing.ImageIcon;
 
 import omega.framework.CodeFramework;
 
@@ -46,13 +46,12 @@ import java.awt.Image;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-import java.util.Locale;
-public class CErrorHighlighter {
+public class KotlinErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
 	private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
 	
-	public CErrorHighlighter() {
+	public KotlinErrorHighlighter() {
 		highlights = new LinkedList<>();
 		gutterIconInfos = new LinkedList<>();
 	}
@@ -63,10 +62,12 @@ public class CErrorHighlighter {
           return log;
      }
      /*
-      	c_test.c: In function ‘main’:
-		c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
-		    6 |  return 2;
-		      |  ^~~~~~
+      	testDir/src/kode/Main.kt:5:17: error: unresolved reference: getTitle
+			println(screen.getTitle())
+		                ^
+		testDir/src/kode/Screen.kt:9:20: error: import must be placed on a single line
+		import javax.swing.
+		                   ^
       */
 	public void loadErrors(String errorLog) {
 		removeAllHighlights();
@@ -79,16 +80,17 @@ public class CErrorHighlighter {
 		try {
 			while(tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
-				if(!canRecord && CodeFramework.count(token, ':') == 4 && !token.startsWith(" ")){
+				if(!canRecord && CodeFramework.count(token, ':') >= 4 && !token.startsWith(" ")){
 					int index;
 					path = token.substring(0, index = token.indexOf(':')).trim();
+					path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;
 					line = Integer.parseInt(token.substring(index + 1, index = token.indexOf(':', index + 1)).trim());
 					index = token.indexOf(':', index + 1);
 					message = token.substring(index + 1).trim();
 					canRecord = true;
 				}
-				else if(canRecord && token.contains("|")){
-					code = token.substring(token.indexOf('|') + 1).trim();
+				else if(canRecord){
+					code = token.trim();
 
 					if(!path.contains(File.separator)){
 						path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;

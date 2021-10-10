@@ -89,7 +89,7 @@ public class ErrorHighlighter {
 							times++;
 						}
 					}
-					int start = text.indexOf(code, index+1);
+					int start = text.indexOf(code, line == 1 ? 0 : index+1);
 					int end = start + code.length();
 				     h.addHighlight(start, end, hp);
 				     highlights.add(new Highlight(e, hp, start, end, false));

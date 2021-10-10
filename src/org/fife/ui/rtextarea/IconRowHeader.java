@@ -258,7 +258,7 @@ public class IconRowHeader extends AbstractGutterComponent implements MouseListe
 	@Override
 	public Dimension getPreferredSize() {
 		int h = textArea!=null ? textArea.getHeight() : 100; // Arbitrary
-		return new Dimension(width, h);
+		return new Dimension(textArea != null ? (width = textArea.getGraphics().getFontMetrics().getHeight() + 2) : width, h);
 	}
 
 
@@ -685,8 +685,8 @@ public class IconRowHeader extends AbstractGutterComponent implements MouseListe
 	public void removeAllTrackingIcons() {
 		if (trackingIcons!=null && trackingIcons.size()>0) {
 			trackingIcons.clear();
-			repaint();
 		}
+		repaint();
 	}
 
 

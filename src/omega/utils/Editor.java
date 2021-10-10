@@ -17,6 +17,7 @@
 */
 
 package omega.utils;
+
 import omega.utils.systems.View;
 
 import omega.Screen;
@@ -207,7 +208,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
 		getAttachment().getGutter().setIconRowHeaderInheritsGutterBackground(true);
 		getAttachment().getGutter().iconArea.setBackground(omega.utils.UIManager.c2);
-	}
+	}	
 	
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);

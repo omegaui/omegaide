@@ -48,6 +48,12 @@ public class SquiggleUnderlineHighlightPainter
 		super(color);
 		setPaint(color);
 	}
+	
+	public SquiggleUnderlineHighlightPainter(Color color, boolean useFlatLine) {
+		super(color);
+		setPaint(color);
+		this.useFlatLine = useFlatLine;
+	}
 
 	public boolean isUsingFlatLine(){
 		return useFlatLine;
