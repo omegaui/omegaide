@@ -273,21 +273,16 @@ public class RunView extends View {
 				
 				runningApps.add(runProcess);
 				
-				Scanner inputReader = new Scanner(runProcess.getInputStream());
-				Scanner errorReader = new Scanner(runProcess.getErrorStream());
-				
 				Screen.setStatus("Running Project", 100);
 				getScreen().getToolMenu().runComp.setClickable(true);
 				
 				new Thread(()->{
-					String statusX = "No Errors";
-					while(runProcess.isAlive()) {
-						while(errorReader.hasNextLine()) {
-							if(!statusX.equals("Errors")) statusX = "Errors";
+					try(Scanner errorReader = new Scanner(runProcess.getErrorStream())){
+						while(runProcess.isAlive()) {
+							while(errorReader.hasNextLine()) {
 								terminal.printText(errorReader.nextLine());
+							}
 						}
-					}
-					try{
 		                    if(runProcess.getErrorStream().available() > 0){
 		                    	while(errorReader.hasNextLine()) {
 		                              terminal.print(errorReader.nextLine());
@@ -295,17 +290,16 @@ public class RunView extends View {
 		                    }
 	                    }
 	                    catch(Exception e){
-	                    	
+	                    	e.printStackTrace();
 	                    }
-					errorReader.close();
 				}).start();
 				
-				while(runProcess.isAlive()) {
-					while(inputReader.hasNextLine()) {
-						terminal.printText(inputReader.nextLine());
+				try(Scanner inputReader = new Scanner(runProcess.getInputStream())){
+					while(runProcess.isAlive()) {
+						while(inputReader.hasNextLine()) {
+							terminal.printText(inputReader.nextLine());
+						}
 					}
-				}
-				try{
 	                    if(runProcess.getInputStream().available() > 0){
 	                    	while(inputReader.hasNextLine()) {
 	                              terminal.printText(inputReader.nextLine());
@@ -313,14 +307,12 @@ public class RunView extends View {
 	                    }
                     }
                     catch(Exception e){
-                    	
+                    	e.printStackTrace();
                     }
-				inputReader.close();
-				errorReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
 				terminal.printText("---<>--------------------------------------<>---");
-				terminal.printText("Program Execution finished with " + statusX);
+				terminal.printText("Program Execution finished with Exit Code " + runProcess.exitValue());
 			}
 			catch(Exception e){
 				terminal.printText("Enter commands correctly!");
@@ -380,7 +372,8 @@ public class RunView extends View {
 					String statusX = "No Errors";
 					while(runProcess.isAlive()) {
 						while(errorReader.hasNextLine()) {
-							if(!statusX.equals("Errors")) statusX = "Errors";
+							if(!statusX.equals("Errors")) 
+								statusX = "Errors";
 							terminal.printText(errorReader.nextLine());
 						}
 					}
@@ -392,7 +385,7 @@ public class RunView extends View {
 		                    }
 	                    }
 	                    catch(Exception e){
-	                    	
+	                    	e.printStackTrace();
 	                    }
 					errorReader.close();
 				}).start();
@@ -411,10 +404,9 @@ public class RunView extends View {
 	                    }
                     }
                     catch(Exception e){
-                    	
+                    	e.printStackTrace();
                     }
 				inputReader.close();
-				errorReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
 				terminal.printText("---<>--------------------------------------<>---");
@@ -551,17 +543,11 @@ public class RunView extends View {
 				Screen.setStatus("Running Project", 100);
 				
 				new Thread(()->{
-					String status = "No Errors";
-					while(runProcess.isAlive())
-						{
-						while(errorReader.hasNextLine())
-							{
-							if(!status.equals("Errors")) status = "Errors";
+					while(runProcess.isAlive()) {
+						while(errorReader.hasNextLine()) {
 							terminal.printText(errorReader.nextLine());
 						}
 					}
-					terminal.printText("---<>--------------------------------------<>---");
-					terminal.printText("Program Execution finished with " + status);
 					errorReader.close();
 				}).start();
 				
@@ -575,6 +561,8 @@ public class RunView extends View {
 				inputReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
+				terminal.printText("---<>--------------------------------------<>---");
+				terminal.printText("Program Execution finished with Exit Code " + runProcess.exitValue());
 			}
 			catch(Exception e) {
 				
@@ -1021,15 +1009,11 @@ public class RunView extends View {
 				Screen.setStatus("Running Project", 100);
 				
 				new Thread(()->{
-					String status = "No Errors";
 					while(runProcess.isAlive()) {
 						while(errorReader.hasNextLine()) {
-							if(!status.equals("Errors")) status = "Errors";
-								terminal.printText(errorReader.nextLine());
+							terminal.printText(errorReader.nextLine());
 						}
 					}
-					terminal.printText("---<>--------------------------------------<>---");
-					terminal.printText("Program Execution finished with " + status);
 					errorReader.close();
 				}).start();
 				
@@ -1043,6 +1027,8 @@ public class RunView extends View {
 				inputReader.close();
 				runningApps.remove(runProcess);
 				Screen.getProjectView().reload();
+				terminal.printText("---<>--------------------------------------<>---");
+				terminal.printText("Program Execution finished with Exit Code " + runProcess.exitValue());
 			}
 			catch(Exception e) {e.printStackTrace();}
 		}).start();
