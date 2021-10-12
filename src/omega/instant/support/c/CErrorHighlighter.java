@@ -98,7 +98,7 @@ public class CErrorHighlighter {
 					if(file.exists()){
 						Editor e = Screen.getFileView().getScreen().loadFile(file);
 						try{
-							ImageIcon icon = new ImageIcon(IconManager.fluenterrorImage);
+							ImageIcon icon = new ImageIcon(message.startsWith("warning") ? IconManager.fluentwarningImage : IconManager.fluenterrorImage);
 							int size = e.getGraphics().getFontMetrics().getHeight();
 							icon = new ImageIcon(icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH));
 							gutterIconInfos.add(new JavaSyntaxParserGutterIconInfo(e.getAttachment().getGutter().addLineTrackingIcon(line - 1, icon, message), e));
@@ -107,7 +107,7 @@ public class CErrorHighlighter {
 							ex.printStackTrace();
 						}
 						Highlighter h = e.getHighlighter();
-						SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(Color.RED);
+						SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(message.startsWith("warning") ? Color.YELLOW : Color.RED);
 						String text = e.getText();
 						int index = 0;
 						int times = 0;
@@ -120,7 +120,7 @@ public class CErrorHighlighter {
 						int start = text.indexOf(code, line == 1 ? 0 : index+1);
 						int end = start + code.length();
 					     h.addHighlight(start, end, painter);
-					     highlights.add(new Highlight(e, painter, start, end, false));
+					     highlights.add(new Highlight(e, painter, start, end, message.startsWith("warning")));
 					}
 					canRecord = false;
 				}
@@ -129,14 +129,20 @@ public class CErrorHighlighter {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		int count = 0;
+		int warningCount = 0;
+		int errorCount = 0;
 		for(Highlight h : highlights){
-			count = 0;
+			warningCount = 0;
+			errorCount = 0;
 			for(Highlight hx : highlights){
-				if(h.editor.equals(hx.editor))
-					count++;
+				if(h.editor.equals(hx.editor)){
+					if(hx.warning)
+						warningCount++;
+					else
+						errorCount++;
+				}
 			}
-			h.editor.javaErrorPanel.setDiagnosticData(count, 0);
+			h.editor.javaErrorPanel.setDiagnosticData(errorCount, warningCount);
 		}
 	}
 

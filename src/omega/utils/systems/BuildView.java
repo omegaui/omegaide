@@ -162,12 +162,12 @@ public class BuildView extends View {
 				
 				ErrorHighlighters.resetAllErrors();
 				
+				printArea.printText("Compilation Finished with Exit Code " + compileNJProcess.exitValue());
 				if(compileNJProcess.exitValue() != 0){
 					ErrorHighlighters.showErrors(errorlog);
 					getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					getScreen().getToolMenu().runComp.setClickable(true);
-					printArea.printText("Compilation Finished with Exit Code " + compileNJProcess.exitValue());
 					return;
 				}
                }
