@@ -67,8 +67,12 @@ public class CErrorHighlighter {
 		c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
 		    6 |  return 2;
 		      |  ^~~~~~
+		main.c:3:10: fatal error: utils.c: No such file or directory
+		    3 | #include <utils.c>
+		      |          ^~~~~~~~~
       */
 	public void loadErrors(String errorLog) {
+		System.out.println(errorLog);
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
 		boolean canRecord = false;
@@ -79,7 +83,7 @@ public class CErrorHighlighter {
 		try {
 			while(tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
-				if(!canRecord && CodeFramework.count(token, ':') == 4 && !token.startsWith(" ")){
+				if(!canRecord && CodeFramework.count(token, ':') >= 4 && !token.startsWith(" ")){
 					int index;
 					path = token.substring(0, index = token.indexOf(':')).trim();
 					line = Integer.parseInt(token.substring(index + 1, index = token.indexOf(':', index + 1)).trim());
