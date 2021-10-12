@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import java.awt.image.BufferedImage;
+
 import omega.popup.NotificationPopup;
 
 import omega.Screen;
@@ -26,6 +28,8 @@ import java.awt.event.MouseEvent;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 
 import omega.comp.TextComp;
 import omega.comp.RTextField;
@@ -37,6 +41,7 @@ import static omega.comp.Animations.*;
 public class BottomPane extends JPanel {
 	private Screen screen;
 	public TextComp messageComp;
+	public TextComp logComp;
 	public RTextField jumpField;
      public TextComp themeComp;
      private Runnable r = ()->{};
@@ -50,11 +55,18 @@ public class BottomPane extends JPanel {
 	}
 	
 	public void init(){
-		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, back2, glow, null);
-		//messageComp.setGradientColor(TOOLMENU_GRADIENT);
-		//messageComp.setPaintGradientEnabled(true);
+		messageComp = new TextComp("Status of any process running will appear here!", TOOLMENU_COLOR1_SHADE, back2, glow, null){
+			@Override
+			public void draw(Graphics2D g){
+				if(image != null){
+					g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), 2, getHeight()/2 - h/2, w, h, null);
+				}
+			}
+		};
 		messageComp.setFont(PX14);
 		messageComp.alignX = 15;
+		messageComp.w = 25;
+		messageComp.h = 25;
 		messageComp.setPreferredSize(new Dimension(100, 25));
 		messageComp.setArc(0, 0);
 		messageComp.addMouseListener(new MouseAdapter(){
@@ -65,6 +77,22 @@ public class BottomPane extends JPanel {
 			}
 		});
 		add(messageComp);
+
+		logComp = new TextComp("No Logs", TOOLMENU_COLOR4_SHADE, back1, glow, null){
+			@Override
+			public void draw(Graphics2D g){
+				if(image != null){
+					g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), 5, getHeight()/2 - h/2, w, h, null);
+				}
+			}
+		};
+		logComp.setFont(PX14);
+		logComp.setArc(0, 0);
+		logComp.image = IconManager.fluentlogImage;
+		logComp.w = 20;
+		logComp.h = 20;
+		logComp.alignX = 30;
+		add(logComp);
 
           jumpField = new RTextField("Goto Line", "", TOOLMENU_COLOR2, back2, glow);
           jumpField.setFont(PX14);
@@ -152,16 +180,27 @@ public class BottomPane extends JPanel {
           themeComp.setGradientColor(TOOLMENU_GRADIENT);
           add(themeComp);
 	}
+	
 	@Override
-	public void paint(Graphics g){
-		messageComp.setBounds(0, 0, getWidth() - 170, 25);
+	public void layout(){
+		messageComp.setBounds(0, 0, getWidth() - 300, 25);
+		logComp.setBounds(getWidth() - 300, 0, 130, 25);
           jumpField.setBounds(getWidth() - 170, 0, 100, 25);
           themeComp.setBounds(getWidth() - 70, 0, 70, 25);
-		super.paint(g);
+		super.layout();
 	}
-	public void setMessage(String text){
+
+	public void setShowLogAction(Runnable action){
+		logComp.setRunnable(action);
+		logComp.setText(action == null ? "No Logs" : "Show Logs");
+	}
+	
+	public void setMessage(String text, BufferedImage image){
+		messageComp.image = image;
+		messageComp.alignX = image != null ? 35 : 15;
 		messageComp.setText(text);
 	}
+	
 	public void setDoubleClickAction(Runnable r){
 		this.r = r;
 	}

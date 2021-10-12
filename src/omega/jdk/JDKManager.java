@@ -17,6 +17,8 @@
 */
 
 package omega.jdk;
+import omega.utils.IconManager;
+
 import omega.Screen;
 
 import java.util.jar.JarFile;
@@ -72,7 +74,7 @@ public class JDKManager {
           }
 	}
 	public void readRTJarFile(){
-		Screen.setStatus("Reading JDK v" + version, 10);
+		Screen.setStatus("Reading JDK v" + version, 10, IconManager.fluentjavaImage);
 		String rtJarPath = jdkDir.getAbsolutePath() + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar";
 		try{
 			systemJarLoader = new JarLoader(rtJarPath);
@@ -91,10 +93,10 @@ public class JDKManager {
 			}
 		}
 		catch(Exception e) {
-			Screen.setStatus("Exception while Reading JDK v" + version, 99);
+			Screen.setStatus("Exception while Reading JDK v" + version, 99, IconManager.fluentbrokenbotImage);
 			e.printStackTrace();
 		}
-		Screen.setStatus("", 100);
+		Screen.setStatus("", 100, null);
 	}
 	public void readModules(){
 		File[] modulesFiles = new File(jdkDir.getAbsolutePath() + File.separator + "jmods").listFiles();
@@ -193,7 +195,7 @@ public class JDKManager {
 		});
 	}
 	public void readJar(String path, boolean module){
-		Screen.setStatus("Reading Jar : " + new File(path).getName(), 10);
+		Screen.setStatus("Reading Jar : " + new File(path).getName(), 10, IconManager.fluentjavaImage);
 		try{
 			try(JarFile rtJarFile = new JarFile(path)){
 				for(Enumeration<JarEntry> enums = rtJarFile.entries(); enums.hasMoreElements();){
@@ -209,14 +211,14 @@ public class JDKManager {
 			}
 		}
 		catch(Exception e) {
-			Screen.setStatus("Exception while Reading Jar : " + new File(path).getName(), 12);
+			Screen.setStatus("Exception while Reading Jar : " + new File(path).getName(), 12, IconManager.fluentbrokenbotImage);
 			e.printStackTrace();
 		}
-		Screen.setStatus("", 100);
+		Screen.setStatus("", 100, null);
 	}
 	public static int calculateVersion(File jdkDir){
           if(!isJDKPathValid(jdkDir.getAbsolutePath())) {
-               Screen.setStatus("Please first select a valid JDK for the project", 10);
+               Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
                return 0;
           }
 		String version = "";

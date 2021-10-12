@@ -149,7 +149,7 @@ public class RunView extends View {
 			omega.Screen.getFileView().getArgumentManager().genLists();
 			LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
 			if(Screen.isNotNull(Screen.getFileView().getArgumentManager().getCompileCommand())){
-				Screen.setStatus("Building Project", 45);
+				Screen.setStatus("Building Project", 45, IconManager.fluentbuildImage);
 				String compileDir = Screen.getFileView().getArgumentManager().compileDir;
 				RunPanel printArea = new RunPanel(false);
 				printArea.setLogMode(true);
@@ -163,12 +163,12 @@ public class RunView extends View {
 					
 					runningApps.add(compileProcess);
 					
-					Screen.setStatus("Building Project -- Double Click to kill this process", 70);
+					Screen.setStatus("Building Project -- Double Click to kill this process", 70, IconManager.fluentbuildImage);
 					Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
-						Screen.setStatus("Killing Build Process", 10);
+						Screen.setStatus("Killing Build Process", 10, IconManager.closeImage);
 						if(compileProcess.isAlive())
 							compileProcess.destroyForcibly();
-						Screen.setStatus("", 100);
+						Screen.setStatus("", 100, null);
 					});
 
 					errorlog = "";
@@ -217,18 +217,28 @@ public class RunView extends View {
 	                    }
 					errorReader.close();
 					
-					Screen.setStatus("Building Project", 100);
+					Screen.setStatus("Building Project", 100, null);
 					
 					ErrorHighlighters.resetAllErrors();
 					
 					if(compileProcess.exitValue() != 0){
-						ErrorHighlighters.showErrors(errorlog);
-						getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+						if(ErrorHighlighters.isLoggerPresentForCurrentLang()){
+							ErrorHighlighters.showErrors(errorlog);
+							getScreen().getBottomPane().setShowLogAction(()->{
+								getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+								getScreen().getBottomPane().setShowLogAction(null);
+							});
+						}
+						else{
+							getScreen().getBottomPane().setShowLogAction(null);
+							getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+						}
 						getScreen().getToolMenu().buildComp.setClickable(true);
 						getScreen().getToolMenu().runComp.setClickable(true);
 						printArea.printText("Compilation Finished with Exit Code " + compileProcess.exitValue());
 						return;
 					}
+					getScreen().getBottomPane().setShowLogAction(null);
 				}
 				catch(Exception e){ 
 					printArea.printText("Compilation Failed!\nSystem was unable to find the specified command!");
@@ -238,13 +248,13 @@ public class RunView extends View {
 				finally{
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					getScreen().getToolMenu().runComp.setClickable(true);
-					Screen.setStatus("", 100);
+					Screen.setStatus("", 100, null);
 				}
 			}
 			
 			getScreen().getToolMenu().buildComp.setClickable(true);
 			
-			Screen.setStatus("Running Project", 56);
+			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 			RunPanel terminal = new RunPanel(false);
 			try{
 				args = Screen.getFileView().getArgumentManager().run_time_args;
@@ -273,7 +283,7 @@ public class RunView extends View {
 				
 				runningApps.add(runProcess);
 				
-				Screen.setStatus("Running Project", 100);
+				Screen.setStatus("Running Project", 100, null);
 				getScreen().getToolMenu().runComp.setClickable(true);
 				
 				new Thread(()->{
@@ -322,7 +332,7 @@ public class RunView extends View {
 			}
 			finally{
 				getScreen().getToolMenu().runComp.setClickable(true);
-				Screen.setStatus("", 100);
+				Screen.setStatus("", 100, null);
 			}
 		}).start();
 	}
@@ -334,7 +344,7 @@ public class RunView extends View {
 			omega.Screen.getFileView().getArgumentManager().genLists();
 			LinkedList<String> args = Screen.getFileView().getArgumentManager().run_time_args;
 			
-			Screen.setStatus("Running Project", 56);
+			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 			RunPanel terminal = new RunPanel(false);
 			try{
 				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
@@ -365,7 +375,7 @@ public class RunView extends View {
 				Scanner inputReader = new Scanner(runProcess.getInputStream());
 				Scanner errorReader = new Scanner(runProcess.getErrorStream());
 				
-				Screen.setStatus("Running Project", 100);
+				Screen.setStatus("Running Project", 100, null);
 				getScreen().getToolMenu().runComp.setClickable(true);
 				
 				new Thread(()->{
@@ -420,7 +430,7 @@ public class RunView extends View {
 			}
 			finally{
 				getScreen().getToolMenu().runComp.setClickable(true);
-				Screen.setStatus("", 100);
+				Screen.setStatus("", 100, null);
 			}
 		}).start();
 	}
@@ -448,7 +458,7 @@ public class RunView extends View {
 				return;
 			}
 			try {
-				Screen.setStatus("Running Project", 23);
+				Screen.setStatus("Running Project", 23, IconManager.fluentrunImage);
 				
 				NATIVE_PATH = "";
 				for(String d : Screen.getFileView().getProjectManager().natives) {
@@ -476,10 +486,10 @@ public class RunView extends View {
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 				
-				Screen.setStatus("Running Project", 56);
+				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 				if(Screen.getFileView().getProjectManager().jdkPath == null){
 					getScreen().getToolMenu().runComp.setClickable(true);
-					Screen.setStatus("Please Setup the Project JDK First!", 99);
+					Screen.setStatus("Please Setup the Project JDK First!", 99, IconManager.fluentbrokenbotImage);
 					return;
 				}
 				
@@ -540,7 +550,7 @@ public class RunView extends View {
 				
 				terminal.setVisible(true);
 				
-				Screen.setStatus("Running Project", 100);
+				Screen.setStatus("Running Project", 100, null);
 				
 				new Thread(()->{
 					while(runProcess.isAlive()) {
@@ -596,7 +606,7 @@ public class RunView extends View {
 		new Thread(()->{
 			try{
 				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
-					Screen.setStatus("Please first select a valid JDK for the project", 10);
+					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentrocketbuildImage);
 					return;
 				}
 				
@@ -617,10 +627,10 @@ public class RunView extends View {
 				
 				fx = null;
 				
-				Screen.setStatus("Building Project -- Instant Build", 0);
+				Screen.setStatus("Building Project -- Instant Build", 0, IconManager.fluentrocketbuildImage);
 				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileFullProject();
 				if(diagnostics == null){
-					Screen.setStatus("", 100);
+					Screen.setStatus("", 100, null);
 					System.gc();
 					return;
 				}
@@ -653,7 +663,7 @@ public class RunView extends View {
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
 				
-				Screen.setStatus("Building Project, Accomplished Successfully -- Instant Build", 0);
+				Screen.setStatus("Building Project, Accomplished Successfully -- Instant Build", 0, IconManager.fluentrocketbuildImage);
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -673,11 +683,11 @@ public class RunView extends View {
 		new Thread(()->{
 			try{
 				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
-					Screen.setStatus("Please first select a valid JDK for the project", 10);
+					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
 					return;
 				}
 				String text = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? "instant-mode-speed" : "instant-mode-accuracy";
-				Screen.setStatus("Building Project -- Instant Run : " + text, 0);
+				Screen.setStatus("Building Project -- Instant Run : " + text, 0, IconManager.fluentrocketImage);
 				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
 				
 				if(diagnostics == null){
@@ -693,7 +703,7 @@ public class RunView extends View {
 						.locateOnBottomLeft()
 						.showIt();
 						
-						Screen.setStatus("", 100);
+						Screen.setStatus("", 100, null);
 						return;
 					}
 					else{
@@ -709,7 +719,7 @@ public class RunView extends View {
 						.showIt();
 					}
 					System.gc();
-					Screen.setStatus("", 100);
+					Screen.setStatus("", 100, null);
 					return;
 				}
 				
@@ -735,21 +745,21 @@ public class RunView extends View {
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
 					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{});
-					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10);
+					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10, IconManager.fluentbrokenbotImage);
 					System.gc();
 					return;
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
 				
 				if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
-					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0);
+					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0, IconManager.fluentbrokenbotImage);
 					System.gc();
 					return;
 				}
 				
-				Screen.setStatus("Running Project -- Instant Run", 50);
+				Screen.setStatus("Running Project -- Instant Run", 50, IconManager.fluentrocketImage);
 				justRun();
-				Screen.setStatus("Running Project", 100);
+				Screen.setStatus("Running Project", 100, null);
 				
 				System.gc();
 			}
@@ -788,7 +798,7 @@ public class RunView extends View {
 			try {
 				try {
 					if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
-						Screen.setStatus("Please first select a valid JDK for the project", 10);
+						Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
 						return;
 					}
 					Screen.getBuildView().createClassList();
@@ -804,14 +814,14 @@ public class RunView extends View {
 					int percent = 70;
 					
 					wasKilled = false;
-					Screen.setStatus("Building Project -- Double Click to kill this process", percent);
+					Screen.setStatus("Building Project -- Double Click to kill this process", percent, IconManager.fluentrunImage);
 					Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
 						new Thread(()->{
 							wasKilled = true;
-							Screen.setStatus("Killing Build Process", 10);
+							Screen.setStatus("Killing Build Process", 10, IconManager.fluentcloseImage);
 							if(compileProcess != null && compileProcess.isAlive())
 								compileProcess.destroyForcibly();
-							Screen.setStatus("", 100);
+							Screen.setStatus("", 100, null);
 							getScreen().getOperationPanel().removeTab("Compilation");
 						}).start();
 					});
@@ -882,11 +892,11 @@ public class RunView extends View {
 					}
 					errorReader.close();
 					
-					Screen.setStatus("Building Project -- Double Click to kill this process", 90);
+					Screen.setStatus("Building Project -- Double Click to kill this process", 90, IconManager.fluentrunImage);
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					Screen.getProjectView().reload();
 					if(compileProcess.exitValue() != 0) {
-						Screen.setStatus("", 100);
+						Screen.setStatus("", 100, null);
 						runningApps.remove(compileProcess);
 						getScreen().getToolMenu().runComp.setClickable(true);
 						if(!wasKilled) {
@@ -912,16 +922,16 @@ public class RunView extends View {
 					if(mainClassPath.equals(Screen.getFileView().getProjectPath() + File.separator + "src.java"))
 						p.printText("\"No Main Class Defined for the Project!\" \n\t or \n \"Defined Main Class does not exits!\"");
 					
-					Screen.setStatus("Running Project Failed", 100);
+					Screen.setStatus("Running Project Failed", 100, null);
 					getScreen().getToolMenu().runComp.setClickable(true);
 					return;
 				}
 				
-				Screen.setStatus("Building Project Completed", 100);
+				Screen.setStatus("Building Project Completed", 100, null);
 				
 				System.gc();
 				
-				Screen.setStatus("Running Project", 23);
+				Screen.setStatus("Running Project", 23, IconManager.fluentrunImage);
 				
 				NATIVE_PATH = "";
 				for(String d : Screen.getFileView().getProjectManager().natives) {
@@ -947,10 +957,10 @@ public class RunView extends View {
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 				
-				Screen.setStatus("Running Project", 56);
+				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 				if(Screen.getFileView().getProjectManager().jdkPath == null){
 					getScreen().getToolMenu().runComp.setClickable(true);
-					Screen.setStatus("Please Setup the Project JDK First!", 99);
+					Screen.setStatus("Please Setup the Project JDK First!", 99, IconManager.fluentbrokenbotImage);
 					return;
 				}
 				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
@@ -1006,7 +1016,7 @@ public class RunView extends View {
 				
 				Scanner inputReader = new Scanner(runProcess.getInputStream());
 				Scanner errorReader = new Scanner(runProcess.getErrorStream());
-				Screen.setStatus("Running Project", 100);
+				Screen.setStatus("Running Project", 100, null);
 				
 				new Thread(()->{
 					while(runProcess.isAlive()) {

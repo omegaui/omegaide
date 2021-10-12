@@ -78,6 +78,8 @@ public class IconManager {
      public static BufferedImage fluentgradleImage = getFluentIcon("elephant-50.png");
      public static BufferedImage fluentsourceImage = getFluentIcon("source-code-50.png");
      public static BufferedImage fluentbinaryImage = getFluentIcon("venn-diagram-50.png");
+     public static BufferedImage fluentlogImage = getFluentIcon("log-48.png");
+     public static BufferedImage fluentemptylogImage = getFluentIcon("empty-log-48.png");
      
      public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
      public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");

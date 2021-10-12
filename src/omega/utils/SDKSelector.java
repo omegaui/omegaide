@@ -107,7 +107,7 @@ public class SDKSelector extends JDialog {
 			return;
 		File[] files = new File(pathJava).listFiles();
 		if(files == null) {
-			omega.Screen.setStatus("No JDKs found in \"" + pathJava + "\"", 10);
+			omega.Screen.setStatus("No JDKs found in \"" + pathJava + "\"", 10, IconManager.fluentbrokenbotImage);
 			return;
 		}
 		for(File file : files) {

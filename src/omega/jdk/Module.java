@@ -17,6 +17,8 @@
 */
 
 package omega.jdk;
+import omega.utils.IconManager;
+
 import java.util.zip.ZipFile;
 
 import java.util.LinkedList;
@@ -40,7 +42,7 @@ public class Module {
 		readModule();
 	}
 	public void readModule(){
-          Screen.setStatus("Reading Module : " + name, 10);
+          Screen.setStatus("Reading Module : " + name, 10, IconManager.fluentjavaImage);
 		try{
 			ZipFile zipFile = new ZipFile(moduleFile);
 			Enumeration enums = zipFile.entries();
@@ -53,10 +55,10 @@ public class Module {
 			}
 		}
 		catch(Exception e){
-               Screen.setStatus("Exception while Reading Module : " + name, 10);
+               Screen.setStatus("Exception while Reading Module : " + name, 10, IconManager.fluentbrokenbotImage);
 			e.printStackTrace();
 		}
-          Screen.setStatus("", 100);
+          Screen.setStatus("", 100, null);
 	}
 	public static String convertModulePathToPackagePath(String zipPath){
 		if(zipPath == null || !zipPath.startsWith("classes/") || zipPath.contains("$") || !zipPath.endsWith(".class") || zipPath.startsWith("META-INF"))

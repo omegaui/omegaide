@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Toolkit;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -209,6 +210,9 @@ public class FileSelectionDialog extends JDialog{
                          selections.add(file);
                          dispose();
                     }
+               }
+               else{
+               	Toolkit.getDefaultToolkit().beep();
                }
           });
           selectionField.setFont(PX14);

@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import java.awt.image.BufferedImage;
+
 import omega.instant.support.LanguageTagView;
 
 import omega.startup.Startup;
@@ -408,11 +410,11 @@ public class Screen extends JFrame {
 		sideMenu.changeLocations(manager.non_java);
 	}
 	
-	public static void setStatus(String status, int value) {
+	public static void setStatus(String status, int value, BufferedImage image) {
 		if(value != 100)
-			Screen.getScreen().getBottomPane().setMessage(status);
+			Screen.getScreen().getBottomPane().setMessage(status, image);
 		else
-			Screen.getScreen().getBottomPane().setMessage("Status of any process running will appear here!");
+			Screen.getScreen().getBottomPane().setMessage("Status of any process running will appear here!", image);
 	}
 	
 	@Override

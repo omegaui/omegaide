@@ -60,6 +60,7 @@ import omega.Screen;
 import omega.utils.Editor;
 import omega.utils.UIManager;
 import omega.utils.BuildLog;
+import omega.utils.IconManager;
 import omega.utils.systems.creators.FileOperationManager;
 
 import static omega.utils.UIManager.*;
@@ -158,7 +159,7 @@ public class BuildView extends View {
                     }
 				errorReader.close();
 				
-				Screen.setStatus("Building Project", 100);
+				Screen.setStatus("Building Project", 100, null);
 				
 				ErrorHighlighters.resetAllErrors();
 				
@@ -238,7 +239,7 @@ public class BuildView extends View {
                          return;
                     
                     if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)) {
-                         Screen.setStatus("Please first select a valid JDK for the project", 10);
+                         Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
                          return;
                     }
                     

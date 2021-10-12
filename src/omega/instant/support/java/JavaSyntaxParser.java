@@ -362,7 +362,7 @@ public class JavaSyntaxParser {
 			.locateOnBottomLeft()
 			.showIt();
 			
-			Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0);
+			Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0, IconManager.fluentbriefImage);
 		}
 		
 		if(Screen.isNotNull(depenPath))
