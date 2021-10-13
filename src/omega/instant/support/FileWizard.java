@@ -69,7 +69,7 @@ public class FileWizard extends JDialog{
 		fileC.setTitle("Select a directory as source root");
           
 		parentRoot = new TextComp(":", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{
-			LinkedList<File> selections = fileC.selectFiles();
+			LinkedList<File> selections = fileC.selectDirectories();
 			if(!selections.isEmpty()){
 				parentRoot.setToolTipText(selections.get(0).getAbsolutePath());
 			}

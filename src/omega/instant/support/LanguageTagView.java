@@ -29,6 +29,8 @@ public class LanguageTagView extends JDialog{
 	public static final int LANGUAGE_TAG_CPLUSPLUS = 5;
 	public static final int LANGUAGE_TAG_DART = 6;
 	public static final int LANGUAGE_TAG_WEB = 7;
+	public static final int LANGUAGE_TAG_RUST = 8;
+	public static final int LANGUAGE_TAG_JULIA = 9;
 	public static final int LANGUAGE_TAG_ANY = -1;
 
 	private FlexPanel containerPanel;
@@ -95,6 +97,8 @@ public class LanguageTagView extends JDialog{
 		addTag(prepareLangComp(IconManager.fluentcplusplusImage, "C++", LANGUAGE_TAG_CPLUSPLUS));
 		addTag(prepareLangComp(IconManager.fluentdartImage, "Dart", LANGUAGE_TAG_DART));
 		addTag(prepareLangComp(IconManager.fluentwebImage, "Web", LANGUAGE_TAG_WEB));
+		addTag(prepareLangComp(IconManager.fluentrustImage, "Rust", LANGUAGE_TAG_RUST));
+		addTag(prepareLangComp(IconManager.fluentjuliaImage, "Julia", LANGUAGE_TAG_JULIA));
 		addTag(prepareLangComp(IconManager.fluentanylangImage, "LangX", LANGUAGE_TAG_ANY));
 
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));
@@ -119,6 +123,8 @@ public class LanguageTagView extends JDialog{
 			case LANGUAGE_TAG_CPLUSPLUS -> IconManager.fluentcplusplusImage;
 			case LANGUAGE_TAG_DART -> IconManager.fluentdartImage;
 			case LANGUAGE_TAG_WEB -> IconManager.fluentwebImage;
+			case LANGUAGE_TAG_RUST -> IconManager.fluentrustImage;
+			case LANGUAGE_TAG_JULIA -> IconManager.fluentjuliaImage;
 			default -> IconManager.fluentanylangImage;
 		};
 	}

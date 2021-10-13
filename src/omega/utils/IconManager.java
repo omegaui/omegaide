@@ -83,11 +83,13 @@ public class IconManager {
      
      public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
      public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");
-     public static BufferedImage fluentdartImage = getFluentIcon("dart-48.png");
+     public static BufferedImage fluentdartImage = getFluentIcon("flutter-48.png");
      public static BufferedImage fluentgroovyImage = getFluentIcon("groovy-48.png");
      public static BufferedImage fluentjavaImage = getFluentIcon("java-48.png");
      public static BufferedImage fluentkotlinImage = getFluentIcon("kotlin-48.png");
      public static BufferedImage fluentpythonImage = getFluentIcon("python-48.png");
+     public static BufferedImage fluentrustImage = getFluentIcon("rust-48.png");
+     public static BufferedImage fluentjuliaImage = getFluentIcon("julia-48.png");
      public static BufferedImage fluentanylangImage = getFluentIcon("any-lang-48.png");
      
      public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
