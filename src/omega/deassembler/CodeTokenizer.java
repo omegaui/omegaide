@@ -47,5 +47,67 @@ public class CodeTokenizer {
           }
           return tokens;
      }
+     public static LinkedList<String> tokenize(String code, char s, int maxTokenCount){
+     	LinkedList<String> tokens = new LinkedList<>();
+          String token = "";
+          for(int i = 0; i < code.length() && maxTokenCount != 0; i++){
+          	char ch = code.charAt(i);
+               if(ch == s){
+                    tokens.add(token);
+                    token = "";
+                    maxTokenCount--;
+               }
+               else
+                    token += ch;
+          }
+          return tokens;
+     }
+     public static LinkedList<String> tokenizeWithoutLoss(String code, char s, int maxTokenCount){
+     	LinkedList<String> tokens = new LinkedList<>();
+          String token = "";
+          for(int i = 0; i < code.length() && maxTokenCount != 0; i++){
+          	char ch = code.charAt(i);
+               if(ch == s){
+                    tokens.add(token + s);
+                    token = "";
+                    maxTokenCount--;
+               }
+               else
+                    token += ch;
+          }
+          return tokens;
+     }
+     public static LinkedList<String> tokenize(String code, char s, String breaker){
+     	LinkedList<String> tokens = new LinkedList<>();
+          String token = "";
+          for(int i = 0; i < code.length(); i++){
+          	char ch = code.charAt(i);
+               if(ch == s){
+                    tokens.add(token);
+                    if(token.startsWith(breaker))
+                    	break;
+                    token = "";
+               }
+               else
+                    token += ch;
+          }
+          return tokens;
+     }
+     public static LinkedList<String> tokenizeWithoutLoss(String code, char s, String breaker){
+     	LinkedList<String> tokens = new LinkedList<>();
+          String token = "";
+          for(int i = 0; i < code.length(); i++){
+          	char ch = code.charAt(i);
+               if(ch == s){
+                    tokens.add(token + s);
+                    if(token.startsWith(breaker))
+                    	break;
+                    token = "";
+               }
+               else
+                    token += ch;
+          }
+          return tokens;
+     }
 }
 

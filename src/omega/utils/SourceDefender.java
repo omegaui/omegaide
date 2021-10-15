@@ -281,6 +281,12 @@ public class SourceDefender extends JDialog {
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));
 		repaint();
 	}
+
+	@Override
+	public void setSize(int width, int height){
+		super.setSize(width, height);
+		setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
+	}
 	
 	@Override
 	public void setVisible(boolean value){

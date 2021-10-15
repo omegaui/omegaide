@@ -17,7 +17,6 @@
 */
 
 package omega.utils;
-
 import omega.utils.systems.View;
 
 import omega.Screen;
@@ -78,6 +77,7 @@ import org.fife.ui.rtextarea.SearchResult;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.rsta.ui.search.ReplaceToolBar;
 import org.fife.rsta.ui.search.SearchEvent;
+import org.fife.rsta.ui.search.SearchEvent.Type;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -120,19 +120,33 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	private static volatile boolean ctrl;
 	private static volatile boolean shift;
-	private static volatile boolean o; // Auto-Imports
-	private static volatile boolean f; // Find and Replace
-	private static volatile boolean r; // Run
-	private static volatile boolean b; // Build
-	private static volatile boolean s; // Save
-	private static volatile boolean c; // Click Editor Image
-	private static volatile boolean g; // getters and setters
-	private static volatile boolean i; // override methods
-	private static volatile boolean l; // instant launch
-	private static volatile boolean f1; // instant run
-	private static volatile boolean d; // duplicate
-	private static volatile boolean j; // jump-to-definition
-	private static volatile boolean slash; // comment-out (Single-Line Only)
+	
+	// Auto-Imports
+	private static volatile boolean o; 
+	// Find and Replace
+	private static volatile boolean f; 
+	// Run
+	private static volatile boolean r; 
+	// Build
+	private static volatile boolean b; 
+	// Save
+	private static volatile boolean s; 
+	// Click Editor Image
+	private static volatile boolean c; 
+	// getters and setters
+	private static volatile boolean g; 
+	// override methods
+	private static volatile boolean i; 
+	// instant launch
+	private static volatile boolean l; 
+	// instant run
+	private static volatile boolean f1; 
+	// duplicate
+	private static volatile boolean d; 
+	// jump-to-definition
+	private static volatile boolean j; 
+	// comment-out (Single-Line Only)
+	private static volatile boolean slash; 
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -720,7 +734,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(currentFile != null) {
 			//Managing KeyBoard Shortcuts
 			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
-				ImportFramework.addImports(ImportFramework.findClasses(getText()), this);
+				new Thread(()->ImportFramework.addImports(ImportFramework.findClasses(getText()), this)).start();
 				o = false;
 				shift = false;
 				ctrl = false;
@@ -980,7 +994,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	@Override
 	public void searchEvent(SearchEvent e) {
-		SearchEvent.Type type = e.getType();
+		Type type = e.getType();
 		SearchContext context = e.getSearchContext();
 		SearchResult result;
 		switch (type) {

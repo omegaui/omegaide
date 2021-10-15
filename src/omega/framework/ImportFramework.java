@@ -15,6 +15,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.framework;
+import omega.Screen;
+
 import javax.swing.text.Document;
 
 import omega.jdk.JDKManager;
@@ -28,6 +30,7 @@ import java.util.LinkedList;
 import omega.utils.ImportResolver;
 import omega.utils.DataManager;
 import omega.utils.Editor;
+import omega.utils.IconManager;
 public class ImportFramework {
 	//The Object of the Window that lets you choose the imports
 	//when classes in different packages have a same name.
@@ -51,9 +54,12 @@ public class ImportFramework {
 			char ch = text.charAt(i);
 			if(ch != '\"' && ch != '\'' && ch != '_' && ch != '$' && !Character.isLetterOrDigit(ch)){
 				String sx = text.substring(pos, i);
-				pos = i + 1;
-				if(sx.length() > 0 && Character.isUpperCase(sx.charAt(0)) && !SourceReader.isInnerLine(sx) && !cls.contains(sx))
-					cls.add(sx);
+				if(text.charAt(i - sx.length()) != '.'){
+					pos = i + 1;
+					if(sx.length() > 0 && Character.isUpperCase(sx.charAt(0)) && !SourceReader.isInnerLine(sx) && !cls.contains(sx)){
+						cls.add(sx);
+					}
+				}
 			}
 		}
 		return cls;
@@ -105,11 +111,13 @@ public class ImportFramework {
 	* @param editor = The Editor in which the imports are to be inserted
 	*/
 	public static synchronized void addImports(LinkedList<String> classes, Editor editor){
-		if(JDKManager.reading) return;
+		if(JDKManager.reading) 
+			return;
+		Screen.setStatus("Resolving Imports ... Keep Editing meanwhile!", 0, IconManager.fluentinfoImage);
 		String PACK = "";
-		if(isPackageInformationPresent(editor)) {
+		int index = getPackageInformationIndex(editor);
+		if(index != 0) {
 			String text = editor.getText();
-			int index = getPackageInformationIndex(editor);
 			text = text.substring(0, index + 1);
 			PACK = text.substring(text.lastIndexOf(" ") + 1, text.lastIndexOf(';'));
 		}
@@ -202,6 +210,7 @@ public class ImportFramework {
 				insertImport(editor, im.getPackage(), im.getClassName());
 			}
 		}
+		Screen.setStatus(null, 100, null);
 	}
 	/**
 	* The method checks whether a specified import is already present in the editor or not
@@ -230,13 +239,11 @@ public class ImportFramework {
 	* Like for The Current Class the index is : 719
 	* @param editor = The Editor, the contents of which is to be examined.
 	*/
-	public static int getPackageInformationIndex(Editor e){
+	public static synchronized int getPackageInformationIndex(Editor e){
 		int index = 0;
-		LinkedList<String> lines = omega.deassembler.CodeTokenizer.tokenizeWithoutLoss(e.getText(), '\n');
-		for(String token : lines){
-			index += token.length();
-			if(token.startsWith("package"))
-				break;
+		LinkedList<String> lines = CodeTokenizer.tokenizeWithoutLoss(e.getText(), '\n', "package ");
+		for(String line : lines){
+			index += line.length();
 		}
 		return index;
 	}

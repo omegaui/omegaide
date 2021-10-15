@@ -60,6 +60,7 @@ public class SourceReader {
 	public String className;
 	public String type;
 	public String parent = "Object";
+	public String path;
 	public String[] features;
 	public LinkedList<DataMember> dataMembers = new LinkedList<>();
 	public LinkedList<DataMember> ownedDataMembers = new LinkedList<>();
@@ -797,8 +798,9 @@ public class SourceReader {
 		if(path == null)
 			return false;
 		if(!path.equals("java.lang.Object")){
-			if(CodeFramework.isSource(path))
+			if(CodeFramework.isSource(path)){
 				value = new SourceReader(CodeFramework.getContent(path)).isSubClass(className);
+			}
 			else{
 				value = Screen.getFileView().getJDKManager().prepareReader(path).isSubClass(className);
 			}

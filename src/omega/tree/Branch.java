@@ -167,8 +167,11 @@ public class Branch extends JComponent{
 			@Override
 			public void mouseClicked(MouseEvent e){
 				//other button is 3
-				if(e.getButton() == 1)
-					l.locate(Branch.this);
+				if(e.getButton() == 1){
+					new Thread(()->{
+						l.locate(Branch.this);
+					}).start();
+				}
 				else if(e.getButton() == 3) {
 					popupMenu.setLocation(e.getLocationOnScreen());
 					popupMenu.setVisible(true);
