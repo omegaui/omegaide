@@ -52,8 +52,10 @@ public class ImportFramework {
 		int pos = 0;
 		for(int i = 0; i < text.length(); i++){
 			char ch = text.charAt(i);
-			if(ch != '\"' && ch != '\'' && ch != '_' && ch != '$' && !Character.isLetterOrDigit(ch)){
-				String sx = text.substring(pos, i);
+			if(!"\"\'_S".contains(ch + "") && !Character.isLetterOrDigit(ch)){
+				String sx = text.substring(pos, i).trim();
+				if(sx.equals(""))
+					continue;
 				if(text.charAt(i - sx.length()) != '.'){
 					pos = i + 1;
 					if(sx.length() > 0 && Character.isUpperCase(sx.charAt(0)) && !SourceReader.isInnerLine(sx) && !cls.contains(sx)){
