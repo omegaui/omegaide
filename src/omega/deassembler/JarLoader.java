@@ -39,6 +39,7 @@ public class JarLoader {
 	public LinkedList<ByteReader> readers = new LinkedList<>();
 	public LinkedList<String> classNames = new LinkedList<>();
 	public ClassLoader loader;
+	
 	public JarLoader(String jarPath){
 		this.jarPath = jarPath;
 		load();
@@ -47,14 +48,16 @@ public class JarLoader {
      public JarLoader(LinkedList<String> paths){
      	try{
      		URL[] urls = new URL[paths.size()];
+     		File file;
                for(int i = 0; i < urls.length; i++){
-               	urls[i] = new File(paths.get(i)).toURL();
-                    readJar(paths.get(i));
+               	urls[i] = (file = new File(paths.get(i))).toURL();
+               	if(!file.isDirectory())
+                    	readJar(paths.get(i));
                }
                loader = URLClassLoader.newInstance(urls);
      	}
      	catch(Exception e){ 
-     		System.err.println(e);
+     		//e.printStackTrace();
      	}
      }
      
@@ -68,9 +71,11 @@ public class JarLoader {
 			e.printStackTrace();
 		}
 	}
+	
 	public void putClassName(String className){
 		classNames.add(className);
 	}
+	
 	private void load(){
 		try{
 			File file = new File(jarPath);
@@ -85,6 +90,7 @@ public class JarLoader {
 			System.err.println(e);
 		}
 	}
+	
 	private void loadClassNames(){
 		readJar();
 	}
@@ -127,6 +133,7 @@ public class JarLoader {
                System.err.println(e);
           }
      }
+     
 	public static String convertJarPathToPackagePath(String zipPath){
 		if(zipPath == null || zipPath.contains("$") || !zipPath.endsWith(".class") || zipPath.startsWith("META-INF"))
 			return null;
@@ -138,6 +145,7 @@ public class JarLoader {
 		zipPath = zipPath.substring(0, zipPath.length() - 1);
 		return zipPath.equals("module-info") ? null : zipPath;
 	}
+	
 	public ByteReader getReader(String className){
 		for(ByteReader br : readers){
 			if(br.className.equals(className))
@@ -145,6 +153,7 @@ public class JarLoader {
 		}
 		return null;
 	}
+	
 	public ByteReader loadReader(String className){
 		ByteReader br = null;
 		try{
@@ -161,6 +170,7 @@ public class JarLoader {
 		}
 		return br;
 	}
+	
 	public Class loadClassNoAppend(String className){
 		try{
 			return loader.loadClass(className);

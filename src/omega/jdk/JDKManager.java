@@ -17,6 +17,8 @@
 */
 
 package omega.jdk;
+import omega.framework.CodeFramework;
+
 import omega.utils.IconManager;
 
 import omega.Screen;
@@ -33,6 +35,9 @@ import java.util.Scanner;
 
 import java.io.File;
 public class JDKManager {
+	public interface Condition{
+		boolean accept(File file);
+	}
 	public File jdkDir;
 	
 	public String version;
@@ -50,6 +55,7 @@ public class JDKManager {
 	
 	public static JarLoader systemJarLoader;
 	public static JarLoader dependencyJarLoader;
+	public static JarLoader resourceCodeLoader;
 	public JDKManager(File jdkDir){
 		imports.clear();
 		modules.clear();
@@ -140,6 +146,13 @@ public class JDKManager {
 				}
 			}
 		}
+		if(resourceCodeLoader != null) {
+			for(String className : resourceCodeLoader.classNames){
+				if(className.equals(name)){
+					return resourceCodeLoader.loadReader(name);
+				}
+			}
+		}
 		return null;
 	}
 	public void loadVersionInfo(){
@@ -194,6 +207,34 @@ public class JDKManager {
 			}
 		});
 	}
+	
+	public void readResources(String projectPath, LinkedList<String> resourceRoots){
+		LinkedList<File> byteCodeFiles = new LinkedList<>();
+		resourceCodeLoader = new JarLoader(resourceRoots);
+		resourceRoots.forEach((resourceDir)->{
+			byteCodeFiles.clear();
+			loadFiles(new File(resourceDir), byteCodeFiles, ".class", (file)->!file.getName().contains("$"));
+			if(!byteCodeFiles.isEmpty()){
+				byteCodeFiles.forEach((file)->{
+					String path = file.getAbsolutePath();
+					String qualifiedPath = path.substring(resourceDir.length() + 1, path.lastIndexOf("."));
+					String className = CodeFramework.replace(qualifiedPath, File.separatorChar, '.');
+					Import im = new Import(className, resourceDir, false);
+					imports.add(im);
+					resourceCodeLoader.classNames.add(className);
+				});
+			}
+		});
+	}
+
+	public synchronized String checkInResourceRoots(String pack, String className){
+		for(String name : resourceCodeLoader.classNames){
+			if(name.startsWith(pack + ".") && name.endsWith("." + className))
+				return name;
+		}
+		return null;
+	}
+	
 	public void readJar(String path, boolean module){
 		Screen.setStatus("Reading Jar : " + new File(path).getName(), 10, IconManager.fluentjavaImage);
 		try{
@@ -216,6 +257,7 @@ public class JDKManager {
 		}
 		Screen.setStatus("", 100, null);
 	}
+	
 	public static int calculateVersion(File jdkDir){
           if(!isJDKPathValid(jdkDir.getAbsolutePath())) {
                Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
@@ -249,6 +291,7 @@ public class JDKManager {
 		else
 			return Integer.parseInt(version);
 	}
+	
 	public void loadFiles(File dir, LinkedList<File> files, String ext){
 		File[] F = dir.listFiles();
 		if(F == null || F.length == 0) return;
@@ -256,6 +299,17 @@ public class JDKManager {
 			if(f.isDirectory())
 				loadFiles(f, files, ext);
 			else if(f.getName().endsWith(ext))
+				files.add(f);
+		}
+	}
+	
+	public void loadFiles(File dir, LinkedList<File> files, String ext, Condition condition){
+		File[] F = dir.listFiles();
+		if(F == null || F.length == 0) return;
+		for(File f : F){
+			if(f.isDirectory())
+				loadFiles(f, files, ext);
+			else if(f.getName().endsWith(ext) && condition.accept(f))
 				files.add(f);
 		}
 	}
@@ -298,6 +352,7 @@ public class JDKManager {
 		else
 			return Integer.parseInt(version);
 	}
+	
 	public void clear(){
 		modules.clear();
 		imports.clear();
@@ -305,10 +360,14 @@ public class JDKManager {
 		sources.clear();
 		if(dependencyJarLoader != null)
 			dependencyJarLoader.close();
+		if(resourceCodeLoader != null)
+			resourceCodeLoader.close();
 	}
+	
 	public void prepareDependencyLoader(LinkedList<String> paths){
 		dependencyJarLoader = new JarLoader(paths);
 	}
+	
 	public static boolean isJDKPathValid(String path){
 		File file = new File(path);
 		return path != null && file.exists() && isJDK(file);

@@ -91,7 +91,8 @@ public class FileView extends View {
 	}
 
      public void readDependencies(){
-     	if(jdkManager == null) return;
+     	if(jdkManager == null) 
+     		return;
           LinkedList<String> paths = new LinkedList<>();
           projectManager.jars.forEach(path->{
                jdkManager.readJar(path, false);
@@ -102,6 +103,7 @@ public class FileView extends View {
                paths.add(path);
           });
           jdkManager.prepareDependencyLoader(paths);
+          jdkManager.readResources(projectPath, projectManager.resourceRoots);
           paths.clear();
      }
 	

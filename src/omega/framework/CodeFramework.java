@@ -548,9 +548,11 @@ public class CodeFramework{
 		}
 		else{
 			reader = new SourceReader(partialText);
-			DataBlock block = reader.dataBlocks.getLast();
-			if(block != null){
-				dataMember = (DataMember)block.getMatch(var);
+			if(reader.dataBlocks != null){
+				DataBlock block = reader.dataBlocks.getLast();
+				if(block != null){
+					dataMember = (DataMember)block.getMatch(var);
+				}
 			}
 		}
 		if(dataMember != null && !dataMember.name.equals(var)) dataMember = null;
@@ -1247,6 +1249,16 @@ public class CodeFramework{
 				c++;
 		}
 		return c;
+	}
+
+	public static String replace(String text, char x, char y){
+		String result = "";
+		for(char ch : text.toCharArray()){
+			if(ch == x)
+				ch = y;
+			result += ch;
+		}
+		return result;
 	}
 	
 	public static int getUnpairedParanthesis(String text){

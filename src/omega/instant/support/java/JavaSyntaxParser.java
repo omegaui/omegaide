@@ -74,7 +74,17 @@ public class JavaSyntaxParser {
 	public static volatile boolean packingCodes = false;
 	
 	public static final File BUILDSPACE_DIR = new File(".omega-ide", "buildspace");
-	
+
+	public static NotificationPopup dynamicBuildInfoPopup =  NotificationPopup.create(Screen.getScreen())
+													.size(400, 120)
+													.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
+													.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
+													.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
+													.dialogIcon(IconManager.fluenterrorImage)
+													.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
+													.build()
+													.locateOnBottomLeft();
+														
 	public JavaSyntaxParser(){
 		compiler = ToolProvider.getSystemJavaCompiler();
 		
@@ -351,17 +361,7 @@ public class JavaSyntaxParser {
 			depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
 		}
 		else{
-			NotificationPopup.create(Screen.getScreen())
-			.size(400, 120)
-			.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
-			.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
-			.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
-			.dialogIcon(IconManager.fluenterrorImage)
-			.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
-			.build()
-			.locateOnBottomLeft()
-			.showIt();
-			
+			dynamicBuildInfoPopup.showIt();
 			Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0, IconManager.fluentbriefImage);
 		}
 		

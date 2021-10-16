@@ -728,7 +728,8 @@ public class SourceReader {
           if(className.contains("."))
                return className;
 		for(Import im : imports){
-			if(im.name.equals(className)) return im.get();
+			if(im.name.equals(className)) 
+				return im.get();
 		}
 		if(CodeFramework.isSource(pack + "." + className))
 			return pack + "." + className;
@@ -736,7 +737,8 @@ public class SourceReader {
 			if(r.className.equals(className))
 				return pack + "." + this.className + "." + r.className;
 		}
-		return null;
+		className = Screen.getFileView().getJDKManager().checkInResourceRoots(pack, className);
+		return className;
 	}
 
      public void addNeighbourImports(){
