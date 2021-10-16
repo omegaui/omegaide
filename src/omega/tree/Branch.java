@@ -106,7 +106,7 @@ public class Branch extends JComponent{
 				setForeground(BYTE_COLOR);
 				type = "ByteCode";
 			}
-			else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi")){
+			else if(file.getName().endsWith(".exe") || file.getName().endsWith(".msi") || file.getName().endsWith(".cmd") || file.getName().endsWith(".bat")){
 				type = "Windows";
 			}
 			else if(file.getName().endsWith(".dmg")){

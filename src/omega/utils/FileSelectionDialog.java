@@ -89,7 +89,6 @@ public class FileSelectionDialog extends JDialog{
           setSize(500, 400);
           setLocationRelativeTo(null);
           setBackground(c2);
-          setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
           setLayout(null);
           init();
      }
@@ -597,6 +596,12 @@ public class FileSelectionDialog extends JDialog{
                     
                }
           }).start();
+     }
+
+     @Override
+     public void setSize(int width, int height){
+     	super.setSize(width, height);
+     	setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
      }
 }
 
