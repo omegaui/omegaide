@@ -90,6 +90,8 @@ public class UIManager extends DataBase {
 	public static Color TOOLMENU_COLOR3_SHADE = new Color(126, 20, 219, 40);
 	public static Color TOOLMENU_COLOR4 = new Color(200, 103, 0);
 	public static Color TOOLMENU_COLOR4_SHADE = new Color(200, 103, 0, 40);
+	public static Color TOOLMENU_COLOR5 = new Color(16, 62, 110);
+	public static Color TOOLMENU_COLOR5_SHADE = new Color(16, 62, 110, 40);
 	public static Color TOOLMENU_GRADIENT = new Color(200, 200, 200, 100);
 	public static Color ALPHA = new Color(0, 0, 0, 0);
 	
@@ -159,8 +161,9 @@ public class UIManager extends DataBase {
 				TOOLMENU_COLOR3_SHADE = new Color(TOOLMENU_COLOR3.getRed(), TOOLMENU_COLOR3.getGreen(), TOOLMENU_COLOR3.getBlue(), 40);
 				TOOLMENU_COLOR4 = Color.decode("#EB7201");
 				TOOLMENU_COLOR4_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
+				TOOLMENU_COLOR5 = Color.decode("#7f6021");
+				TOOLMENU_COLOR5_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 				TOOLMENU_GRADIENT = Color.decode("#132132");
-				
 				back1 = Color.decode("#111111");
 				back2 = Color.decode("#0c0c0d");
 				back3 = Color.decode("#161616");

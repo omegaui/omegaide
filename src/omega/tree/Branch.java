@@ -59,7 +59,7 @@ public class Branch extends JComponent{
 	public static final int OPTIMAL_X = 40;
 	public static final int IMAGE_SIZE = 16;
 	
-	public static final Color ANY_COLOR = TOOLMENU_COLOR2;
+	public static final Color ANY_COLOR = TOOLMENU_COLOR5;
 	public static final Color SOURCE_COLOR = ANY_COLOR;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 220);
 	public static final Color IMAGE_COLOR = new Color(50, 100, 50, 220);

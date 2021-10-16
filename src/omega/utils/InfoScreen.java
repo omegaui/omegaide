@@ -97,7 +97,7 @@ public class InfoScreen extends JDialog {
           
           g.setColor(c3);
           g.setFont(PX26);
-          g.setPaint(gradient1);          
+          g.setPaint(gradient1);
           g.drawString(title, getWidth()/2 - g.getFontMetrics().stringWidth(title)/2, 160 + g.getFontMetrics().getAscent());
           
           g.setColor(TOOLMENU_COLOR1);
@@ -109,7 +109,7 @@ public class InfoScreen extends JDialog {
           g.drawString(h1, getWidth()/2 - g.getFontMetrics().stringWidth(h1)/2, 220 + g.getFontMetrics().getAscent());
           g.drawString(h2, getWidth()/2 - g.getFontMetrics().stringWidth(h2)/2, 240 + g.getFontMetrics().getAscent());
           
-          g.setColor(TOOLMENU_COLOR4);
+          g.setColor(TOOLMENU_COLOR5);
           g.drawString(p1, getWidth()/2 - g.getFontMetrics().stringWidth(p1)/2, 260 + g.getFontMetrics().getAscent());
      }
 }
