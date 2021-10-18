@@ -15,6 +15,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.framework;
+import java.io.PrintWriter;
+
 import omega.Screen;
 
 import javax.swing.text.Document;
@@ -259,14 +261,17 @@ public class ImportFramework {
 	public static void insertImport(Editor editor, String pack, String className) {
 		try {
 			if(isPackageInformationPresent(editor)) {
+				int caretPos = editor.getCaretPosition();
 				String text = editor.getText();
 				Document d = editor.getDocument();
 				var info = getInsertIndex(editor, pack, className);
 				int start = info.index;
+				String insertedText = "";
 				if(DataManager.isUsingStarImports())
-					d.insertString(start, (!info.startChar.equals("") ? info.startChar : "") + "import " + pack + ".*;" + (!info.endChar.equals("") ? info.endChar : ""), null);
+					d.insertString(start, insertedText = (!info.startChar.equals("") ? info.startChar : "") + "import " + pack + ".*;" + (!info.endChar.equals("") ? info.endChar : ""), null);
 				else
-					d.insertString(start, (!info.startChar.equals("") ? info.startChar : "") + "import " + pack + "." + className + ";" + (!info.endChar.equals("") ? info.endChar : ""), null);
+					d.insertString(start, insertedText = (!info.startChar.equals("") ? info.startChar : "") + "import " + pack + "." + className + ";" + (!info.endChar.equals("") ? info.endChar : ""), null);
+				editor.setCaretPosition(caretPos + insertedText.length());
 			}
 			else {
 				Document d = editor.getDocument();

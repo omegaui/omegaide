@@ -589,6 +589,7 @@ public class FileSelectionDialog extends JDialog{
           new Thread(()->{
                try{
                     scrollPane.repaint();
+                    scrollPane.getVerticalScrollBar().setValue(0);
                     panel.repaint();
                     items.forEach(item->item.repaint());
                }
