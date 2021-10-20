@@ -17,6 +17,8 @@
 */
 
 package omega.startup;
+import omega.plugin.management.PluginManager;
+
 import java.util.Scanner;
 
 import omega.Screen;
@@ -178,6 +180,8 @@ public class Startup extends JDialog {
 		f.mkdir();
 		f = new File(".omega-ide" + File.separator + "buildspace", "bin");
 		f.mkdir();
+		if(!PluginManager.PLUGINS_DIRECTORY.exists())
+			PluginManager.PLUGINS_DIRECTORY.mkdirs();
 	}
 }
 

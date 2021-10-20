@@ -26,8 +26,8 @@ import java.awt.RenderingHints;
 import javax.swing.JComponent;
 public class FlexPanel extends JComponent{
      
-     private int arcX = 40;
-     private int arcY = 40;
+     public int arcX = 40;
+     public int arcY = 40;
      private Color accentColor;
      private Color borderColor = Color.BLACK;
      private GradientPaint paint;

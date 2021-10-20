@@ -21,7 +21,7 @@ import java.net.URL;
 
 import java.io.InputStream;
 import java.io.BufferedInputStream;
-public class Download {
+public class Downloader {
      public static InputStream openStream(String url){
      	InputStream in = null;
           try{

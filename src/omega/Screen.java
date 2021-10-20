@@ -16,6 +16,11 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.plugin.store.PluginStore;
+
+import omega.plugin.management.PluginManager;
+import omega.plugin.management.PluginsView;
+
 import java.awt.image.BufferedImage;
 
 import omega.instant.support.LanguageTagView;
@@ -44,9 +49,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 
 import omega.terminal.TerminalComp;
-
-import omega.plugin.PluginManager;
-import omega.plugin.PluginCenter;
 
 import omega.instant.support.universal.UniversalSettingsWizard;
 
@@ -128,7 +130,8 @@ public class Screen extends JFrame {
 	private static ProjectView projectView;
 	private static UniversalSettingsWizard universalSettings;
 	private static PluginManager pluginManager;
-	private static PluginCenter pluginCenter;
+	private static PluginStore pluginStore;
+	private static PluginsView pluginsView;
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
 	
@@ -303,7 +306,8 @@ public class Screen extends JFrame {
 		
 		splash.setProgress(83, "plugging in");
 		pluginManager = new PluginManager();
-		pluginCenter = new PluginCenter(this);
+		pluginStore = new PluginStore(this, pluginManager);
+		pluginsView = new PluginsView(this, pluginManager);
 		
 		splash.setProgress(100, "");
 		File file = new File(DataManager.getDefaultProjectPath());
@@ -593,6 +597,7 @@ public class Screen extends JFrame {
 			
 		}
 		Screen.notify("Saving UI and Data");
+		pluginManager.save();
 		uiManager.save();
 		dataManager.saveData();
 		SnippetBase.save();
@@ -753,8 +758,12 @@ public class Screen extends JFrame {
 		return pluginManager;
 	}
 	
-	public static PluginCenter getPluginCenter(){
-		return pluginCenter;
+	public static PluginStore getPluginStore(){
+		return pluginStore;
+	}
+	
+	public static PluginsView getPluginsView(){
+		return pluginsView;
 	}
 	
 	public void saveEssential() {

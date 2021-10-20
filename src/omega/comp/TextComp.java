@@ -43,6 +43,7 @@ public class TextComp extends JComponent{
 	public volatile boolean bottomRightArcVisible = true;
 	private volatile boolean clickable = true;
 	private volatile boolean paintGradientEnabled = false;
+	private volatile boolean paintTextGradientEnabled = false;
 	
 	public static final int GRADIENT_MODE_DEFAULT = 0;
 	public static final int GRADIENT_MODE_LINEAR = 1;
@@ -240,6 +241,23 @@ public class TextComp extends JComponent{
 		repaint();
 	}
 	
+	public boolean isPaintTextGradientEnabled() {
+		if(!paintTextGradientEnabled)
+			return false;
+		if(!(gradientMode >= GRADIENT_MODE_DEFAULT && gradientMode <= GRADIENT_MODE_LINEAR))
+			return false;
+		if(gradientMode == GRADIENT_MODE_DEFAULT)
+			return colorG != null;
+		if(gradientMode == GRADIENT_MODE_LINEAR)
+			return fractions != null && gradientColors != null && fractions.length == gradientColors.length;
+		return true;
+	}
+	
+	public void setPaintTextGradientEnabled(boolean paintTextGradientEnabled) {
+		this.paintTextGradientEnabled = paintTextGradientEnabled;
+		repaint();
+	}
+	
 	public java.awt.Color getGradientColor() {
 		return colorG;
 	}
@@ -297,7 +315,6 @@ public class TextComp extends JComponent{
 		
 		textX = x;
 		textY = y;
-		textWidth = g.getFontMetrics().stringWidth(dir);
 		textHeight = g.getFontMetrics().getHeight();
 		
 		if(isPaintGradientEnabled()){
@@ -326,18 +343,37 @@ public class TextComp extends JComponent{
 	}
 	
 	public void draw(Graphics2D g, int x, int y){
-		g.setColor(color3);
+		g.setFont(getFont());
+		
+		textX = alignX < 0 ? x : alignX;
+		textWidth = g.getFontMetrics().stringWidth(getText());
+		
+		
+		if(isPaintTextGradientEnabled()){	
+			if(gradientMode == GRADIENT_MODE_DEFAULT)
+				g.setPaint(new GradientPaint(textX, y, color3, textWidth, textHeight, colorG));
+			else if(gradientMode == GRADIENT_MODE_LINEAR)
+				g.setPaint(new LinearGradientPaint(textX, y, textWidth, textHeight, fractions, gradientColors));
+		}
+		else
+			g.setColor(color3);
+	
 		if(x < alignX){
 			String temp = dir.substring(0, dir.length()/2) + "..";
 			x = getWidth()/2 - g.getFontMetrics().stringWidth(temp)/2;
-			g.drawString(temp, alignX < 0 ? x : alignX, y);
-			setToolTipText(dir);
 			textX = alignX < 0 ? x : alignX;
 			textWidth = g.getFontMetrics().stringWidth(temp);
+			if(isPaintTextGradientEnabled()){	
+				if(gradientMode == GRADIENT_MODE_DEFAULT)
+					g.setPaint(new GradientPaint(textX, y, color3, textWidth, textHeight, colorG));
+				else if(gradientMode == GRADIENT_MODE_LINEAR)
+					g.setPaint(new LinearGradientPaint(textX, y, textWidth, textHeight, fractions, gradientColors));
+			}
+			g.drawString(temp, textX, y);
+			setToolTipText(dir);
 		}
 		else {
-			g.drawString(dir, alignX < 0 ? x : alignX, y);
-			textX = alignX < 0 ? x : alignX;
+			g.drawString(dir, textX, y);
 		}
 	}
 	

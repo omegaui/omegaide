@@ -795,6 +795,7 @@ public class ToolMenu extends JPanel {
 	               
 		          }
 				Screen.notify("Saving UI and Data");
+				Screen.getPluginManager().save();
 				screen.getUIManager().save();
 				screen.getDataManager().saveData();
 				Screen.notify("Saving Project");
@@ -873,6 +874,7 @@ public class ToolMenu extends JPanel {
 		setPopup.addItem(instantModeItem);
 		setPopup.addItem(allSettingsItem);
 	}
+	
 	private void initHelpMenu() {
 		helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.fluentyoutubeImage, ()->{
 			try{
@@ -882,7 +884,8 @@ public class ToolMenu extends JPanel {
 		          System.err.println(e);
 	          }
 		})
-		.createItem("Plugin Center & Updates", IconManager.fluentupdateImage, ()->Screen.getPluginCenter().setVisible(true))
+		.createItem("Plugin Store", IconManager.ideImage64, ()->Screen.getPluginStore().setVisible(true))
+		.createItem("Plugin Manager", IconManager.ideImage64, ()->Screen.getPluginsView().setVisible(true))
           .createItem("Instructions", IconManager.fluentinfoImage, ()->{
                instructionWindow.setVisible(true);
           })
@@ -954,6 +957,7 @@ public class ToolMenu extends JPanel {
                
 	          }
 			Screen.notify("Saving UI and Data");
+			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			Screen.notify("Saving Project");
@@ -982,6 +986,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage,
 		()->{
 			Screen.notify("Saving UI and Data");
+			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			Screen.notify("Saving Project");
@@ -1004,6 +1009,7 @@ public class ToolMenu extends JPanel {
      		}
      		catch(Exception e2) {}
 			Screen.notify("Saving UI and Data");
+			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			try{
@@ -1024,6 +1030,7 @@ public class ToolMenu extends JPanel {
                
 	          }
 			Screen.notify("Saving UI and Data");
+			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			Screen.notify("Saving Project");
