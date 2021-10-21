@@ -151,7 +151,7 @@ public class UIManager extends DataBase {
 			}
 			else {
 				c1 = Color.decode("#132162");
-				c2 = Color.decode("#070707");
+				c2 = Color.decode("#111111");
 				c3 = Color.decode("#3CE5DD");
 				TOOLMENU_COLOR1 = Color.decode("#f0b40f");
 				TOOLMENU_COLOR1_SHADE = new Color(TOOLMENU_COLOR1.getRed(), TOOLMENU_COLOR1.getGreen(), TOOLMENU_COLOR1.getBlue(), 40);
@@ -164,9 +164,9 @@ public class UIManager extends DataBase {
 				TOOLMENU_COLOR5 = Color.decode("#7f6021");
 				TOOLMENU_COLOR5_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 				TOOLMENU_GRADIENT = Color.decode("#132132");
-				back1 = Color.decode("#111111");
-				back2 = Color.decode("#0c0c0d");
-				back3 = Color.decode("#161616");
+				back1 = Color.decode("#101010");
+				back2 = Color.decode("#222222");
+				back3 = Color.decode("#333333");
 			}
 		}
 		catch(Exception e) {

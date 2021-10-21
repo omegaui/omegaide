@@ -218,10 +218,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setDragEnabled(true);
 		setDropMode(DropMode.USE_SELECTION);
 		UIManager.setData(this);
-		
+
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
 		getAttachment().getGutter().setIconRowHeaderInheritsGutterBackground(true);
-		getAttachment().getGutter().iconArea.setBackground(omega.utils.UIManager.c2);
+		getAttachment().getGutter().iconArea.setBackground(UIManager.back1);
 	}	
 	
 	private void createNewContent() {

@@ -42,7 +42,7 @@ import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class ContentWindow extends JPanel implements KeyListener{
      public LinkedList<TextComp> hints = new LinkedList<>();
-     private final Font PX12 = new Font("Ubuntu", Font.BOLD, 12);
+     private final Font PX12 = UBUNTU_PX12;
      private Editor editor;
      private JPanel panel;
      private JScrollPane scrollPane;
