@@ -77,4 +77,10 @@ public interface Plugin {
 	default LinkedList<URL> getScreenshots(){
 		return new LinkedList<URL>();
 	}
+	/**
+	 * method <code>registerReaction()</code> should be used when using the {@link omega.plugin.event API} for binding plugin reactions
+	 */
+	default void registerReactions(){
+		
+	}
 }

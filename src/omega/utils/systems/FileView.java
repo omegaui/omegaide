@@ -17,6 +17,8 @@
 */
 
 package omega.utils.systems;
+import omega.plugin.event.PluginReactionEvent;
+
 import omega.Screen;
 
 import omega.launcher.Launcher;
@@ -166,6 +168,7 @@ public class FileView extends View {
 	          }
           }
 		getScreen().getToolMenu().reloadItems(projectManager.non_java);
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CHANGED, this, projectPath));
 	}
 
 	public String getProjectPath() {
@@ -216,6 +219,7 @@ public class FileView extends View {
 		DataManager.setDefaultProjectPath("");
 		if(Screen.launcher == null)
 			Screen.launcher = new omega.launcher.Launcher();
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CLOSED, this, projectPath));
 		Screen.launcher.setVisible(true);
 	}
 	

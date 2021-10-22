@@ -1,4 +1,6 @@
 package omega.instant.support;
+import omega.plugin.event.PluginReactionEvent;
+
 import omega.utils.IconManager;
 import omega.utils.DataManager;
 
@@ -130,6 +132,9 @@ public class LanguageTagView extends JDialog{
 	}
 
 	public void setActiveLang(int tag){
+		if(tag == Screen.getFileView().getProjectManager().getLanguageTag())
+			return;
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, tag));
 		Screen.getFileView().getProjectManager().setLanguageTag(tag);
 		setVisible(false);
 	}

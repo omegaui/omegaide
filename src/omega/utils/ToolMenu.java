@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import omega.plugin.event.PluginReactionEvent;
+
 import omega.instant.support.LanguageTagView;
 
 import omega.Screen;
@@ -662,11 +664,13 @@ public class ToolMenu extends JPanel {
      
 	public void minimize(){
 		screen.setState(Screen.ICONIFIED);
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_MINIMIZED, this, true));
 	}
      
 	public void maximize(){
 		screen.setExtendedState(!maximized ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
 		maximized = !maximized;
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(maximized ? PluginReactionEvent.EVENT_TYPE_IDE_MAXIMIZED : PluginReactionEvent.EVENT_TYPE_IDE_RESTORED, this, maximized));
 	}
 	
 	public void disposeAll(){
@@ -996,6 +1000,7 @@ public class ToolMenu extends JPanel {
 			}
 			catch(Exception e2) {
 			}
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 			System.exit(0);
 		})
 		.createItem("Terminate Running Apps and Exit -Without saving opened editors", IconManager.closeImage,
@@ -1014,7 +1019,10 @@ public class ToolMenu extends JPanel {
 			screen.getDataManager().saveData();
 			try{
           		Screen.getFileView().getProjectManager().save();
-     		}catch(Exception e2) {}
+     		}
+     		catch(Exception e2) {
+			}
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 			System.exit(0);
 		})
 		.createItem("Exit", IconManager.closeImage,
@@ -1039,8 +1047,8 @@ public class ToolMenu extends JPanel {
 	               Screen.getFileView().getProjectManager().save();
 	          }
 	          catch(Exception e2) {
-               
                }
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 			System.exit(0);
 		});
 	}

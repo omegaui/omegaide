@@ -16,6 +16,9 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.plugin.event.PluginReactionManager;
+import omega.plugin.event.PluginReactionEvent;
+
 import omega.plugin.store.PluginStore;
 
 import omega.plugin.management.PluginManager;
@@ -132,6 +135,7 @@ public class Screen extends JFrame {
 	private static PluginManager pluginManager;
 	private static PluginStore pluginStore;
 	private static PluginsView pluginsView;
+	private static PluginReactionManager pluginReactionManager;
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
 	
@@ -308,8 +312,14 @@ public class Screen extends JFrame {
 		pluginManager = new PluginManager();
 		pluginStore = new PluginStore(this, pluginManager);
 		pluginsView = new PluginsView(this, pluginManager);
+		pluginReactionManager = new PluginReactionManager(pluginManager);
+		pluginManager.doPluginReactionRegistration();
+		
+		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_INITIALIZED, this, splash));
 		
 		splash.setProgress(100, "");
+
+		
 		File file = new File(DataManager.getDefaultProjectPath());
 		
 		if(DataManager.getWorkspace().equals("") || !new File(DataManager.getWorkspace()).exists())
@@ -582,6 +592,12 @@ public class Screen extends JFrame {
 			res = res.substring(0,res.length() - 1);
 		return res;
 	}
+
+	@Override
+	public void layout(){
+		super.layout();
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
+	}
 	
 	@Override
 	public void dispose(){
@@ -610,6 +626,7 @@ public class Screen extends JFrame {
 			
 		}
 		super.dispose();
+		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 		System.exit(0);
 	}
 	
@@ -764,6 +781,10 @@ public class Screen extends JFrame {
 	
 	public static PluginsView getPluginsView(){
 		return pluginsView;
+	}
+	
+	public static PluginReactionManager getPluginReactionManager(){
+		return pluginReactionManager;
 	}
 	
 	public void saveEssential() {

@@ -1,4 +1,6 @@
 package omega.utils;
+import omega.plugin.event.PluginReactionEvent;
+
 import omega.Screen;
 
 import java.io.File;
@@ -67,6 +69,7 @@ public class ProjectDistructionWizard extends JDialog{
 				File projectDir = new File(Screen.getFileView().getProjectPath());
 				Screen.getFileView().closeProject();
 				Editor.deleteDir(projectDir);
+				Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_DELETED, this, null));
 			}
 			catch(Exception e){
 				e.printStackTrace();

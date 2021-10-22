@@ -114,6 +114,10 @@ public class PluginManager extends DataBase{
 		}
 	}
 
+	public void doPluginReactionRegistration(){
+		plugins.forEach(plugin->plugin.registerReactions());
+	}
+	
 	public synchronized boolean isPluginInstalled(String fileName){
 		return new File(PLUGINS_DIRECTORY.getAbsolutePath(), fileName).exists();
 	}
