@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 import omega.comp.FlexPanel;
 import omega.comp.TextComp;
+import omega.comp.NoCaretField;
 
 import omega.deassembler.SourceReader;
 import omega.deassembler.DataMember;
@@ -31,6 +32,8 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 	
 	private JPanel panel;
 
+	private NoCaretField searchField;
+
 	private LinkedList<TextComp> definitions = new LinkedList<>();
 	
 	public JavaJumpToDefinitionPanel(Editor editor){
@@ -50,17 +53,26 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 		
 		containerPanel.add(scrollPane);
 		add(containerPanel);
+
+		searchField = new NoCaretField("", "Search Members", TOOLMENU_COLOR3, back3, TOOLMENU_COLOR2);
+		searchField.setFont(PX14);
+		searchField.setOnAction(()->{
+			genDefinitions(searchField.getText());
+		});
+		add(searchField);
+		
 		setVisible(false);
 	}
 
 	@Override
 	public void layout(){
-		containerPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
+		containerPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 40);
 		scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
+		searchField.setBounds(5, getHeight() - 25, getWidth() - 10, 25);
 		super.layout();
 	}
 
-	public void genDefinitions(){
+	public void genDefinitions(String match){
 		try{
 			definitions.forEach(panel::remove);
 			definitions.clear();
@@ -75,12 +87,16 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 			int min_height = g.getFontMetrics().getHeight() + 10;
 			
 			for(DataMember dx : reader.ownedDataMembers){
+				if(!dx.getRepresentableValue().contains(match))
+					continue;
 				int width = g.getFontMetrics().stringWidth(dx.name + " - " + dx.type);
 				if(width > min_width)
 					min_width = width + 15;
 			}
 			
 			for(DataMember dx : reader.ownedDataMembers) {
+				if(!dx.getRepresentableValue().contains(match))
+					continue;
 				if(!dx.isMethod()){
 					TextComp comp = new TextComp(dx.name + " - " + dx.type, TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
 						editor.setCaretPosition(JavaCodeNavigator.getLineOffset(editor, dx.lineNumber));
@@ -97,9 +113,15 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 			}
 			
 			for(DataMember dx : reader.ownedDataMembers) {
+				if(!dx.getRepresentableValue().contains(match))
+					continue;
 				if(dx.isMethod()){
 					TextComp comp = new TextComp(dx.name + " - " + dx.type, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 						editor.setCaretPosition(JavaCodeNavigator.getLineOffset(editor, dx.lineNumber));
+						try{
+							editor.getAttachment().getVerticalScrollBar().setValue(JavaCodeNavigator.getLineOffsetForView(editor, dx.lineNumber));
+						}
+						catch(Exception e){}
 						setVisible(false);
 					});
 					comp.setBounds(0, block, min_width, min_height);
@@ -114,7 +136,7 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 			
 			panel.setPreferredSize(new Dimension(min_width + 10, block));
 
-			setSize(min_width + 5, block + 10);
+			setSize(min_width + 5, block + 10 + 30);
 
 			if(getWidth() > 400)
 				setSize(400 + 20, getHeight());
@@ -133,12 +155,13 @@ public class JavaJumpToDefinitionPanel extends JPanel{
 	public void relocate(){
 		Rectangle rect = editor.getAttachment().getViewport().getViewRect();
 		setLocation(rect.x + rect.width/2 - getWidth()/2, rect.y + rect.height/2 - getHeight()/2);
+		layout();
 	}
 
 	@Override
 	public void setVisible(boolean value){
 		if(value){
-	          genDefinitions();
+	          genDefinitions("");
 		}
 	     super.setVisible(value);
 	}

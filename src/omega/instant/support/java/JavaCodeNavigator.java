@@ -180,6 +180,23 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 		return pos - 1;
 	}
 
+	public static int getLineOffsetForView(Editor editor, int line){
+		if(editor.getCaretLineNumber() < line)
+			line += 10;
+		else if(editor.getCaretLineNumber() < line)
+			line -= 10;
+		int pos = 0;
+		String wholeText = editor.getText();
+		for(char c : wholeText.toCharArray()) {
+			if(line <= 0)
+				break;
+			if(c == '\n')
+				line--;
+			pos++;
+		}
+		return pos - 1;
+	}
+
 	public static void install(Editor editor){
 		if(editor.currentFile != null && editor.currentFile.getName().endsWith(".java")){
 			new JavaCodeNavigator(editor);

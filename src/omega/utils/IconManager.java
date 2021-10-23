@@ -103,6 +103,8 @@ public class IconManager {
      public static BufferedImage fluentbulletedlistImage = getFluentIcon("bulleted-list-64.png");
      public static BufferedImage fluentusermanualImage = getFluentIcon("user-manual-64.png");
      public static BufferedImage fluentcolorwheelImage = getFluentIcon("color-wheel-2-48.png");
+     public static BufferedImage fluentfocusImage = getFluentIcon("goal-48.png");
+     public static BufferedImage fluentnormalScreenImage = getFluentIcon("normal-screen-48.png");
      
 
      //The Default Icon Pack -- mixed

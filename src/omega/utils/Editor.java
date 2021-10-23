@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import omega.plugin.event.PluginReactionEvent;
+
 import omega.utils.systems.View;
 
 import omega.Screen;
@@ -77,7 +79,6 @@ import org.fife.ui.rtextarea.SearchResult;
 import org.fife.rsta.ui.search.SearchListener;
 import org.fife.rsta.ui.search.ReplaceToolBar;
 import org.fife.rsta.ui.search.SearchEvent;
-import org.fife.rsta.ui.search.SearchEvent.Type;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -90,9 +91,9 @@ import java.awt.event.MouseEvent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
+import java.nio.charset.StandardCharsets;
 
 import static omega.deassembler.Assembly.*;
-import static java.nio.charset.StandardCharsets.UTF_8;
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, MouseMotionListener, SearchListener, FocusListener {
 	private static Screen screen;
 	private static PrintArea printArea;
@@ -144,7 +145,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	// duplicate
 	private static volatile boolean d; 
 	// jump-to-definition
-	private static volatile boolean j; 
+	private static volatile boolean j;
+	// tab-size
+	private static volatile boolean t;
+	// increase font-size
+	private static volatile boolean plus;
+	// decrease font-size
+	private static volatile boolean minus; 
+	// search-dialog
+	private static volatile boolean p; 
 	// comment-out (Single-Line Only)
 	private static volatile boolean slash; 
 	
@@ -217,11 +226,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setHighlightSecondaryLanguages(true);
 		setDragEnabled(true);
 		setDropMode(DropMode.USE_SELECTION);
+		setTabSize(4);
 		UIManager.setData(this);
 
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
 		getAttachment().getGutter().setIconRowHeaderInheritsGutterBackground(true);
 		getAttachment().getGutter().iconArea.setBackground(UIManager.back1);
+
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CREATED, this, currentFile));
 	}	
 	
 	private void createNewContent() {
@@ -460,9 +472,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		try {
 			String text = getText();
 			savedText = text;
-			PrintWriter writer = new PrintWriter(currentFile, UTF_8);
+			PrintWriter writer = new PrintWriter(currentFile, StandardCharsets.UTF_8);
 			writer.print(text);
 			writer.close();
+			
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_SAVED, this, currentFile));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -489,7 +503,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		String path = fileSaveDialog.saveFile();
 		if(path != null) {
 			try {
-				PrintWriter writer = new PrintWriter(new File(path), UTF_8);
+				PrintWriter writer = new PrintWriter(new File(path), StandardCharsets.UTF_8);
 				writer.println(getText());
 				writer.close();
 				Screen.getProjectView().reload();
@@ -507,6 +521,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		currentFile = null;
 		setText("");
 		savedText = "";
+		
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CLOSED, this, currentFile));
 	}
 	
 	public void reloadFile() {
@@ -519,11 +535,18 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				savedText = getText();
 				setStyle(this, currentFile);
 				setCaretPosition(0);
+				
+				Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_RELOADED, this, currentFile));
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void discardData(){
+		setText(savedText);
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_DISCARD, this, currentFile));
 	}
 	
 	public void deleteFile() {
@@ -643,6 +666,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			d = true;
 		else if(code == KeyEvent.VK_J)
 			j = true;
+		else if(code == KeyEvent.VK_T)
+			t = true;
+		else if(code == KeyEvent.VK_P)
+			p = true;
+		else if(code == KeyEvent.VK_PLUS || code == KeyEvent.VK_EQUALS)
+			plus = true;
+		else if(code == KeyEvent.VK_MINUS)
+			minus = true;
 		else if(code == KeyEvent.VK_SLASH)
 			slash = true;
 
@@ -681,6 +712,36 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			d = false;
 			e.consume();
 		}
+
+		if(!t){
+			if(ctrl && shift && plus){
+				UIManager.fontSize++;
+				screen.getUIManager().save();
+				screen.loadThemes();
+	
+				plus = false;
+			}
+	
+			if(ctrl && shift && minus){
+				UIManager.fontSize--;
+				screen.getUIManager().save();
+				screen.loadThemes();
+	
+				minus = false;
+			}
+		}
+
+		if(ctrl && shift && plus && t){
+			setTabSize(getTabSize() + 1);
+
+			plus = false;
+		}
+
+		if(ctrl && shift && minus && t){
+			setTabSize(getTabSize() - 1);
+
+			minus = false;
+		}
 		
 		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
 			if(GradleProcessManager.isGradleProject())
@@ -696,6 +757,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			c = false;
 			shift = false;
 			ctrl = false;
+		}
+
+		if(ctrl && shift && p){
+			Screen.getFileView().getSearchWindow().setVisible(true);
+
+			ctrl = false;
+			shift = false;
+			p = false;
 		}
 		
 		if(code == KeyEvent.VK_TAB){
@@ -861,6 +930,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			d = false;
 		else if(code == KeyEvent.VK_J)
 			j = false;
+		else if(code == KeyEvent.VK_T)
+			t = false;
+		else if(code == KeyEvent.VK_P)
+			p = false;
+		else if(code == KeyEvent.VK_PLUS || code == KeyEvent.VK_EQUALS)
+			plus = false;
+		else if(code == KeyEvent.VK_MINUS)
+			minus = false;
 		else if(code == KeyEvent.VK_SLASH)
 			slash = false;
 		
@@ -994,7 +1071,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	@Override
 	public void searchEvent(SearchEvent e) {
-		Type type = e.getType();
+		SearchEvent.Type type = e.getType();
 		SearchContext context = e.getSearchContext();
 		SearchResult result;
 		switch (type) {

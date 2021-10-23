@@ -641,8 +641,6 @@ public class ToolMenu extends JPanel {
 					.showIt();
 				}
 				themeComp.setText(DataManager.getTheme());
-				Screen.getScreen().getBottomPane().themeComp.setText(DataManager.getTheme());
-				
 			}
 		);
 		themeComp.setFont(omega.utils.UIManager.PX16);

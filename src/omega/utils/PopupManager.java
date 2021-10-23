@@ -64,7 +64,7 @@ public class PopupManager {
                     Screen.getProjectView().reload();
                })
                .createItem("Discard", IconManager.closeImage, ()->{
-                    editor.reloadFile();
+               	editor.discardData();
                     screen.getTabPanel().remove(editor);
                })
                .createItem("Reload", null, ()->editor.reloadFile()).width(200);

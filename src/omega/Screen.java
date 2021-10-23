@@ -78,6 +78,7 @@ import omega.utils.WorkspaceSelector;
 import omega.utils.ProjectDataBase;
 import omega.utils.Editor;
 import omega.utils.UIManager;
+import omega.utils.IconManager;
 
 import omega.tabPane.TabPanel;
 
@@ -111,6 +112,7 @@ public class Screen extends JFrame {
 	
 	public volatile boolean active = true;
 	public volatile boolean screenHasProjectView = true;
+	public volatile boolean focusMode = false;
 	
 	private SplashScreen splash;
 	private OperationPane operationPane;
@@ -785,6 +787,56 @@ public class Screen extends JFrame {
 	
 	public static PluginReactionManager getPluginReactionManager(){
 		return pluginReactionManager;
+	}
+
+	public synchronized boolean isFocusMode() {
+		return focusMode;
+	}
+	
+	public synchronized void setFocusMode(boolean focusMode) {
+		this.focusMode = focusMode;
+		final int state = getExtendedState();
+		Thread tx = new Thread(()->{
+			setStatus("Toggling Focus Mode ...", 0, IconManager.fluentfocusImage);
+			if(focusMode){
+				toolMenu.hidden = true;
+				
+				setVisible(false);
+				remove(toolMenu);
+				remove(sideMenu);
+				layout();
+				doLayout();
+				setVisible(true);
+			}
+			else{
+				toolMenu.hidden = false;
+				
+				setVisible(false);
+				add(toolMenu, BorderLayout.NORTH);
+				add(sideMenu, BorderLayout.WEST);
+				layout();
+				doLayout();
+				setVisible(true);
+			}
+			screenHasProjectView = !toolMenu.hidden;
+			getProjectView().organizeProjectViewDefaults();
+			doLayout();
+			getProjectView().setVisible(false);
+			toolMenu.structureComp.setToolTipText(toolMenu.hidden ? "Project Structure Hidden" : "Project Structure Visible");
+			toolMenu.structureComp.repaint();
+			
+			setStatus(null, 100, null);
+		});
+
+		tx.start();
+		
+		try{
+			tx.join();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		setExtendedState(state);
 	}
 	
 	public void saveEssential() {

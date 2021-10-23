@@ -41,9 +41,11 @@ import static omega.comp.Animations.*;
 public class BottomPane extends JPanel {
 	private Screen screen;
 	public TextComp messageComp;
+	public TextComp searchComp;
 	public TextComp logComp;
+	public TextComp focusComp;
 	public RTextField jumpField;
-     public TextComp themeComp;
+	
      private Runnable r = ()->{};
 	
 	public BottomPane(Screen screen) {
@@ -77,6 +79,14 @@ public class BottomPane extends JPanel {
 			}
 		});
 		add(messageComp);
+
+		searchComp = new TextComp(IconManager.fluentsearchImage, 25, 25, TOOLMENU_COLOR1_SHADE, back1, glow, ()->Screen.getFileView().getSearchWindow().setVisible(true));
+		searchComp.setArc(0, 0);
+		add(searchComp);
+
+		focusComp = new TextComp(IconManager.fluentfocusImage, 25, 25, TOOLMENU_COLOR1_SHADE, back1, glow, this::toggleFocusMode);
+		focusComp.setArc(0, 0);
+		add(focusComp);
 
 		logComp = new TextComp("No Logs", TOOLMENU_COLOR4_SHADE, back1, glow, null){
 			@Override
@@ -120,73 +130,21 @@ public class BottomPane extends JPanel {
                Screen.getScreen().getCurrentEditor().setCaretPosition(pos - 1);
           });
           add(jumpField);
+	}
 
-          themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR1_SHADE, back2, glow, null);
-          themeComp.setRunnable(()->{
-               Screen.pickTheme(DataManager.getTheme());
-               if(!themeComp.getText().equals(DataManager.getTheme())){
-				NotificationPopup.create(screen)
-				.size(300, 120)
-				.title("Theme Manager")
-				.dialogIcon(IconManager.fluentupdateImage)
-				.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
-				.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
-				.iconButton(IconManager.fluentcloseImage, ()->{
-					Screen.notify("Terminating Running Applications");
-					try{
-						for(Process p : Screen.getRunView().runningApps) {
-							if(p.isAlive())
-								p.destroyForcibly();
-						}
-				     }
-				     catch(Exception e2) {
-		               
-			          }
-					Screen.notify("Saving UI and Data");
-					screen.getUIManager().save();
-					screen.getDataManager().saveData();
-					Screen.notify("Saving Project");
-					screen.saveAllEditors();
-			          try{
-			               Screen.getFileView().getProjectManager().save();
-			          }
-			          catch(Exception e2) {
-		               
-		               }
-		
-		               new Thread(()->{
-		               	try{
-		               		if(Screen.onWindows())
-		               			new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
-		          			else
-		          				new ProcessBuilder("omega-ide").start();
-		               	}
-		               	catch(Exception e){
-		               		e.printStackTrace();
-		               	}
-		          	}).start();
-		          	
-		               screen.dispose();
-				}, "")
-				.build()
-				.locateOnBottomLeft()
-				.showIt();
-			}
-               themeComp.setText(DataManager.getTheme());
-               Screen.getScreen().getToolMenu().themeComp.setText(DataManager.getTheme());
-          });
-          themeComp.setFont(PX14);
-          themeComp.setArc(0, 0);
-          themeComp.setGradientColor(TOOLMENU_GRADIENT);
-          add(themeComp);
+	public void toggleFocusMode(){
+		screen.setFocusMode(!screen.isFocusMode());
+		focusComp.image = screen.isFocusMode() ? IconManager.fluentnormalScreenImage : IconManager.fluentfocusImage;
+		focusComp.repaint();
 	}
 	
 	@Override
 	public void layout(){
-		messageComp.setBounds(0, 0, getWidth() - 300, 25);
-		logComp.setBounds(getWidth() - 300, 0, 130, 25);
-          jumpField.setBounds(getWidth() - 170, 0, 100, 25);
-          themeComp.setBounds(getWidth() - 70, 0, 70, 25);
+		messageComp.setBounds(0, 0, getWidth() - 300 - 60 + 70, 25);
+		searchComp.setBounds(getWidth() - 300 - 60 + 70, 0, 30, 25);
+		focusComp.setBounds(getWidth() - 300 - 30 + 70, 0, 30, 25);
+		logComp.setBounds(getWidth() - 300 + 70, 0, 130, 25);
+          jumpField.setBounds(getWidth() - 170 + 70, 0, 100, 25);
 		super.layout();
 	}
 
