@@ -1,3 +1,21 @@
+/**
+	* InstructionWindow
+	* Copyright (C) 2021 Omega UI
+	
+	* This program is free software: you can redistribute it and/or modify
+	* it under the terms of the GNU General Public License as published by
+	* the Free Software Foundation, either version 3 of the License, or
+	* (at your option) any later version.
+	
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU General Public License for more details.
+	
+	* You should have received a copy of the GNU General Public License
+	* along with this program.  If not, see http://www.gnu.org/licenses/.
+*/
+
 package omega.launcher;
 import omega.Screen;
 
@@ -36,15 +54,15 @@ public class InstructionWindow extends JDialog{
 	private TextComp previousComp;
 	private TextComp skipComp;
 	private TextComp nextComp;
-
+	
 	private LinkedList<PaintBoard> paintBoards = new LinkedList<>();
-
+	
 	private int pointer = 0;
-
+	
 	private static GradientPaint titlePaint = new GradientPaint(0, 100, TOOLMENU_COLOR1, 400, 300, TOOLMENU_COLOR2);
 	private static GradientPaint textPaint = new GradientPaint(0, 100, TOOLMENU_COLOR3, 400, 300, TOOLMENU_COLOR4);
 	private static GradientPaint bodyPaint = new GradientPaint(0, 0, TOOLMENU_COLOR1, 500, 400, TOOLMENU_COLOR3);
-
+	
 	private BufferedImage toolMenuImage = getInstructionImage("toolmenu.png");
 	private BufferedImage sourceDefenderImage = getInstructionImage("source-defender.png");
 	private BufferedImage processWizardImage = getInstructionImage("process-wizard.png");
@@ -66,7 +84,7 @@ public class InstructionWindow extends JDialog{
 		init();
 		loadPaintBoards();
 	}
-
+	
 	public void init(){
 		titleComp = new TextComp("Instructions", c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth(), 30);
@@ -75,7 +93,7 @@ public class InstructionWindow extends JDialog{
 		titleComp.setArc(0, 0);
 		titleComp.attachDragger(this);
 		add(titleComp);
-
+		
 		mainPanel = new FlexPanel(new BorderLayout(), TOOLMENU_GRADIENT, null){
 			@Override
 			public void paint(Graphics graphics){
@@ -91,26 +109,26 @@ public class InstructionWindow extends JDialog{
 		};
 		mainPanel.setBounds(10, 40, getWidth() - 20, getHeight() - 40 - 40);
 		add(mainPanel);
-
+		
 		previousComp = new TextComp("Previous", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::previous);
 		previousComp.setBounds(10, getHeight() - 30, 100, 25);
 		previousComp.setFont(UBUNTU_PX12);
 		previousComp.setArc(2, 2);
 		add(previousComp);
-
+		
 		skipComp = new TextComp("Skip", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::dispose);
 		skipComp.setBounds(10 + previousComp.getWidth() + 2, getHeight() - 30, 100, 25);
 		skipComp.setFont(UBUNTU_PX12);
 		skipComp.setArc(2, 2);
 		add(skipComp);
-
+		
 		nextComp = new TextComp("Next", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::next);
 		nextComp.setBounds(getWidth() - 120, getHeight() - 30, 100, 25);
 		nextComp.setFont(UBUNTU_PX12);
 		nextComp.setArc(2, 2);
 		add(nextComp);
 	}
-
+	
 	public void loadPaintBoards(){
 		paintBoards.add((g, width, height)->{
 			g.setColor(glow);
@@ -124,14 +142,14 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Click 'Previous' to go back anytime", width/2 - g.getFontMetrics().stringWidth("Click 'Previous' to go back anytime")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
 			g.drawString("Click 'Skip' to exit", width/2 - g.getFontMetrics().stringWidth("Click 'Skip' to exit")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 100);
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.setPaint(titlePaint);
 			g.setFont(PX40);
 			String text = "ToolMenu";
 			g.drawString(text, width/2 - g.getFontMetrics().stringWidth(text)/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.drawImage(toolMenuImage, width/2 - toolMenuImage.getWidth()/6, 60, toolMenuImage.getWidth()/3, toolMenuImage.getHeight()/3, null);
 			g.setFont(PX14);
@@ -143,13 +161,13 @@ public class InstructionWindow extends JDialog{
 			g.drawString("From Managing Content-Assist to Controlling Imports", width/2 - g.getFontMetrics().stringWidth("From Managing Content-Assist to Controlling Imports")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 66);
 			g.drawString("And Much More. We will take a look at each of them.", width/2 - g.getFontMetrics().stringWidth("And Much More. We will take a look at each of them.")/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 86);
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.drawImage(IconManager.fluentfolderImage, 20, 40, null);
 			g.drawImage(IconManager.fluentfileImage, 20, 100, null);
 			g.drawImage(IconManager.fluentnewfolderImage, 20, 160, null);
 			g.drawImage(IconManager.fluentnewfileImage, 20, 220, null);
-
+			
 			g.setFont(UBUNTU_PX14);
 			
 			g.drawString("Click to open another project", 100, 70 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
@@ -157,7 +175,7 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Click to create a new java project", 100, 195 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
 			g.drawString("Click to create a new file", 100, 250 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.drawImage(IconManager.fluentrunImage, 20, 40, null);
 			g.drawImage(IconManager.fluentrocketImage, 20, 100, null);
@@ -171,7 +189,7 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Click to start Headless Build", 100, 195 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
 			g.drawString("Click to start Dynamic Build(Accuracy Mode)", 100, 260 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.drawImage(IconManager.fluentstructureImage, 20, 40, null);
 			g.drawImage(IconManager.fluentsearchImage, 20, 100, null);
@@ -216,7 +234,7 @@ public class InstructionWindow extends JDialog{
 			g.drawImage(processWizardImage, 10, height/2 - processWizardImage.getHeight()/4, processWizardImage.getWidth()/2, processWizardImage.getHeight()/2, null);
 			g.setFont(PX14);
 			g.setColor(glow);
-
+			
 			int x = 30 + processWizardImage.getWidth()/2;
 			g.drawString("Process Wizard", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
 			g.setPaint(bodyPaint);
@@ -227,17 +245,17 @@ public class InstructionWindow extends JDialog{
 			g.drawString("the Editor.", x + 20, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
 			g.drawString("There are more tools to see.", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 170);
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.setPaint(titlePaint);
 			g.setFont(PX40);
 			String text = "Editor KeyBindings";
 			g.drawString(text, width/2 - g.getFontMetrics().stringWidth(text)/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		});
-
+		
 		paintBoards.add((g, width, height)->{
 			g.setFont(PX14);
-
+			
 			int x = 20;
 			g.setColor(glow);
 			g.drawString("In Editor KeyBindings", width/2 - g.getFontMetrics().stringWidth("In Editor KeyBindings")/2, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
@@ -250,12 +268,27 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Ctrl + SHIFT + G - Generate Getter/Setter(s)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 130);
 			g.drawString("Ctrl + SHIFT + I - Override/Implement Methods", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
 			g.drawString("Ctrl + SHIFT + L - Launch File", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 170);
-			g.drawString("Ctrl + SHIFT + F1 - Run Project(Dynamic)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 190);
+			g.drawString("Ctrl + SHIFT + PLUS/EQUAL - Increase Editor Font Size", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 190);
+			g.drawString("Ctrl + SHIFT + MINUS - Decrease Editor Font Size", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 210);
+			g.drawString("Ctrl + SHIFT + T + PLUS/EQUAL - Increase Editor Tab Size", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 230);
+			g.drawString("Ctrl + SHIFT + T + MINUS - Decrease Editor Tab Size", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 250);
+			g.drawString("Ctrl + SHIFT + P - Show Search Window", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 270);
+			g.drawString("Ctrl + SHIFT + SLASH - Toggle Single-Line Comment", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 290);
+		});
+		
+		paintBoards.add((g, width, height)->{
+			g.setFont(PX14);
 			
-			g.drawString("Ctrl + B - Build Project", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 220);
-			g.drawString("Ctrl + S - Save File", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 240);
-			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 260);
-			g.drawString("Ctrl + D - Duplicate Current Line or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 280);
+			int x = 20;
+			g.setColor(glow);
+			g.drawString("In Editor KeyBindings", width/2 - g.getFontMetrics().stringWidth("In Editor KeyBindings")/2, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
+			
+			g.setPaint(textPaint);
+			g.drawString("Ctrl + B - Start Headless Build", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
+			g.drawString("Ctrl + S - Save Current Editor", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 70);
+			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 90);
+			g.drawString("Ctrl + D - Duplicate Current Line(Till Caret) or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 110);
+			g.drawString("Ctrl + J - Show Definitions", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 130);
 		});
 		
 		paintBoards.add((g, width, height)->{
@@ -265,7 +298,7 @@ public class InstructionWindow extends JDialog{
 			g.drawString(text, width/2 - g.getFontMetrics().stringWidth(text)/2, height/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		});
 	}
-
+	
 	public void previous(){
 		if(pointer == 0)
 			return;
@@ -275,7 +308,7 @@ public class InstructionWindow extends JDialog{
 		}
 		mainPanel.repaint();
 	}
-
+	
 	public void next(){
 		if(pointer == paintBoards.size() - 1){
 			dispose();
@@ -290,7 +323,7 @@ public class InstructionWindow extends JDialog{
 		}
 		mainPanel.repaint();
 	}
-
+	
 	public BufferedImage getInstructionImage(String name){
 		try{
 			if(isDarkMode())

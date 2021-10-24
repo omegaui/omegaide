@@ -723,11 +723,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 	
 			if(ctrl && shift && minus){
-				UIManager.fontSize--;
-				screen.getUIManager().save();
-				screen.loadThemes();
-	
-				minus = false;
+				if(UIManager.fontSize > 8){
+					UIManager.fontSize--;
+					screen.getUIManager().save();
+					screen.loadThemes();
+		
+					minus = false;
+				}
 			}
 		}
 
@@ -738,9 +740,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 
 		if(ctrl && shift && minus && t){
-			setTabSize(getTabSize() - 1);
-
-			minus = false;
+			if(getTabSize() > 1){
+				setTabSize(getTabSize() - 1);
+	
+				minus = false;
+			}
 		}
 		
 		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
