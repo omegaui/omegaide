@@ -2,9 +2,9 @@
 
 **Omega IDE v2.1 - The Awesome Beta**
 
-![](/images/beta-light.png)
+![](/res/light.png)
 
-![](/images/beta-dark.png)
+![](/res/dark.png)
 
 
 **Omega IDE v2.0 - Latest Stable**
