@@ -1,21 +1,23 @@
 /**
-  * Highlights Errors
-  * Copyright (C) 2021 Omega UI
+* Highlights Errors
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.instant.support.kotlin;
+import omega.instant.support.AbstractErrorHighlighter;
+
 import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 
 import javax.swing.ImageIcon;
@@ -46,7 +48,7 @@ import java.awt.Image;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-public class KotlinErrorHighlighter {
+public class KotlinErrorHighlighter implements AbstractErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
 	private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
@@ -55,20 +57,16 @@ public class KotlinErrorHighlighter {
 		highlights = new LinkedList<>();
 		gutterIconInfos = new LinkedList<>();
 	}
-
-     public String getSimplifiedErrorLog(String errorLog){
-          String log = "";
-          LinkedList<String> lines = CodeTokenizer.tokenize(errorLog, '\n');
-          return log;
-     }
-     /*
-      	testDir/src/kode/Main.kt:5:17: error: unresolved reference: getTitle
-			println(screen.getTitle())
-		                ^
-		testDir/src/kode/Screen.kt:9:20: error: import must be placed on a single line
-		import javax.swing.
-		                   ^
-      */
+	
+	/*
+	testDir/src/kode/Main.kt:5:17: error: unresolved reference: getTitle
+	println(screen.getTitle())
+	^
+	testDir/src/kode/Screen.kt:9:20: error: import must be placed on a single line
+	import javax.swing.
+	^
+	*/
+	@Override
 	public void loadErrors(String errorLog) {
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
@@ -91,7 +89,7 @@ public class KotlinErrorHighlighter {
 				}
 				else if(canRecord){
 					code = token.trim();
-
+					
 					if(!path.contains(File.separator)){
 						path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;
 					}
@@ -121,8 +119,8 @@ public class KotlinErrorHighlighter {
 						}
 						int start = text.indexOf(code, line == 1 ? 0 : index+1);
 						int end = start + code.length();
-					     h.addHighlight(start, end, painter);
-					     highlights.add(new Highlight(e, painter, start, end, false));
+						h.addHighlight(start, end, painter);
+						highlights.add(new Highlight(e, painter, start, end, false));
 					}
 					canRecord = false;
 				}
@@ -141,7 +139,8 @@ public class KotlinErrorHighlighter {
 			h.editor.javaErrorPanel.setDiagnosticData(count, 0);
 		}
 	}
-
+	
+	@Override
 	public void removeAllHighlights() {
 		highlights.forEach(h->{
 			h.editor.javaErrorPanel.setDiagnosticData(0, 0);

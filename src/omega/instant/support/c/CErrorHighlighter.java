@@ -1,21 +1,23 @@
 /**
-  * Highlights Errors
-  * Copyright (C) 2021 Omega UI
+* Highlights Errors
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.instant.support.c;
+import omega.instant.support.AbstractErrorHighlighter;
+
 import javax.swing.ImageIcon;
 
 import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
@@ -47,7 +49,7 @@ import java.awt.Image;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Locale;
-public class CErrorHighlighter {
+public class CErrorHighlighter implements AbstractErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;
 	private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
@@ -56,21 +58,17 @@ public class CErrorHighlighter {
 		highlights = new LinkedList<>();
 		gutterIconInfos = new LinkedList<>();
 	}
-
-     public String getSimplifiedErrorLog(String errorLog){
-          String log = "";
-          LinkedList<String> lines = CodeTokenizer.tokenize(errorLog, '\n');
-          return log;
-     }
-     /*
-      	c_test.c: In function ‘main’:
-		c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
-		    6 |  return 2;
-		      |  ^~~~~~
-		main.c:3:10: fatal error: utils.c: No such file or directory
-		    3 | #include <utils.c>
-		      |          ^~~~~~~~~
-      */
+	
+	/*
+	c_test.c: In function ‘main’:
+	c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
+	6 |  return 2;
+	|  ^~~~~~
+	main.c:3:10: fatal error: utils.c: No such file or directory
+	3 | #include <utils.c>
+	|          ^~~~~~~~~
+	*/
+	@Override
 	public void loadErrors(String errorLog) {
 		System.out.println(errorLog);
 		removeAllHighlights();
@@ -93,7 +91,7 @@ public class CErrorHighlighter {
 				}
 				else if(canRecord && token.contains("|")){
 					code = token.substring(token.indexOf('|') + 1).trim();
-
+					
 					if(!path.contains(File.separator)){
 						path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;
 					}
@@ -123,8 +121,8 @@ public class CErrorHighlighter {
 						}
 						int start = text.indexOf(code, line == 1 ? 0 : index+1);
 						int end = start + code.length();
-					     h.addHighlight(start, end, painter);
-					     highlights.add(new Highlight(e, painter, start, end, message.startsWith("warning")));
+						h.addHighlight(start, end, painter);
+						highlights.add(new Highlight(e, painter, start, end, message.startsWith("warning")));
 					}
 					canRecord = false;
 				}
@@ -149,7 +147,8 @@ public class CErrorHighlighter {
 			h.editor.javaErrorPanel.setDiagnosticData(errorCount, warningCount);
 		}
 	}
-
+	
+	@Override
 	public void removeAllHighlights() {
 		highlights.forEach(h->{
 			h.editor.javaErrorPanel.setDiagnosticData(0, 0);
