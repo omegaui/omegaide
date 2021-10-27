@@ -685,7 +685,7 @@ public class CodeFramework{
 			dataMembers = reader.dataMembers;
 			//Checking whether if there is data after className
 			if(code.indexOf('.', ix + 1) >= 0){
-				//There are some members after class-path's dot
+				//There are some members after class-path 's dot
 				code = code.substring(ix + 1);
 				LinkedList<String> members = new LinkedList<>();
 				int index = 0;
@@ -738,10 +738,10 @@ public class CodeFramework{
 				     in = 1;
 				}
 				if(least) gen(dataMembers);
-				else System.out.println("Not at least one match found for "+code);
+				else System.out.println("Not at least one match found for " + code);
 			}
 			else{
-				//There are no members after class-path's dot, so showing all hints
+				//There are no members after class-path 's dot, so showing all hints
 				gen(dataMembers);
 			}
 		}
@@ -898,7 +898,7 @@ public class CodeFramework{
           lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
-				if(d.name.startsWith(lCode))
+				if(d.name.contains(lCode))
 				     mx.add(d);
 			});
 			editor.contentWindow.genView(mx, Screen.getScreen().getGraphics());
@@ -912,7 +912,7 @@ public class CodeFramework{
           lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
-				if(d.name.startsWith(lCode)) 
+				if(d.name.contains(lCode)) 
 				     mx.add(d);
 			});
 			editor.contentWindow.genView(mx, omega.Screen.getScreen().getGraphics());

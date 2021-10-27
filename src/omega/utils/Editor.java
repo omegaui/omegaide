@@ -226,7 +226,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setHighlightSecondaryLanguages(true);
 		setDragEnabled(true);
 		setDropMode(DropMode.USE_SELECTION);
-		setTabSize(4);
+		setTabSize(DataManager.getTabSize());
 		UIManager.setData(this);
 
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
@@ -735,13 +735,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 		if(ctrl && shift && plus && t){
 			setTabSize(getTabSize() + 1);
-
+			DataManager.setTabSize(getTabSize());
+			
 			plus = false;
 		}
 
 		if(ctrl && shift && minus && t){
 			if(getTabSize() > 1){
 				setTabSize(getTabSize() - 1);
+				DataManager.setTabSize(getTabSize());
 	
 				minus = false;
 			}

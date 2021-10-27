@@ -83,7 +83,7 @@ public class ContentTokenizer {
 		LinkedList<DataMember> tokens = new LinkedList<>();
 		while(tok.hasMoreTokens()){
 			final String token = tok.nextToken().trim();
-			if(token.equals("") || !token.startsWith(text) || token.equals(text)) continue;
+			if(token.equals("") || !token.contains(text) || token.equals(text)) continue;
 			DataMember d = new DataMember("", "", "", token, null){
 				@Override
 				public String getRepresentableValue(){
@@ -177,7 +177,7 @@ public class ContentTokenizer {
 			}
 			
 			for(DataMember m : reader.dataMembers) {
-				if(m.name.startsWith(text)) {
+				if(m.name.contains(text)) {
 					dataMembers.add(m);
 				}
 			}
@@ -192,7 +192,7 @@ public class ContentTokenizer {
 			if(!reader.recordingInternal) {
 				if(block != null) {
 					for(DataMember m : block.depthMembers) {
-						if(m.name.startsWith(text)) {
+						if(m.name.contains(text)) {
 							inner:
 							for(DataMember mx : dataMembers){
 								if(mx.name.equals(m.name) && mx.parameterCount == m.parameterCount){
