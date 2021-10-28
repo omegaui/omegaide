@@ -398,7 +398,18 @@ public class SourceReader {
                          type = "record";
 				if(line.contains("@interface "))
 					type = "@interface";
-				if(!type.equals("")){
+				if(type.equals("record")){
+					String parameters = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
+					String[] members = parameters.split(",");
+					for(String member : members){
+						String typeX = member.substring(0, member.indexOf(' ')).trim();
+						String name = member.substring(member.indexOf(' ')).trim();
+						dataMembers.add(new DataMember("private", "final", typeX, name, null, lineN));
+						dataMembers.add(new DataMember("public", "final", typeX, name + "()", "", lineN));
+					}
+					members = null;
+				}
+				else if(!type.equals("")){
 					canReadImports = false;
 					this.type = type;
 					String part = line.substring(0, line.indexOf(type)).trim();

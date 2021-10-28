@@ -893,12 +893,30 @@ public class CodeFramework{
 		return parameterCount;
 	}
 
+	public static boolean isUpperCaseHintType(DataMember d, String lCode){
+		String upperCode = "";
+		for(char ch : d.name.toCharArray()){
+			if(Character.isUpperCase(ch))
+				upperCode += ch;
+		}
+		return upperCode.startsWith(lCode);
+	}
+
+	public static boolean isUpperCaseHintType(String text, String lCode){
+		String upperCode = "";
+		for(char ch : text.toCharArray()){
+			if(Character.isUpperCase(ch))
+				upperCode += ch;
+		}
+		return upperCode.startsWith(lCode);
+	}
+
 	public static void gen(LinkedList<DataMember> dataMembers){
 		LinkedList<DataMember> mx = new LinkedList<>();
           lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
-				if(d.name.contains(lCode))
+				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
 				     mx.add(d);
 			});
 			editor.contentWindow.genView(mx, Screen.getScreen().getGraphics());
@@ -912,7 +930,7 @@ public class CodeFramework{
           lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
-				if(d.name.contains(lCode)) 
+				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
 				     mx.add(d);
 			});
 			editor.contentWindow.genView(mx, omega.Screen.getScreen().getGraphics());

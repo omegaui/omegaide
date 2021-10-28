@@ -144,7 +144,7 @@ public class ContentTokenizer {
 			LinkedList<SourceReader.Import> imports = new LinkedList<>();
 			main:
 			for(SourceReader.Import im : reader.imports){
-				if(!im.isStatic && im.name.startsWith(text)){
+				if(!im.isStatic && (im.name.contains(text) || CodeFramework.isUpperCaseHintType(im.name, text))){
 					for(SourceReader.Import x : imports){
 						if(x.get().equals(im.get()))
 							continue main;
@@ -171,13 +171,14 @@ public class ContentTokenizer {
 			}
 			for(SourceReader.Import im : I)
 				imports.add(im);
+			
 			I = null;
 			for(SourceReader.Import im : imports){
 				dataMembers.add(new DataMember("", "", im.get(), im.name, null));
 			}
 			
 			for(DataMember m : reader.dataMembers) {
-				if(m.name.contains(text)) {
+				if(m.name.contains(text) || CodeFramework.isUpperCaseHintType(m, text)) {
 					dataMembers.add(m);
 				}
 			}

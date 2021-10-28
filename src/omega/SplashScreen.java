@@ -103,6 +103,7 @@ public class SplashScreen extends JFrame{
 				System.exit(0);
 			}
 		});
+		
 		setVisible(true);
 		new Thread(()->{
 			long lastTime = System.nanoTime();
