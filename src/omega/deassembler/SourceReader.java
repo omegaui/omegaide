@@ -95,9 +95,10 @@ public class SourceReader {
           int lineN = 0;
 		for(String line : tokens){
 			lineN++;
-               //Skippings Single Character like }, etc
+               //Skipping Single Character like }, etc
                if(line.trim().length() <= 1 && !line.trim().equals("}"))
                     continue;
+               
 			//Skipping Strings and characters
 			String cLine = line;
 			line = "";
@@ -748,7 +749,12 @@ public class SourceReader {
 			if(r.className.equals(className))
 				return pack + "." + this.className + "." + r.className;
 		}
-		className = Screen.getFileView().getJDKManager().checkInResourceRoots(pack, className);
+		try{
+			className = Screen.getFileView().getJDKManager().checkInResourceRoots(pack, className);
+		}
+		catch(Exception e){
+			
+		}
 		return className;
 	}
 

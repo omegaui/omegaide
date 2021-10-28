@@ -239,7 +239,7 @@ public class JavaSyntaxParser {
 				for(File fx : F){
 					if(!fx.getName().endsWith(".class"))
 						continue;
-					if(fx.getName().equals(name) || (fx.getName().startsWith(simpleName) && fx.getName().contains("$"))){
+					if(fx.getName().equals(name) || (fx.getName().startsWith(simpleName) && fx.getName().charAt(simpleName.length()) == '$')){
 						fx.delete();
 					}
 				}

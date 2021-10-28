@@ -17,9 +17,17 @@
 */
 
 package omega.framework;
+import omega.instant.support.LanguageTagView;
+
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
+import java.awt.Color;
+
 import omega.Screen;
 
 import omega.utils.Editor;
+import omega.utils.DataManager;
 
 import java.io.File;
 import java.io.BufferedReader;
@@ -37,6 +45,8 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 import static omega.deassembler.Assembly.*;
+import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class CodeFramework{
 	private static String text;
 	public static String lCode;

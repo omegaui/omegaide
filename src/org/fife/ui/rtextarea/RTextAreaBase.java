@@ -444,34 +444,10 @@ public abstract class RTextAreaBase extends JTextArea {
 	 * @return The default font.
 	 */
 	public static Font getDefaultFont() {
-
-		// Use StyleContext to get a composite font for better Asian language
-		// support; see Sun bug S282887.
 		StyleContext sc = StyleContext.getDefaultStyleContext();
 		Font font = null;
 		font = sc.getFont(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
-//		if (isOSX()) {
-//			// Snow Leopard (1.6) uses Menlo as default monospaced font,
-//			// pre-Snow Leopard used Monaco.
-//			font = sc.getFont("Menlo", Font.PLAIN, 12);
-//			if (!"Menlo".equals(font.getFamily())) {
-//				font = sc.getFont("Monaco", Font.PLAIN, 12);
-//				if (!"Monaco".equals(font.getFamily())) { // Shouldn't happen
-//					font = sc.getFont("Monospaced", Font.PLAIN, 13);
-//				}
-//			}
-//		}
-//		else {
-//			// Consolas added in Vista, used by VS2010+.
-//			font = sc.getFont("Consolas", Font.PLAIN, 13);
-//			if (!"Consolas".equals(font.getFamily())) {
-//				font = sc.getFont("Monospaced", Font.PLAIN, 13);
-//			}
-//		}
-
-		//System.out.println(font.getFamily() + ", " + font.getName());
 		return font;
-
 	}
 
 

@@ -3,7 +3,6 @@
  * LICENSE file for details.
  */
 package org.fife.ui.rsyntaxtextarea;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
