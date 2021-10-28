@@ -69,6 +69,7 @@ public class TextComp extends JComponent{
 	public Color color2;
 	public Color color3;
 	public Color colorG;
+	public Color colorH;
 	
 	public Runnable runnable;
 	
@@ -76,9 +77,11 @@ public class TextComp extends JComponent{
 	
 	public Window window;
 	
+	public LinkedList<String> highlightTexts = new LinkedList<>();
+	
 	public LinkedList<Object> extras = new LinkedList<>();
 	public HashMap<Object, Object> map = new HashMap<>();
-
+	
 	public float[] fractions = {0.0f, 0.5f, 1f};
 	
 	public Color[] gradientColors;
@@ -109,7 +112,7 @@ public class TextComp extends JComponent{
 					pressX = e.getX();
 					pressY = e.getY();
 				}
-				if(!clickable) 
+				if(!clickable)
 					return;
 				press = true;
 				repaint();
@@ -179,7 +182,7 @@ public class TextComp extends JComponent{
 			g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
 		}
 	}
-
+	
 	public boolean isDrawingImage(){
 		return image != null;
 	}
@@ -225,6 +228,11 @@ public class TextComp extends JComponent{
 			runnable.run();
 	}
 	
+	public void setHighlightColor(Color colorH){
+		this.colorH = colorH;
+		repaint();
+	}
+	
 	public boolean isPaintGradientEnabled() {
 		if(!paintGradientEnabled)
 			return false;
@@ -258,7 +266,7 @@ public class TextComp extends JComponent{
 		this.paintTextGradientEnabled = paintTextGradientEnabled;
 		repaint();
 	}
-
+	
 	public boolean isUseSpeedMode() {
 		return useSpeedMode;
 	}
@@ -285,21 +293,21 @@ public class TextComp extends JComponent{
 		this.gradientMode = gradientMode;
 		repaint();
 	}
-
+	
 	public void setLinearGradientFractions(float... fractions){
 		this.fractions = fractions;
 		repaint();
 	}
-
+	
 	public float[] getGradientFractions(){
 		return fractions;
 	}
-
+	
 	public void setLinearGradientColors(Color... colors){
 		this.gradientColors = colors;
 		repaint();
 	}
-
+	
 	public Color[] getLinearGradientColors(){
 		return gradientColors;
 	}
@@ -309,6 +317,13 @@ public class TextComp extends JComponent{
 		topRightArcVisible = arc2;
 		bottomRightArcVisible = arc3;
 		bottomLeftArcVisible = arc4;
+		repaint();
+	}
+	
+	public void addHighlightText(String... texts){
+		for(String text : texts)
+			highlightTexts.add(text);
+		texts = null;
 		repaint();
 	}
 	
@@ -358,8 +373,7 @@ public class TextComp extends JComponent{
 		textX = alignX < 0 ? x : alignX;
 		textWidth = g.getFontMetrics().stringWidth(getText());
 		
-		
-		if(isPaintTextGradientEnabled()){	
+		if(isPaintTextGradientEnabled()){
 			if(gradientMode == GRADIENT_MODE_DEFAULT)
 				g.setPaint(new GradientPaint(textX, y, color3, textWidth, textHeight, colorG));
 			else if(gradientMode == GRADIENT_MODE_LINEAR)
@@ -367,13 +381,13 @@ public class TextComp extends JComponent{
 		}
 		else
 			g.setColor(color3);
-	
+		
 		if(x < alignX){
 			String temp = dir.substring(0, dir.length()/2) + "..";
 			x = getWidth()/2 - g.getFontMetrics().stringWidth(temp)/2;
 			textX = alignX < 0 ? x : alignX;
 			textWidth = g.getFontMetrics().stringWidth(temp);
-			if(isPaintTextGradientEnabled()){	
+			if(isPaintTextGradientEnabled()){
 				if(gradientMode == GRADIENT_MODE_DEFAULT)
 					g.setPaint(new GradientPaint(textX, y, color3, textWidth, textHeight, colorG));
 				else if(gradientMode == GRADIENT_MODE_LINEAR)
@@ -381,10 +395,37 @@ public class TextComp extends JComponent{
 			}
 			g.drawString(temp, textX, y);
 			setToolTipText(dir);
+			highlight(g, temp);
 		}
 		else {
 			g.drawString(dir, textX, y);
+			highlight(g, dir);
 		}
+	}
+	
+	public void highlight(Graphics2D g, String text){
+		for(String match : highlightTexts){
+			if(text.contains(match)){
+				int matchLength = match.length();
+				String token = "";
+				if(matchLength <= text.length()){
+					String lpart = text.substring(0, text.indexOf(match));
+					g.setColor(color2);
+					g.drawString(match, textX + g.getFontMetrics().stringWidth(lpart), textY);
+					g.setColor(colorH);
+					g.drawString(match, textX + g.getFontMetrics().stringWidth(lpart), textY);
+				}
+			}
+		}
+	}
+	
+	public int countOccurence(String line, String text){
+		int count = 0;
+		while(line.contains(text)){
+			count++;
+			line = line.substring(line.indexOf(text) + text.length());
+		}
+		return count;
 	}
 	
 	public void paintEnter(Graphics2D g){
@@ -422,7 +463,7 @@ public class TextComp extends JComponent{
 	public LinkedList<Object> getExtras(){
 		return extras;
 	}
-
+	
 	public Object getValue(Object key){
 		return map.get(key);
 	}

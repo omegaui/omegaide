@@ -93,7 +93,20 @@ public class ContentWindow extends JPanel implements KeyListener{
 			nameComp.setPaintTextGradientEnabled(true);
 			nameComp.alignX = 2;
 			nameComp.setUseSpeedMode(true);
+			nameComp.addHighlightText(getHighlights());
+			nameComp.setHighlightColor(highlight);
 			add(nameComp);
+		}
+
+		public String[] getHighlights(){
+			if(CodeFramework.isUpperCaseHintType(match, match)){
+				String[] S = new String[match.length()];
+				int k = 0;
+				while(k < S.length)
+					S[k] = match.charAt(k++) + "";
+				return S;
+			}
+			return new String[]{ match };
 		}
 
 		public void setEnter(boolean value){

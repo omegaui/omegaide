@@ -59,6 +59,11 @@ public class UIManager extends DataBase {
 	public static Color glow;
 	
 	/**
+	* The Highlight Color of TextComp
+	*/
+	public static Color highlight;
+	
+	/**
 	* The Base Shade of UI Elements
 	*/
 	public static Color c1;
@@ -130,10 +135,14 @@ public class UIManager extends DataBase {
 	}
 	
 	public static void loadHighlight(){
-		if(isDarkMode())
+		if(isDarkMode()){
 			glow = Color.WHITE;
-		else
+			highlight = Color.decode("#b0b0b1");
+		}
+		else {
 			glow = Color.BLACK;
+			highlight = Color.decode("#22959e");
+		}
 	}
 	
 	public void loadData() {
