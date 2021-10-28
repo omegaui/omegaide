@@ -111,7 +111,7 @@ public class Generator {
      public static void genGetter(DataMember d, RSyntaxTextArea textArea, String access){
           int caret = textArea.getCaretPosition();
           String tabs = getTabs(textArea, caret);
-          String meth = access + " " + d.modifier;
+          String meth = access + (d.modifier.contains("volatile") ? "" : (" " + d.modifier));
           meth = meth.trim() + " " + d.type;
           String name = (d.type.equals("boolean") ? "is" : "get") + toUpperCase(d.name) + "() {";
           meth = meth.trim() + " " + name;
@@ -122,7 +122,7 @@ public class Generator {
      public static void genSetter(DataMember d, RSyntaxTextArea textArea, String access, String className){
           int caret = textArea.getCaretPosition();
           String tabs = getTabs(textArea, caret);
-          String meth = access + " " + d.modifier;
+          String meth = access + (d.modifier.contains("volatile") ? "" : (" " + d.modifier));
           meth = meth.trim() + " void";
           String name = "set" + toUpperCase(d.name) + "(" + d.type + " " + d.name + ") {";
           meth = meth.trim() + " " + name;

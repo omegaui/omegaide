@@ -92,6 +92,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			nameComp.setGradientColor(glow);
 			nameComp.setPaintTextGradientEnabled(true);
 			nameComp.alignX = 2;
+			nameComp.setUseSpeedMode(true);
 			add(nameComp);
 		}
 

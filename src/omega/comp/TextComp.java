@@ -44,6 +44,7 @@ public class TextComp extends JComponent{
 	private volatile boolean clickable = true;
 	private volatile boolean paintGradientEnabled = false;
 	private volatile boolean paintTextGradientEnabled = false;
+	private volatile boolean useSpeedMode = false;
 	
 	public static final int GRADIENT_MODE_DEFAULT = 0;
 	public static final int GRADIENT_MODE_LINEAR = 1;
@@ -257,6 +258,15 @@ public class TextComp extends JComponent{
 		this.paintTextGradientEnabled = paintTextGradientEnabled;
 		repaint();
 	}
+
+	public boolean isUseSpeedMode() {
+		return useSpeedMode;
+	}
+	
+	public void setUseSpeedMode(boolean useSpeedMode) {
+		this.useSpeedMode = useSpeedMode;
+		repaint();
+	}
 	
 	public java.awt.Color getGradientColor() {
 		return colorG;
@@ -305,7 +315,7 @@ public class TextComp extends JComponent{
 	@Override
 	public void paint(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, useSpeedMode ? RenderingHints.VALUE_RENDER_SPEED : RenderingHints.VALUE_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(getFont());
