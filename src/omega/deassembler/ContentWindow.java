@@ -85,12 +85,12 @@ public class ContentWindow extends JPanel implements KeyListener{
 			iconComp.setClickable(false);
 			add(iconComp);
 
-			nameComp = new TextComp(d.getRepresentableValue(), getColorShade(), c2, getColor(), null);
+			nameComp = new TextComp(d.getRepresentableValue(), getColorShade(), c2, glow, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
-			nameComp.setGradientColor(glow);
-			nameComp.setPaintTextGradientEnabled(true);
+			//nameComp.setGradientColor(glow);
+			//nameComp.setPaintTextGradientEnabled(true);
 			nameComp.alignX = 2;
 			nameComp.setUseSpeedMode(true);
 			nameComp.addHighlightText(getHighlights());
@@ -120,16 +120,6 @@ public class ContentWindow extends JPanel implements KeyListener{
 
 		public void run(){
 			nameComp.runnable.run();
-		}
-
-		public Color getColor(){
-			if(d.modifier.contains("synchronized"))
-				return TOOLMENU_COLOR5;
-			if(d.modifier.contains("final"))
-				return TOOLMENU_COLOR1;
-			if(d.modifier.contains("volatile"))
-				return TOOLMENU_COLOR3;
-			return d.isMethod() ? TOOLMENU_COLOR4 : TOOLMENU_COLOR2;
 		}
 
 		public Color getColorShade(){
@@ -281,7 +271,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		if(e.getKeyCode() == KeyEvent.VK_DOWN){
 			if(index < hints.size() - 1){
 				hints.get(index).setEnter(false);
-				hints.get(index).setColor3(hints.get(index).getColor());
+				hints.get(index).setColor3(glow);
 				hints.get(++index).setEnter(true);
 				hints.get(index).setColor3(highlightColor);
 				scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
@@ -290,7 +280,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		else if(e.getKeyCode() == KeyEvent.VK_UP){
 			if(index > 0){
 				hints.get(index).setEnter(false);
-				hints.get(index).setColor3(hints.get(index).getColor());
+				hints.get(index).setColor3(glow);
 				hints.get(--index).setEnter(true);
 				hints.get(index).setColor3(highlightColor);
 				scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);

@@ -16,6 +16,8 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
+import omega.update.IDEUpdater;
+
 import omega.plugin.event.PluginReactionEvent;
 
 import omega.instant.support.LanguageTagView;
@@ -888,6 +890,9 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Plugin Store", IconManager.ideImage64, ()->Screen.getPluginStore().setVisible(true))
 		.createItem("Plugin Manager", IconManager.ideImage64, ()->Screen.getPluginsView().setVisible(true))
+		.createItem("Check for Update", IconManager.ideImage64, ()->{
+			new Thread(IDEUpdater::checkForUpdate).start();
+		})
           .createItem("Instructions", IconManager.fluentinfoImage, ()->{
                instructionWindow.setVisible(true);
           })

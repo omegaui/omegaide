@@ -137,11 +137,11 @@ public class UIManager extends DataBase {
 	public static void loadHighlight(){
 		if(isDarkMode()){
 			glow = Color.WHITE;
-			highlight = Color.decode("#b0b0b1");
+			highlight = Color.decode("#88580B");
 		}
 		else {
 			glow = Color.BLACK;
-			highlight = Color.decode("#22959e");
+			highlight = Color.decode("#0000ff");
 		}
 	}
 	
