@@ -598,7 +598,12 @@ public class Screen extends JFrame {
 	@Override
 	public void layout(){
 		super.layout();
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
+		try{
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
+		}
+		catch(Exception e){
+			
+		}
 	}
 	
 	@Override
