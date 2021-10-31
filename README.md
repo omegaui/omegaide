@@ -1,13 +1,13 @@
 # **Omega IDE**
 
-**Omega IDE v2.1 - The Awesome Beta**
+**Omega IDE v2.2 - The Awesome Beta**
 
 ![](/res/light.png)
 
 ![](/res/dark.png)
 
 
-**Omega IDE v2.0 - Latest Stable**
+**Omega IDE v2.1 - Latest Stable**
 
 ![](/images/light.png)
 
@@ -16,32 +16,11 @@
 
 Omega IDE is a **blazing fast Java IDE promising performance** even on minimal resource environment.
 
-Here is a proof, 
-
-Omega IDE Version - 1.8
-
-OS - Deepin Linux
-
-RAM - 2GB
-
-Storage - 320 GB
-
-GPU - Intel Integrated
-
-CPU - Intel Pentium Duo 2 cores 2 logical processors 2 x 2.20 GHz
-
-![](/images/p1.png)
-
-![](/images/p2.png)
-
 Omega IDE can also be used as a **Instant IDE for any** other **programming language** as well.
 
-Omega IDE when idle uses at most 119 MB of Available RAM.
+While Using Omega IDE you need not to worry about your RAM Usage 😁️.
 
-Omega IDE when editing its own source code uses at most 210 MB of RAM (only when used extensively) 
-so you can imagine how good it is for small projects 🤩.
-
-Omega IDE has a very small download size.
+Omega IDE takes a minute disk space.
 
 It has a beautiful text editor with code folding, thanks to [rsyntaxtextarea](https://github.com/bobbylight/RSyntaxTextArea).
 
@@ -67,14 +46,11 @@ See a what's new in the latest release on the official channel!
 
 # Editor Key Bindings
 
-Page 12, Instruction Panel, Help Section.
+Page 12 & 13, Instruction Panel, Help Section.
 
 
 # Installing
-
-Dependency **JDK 16** or above for stable version
-
-Dependency **JDK 17** or above for current beta version
+Dependency **JDK 17** or above for current beta & stable versions
 
 
 If you want to get early access to optimizations and new features you can freely use latest beta available.
@@ -228,14 +204,9 @@ The **res** is the resource-root.
 
 Omega IDE is not yet totally evolved which means it has no integrated support for any version control system yet and bugs are likely to come.
 
+#See What's Included
 
-# Small Gallery
-
-![](/images/g1.png)
-![](/images/g2.png)
-![](/images/g3.png)
-![](/images/g4.png)
-![](/images/g5.png)
+![Here at the official Github Page](https://omegaui.github.io/omegaide)
 
 
 # Hope You Like It

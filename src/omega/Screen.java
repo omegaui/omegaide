@@ -107,7 +107,7 @@ public class Screen extends JFrame {
 	
 	public static SnippetView snippetView;
 	
-	public static final String VERSION = "v2.1";
+	public static final String VERSION = "v2.2";
 	public static String PATH_SEPARATOR = ":";
 	
 	public volatile boolean active = true;
