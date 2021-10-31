@@ -210,7 +210,7 @@ public class DataManager extends DataBase {
 	public static void setParsingEnabled(boolean parsingEnabled) {
 		DataManager.parsingEnabled = parsingEnabled;
 	}
-
+	
 	public static int getTabSize() {
 		return tabSize;
 	}

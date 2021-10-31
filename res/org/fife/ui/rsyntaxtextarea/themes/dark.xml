@@ -11,6 +11,7 @@
 	<!--<baseFont family="..." size="13"/>-->
 
 	<!--  General editor colors. -->
+	
 	<background color="293134" />
 	<caret color="c1cbc2" />
 	<selection useFG="false" bg="404E51" roundedEdges="false" />

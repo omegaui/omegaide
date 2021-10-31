@@ -1,5 +1,5 @@
 /**
-* The IDE's Default Editor
+* The IDE 's Default Editor
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify

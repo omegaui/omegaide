@@ -11,6 +11,7 @@ public class PluginReactionManager {
 
 	public PluginReactionManager(PluginManager pluginManager){
 		this.pluginManager = pluginManager;
+		
 	}
 
 	public synchronized boolean registerPlugin(Plugin plugin, int pluginReactionType, PluginReactionEventListener listener){
