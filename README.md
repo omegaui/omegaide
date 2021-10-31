@@ -206,7 +206,7 @@ Omega IDE is not yet totally evolved which means it has no integrated support fo
 
 # See What's Included
 
-![Here at the official Github Page](https://omegaui.github.io/omegaide)
+[Here at the official Github Page](https://omegaui.github.io/omegaide)
 
 
 # Hope You Like It
