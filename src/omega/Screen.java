@@ -804,31 +804,20 @@ public class Screen extends JFrame {
 		Thread tx = new Thread(()->{
 			setStatus("Toggling Focus Mode ...", 0, IconManager.fluentfocusImage);
 			if(focusMode){
-				toolMenu.hidden = true;
-				
 				setVisible(false);
 				remove(toolMenu);
-				remove(sideMenu);
 				layout();
 				doLayout();
 				setVisible(true);
 			}
 			else{
-				toolMenu.hidden = false;
-				
 				setVisible(false);
 				add(toolMenu, BorderLayout.NORTH);
-				add(sideMenu, BorderLayout.WEST);
 				layout();
 				doLayout();
 				setVisible(true);
 			}
-			screenHasProjectView = !toolMenu.hidden;
-			getProjectView().organizeProjectViewDefaults();
 			doLayout();
-			getProjectView().setVisible(false);
-			toolMenu.structureComp.setToolTipText(toolMenu.hidden ? "Project Structure Hidden" : "Project Structure Visible");
-			toolMenu.structureComp.repaint();
 			
 			setStatus(null, 100, null);
 		});

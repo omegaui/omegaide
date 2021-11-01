@@ -42,7 +42,7 @@ public class SideMenu extends JPanel {
      	this.screen = screen;
 
           setBackground(back2);
-          setPreferredSize(new Dimension(42, 100));
+          setPreferredSize(new Dimension(30, 100));
           init();
      }
 
@@ -50,42 +50,42 @@ public class SideMenu extends JPanel {
           sep = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
           add(sep);
           
-     	projectTabComp = new TextComp(fluentprojectstructureImage, 30, 30, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureComp.runnable.run());
-          projectTabComp.setBounds(0, 0, 40, 40);
+     	projectTabComp = new TextComp(fluentprojectstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureComp.runnable.run());
+          projectTabComp.setBounds(0, 0, 30, 25);
           projectTabComp.setArc(2, 2);
           add(projectTabComp);
 
-          shellComp = new TextComp(fluentconsoleImage, 30, 30, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, Screen.getTerminalComp()::showTerminal);
-          shellComp.setBounds(0, 40, 40, 40);
+          shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, Screen.getTerminalComp()::showTerminal);
+          shellComp.setBounds(0, 25, 30, 25);
           shellComp.setFont(PX18);
           shellComp.setArc(2, 2);
           add(shellComp);
 
-          structureComp = new TextComp(fluentstructureImage, 30, 30, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
-          structureComp.setBounds(0, 80, 40, 40);
+          structureComp = new TextComp(fluentstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
+          structureComp.setBounds(0, 50, 30, 25);
           structureComp.setFont(PX18);
           structureComp.setArc(2, 2);
           add(structureComp);
 
-          searchComp = new TextComp(fluentsearchImage, 30, 30, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
-          searchComp.setBounds(0, 120, 40, 40);
+          searchComp = new TextComp(fluentsearchImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
+          searchComp.setBounds(0, 75, 30, 25);
           searchComp.setArc(2, 2);
           add(searchComp);
      }
 
      public void changeLocations(boolean non_java){
           if(non_java)
-               searchComp.setBounds(0, 80, 40, 40);
+               searchComp.setBounds(0, 75, 30, 25);
           else{
-               structureComp.setBounds(0, 80, 40, 40);
-               searchComp.setBounds(0, 120, 40, 40);
+               structureComp.setBounds(0, 75, 30, 25);
+               searchComp.setBounds(0, 50, 30, 25);
           }
           repaint();
      }
 
      @Override
      public void paint(Graphics g){
-          sep.setBounds(40, 0, 2, getHeight());
+          sep.setBounds(30, 0, 2, getHeight());
      	super.paint(g);
      }
 }
