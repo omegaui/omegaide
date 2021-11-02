@@ -75,7 +75,7 @@ public class SideMenu extends JPanel {
 
      public void changeLocations(boolean non_java){
           if(non_java)
-               searchComp.setBounds(0, 75, 30, 25);
+               searchComp.setBounds(0, 50, 30, 25);
           else{
                structureComp.setBounds(0, 75, 30, 25);
                searchComp.setBounds(0, 50, 30, 25);
