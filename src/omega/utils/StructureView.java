@@ -265,7 +265,7 @@ public class StructureView extends JDialog {
 	                    comp.setFont(PX14);
 	                    comp.setClickable(false);
 	                    comp.setArc(0, 0);
-	               	comp.alignX = 5;
+	               		comp.alignX = 5;
 	                    contentPanel.add(comp);
 	                    memberComps.add(comp);
 	                    
@@ -329,12 +329,12 @@ public class StructureView extends JDialog {
 				}
 				
 				String modulePath = Screen.getFileView().getDependencyView().getModulePath();
-				String modules = Screen.getFileView().getDependencyView().getModules();
 				if(Screen.isNotNull(modulePath)){
 					options.add("--module-path");
 					options.add(modulePath);
-					options.add("--add-modules");
-					options.add(modules);
+					options.add("--module");
+					options.add(im.getModuleName());
+					
 				}
 
 				options.add(im.getImport());

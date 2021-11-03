@@ -1,19 +1,19 @@
 /**
-  * The Main Window
-  * Copyright (C) 2021 Omega UI
+* The Main Window
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
 import omega.plugin.event.PluginReactionManager;
@@ -95,6 +95,7 @@ import omega.launcher.Launcher;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
+import javax.swing.JButton;
 public class Screen extends JFrame {
 	public JSplitPane splitPane;
 	public JSplitPane compilancePane;
@@ -233,7 +234,7 @@ public class Screen extends JFrame {
 		rightTabPanelSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		bottomTabPanelSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-
+		
 		rightTabPanelSplitPane.setBorder(null);
 		bottomTabPanelSplitPane.setBorder(null);
 		splitPane.setBorder(null);
@@ -320,7 +321,7 @@ public class Screen extends JFrame {
 		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_INITIALIZED, this, splash));
 		
 		splash.setProgress(100, "");
-
+		
 		
 		File file = new File(DataManager.getDefaultProjectPath());
 		
@@ -335,7 +336,7 @@ public class Screen extends JFrame {
 			launcher.setVisible(true);
 		}
 	}
-
+	
 	@Override
 	public void setSize(int w, int h){
 		super.setSize(w, h);
@@ -408,18 +409,18 @@ public class Screen extends JFrame {
 	}
 	
 	public void manageTools(ProjectDataBase manager){
-          toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
-     	toolMenu.langComp.repaint();
+		toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
+		toolMenu.langComp.repaint();
 		toolMenu.structureViewComp.setVisible(!manager.non_java);
 		toolMenu.sep4.setVisible(!manager.non_java);
 		toolMenu.asteriskComp.setVisible(!manager.non_java);
 		toolMenu.contentModeComp.setVisible(!manager.non_java);
-          toolMenu.instantRunComp.setVisible(!manager.non_java);
-          toolMenu.instantBuildComp.setVisible(!manager.non_java);
-          toolMenu.projectPopup.setEnabled("Manage Build-Path", !manager.non_java);
-          toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.non_java);
-          toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.non_java);
-          toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.non_java);
+		toolMenu.instantRunComp.setVisible(!manager.non_java);
+		toolMenu.instantBuildComp.setVisible(!manager.non_java);
+		toolMenu.projectPopup.setEnabled("Manage Build-Path", !manager.non_java);
+		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.non_java);
+		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.non_java);
+		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.non_java);
 		toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
 		sideMenu.structureComp.setVisible(!manager.non_java);
 		toolMenu.changeLocations(manager.non_java);
@@ -594,7 +595,7 @@ public class Screen extends JFrame {
 			res = res.substring(0,res.length() - 1);
 		return res;
 	}
-
+	
 	@Override
 	public void layout(){
 		super.layout();
@@ -759,7 +760,7 @@ public class Screen extends JFrame {
 	public void closeCurrentProject() {
 		closeAllTabs();
 	}
-
+	
 	public void closeAllTabs(){
 		tabPanel.closeAllTabs();
 		rightTabPanel.closeAllTabs();
@@ -793,7 +794,7 @@ public class Screen extends JFrame {
 	public static PluginReactionManager getPluginReactionManager(){
 		return pluginReactionManager;
 	}
-
+	
 	public synchronized boolean isFocusMode() {
 		return focusMode;
 	}
@@ -821,7 +822,7 @@ public class Screen extends JFrame {
 			
 			setStatus(null, 100, null);
 		});
-
+		
 		tx.start();
 		
 		try{
@@ -844,7 +845,7 @@ public class Screen extends JFrame {
 	public static boolean onWindows(){
 		return File.pathSeparator.equals(";");
 	}
-
+	
 	public synchronized static boolean isNotNull(String text){
 		return text != null && !text.equals("");
 	}

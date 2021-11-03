@@ -70,7 +70,7 @@ public class OperationPane extends JPanel{
 		}
 		names.add(name);
 		tabPane.addTab(name, c);
-		tabPane.setTabComponentAt(tabPane.indexOfTab(name), TabComp.create(c,
+		tabPane.setTabComponentAt(tabPane.indexOfTab(name), TabComp.create(c, null, 
 				name, ()->{
 					r.run();
 					removeTab(name);
@@ -88,7 +88,7 @@ public class OperationPane extends JPanel{
 		}
 		names.add(name);
 		tabPane.addTab(name, c);
-		tabPane.setTabComponentAt(tabPane.indexOfTab(name), TabComp.create(c,
+		tabPane.setTabComponentAt(tabPane.indexOfTab(name), TabComp.create(c, null, 
 				name, ()->{
 					r.run();
 					removeTab(name);

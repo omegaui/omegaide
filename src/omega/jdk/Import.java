@@ -17,6 +17,7 @@
 */
 
 package omega.jdk;
+import java.io.File;
 public class Import {
 	public String className;
 	public String packageName;
@@ -58,6 +59,10 @@ public class Import {
 
 	public boolean isStatic(){
 		return staticImport;
+	}
+
+	public String getModuleName(){
+		return jarPath.substring(jarPath.lastIndexOf(File.separator) + 1, jarPath.lastIndexOf('.'));
 	}
 	
 	@Override
