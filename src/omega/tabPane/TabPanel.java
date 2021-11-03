@@ -100,7 +100,7 @@ public class TabPanel extends JPanel{
 		g.dispose();
 	}
 	
-	public void addTab(String name, JComponent component, String toolTip) {
+	public void addTab(String name, String fullQualifiedName, JComponent component, String toolTip) {
 		if(contains(component)) {
 			remove(component);
 		}
@@ -108,7 +108,7 @@ public class TabPanel extends JPanel{
 		TabHolder panel = (component instanceof Editor) ? new EditorTabHolder((Editor)component) : new TabHolder(component);
 		
 		tabHolders.add(panel);
-		names.add(name);
+		names.add(fullQualifiedName);
 		
 		tabPane.addTab(name, panel);
 		tabPane.setBackgroundAt(tabPane.getTabCount() - 1, c2);
@@ -133,13 +133,13 @@ public class TabPanel extends JPanel{
 			}, ()->{
 			tabPane.setSelectedIndex(getIndexOf(component));
 		},toolTip, isEditor ? createMenu((Editor)component) : null));
-		tabPane.setSelectedIndex(names.lastIndexOf(name));
+		tabPane.setSelectedIndex(names.lastIndexOf(fullQualifiedName));
 		addAction.run();
 		
 		panel.relocate();
 	}
 	
-	public void addTab(String name, BufferedImage image, JComponent component, String toolTip, OPopupWindow popup) {
+	public void addTab(String name, String fullQualifiedName, BufferedImage image, JComponent component, String toolTip, OPopupWindow popup) {
 		if(contains(component)) {
 			remove(component);
 		}
@@ -147,7 +147,7 @@ public class TabPanel extends JPanel{
 		TabHolder panel = (component instanceof Editor) ? new EditorTabHolder((Editor)component) : new TabHolder(component);
 		
 		tabHolders.add(panel);
-		names.add(name);
+		names.add(fullQualifiedName);
 		
 		tabPane.addTab(name, panel);
 		tabPane.setBackgroundAt(tabPane.getTabCount() - 1, c2);
@@ -172,7 +172,7 @@ public class TabPanel extends JPanel{
 			}, ()->{
 			tabPane.setSelectedIndex(getIndexOf(component));
 		},toolTip, isEditor ? createMenu((Editor)component) : popup));
-		tabPane.setSelectedIndex(names.lastIndexOf(name));
+		tabPane.setSelectedIndex(names.indexOf(fullQualifiedName));
 		addAction.run();
 		
 		panel.relocate();

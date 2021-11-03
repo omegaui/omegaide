@@ -490,7 +490,7 @@ public class Screen extends JFrame {
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		tabPanel.addTab(file.getName(), editor, getPackName(file));
+		tabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
 		return editor;
 	}
 	
@@ -507,7 +507,7 @@ public class Screen extends JFrame {
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		rightTabPanel.addTab(file.getName(), editor, getPackName(file));
+		rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
 		return editor;
 	}
 	
@@ -528,7 +528,7 @@ public class Screen extends JFrame {
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		bottomTabPanel.addTab(file.getName(), editor, getPackName(file));
+		bottomTabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
 		return editor;
 	}
 	
