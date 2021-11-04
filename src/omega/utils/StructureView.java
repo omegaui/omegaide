@@ -332,9 +332,10 @@ public class StructureView extends JDialog {
 				if(Screen.isNotNull(modulePath)){
 					options.add("--module-path");
 					options.add(modulePath);
-					options.add("--module");
-					options.add(im.getModuleName());
-					
+					if(im.module){
+						options.add("--module");
+						options.add(im.getModuleName());
+					}
 				}
 
 				options.add(im.getImport());

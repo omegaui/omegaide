@@ -390,7 +390,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_UNIX_SHELL);
 		else if(f.getName().endsWith(".bat") || f.getName().endsWith(".cmd"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_WINDOWS_BATCH);
-		else if(f.getName().endsWith(".xml"))
+		else if(f.getName().endsWith(".xml") || f.getName().endsWith(".fxml"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_XML);
 		else if(f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_YAML);
