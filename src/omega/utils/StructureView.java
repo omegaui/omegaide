@@ -1,19 +1,19 @@
 /**
-  * StructureView
-  * Copyright (C) 2021 Omega UI
+* StructureView
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
 import java.io.File;
@@ -59,108 +59,108 @@ public class StructureView extends JDialog {
 	public static final short DEASSEMBLE_DYNAMICALLY = 0;
 	public static final short DEASSEMBLE_HEADLESSLY = 1;
 	public short deassembleType = DEASSEMBLE_DYNAMICALLY;
-     public TextComp iconComp;
-     public TextComp titleComp;
-     public TextComp closeComp;
-     public TextComp smallLogComp;
-     public TextComp fullLogComp;
-
-     public FlexPanel primeContainerPanel;
-
-     public NoCaretField searchField;
-
-     public FlexPanel searchPanel;
-     public JScrollPane searchScrollPanel;
-     public JPanel containerPanel;
-
-     public JScrollPane contentScrollPanel;
-     public JPanel contentPanel;
-     
-     public JScrollPane textAreaScrollPane;
-     public RSyntaxTextArea textArea;
-
-     public LinkedList<TextComp> options = new LinkedList<>();
-     public LinkedList<TextComp> memberComps = new LinkedList<>();
+	public TextComp iconComp;
+	public TextComp titleComp;
+	public TextComp closeComp;
+	public TextComp smallLogComp;
+	public TextComp fullLogComp;
 	
-     public StructureView(Screen screen){
-     	super(screen, false);
-     	setUndecorated(true);
-     	setResizable(false);
-     	setSize(700, 500);
-     	setLocationRelativeTo(null);
-     	JPanel panel = new JPanel(null);
-     	panel.setBackground(back1);
-     	setContentPane(panel);
-     	setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
-     	init();
-     }
-
-     public void init(){
-     	iconComp = new TextComp(IconManager.fluentstructureImage, 25, 25, back1, back1, back1, null);
-     	iconComp.setBounds(0, 0, 30, 30);
-     	iconComp.setArc(0, 0);
-     	iconComp.setClickable(false);
-     	add(iconComp);
-
-     	smallLogComp = new TextComp(IconManager.fluentrocketImage, 25, 25, "Deassemble Dynamically", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->{
-     		deassembleType = DEASSEMBLE_DYNAMICALLY;
-     		fullLogComp.repaint();
-     	}){
-     		@Override
-     		public void draw(Graphics2D g){
-     			super.draw(g);
-     			if(deassembleType == DEASSEMBLE_DYNAMICALLY){
-     				g.setColor(color3);
-     				g.fillRect(0, getHeight() - 2, getWidth(), 2);
-     			}
-     		}
+	public FlexPanel primeContainerPanel;
+	
+	public NoCaretField searchField;
+	
+	public FlexPanel searchPanel;
+	public JScrollPane searchScrollPanel;
+	public JPanel containerPanel;
+	
+	public JScrollPane contentScrollPanel;
+	public JPanel contentPanel;
+	
+	public JScrollPane textAreaScrollPane;
+	public RSyntaxTextArea textArea;
+	
+	public LinkedList<TextComp> options = new LinkedList<>();
+	public LinkedList<TextComp> memberComps = new LinkedList<>();
+	
+	public StructureView(Screen screen){
+		super(screen, false);
+		setUndecorated(true);
+		setResizable(false);
+		setSize(700, 500);
+		setLocationRelativeTo(null);
+		JPanel panel = new JPanel(null);
+		panel.setBackground(back1);
+		setContentPane(panel);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+		init();
+	}
+	
+	public void init(){
+		iconComp = new TextComp(IconManager.fluentstructureImage, 25, 25, back1, back1, back1, null);
+		iconComp.setBounds(0, 0, 30, 30);
+		iconComp.setArc(0, 0);
+		iconComp.setClickable(false);
+		add(iconComp);
+		
+		smallLogComp = new TextComp(IconManager.fluentrocketImage, 25, 25, "Deassemble Dynamically", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->{
+			deassembleType = DEASSEMBLE_DYNAMICALLY;
+			fullLogComp.repaint();
+			}){
+			@Override
+			public void draw(Graphics2D g){
+				super.draw(g);
+				if(deassembleType == DEASSEMBLE_DYNAMICALLY){
+					g.setColor(color3);
+					g.fillRect(0, getHeight() - 2, getWidth(), 2);
+				}
+			}
 		};
-     	smallLogComp.setBounds(30, 0, 30, 30);
-     	smallLogComp.setArc(0, 0);
-     	add(smallLogComp);
-
-     	fullLogComp = new TextComp(IconManager.fluentshellImage, 25, 25, "Deassemble Headlessly (Uses System's Default javap command)", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->{
-     		deassembleType = DEASSEMBLE_HEADLESSLY;
-     		smallLogComp.repaint();
-     	}){
-     		@Override
-     		public void draw(Graphics2D g){
-     			super.draw(g);
-     			if(deassembleType == DEASSEMBLE_HEADLESSLY){
-     				g.setColor(color3);
-     				g.fillRect(0, getHeight() - 2, getWidth(), 2);
-     			}
-     		}
+		smallLogComp.setBounds(30, 0, 30, 30);
+		smallLogComp.setArc(0, 0);
+		add(smallLogComp);
+		
+		fullLogComp = new TextComp(IconManager.fluentshellImage, 25, 25, "Deassemble Headlessly (Uses System's Default javap command)", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->{
+			deassembleType = DEASSEMBLE_HEADLESSLY;
+			smallLogComp.repaint();
+			}){
+			@Override
+			public void draw(Graphics2D g){
+				super.draw(g);
+				if(deassembleType == DEASSEMBLE_HEADLESSLY){
+					g.setColor(color3);
+					g.fillRect(0, getHeight() - 2, getWidth(), 2);
+				}
+			}
 		};
-     	fullLogComp.setBounds(60, 0, 30, 30);
-     	fullLogComp.setArc(0, 0);
-     	add(fullLogComp);
-     	
-     	titleComp = new TextComp("View Java Code Structures", back1, back1, glow, null);
-     	titleComp.setBounds(90, 0, getWidth() - 120, 30);
-     	titleComp.setArc(0, 0);
-     	titleComp.setFont(PX14);
-     	titleComp.setClickable(false);
-     	titleComp.attachDragger(this);
-     	add(titleComp);
-
-     	closeComp = new TextComp(IconManager.fluentcloseImage, 25, 25, TOOLMENU_COLOR2_SHADE, back1, back1, this::dispose);
-     	closeComp.setBounds(getWidth() - 30, 0, 30, 30);
-     	closeComp.setArc(0, 0);
-     	add(closeComp);
-
-     	primeContainerPanel = new FlexPanel(null, c2, null);
-     	primeContainerPanel.setBounds(5, 40, getWidth() - 10, getHeight() - 40);
-     	primeContainerPanel.setArc(20, 20);
-     	add(primeContainerPanel);
-
-     	searchField = new NoCaretField("", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
-     	searchField.setBounds(primeContainerPanel.getWidth()/2 - 125, 5, 250, 25);
-     	searchField.setFont(PX14);
-     	searchField.setOnAction(()->search(searchField.getText()));
-     	primeContainerPanel.add(searchField);
-     	addKeyListener(searchField);
-
+		fullLogComp.setBounds(60, 0, 30, 30);
+		fullLogComp.setArc(0, 0);
+		add(fullLogComp);
+		
+		titleComp = new TextComp("View Java Code Structures", back1, back1, glow, null);
+		titleComp.setBounds(90, 0, getWidth() - 120, 30);
+		titleComp.setArc(0, 0);
+		titleComp.setFont(PX14);
+		titleComp.setClickable(false);
+		titleComp.attachDragger(this);
+		add(titleComp);
+		
+		closeComp = new TextComp(IconManager.fluentcloseImage, 25, 25, TOOLMENU_COLOR2_SHADE, back1, back1, this::dispose);
+		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+		closeComp.setArc(0, 0);
+		add(closeComp);
+		
+		primeContainerPanel = new FlexPanel(null, c2, null);
+		primeContainerPanel.setBounds(5, 40, getWidth() - 10, getHeight() - 40);
+		primeContainerPanel.setArc(20, 20);
+		add(primeContainerPanel);
+		
+		searchField = new NoCaretField("", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+		searchField.setBounds(primeContainerPanel.getWidth()/2 - 125, 5, 250, 25);
+		searchField.setFont(PX14);
+		searchField.setOnAction(()->search(searchField.getText()));
+		primeContainerPanel.add(searchField);
+		addKeyListener(searchField);
+		
 		searchPanel = new FlexPanel(null, back2, null);
 		searchPanel.setBounds(getWidth()/2 - 200, 40, 400, 250);
 		searchPanel.setArc(10, 10);
@@ -173,14 +173,14 @@ public class StructureView extends JDialog {
 		containerPanel.setBackground(c2);
 		
 		searchPanel.add(searchScrollPanel);
-
+		
 		contentScrollPanel = new JScrollPane(contentPanel = new JPanel(null));
 		contentScrollPanel.setBounds(5, 30, primeContainerPanel.getWidth() - 10, primeContainerPanel.getHeight() - 35);
 		contentScrollPanel.setBackground(c2);
 		contentScrollPanel.setBorder(null);
-
+		
 		contentPanel.setBackground(c2);
-
+		
 		textAreaScrollPane = new JScrollPane(textArea = new RSyntaxTextArea());
 		textAreaScrollPane.setBorder(null);
 		textAreaScrollPane.setBackground(c2);
@@ -189,30 +189,30 @@ public class StructureView extends JDialog {
 		Editor.getTheme().apply(textArea);
 		textArea.setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 		textArea.setEditable(false);
-     }
-
-     public synchronized void search(String text){
+	}
+	
+	public synchronized void search(String text){
 		titleComp.setText("Searching...");
 		titleComp.setColors(back1, back1, TOOLMENU_COLOR3);
 		
-     	options.forEach(containerPanel::remove);
-     	options.clear();
-     	repaint();
-     	
-     	LinkedList<Import> matches = new LinkedList<>();
-     	
-     	for(Import im : JDKManager.imports){
-     		if(im.getImport().contains(text))
-     			matches.add(im);
-     	}
-     	if(matches.isEmpty()){
-     		titleComp.setText("No Matches Found");
-     		titleComp.setColors(back1, back1, TOOLMENU_COLOR2);
-     		return;
-     	}
+		options.forEach(containerPanel::remove);
+		options.clear();
+		repaint();
+		
+		LinkedList<Import> matches = new LinkedList<>();
+		
+		for(Import im : JDKManager.imports){
+			if(im.getImport().contains(text))
+				matches.add(im);
+		}
+		if(matches.isEmpty()){
+			titleComp.setText("No Matches Found");
+			titleComp.setColors(back1, back1, TOOLMENU_COLOR2);
+			return;
+		}
 		titleComp.setText("View Java Code Structures");
 		titleComp.setColors(back1, back1, glow);
-
+		
 		int block = 0;
 		for(Import im : matches){
 			TextComp comp = new TextComp(im.getImport(), c1, c2, getSuitableColor(im), ()->genView(im));
@@ -222,7 +222,7 @@ public class StructureView extends JDialog {
 			comp.alignX = 5;
 			containerPanel.add(comp);
 			options.add(comp);
-
+			
 			block += 25;
 		}
 		primeContainerPanel.remove(contentScrollPanel);
@@ -235,13 +235,13 @@ public class StructureView extends JDialog {
 		
 		searchScrollPanel.getVerticalScrollBar().setVisible(true);
 		searchScrollPanel.getVerticalScrollBar().setValue(0);
-
+		
 		layout();
 		repaint();
 		
 		matches.clear();
-     }
-
+	}
+	
 	public void genView(Import im){
 		primeContainerPanel.remove(searchPanel);
 		primeContainerPanel.remove(contentScrollPanel);
@@ -249,54 +249,54 @@ public class StructureView extends JDialog {
 		primeContainerPanel.repaint();
 		
 		memberComps.forEach(contentPanel::remove);
-          memberComps.clear();
-          
-          int block = 0;
-
+		memberComps.clear();
+		
+		int block = 0;
+		
 		if(deassembleType == DEASSEMBLE_DYNAMICALLY){
 			primeContainerPanel.add(contentScrollPanel);
-	     	if(CodeFramework.isSource(im.getImport())){
-	     		titleComp.setText("Viewing " + im.getImport() + " (Dynamic, Type : SourceCode)");
-	               SourceReader reader = new SourceReader(CodeFramework.getContent(im.getImport()));
-	               for(DataMember dx : reader.dataMembers){
-	                    TextComp comp = new TextComp(dx.getRepresentableValue(), back1, back1, TOOLMENU_COLOR2, null);
-	                    comp.setBounds(0, block, contentScrollPanel.getWidth(), 25);
-	                    comp.setToolTipText(dx.getData());
-	                    comp.setFont(PX14);
-	                    comp.setClickable(false);
-	                    comp.setArc(0, 0);
-	               		comp.alignX = 5;
-	                    contentPanel.add(comp);
-	                    memberComps.add(comp);
-	                    
-	                    block += 25;
-	               }
-	     	}
-	          else{
-	               ByteReader reader = null;
-	               if(Assembly.has(im.getImport()))
-	                    reader = Assembly.getReader(im.getImport());
-	               else
-	                    reader = Screen.getFileView().getJDKManager().prepareReader(im.getImport());
-                    
-	               if(reader.dataMembers == null)
-	               	return;
-	     		titleComp.setText("Viewing " + im.getImport());
-	               for(DataMember dx : reader.dataMembers){
-	                    TextComp comp = new TextComp(dx.getRepresentableValue(), back1, back1, TOOLMENU_COLOR2, null);
-	                    comp.setBounds(0, block, contentScrollPanel.getWidth(), 25);
-	                    comp.setToolTipText(dx.getData());
-	                    comp.setClickable(false);
-	                    comp.setFont(PX14);
-	                    comp.setArc(0, 0);
-	               	comp.alignX = 5;
-	                    contentPanel.add(comp);
-	                    memberComps.add(comp);
-	                    block += 25;
-	               }
-	          }
+			if(CodeFramework.isSource(im.getImport())){
+				titleComp.setText("Viewing " + im.getImport() + " (Dynamic, Type : SourceCode)");
+				SourceReader reader = new SourceReader(CodeFramework.getContent(im.getImport()));
+				for(DataMember dx : reader.dataMembers){
+					TextComp comp = new TextComp(dx.getRepresentableValue(), back1, back1, dx.isMethod() ? TOOLMENU_COLOR5 : TOOLMENU_COLOR2, null);
+					comp.setBounds(0, block, contentScrollPanel.getWidth(), 25);
+					comp.setToolTipText(dx.getData());
+					comp.setFont(PX14);
+					comp.setClickable(false);
+					comp.setArc(0, 0);
+					comp.alignX = 5;
+					contentPanel.add(comp);
+					memberComps.add(comp);
+					
+					block += 25;
+				}
+			}
+			else{
+				ByteReader reader = null;
+				if(Assembly.has(im.getImport()))
+					reader = Assembly.getReader(im.getImport());
+				else
+					reader = Screen.getFileView().getJDKManager().prepareReader(im.getImport());
+				
+				if(reader.dataMembers == null)
+					return;
+				titleComp.setText("Viewing " + im.getImport());
+				for(DataMember dx : reader.dataMembers){
+					TextComp comp = new TextComp(dx.getRepresentableValue(), back1, back1, dx.isMethod() ? TOOLMENU_COLOR5 : TOOLMENU_COLOR2, null);
+					comp.setBounds(0, block, contentScrollPanel.getWidth(), 25);
+					comp.setToolTipText(dx.getData());
+					comp.setClickable(false);
+					comp.setFont(PX14);
+					comp.setArc(0, 0);
+					comp.alignX = 5;
+					contentPanel.add(comp);
+					memberComps.add(comp);
+					block += 25;
+				}
+			}
 		}
-
+		
 		else if(deassembleType == DEASSEMBLE_HEADLESSLY){
 			titleComp.setText("Deassembling Headlessly ...");
 			titleComp.repaint();
@@ -312,7 +312,7 @@ public class StructureView extends JDialog {
 				options.add("javap");
 				options.add("-public");
 				String depenPath = "";
-		
+				
 				if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
 					for(String d : Screen.getFileView().getProjectManager().jars)
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
@@ -322,7 +322,7 @@ public class StructureView extends JDialog {
 					for(String d : Screen.getFileView().getProjectManager().resourceRoots)
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
 				}
-
+				
 				if(Screen.isNotNull(depenPath)){
 					options.add("--class-path");
 					options.add(depenPath);
@@ -337,7 +337,7 @@ public class StructureView extends JDialog {
 						options.add(im.getModuleName());
 					}
 				}
-
+				
 				options.add(im.getImport());
 				
 				Process process = new ProcessBuilder(options).directory(new File(Screen.getFileView().getProjectPath())).start();
@@ -371,7 +371,7 @@ public class StructureView extends JDialog {
 				e.printStackTrace();
 			}
 		}
-
+		
 		if(deassembleType == DEASSEMBLE_DYNAMICALLY){
 			contentPanel.setPreferredSize(new Dimension(contentScrollPanel.getWidth(), block));
 			contentPanel.setLocation(0, 0);
@@ -383,12 +383,12 @@ public class StructureView extends JDialog {
 			textAreaScrollPane.getVerticalScrollBar().setVisible(true);
 			textAreaScrollPane.getVerticalScrollBar().setValue(0);
 		}
-
+		
 		layout();
 		repaint();
 	}
-
-     public static Color getSuitableColor(Import im){
-     	return im.getImport().startsWith("java")? TOOLMENU_COLOR1 : TOOLMENU_COLOR3;
-     }
+	
+	public static Color getSuitableColor(Import im){
+		return im.getImport().startsWith("java")? TOOLMENU_COLOR1 : TOOLMENU_COLOR3;
+	}
 }
