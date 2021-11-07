@@ -93,6 +93,8 @@ public class Branch extends JComponent{
 				setForeground(EMPTY_COLOR);
 				type = "Empty";
 			}
+			else
+				setForeground(UIManager.glow);
 		}
 		else{
 			setForeground(ANY_COLOR);

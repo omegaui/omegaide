@@ -1,19 +1,19 @@
 /**
-  * ToolMenu
-  * Copyright (C) 2021 Omega UI
+* ToolMenu
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.utils;
 import omega.update.IDEUpdater;
@@ -129,13 +129,13 @@ public class ToolMenu extends JPanel {
 	public LabelMenu taskMenu;
 	
 	public static InfoScreen infoScreen;
-     public static ToolMenuPathBox pathBox;
-     public static SourceDefender sourceDefender;
+	public static ToolMenuPathBox pathBox;
+	public static SourceDefender sourceDefender;
 	public static ProjectWizard projectWizard;
-     public static ProcessWizard processWizard;
+	public static ProcessWizard processWizard;
 	public static StructureView structureView;
-     public static MadeWithScreen madeWithScreen;
-     public static GradleModuleWizard gradleModuleWizard;
+	public static MadeWithScreen madeWithScreen;
+	public static GradleModuleWizard gradleModuleWizard;
 	public static UniversalProjectWizard universalProjectWizard;
 	public static ProjectDistructionWizard projectDistructionWizard;
 	public static ConsoleSelector consoleSelector;
@@ -143,7 +143,7 @@ public class ToolMenu extends JPanel {
 	public static InstructionWindow instructionWindow;
 	public static ColorPicker colorPicker;
 	public static LanguageTagView languageTagView;
-     
+	
 	private int pressX;
 	private int pressY;
 	
@@ -175,10 +175,10 @@ public class ToolMenu extends JPanel {
 			infoScreen = new InfoScreen(screen);
 			sourceDefender = new SourceDefender(screen);
 			projectWizard = new ProjectWizard(screen);
-               processWizard = new ProcessWizard(screen);
+			processWizard = new ProcessWizard(screen);
 			structureView = new StructureView(screen);
-               madeWithScreen = new MadeWithScreen(screen);
-               gradleModuleWizard = new GradleModuleWizard(screen);
+			madeWithScreen = new MadeWithScreen(screen);
+			gradleModuleWizard = new GradleModuleWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
 			consoleSelector = new ConsoleSelector(screen);
 			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
@@ -219,7 +219,7 @@ public class ToolMenu extends JPanel {
 		iconComp.setClickable(false);
 		iconComp.setArc(0, 0);
 		add(iconComp);
-
+		
 		langComp = new TextComp(IconManager.fluentjavaImage, 25, 25, back2, c2, c2, this::changeLang);
 		langComp.setBounds(30, 0, 30, 30);
 		langComp.setArc(0, 0);
@@ -309,25 +309,25 @@ public class ToolMenu extends JPanel {
 		Menu fileMenu = new Menu(filePopup, "File");
 		fileMenu.setBounds(0, 30, 60, 20);
 		addComp(fileMenu);
-          
+		
 		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
 		initProjectPopup();
 		Menu projectMenu = new Menu(projectPopup, "Project");
 		projectMenu.setBounds(60, 30, 60, 20);
 		addComp(projectMenu);
 		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
-          
+		
 		initToolMenu();
 		Menu toolsMenu = new Menu(toolsPopup, "Tools");
 		toolsMenu.setBounds(120, 30, 60, 20);
 		addComp(toolsMenu);
-          
+		
 		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(250);
 		initSetMenu();
 		Menu setMenu = new Menu(setPopup, "Settings");
 		setMenu.setBounds(180, 30, 60, 20);
 		addComp(setMenu);
-          
+		
 		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
 		initHelpMenu();
 		Menu helpMenu = new Menu(helpPopup, "Help");
@@ -336,7 +336,7 @@ public class ToolMenu extends JPanel {
 		
 		taskMenu = new LabelMenu("Click to Run Garbage Collector", ()->{
 			if(CodeFramework.resolving) return;
-				setTask("Running Java Garbage Collector");
+			setTask("Running Java Garbage Collector");
 			taskMenu.repaint();
 			System.gc();
 			if(!CodeFramework.resolving) {
@@ -344,7 +344,7 @@ public class ToolMenu extends JPanel {
 				ram = (long)(ram / 1000000);
 				setTask("Using " + (ram) + " MB of Physical Memory Excluding JVM");
 			}
-		}, ()->{
+			}, ()->{
 			if(!CodeFramework.resolving) {
 				long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 				ram = (long)(ram / 1000000);
@@ -353,69 +353,69 @@ public class ToolMenu extends JPanel {
 		});
 		taskMenu.setFont(PX14);
 		setTask("Hover to see Memory Statistics");
-        
+		
 		openProjectComp = new TextComp(fluentfolderImage, 25, 25, "Open Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
 		openProjectComp.setBounds(0, 55, 30, 30);
 		openProjectComp.setFont(omega.utils.UIManager.PX14);
 		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
-          
+		
 		openFileComp = new TextComp(fluentfileImage, 25, 25, "Open File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
 		openFileComp.setBounds(32, 55, 30, 30);
 		openFileComp.setFont(omega.utils.UIManager.PX14);
 		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
-          
+		
 		newProjectComp = new TextComp(fluentnewfolderImage, 25, 25, "Create New Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
 		newProjectComp.setBounds(64, 55, 30, 30);
 		newProjectComp.setFont(omega.utils.UIManager.PX14);
 		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
-
-          newFileComp = new TextComp(fluentnewfileImage, 25, 25, "Create New File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
-          newFileComp.setBounds(96, 55, 30, 30);
-          newFileComp.setFont(PX14);
-          newFileComp.setArcVisible(true, false, true, false);
-          addComp(newFileComp);
+		
+		newFileComp = new TextComp(fluentnewfileImage, 25, 25, "Create New File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
+		newFileComp.setBounds(96, 55, 30, 30);
+		newFileComp.setFont(PX14);
+		newFileComp.setArcVisible(true, false, true, false);
+		addComp(newFileComp);
 		
 		sep0 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		sep0.setBounds(130, 50, 2, 40);
 		addComp(sep0);
-       	
-          runComp = new TextComp(fluentrunImage, 25, 25, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
-               if(runComp.isClickable() && buildComp.isClickable()){
-                    if(GradleProcessManager.isGradleProject())
-                         GradleProcessManager.run();
-                    else
-                         Screen.getRunView().run();
-               }
-          });
-          runComp.setBounds(140, 55, 30, 30);
-          runComp.addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e){
-               	if(e.getButton() == 3){
-                         if(runComp.isClickable() && buildComp.isClickable())
-                              Screen.getRunView().justRun();
-               	}
-               }
-          });
-          runComp.setArcVisible(true, false, true, false);
-          add(runComp);
-       	
-          instantRunComp = new TextComp(fluentrocketImage, 25, 25, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
-               Screen.getRunView().instantRun();
-          });
-          instantRunComp.setBounds(172, 55, 30, 30);
-          instantRunComp.setArcVisible(true, false, true, false);
-          add(instantRunComp);
 		
-		buildComp = new TextComp(fluentbuildImage, 25, 25, "Time to Build", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+		runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			if(runComp.isClickable() && buildComp.isClickable()){
-                    if(GradleProcessManager.isGradleProject())
-                         GradleProcessManager.build();
-                    else
-				     Screen.getBuildView().compileProject();
+				if(GradleProcessManager.isGradleProject())
+					GradleProcessManager.run();
+				else
+					Screen.getRunView().run();
+			}
+		});
+		runComp.setBounds(140, 55, 30, 30);
+		runComp.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(e.getButton() == 3){
+					if(runComp.isClickable() && buildComp.isClickable())
+						Screen.getRunView().justRun();
+				}
+			}
+		});
+		runComp.setArcVisible(true, false, true, false);
+		add(runComp);
+		
+		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+			Screen.getRunView().instantRun();
+		});
+		instantRunComp.setBounds(172, 55, 30, 30);
+		instantRunComp.setArcVisible(true, false, true, false);
+		add(instantRunComp);
+		
+		buildComp = new TextComp(fluentbuildImage, 20, 20, "Time to Build", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+			if(runComp.isClickable() && buildComp.isClickable()){
+				if(GradleProcessManager.isGradleProject())
+					GradleProcessManager.build();
+				else
+					Screen.getBuildView().compileProject();
 			}
 		});
 		buildComp.setBounds(204, 55, 30, 30);
@@ -423,22 +423,22 @@ public class ToolMenu extends JPanel {
 		buildComp.setArcVisible(false, true, false, true);
 		add(buildComp);
 		
-          instantBuildComp = new TextComp(fluentrocketbuildImage, 25, 25, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
-               Screen.getRunView().instantBuild();
-          });
-          instantBuildComp.setBounds(236, 55, 30, 30);
-     	instantBuildComp.setArcVisible(false, true, false, true);
-          add(instantBuildComp);
-          
+		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+			Screen.getRunView().instantBuild();
+		});
+		instantBuildComp.setBounds(236, 55, 30, 30);
+		instantBuildComp.setArcVisible(false, true, false, true);
+		add(instantBuildComp);
+		
 		sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		sep1.setBounds(272, 50, 2, 40);
 		addComp(sep1);
-          
+		
 		contentComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
 			contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 			contentComp.repaint();
-		}){
+			}){
 			@Override
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
@@ -455,12 +455,12 @@ public class ToolMenu extends JPanel {
 		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 		contentComp.setArcVisible(false, true, false, true);
 		addComp(contentComp);
-          
+		
 		contentModeComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			DataManager.setContentModeJava(!DataManager.isContentModeJava());
 			contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 			contentModeComp.repaint();
-		}){
+			}){
 			@Override
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
@@ -477,12 +477,12 @@ public class ToolMenu extends JPanel {
 		contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 		contentModeComp.setArcVisible(false, true, false, true);
 		addComp(contentModeComp);
-          
+		
 		asteriskComp = new TextComp("", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
 			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 			asteriskComp.repaint();
-		}){
+			}){
 			@Override
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
@@ -498,7 +498,7 @@ public class ToolMenu extends JPanel {
 		asteriskComp.setBounds(346, 55, 30, 30);
 		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		addComp(asteriskComp);
-          
+		
 		structureComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
 			hidden = !hidden;
 			screen.screenHasProjectView = !screen.screenHasProjectView;
@@ -507,7 +507,7 @@ public class ToolMenu extends JPanel {
 			Screen.getProjectView().setVisible(false);
 			structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
 			structureComp.repaint();
-		}){
+			}){
 			@Override
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
@@ -524,7 +524,7 @@ public class ToolMenu extends JPanel {
 		structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
 		structureComp.setArcVisible(true, false, true, false);
 		addComp(structureComp);
-          
+		
 		operateComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
 			if(!oPHidden) {
 				screen.getOperationPanel().setVisible(false);
@@ -536,7 +536,7 @@ public class ToolMenu extends JPanel {
 			}
 			operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
 			operateComp.repaint();
-		}){
+			}){
 			@Override
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
@@ -553,27 +553,27 @@ public class ToolMenu extends JPanel {
 		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
 		operateComp.setArcVisible(true, false, true, false);
 		addComp(operateComp);
-         
+		
 		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
 		addComp(searchComp);
 		
 		sep4 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		addComp(sep4);
-      
+		
 		structureViewComp = new TextComp(fluentstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
 		structureViewComp.setFont(omega.utils.UIManager.PX18);
 		structureViewComp.setToolTipText("Lets see that class");
 		addComp(structureViewComp);
-          
+		
 		sep3 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		sep3.setBounds(444, 50, 2, 40);
 		addComp(sep3);
-
+		
 		OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(200);
 		consoleItemWindow
 		.createItem("New System Terminal", IconManager.fluentconsoleImage, consoleSelector::launchTerminal)
 		.createItem("Integrated Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal);
-      
+		
 		shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, null);
 		shellComp.addMouseListener(new MouseAdapter(){
 			@Override
@@ -586,87 +586,95 @@ public class ToolMenu extends JPanel {
 		shellComp.setBounds(454, 55, 60, 30);
 		shellComp.setArcVisible(false, true, false, true);
 		add(shellComp);
-          
+		
 		sep5 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		sep5.setBounds(521, 50, 2, 40);
 		addComp(sep5);
-      
+		
 		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3,
-			()->{
-				Screen.pickTheme(DataManager.getTheme());
-				if(!themeComp.getText().equals(DataManager.getTheme())){
-					NotificationPopup.create(screen)
-					.size(300, 120)
-					.title("Theme Manager")
-					.dialogIcon(IconManager.fluentupdateImage)
-					.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
-					.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
-					.iconButton(IconManager.fluentcloseImage, ()->{
-						Screen.notify("Terminating Running Applications");
+		()->{
+			Screen.pickTheme(DataManager.getTheme());
+			if(!themeComp.getText().equals(DataManager.getTheme())){
+				NotificationPopup.create(screen)
+				.size(300, 120)
+				.title("Theme Manager")
+				.dialogIcon(IconManager.fluentupdateImage)
+				.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+				.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
+				.iconButton(IconManager.fluentcloseImage, ()->{
+					Screen.notify("Terminating Running Applications");
+					try{
+						for(Process p : Screen.getRunView().runningApps) {
+							if(p.isAlive())
+								p.destroyForcibly();
+						}
+					}
+					catch(Exception e2) {
+						
+					}
+					Screen.notify("Saving UI and Data");
+					screen.getUIManager().save();
+					screen.getDataManager().saveData();
+					Screen.notify("Saving Project");
+					screen.saveAllEditors();
+					try{
+						Screen.getFileView().getProjectManager().save();
+					}
+					catch(Exception e2) {
+						
+					}
+					
+					new Thread(()->{
 						try{
-							for(Process p : Screen.getRunView().runningApps) {
-								if(p.isAlive())
-									p.destroyForcibly();
-							}
-					     }
-					     catch(Exception e2) {
-			               
-				          }
-						Screen.notify("Saving UI and Data");
-						screen.getUIManager().save();
-						screen.getDataManager().saveData();
-						Screen.notify("Saving Project");
-						screen.saveAllEditors();
-				          try{
-				               Screen.getFileView().getProjectManager().save();
-				          }
-				          catch(Exception e2) {
-			               
-			               }
-			
-			               new Thread(()->{
-			               	try{
-			               		if(Screen.onWindows())
-			               			new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
-			          			else
-			          				new ProcessBuilder("omega-ide").start();
-			               	}
-			               	catch(Exception e){
-			               		e.printStackTrace();
-			               	}
-			          	}).start();
-			          	
-			               screen.dispose();
-					}, "")
-					.build()
-					.locateOnBottomLeft()
-					.showIt();
-				}
-				themeComp.setText(DataManager.getTheme());
+							if(Screen.onWindows())
+								new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
+							else
+								new ProcessBuilder("omega-ide").start();
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
+					}).start();
+					
+					screen.dispose();
+				}, "")
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
 			}
+			themeComp.setText(DataManager.getTheme());
+		}
 		);
 		themeComp.setFont(omega.utils.UIManager.PX16);
 		themeComp.setBounds(532, 55, 60, 30);
 		themeComp.setArcVisible(true, false, true, false);
 		add(themeComp);
-
-          pathBox = new ToolMenuPathBox();
-          add(pathBox);
-          
+		
+		pathBox = new ToolMenuPathBox();
+		add(pathBox);
+		
 		reshapeComp();
-
-		putAnimationLayer(openProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(openFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newProjectComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newFileComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(shellComp, getLineAnimationLayer(2), ACTION_MOUSE_ENTERED);
+		
+		putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, -8, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 	}
-     
+	
 	public void minimize(){
 		screen.setState(Screen.ICONIFIED);
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_MINIMIZED, this, true));
 	}
-     
+	
 	public void maximize(){
 		screen.setExtendedState(!maximized ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
 		maximized = !maximized;
@@ -682,10 +690,10 @@ public class ToolMenu extends JPanel {
 		taskMenu.repaint();
 	}
 	
-     public static omega.utils.ToolMenuPathBox getPathBox() {
-          return pathBox;
-     }
-     
+	public static omega.utils.ToolMenuPathBox getPathBox() {
+		return pathBox;
+	}
+	
 	public void setMsg(String msg) {
 		taskMenu.setMsg(msg);
 		taskMenu.repaint();
@@ -696,46 +704,46 @@ public class ToolMenu extends JPanel {
 		sep4.setBounds(getWidth() - 40, 50, 2, 40);
 		structureViewComp.setBounds(getWidth() - 110, 55, 60, 30);
 		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 30);
-          pathBox.setBounds(0, 90, getWidth(), 25);
-          	
+		pathBox.setBounds(0, 90, getWidth(), 25);
+		
 		//Window Decorations
 		titleComp.setBounds(60, 0, getWidth() - (30 * 5), 30);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
 		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
 	}
-     public void changeLocations(boolean non_java){
-     	if(non_java){
-     		buildComp.setBounds(204 - 30, 55, 30, 30);
-     		contentComp.setBounds(282 - 62, 55, 30, 30);
-               structureComp.setBounds(316 - 4 - 60, 55, 30, 30);
-               operateComp.setBounds(348 - 4 - 60, 55, 30, 30);
-               sep1.setBounds(272 - 60, 50, 2, 40);
-               sep3.setBounds(382 - 4 - 60, 50, 2, 40);
-               shellComp.setBounds(392 - 4 - 60, 55, 60, 30);
-               sep5.setBounds(457 - 4 - 60, 50, 2, 40);
-               themeComp.setBounds(472 - 4 - 60, 55, 60, 30);
-     	}
-          else {
-          	buildComp.setBounds(204, 55, 30, 30);
-          	contentComp.setBounds(282, 55, 30, 30);
-               structureComp.setBounds(378, 55, 30, 30);
-               operateComp.setBounds(410, 55, 30, 30);
-               sep1.setBounds(272, 50, 2, 40);
-               sep3.setBounds(444, 50, 2, 40);
-               shellComp.setBounds(454, 55, 60, 30);
-               sep5.setBounds(521, 50, 2, 40);
-               themeComp.setBounds(532, 55, 60, 30);
-          }
-          reloadItems(non_java);
-          repaint();
-     }
-     public void reloadItems(boolean non_java){
-          jdkItem.setEnabled(!non_java);
+	public void changeLocations(boolean non_java){
+		if(non_java){
+			buildComp.setBounds(204 - 30, 55, 30, 30);
+			contentComp.setBounds(282 - 62, 55, 30, 30);
+			structureComp.setBounds(316 - 4 - 60, 55, 30, 30);
+			operateComp.setBounds(348 - 4 - 60, 55, 30, 30);
+			sep1.setBounds(272 - 60, 50, 2, 40);
+			sep3.setBounds(382 - 4 - 60, 50, 2, 40);
+			shellComp.setBounds(392 - 4 - 60, 55, 60, 30);
+			sep5.setBounds(457 - 4 - 60, 50, 2, 40);
+			themeComp.setBounds(472 - 4 - 60, 55, 60, 30);
+		}
+		else {
+			buildComp.setBounds(204, 55, 30, 30);
+			contentComp.setBounds(282, 55, 30, 30);
+			structureComp.setBounds(378, 55, 30, 30);
+			operateComp.setBounds(410, 55, 30, 30);
+			sep1.setBounds(272, 50, 2, 40);
+			sep3.setBounds(444, 50, 2, 40);
+			shellComp.setBounds(454, 55, 60, 30);
+			sep5.setBounds(521, 50, 2, 40);
+			themeComp.setBounds(532, 55, 60, 30);
+		}
+		reloadItems(non_java);
+		repaint();
+	}
+	public void reloadItems(boolean non_java){
+		jdkItem.setEnabled(!non_java);
 		jdkRootItem.setToolTipText(DataManager.getPathToJava());
-          allSettingsItem.setEnabled(non_java);
-          instantModeItem.setEnabled(!non_java);
-          parsingEnabledItem.setEnabled(!non_java);
+		allSettingsItem.setEnabled(non_java);
+		instantModeItem.setEnabled(!non_java);
+		parsingEnabledItem.setEnabled(!non_java);
 		if(Screen.getFileView().getJDKManager() != null)
 			jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
 		else
@@ -745,16 +753,16 @@ public class ToolMenu extends JPanel {
 			instantModeItem.setName("Instant Mode : Speed");
 		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 			instantModeItem.setName("Instant Mode : Accuracy");
-
+		
 		parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
-     }
-     
-     public void changeLang(){
-     	languageTagView.setVisible(true);
-     	langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getFileView().getProjectManager().getLanguageTag());
-     	langComp.repaint();
-     }
-     
+	}
+	
+	public void changeLang(){
+		languageTagView.setVisible(true);
+		langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getFileView().getProjectManager().getLanguageTag());
+		langComp.repaint();
+	}
+	
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
 		setPopup.createItem("Change Font", IconManager.settingsImage, ()->{
@@ -794,29 +802,29 @@ public class ToolMenu extends JPanel {
 						if(p.isAlive())
 							p.destroyForcibly();
 					}
-			     }
-			     catch(Exception e2) {
-	               
-		          }
+				}
+				catch(Exception e2) {
+					
+				}
 				Screen.notify("Saving UI and Data");
 				Screen.getPluginManager().save();
 				screen.getUIManager().save();
 				screen.getDataManager().saveData();
 				Screen.notify("Saving Project");
 				screen.saveAllEditors();
-		          try{
-		               Screen.getFileView().getProjectManager().save();
-		          }
-		          catch(Exception e2) {
-	               
-	               }
+				try{
+					Screen.getFileView().getProjectManager().save();
+				}
+				catch(Exception e2) {
+					
+				}
 				System.exit(0);
 			}, "You need to start the IDE again manually!")
 			.build()
 			.locateOnBottomLeft()
 			.showIt();
 		});
-
+		
 		SDKSelector sdkSelector = new SDKSelector(screen);
 		
 		jdkItem = new OPopupItem(setPopup, "Project JDK : None", IconManager.fluentsourceImage, ()->{
@@ -827,7 +835,7 @@ public class ToolMenu extends JPanel {
 				jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
 			}
 		});
-
+		
 		FileSelectionDialog fs = new FileSelectionDialog(screen);
 		fs.setTitle("Select JDK Root");
 		
@@ -838,13 +846,13 @@ public class ToolMenu extends JPanel {
 				jdkRootItem.setToolTipText(DataManager.getPathToJava());
 			}
 		});
-
+		
 		String text = "";
 		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
 			text = "Instant Mode : Speed";
 		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 			text = "Instant Mode : Accuracy";
-
+		
 		instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, ()->{
 			DataManager.setInstantMode((DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED)) ? DataManager.INSTANT_MODE_ACCURACY : DataManager.INSTANT_MODE_SPEED);
 			
@@ -853,7 +861,7 @@ public class ToolMenu extends JPanel {
 			else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
 				instantModeItem.setName("Instant Mode : Accuracy");
 		});
-
+		
 		parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + DataManager.isParsingEnabled(), IconManager.fluentsourceImage, ()->{
 			DataManager.setParsingEnabled(!DataManager.isParsingEnabled());
 			parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
@@ -863,10 +871,10 @@ public class ToolMenu extends JPanel {
 		});
 		
 		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{
-               if(GradleProcessManager.isGradleProject()) {
-                    Screen.getScreen().loadFile(new File(Screen.getFileView().getProjectPath(), "settings.gradle"));
-                    return;
-               }
+			if(GradleProcessManager.isGradleProject()) {
+				Screen.getScreen().loadFile(new File(Screen.getFileView().getProjectPath(), "settings.gradle"));
+				return;
+			}
 			if(Screen.getFileView().getProjectManager().non_java)
 				Screen.getUniversalSettingsView().setVisible(true);
 		});
@@ -883,30 +891,30 @@ public class ToolMenu extends JPanel {
 		helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.fluentyoutubeImage, ()->{
 			try{
 				java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
-		     }
-		     catch(Exception e){ 
-		          System.err.println(e);
-	          }
+			}
+			catch(Exception e){
+				System.err.println(e);
+			}
 		})
 		.createItem("Plugin Store", IconManager.ideImage64, ()->Screen.getPluginStore().setVisible(true))
 		.createItem("Plugin Manager", IconManager.ideImage64, ()->Screen.getPluginsView().setVisible(true))
 		.createItem("Check for Update", IconManager.ideImage64, ()->{
 			new Thread(IDEUpdater::checkForUpdate).start();
 		})
-          .createItem("Instructions", IconManager.fluentinfoImage, ()->{
-               instructionWindow.setVisible(true);
-          })
-          .createItem("Made With", IconManager.fluentinfoImage, ()->{
-               madeWithScreen.setVisible(true);
-          })
-          .createItem("About", IconManager.fluentinfoImage, ()->{
-               infoScreen.setVisible(true);
-          });
+		.createItem("Instructions", IconManager.fluentinfoImage, ()->{
+			instructionWindow.setVisible(true);
+		})
+		.createItem("Made With", IconManager.fluentinfoImage, ()->{
+			madeWithScreen.setVisible(true);
+		})
+		.createItem("About", IconManager.fluentinfoImage, ()->{
+			infoScreen.setVisible(true);
+		});
 	}
 	private void initToolMenu() {
 		toolsPopup
 		.createItem("Source Defender", IconManager.fluentsourceImage, ()->sourceDefender.setVisible(true))
-          .createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
+		.createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
 		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
 		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->omega.gset.Generator.gsView.genView(screen.getCurrentEditor()))
 		.createItem("Override/Implement Methods", IconManager.buildImage, ()->omega.gset.Generator.overView.genView(screen.getCurrentEditor()))
@@ -919,9 +927,9 @@ public class ToolMenu extends JPanel {
 			Screen.getFileView().getExtendedDependencyView().setVisible(true);
 		})
 		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload())
-          .createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
-          .createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
-          .createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));
+		.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
+		.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
+		.createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));
 	}
 	private void initFilePopup() {
 		//New Menu Items
@@ -959,36 +967,36 @@ public class ToolMenu extends JPanel {
 					if(p.isAlive())
 						p.destroyForcibly();
 				}
-		     }
-		     catch(Exception e2) {
-               
-	          }
+			}
+			catch(Exception e2) {
+				
+			}
 			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			Screen.notify("Saving Project");
 			screen.saveAllEditors();
-	          try{
-	               Screen.getFileView().getProjectManager().save();
-	          }
-	          catch(Exception e2) {
-               
-               }
-
-               new Thread(()->{
-               	try{
-               		if(Screen.onWindows())
-               			new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
-          			else
-          				new ProcessBuilder("omega-ide").start();
-               	}
-               	catch(Exception e){
-               		e.printStackTrace();
-               	}
-          	}).start();
-          	
-               screen.dispose();
+			try{
+				Screen.getFileView().getProjectManager().save();
+			}
+			catch(Exception e2) {
+				
+			}
+			
+			new Thread(()->{
+				try{
+					if(Screen.onWindows())
+						new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
+					else
+						new ProcessBuilder("omega-ide").start();
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+			}).start();
+			
+			screen.dispose();
 		})
 		.createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage,
 		()->{
@@ -1013,17 +1021,17 @@ public class ToolMenu extends JPanel {
 				for(Process p : Screen.getRunView().runningApps) {
 					if(p.isAlive())
 						p.destroyForcibly();
-     				}
-     		}
-     		catch(Exception e2) {}
+				}
+			}
+			catch(Exception e2) {}
 			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			try{
-          		Screen.getFileView().getProjectManager().save();
-     		}
-     		catch(Exception e2) {
+				Screen.getFileView().getProjectManager().save();
+			}
+			catch(Exception e2) {
 			}
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 			System.exit(0);
@@ -1036,30 +1044,30 @@ public class ToolMenu extends JPanel {
 					if(p.isAlive())
 						p.destroyForcibly();
 				}
-		     }
-		     catch(Exception e2) {
-               
-	          }
+			}
+			catch(Exception e2) {
+				
+			}
 			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			Screen.notify("Saving Project");
 			screen.saveAllEditors();
-	          try{
-	               Screen.getFileView().getProjectManager().save();
-	          }
-	          catch(Exception e2) {
-               }
+			try{
+				Screen.getFileView().getProjectManager().save();
+			}
+			catch(Exception e2) {
+			}
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 			System.exit(0);
 		});
 	}
-     
+	
 	private void addComp(Component c) {
 		add(c);
 	}
-     
+	
 	public void deleteDir(File file) throws Exception {
 		if (file.isDirectory())
 			{
@@ -1111,12 +1119,12 @@ public class ToolMenu extends JPanel {
 		private String text;
 		private String msg;
 		private volatile boolean enter;
-
+		
 		public LabelMenu(String text, Runnable r, Runnable x) {
 			this.text = "";
 			setToolTipText(text);
 			UIManager.setData(this);
-               setForeground(TOOLMENU_COLOR3);
+			setForeground(TOOLMENU_COLOR3);
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -1190,7 +1198,7 @@ public class ToolMenu extends JPanel {
 		public Menu(OPopupWindow popup, String text) {
 			this.text = text;
 			UIManager.setData(this);
-               setForeground(TOOLMENU_COLOR2);
+			setForeground(TOOLMENU_COLOR2);
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {

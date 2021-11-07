@@ -1,6 +1,7 @@
 package omega.comp;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Image;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -156,6 +157,54 @@ public class Animations {
 				}
 				
 				g.dispose();
+				
+				if(!comp.enter)
+					comp.repaint();
+			}).start();
+		};
+	}
+	
+	public static AnimationLayer getImageSizeAnimationLayer(int rate, int distance, boolean useClear){
+		return (comp)->{
+			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
+			if(animationRunning || !comp.isDrawingImage())
+				return;
+			new Thread(()->{
+				Graphics2D g = (Graphics2D)comp.getGraphics();
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				
+				comp.map.put(ANIMATION_STATE, true);
+				
+				boolean canPaint = true;
+				boolean positive = distance >= 0;
+				int factor = positive ? +1 : -1;
+				int width = comp.w;
+				int height = comp.h;
+				int maxWidth = comp.getWidth();
+				int maxHeight = comp.getHeight();
+				int currentDistance = distance;
+				
+				g.setColor(comp.color2);
+				
+				while(canPaint && (positive ? (currentDistance-- >= 0) : (currentDistance++ < 0)) && (width <= maxWidth && height <= maxHeight)){
+					if(useClear)
+						g.fillRect(0, 0, comp.getWidth(), comp.getHeight());
+					g.drawImage(comp.image.getScaledInstance(width, height, Image.SCALE_SMOOTH), comp.getWidth()/2 - width/2, comp.getHeight()/2 - height/2, width, height, null);
+					width += factor;
+					height += factor;
+					
+					try{
+						Thread.sleep(rate);
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
+				g.dispose();
+				
+				comp.map.put(ANIMATION_STATE, false);
 				
 				if(!comp.enter)
 					comp.repaint();
