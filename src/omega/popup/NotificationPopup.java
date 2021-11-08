@@ -80,7 +80,7 @@ public class NotificationPopup extends JDialog{
 		titleComp.attachDragger(this);
 		add(titleComp);
 
-		imageComp = new TextComp(null, 25, 25, c1, ALPHA, glow, null);
+		imageComp = new TextComp(null, 20, 20, c1, ALPHA, glow, null);
 		add(imageComp);
 
 		messageComp = new TextComp("", ALPHA, ALPHA, glow, null);
@@ -96,6 +96,9 @@ public class NotificationPopup extends JDialog{
 		footerComp.setFont(PX14);
 		footerComp.setArc(0, 0);
 		add(footerComp);
+
+		putAnimationLayer(dialogImageComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(imageComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 	}
 	
 	public NotificationPopup title(String text){
