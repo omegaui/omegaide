@@ -1,4 +1,6 @@
 package omega.comp;
+import java.util.LinkedList;
+
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Image;
@@ -13,9 +15,30 @@ public class Animations {
 	public static final int ACTION_MOUSE_PRESSED = 2;
 	public static final int ACTION_MOUSE_CLICKED = 3;
 	public static final int ACTION_MOUSE_DOUBLE_CLICKED = 4;
+
+	public static final LinkedList<TextComp> comps = new LinkedList<>();
 	
 	public static void prepareTextComp(TextComp comp){
 		comp.map.put(ANIMATION_STATE, false);
+	}
+
+	public static void putComp(TextComp comp, AnimationLayer layer){
+		comp.setAnimationLayer(layer);
+		comps.add(comp);
+	}
+
+	public synchronized static void animateAll(long delay){
+		new Thread(()->{
+			try{
+				Thread.sleep(delay);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			comps.forEach((cx)->{
+				cx.triggerAnimation();
+			});
+		}).start();
 	}
 	
 	public static void putAnimationLayer(TextComp comp, AnimationLayer layer, int action){

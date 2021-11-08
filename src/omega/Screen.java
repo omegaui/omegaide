@@ -16,6 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.comp.Animations;
+
 import omega.plugin.event.PluginReactionManager;
 import omega.plugin.event.PluginReactionEvent;
 
@@ -322,7 +324,6 @@ public class Screen extends JFrame {
 		
 		splash.setProgress(100, "");
 		
-		
 		File file = new File(DataManager.getDefaultProjectPath());
 		
 		if(DataManager.getWorkspace().equals("") || !new File(DataManager.getWorkspace()).exists())
@@ -330,6 +331,7 @@ public class Screen extends JFrame {
 		
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
+			Animations.animateAll(500);
 		}
 		else {
 			launcher = new omega.launcher.Launcher();
