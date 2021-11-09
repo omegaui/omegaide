@@ -135,8 +135,7 @@ public class BottomPane extends JPanel {
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(focusComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
 		
-		putComp(searchComp, getImageSizeAnimationLayer(100, 5, false));
-		putComp(focusComp, getImageSizeAnimationLayer(100, 5, false));
+		putComp(focusComp, getImageSizeAnimationLayer(50, 5, false));
 	}
 	
 	public void toggleFocusMode(){

@@ -211,8 +211,10 @@ public class Animations {
 				g.setColor(comp.color2);
 				
 				while(canPaint && (positive ? (currentDistance-- >= 0) : (currentDistance++ < 0)) && (width <= maxWidth && height <= maxHeight)){
-					if(useClear)
-						g.fillRect(0, 0, comp.getWidth(), comp.getHeight());
+					if(useClear){
+						g.fillRoundRect(0, 0, comp.getWidth(), comp.getHeight(), comp.arcX, comp.arcY);
+						comp.paintArc(g);
+					}
 					g.drawImage(comp.image.getScaledInstance(width, height, Image.SCALE_SMOOTH), comp.getWidth()/2 - width/2, comp.getHeight()/2 - height/2, width, height, null);
 					width += factor;
 					height += factor;

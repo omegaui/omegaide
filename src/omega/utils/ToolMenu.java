@@ -79,7 +79,7 @@ import static omega.utils.UIManager.*;
 import static omega.utils.IconManager.*;
 import static omega.comp.Animations.*;
 /**
-* This is not only the tool menu but also the IDE's custom window decorator
+* This is not only the tool menu but also the IDE 's custom window decorator
 */
 public class ToolMenu extends JPanel {
 	private Screen screen;
@@ -669,21 +669,8 @@ public class ToolMenu extends JPanel {
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 
-		putComp(openProjectComp, getImageSizeAnimationLayer(100, -5, false));
-		putComp(openFileComp, getImageSizeAnimationLayer(100, -5, false));
-		putComp(newProjectComp, getImageSizeAnimationLayer(100, -5, false));
-		putComp(newFileComp, getImageSizeAnimationLayer(100, -5, false));
-		
-		putComp(runComp, getImageSizeAnimationLayer(100, 5, false));
-		putComp(instantRunComp, getImageSizeAnimationLayer(100, 5, true));
-		putComp(buildComp, getImageSizeAnimationLayer(100, 5, false));
-		putComp(instantBuildComp, getImageSizeAnimationLayer(100, 5, true));
-		
-		putComp(shellComp, getImageSizeAnimationLayer(100, -8, false));
-		putComp(structureViewComp, getImageSizeAnimationLayer(100, -5, true));
-		putComp(searchComp, getImageSizeAnimationLayer(100, -5, false));
-		putComp(langComp, getImageSizeAnimationLayer(100, -5, true));
-		putComp(iconComp, getImageSizeAnimationLayer(100, -5, true));
+		putComp(langComp, getImageSizeAnimationLayer(50, -5, true));
+		putComp(iconComp, getImageSizeAnimationLayer(50, -5, true));
 	}
 	
 	public void minimize(){
