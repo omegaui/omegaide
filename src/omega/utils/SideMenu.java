@@ -77,8 +77,6 @@ public class SideMenu extends JPanel {
 		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(structureComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		
-		putComp(projectTabComp, getImageSizeAnimationLayer(50, 5, true));
 	}
 	
 	public void changeLocations(boolean non_java){

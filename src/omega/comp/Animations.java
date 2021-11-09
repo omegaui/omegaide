@@ -199,9 +199,7 @@ public class Animations {
 					return;
 				
 				new Thread(()->{
-					
-					if(color != comp.color2)
-						this.prepareImages(comp, distance, useClear);
+					this.prepareImages(comp, distance, useClear);
 					
 					Graphics2D g = (Graphics2D)comp.getGraphics();
 					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

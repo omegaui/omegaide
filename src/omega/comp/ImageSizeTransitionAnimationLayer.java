@@ -10,14 +10,27 @@ import java.util.LinkedList;
 public abstract class ImageSizeTransitionAnimationLayer implements AnimationLayer{
 	
 	public LinkedList<BufferedImage> images = new LinkedList<>();
+	public BufferedImage image;
 	public Color color;
+
+	public volatile boolean useAddOn = false;
+
+	public ImageSizeTransitionAnimationLayer setUseAddOn(boolean value){
+		this.useAddOn = value;
+		return this;
+	}
 
 	public synchronized void prepareImages(TextComp comp, int distance, boolean useClear){
 		Color tempColor = comp.color2;
-		if(tempColor == color)
+		if(tempColor == color && image == comp.image)
 			return;
+
+		if(!useAddOn)
+			images.clear();
 		
 		color = tempColor;
+		image = comp.image;
+		
 		int sizeW = comp.w;
 		int sizeH = comp.h;
 		boolean positive = distance >= 0;

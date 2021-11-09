@@ -67,6 +67,7 @@ import omega.instant.support.java.ProjectWizard;
 import omega.instant.support.java.JavaSyntaxParser;
 
 import omega.comp.TextComp;
+import omega.comp.ImageSizeTransitionAnimationLayer;
 
 import omega.popup.OPopupWindow;
 import omega.popup.OPopupItem;
@@ -667,10 +668,14 @@ public class ToolMenu extends JPanel {
 		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 
-		putComp(langComp, getImageSizeAnimationLayer(50, -5, true));
-		putComp(iconComp, getImageSizeAnimationLayer(50, -5, true));
+
+		ImageSizeTransitionAnimationLayer layer = (ImageSizeTransitionAnimationLayer)getImageSizeAnimationLayer(25, -5, true);
+		languageTagView.prepareLayer(layer, iconComp, -5, true);
+		
+		putAnimationLayer(iconComp, layer, ACTION_MOUSE_ENTERED);
+		
+		putComp(iconComp, layer);
 	}
 	
 	public void minimize(){

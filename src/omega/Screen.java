@@ -331,7 +331,7 @@ public class Screen extends JFrame {
 		
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
-			Animations.animateAll(100);
+			Animations.animateAll(500);
 		}
 		else {
 			launcher = new omega.launcher.Launcher();

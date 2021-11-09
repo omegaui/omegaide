@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 import omega.comp.FlexPanel;
 import omega.comp.TextComp;
+import omega.comp.ImageSizeTransitionAnimationLayer;
 
 import omega.Screen;
 
@@ -134,6 +135,7 @@ public class LanguageTagView extends JDialog{
 	public void setActiveLang(int tag){
 		if(tag == Screen.getFileView().getProjectManager().getLanguageTag())
 			return;
+		
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, tag));
 		Screen.getFileView().getProjectManager().setLanguageTag(tag);
 		setVisible(false);
@@ -154,6 +156,17 @@ public class LanguageTagView extends JDialog{
 		langComp.alignX = 30;
 		block += 25;
 		return langComp;
+	}
+
+	public void prepareLayer(ImageSizeTransitionAnimationLayer layer, TextComp iconComp, int distance, boolean useClear){
+		BufferedImage imx = iconComp.image;
+		layer.setUseAddOn(true);
+		for(int i = 0; i < 10; i++){
+			iconComp.image = getRespectiveTagImage(i);
+			layer.prepareImages(iconComp, distance, useClear);
+		}
+		iconComp.image = IconManager.ideImage64;
+		layer.prepareImages(iconComp, distance, useClear);
 	}
 
 	@Override
