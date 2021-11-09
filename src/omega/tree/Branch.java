@@ -1,19 +1,19 @@
 /**
-  * The FileTree Component
-  * Copyright (C) 2021 Omega UI
+* The FileTree Component
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.tree;
@@ -34,6 +34,7 @@ import java.awt.GradientPaint;
 import java.awt.Image;
 
 import java.util.Locale;
+import java.util.LinkedList;
 
 import java.awt.image.BufferedImage;
 
@@ -51,7 +52,11 @@ public class Branch extends JComponent{
 	private String name;
 	private String type = "?";
 	private OPopupWindow popupMenu;
+	
 	private BufferedImage icon;
+	private BufferedImage originalIcon;
+	private LinkedList<BufferedImage> images = new LinkedList<>();
+	
 	public volatile boolean enter;
 	private boolean expand;
 	private Locale l;
@@ -80,8 +85,10 @@ public class Branch extends JComponent{
 		this.expand = file.isDirectory();
 		
 		this.icon = file.getName().endsWith(".java") ? IconManager.fluentfileImage : getPreferredImage(file);
+		this.originalIcon = icon;
 		Image iconX = this.icon.getScaledInstance(IMAGE_SIZE, IMAGE_SIZE, Image.SCALE_SMOOTH);
 		this.icon = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_ARGB);
+		
 		Graphics g = this.icon.getGraphics();
 		g.drawImage(iconX, 0, 0, null);
 		g.dispose();
@@ -186,6 +193,54 @@ public class Branch extends JComponent{
 		l.locate(this);
 	}
 	
+	public void prepareAnimationImages(){
+		int distance = 9;
+		int size = IMAGE_SIZE;
+		while(distance >= 0){
+			BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D)image.getGraphics();
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g.setColor(UIManager.c2);
+			g.fillRect(0, 0, size, size);
+			g.drawImage(originalIcon.getScaledInstance(size, size, Image.SCALE_SMOOTH), 0, 0, size, size, null);
+			g.dispose();
+			images.add(image);
+			
+			size++;
+			distance--;
+		}
+	}
+	
+	public synchronized void playEnterAnimation(){
+		new Thread(()->{
+			if(images.isEmpty())
+				prepareAnimationImages();
+			Graphics2D g = (Graphics2D)getGraphics();
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			int size = IMAGE_SIZE;
+			int distance = 9;
+			int i = 0;
+			while(distance >= 0 && enter){
+				try{
+					Thread.sleep(20);
+				}
+				catch(Exception e){
+					
+				}
+				g.drawImage(images.get(i++), 12 - (size - IMAGE_SIZE), getHeight()/2 - size/2, size, size, null);
+				size++;
+				distance--;
+			}
+			g.dispose();
+			if(!enter)
+				repaint();
+		}).start();
+	}
+	
 	public void set(boolean v){
 		this.enter = v;
 		if(!expand){
@@ -194,6 +249,8 @@ public class Branch extends JComponent{
 			setForeground(back);
 		}
 		repaint();
+		if(v)
+			playEnterAnimation();
 	}
 	@Override
 	public void paint(Graphics graphics){
@@ -203,9 +260,11 @@ public class Branch extends JComponent{
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(getFont());
+		
 		int wx = g.getFontMetrics().stringWidth(name + "    ");
 		int wy = g.getFontMetrics().stringWidth(type);
 		int w  = OPTIMAL_X + wx + wy;
+		
 		if(getWidth() < w)
 			setSize(w, getHeight());
 		
@@ -295,22 +354,22 @@ public class Branch extends JComponent{
 						return IconManager.fluentfolderImage;
 				}
 			}
-               if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
-                    return IconManager.fluentsourceImage;
-               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
-                    return IconManager.fluentbinaryImage;
-               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "res"))
-                    return IconManager.fluentresourceImage;
-               else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "out"))
-                    return IconManager.fluentoutImage;
-               else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
-               	return IconManager.fluentpackageImage;
+			if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
+				return IconManager.fluentsourceImage;
+			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+				return IconManager.fluentbinaryImage;
+			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "res"))
+				return IconManager.fluentresourceImage;
+			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "out"))
+				return IconManager.fluentoutImage;
+			else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+				return IconManager.fluentpackageImage;
 			return IconManager.fluentplainfolderImage;
 		}
 		if(file.getName().contains(".")){
 			String ext = file.getName().substring(file.getName().lastIndexOf('.'));
 			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp") || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
-			     return IconManager.fluentimagefileImage;
+				return IconManager.fluentimagefileImage;
 			if(ext.equals(".java"))
 				return IconManager.fluentjavaImage;
 			if(ext.equals(".py"))

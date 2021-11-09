@@ -1092,10 +1092,10 @@ public class RunView extends View {
 			runTextAreaPanel.add(scrollPane);
 			add(runTextAreaPanel);
 
-			putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
-			putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
-			putAnimationLayer(clearComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
-			putAnimationLayer(killComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+			putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+			putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+			putAnimationLayer(clearComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+			putAnimationLayer(killComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		}
 
 		public void reRun(){

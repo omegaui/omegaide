@@ -63,9 +63,9 @@ public class RunPanel extends JPanel {
 		runTextAreaPanel.add(scrollPane);
 		add(runTextAreaPanel);
 		
-		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(clearComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(killComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(clearComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(killComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 	}
 
 	public void launchAsTerminal(Runnable r, BufferedImage image, String toolTip){

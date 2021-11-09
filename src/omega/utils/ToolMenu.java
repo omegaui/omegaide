@@ -354,25 +354,25 @@ public class ToolMenu extends JPanel {
 		taskMenu.setFont(PX14);
 		setTask("Hover to see Memory Statistics");
 		
-		openProjectComp = new TextComp(fluentfolderImage, 25, 25, "Open Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
+		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
 		openProjectComp.setBounds(0, 55, 30, 30);
 		openProjectComp.setFont(omega.utils.UIManager.PX14);
 		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
 		
-		openFileComp = new TextComp(fluentfileImage, 25, 25, "Open File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
+		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
 		openFileComp.setBounds(32, 55, 30, 30);
 		openFileComp.setFont(omega.utils.UIManager.PX14);
 		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
 		
-		newProjectComp = new TextComp(fluentnewfolderImage, 25, 25, "Create New Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
+		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
 		newProjectComp.setBounds(64, 55, 30, 30);
 		newProjectComp.setFont(omega.utils.UIManager.PX14);
 		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
 		
-		newFileComp = new TextComp(fluentnewfileImage, 25, 25, "Create New File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
+		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
 		newFileComp.setBounds(96, 55, 30, 30);
 		newFileComp.setFont(PX14);
 		newFileComp.setArcVisible(true, false, true, false);
@@ -655,17 +655,17 @@ public class ToolMenu extends JPanel {
 		
 		reshapeComp();
 		
-		putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, -8, false), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, false), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 
