@@ -17,10 +17,13 @@
 */
 
 package omega.popup;
+import java.util.LinkedList;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.GradientPaint;
+import java.awt.Image;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -35,7 +38,10 @@ public class OPopupItem extends JComponent{
 	private Runnable run;
 	private Runnable enterRun;
 	private Runnable exitRun;
+	
 	private BufferedImage image;
+	private LinkedList<BufferedImage> images = new LinkedList<>();
+	
 	private OPopupWindow popup;
 	private volatile boolean enter;
 	private volatile boolean clickable = true;
@@ -58,6 +64,8 @@ public class OPopupItem extends JComponent{
 				repaint();
 				if(OPopupItem.this.enterRun != null)
 					OPopupItem.this.enterRun.run();
+
+				playEnterAnimation();
 			}
 			
 			@Override
@@ -81,6 +89,57 @@ public class OPopupItem extends JComponent{
 					OPopupItem.this.run.run();
 			}
 		});
+	}
+
+	public void playEnterAnimation(){
+		new Thread(()->{
+			if(images.isEmpty())
+				prepareImages();
+			
+			Graphics2D g = (Graphics2D)getGraphics();
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			
+			for(BufferedImage image : images){
+				if(!enter){
+					repaint();
+					return;
+				}
+				g.drawImage(image, 0, getHeight()/2 - image.getHeight()/2, null);
+				
+				try{
+					Thread.sleep(20);
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			
+			g.dispose();
+		}).start();
+	}
+
+	public void prepareImages(){
+		int distance = 9;
+		
+		int size = 16;
+		
+		while(distance >= 0){
+			BufferedImage image = new BufferedImage(getHeight(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D)image.getGraphics();
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g.setColor(getBackground());
+			g.fillRect(0, 0, getHeight(), getHeight());
+			g.drawImage(this.image.getScaledInstance(size, size, Image.SCALE_SMOOTH), getHeight()/2 - size/2, getHeight()/2 - size/2, size, size, null);
+			g.dispose();
+			
+			images.add(image);
+			
+			size++;
+			distance--;
+		}
 	}
 	
 	public void setName(String name){
