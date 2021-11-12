@@ -80,6 +80,8 @@ public class IconManager {
      public static BufferedImage fluentbinaryImage = getFluentIcon("venn-diagram-50.png");
      public static BufferedImage fluentlogImage = getFluentIcon("log-48.png");
      public static BufferedImage fluentemptylogImage = getFluentIcon("empty-log-48.png");
+     public static BufferedImage fluentarchiveImage = getFluentIcon("archive-48.png");
+     public static BufferedImage fluentxmlImage = getFluentIcon("xml-transformer-48.png");
      
      public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
      public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");

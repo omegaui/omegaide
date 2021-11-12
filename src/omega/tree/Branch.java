@@ -394,10 +394,14 @@ public class Branch extends JComponent{
 				return IconManager.fluentshellImage;
 			if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
 				return IconManager.fluentlinuxImage;
+			if(ext.equalsIgnoreCase(".fxml") || ext.equals(".xml"))
+				return IconManager.fluentxmlImage;
 			if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
 				return IconManager.fluentwindowsImage;
 			if(ext.equals(".dmg"))
 				return IconManager.fluentmacImage;
+			if(file.getName().endsWith(".zip") || file.getName().endsWith(".7z") || file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz") || file.getName().endsWith(".jar"))
+				return IconManager.fluentarchiveImage;
 		}
 		return IconManager.fluentanyfileImage;
 	}
