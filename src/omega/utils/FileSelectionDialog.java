@@ -51,6 +51,7 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 
 import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class FileSelectionDialog extends JDialog{
 
      private TextComp titleComp;
@@ -136,7 +137,7 @@ public class FileSelectionDialog extends JDialog{
           cancelComp.setArc(0, 0);
           add(cancelComp);
 
-          levelComp = new TextComp(IconManager.fluentlevelupImage, 25, 25, "Move One Level Up", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
+          levelComp = new TextComp(IconManager.fluentlevelupImage, 20, 20, "Move One Level Up", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
                if(currentDir == null)
                     return;
                String path = currentDir.getAbsolutePath();
@@ -168,7 +169,7 @@ public class FileSelectionDialog extends JDialog{
           levelComp.setArc(0, 0);
           add(levelComp);
 
-          homeComp = new TextComp(IconManager.fluenthomeImage, 25, 25, "Go Home", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
+          homeComp = new TextComp(IconManager.fluenthomeImage, 20, 20, "Go Home", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
                currentDir = new File(System.getProperty("user.home"));
                if(state == 0)
                     selectFiles();
@@ -251,6 +252,9 @@ public class FileSelectionDialog extends JDialog{
           panel.setBackground(c2);
           panel.setPreferredSize(new Dimension(490, 290));
           panel.setBorder(null);
+
+          putAnimationLayer(levelComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+          putAnimationLayer(homeComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
      }
 
 	@Override

@@ -1,19 +1,19 @@
 /**
-  * ToggleComp
-  * Copyright (C) 2021 Omega UI
+* ToggleComp
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.comp;
@@ -25,6 +25,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import java.awt.image.BufferedImage;
+import static omega.comp.Animations.*;
 public class ToggleComp extends TextComp {
 	
 	private volatile boolean state = false;
@@ -56,8 +57,8 @@ public class ToggleComp extends TextComp {
 	public ToggleComp(BufferedImage image, int w, int h, String text, Color c1, Color c2, Color c3, boolean state){
 		this(text, c1, c2, c3, state);
 		setImage(image);
-          setImageWidth(w);
-          setImageHeight(h);
+		setImageWidth(w);
+		setImageHeight(h);
 	}
 	public java.awt.image.BufferedImage getImage() {
 		return image;
@@ -67,7 +68,7 @@ public class ToggleComp extends TextComp {
 		this.image = image;
 		repaint();
 	}
-          
+	
 	public void setImageWidth(int w){
 		this.w = w;
 	}
