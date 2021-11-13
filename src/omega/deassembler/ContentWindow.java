@@ -37,6 +37,9 @@ import java.util.LinkedList;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -79,7 +82,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			setBackground(c2);
 			setBorder(null);
 			
-			iconComp = new TextComp(getIcon(), optimalHintHeight, optimalHintHeight, c2, c2, c2, null);
+			iconComp = new TextComp(getIcon(), optimalHintHeight - 5, optimalHintHeight - 5, c2, c2, c2, null);
 			iconComp.setBounds(0, 0, optimalHintHeight, optimalHintHeight);
 			iconComp.setArc(0, 0);
 			iconComp.setClickable(false);
@@ -89,8 +92,6 @@ public class ContentWindow extends JPanel implements KeyListener{
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
-			//nameComp.setGradientColor(glow);
-			//nameComp.setPaintTextGradientEnabled(true);
 			nameComp.alignX = 2;
 			nameComp.setUseSpeedMode(true);
 			nameComp.addHighlightText(getHighlights());

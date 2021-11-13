@@ -99,6 +99,7 @@ public class IconManager {
      public static BufferedImage fluentvolatileImage = getFluentIcon("volatile-48.png");
      public static BufferedImage fluentsyncImage = getFluentIcon("sync-48.png");
      public static BufferedImage fluentmethodImage = getFluentIcon("method-48.png");
+     public static BufferedImage fluentnewItemImage = getFluentIcon("new-item-48.png");
      
      public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
      public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");

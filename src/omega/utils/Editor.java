@@ -49,6 +49,7 @@ import omega.framework.IndentationFramework;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 
@@ -179,7 +180,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		scrollPane = new RTextScrollPane(this, true);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
-		
 		
 		fAndR = new FindAndReplace();
 		

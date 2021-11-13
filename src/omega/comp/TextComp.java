@@ -104,6 +104,7 @@ public class TextComp extends JComponent{
 			
 			@Override
 			public void mouseExited(MouseEvent e){
+				if(!clickable) return;
 				enter = false;
 				repaint();
 			}

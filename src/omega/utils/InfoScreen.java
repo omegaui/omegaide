@@ -60,6 +60,7 @@ public class InfoScreen extends JDialog {
           catch(Exception e){ 
                System.err.println(e); 
           }
+          
           setUndecorated(true);
           setBackground(Screen.onWindows() ? c2 : new Color(0, 0, 0, 0));
           setSize(300, 300);

@@ -1,19 +1,19 @@
 /**
-  The FileWizard
-  * Copyright (C) 2021 Omega UI
+The FileWizard
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.instant.support;
@@ -42,8 +42,8 @@ import omega.comp.NoCaretField;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-
 import static omega.utils.UIManager.*;
+import static omega.comp.Animations.*;
 public class FileWizard extends JDialog{
 	public TextComp parentRoot;
 	public TextComp typeBtn;
@@ -56,39 +56,39 @@ public class FileWizard extends JDialog{
 		setResizable(false);
 		init();
 	}
-
+	
 	private void init(){
 		NoCaretField nameField = new NoCaretField("", "type file name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
 		nameField.setToolTipText("Enter name of the File or Source");
 		nameField.setBounds(0, 0, getWidth() - 40, 40);
-          nameField.setFont(PX16);
+		nameField.setFont(PX16);
 		add(nameField);
-          addKeyListener(nameField);
-
+		addKeyListener(nameField);
+		
 		final FileSelectionDialog fileC = new FileSelectionDialog(this);
 		fileC.setTitle("Select a directory as source root");
-          
+		
 		parentRoot = new TextComp(":", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2, ()->{
 			LinkedList<File> selections = fileC.selectDirectories();
 			if(!selections.isEmpty()){
 				parentRoot.setToolTipText(selections.get(0).getAbsolutePath());
 			}
 		});
-          parentRoot.setArc(0, 0);
-          parentRoot.setFont(PX16);
+		parentRoot.setArc(0, 0);
+		parentRoot.setFont(PX16);
 		parentRoot.setBounds(nameField.getWidth(), 0, 40, 40);
 		add(parentRoot);
-
+		
 		final OPopupWindow popup = new OPopupWindow("File-Type Menu", this, 0, false).width(210);
 		typeBtn = new TextComp("class", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
 		typeBtn.setBounds(0, nameField.getHeight(), getWidth(), 40);
-          popup.createItem("Directory", IconManager.projectImage, ()->typeBtn.setText("directory"))
-          .createItem("Class", IconManager.classImage, ()->typeBtn.setText("class"))
-          .createItem("Record", IconManager.recordImage, ()->typeBtn.setText("record"))
-          .createItem("Interface", IconManager.interImage, ()->typeBtn.setText("interface"))
-          .createItem("Annotation", IconManager.annImage, ()->typeBtn.setText("@interface"))
-          .createItem("Enum", IconManager.enumImage, ()->typeBtn.setText("enum"))
-          .createItem("Custom File", IconManager.fileImage, ()->typeBtn.setText("Custom File"));
+		popup.createItem("Directory", IconManager.projectImage, ()->typeBtn.setText("directory"))
+		.createItem("Class", IconManager.classImage, ()->typeBtn.setText("class"))
+		.createItem("Record", IconManager.recordImage, ()->typeBtn.setText("record"))
+		.createItem("Interface", IconManager.interImage, ()->typeBtn.setText("interface"))
+		.createItem("Annotation", IconManager.annImage, ()->typeBtn.setText("@interface"))
+		.createItem("Enum", IconManager.enumImage, ()->typeBtn.setText("enum"))
+		.createItem("Custom File", IconManager.fileImage, ()->typeBtn.setText("Custom File"));
 		typeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -96,16 +96,16 @@ public class FileWizard extends JDialog{
 				popup.setVisible(true);
 			}
 		});
-          typeBtn.setFont(PX16);
-          typeBtn.setArc(0, 0);
+		typeBtn.setFont(PX16);
+		typeBtn.setArc(0, 0);
 		add(typeBtn);
-
+		
 		TextComp cancelBtn = new TextComp("Close", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, this::dispose);
 		cancelBtn.setBounds(0, getHeight() - 40, getWidth()/2, 40);
-          cancelBtn.setFont(PX16);
-          cancelBtn.setArc(0, 0);
+		cancelBtn.setFont(PX16);
+		cancelBtn.setArc(0, 0);
 		add(cancelBtn);
-
+		
 		TextComp createBtn = new TextComp("Create", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			if(parentRoot.getToolTipText() == null) return;
 			if(!new File(parentRoot.getToolTipText()).exists()) {
@@ -113,12 +113,12 @@ public class FileWizard extends JDialog{
 				return;
 			}
 			String type = typeBtn.getText();
-               if(type.equals("directory")){
-                    File dir = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
-                    dir.mkdir();
-                    Screen.getProjectView().reload();
-                    return;
-               }
+			if(type.equals("directory")){
+				File dir = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
+				dir.mkdir();
+				Screen.getProjectView().reload();
+				return;
+			}
 			if(!type.equals("Custom File")){
 				String text = nameField.getText();
 				if(!text.contains(".")){
@@ -145,15 +145,15 @@ public class FileWizard extends JDialog{
 						file.createNewFile();
 					}
 					catch(Exception ex){
-					     nameField.setText("Access Denied");
-				     }
-                         try{
-                              Screen.getProjectView().reload();
-                              Screen.getScreen().loadFile(file);
-                         }
-                         catch(Exception e){ 
-                         	System.err.println(e); 
-                         }
+						nameField.setText("Access Denied");
+					}
+					try{
+						Screen.getProjectView().reload();
+						Screen.getScreen().loadFile(file);
+					}
+					catch(Exception e){
+						System.err.println(e);
+					}
 				}
 				else
 					nameField.setText("File Already Exists");
@@ -161,39 +161,39 @@ public class FileWizard extends JDialog{
 		});
 		createBtn.setBounds(getWidth()/2, getHeight() - 40, getWidth()/2, 40);
 		createBtn.setFont(PX16);
-          createBtn.setArc(0, 0);
-          nameField.setOnAction(createBtn.runnable);
+		createBtn.setArc(0, 0);
+		nameField.setOnAction(createBtn.runnable);
 		add(createBtn);
 	}
-
+	
 	public void show(String type){
 		typeBtn.setText(type);
 		if(Screen.getFileView().getProjectPath() != null && new File(Screen.getFileView().getProjectPath()).exists())
 			parentRoot.setToolTipText(Screen.getFileView().getProjectPath() + File.separator + "src");
 		setVisible(true);
 	}
-
-     public static void createSRCFile(File file, String type, String pack, String name){
-          try{
-               PrintWriter writer = new PrintWriter(new FileOutputStream(file));
-               String header = type;
-               if(!header.equals("")){
-                    writer.println("package " + pack + ";");
-                    writer.println("public " + header + " " + name + " {\n}");
-               }
-               writer.close();
-               omega.Screen.getScreen().loadFile(file);
-               Screen.getProjectView().reload();
-          }
-          catch(Exception e){ 
-               e.printStackTrace();
-          }
-     }
-
-     @Override
-     public void paint(Graphics g){
-     	super.paint(g);
-          typeBtn.repaint();
-     }
+	
+	public static void createSRCFile(File file, String type, String pack, String name){
+		try{
+			PrintWriter writer = new PrintWriter(new FileOutputStream(file));
+			String header = type;
+			if(!header.equals("")){
+				writer.println("package " + pack + ";");
+				writer.println("public " + header + " " + name + " {\n}");
+			}
+			writer.close();
+			omega.Screen.getScreen().loadFile(file);
+			Screen.getProjectView().reload();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void paint(Graphics g){
+		super.paint(g);
+		typeBtn.repaint();
+	}
 }
 
