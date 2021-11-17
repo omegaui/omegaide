@@ -343,7 +343,7 @@ public class Screen extends JFrame {
 	public void setSize(int w, int h){
 		super.setSize(w, h);
 		int arc = 20;
-		if(w == (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth() || h >= (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight() - 1)
+		if(getExtendedState() != NORMAL)
 			arc = 0;
 		setShape(new RoundRectangle2D.Double(0, 0, w, h, arc, arc));
 	}
