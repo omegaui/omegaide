@@ -81,7 +81,7 @@ public class OPopupItem extends JComponent{
 			
 			@Override
 			public void mousePressed(MouseEvent e){
-				if(!isEnabled())
+				if(!isEnabled() || e.getButton() == 3)
 					return;
 				
 				popup.setVisible(false);

@@ -235,7 +235,7 @@ public class Animations {
 			if(animationRunning || !comp.isDrawingImage() || images == null || images.isEmpty())
 				return;
 			
-			new Thread(()->{				
+			new Thread(()->{
 				Graphics2D g = (Graphics2D)comp.getGraphics();
 				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
