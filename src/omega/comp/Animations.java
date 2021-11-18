@@ -207,12 +207,6 @@ public class Animations {
 					
 					comp.map.put(ANIMATION_STATE, true);
 					
-					boolean positive = distance >= 0;
-					int factor = positive ? +1 : -1;
-					int currentDistance = distance;
-					
-					int i = 0;
-					
 					for(BufferedImage image : images){
 						g.drawImage(image, 0, 0, null);
 						
@@ -232,6 +226,40 @@ public class Animations {
 						comp.repaint();
 				}).start();
 			}
+		};
+	}
+	
+	public static AnimationLayer getImageFrameAnimationLayer(int rate, LinkedList<BufferedImage> images){
+		return (comp)->{
+			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
+			if(animationRunning || !comp.isDrawingImage() || images == null || images.isEmpty())
+				return;
+			
+			new Thread(()->{				
+				Graphics2D g = (Graphics2D)comp.getGraphics();
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				
+				comp.map.put(ANIMATION_STATE, true);
+				
+				for(BufferedImage image : images){
+					g.drawImage(image, 0, 0, null);
+					
+					try{
+						Thread.sleep(rate);
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
+				g.dispose();
+				
+				comp.map.put(ANIMATION_STATE, false);
+				
+				if(!comp.enter)
+					comp.repaint();
+			}).start();
 		};
 	}
 	
