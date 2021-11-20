@@ -20,6 +20,7 @@ package omega.instant.support;
 import omega.Screen;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -127,14 +128,19 @@ public class FileWizard extends JDialog{
 		putAnimationLayer(closeComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		
 		final OPopupWindow popup = new OPopupWindow("File-Type Menu", this, 0, false).width(210);
-		typeBtn = new TextComp("class", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{});
-		typeBtn.setBounds(150, typeLabel.getY(), 120, 25);
+		typeBtn = new TextComp("class", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{}){
+			@Override
+			public void draw(Graphics2D g){
+				g.drawImage(IconManager.fluentcategoryImage, 0, 0, 25, 25, null);
+			}
+		};
+		typeBtn.setBounds(150, typeLabel.getY(), 140, 25);
 		popup.createItem("Directory", IconManager.projectImage, ()->typeBtn.setText("directory"))
-		.createItem("Class", IconManager.classImage, ()->typeBtn.setText("class"))
-		.createItem("Record", IconManager.recordImage, ()->typeBtn.setText("record"))
-		.createItem("Interface", IconManager.interImage, ()->typeBtn.setText("interface"))
-		.createItem("Annotation", IconManager.annImage, ()->typeBtn.setText("@interface"))
-		.createItem("Enum", IconManager.enumImage, ()->typeBtn.setText("enum"))
+		.createItem("Class", IconManager.fluentclassFileImage, ()->typeBtn.setText("class"))
+		.createItem("Record", IconManager.fluentrecordFileImage, ()->typeBtn.setText("record"))
+		.createItem("Interface", IconManager.fluentinterfaceFileImage, ()->typeBtn.setText("interface"))
+		.createItem("Annotation", IconManager.fluentannotationFileImage, ()->typeBtn.setText("@interface"))
+		.createItem("Enum", IconManager.fluentenumFileImage, ()->typeBtn.setText("enum"))
 		.createItem("Custom File", IconManager.fileImage, ()->typeBtn.setText("Custom File"));
 		typeBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -143,6 +149,7 @@ public class FileWizard extends JDialog{
 				popup.setVisible(true);
 			}
 		});
+		typeBtn.alignX = 30;
 		typeBtn.setFont(PX14);
 		typeBtn.setArc(0, 0);
 		add(typeBtn);

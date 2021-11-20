@@ -84,11 +84,11 @@ public class PopupManager {
 		if(file.isDirectory()) {
 			popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
 			.createItem("New File", IconManager.fluentnewfileImage, ()->Screen.getFileView().getFileCreator().showFileView(file.getAbsolutePath()))
-			.createItem("New Class", IconManager.classImage, ()->Screen.getFileView().getFileCreator().showFileView("class", file.getAbsolutePath()))
-			.createItem("New Record", IconManager.recordImage, ()->Screen.getFileView().getFileCreator().showFileView("record", file.getAbsolutePath()))
-			.createItem("New Interface", IconManager.interImage, ()->Screen.getFileView().getFileCreator().showFileView("interface", file.getAbsolutePath()))
-			.createItem("New Enum", IconManager.enumImage, ()->Screen.getFileView().getFileCreator().showFileView("enum", file.getAbsolutePath()))
-			.createItem("New Annotation", IconManager.annImage, ()->Screen.getFileView().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
+			.createItem("New Class", IconManager.fluentclassFileImage, ()->Screen.getFileView().getFileCreator().showFileView("class", file.getAbsolutePath()))
+			.createItem("New Record", IconManager.fluentrecordFileImage, ()->Screen.getFileView().getFileCreator().showFileView("record", file.getAbsolutePath()))
+			.createItem("New Interface", IconManager.fluentinterfaceFileImage, ()->Screen.getFileView().getFileCreator().showFileView("interface", file.getAbsolutePath()))
+			.createItem("New Enum", IconManager.fluentenumFileImage, ()->Screen.getFileView().getFileCreator().showFileView("enum", file.getAbsolutePath()))
+			.createItem("New Annotation", IconManager.fluentannotationFileImage, ()->Screen.getFileView().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
 		}
 		popup.createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file));
 		if(!file.isDirectory()) {

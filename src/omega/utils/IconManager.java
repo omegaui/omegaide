@@ -115,6 +115,13 @@ public class IconManager {
      public static BufferedImage fluentfocusImage = getFluentIcon("goal-48.png");
      public static BufferedImage fluentnormalScreenImage = getFluentIcon("normal-screen-48.png");
      
+     public static BufferedImage fluentclassFileImage = getFluentIcon("class-48.png");
+     public static BufferedImage fluentinterfaceFileImage = getFluentIcon("signal-48.png");
+     public static BufferedImage fluentannotationFileImage = getFluentIcon("note-48.png");
+     public static BufferedImage fluentenumFileImage = getFluentIcon("category-48.png");
+     public static BufferedImage fluentrecordFileImage = getFluentIcon("burn-cd-48.png");
+     public static BufferedImage fluentcategoryImage = getFluentIcon("categorize-48.png");
+     
 
      //The Default Icon Pack -- mixed
      public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
