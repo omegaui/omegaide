@@ -31,7 +31,7 @@ import omega.snippet.SnippetBase;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 public class ContentTokenizer {
-	// hello().length(hello().
+	
 	public static boolean isConditionalCode(String code){
 		return isObjectInstantiationCode(code);
 	}
@@ -140,6 +140,27 @@ public class ContentTokenizer {
 		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
+			LinkedList<DataMember> staticMembers = new LinkedList<>();
+			LinkedList<String> decompiledStaticDataFromClasses = new LinkedList<>();
+			//Adding static data members & methods
+			for(SourceReader.Import im : reader.imports){
+				if(im.isStatic){
+					if(decompiledStaticDataFromClasses.contains(im.pack))
+						continue;
+					
+					if(CodeFramework.isSource(im.pack))
+						staticMembers = new SourceReader(CodeFramework.getContent(im.pack)).getDataMembers("static");
+					else
+						staticMembers = Screen.getFileView().getJDKManager().prepareReader(im.pack).getDataMembers("static");
+					decompiledStaticDataFromClasses.add(im.pack);
+					
+					for(DataMember dx : staticMembers){
+						dataMembers.add(dx);
+					}
+					
+					staticMembers.clear();
+				}
+			}
 			//Searching whether you need Class names as suggestion
 			LinkedList<SourceReader.Import> imports = new LinkedList<>();
 			main:

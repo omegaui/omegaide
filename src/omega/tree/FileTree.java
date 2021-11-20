@@ -1,19 +1,19 @@
 /**
-  * FileTree
-  * Copyright (C) 2021 Omega UI
+* FileTree
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.tree;
@@ -54,20 +54,20 @@ public class FileTree extends JComponent{
 	private int maxW = 300;
 	private int max = 0;
 	private int pointer;
-     private int mouseX;
-     private int mouseY;
-     private int mousePX;
-     private int mousePY;
+	private int mouseX;
+	private int mouseY;
+	private int mousePX;
+	private int mousePY;
 	
 	public JScrollPane scrollPane;
-     
-     private Branch pressedBranch;
-     
-     private BufferedImage image;
-     
-     private volatile boolean dragging;
-     private volatile boolean loopRunning;
-
+	
+	private Branch pressedBranch;
+	
+	private BufferedImage image;
+	
+	private volatile boolean dragging;
+	private volatile boolean loopRunning;
+	
 	public FileTree(String root){
 		super();
 		setPreferredSize(new Dimension(300, 400));
@@ -75,73 +75,74 @@ public class FileTree extends JComponent{
 			this.pointer = 0;
 			this.root = new File(root);
 			setLayout(new BorderLayout());
-               panel = new JPanel(null);
+			panel = new JPanel(null);
 			scrollPane = new JScrollPane(panel);
-               scrollPane.setBackground(omega.utils.UIManager.c2);
-               panel.setBackground(omega.utils.UIManager.c2);
+			scrollPane.setBackground(omega.utils.UIManager.c2);
+			panel.setBackground(omega.utils.UIManager.c2);
 			add(scrollPane, BorderLayout.CENTER);
 		}
 	}
-
-     public void paintComp(int x, int y){
-          if(dragging)
-               getGraphics().drawImage(image, x, y, null);
-     }
-
-     @Override
-     public void paint(Graphics graphics){
-          paintComp(mouseX, mouseY);
-     	super.paint(graphics);
-     }
-
-     public void startPaintLoop(){
-          if(loopRunning) return;
-          loopRunning = true;
-          new Thread(()->{
-               while(loopRunning)
-                    repaint();
-          }).start();
-     }
-     
-     public void stopPaintLoop(){
-          loopRunning = false;
-          Branch selection = null;
-          for(Branch b : branches){
-               if(b.enter){
-                    selection = b;
-                    break;
-               }
-          }
-          if(selection == null || pressedBranch == null) return;
-          if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
-          
-          //Doing move or copy operation
-          int res = ChoiceDialog.makeChoice("Select an action!", "Move", "Copy");
-          if(res == ChoiceDialog.CANCEL)
-               return;
-          if(res == ChoiceDialog.CHOICE1)
-               FileOperationManager.move(pressedBranch.file, selection.file);
-          else 
-               FileOperationManager.copy(pressedBranch.file, selection.file);
-     }
-
+	
+	public void paintComp(int x, int y){
+		if(dragging)
+			getGraphics().drawImage(image, x, y, null);
+	}
+	
+	@Override
+	public void paint(Graphics graphics){
+		paintComp(mouseX, mouseY);
+		super.paint(graphics);
+	}
+	
+	public void startPaintLoop(){
+		if(loopRunning) return;
+		loopRunning = true;
+		new Thread(()->{
+			while(loopRunning)
+				repaint();
+		}).start();
+	}
+	
+	public void stopPaintLoop(){
+		loopRunning = false;
+		Branch selection = null;
+		for(Branch b : branches){
+			if(b.enter){
+				selection = b;
+				break;
+			}
+		}
+		if(selection == null || pressedBranch == null) return;
+		if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
+		
+		//Doing move or copy operation
+		int res = ChoiceDialog.makeChoice("Select an action!", "Move", "Copy");
+		if(res == ChoiceDialog.CANCEL)
+			return;
+		if(res == ChoiceDialog.CHOICE1)
+			FileOperationManager.move(pressedBranch.file, selection.file);
+		else
+			FileOperationManager.copy(pressedBranch.file, selection.file);
+	}
+	
 	public void gen(File file){
-		if(expandedRoots.contains(file)) return;
+		if(expandedRoots.contains(file)) 
+			return;
 		LinkedList<File> files = getContents(file);
 		expandedRoots.add(file);
 		layoutX += Branch.OPTIMAL_HEIGHT;
 		layoutY = 0;
 		if(layoutX > max)
 			max = layoutX;
-          
-          //Also Adding the Project Root Directory
-          Branch bx = new Branch(file, (branch)->{});
-          bx.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
-          panel.add(bx);
-          branches.add(bx);
-          layoutY += Branch.OPTIMAL_HEIGHT;
-          layoutX += Branch.OPTIMAL_HEIGHT;
-          
+		
+		//Also Adding the Project Root Directory
+		Branch bx = new Branch(file, (branch)->{});
+		bx.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
+		panel.add(bx);
+		branches.add(bx);
+		layoutY += Branch.OPTIMAL_HEIGHT;
+		layoutX += Branch.OPTIMAL_HEIGHT;
+		
 		files.forEach(f->{
 			Branch b = new Branch(f, (branch)->{
 				if(f.isDirectory()){
@@ -152,46 +153,46 @@ public class FileTree extends JComponent{
 						dissloveBranch(f);
 					}
 				}
-				else 
-			          omega.Screen.getScreen().loadFile(branch.file);
+				else
+					omega.Screen.getScreen().loadFile(branch.file);
 			});
 			b.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
-               b.addMouseListener(new MouseAdapter(){
-                    @Override
-                    public void mousePressed(MouseEvent e){
-                         pressedBranch = b;
-                         image = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                         b.paint(image.getGraphics());
-                         mousePX = e.getX();
-                         mousePY = e.getY();
-                    }
-                    @Override
-                    public void mouseReleased(MouseEvent e){
-                         if(dragging){
-                              dragging = false;
-                              stopPaintLoop();
-                         }
-                    }
-               });
-               b.addMouseMotionListener(new MouseAdapter(){
-                    @Override
-                    public void mouseDragged(MouseEvent e){
-                         dragging = true;
-                         mouseX = e.getX() + b.getX() - mousePX;
-                         mouseY = e.getY() + b.getY() - mousePY - scrollPane.getVerticalScrollBar().getValue();
-                         startPaintLoop();
-                    }
-               });
+			b.addMouseListener(new MouseAdapter(){
+				@Override
+				public void mousePressed(MouseEvent e){
+					pressedBranch = b;
+					image = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					b.paint(image.getGraphics());
+					mousePX = e.getX();
+					mousePY = e.getY();
+				}
+				@Override
+				public void mouseReleased(MouseEvent e){
+					if(dragging){
+						dragging = false;
+						stopPaintLoop();
+					}
+				}
+			});
+			b.addMouseMotionListener(new MouseAdapter(){
+				@Override
+				public void mouseDragged(MouseEvent e){
+					dragging = true;
+					mouseX = e.getX() + b.getX() - mousePX;
+					mouseY = e.getY() + b.getY() - mousePY - scrollPane.getVerticalScrollBar().getValue();
+					startPaintLoop();
+				}
+			});
 			panel.add(b);
 			branches.add(b);
 			layoutY += Branch.OPTIMAL_HEIGHT;
 		});
 		if(branches.isEmpty()) return;
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-          omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
+		omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
 		repaint();
 	}
-
+	
 	public LinkedList<Branch> getBranches(File file){
 		LinkedList<File> files = getContents(file);
 		expandedRoots.add(file);
@@ -207,34 +208,34 @@ public class FileTree extends JComponent{
 					}
 				}
 				else omega.Screen.getScreen().loadFile(branch.file);
-			});
+				});
 			b.setBounds(layoutX, layoutY, 300, Branch.OPTIMAL_HEIGHT);
-               b.addMouseListener(new MouseAdapter(){
-                    @Override
-                    public void mousePressed(MouseEvent e){
-                         pressedBranch = b;
-                         image = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                         b.paint(image.getGraphics());
-                         mousePX = e.getX();
-                         mousePY = e.getY();
-                    }
-                    @Override
-                    public void mouseReleased(MouseEvent e){
-                         if(dragging){
-                              dragging = false;
-                              stopPaintLoop();
-                         }
-                    }
-               });
-               b.addMouseMotionListener(new MouseAdapter(){
-                    @Override
-                    public void mouseDragged(MouseEvent e){
-                         dragging = true;
-                         mouseX = e.getX() + b.getX() - mousePX;
-                         mouseY = e.getY() + b.getY() - mousePY - scrollPane.getVerticalScrollBar().getValue();
-                         startPaintLoop();
-                    }
-               });
+			b.addMouseListener(new MouseAdapter(){
+				@Override
+				public void mousePressed(MouseEvent e){
+					pressedBranch = b;
+					image = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					b.paint(image.getGraphics());
+					mousePX = e.getX();
+					mousePY = e.getY();
+				}
+				@Override
+				public void mouseReleased(MouseEvent e){
+					if(dragging){
+						dragging = false;
+						stopPaintLoop();
+					}
+				}
+			});
+			b.addMouseMotionListener(new MouseAdapter(){
+				@Override
+				public void mouseDragged(MouseEvent e){
+					dragging = true;
+					mouseX = e.getX() + b.getX() - mousePX;
+					mouseY = e.getY() + b.getY() - mousePY - scrollPane.getVerticalScrollBar().getValue();
+					startPaintLoop();
+				}
+			});
 			panel.add(b);
 			branches.add(b);
 			branchesX.add(b);
@@ -242,7 +243,7 @@ public class FileTree extends JComponent{
 		});
 		return branchesX;
 	}
-
+	
 	public void genBranch(File f){
 		if(expandedRoots.contains(f) || f.getAbsolutePath().equals(root.getAbsolutePath())) return;
 		Branch root = null;
@@ -269,10 +270,10 @@ public class FileTree extends JComponent{
 			branches.add(b);
 		}
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-          omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
+		omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
 		repaint();
 	}
-
+	
 	public void dissloveBranch(File f){
 		if(!expandedRoots.contains(f)) return;
 		expandedRoots.remove(f);
@@ -303,21 +304,21 @@ public class FileTree extends JComponent{
 		}
 		children.clear();
 		panel.setPreferredSize(new Dimension(max + maxW, branches.getLast().getY() + Branch.OPTIMAL_HEIGHT));
-          omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
+		omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
 		repaint();
 	}
-
-     public static int getWidestBranchLastX(LinkedList<Branch> branches){
-     	int x = 0;
-          int w = 0;
-          for(Branch b : branches){
-               w = b.getX() + b.getWidth();
-               if(w > x)
-                    x = w;
-          }
-          return x + 5;
-     }
-
+	
+	public static int getWidestBranchLastX(LinkedList<Branch> branches){
+		int x = 0;
+		int w = 0;
+		for(Branch b : branches){
+			w = b.getX() + b.getWidth();
+			if(w > x)
+				x = w;
+		}
+		return x + 5;
+	}
+	
 	private synchronized LinkedList<File> getContents(File file){
 		LinkedList<File> files = new LinkedList<>();
 		if(file == null) return files;
@@ -327,50 +328,50 @@ public class FileTree extends JComponent{
 		sort(files);
 		return files;
 	}
-
+	
 	public static synchronized void sort(LinkedList<File> files){
-          try{
-               final LinkedList<File> tempFiles = new LinkedList<>();
-               final LinkedList<File> tempDirs = new LinkedList<>();
-               files.forEach(f->{
-                    if(f.isDirectory()) tempDirs.add(f);
-                    else tempFiles.add(f);
-               });
-               files.clear();
-               File[] F = new File[tempFiles.size()];
-               int k = -1;
-               for(File fx : tempFiles)
-                    F[++k] = fx;
-               File[] D = new File[tempDirs.size()];
-               k = -1;
-               for(File fx : tempDirs)
-                    D[++k] = fx;
-               sort(F);
-               sort(D);
-               LinkedList<File> dots = new LinkedList<>();
-               for(File f : D){
-                    if(f.getName().startsWith(".")) dots.add(f);
-                    else files.add(f);
-               }
-               for(File f : dots){
-                    files.add(f);
-               }
-               dots.clear();
-               for(File f : F){
-                    if(f.getName().startsWith(".")) dots.add(f);
-                    else files.add(f);
-               }
-               for(File f : dots){
-                    files.add(f);
-               }
-               tempFiles.clear();
-               tempDirs.clear();
-               dots.clear();
-          }
-          catch(Exception exception){
-               
-          }
-     }
+		try{
+			final LinkedList<File> tempFiles = new LinkedList<>();
+			final LinkedList<File> tempDirs = new LinkedList<>();
+			files.forEach(f->{
+				if(f.isDirectory()) tempDirs.add(f);
+				else tempFiles.add(f);
+				});
+			files.clear();
+			File[] F = new File[tempFiles.size()];
+			int k = -1;
+			for(File fx : tempFiles)
+				F[++k] = fx;
+			File[] D = new File[tempDirs.size()];
+			k = -1;
+			for(File fx : tempDirs)
+				D[++k] = fx;
+			sort(F);
+			sort(D);
+			LinkedList<File> dots = new LinkedList<>();
+			for(File f : D){
+				if(f.getName().startsWith(".")) dots.add(f);
+				else files.add(f);
+				}
+			for(File f : dots){
+				files.add(f);
+			}
+			dots.clear();
+			for(File f : F){
+				if(f.getName().startsWith(".")) dots.add(f);
+				else files.add(f);
+				}
+			for(File f : dots){
+				files.add(f);
+			}
+			tempFiles.clear();
+			tempDirs.clear();
+			dots.clear();
+		}
+		catch(Exception exception){
+			
+		}
+	}
 	
 	@Override
 	public void addKeyListener(KeyListener k) {
@@ -378,14 +379,14 @@ public class FileTree extends JComponent{
 		if(panel != null)
 			panel.addKeyListener(k);
 	}
-
-     @Override
-     public void setVisible(boolean value){
-          super.setVisible(true);
-     	if(value)
-               omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
-     }
-     
+	
+	@Override
+	public void setVisible(boolean value){
+		super.setVisible(true);
+		if(value)
+			omega.Screen.getScreen().splitPane.setDividerLocation(getWidestBranchLastX(branches) + 5);
+	}
+	
 	private static void sort(File[] files){
 		for(int i = 0; i < files.length; i++){
 			for(int j = 0; j < files.length - 1 - i; j++){
@@ -419,9 +420,9 @@ public class FileTree extends JComponent{
 	
 	public void relocate() {
 		if(!omega.Screen.getScreen().screenHasProjectView)
-		     branches.get(pointer).set(true);
+			branches.get(pointer).set(true);
 	}
-
+	
 	public FileTree reload() {
 		int value = scrollPane.getVerticalScrollBar().getValue();
 		FileTree fileTree = new FileTree(root.getAbsolutePath());
@@ -434,8 +435,8 @@ public class FileTree extends JComponent{
 			fileTree.relocate();
 		}
 		catch(Exception e) {
-               
-	     }
+			
+		}
 		fileTree.scrollPane.getVerticalScrollBar().setValue(value);
 		return fileTree;
 	}

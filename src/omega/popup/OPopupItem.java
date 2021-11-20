@@ -92,6 +92,8 @@ public class OPopupItem extends JComponent{
 	}
 
 	public void playEnterAnimation(){
+		if(image == null)
+			return;
 		new Thread(()->{
 			if(images.isEmpty())
 				prepareImages();

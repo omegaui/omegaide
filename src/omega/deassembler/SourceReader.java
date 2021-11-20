@@ -36,12 +36,18 @@ public class SourceReader {
 		public Import(String pack, String name){
 			this.name = name;
 			if(pack.startsWith("static ")){
+				System.out.println(pack);
 				isStatic = true;
 				staticMember = name;
 				this.name = pack.substring(pack.lastIndexOf('.') + 1).trim();
 				pack = pack.substring(pack.indexOf(' ') + 1, pack.lastIndexOf('.')).trim();
 			}
 			this.pack = pack;
+		}
+
+		public Import setStatic(boolean isStatic){
+			Import.this.isStatic = isStatic;
+			return Import.this;
 		}
 
 		public String get(){
@@ -53,6 +59,7 @@ public class SourceReader {
 			return get();
 		}
 	}
+	
 	private String code;
 	public String pack;
 	public String access;
@@ -349,15 +356,14 @@ public class SourceReader {
 				String name = im.substring(im.lastIndexOf('.') + 1);
 				if(pack.equals("java.lang") || !Character.isLowerCase(pack.charAt(0))) continue;
 				if(name.equals("*") && !JDKManager.reading){
-					//To be continued in IDE's repository
 					if(line.contains(" static ")) {
 						if(CodeFramework.isSource(pack)) {
-							SourceReader reader = new SourceReader(pack);
+							SourceReader reader = new SourceReader(CodeFramework.getContent(pack));
 							for(DataMember m : reader.getDataMembers("static")) {
 								String nameX = m.name;
 								if(nameX.contains("()"))
 									nameX = nameX.substring(0, nameX.indexOf('(')).trim();
-								imports.add(new Import(pack, nameX));
+								imports.add(new Import(pack, nameX).setStatic(true));
 							}
 						}
 						else {
@@ -366,7 +372,7 @@ public class SourceReader {
 								String nameX = m.name;
 								if(nameX.contains("()"))
 									nameX = nameX.substring(0, nameX.indexOf('(')).trim();
-								imports.add(new Import(pack, nameX));
+								imports.add(new Import(pack, nameX).setStatic(true));
 							}
 						}
 					}
@@ -379,7 +385,7 @@ public class SourceReader {
 					}
 				}
 				else{
-					imports.add(new Import(pack, name));
+					imports.add(new Import(pack, name).setStatic(line.contains(" static ")));
 				}
 				continue;
 			}

@@ -49,6 +49,7 @@ import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class Branch extends JComponent{
 	public File file;
+	
 	private String name;
 	private String type = "?";
 	private OPopupWindow popupMenu;
@@ -58,8 +59,11 @@ public class Branch extends JComponent{
 	private LinkedList<BufferedImage> images = new LinkedList<>();
 	
 	public volatile boolean enter;
+	
 	private boolean expand;
+	
 	private Locale l;
+	
 	public static final int OPTIMAL_HEIGHT = 30;
 	public static final int OPTIMAL_X = 40;
 	public static final int IMAGE_SIZE = 16;
@@ -93,7 +97,8 @@ public class Branch extends JComponent{
 		g.drawImage(iconX, 0, 0, null);
 		g.dispose();
 		
-		setFont(PX16);
+		//setFont(PX14);
+		setFont(UBUNTU_PX14);
 		if(expand){
 			type = "";
 			if(file.listFiles().length == 0){
@@ -105,7 +110,6 @@ public class Branch extends JComponent{
 		}
 		else{
 			setForeground(ANY_COLOR);
-			setFont(PX14);
 			if(file.getName().endsWith(".java") || file.getName().endsWith(".rs") || file.getName().endsWith(".py")
 			|| file.getName().endsWith(".groovy")) {
 				setForeground(SOURCE_COLOR);
@@ -217,6 +221,8 @@ public class Branch extends JComponent{
 		new Thread(()->{
 			if(images.isEmpty())
 				prepareAnimationImages();
+			if(getGraphics() == null)
+				return;
 			Graphics2D g = (Graphics2D)getGraphics();
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -252,6 +258,7 @@ public class Branch extends JComponent{
 		if(v)
 			playEnterAnimation();
 	}
+	
 	@Override
 	public void paint(Graphics graphics){
 		super.paint(graphics);
@@ -279,6 +286,8 @@ public class Branch extends JComponent{
 		else
 			g.setColor(enter ? UIManager.glow : getForeground());
 		g.drawString(name, OPTIMAL_X, (getHeight()/2) + 2);
+
+		g.setFont(PX14);
 		
 		if(!type.equals("?"))
 			g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
@@ -288,6 +297,7 @@ public class Branch extends JComponent{
 			g.fillRect(OPTIMAL_X, (getHeight()/2) + getFont().getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
 		}
 	}
+	
 	public static Color getColor(String fileName){
 		Color res = ANY_COLOR;
 		if(!fileName.contains("."))

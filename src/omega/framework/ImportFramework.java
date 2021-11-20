@@ -337,18 +337,31 @@ public class ImportFramework {
 		String line = text.substring(lineIndex, lineIndex = text.indexOf('\n', lineIndex + 1));
 		String pAck;
 		String name;
-		while(line.endsWith(";") || line.trim().equals("")){
-			if(line.trim().equals("")){
-				line = text.substring(lineIndex + 1, text.indexOf(';', lineIndex) + 1).trim();
-				continue;
+		boolean sourceStartReached = false;
+		try{
+			while(line.endsWith(";") || line.trim().equals("") || !sourceStartReached){
+				sourceStartReached = line.contains("public ");
+				if(sourceStartReached)
+					break;
+				
+				if(line.trim().equals("")){
+					line = text.substring(lineIndex + 1, text.indexOf(';', lineIndex) + 1).trim();
+					continue;
+				}
+				
+				line = line.substring(line.indexOf(' '), line.indexOf(';')).trim();
+				if(line.startsWith("static "))
+					line = line.substring(line.indexOf(' ')).trim();
+				pAck = line.substring(0, line.lastIndexOf('.'));
+				name = line.substring(line.lastIndexOf('.') + 1);
+				infos.add(new ImportInfo(pAck, name, lineIndex));
+				line = text.substring(lineIndex, lineIndex = text.indexOf('\n', lineIndex + 1));
 			}
-			line = line.substring(line.indexOf(' '), line.indexOf(';')).trim();
-			if(line.startsWith("static "))
-				line = line.substring(line.indexOf(' ')).trim();
-			pAck = line.substring(0, line.lastIndexOf('.'));
-			name = line.substring(line.lastIndexOf('.') + 1);
-			infos.add(new ImportInfo(pAck, name, lineIndex));
-			line = text.substring(lineIndex, lineIndex = text.indexOf('\n', lineIndex + 1));
+		}
+		catch(Exception e){
+			System.out.println(sourceStartReached);
+			System.out.println(line);
+			e.printStackTrace();
 		}
 		/*
 		 * Packaging Completes Here
@@ -386,7 +399,7 @@ public class ImportFramework {
 			startChar = "";
 			endChar = "\n";
 		}
-		//Releasing MX-Bean-Memory
+		//Releasing Memory
 		infos.clear();
 		
 		return new IndexInfo(index, startChar, endChar);
