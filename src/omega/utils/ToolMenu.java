@@ -661,7 +661,7 @@ public class ToolMenu extends JPanel {
 		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		//putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, -8, false), ACTION_MOUSE_ENTERED);
