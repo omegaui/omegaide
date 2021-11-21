@@ -55,7 +55,7 @@ Dependency **JDK 17** or above for current beta & stable versions
 
 If you want to get early access to optimizations and new features you can freely use latest beta available.
 
-![Check out the dailybuild(.jar) now](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
+[Check out the dailybuild(.jar) now](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
 
 **Available installation formats**
 
