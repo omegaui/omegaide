@@ -69,9 +69,9 @@ public class PopupManager {
 			})
 			.createItem("Reload", null, ()->editor.reloadFile()).width(200);
 		}
-		popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
-		popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
-		popup.createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(editor.currentFile));
+		popup.createItem("Copy Path (\"path\")", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
+		popup.createItem("Copy Path", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
+		popup.createItem("Open in Desktop", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(editor.currentFile));
 		popup.createItem("Close All Tabs", IconManager.closeImage, Screen.getScreen()::closeAllTabs);
 		return popup;
 	}
@@ -90,11 +90,11 @@ public class PopupManager {
 			.createItem("New Enum", IconManager.fluentenumFileImage, ()->Screen.getFileView().getFileCreator().showFileView("enum", file.getAbsolutePath()))
 			.createItem("New Annotation", IconManager.fluentannotationFileImage, ()->Screen.getFileView().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
 		}
-		popup.createItem("Open in Desktop", IconManager.fileImage, ()->Screen.openInDesktop(file));
+		popup.createItem("Open in Desktop", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(file));
 		if(!file.isDirectory()) {
 			popup
-			.createItem("Open On Right Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
-			.createItem("Open On Bottom Tab Panel", IconManager.fileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
+			.createItem("Open On Right Tab Panel", IconManager.fluenteditFileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
+			.createItem("Open On Bottom Tab Panel", IconManager.fluenteditFileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
 		}
 		if(!file.getAbsolutePath().equals(Screen.getFileView().getProjectPath())){
 			popup.createItem("Delete", IconManager.closeImage, ()->{
@@ -116,14 +116,14 @@ public class PopupManager {
 		}
 		popup.createItem("Refresh", null, ()->Screen.getProjectView().reload());
 		if(!file.isDirectory()) {
-			popup.createItem("Rename", IconManager.fileImage, ()->{
+			popup.createItem("Rename", IconManager.fluentrenameImage, ()->{
 				Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
 				Screen.getProjectView().reload();
 			});
 		}
 		
-		popup.createItem("Copy Path (\"path\")", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"" + file.getAbsolutePath() + "\""), null));
-		popup.createItem("Copy Path", IconManager.fileImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));
+		popup.createItem("Copy Path (\"path\")", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"" + file.getAbsolutePath() + "\""), null));
+		popup.createItem("Copy Path", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));
 	}
 }
 

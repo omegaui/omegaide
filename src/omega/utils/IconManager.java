@@ -121,6 +121,10 @@ public class IconManager {
      public static BufferedImage fluentenumFileImage = getFluentIcon("category-48.png");
      public static BufferedImage fluentrecordFileImage = getFluentIcon("burn-cd-48.png");
      public static BufferedImage fluentcategoryImage = getFluentIcon("categorize-48.png");
+     public static BufferedImage fluentdesktopImage = getFluentIcon("imac-48.png");
+     public static BufferedImage fluentcopyImage = getFluentIcon("copy-to-clipboard-48.png");
+     public static BufferedImage fluenteditFileImage = getFluentIcon("edit-file-48.png");
+     public static BufferedImage fluentrenameImage = getFluentIcon("rename-48.png");
      
 
      //The Default Icon Pack -- mixed
