@@ -1,7 +1,9 @@
 package omega.terminal.jediterm;
+import java.awt.Color;
+
 import java.nio.charset.Charset;
 
-import com.jediterm.pty.PtyMain;
+import com.jediterm.pty.PtyProcessTtyConnector;
 
 import com.pty4j.PtyProcess;
 
@@ -44,8 +46,10 @@ public class JetTerminal extends JPanel{
 		panel = new FlexPanel(null, back1, null);
 		panel.setArc(10, 10);
 		add(panel);
-		
-		widget = new JediTermWidget(new JetTermSettingsProvider());
+
+		JetTermSettingsProvider jtsp = new JetTermSettingsProvider();
+		widget = new JediTermWidget(jtsp);
+
 		if(command == null)
 			widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
 		else
@@ -67,7 +71,7 @@ public class JetTerminal extends JPanel{
 				envs.put("TERM", "xterm");
 			
 			process = PtyProcess.exec(command, envs, directory);
-			return new PtyMain.LoggingPtyProcessTtyConnector(process, Charset.forName("UTF-8"));
+			return new PtyProcessTtyConnector(process, Charset.forName("UTF-8"));
 		}
 		catch(Exception e){
 			e.printStackTrace();

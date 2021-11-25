@@ -573,8 +573,8 @@ public class ToolMenu extends JPanel {
 		OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(270);
 		consoleItemWindow
 		.createItem("New System Terminal", IconManager.fluentconsoleImage, consoleSelector::launchTerminal)
-		.createItem("Integrated Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal)
-		.createItem("IntelliJ Platform Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showJetTerminal);
+		.createItem("Faster Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal)
+		.createItem("Full-Fledge Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showJetTerminal);
 		
 		shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, null);
 		shellComp.addMouseListener(new MouseAdapter(){

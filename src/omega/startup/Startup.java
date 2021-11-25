@@ -1,19 +1,19 @@
 /**
-  * Checks for license agreement and IDE resources.
-  * Copyright (C) 2021 Omega UI
+* Checks for license agreement and IDE resources.
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.startup;
@@ -66,8 +66,8 @@ public class Startup extends JDialog {
 			LICENSE_TEXT += "\n**Copyright 2021 Omega UI. All Right Reserved.**\n";
 		}
 		catch(Exception e){
-		     e.printStackTrace();
-	     }
+			e.printStackTrace();
+		}
 		setUndecorated(true);
 		setSize(650, 550);
 		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
@@ -87,7 +87,7 @@ public class Startup extends JDialog {
 		closeBtn.setFont(PX18);
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
-      
+		
 		JScrollPane scrollPane = new JScrollPane(textArea = new RSyntaxTextArea(LICENSE_TEXT));
 		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
 		scrollPane.setBackground(c2);
@@ -104,20 +104,20 @@ public class Startup extends JDialog {
 			try{
 				new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
 				dispose();
-	          }
-		     catch(Exception e){ 
-		          e.printStackTrace();
-	          }
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		});
 		acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
 		acceptComp.setFont(PX16);
 		add(acceptComp);
-          
-	     TextComp imageComp = new TextComp(image, 64, 64, c2, c2, c2, null);
+		
+		TextComp imageComp = new TextComp(image, 64, 64, c2, c2, c2, null);
 		imageComp.setBounds(0, 0, 66, 66);
 		imageComp.setClickable(false);
 		add(imageComp);
-          
+		
 		TextComp textComp = new TextComp("Omega IDE", c2, TOOLMENU_COLOR1, TOOLMENU_COLOR1, null);
 		textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
 		textComp.setClickable(false);
@@ -182,6 +182,33 @@ public class Startup extends JDialog {
 		f.mkdir();
 		if(!PluginManager.PLUGINS_DIRECTORY.exists())
 			PluginManager.PLUGINS_DIRECTORY.mkdirs();
+		f = new File(".omega-ide" + File.separator + ".generated-pty-native-libs");
+		if(!f.exists()){
+			System.out.println("Writing Native Files for Terminal Emulation ...");
+			
+			loadDefaultFile("linux" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86/libpty.so");
+			loadDefaultFile("linux" + File.separator + "x86_64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86_64/libpty.so");
+			loadDefaultFile("macosx" + File.separator + "x86" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/macosx/x86/libpty.dylib");
+			loadDefaultFile("macosx" + File.separator + "x86_64" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/macosx/x86_64/libpty.dylib");
+			loadDefaultFile("x86" + File.separator + "libwinpty.dll", ".omega-ide/pty4j-libs/x86/libwinpty.dll");
+			loadDefaultFile("x86" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/x86/winpty-agent.exe");
+			
+			System.out.println("Writing Native Files for Terminal Emulation ... Done!");
+
+			try{
+				f.createNewFile();
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			System.out.println("Launching...");
+		}
+	}
+
+	public static void checkDirectory(String path){
+		File f = new File(path);
+		if(!f.exists())
+			f.mkdir();
 	}
 }
 

@@ -1004,6 +1004,7 @@ public class RunView extends View {
 				runProcess = new ProcessBuilder(commandsAsArray).directory(workingDir).start();
 				
 				runningApps.add(runProcess);
+				
 				String name = "Run("+mainClass;
 				int count = OperationPane.count(name);
 				if(count > -1) {

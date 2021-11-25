@@ -222,6 +222,8 @@ public class UIManager extends DataBase {
 		try{
 			if(file.exists())
 				return file;
+			else
+				file.getParentFile().mkdirs();
 			InputStream in = UIManager.class.getResourceAsStream("/" + resName);
 			OutputStream out = new FileOutputStream(file);
 			while(in.available() > 0)
