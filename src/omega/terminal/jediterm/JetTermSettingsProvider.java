@@ -33,7 +33,7 @@ public class JetTermSettingsProvider extends DefaultSettingsProvider{
 		colors[12] = Color.decode("#253237");
 		colors[13] = Color.decode("#5C6B73");
 		colors[14] = Color.decode("#4C2719");
-		colors[15] = back2;
+		colors[15] = back1;
 	}
 	
 	@Override

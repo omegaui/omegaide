@@ -125,7 +125,7 @@ public class Branch extends JComponent{
 			else if(file.getName().endsWith(".dmg")){
 				type = "Mac";
 			}
-			else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
+			else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so") || file.getName().endsWith(".dylib")){
 				type = "Native Lib";
 			}
 			else if(file.getName().endsWith(".deb") || file.getName().endsWith(".run")
@@ -316,7 +316,7 @@ public class Branch extends JComponent{
 		else if(file.getName().endsWith(".dmg")){
 			res = UIManager.TOOLMENU_COLOR1;
 		}
-		else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so")){
+		else if(file.getName().endsWith(".dll") || file.getName().endsWith(".so") || file.getName().endsWith(".dylib")){
 			res = UIManager.TOOLMENU_COLOR2;
 		}
 		else if(file.getName().endsWith(".deb") || file.getName().endsWith(".run")
@@ -400,7 +400,7 @@ public class Branch extends JComponent{
 				return IconManager.fluentfileImage;
 			if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
 				return IconManager.fluentwebImage;
-			if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so"))
+			if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so") || file.getName().endsWith(".dylib"))
 				return IconManager.fluentshellImage;
 			if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
 				return IconManager.fluentlinuxImage;

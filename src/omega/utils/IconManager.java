@@ -106,6 +106,8 @@ public class IconManager {
      public static BufferedImage fluentrocketImage = getFluentIcon("rocket-64.png");
      public static BufferedImage fluentrocketbuildImage = getFluentIcon("rocket-build-64.png");
      public static BufferedImage fluentlightningboltImage = getFluentIcon("lightning-bolt-48.png");
+     public static BufferedImage fluentspeedImage = getFluentIcon("speed-47.png");
+     public static BufferedImage fluenttesttubeImage = getFluentIcon("test-tube-48.png");
      public static BufferedImage fluentquickmodeonImage = getFluentIcon("quick-mode-on-48.png");
      public static BufferedImage fluentphoenixImage = getFluentIcon("phoenix-48.png");
      public static BufferedImage fluentbriefImage = getFluentIcon("brief-48.png");

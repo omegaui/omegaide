@@ -119,10 +119,12 @@ public class ProjectWizard extends JDialog{
                     sdkSelector = new SDKSelector(Screen.getScreen());
                sdkSelector.setVisible(true);
                String res = sdkSelector.getSelection();
-               File file = new File(res);
-               if(res != null && file.exists()){
-                    jdkComp.setText(file.getName());
-                    jdkComp.setToolTipText(file.getAbsolutePath());
+               if(res != null){
+	               File file = new File(res);
+	               if(file.exists()){
+	                    jdkComp.setText(file.getName());
+	                    jdkComp.setToolTipText(file.getAbsolutePath());
+	               }
                }
           });
           jdkComp.setBounds(170, 100, getWidth() - 190, 25);

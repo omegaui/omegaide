@@ -70,7 +70,6 @@ public class CErrorHighlighter implements AbstractErrorHighlighter {
 	*/
 	@Override
 	public void loadErrors(String errorLog) {
-		System.out.println(errorLog);
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
 		boolean canRecord = false;

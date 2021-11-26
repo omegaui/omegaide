@@ -396,6 +396,8 @@ public class ToolMenu extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e){
 				if(e.getButton() == 3){
+					if(GradleProcessManager.isGradleProject())
+						return;
 					if(runComp.isClickable() && buildComp.isClickable())
 						Screen.getRunView().justRun();
 				}

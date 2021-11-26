@@ -24,10 +24,12 @@ import omega.Screen;
 import java.io.File;
 
 import omega.utils.DataManager;
-import omega.utils.RunPanel;
 import omega.utils.IconManager;
+import omega.utils.JetRunPanel;
 public class GradleProcessManager {
-	private static RunPanel printArea;
+	
+	private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";
+	
 	public static boolean isGradleProject(){
 		File settings = new File(Screen.getFileView().getProjectPath(), "settings.gradle");
 		return settings.exists();
@@ -35,38 +37,19 @@ public class GradleProcessManager {
 	public static void init(){
 		new Thread(()->{
 			try{
-				preparePrintArea();
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, printArea::killProcess);
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{"gradle" + ext, "init"}, Screen.getFileView().getProjectPath());
+				printArea.print("# Executing : gradle init");
+				printArea.print("--------------------------------------------------");
+				printArea.start();
+				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
 				if(!Screen.getFileView().getProjectManager().non_java){
-					printArea.print("**Changing Project Type ...**");
 					Screen.getFileView().getProjectManager().non_java = true;
 					Screen.getScreen().manageTools(Screen.getFileView().getProjectManager());
 					Screen.getFileView().getProjectManager().save();
-					printArea.print("**Changing Project Type ... Done!**");
 				}
-				printArea.print("# Launching : gradle init");
+				while(printArea.terminalPanel.process.isAlive());
 				printArea.print("--------------------------------------------------");
-				Process p = GradleProcessExecutor.init(new File(Screen.getFileView().getProjectPath()));
-				printArea.setProcess(p);
-				Scanner inputReader = GradleProcessExecutor.getInputScanner(p);
-				Scanner errorReader = GradleProcessExecutor.getErrorScanner(p);
-				new Thread(()->{
-					boolean errorOccured = false;
-					while(p.isAlive()){
-						while(errorReader.hasNextLine()){
-							printArea.print(errorReader.nextLine());
-							errorOccured = true;
-						}
-					}
-					errorReader.close();
-					printArea.print("--------------------------------------------------");
-					printArea.print(errorOccured ? "Error Occured During : gradle init" : "Completed Successfully : gradle init");
-				}).start();
-				while(p.isAlive()){
-					while(inputReader.hasNextLine())
-						printArea.print(inputReader.nextLine());
-				}
-				inputReader.close();
+				printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -77,40 +60,29 @@ public class GradleProcessManager {
 	public static void run(){
 		new Thread(()->{
 			try{
-                    Screen.getScreen().saveAllEditors();
-				RunPanel printArea = new RunPanel();
-				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, DataManager.getGradleCommand() + " run");
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, printArea::killProcess);
+                Screen.getScreen().saveAllEditors();
+				
 				if(!Screen.getFileView().getProjectManager().non_java){
-					printArea.print("**Changing Project Type ...**");
 					Screen.getFileView().getProjectManager().non_java = true;
 					Screen.getScreen().manageTools(Screen.getFileView().getProjectManager());
 					Screen.getFileView().getProjectManager().save();
-					printArea.print("**Changing Project Type ... Done!**");
 				}
-				printArea.print("# Launching : " + DataManager.getGradleCommand() +" run");
+				
+				
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "run"}, Screen.getFileView().getProjectPath());
+				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, DataManager.getGradleCommand() + " run");
+				
+				printArea.print("# Executing : " + DataManager.getGradleCommand() +" run");
 				printArea.print("--------------------------------------------------");
-				Process p = GradleProcessExecutor.run(new File(Screen.getFileView().getProjectPath()));
-				printArea.setProcess(p);
-				Scanner inputReader = GradleProcessExecutor.getInputScanner(p);
-				Scanner errorReader = GradleProcessExecutor.getErrorScanner(p);
-				new Thread(()->{
-					boolean errorOccured = false;
-					while(p.isAlive()){
-						while(errorReader.hasNextLine()){
-							printArea.print(errorReader.nextLine());
-							errorOccured = true;
-						}
-					}
-					errorReader.close();
-					printArea.print("--------------------------------------------------");
-					printArea.print(errorOccured ? "Error Occured During : " + DataManager.getGradleCommand() + " run" : "Completed Successfully : " + DataManager.getGradleCommand() + " run");
-				}).start();
-				while(p.isAlive()){
-					while(inputReader.hasNextLine())
-						printArea.print(inputReader.nextLine());
-				}
-				inputReader.close();
+
+				printArea.start();
+				
+				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+				
+				while(printArea.terminalPanel.process.isAlive());
+				printArea.print("--------------------------------------------------");
+				printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+				
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -121,50 +93,32 @@ public class GradleProcessManager {
 	public static void build(){
 		new Thread(()->{
 			try{
-                    Screen.getScreen().saveAllEditors();
-				RunPanel printArea = new RunPanel();
-				printArea.setLogMode(true);
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", printArea, printArea::killProcess);
+                Screen.getScreen().saveAllEditors();
 				if(!Screen.getFileView().getProjectManager().non_java){
-					printArea.print("**Changing Project Type ...**");
 					Screen.getFileView().getProjectManager().non_java = true;
 					Screen.getScreen().manageTools(Screen.getFileView().getProjectManager());
 					Screen.getFileView().getProjectManager().save();
-					printArea.print("**Changing Project Type ... Done!**");
 				}
-				printArea.print("# Launching : " + DataManager.getGradleCommand() + " build");
+				
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "build"}, Screen.getFileView().getProjectPath());
+				printArea.setLogMode(true);
+				printArea.print("# Executing : " + DataManager.getGradleCommand() +" build");
 				printArea.print("--------------------------------------------------");
-				Process p = GradleProcessExecutor.build(new File(Screen.getFileView().getProjectPath()));
-				printArea.setProcess(p);
-				Scanner inputReader = GradleProcessExecutor.getInputScanner(p);
-				Scanner errorReader = GradleProcessExecutor.getErrorScanner(p);
-				new Thread(()->{
-					boolean errorOccured = false;
-					while(p.isAlive()){
-						while(errorReader.hasNextLine()){
-							printArea.print(errorReader.nextLine());
-							errorOccured = true;
-						}
-					}
-					errorReader.close();
-					printArea.print("--------------------------------------------------");
-					printArea.print(errorOccured ? "Error Occured During : " + DataManager.getGradleCommand() + " build" : "Completed Successfully : " + DataManager.getGradleCommand() + " build");
-				}).start();
-				while(p.isAlive()){
-					while(inputReader.hasNextLine())
-						printArea.print(inputReader.nextLine());
-				}
-				inputReader.close();
+				
+				printArea.start();
+				
+				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+				
+				while(printArea.terminalPanel.process.isAlive());
+				
+				printArea.print("--------------------------------------------------");
+				printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
 			}
 			catch(Exception e){
 				e.printStackTrace();
 			}
 			Screen.getProjectView().reload();
 		}).start();
-	}
-	public static void preparePrintArea(){
-		if(printArea == null)
-			printArea = new RunPanel();
 	}
 }
 

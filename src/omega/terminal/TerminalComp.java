@@ -16,34 +16,37 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.terminal;
+import omega.utils.IconManager;
+
 import omega.terminal.jediterm.JetTerminal;
 
 import omega.Screen;
 
 import omega.token.factory.ShellTokenMaker;
 public class TerminalComp {
-	private JetTerminal jetTerminal;
-	private Terminal terminal;
+
+	public int count = 1;
 	
 	public void showTerminal(){
-		terminal = new Terminal();
+		Terminal terminal = new Terminal();
 		ShellTokenMaker.apply(terminal.getOutputArea());
-		Screen.getScreen().getOperationPanel().addTab("Shell", terminal, terminal::exit);
+		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ((count - 1) + "") : ""), IconManager.fluentconsoleImage, terminal, ()->{
+			count--;
+			terminal.exit();
+		});
 		terminal.launchTerminal();
-	}
-	
-	public Terminal getTerminal(){
-		return terminal;
+		count++;
 	}
 	
 	public void showJetTerminal(){
-		jetTerminal = new JetTerminal();
+		JetTerminal jetTerminal = new JetTerminal();
 		jetTerminal.start();
-		Screen.getScreen().getOperationPanel().addTab("Shell", jetTerminal, jetTerminal::exit);
+		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ((count - 1) + "") : ""), IconManager.fluentconsoleImage, jetTerminal, ()->{
+			count--;
+			jetTerminal.exit();
+		});
+		count++;
 	}
 	
-	public JetTerminal getJetTerminal(){
-		return jetTerminal;
-	}
 }
 

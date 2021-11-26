@@ -1,22 +1,24 @@
 /**
-  * BuildView 
-  * Copyright (C) 2021 Omega UI
+* BuildView
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.utils.systems;
+import omega.popup.NotificationPopup;
+
 import omega.instant.support.ErrorHighlighters;
 
 import omega.token.factory.ShellTokenMaker;
@@ -61,301 +63,272 @@ import omega.utils.Editor;
 import omega.utils.UIManager;
 import omega.utils.BuildLog;
 import omega.utils.IconManager;
+import omega.utils.JetRunPanel;
 import omega.utils.systems.creators.FileOperationManager;
 
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
 public class BuildView extends View {
-
+	
 	public volatile Process compileProcess;
 	public LinkedList<String> classess = new LinkedList<>();
 	public static final String SRC_LIST = ".sources";
-     public BuildLog buildLog;
-     public RunPanel printArea;
-     public String errorlog = "";
-
+	public BuildLog buildLog;
+	public String errorlog = "";
+	
 	public BuildView(String title, Screen window) {
 		super(title, window);
-          printArea = new RunPanel();
-          buildLog = new BuildLog();
+		buildLog = new BuildLog();
 	}
-
+	
 	public static LinkedList<File> loadAllFiles(String dir, LinkedList<File> files){
 		File[] fs = new File(dir).listFiles();
 		for(File f : fs) {
-			if(f.isDirectory()) 
+			if(f.isDirectory())
 				loadAllFiles(f.getAbsolutePath(), files);
 			else
 				files.add(f);
 		}
 		return files;
 	}
-
-     public void compile(){
-          new Thread(()->{
-               LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
-               printArea.print("Building Project...\n\"" + args + "\"");
-               getScreen().getOperationPanel().addTab("Build", printArea, printArea::killProcess);
-               if(Screen.getFileView().getArgumentManager().getCompileCommand().trim().equals("")){
-                    printArea.print("\'No Compile Time Command Specified!!!\'");
-                    printArea.print("Click \"Settings\", then Click \"All Settings\"");
-                    printArea.print("And Specify the Compile Time Args or Command");
-                    return;
-               }
-               getScreen().getToolMenu().buildComp.setClickable(false);
-               getScreen().getToolMenu().runComp.setClickable(false);
-               omega.Screen.getFileView().getArgumentManager().genLists();
-               String compileDir = Screen.getFileView().getArgumentManager().compileDir;
-               try {
-                    Process compileNJProcess = new ProcessBuilder(args).directory(new File(compileDir)).start();
-                    Scanner errorReader = new Scanner(compileNJProcess.getErrorStream());
-                    Scanner inputReader = new Scanner(compileNJProcess.getInputStream());
-                    printArea.setProcess(compileNJProcess);
-                    printArea.print("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
-                    
-                    errorlog = "";
+	
+	public void compile(){
+		new Thread(()->{
+			LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
+			if(Screen.getFileView().getArgumentManager().getCompileCommand().trim().equals("")){
+				NotificationPopup.create(getScreen())
+				.size(500, 120)
+				.title("Project Management")
+				.message("No Run Time Command Specified!", TOOLMENU_COLOR2)
+				.shortMessage("Click \"Settings\", then Click \"All Settings\"", TOOLMENU_COLOR1)
+				.dialogIcon(IconManager.fluentfolderImage)
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
+				return;
+			}
+			getScreen().getToolMenu().buildComp.setClickable(false);
+			getScreen().getToolMenu().runComp.setClickable(false);
+			omega.Screen.getFileView().getArgumentManager().genLists();
+			String compileDir = Screen.getFileView().getArgumentManager().compileDir;
+			String[] commandsAsArray = new String[args.size()];
+				for(int i = 0; i < args.size(); i++){
+					commandsAsArray[i] = args.get(i);
+			}
+			
+			JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, compileDir);
+			printArea.setLogMode(true);
+			
+			try {
+				getScreen().getOperationPanel().addTab("Build", IconManager.fluenttesttubeImage, printArea, printArea::killProcess);
 				
-				new Thread(()->{
-					while(compileNJProcess.isAlive()) {
-						while(inputReader.hasNextLine()) {
-							String data = inputReader.nextLine();
-							errorlog += data + "\n";
-							printArea.printText(data);
-						}
-					}
-					try{
-		                    if(compileNJProcess.getInputStream().available() > 0){
-		                    	while(inputReader.hasNextLine()) {
-								String data = inputReader.nextLine();
-		                    		errorlog += data + "\n";
-		                              printArea.print(data);
-		                         }
-		                    }
-	                    }
-	                    catch(Exception e){
-	                    	
-	                    }
-					inputReader.close();
-				}).start();
-				while(compileNJProcess.isAlive()) {
-					while(errorReader.hasNextLine()) {
-						String line = errorReader.nextLine();
-						errorlog += line + "\n";
-						printArea.printText(line);
-					}
-				}
+				printArea.print("Building Project...\n\"" + args + "\"");
+				printArea.print("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
+				printArea.start();
 				
-				try{
-	                    if(compileNJProcess.getErrorStream().available() > 0){
-	                    	while(errorReader.hasNextLine()) {
-	                              String line = errorReader.nextLine();
-							errorlog += line + "\n";
-							printArea.printText(line);
-	                         }
-	                    }
-                    }
-                    catch(Exception e){
-                    	
-                    }
-				errorReader.close();
+				errorlog = "";
+				
+				while(printArea.terminalPanel.process.isAlive());
+				
+				printArea.printText("Compilation Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
 				
 				Screen.setStatus("Building Project", 100, null);
 				
 				ErrorHighlighters.resetAllErrors();
 				
-				printArea.printText("Compilation Finished with Exit Code " + compileNJProcess.exitValue());
-				if(compileNJProcess.exitValue() != 0){
+				if(printArea.terminalPanel.process.exitValue() != 0){
 					ErrorHighlighters.showErrors(errorlog);
-					getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+					getScreen().getOperationPanel().addTab("Build",IconManager.fluenttesttubeImage,  printArea, ()->printArea.killProcess());
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					getScreen().getToolMenu().runComp.setClickable(true);
 					return;
 				}
-               }
-               catch(Exception e){ 
-                    printArea.printText("Compilation Failed!\nSystem was unable to find the specified command!");
+			}
+			catch(Exception e){
+				printArea.printText("Compilation Failed!");
+				printArea.printText("System was unable to find the specified command.");
 				printArea.printText(e.toString());
 				e.printStackTrace();
-               }
-               finally {
-	               getScreen().getToolMenu().buildComp.setClickable(true);
-	               getScreen().getToolMenu().runComp.setClickable(true);
-	               getScreen().getProjectView().reload();
-               }
-          }).start();
-     }
-
-     public static String[] convertToArray(String args){
-          String token = "";
-          LinkedList<String> arguments = new LinkedList<>();
-          boolean canRecord = false;
-          boolean strRec = false;
-     	for(int i = 0; i < args.length(); i++){
-               char ch = args.charAt(i);
-     		if(!canRecord && (Character.isLetterOrDigit(ch) || "@-\"".contains(ch + ""))){
-                    token = "";
-                    canRecord = true;
-     		}
-               if(ch == '\"' && !strRec){
-                    strRec = true;
-               }
-               else if(ch == '\"' && strRec){
-                    strRec = false;
-               }
-               if(ch == ' ' && !strRec){
-                    arguments.add(token);
-                    canRecord = false;
-               }
-               else if(canRecord){
-                    token += ch;
-               }
-     	}
-          arguments.add(token);
-          String[] A = new String[arguments.size()];
-          int k = 0;
-          for(String x : arguments)
-               A[k++] = x;
-          return A;
-     }
-
-     public void compileProject() {
-          if(compileProcess != null) {
-               if(compileProcess.isAlive())
-                    return;
-          }
-          
-          getScreen().saveAllEditors();
-          
-          if(omega.Screen.getFileView().getProjectManager().non_java){
-               compile();
-               return;
-          }
-          
-          new Thread(()->{
-
-               try  {
-                    createClassList();
-                    if(classess.isEmpty())
-                         return;
-                    
-                    if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)) {
-                         Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
-                         return;
-                    }
-                    
-                    buildLog.genView("");
-                    Screen.getErrorHighlighter().removeAllHighlights();
-                    
-                    optimizeProjectOutputs();
-                    
-                    getScreen().getToolMenu().buildComp.setClickable(false);
-                    getScreen().getToolMenu().runComp.setClickable(false);
-                    
-                    String status = " Successfully";
-                    String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
-                    
-                    if(jdkPath != null && new File(jdkPath).exists())
-                         jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
-                    
-                    String cmd = "";
-                    String depenPath = "";
-                    
-                    if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
-                    	
-                         for(String d : Screen.getFileView().getProjectManager().jars)
-                              depenPath += d + omega.Screen.PATH_SEPARATOR;
-                    }
-                    
-                    if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-                         for(String d : Screen.getFileView().getProjectManager().resourceRoots)
-                              depenPath += d + omega.Screen.PATH_SEPARATOR;
-                    }
-                    
-                    if(Screen.isNotNull(depenPath))
-                         depenPath = depenPath.substring(0, depenPath.length() - 1);
-                    
-                    if(Screen.isNotNull(jdkPath) && new File(jdkPath).exists())
-                         cmd = jdkPath + "javac";
-                    else
-                         cmd = "javac" + cmd;
-
-                    File workingDir = new File(Screen.getFileView().getProjectPath());
-                    LinkedList<String> commands = new LinkedList<>();
-                    commands.add(cmd);
-                    commands.add("-d");
-                    commands.add("bin");
-
-                    if(Screen.isNotNull(depenPath)){
-                    	commands.add("-classpath");
-                    	commands.add(depenPath);
-                    }
-
+			}
+			finally {
+				getScreen().getToolMenu().buildComp.setClickable(true);
+				getScreen().getToolMenu().runComp.setClickable(true);
+				getScreen().getProjectView().reload();
+			}
+		}).start();
+	}
+	
+	public static String[] convertToArray(String args){
+		String token = "";
+		LinkedList<String> arguments = new LinkedList<>();
+		boolean canRecord = false;
+		boolean strRec = false;
+		for(int i = 0; i < args.length(); i++){
+			char ch = args.charAt(i);
+			if(!canRecord && (Character.isLetterOrDigit(ch) ||
+			"-@\"".
+			contains(ch + ""))){
+				token = "";
+				canRecord = true;
+			}
+			if(ch == '\"' && !strRec)
+			strRec = true;
+			else if(ch == '\"' && strRec)
+			strRec = false;
+			if(ch == ' ' && !strRec){
+				arguments.add(token);
+				canRecord = false;
+			}
+			else if(canRecord){
+				token += ch;
+			}
+		}
+		arguments.add(token);
+		String[] A = new String[arguments.size()];
+		int k = 0;
+		for(String x : arguments)
+			A[k++] = x;
+		return A;
+	}
+	
+	public void compileProject() {
+		if(compileProcess != null) {
+			if(compileProcess.isAlive())
+				return;
+		}
+		
+		getScreen().saveAllEditors();
+		
+		if(omega.Screen.getFileView().getProjectManager().non_java){
+			compile();
+			return;
+		}
+		
+		new Thread(()->{
+			
+			try  {
+				createClassList();
+				if(classess.isEmpty())
+					return;
+				
+				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)) {
+					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
+					return;
+				}
+				
+				buildLog.genView("");
+				Screen.getErrorHighlighter().removeAllHighlights();
+				
+				optimizeProjectOutputs();
+				
+				getScreen().getToolMenu().buildComp.setClickable(false);
+				getScreen().getToolMenu().runComp.setClickable(false);
+				
+				String status = " Successfully";
+				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+				
+				if(jdkPath != null && new File(jdkPath).exists())
+					jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
+				
+				String cmd = "";
+				String depenPath = "";
+				
+				if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
+					
+					for(String d : Screen.getFileView().getProjectManager().jars)
+						depenPath += d + omega.Screen.PATH_SEPARATOR;
+				}
+				
+				if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
+					for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+						depenPath += d + omega.Screen.PATH_SEPARATOR;
+				}
+				
+				if(Screen.isNotNull(depenPath))
+					depenPath = depenPath.substring(0, depenPath.length() - 1);
+				
+				if(Screen.isNotNull(jdkPath) && new File(jdkPath).exists())
+					cmd = jdkPath + "javac";
+				else
+					cmd = "javac" + cmd;
+				
+				File workingDir = new File(Screen.getFileView().getProjectPath());
+				LinkedList<String> commands = new LinkedList<>();
+				commands.add(cmd);
+				commands.add("-d");
+				commands.add("bin");
+				
+				if(Screen.isNotNull(depenPath)){
+					commands.add("-classpath");
+					commands.add(depenPath);
+				}
+				
 				String modulePath = Screen.getFileView().getDependencyView().getModulePath();
 				String modules = Screen.getFileView().getDependencyView().getModules();
-                    if(Screen.isNotNull(modulePath)){
-                    	commands.add("--module-path");
-                    	commands.add(modulePath);
-                    	commands.add("--add-modules");
-                    	commands.add(modules);
-                    }
-
+				if(Screen.isNotNull(modulePath)){
+					commands.add("--module-path");
+					commands.add(modulePath);
+					commands.add("--add-modules");
+					commands.add(modules);
+				}
+				
 				Screen.getFileView().getProjectManager().compileTimeFlags.forEach(commands::add);
 				
 				commands.add("@" + BuildView.SRC_LIST);
-
+				
 				String[] commandsAsArray = new String[commands.size()];
 				
 				int k = -1;
 				for(String command : commands)
 					commandsAsArray[++k] = command;
 				
-               	compileProcess = new ProcessBuilder(commandsAsArray).directory(workingDir).start();
-                    
-                    buildLog.setHeading("Building Project with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
-                    
-                    getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{
-                         if(compileProcess != null && compileProcess.isAlive())
-                              compileProcess.destroyForcibly();
-                    });
-                    
-                    String errorlog = "";
-                    Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-                    
-                    while(compileProcess.isAlive()) {
-                         while(errorReader.hasNextLine()) {
-                              String line = errorReader.nextLine();
-                              errorlog += line + "\n";
-                         }
-                    }
-                    
-                    errorReader.close();
-                    
-                    if(compileProcess.exitValue() != 0) {
-                         buildLog.setHeading("Build Resulted in following Error(s)");
-                         buildLog.genView(errorlog);
-                         Screen.getErrorHighlighter().loadErrors(errorlog);
-                         buildLog.repaint();
-                    }
-                    else{
-                         buildLog.setHeading("Build Completed Successfully");
-                    }
-                    
-                    compileProcess = null;
-                    getScreen().getToolMenu().buildComp.setClickable(true);
-                    getScreen().getToolMenu().runComp.setClickable(true);
-                    Screen.getProjectView().reload();
-               }
-               catch(Exception e) {
-                    e.printStackTrace();
-               }
-          }).start();
-     }
-     
+				compileProcess = new ProcessBuilder(commandsAsArray).directory(workingDir).start();
+				
+				buildLog.setHeading("Building Project with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+				
+				getScreen().getOperationPanel().addTab("Compilation", IconManager.fluenttesttubeImage, buildLog, ()->{
+					if(compileProcess != null && compileProcess.isAlive())
+						compileProcess.destroyForcibly();
+				});
+				
+				String errorlog = "";
+				Scanner errorReader = new Scanner(compileProcess.getErrorStream());
+				
+				while(compileProcess.isAlive()) {
+					while(errorReader.hasNextLine()) {
+						String line = errorReader.nextLine();
+						errorlog += line + "\n";
+					}
+				}
+				
+				errorReader.close();
+				
+				if(compileProcess.exitValue() != 0) {
+					buildLog.setHeading("Build Resulted in following Error(s)");
+					buildLog.genView(errorlog);
+					Screen.getErrorHighlighter().loadErrors(errorlog);
+					buildLog.repaint();
+				}
+				else{
+					buildLog.setHeading("Build Completed Successfully");
+				}
+				
+				compileProcess = null;
+				getScreen().getToolMenu().buildComp.setClickable(true);
+				getScreen().getToolMenu().runComp.setClickable(true);
+				Screen.getProjectView().reload();
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}).start();
+	}
+	
 	public static void optimizeProjectOutputs(){
 		File outputDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
 		LinkedList<File> files = new LinkedList<>();
 		loadClassFiles(outputDir, files);
-		if(files.isEmpty()) 
+		if(files.isEmpty())
 			return;
 		for(File file : files) {
 			file.delete();
@@ -369,11 +342,11 @@ public class BuildView extends View {
 		for(File f : F) {
 			if(f.isDirectory()) loadClassFiles(f, files);
 			else if(f.getName().endsWith(".class")) files.add(f);
-		}
+			}
 	}
 	
 	public void deleteDir(File file) {
-
+		
 		if (file.isDirectory()) {
 			if (file.list().length == 0)
 				deleteEmptyDir(file);
@@ -383,22 +356,22 @@ public class BuildView extends View {
 				for (File fileDelete : files) {
 					deleteDir(fileDelete);
 				}
-
+				
 				if (file.list().length == 0) {
 					deleteEmptyDir(file);
 				}
 			}
-
+			
 		}
 		else {
 			deleteEmptyDir(file);
 		}
 	}
-
+	
 	private void deleteEmptyDir(File file) {
 		file.delete();
 	}
-
+	
 	public static void getAllFolders(File[] files, LinkedList<File> folders) {
 		for(File f : files) {
 			if(f.isDirectory()) {
@@ -407,7 +380,7 @@ public class BuildView extends View {
 			}
 		}
 	}
-
+	
 	public static void getAllFiles(File[] files, LinkedList<File> fs) {
 		for(File f : files) {
 			if(!f.isDirectory()) {
@@ -418,14 +391,14 @@ public class BuildView extends View {
 			}
 		}
 	}
-
+	
 	public void createClassList() {
-          if(omega.Screen.getFileView().getProjectManager().non_java) return;
+		if(omega.Screen.getFileView().getProjectManager().non_java) return;
 		classess.clear();
 		try {
 			LinkedList<String> dirs = new LinkedList<>();
 			loadData(dirs, new File(Screen.getFileView().getProjectPath() + File.separator + "src").listFiles());
-
+			
 			while(!dirs.isEmpty()) {
 				try {
 					for(String path : dirs) {
@@ -448,7 +421,7 @@ public class BuildView extends View {
 				}
 				catch(Exception e) {}
 			}
-
+			
 			LinkedList<String> paths = new LinkedList<>();
 			classess.forEach((c)->{
 				String res = "";
@@ -470,136 +443,21 @@ public class BuildView extends View {
 		}
 		catch(Exception e) {e.printStackTrace();}
 	}
-
+	
 	private static void loadData(LinkedList<String> paths, File[] files) {
 		try {
 			for (File file : files) {
 				paths.add(file.getPath());
 			}
-		}catch(Exception e){}
+		}
+		catch(Exception e){
+		}
 	}
-
+	
 	private static void loadData(LinkedList<String> paths0, LinkedList<String> paths1) {
 		for(String path0 : paths0)
 			paths1.add(path0);
 	}
-
-	public class RunPanel extends JPanel {
-		private FlexPanel runTextAreaPanel;
-		private JScrollPane scrollPane;
-		private RunTextArea runTextArea;
-
-		private Process process;
-		private PrintWriter writer;
-		
-		public RunPanel(){
-			super(null);
-			setBackground(c2);
-			init();
-		}
-		
-		public void init(){
-			runTextAreaPanel = new FlexPanel(null, back1, null);
-			runTextAreaPanel.setArc(10, 10);
-			scrollPane = new JScrollPane(runTextArea = new RunTextArea());
-			runTextAreaPanel.add(scrollPane);
-			add(runTextAreaPanel);
-		}
-
-		public void setProcess(Process process){
-			this.process = process;
-			writer = new PrintWriter(process.getOutputStream());
-		}
-
-		public void print(String text){
-			runTextArea.append(text + "\n");
-		}
-		
-		public void printText(String text){
-			print(text);
-			layout();
-			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-		}
-
-		public void clearTerminal(){
-			runTextArea.setText("");
-		}
-
-		public void killProcess(){
-			if(process != null && process.isAlive()){
-				try{
-					process.destroyForcibly();
-					writer.close();
-				}
-				catch(Exception e){
-					
-				}
-			}
-		}
-		
-		public void relocate(){
-			runTextAreaPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
-			scrollPane.setBounds(5, 5, runTextAreaPanel.getWidth() - 10, runTextAreaPanel.getHeight() - 10);
-		}
-		
-		@Override
-		public void layout(){
-			relocate();
-			super.layout();
-		}
-
-		public class RunTextArea extends RSyntaxTextArea {
-			private static volatile boolean ctrl;
-			private static volatile boolean l;
-			public RunTextArea(){
-				Editor.getTheme().apply(this);
-				ShellTokenMaker.apply(this);
-				addKeyListener(new KeyAdapter(){
-					@Override
-					public void keyPressed(KeyEvent e){
-						int code = e.getKeyCode();
-						if(code == KeyEvent.VK_CONTROL)
-							ctrl = true;
-						else if(code == KeyEvent.VK_L)
-							l = true;
-
-						performShortcuts(e);
-					}
-					@Override
-					public void keyReleased(KeyEvent e){
-						int code = e.getKeyCode();
-						if(code == KeyEvent.VK_CONTROL)
-							ctrl = false;
-						else if(code == KeyEvent.VK_L)
-							l = false;
-					}
-				});
-			}
-
-			public void performShortcuts(KeyEvent e){
-				if(process == null)
-					return;
-				if(e.getKeyCode() == KeyEvent.VK_ENTER){
-					if(writer == null || !process.isAlive())
-						e.consume();
-					
-					String text = getText();
-					text = text.substring(0, getCaretPosition());
-					text = text.substring(text.lastIndexOf('\n') + 1);
-					if(Screen.onWindows())
-						append("\n");
-					writer.println(text);
-					writer.flush();
-				}
-				if(ctrl && l){
-					clearTerminal();
-					ctrl = false;
-					l = false;
-					e.consume();
-				}
-			}
-		}
-	}
-
+	
 }
 

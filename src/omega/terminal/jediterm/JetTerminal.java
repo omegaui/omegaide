@@ -43,6 +43,8 @@ public class JetTerminal extends JPanel{
 	}
 	
 	public void init(){
+		setBackground(back2);
+		
 		panel = new FlexPanel(null, back1, null);
 		panel.setArc(10, 10);
 		add(panel);

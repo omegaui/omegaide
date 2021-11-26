@@ -17,6 +17,7 @@
 */
 
 package omega.utils.systems;
+
 import omega.token.factory.ShellTokenMaker;
 
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -69,7 +70,7 @@ import omega.utils.DataManager;
 import omega.utils.IconManager;
 import omega.utils.Editor;
 import omega.utils.UIManager;
-import omega.utils.RunPanel;
+import omega.utils.JetRunPanel;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
@@ -90,10 +91,9 @@ public class RunView extends View {
 	
 	public LinkedList<Process> runningApps = new LinkedList<>();
 	
-	private Process compileProcess = null;
-	private Process runProcess = null;
-	
 	private BuildLog buildLog;
+
+	private Process compileProcess;
 	
 	private volatile boolean wasKilled = false;
 	
@@ -151,97 +151,63 @@ public class RunView extends View {
 			if(Screen.isNotNull(Screen.getFileView().getArgumentManager().getCompileCommand())){
 				Screen.setStatus("Building Project", 45, IconManager.fluentbuildImage);
 				String compileDir = Screen.getFileView().getArgumentManager().compileDir;
-				RunPanel printArea = new RunPanel(false);
+				
+				String[] commandsAsArray = new String[args.size()];
+				for(int i = 0; i < args.size(); i++){
+					commandsAsArray[i] = args.get(i);
+				}
+				
+				JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, compileDir);
 				printArea.setLogMode(true);
 				try {
-					Process compileProcess = new ProcessBuilder(args).directory(new File(compileDir)).start();
-					Scanner errorReader = new Scanner(compileProcess.getErrorStream());
-					Scanner inputReader = new Scanner(compileProcess.getInputStream());
-					printArea.setProcess(compileProcess);
 					printArea.printText("Building Project ...");
 					printArea.printText("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
 					
-					runningApps.add(compileProcess);
+					printArea.start();
 					
+					runningApps.add(printArea.terminalPanel.process);
+
 					Screen.setStatus("Building Project -- Double Click to kill this process", 70, IconManager.fluentbuildImage);
 					Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
 						Screen.setStatus("Killing Build Process", 10, IconManager.closeImage);
-						if(compileProcess.isAlive())
-							compileProcess.destroyForcibly();
+						if(printArea.terminalPanel.process.isAlive())
+							printArea.terminalPanel.process.destroyForcibly();
 						Screen.setStatus("", 100, null);
 					});
 
 					errorlog = "";
 					
-					new Thread(()->{
-						while(compileProcess.isAlive()) {
-							while(inputReader.hasNextLine()) {
-								String data = inputReader.nextLine();
-								errorlog += data + "\n";
-								printArea.printText(data);
-							}
-						}
-						try{
-			                    if(compileProcess.getInputStream().available() > 0){
-			                    	while(inputReader.hasNextLine()) {
-									String data = inputReader.nextLine();
-			                    		errorlog += data + "\n";
-			                              printArea.print(data);
-			                         }
-			                    }
-		                    }
-		                    catch(Exception e){
-		                    	
-		                    }
-						inputReader.close();
-					}).start();
-					while(compileProcess.isAlive()) {
-						while(errorReader.hasNextLine()) {
-							String line = errorReader.nextLine();
-							errorlog += line + "\n";
-							printArea.printText(line);
-						}
-					}
-					
-					try{
-		                    if(compileProcess.getErrorStream().available() > 0){
-		                    	while(errorReader.hasNextLine()) {
-		                              String line = errorReader.nextLine();
-								errorlog += line + "\n";
-								printArea.printText(line);
-		                         }
-		                    }
-	                    }
-	                    catch(Exception e){
-	                    	
-	                    }
-					errorReader.close();
+					while(printArea.terminalPanel.process.isAlive());
+
+					errorlog = printArea.getText();
 					
 					Screen.setStatus("Building Project", 100, null);
 					
 					ErrorHighlighters.resetAllErrors();
 					
-					if(compileProcess.exitValue() != 0){
+					printArea.printText("Compilation Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+					
+					if(printArea.terminalPanel.process.exitValue() != 0){
 						if(ErrorHighlighters.isLoggerPresentForCurrentLang()){
 							ErrorHighlighters.showErrors(errorlog);
 							getScreen().getBottomPane().setShowLogAction(()->{
-								getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+								getScreen().getOperationPanel().addTab("Build", IconManager.fluenttesttubeImage, printArea, ()->printArea.killProcess());
 								getScreen().getBottomPane().setShowLogAction(null);
 							});
 						}
 						else{
 							getScreen().getBottomPane().setShowLogAction(null);
-							getScreen().getOperationPanel().addTab("Build", printArea, ()->printArea.killProcess());
+							getScreen().getOperationPanel().addTab("Build", IconManager.fluenttesttubeImage, printArea, ()->printArea.killProcess());
 						}
 						getScreen().getToolMenu().buildComp.setClickable(true);
 						getScreen().getToolMenu().runComp.setClickable(true);
-						printArea.printText("Compilation Finished with Exit Code " + compileProcess.exitValue());
 						return;
 					}
 					getScreen().getBottomPane().setShowLogAction(null);
 				}
-				catch(Exception e){ 
-					printArea.printText("Compilation Failed!\nSystem was unable to find the specified command!");
+				catch(Exception e){
+					printArea.printText("Compilation Failed!");
+					printArea.printText("System was unable to find the specified command.");
 					printArea.printText(e.toString());
 					e.printStackTrace();
 				}
@@ -254,86 +220,7 @@ public class RunView extends View {
 			
 			getScreen().getToolMenu().buildComp.setClickable(true);
 			
-			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
-			RunPanel terminal = new RunPanel(false);
-			try{
-				args = Screen.getFileView().getArgumentManager().run_time_args;
-				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
-				terminal.printText("");
-				terminal.printText("---<>--------------------------------------<>---");
-				String status = "Successfully";
-				
-				String name = "Run";
-				int count = OperationPane.count(name);
-				if(count > -1)
-					name = name + " " + count;
-
-				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
-				
-				if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
-					terminal.printText("\'No Run Time Command Specified!!!\'");
-					terminal.printText("Click \"Settings\", then Click \"All Settings\"");
-					terminal.printText("And Specify the Run Time Args or Command");
-					return;
-				}
-				String runDir = Screen.getFileView().getArgumentManager().runDir;
-				
-				Process runProcess = new ProcessBuilder(args).directory(new File(runDir)).start();
-				terminal.setProcess(runProcess);
-				
-				runningApps.add(runProcess);
-				
-				Screen.setStatus("Running Project", 100, null);
-				getScreen().getToolMenu().runComp.setClickable(true);
-				
-				new Thread(()->{
-					try(Scanner errorReader = new Scanner(runProcess.getErrorStream())){
-						while(runProcess.isAlive()) {
-							while(errorReader.hasNextLine()) {
-								terminal.printText(errorReader.nextLine());
-							}
-						}
-		                    if(runProcess.getErrorStream().available() > 0){
-		                    	while(errorReader.hasNextLine()) {
-		                              terminal.print(errorReader.nextLine());
-		                         }
-		                    }
-	                    }
-	                    catch(Exception e){
-	                    	e.printStackTrace();
-	                    }
-				}).start();
-				
-				try(Scanner inputReader = new Scanner(runProcess.getInputStream())){
-					while(runProcess.isAlive()) {
-						while(inputReader.hasNextLine()) {
-							terminal.printText(inputReader.nextLine());
-						}
-					}
-	                    if(runProcess.getInputStream().available() > 0){
-	                    	while(inputReader.hasNextLine()) {
-	                              terminal.printText(inputReader.nextLine());
-	                         }
-	                    }
-                    }
-                    catch(Exception e){
-                    	e.printStackTrace();
-                    }
-				runningApps.remove(runProcess);
-				Screen.getProjectView().reload();
-				terminal.printText("---<>--------------------------------------<>---");
-				terminal.printText("Program Execution finished with Exit Code " + runProcess.exitValue());
-			}
-			catch(Exception e){
-				terminal.printText("Enter commands correctly!");
-				terminal.printText(e.toString());
-				terminal.printText("---<>--------------------------------------<>---");
-				e.printStackTrace();
-			}
-			finally{
-				getScreen().getToolMenu().runComp.setClickable(true);
-				Screen.setStatus("", 100, null);
-			}
+			justRunNJ();
 		}).start();
 	}
 	
@@ -345,84 +232,61 @@ public class RunView extends View {
 			LinkedList<String> args = Screen.getFileView().getArgumentManager().run_time_args;
 			
 			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
-			RunPanel terminal = new RunPanel(false);
+			String status = "Successfully";
+			
+			String name = "Run";
+			int count = OperationPane.count(name);
+			if(count > -1)
+				name = name + " " + count;
+
+			if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
+				NotificationPopup.create(getScreen())
+				.size(500, 120)
+				.title("Project Management")
+				.message("No Run Time Command Specified!", TOOLMENU_COLOR2)
+				.shortMessage("Click \"Settings\", then Click \"All Settings\"", TOOLMENU_COLOR1)
+				.dialogIcon(IconManager.fluentfolderImage)
+				.build()
+				.locateOnBottomLeft()
+				.showIt();
+				return;
+			}
+
+			String[] commandsAsArray = new String[args.size()];
+			for(int i = 0; i < args.size(); i++){
+				commandsAsArray[i] = args.get(i);
+			}
+			
+			String runDir = Screen.getFileView().getArgumentManager().runDir;
+			JetRunPanel terminal = new JetRunPanel(false, commandsAsArray, runDir);
 			try{
 				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
-				String status = "Successfully";
+
+				terminal.start();
 				
-				String name = "Run";
-				int count = OperationPane.count(name);
-				if(count > -1)
-					name = name + " " + count;
+				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
 				
-				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
-				
-				if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
-					terminal.printText("\'No Run Time Command Specified!!!\'");
-					terminal.printText("Click \"Settings\", then Click \"All Settings\"");
-					terminal.printText("And Specify the Run Time Args or Command");
-					return;
-				}
-				String runDir = Screen.getFileView().getArgumentManager().runDir;
-				
-				Process runProcess = new ProcessBuilder(args).directory(new File(runDir)).start();
-				terminal.setProcess(runProcess);
-				
-				runningApps.add(runProcess);
-				
-				Scanner inputReader = new Scanner(runProcess.getInputStream());
-				Scanner errorReader = new Scanner(runProcess.getErrorStream());
+				runningApps.add(terminal.terminalPanel.process);
 				
 				Screen.setStatus("Running Project", 100, null);
 				getScreen().getToolMenu().runComp.setClickable(true);
 				
 				new Thread(()->{
-					String statusX = "No Errors";
-					while(runProcess.isAlive()) {
-						while(errorReader.hasNextLine()) {
-							if(!statusX.equals("Errors")) 
-								statusX = "Errors";
-							terminal.printText(errorReader.nextLine());
-						}
-					}
-					try{
-		                    if(runProcess.getErrorStream().available() > 0){
-		                    	while(errorReader.hasNextLine()) {
-		                              terminal.print(errorReader.nextLine());
-		                         }
-		                    }
-	                    }
-	                    catch(Exception e){
-	                    	e.printStackTrace();
-	                    }
-					errorReader.close();
+					while(terminal.terminalPanel.process != null && terminal.terminalPanel.process.isAlive());
+					terminal.printText("---<>--------------------------------------<>---");
+					if(terminal.terminalPanel.process != null)
+						terminal.printText("Program Execution finished with Exit Code " + terminal.terminalPanel.process.exitValue());
+					else
+						terminal.printText("Unable to Run the Specified Command!");
+					
+					runningApps.remove(terminal.terminalPanel.process);
+					Screen.getProjectView().reload();
 				}).start();
 				
-				while(runProcess.isAlive()) {
-					while(inputReader.hasNextLine()) {
-						String data = inputReader.nextLine();
-						terminal.printText(data);
-					}
-				}
-				try{
-	                    if(runProcess.getInputStream().available() > 0){
-	                    	while(inputReader.hasNextLine()) {
-	                              terminal.print(inputReader.nextLine());
-	                         }
-	                    }
-                    }
-                    catch(Exception e){
-                    	e.printStackTrace();
-                    }
-				inputReader.close();
-				runningApps.remove(runProcess);
-				Screen.getProjectView().reload();
-				terminal.printText("---<>--------------------------------------<>---");
-				terminal.printText("Program Execution finished with " + statusX);
 			}
-			catch(Exception e){ 
+			catch(Exception e){
 				terminal.printText("Enter commands correctly!");
 				terminal.printText(e.toString());
 				terminal.printText("---<>--------------------------------------<>---");
@@ -481,10 +345,6 @@ public class RunView extends View {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
 				
-				RunPanel terminal = new RunPanel(true);
-				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
-				terminal.printText("");
-				terminal.printText("---<>--------------------------------------<>---");
 				
 				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 				if(Screen.getFileView().getProjectManager().jdkPath == null){
@@ -531,9 +391,13 @@ public class RunView extends View {
 				for(String command : commands)
 					commandsAsArray[++k] = command;
 				
-				runProcess = new ProcessBuilder(commandsAsArray).directory(workingDir).start();
+				JetRunPanel terminal = new JetRunPanel(true, commandsAsArray, workingDir.getAbsolutePath());
 				
-				runningApps.add(runProcess);
+				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+				terminal.printText("");
+				terminal.printText("---<>--------------------------------------<>---");
+				
+				runningApps.add(terminal.terminalPanel.process);
 				
 				String name = "Run("+mainClass;
 				int count = OperationPane.count(name);
@@ -541,38 +405,25 @@ public class RunView extends View {
 					name = name + " " + count;
 				name =  name + ")";
 				
-				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
-				
-				terminal.setProcess(runProcess);
-				
-				Scanner inputReader = new Scanner(runProcess.getInputStream());
-				Scanner errorReader = new Scanner(runProcess.getErrorStream());
-				
-				terminal.setVisible(true);
+				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
+				terminal.start();
 				
 				Screen.setStatus("Running Project", 100, null);
 				
 				new Thread(()->{
-					while(runProcess.isAlive()) {
-						while(errorReader.hasNextLine()) {
-							terminal.printText(errorReader.nextLine());
-						}
-					}
-					errorReader.close();
+					while(terminal.terminalPanel.process != null && terminal.terminalPanel.process.isAlive());
+					terminal.printText("---<>--------------------------------------<>---");
+					
+					if(terminal.terminalPanel.process != null)
+						terminal.printText("Program Execution finished with Exit Code " + terminal.terminalPanel.process.exitValue());
+					else
+						terminal.printText("Unable to Run the Specified Command!");
+					
+					runningApps.remove(terminal.terminalPanel.process);
+					Screen.getProjectView().reload();
 				}).start();
 				
 				getScreen().getToolMenu().runComp.setClickable(true);
-				while(runProcess.isAlive()) {
-					while(inputReader.hasNextLine()) {
-						String data = inputReader.nextLine();
-						terminal.printText(data);
-					}
-				}
-				inputReader.close();
-				runningApps.remove(runProcess);
-				Screen.getProjectView().reload();
-				terminal.printText("---<>--------------------------------------<>---");
-				terminal.printText("Program Execution finished with Exit Code " + runProcess.exitValue());
 			}
 			catch(Exception e) {
 				
@@ -657,7 +508,7 @@ public class RunView extends View {
 					Screen.getErrorHighlighter().loadErrors(errorLog);
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
-					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+					getScreen().getOperationPanel().addTab("Compilation", IconManager.fluentbrokenbotImage, buildLog, ()->{  });
 					System.gc();
 					return;
 				}
@@ -744,7 +595,7 @@ public class RunView extends View {
 					Screen.getErrorHighlighter().loadErrors(errorLog);
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
-					getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{});
+					getScreen().getOperationPanel().addTab("Compilation", IconManager.fluentbrokenbotImage, buildLog, ()->{});
 					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10, IconManager.fluentbrokenbotImage);
 					System.gc();
 					return;
@@ -837,10 +688,10 @@ public class RunView extends View {
 							depenPath += d + omega.Screen.PATH_SEPARATOR;
 						}
 					}
-	                    if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-	                         for(String d : Screen.getFileView().getProjectManager().resourceRoots)
-	                              depenPath += d + omega.Screen.PATH_SEPARATOR;
-	                    }
+                    if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
+                         for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+                              depenPath += d + omega.Screen.PATH_SEPARATOR;
+                    }
 					if(!depenPath.equals("")) {
 						depenPath = depenPath.substring(0, depenPath.length() - 1);
 					}
@@ -903,7 +754,7 @@ public class RunView extends View {
 							Screen.getErrorHighlighter().loadErrors(errorlog);
 							buildLog.setHeading("Build Resulted in following Error(s)");
 							buildLog.genView(errorlog);
-							getScreen().getOperationPanel().addTab("Compilation", buildLog, ()->{  });
+							getScreen().getOperationPanel().addTab("Compilation", IconManager.fluentbrokenbotImage, buildLog, ()->{  });
 						}
 						return;
 					}
@@ -914,18 +765,6 @@ public class RunView extends View {
 				}
 				
 				getScreen().getOperationPanel().removeTab("Compilation");
-				
-				if(mainClass == null) {
-					RunPanel p = new RunPanel(true);
-					getScreen().getOperationPanel().addTab("No Main Config", p, p::killProcess);
-					
-					if(mainClassPath.equals(Screen.getFileView().getProjectPath() + File.separator + "src.java"))
-						p.printText("\"No Main Class Defined for the Project!\" \n\t or \n \"Defined Main Class does not exits!\"");
-					
-					Screen.setStatus("Running Project Failed", 100, null);
-					getScreen().getToolMenu().runComp.setClickable(true);
-					return;
-				}
 				
 				Screen.setStatus("Building Project Completed", 100, null);
 				
@@ -952,10 +791,6 @@ public class RunView extends View {
 				if(!depenPath.equals(""))
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				
-				RunPanel terminal = new RunPanel(true);
-				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
-				terminal.printText("");
-				terminal.printText("---<>--------------------------------------<>---");
 				
 				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 				if(Screen.getFileView().getProjectManager().jdkPath == null){
@@ -1001,9 +836,21 @@ public class RunView extends View {
 				for(String command : commands)
 					commandsAsArray[++k] = command;
 				
-				runProcess = new ProcessBuilder(commandsAsArray).directory(workingDir).start();
+				JetRunPanel terminal = new JetRunPanel(true, commandsAsArray, workingDir.getAbsolutePath());
+				terminal
+				.reRunAction(()->{
+					terminal.killProcess();
+					run();
+				})
+				.reRunDynamicallyAction(()->{
+					terminal.killProcess();
+					instantRun();
+				});
+				runningApps.add(terminal.terminalPanel.process);
 				
-				runningApps.add(runProcess);
+				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+				terminal.printText("");
+				terminal.printText("---<>--------------------------------------<>---");
 				
 				String name = "Run("+mainClass;
 				int count = OperationPane.count(name);
@@ -1012,213 +859,23 @@ public class RunView extends View {
 				}
 				name =  name + ")";
 				
-				getScreen().getOperationPanel().addTab(name, terminal, terminal::killProcess);
-				terminal.setProcess(runProcess);
+				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
+				terminal.start();
 				
-				Scanner inputReader = new Scanner(runProcess.getInputStream());
-				Scanner errorReader = new Scanner(runProcess.getErrorStream());
 				Screen.setStatus("Running Project", 100, null);
 				
 				new Thread(()->{
-					while(runProcess.isAlive()) {
-						while(errorReader.hasNextLine()) {
-							terminal.printText(errorReader.nextLine());
-						}
-					}
-					errorReader.close();
+					while(terminal.terminalPanel.process.isAlive());
+					terminal.printText("---<>--------------------------------------<>---");
+					terminal.printText("Program Execution finished with Exit Code " + terminal.terminalPanel.process.exitValue());
+					runningApps.remove(terminal.terminalPanel.process);
+					Screen.getProjectView().reload();
 				}).start();
-				
+								
 				getScreen().getToolMenu().runComp.setClickable(true);
-				while(runProcess.isAlive()) 	{
-					while(inputReader.hasNextLine()) {
-						String data = inputReader.nextLine();
-						terminal.printText(data);
-					}
-				}
-				inputReader.close();
-				runningApps.remove(runProcess);
-				Screen.getProjectView().reload();
-				terminal.printText("---<>--------------------------------------<>---");
-				terminal.printText("Program Execution finished with Exit Code " + runProcess.exitValue());
 			}
 			catch(Exception e) {e.printStackTrace();}
 		}).start();
-	}
-	
-	public class RunPanel extends JPanel {
-		private FlexPanel actionPanel;
-		private TextComp runComp;
-		private TextComp instantRunComp;
-		private TextComp clearComp;
-		private TextComp killComp;
-
-		private FlexPanel runTextAreaPanel;
-		private JScrollPane scrollPane;
-		private RunTextArea runTextArea;
-
-		private boolean processTerminal;
-		private boolean logMode;
-
-		private Process process;
-		private PrintWriter writer;
-		
-		public RunPanel(boolean processTerminal){
-			super(null);
-			this.processTerminal = processTerminal;
-			setBackground(c2);
-			init();
-		}
-		
-		public void init(){
-			actionPanel = new FlexPanel(null, back1, null);
-			actionPanel.setArc(10, 10);
-			add(actionPanel);
-			
-			runComp = new TextComp(processTerminal ? IconManager.fluentrunImage : IconManager.fluentlaunchImage, 20, 20, "Re-Run",TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::reRun);
-			actionPanel.add(runComp);
-			
-			instantRunComp = new TextComp(IconManager.fluentrocketImage, 20, 20, "Re-Run(Dynamic)", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::reRunDynamically);
-			instantRunComp.setVisible(processTerminal);
-			actionPanel.add(instantRunComp);
-			
-			clearComp = new TextComp(IconManager.fluentclearImage, 20, 20, "Clear Terminal", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::clearTerminal);
-			actionPanel.add(clearComp);
-			
-			killComp = new TextComp(IconManager.fluentcloseImage, 15, 15, "Kill Process", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::killProcess);
-			actionPanel.add(killComp);
-
-			runTextAreaPanel = new FlexPanel(null, back1, null);
-			runTextAreaPanel.setArc(10, 10);
-			scrollPane = new JScrollPane(runTextArea = new RunTextArea());
-			runTextAreaPanel.add(scrollPane);
-			add(runTextAreaPanel);
-
-			putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-			putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-			putAnimationLayer(clearComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-			putAnimationLayer(killComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		}
-
-		public void reRun(){
-			killProcess();
-			run();
-		}
-
-		public void reRunDynamically(){
-			killProcess();
-			instantRun();
-		}
-
-		public void clearTerminal(){
-			runTextArea.setText("");
-		}
-
-		public void killProcess(){
-			if(process != null && process.isAlive()){
-				try{
-					process.destroyForcibly();
-					writer.close();
-				}
-				catch(Exception e){
-					
-				}
-			}
-		}
-
-		public void setProcess(Process process){
-			this.process = process;
-			if(!logMode)
-				writer = new PrintWriter(process.getOutputStream());
-		}
-
-		public void setLogMode(boolean logMode){
-			this.logMode = logMode;
-			runTextArea.removeKeyListener(runTextArea.getKeyListeners()[0]);
-			actionPanel.setVisible(true);
-		}
-
-		public void print(String text){
-			runTextArea.append(text + "\n");
-			layout();
-			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-		}
-		
-		public void printText(String text){
-			print(text);
-		}
-		
-		public void relocate(){
-			if(!logMode){
-				actionPanel.setBounds(5, 5, 30, getHeight() - 10);
-				runComp.setBounds(3, 5, 25, 25);
-				instantRunComp.setBounds(3, 32, 25, 25);
-				clearComp.setBounds(3, processTerminal ? 60 : 32, 25, 25);
-				killComp.setBounds(3, processTerminal ? 87 : 60, 25, 25);
-			}
-			if(logMode)
-				runTextAreaPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
-			else	
-				runTextAreaPanel.setBounds(40, 5, getWidth() - 50, getHeight() - 10);
-			scrollPane.setBounds(5, 5, runTextAreaPanel.getWidth() - 10, runTextAreaPanel.getHeight() - 10);
-		}
-		
-		@Override
-		public void layout(){
-			relocate();
-			super.layout();
-		}
-
-		public class RunTextArea extends RSyntaxTextArea {
-			private static volatile boolean ctrl;
-			private static volatile boolean l;
-			public RunTextArea(){
-				Editor.getTheme().apply(this);
-				ShellTokenMaker.apply(this);
-				addKeyListener(new KeyAdapter(){
-					@Override
-					public void keyPressed(KeyEvent e){
-						int code = e.getKeyCode();
-						if(code == KeyEvent.VK_CONTROL)
-							ctrl = true;
-						else if(code == KeyEvent.VK_L)
-							l = true;
-
-						performShortcuts(e);
-					}
-					@Override
-					public void keyReleased(KeyEvent e){
-						int code = e.getKeyCode();
-						if(code == KeyEvent.VK_CONTROL)
-							ctrl = false;
-						else if(code == KeyEvent.VK_L)
-							l = false;
-					}
-				});
-			}
-
-			public void performShortcuts(KeyEvent e){
-				if(process == null)
-					return;
-				if(e.getKeyCode() == KeyEvent.VK_ENTER){
-					if(writer == null || !process.isAlive())
-						e.consume();
-					
-					String text = getText();
-					text = text.substring(0, getCaretPosition());
-					text = text.substring(text.lastIndexOf('\n') + 1);
-					if(Screen.onWindows())
-						append("\n");
-					writer.println(text);
-					writer.flush();
-				}
-				if(ctrl && l){
-					clearTerminal();
-					ctrl = false;
-					l = false;
-					e.consume();
-				}
-			}
-		}
 	}
 }
 
