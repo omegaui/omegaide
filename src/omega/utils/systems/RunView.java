@@ -393,6 +393,16 @@ public class RunView extends View {
 				
 				JetRunPanel terminal = new JetRunPanel(true, commandsAsArray, workingDir.getAbsolutePath());
 				
+				terminal
+				.reRunAction(()->{
+					terminal.killProcess();
+					run();
+				})
+				.reRunDynamicallyAction(()->{
+					terminal.killProcess();
+					instantRun();
+				});
+				
 				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");

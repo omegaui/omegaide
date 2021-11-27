@@ -1,11 +1,11 @@
 /*
- * 09/20/2013
- *
- * ReplaceToolBar - A tool bar for "replace" operations in text areas.
- *
- * This library is distributed under a modified BSD license.  See the included
- * RSTAUI.license.txt file for details.
- */
+* 09/20/2013
+*
+* ReplaceToolBar - A tool bar for "replace" operations in text areas.
+*
+* This library is distributed under a modified BSD license.  See the included
+* RSTAUI.license.txt file for details.
+*/
 package org.fife.rsta.ui.search;
 
 import java.awt.*;
@@ -27,62 +27,62 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 
 
 /**
- * A toolbar for replace operations in a text editor application.  This provides
- * a more seamless experience than using a Find or Replace dialog.
- *
- * @author Robert Futrell
- * @version 0.5
- * @see FindToolBar
- * @see ReplaceDialog
- */
+* A toolbar for replace operations in a text editor application.  This provides
+* a more seamless experience than using a Find or Replace dialog.
+*
+* @author Robert Futrell
+* @version 0.5
+* @see FindToolBar
+* @see ReplaceDialog
+*/
 public class ReplaceToolBar extends FindToolBar {
-
+	
 	private JButton replaceButton;
 	private JButton replaceAllButton;
-
+	
 	/**
-	 * Our search listener, cached so we can grab its selected text easily.
-	 */
+	* Our search listener, cached so we can grab its selected text easily.
+	*/
 	protected SearchListener searchListener;
-
-
+	
+	
 	/**
-	 * Creates the tool bar.
-	 *
-	 * @param listener An entity listening for search events.
-	 */
+	* Creates the tool bar.
+	*
+	* @param listener An entity listening for search events.
+	*/
 	public ReplaceToolBar(SearchListener listener) {
 		super(listener);
 		this.searchListener = listener;
 	}
-
-
+	
+	
 	@Override
 	public void addNotify() {
 		super.addNotify();
 		handleToggleButtons();
 	}
-
-
+	
+	
 	@Override
 	protected Container createButtonPanel() {
-
+		
 		Box panel = new Box(BoxLayout.LINE_AXIS);
-
+		
 		JPanel bp = new JPanel(new GridLayout(2,2, 5,5));
-          bp.setBackground(omega.utils.UIManager.c2);
+		bp.setBackground(omega.utils.UIManager.c2);
 		panel.add(bp);
-
+		
 		createFindButtons();
-
+		
 		Component filler = Box.createRigidArea(new Dimension(5, 5));
-
+		
 		bp.add(findButton);       bp.add(replaceButton);
 		bp.add(replaceAllButton); bp.add(filler);
 		panel.add(bp);
-
+		
 		JPanel optionPanel = new JPanel(new SpringLayout());
-          optionPanel.setBackground(omega.utils.UIManager.c2);
+		optionPanel.setBackground(omega.utils.UIManager.c2);
 		matchCaseCheckBox = createCB("MatchCase");
 		regexCheckBox = createCB("RegEx");
 		wholeWordCheckBox = createCB("WholeWord");
@@ -96,10 +96,10 @@ public class ReplaceToolBar extends FindToolBar {
 		Component space2 = Box.createRigidArea(spacing);
 		Component space3 = Box.createRigidArea(spacing);
 		Component space4 = Box.createRigidArea(spacing);
-
+		
 		ComponentOrientation orientation = ComponentOrientation.
-				getOrientation(getLocale());
-
+		getOrientation(getLocale());
+		
 		if (orientation.isLeftToRight()) {
 			optionPanel.add(matchCaseCheckBox); optionPanel.add(wholeWordCheckBox); optionPanel.add(wrapCheckBox);
 			optionPanel.add(space1);            optionPanel.add(space2);            optionPanel.add(space3);
@@ -112,44 +112,48 @@ public class ReplaceToolBar extends FindToolBar {
 		}
 		UIUtil.makeSpringCompactGrid(optionPanel, 3,3, 0,0, 0,0);
 		panel.add(optionPanel);
-
+		
 		return panel;
-
+		
 	}
-
-
+	
+	
 	@Override
 	protected Container createFieldPanel() {
-
+		
 		findFieldListener = new ReplaceFindFieldListener();
-
+		
 		JPanel temp = new JPanel(new SpringLayout());
-          temp.setBackground(omega.utils.UIManager.c2);
-
+		temp.setBackground(omega.utils.UIManager.c2);
+		
 		JLabel findLabel = new JLabel(MSG.getString("FindWhat"));
-          findLabel.setBackground(omega.utils.UIManager.c2);
+		findLabel.setBackground(omega.utils.UIManager.c2);
 		JLabel replaceLabel = new JLabel(MSG.getString("ReplaceWith"));
-          replaceLabel.setBackground(omega.utils.UIManager.c2);
-
+		replaceLabel.setBackground(omega.utils.UIManager.c2);
+		
 		findCombo = new SearchComboBox(this, false);
-          findCombo.setBackground(omega.utils.UIManager.c2);
+		findCombo.setBackground(omega.utils.UIManager.c2);
+		findCombo.setFont(omega.utils.UIManager.PX14);
 		JTextComponent findField = UIUtil.getTextComponent(findCombo);
 		findFieldListener.install(findField);
+		findField.setFont(omega.utils.UIManager.PX14);
 		Container fcp = createContentAssistablePanel(findCombo);
-
+		
 		replaceCombo = new SearchComboBox(this, true);
-          replaceCombo.setBackground(omega.utils.UIManager.c2);
+		replaceCombo.setBackground(omega.utils.UIManager.c2);
+		replaceCombo.setFont(omega.utils.UIManager.PX14);
 		JTextComponent replaceField = UIUtil.getTextComponent(replaceCombo);
+		replaceField.setFont(omega.utils.UIManager.PX14);
 		findFieldListener.install(replaceField);
 		Container rcp = createContentAssistablePanel(replaceCombo);
-
+		
 		// We use a "spacing" middle row, instead of spacing in the call to
 		// UIUtil.makeSpringCompactGrid(), as the latter adds trailing
 		// spacing after the final "row", which screws up our alignment.
 		Dimension spacing = new Dimension(1, 5);
 		Component space1 = Box.createRigidArea(spacing);
 		Component space2 = Box.createRigidArea(spacing);
-
+		
 		if (getComponentOrientation().isLeftToRight()) {
 			temp.add(findLabel);     temp.add(fcp);
 			temp.add(space1);        temp.add(space2);
@@ -161,38 +165,38 @@ public class ReplaceToolBar extends FindToolBar {
 			temp.add(rcp);    temp.add(replaceLabel);
 		}
 		UIUtil.makeSpringCompactGrid(temp, 3,2, 0,0, 0,0);
-
+		
 		return temp;
 	}
-
-
+	
+	
 	@Override
 	protected void createFindButtons() {
-
+		
 		super.createFindButtons();
-
+		
 		replaceButton = new JButton(SEARCH_MSG.getString("Replace"));
 		makeEnterActivateButton(replaceButton);
 		replaceButton.setToolTipText(MSG.getString("Replace.ToolTip"));
 		replaceButton.setActionCommand("Replace");
 		replaceButton.addActionListener(listener);
 		replaceButton.setEnabled(false);
-          
-
+		
+		
 		replaceAllButton = new JButton(SEARCH_MSG.getString("ReplaceAll"));
 		makeEnterActivateButton(replaceAllButton);
 		replaceAllButton.setActionCommand("ReplaceAll");
 		replaceAllButton.addActionListener(listener);
 		replaceAllButton.setEnabled(false);
-
+		
 	}
-
-
+	
+	
 	/**
-	 * Called when the regex checkbox is clicked (or its value is modified
-	 * via a change to the search context).  Subclasses can override
-	 * to add custom behavior, but should call the super implementation.
-	 */
+	* Called when the regex checkbox is clicked (or its value is modified
+	* via a change to the search context).  Subclasses can override
+	* to add custom behavior, but should call the super implementation.
+	*/
 	@Override
 	protected void handleRegExCheckBoxClicked() {
 		super.handleRegExCheckBoxClicked();
@@ -200,8 +204,8 @@ public class ReplaceToolBar extends FindToolBar {
 		boolean b = regexCheckBox.isSelected();
 		replaceCombo.setAutoCompleteEnabled(b);
 	}
-
-
+	
+	
 	@Override
 	protected void handleSearchAction(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -210,15 +214,15 @@ public class ReplaceToolBar extends FindToolBar {
 			handleToggleButtons(); // Replace button could toggle state
 		}
 	}
-
-
+	
+	
 	@Override
 	protected FindReplaceButtonsEnableResult handleToggleButtons() {
-
+		
 		FindReplaceButtonsEnableResult er = super.handleToggleButtons();
 		boolean shouldReplace = er.getEnable();
 		replaceAllButton.setEnabled(shouldReplace);
-
+		
 		// "Replace" is only enabled if text to search for is selected in
 		// the UI.
 		if (shouldReplace) {
@@ -226,11 +230,11 @@ public class ReplaceToolBar extends FindToolBar {
 			shouldReplace = matchesSearchFor(text);
 		}
 		replaceButton.setEnabled(shouldReplace);
-
+		
 		return er;
 	}
-
-
+	
+	
 	private boolean matchesSearchFor(String text) {
 		if (text==null || text.length()==0) {
 			return false;
@@ -244,7 +248,7 @@ public class ReplaceToolBar extends FindToolBar {
 				Pattern pattern;
 				try {
 					pattern = Pattern.compile(searchFor, flags);
-				} catch (PatternSyntaxException pse) {
+					} catch (PatternSyntaxException pse) {
 					pse.printStackTrace(); // Never happens
 					return false;
 				}
@@ -259,30 +263,30 @@ public class ReplaceToolBar extends FindToolBar {
 		}
 		return false;
 	}
-
-
+	
+	
 	/**
-	 * Overridden to possibly toggle the enabled state of the replace button.
-	 */
+	* Overridden to possibly toggle the enabled state of the replace button.
+	*/
 	@Override
 	public boolean requestFocusInWindow() {
 		boolean result = super.requestFocusInWindow();
 		handleToggleButtons(); // Replace button state may change
 		return result;
 	}
-
+	
 	@Override
-    public void setContentAssistImage(Image image) {
-        super.setContentAssistImage(image);
-        replaceCombo.setContentAssistImage(image);
-    }
-
-
+	public void setContentAssistImage(Image image) {
+		super.setContentAssistImage(image);
+		replaceCombo.setContentAssistImage(image);
+	}
+	
+	
 	/**
-	 * Listens for the user typing into the search field.
-	 */
+	* Listens for the user typing into the search field.
+	*/
 	protected class ReplaceFindFieldListener extends FindFieldListener {
-
+		
 		@Override
 		protected void handleDocumentEvent(DocumentEvent e) {
 			super.handleDocumentEvent(e);
@@ -295,8 +299,8 @@ public class ReplaceToolBar extends FindToolBar {
 				getSearchContext().setReplaceWith(replaceField.getText());
 			}
 		}
-
+		
 	}
-
-
+	
+	
 }

@@ -1,11 +1,11 @@
 /*
- * 09/20/2013
- *
- * FindToolBar - A tool bar for "find" operations in text areas.
- *
- * This library is distributed under a modified BSD license.  See the included
- * RSTAUI.license.txt file for details.
- */
+* 09/20/2013
+*
+* FindToolBar - A tool bar for "find" operations in text areas.
+*
+* This library is distributed under a modified BSD license.  See the included
+* RSTAUI.license.txt file for details.
+*/
 package org.fife.rsta.ui.search;
 
 import java.awt.*;
@@ -47,15 +47,15 @@ import org.fife.ui.rtextarea.SearchContext;
 
 
 /**
- * A toolbar for search operations in a text editor application.  This provides
- * a more seamless experience than using a Find or Replace dialog.
- *
- * @author Robert Futrell
- * @version 0.5
- * @see FindDialog
- */
+* A toolbar for search operations in a text editor application.  This provides
+* a more seamless experience than using a Find or Replace dialog.
+*
+* @author Robert Futrell
+* @version 0.5
+* @see FindDialog
+*/
 public class FindToolBar extends JPanel {
-
+	
 	private SearchContext context;
 	protected ToolBarListener listener;
 	protected FindFieldListener findFieldListener;
@@ -70,82 +70,82 @@ public class FindToolBar extends JPanel {
 	protected JCheckBox wrapCheckBox;
 	private JLabel infoLabel;
 	private Timer markAllTimer;
-
+	
 	/**
-	 * Flag to prevent double-modification of SearchContext when e.g. a
-	 * FindToolBar and ReplaceToolBar share the same SearchContext.
-	 */
+	* Flag to prevent double-modification of SearchContext when e.g. a
+	* FindToolBar and ReplaceToolBar share the same SearchContext.
+	*/
 	private boolean settingFindTextFromEvent;
-
+	
 	protected static final ResourceBundle SEARCH_MSG = ResourceBundle.getBundle(
-			"org.fife.rsta.ui.search.Search");
+	"org.fife.rsta.ui.search.Search");
 	protected static final ResourceBundle MSG = ResourceBundle.getBundle(
-			"org.fife.rsta.ui.search.SearchToolBar");
-
+	"org.fife.rsta.ui.search.SearchToolBar");
+	
 	/**
-	 * Creates the tool bar.
-	 *
-	 * @param listener An entity listening for search events.
-	 */
+	* Creates the tool bar.
+	*
+	* @param listener An entity listening for search events.
+	*/
 	public FindToolBar(SearchListener listener) {
-
+		
 		// Keep focus in this component when tabbing through search controls
-          setBackground(omega.utils.UIManager.c2);
+		setBackground(omega.utils.UIManager.c2);
 		setFocusCycleRoot(true);
-
+		
 		markAllTimer = new Timer(300, new MarkAllEventNotifier());
 		markAllTimer.setRepeats(false);
-
+		
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 		addSearchListener(listener);
 		this.listener = new ToolBarListener();
-
+		
 		// The user should set a shared instance between all subclass
 		// instances, but to be safe we set individual ones.
 		setSearchContext(new SearchContext());
-
+		
 		ComponentOrientation orientation = ComponentOrientation.
-									getOrientation(getLocale());
-
+		getOrientation(getLocale());
+		
 		add(Box.createHorizontalStrut(5));
-
+		
 		add(createFieldPanel());
-
+		
 		Box rest = new Box(BoxLayout.LINE_AXIS);
 		add(rest, BorderLayout.LINE_END);
-
+		
 		rest.add(Box.createHorizontalStrut(5));
 		rest.add(createButtonPanel());
 		rest.add(Box.createHorizontalStrut(15));
-
+		
 		JLabel infoLabel = new JLabel();
 		rest.add(infoLabel);
-
+		
 		rest.add(Box.createHorizontalGlue());
-
+		
 		// Get ready to go.
 		applyComponentOrientation(orientation);
 	}
-
-
+	
+	
 	/**
-	 * Adds a {@link SearchListener} to this tool bar.  This listener will
-	 * be notified when find or replace operations are triggered.
-	 *
-	 * @param l The listener to add.
-	 * @see #removeSearchListener(SearchListener)
-	 */
+	* Adds a {@link SearchListener} to this tool bar.  This listener will
+	* be notified when find or replace operations are triggered.
+	*
+	* @param l The listener to add.
+	* @see #removeSearchListener(SearchListener)
+	*/
 	public void addSearchListener(SearchListener l) {
 		listenerList.add(SearchListener.class, l);
 	}
-
+	
 	protected Container createButtonPanel() {
-
+		
 		Box panel = new Box(BoxLayout.LINE_AXIS);
-          panel.setBackground(omega.utils.UIManager.c2);
+		panel.setBackground(omega.utils.UIManager.c2);
 		createFindButtons();
-
+		
 		//JPanel bp = new JPanel(new GridLayout(1,2, 5,0));
 		//bp.add(findButton); bp.add(findPrevButton);
 		JPanel filler = new JPanel(new BorderLayout());
@@ -153,78 +153,83 @@ public class FindToolBar extends JPanel {
 		filler.add(findButton);//bp);
 		panel.add(filler);
 		panel.add(Box.createHorizontalStrut(6));
-
+		
 		matchCaseCheckBox = createCB("MatchCase");
+		matchCaseCheckBox.setFont(omega.utils.UIManager.PX14);
 		panel.add(matchCaseCheckBox);
-
+		
 		regexCheckBox = createCB("RegEx");
+		regexCheckBox.setFont(omega.utils.UIManager.PX14);
 		panel.add(regexCheckBox);
-
+		
 		wholeWordCheckBox = createCB("WholeWord");
+		wholeWordCheckBox.setFont(omega.utils.UIManager.PX14);
 		panel.add(wholeWordCheckBox);
-
+		
 		markAllCheckBox = createCB("MarkAll");
+		markAllCheckBox.setFont(omega.utils.UIManager.PX14);
 		panel.add(markAllCheckBox);
-
+		
 		wrapCheckBox = createCB("Wrap");
+		wrapCheckBox.setFont(omega.utils.UIManager.PX14);
 		panel.add(wrapCheckBox);
-
+		
 		return panel;
-
+		
 	}
-    
+	
 	protected JCheckBox createCB(String key) {
 		JCheckBox cb = new JCheckBox(SEARCH_MSG.getString(key));
 		cb.addActionListener(listener);
 		cb.addMouseListener(listener);
-          cb.setBackground(omega.utils.UIManager.c2);
+		cb.setBackground(omega.utils.UIManager.c2);
 		return cb;
 	}
-
+	
 	/**
-	 * Wraps the specified component in a panel with a leading "content assist
-	 * available" icon in front of it.
-	 *
-	 * @param comp The component with content assist.
-	 * @return The wrapper panel.
-	 */
+	* Wraps the specified component in a panel with a leading "content assist
+	* available" icon in front of it.
+	*
+	* @param comp The component with content assist.
+	* @return The wrapper panel.
+	*/
 	protected Container createContentAssistablePanel(JComponent comp) {
 		JPanel temp = new JPanel(new BorderLayout());
-          temp.setBackground(omega.utils.UIManager.c2);
+		temp.setBackground(omega.utils.UIManager.c2);
 		temp.add(comp);
 		AssistanceIconPanel aip = new AssistanceIconPanel(comp);
-          aip.setBackground(omega.utils.UIManager.c2);
+		aip.setBackground(omega.utils.UIManager.c2);
 		temp.add(aip, BorderLayout.LINE_START);
 		return temp;
 	}
-
-
+	
+	
 	protected Container createFieldPanel() {
-
+		
 		findFieldListener = new FindFieldListener();
 		JPanel temp = new JPanel(new BorderLayout());
-          temp.setBackground(omega.utils.UIManager.c2);
-
+		temp.setBackground(omega.utils.UIManager.c2);
+		
 		findCombo = new SearchComboBox(this, false);
 		JTextComponent findField = UIUtil.getTextComponent(findCombo);
 		findFieldListener.install(findField);
 		temp.add(createContentAssistablePanel(findCombo));
-
+		
 		return temp;
 	}
-
-
+	
+	
 	/**
-	 * Creates the buttons for this tool bar.
-	 */
+	* Creates the buttons for this tool bar.
+	*/
 	protected void createFindButtons() {
-
+		
 		findPrevButton = new JButton(MSG.getString("FindPrev"));
 		makeEnterActivateButton(findPrevButton);
 		findPrevButton.setActionCommand("FindPrevious");
 		findPrevButton.addActionListener(listener);
 		findPrevButton.setEnabled(false);
-
+		
 		findButton = new JButton(SEARCH_MSG.getString("Find")) {
 			@Override
 			public Dimension getPreferredSize() {
@@ -236,15 +241,15 @@ public class FindToolBar extends JPanel {
 		findButton.setActionCommand("FindNext");
 		findButton.addActionListener(listener);
 		findButton.setEnabled(false);
-
+		
 	}
-
-
+	
+	
 	/**
-	 * Forces a "mark all" event to be sent out, if "mark all" is enabled.
-	 *
-	 * @param delay If the delay should be honored.
-	 */
+	* Forces a "mark all" event to be sent out, if "mark all" is enabled.
+	*
+	* @param delay If the delay should be honored.
+	*/
 	protected void doMarkAll(boolean delay) {
 		if (context.getMarkAll() && !settingFindTextFromEvent) {
 			if (delay) {
@@ -255,8 +260,8 @@ public class FindToolBar extends JPanel {
 			}
 		}
 	}
-
-
+	
+	
 	void doSearch(boolean forward) {
 		if (forward) {
 			findButton.doClick(0);
@@ -265,114 +270,114 @@ public class FindToolBar extends JPanel {
 			findPrevButton.doClick(0);
 		}
 	}
-
-
+	
+	
 	/**
-	 * Fires a "mark all" search event.
-	 */
+	* Fires a "mark all" search event.
+	*/
 	private void fireMarkAllEvent() {
 		SearchEvent se = new SearchEvent(this, SearchEvent.Type.MARK_ALL,
-				context);
+		context);
 		fireSearchEvent(se);
 	}
-
-
+	
+	
 	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * <code>event</code> parameter.
-	 *
-	 * @param e The <code>ActionEvent</code> object coming from a
-	 *        child component.
-	 */
+	* Notifies all listeners that have registered interest for notification on
+	* this event type. The event instance is lazily created using the
+	* <code>event</code> parameter.
+	*
+	* @param e The <code>ActionEvent</code> object coming from a
+	*        child component.
+	*/
 	protected void fireSearchEvent(SearchEvent e) {
 		// Process the listeners last to first, notifying
 		// those that are interested in this event
 		SearchListener[] listeners = listenerList.
-								getListeners(SearchListener.class);
+		getListeners(SearchListener.class);
 		int count = listeners==null ? 0 : listeners.length;
 		for (int i=count-1; i>=0; i--) {
 			listeners[i].searchEvent(e);
 		}
 	}
-
-
+	
+	
 	protected String getFindText() {
 		return UIUtil.getTextComponent(findCombo).getText();
 	}
-
-
+	
+	
 	/**
-	 * Returns the delay between when the user types and when a "mark all"
-	 * event is fired (assuming "mark all" is enabled), in milliseconds.
-	 *
-	 * @return The delay.
-	 * @see #setMarkAllDelay(int)
-	 */
+	* Returns the delay between when the user types and when a "mark all"
+	* event is fired (assuming "mark all" is enabled), in milliseconds.
+	*
+	* @return The delay.
+	* @see #setMarkAllDelay(int)
+	*/
 	public int getMarkAllDelay() {
 		return markAllTimer.getInitialDelay();
 	}
-
-
+	
+	
 	protected String getReplaceText() {
 		if (replaceCombo==null) {
 			return null;
 		}
 		return UIUtil.getTextComponent(replaceCombo).getText();
 	}
-
-
+	
+	
 	/**
-	 * Returns the search context for this tool bar.
-	 *
-	 * @return The search context.
-	 * @see #setSearchContext(SearchContext)
-	 */
+	* Returns the search context for this tool bar.
+	*
+	* @return The search context.
+	* @see #setSearchContext(SearchContext)
+	*/
 	public SearchContext getSearchContext() {
 		return context;
 	}
-
-
+	
+	
 	/**
-	 * Called when the regex checkbox is clicked (or its value is modified
-	 * via a change to the search context).  Subclasses can override
-	 * to add custom behavior, but should call the super implementation.
-	 */
+	* Called when the regex checkbox is clicked (or its value is modified
+	* via a change to the search context).  Subclasses can override
+	* to add custom behavior, but should call the super implementation.
+	*/
 	protected void handleRegExCheckBoxClicked() {
 		handleToggleButtons();
 		// "Content assist" support
 		boolean b = regexCheckBox.isSelected();
 		findCombo.setAutoCompleteEnabled(b);
 	}
-
-
+	
+	
 	/**
-	 * Creates a search event object and notifies all registered listeners.
-	 *
-	 * @param e The event.
-	 */
+	* Creates a search event object and notifies all registered listeners.
+	*
+	* @param e The event.
+	*/
 	protected void handleSearchAction(ActionEvent e) {
-
+		
 		SearchEvent.Type type = null;
 		boolean forward = true;
 		String action = e.getActionCommand();
 		// JTextField returns *_DOWN_* modifiers, JButton returns the others (!)
 		int allowedModifiers =
-				InputEvent.CTRL_DOWN_MASK|InputEvent.SHIFT_DOWN_MASK | // field
-				InputEvent.CTRL_MASK|InputEvent.SHIFT_MASK; // JButton
-
+		InputEvent.CTRL_DOWN_MASK|InputEvent.SHIFT_DOWN_MASK | // field
+		InputEvent.CTRL_MASK|InputEvent.SHIFT_MASK; // JButton
+		
 		if ("FindNext".equals(action)) {
 			type = SearchEvent.Type.FIND;
 			int mods = e.getModifiers();
 			forward = (mods&allowedModifiers)==0;
-			// Add the item to the combo box's list, if it isn't already there.
+				// Add the item to the combo box's list, if it isn't already there.
 			JTextComponent tc = UIUtil.getTextComponent(findCombo);
 			findCombo.addItem(tc.getText());
 		}
 		else if ("FindPrevious".equals(action)) {
 			type = SearchEvent.Type.FIND;
 			forward = false;
-			// Add the item to the combo box's list, if it isn't already there.
+				// Add the item to the combo box's list, if it isn't already there.
 			JTextComponent tc = UIUtil.getTextComponent(findCombo);
 			findCombo.addItem(tc.getText());
 		}
@@ -380,7 +385,7 @@ public class FindToolBar extends JPanel {
 			type = SearchEvent.Type.REPLACE;
 			int mods = e.getModifiers();
 			forward = (mods&allowedModifiers)==0;
-			// Add the item to the combo box's list, if it isn't already there.
+				// Add the item to the combo box's list, if it isn't already there.
 			JTextComponent tc = UIUtil.getTextComponent(findCombo);
 			findCombo.addItem(tc.getText());
 			tc = UIUtil.getTextComponent(replaceCombo);
@@ -394,12 +399,12 @@ public class FindToolBar extends JPanel {
 			tc = UIUtil.getTextComponent(replaceCombo);
 			replaceCombo.addItem(tc.getText());
 		}
-
+		
 		context.setSearchFor(getFindText());
 		if (replaceCombo!=null) {
 			context.setReplaceWith(replaceCombo.getSelectedString());
 		}
-
+		
 		// If the ask is to search in the opposite direction from the UI's
 		// current direction, use a cloned search context to avoid updating
 		// the UI when we shouldn't (e.g. from a keyboard shortcut to search
@@ -409,27 +414,27 @@ public class FindToolBar extends JPanel {
 			contextToFire = context.clone();
 			contextToFire.setSearchForward(forward);
 		}
-
+		
 		SearchEvent se = new SearchEvent(this, type, contextToFire);
 		fireSearchEvent(se);
 		handleToggleButtons(); // Replace button could toggle state
-
+		
 	}
-
-
+	
+	
 	/**
-	 * Returns whether any action-related buttons (Find Next, Replace, etc.)
-	 * should be enabled.  Subclasses can call this method when the "Find What"
-	 * or "Replace With" text fields are modified.  They can then
-	 * enable/disable any components as appropriate.
-	 *
-	 * @return Whether the buttons should be enabled.
-	 */
+	* Returns whether any action-related buttons (Find Next, Replace, etc.)
+	* should be enabled.  Subclasses can call this method when the "Find What"
+	* or "Replace With" text fields are modified.  They can then
+	* enable/disable any components as appropriate.
+	*
+	* @return Whether the buttons should be enabled.
+	*/
 	protected FindReplaceButtonsEnableResult handleToggleButtons() {
-
+		
 		FindReplaceButtonsEnableResult result =
-				new FindReplaceButtonsEnableResult(true, null);
-
+		new FindReplaceButtonsEnableResult(true, null);
+		
 		String text = getFindText();
 		if (text.length()==0) {
 			result = new FindReplaceButtonsEnableResult(false, null);
@@ -437,36 +442,36 @@ public class FindToolBar extends JPanel {
 		else if (regexCheckBox.isSelected()) {
 			try {
 				Pattern.compile(text);
-			} catch (PatternSyntaxException pse) {
+				} catch (PatternSyntaxException pse) {
 				result = new FindReplaceButtonsEnableResult(false,
-						pse.getMessage());
+				pse.getMessage());
 			}
 		}
-
+		
 		boolean enable = result.getEnable();
 		findButton.setEnabled(enable);
 		findPrevButton.setEnabled(enable);
-
+		
 		// setBackground doesn't show up with XP Look and Feel!
 		//findTextComboBox.setBackground(enable ?
 		//		UIManager.getColor("ComboBox.background") : Color.PINK);
 		JTextComponent tc = UIUtil.getTextComponent(findCombo);
 		tc.setForeground(enable ? UIManager.getColor("TextField.foreground") :
-									UIUtil.getErrorTextForeground());
-
+		UIUtil.getErrorTextForeground());
+		
 		String tooltip = SearchUtil.getToolTip(result);
 		tc.setToolTipText(tooltip); // Always set, even if null
-
+		
 		return result;
-
+		
 	}
-
-
+	
+	
 	/**
-	 * Initializes the UI in this tool bar from a search context.  This is
-	 * called whenever a new search context is installed on this tool bar
-	 * (which should practically be never).
-	 */
+	* Initializes the UI in this tool bar from a search context.  This is
+	* called whenever a new search context is installed on this tool bar
+	* (which should practically be never).
+	*/
 	private void initUIFromContext() {
 		if (findCombo==null) { // First time through, stuff not initialized yet
 			return;
@@ -481,121 +486,121 @@ public class FindToolBar extends JPanel {
 		markAllCheckBox.setSelected(context.getMarkAll());
 		wrapCheckBox.setSelected(context.getSearchWrap());
 	}
-
-
+	
+	
 	/**
-	 * Makes the Enter key activate the button.  In Swing, this is a
-	 * complicated thing.  It's LAF-dependent whether or not this works
-	 * automatically; on most LAFs, it doesn't happen.  In WindowsLookAndFeel
-	 * it does, but *only* if the current window has a "default" button
-	 * specified.  Since these tool bars will typically be used in "main"
-	 * application windows, which don't have default buttons, we'll just
-	 * enable this property here and now.
-	 *
-	 * @param button The button that should respond to the Enter key.
-	 */
+	* Makes the Enter key activate the button.  In Swing, this is a
+	* complicated thing.  It's LAF-dependent whether or not this works
+	* automatically; on most LAFs, it doesn't happen.  In WindowsLookAndFeel
+	* it does, but *only* if the current window has a "default" button
+	* specified.  Since these tool bars will typically be used in "main"
+	* application windows, which don't have default buttons, we'll just
+	* enable this property here and now.
+	*
+	* @param button The button that should respond to the Enter key.
+	*/
 	protected void makeEnterActivateButton(JButton button) {
-
+		
 		InputMap im = button.getInputMap();
-
+		
 		// Make "enter" being typed simulate clicking
 		im.put(KeyStroke.getKeyStroke("ENTER"), "pressed");
 		im.put(KeyStroke.getKeyStroke("released ENTER"), "released");
-
+		
 		// Make "shift+enter" being typed simulate clicking also.  The listener
 		// will handle the backwards searching.  Not sure why the commented-out
 		// versions don't work, possibly SHIFT_MASK vs. SHIFT_DOWN_MASK issue.
 		//im.put(KeyStroke.getKeyStroke("pressed SHIFT ENTER"), "pressed");
 		//im.put(KeyStroke.getKeyStroke("released SHIFT ENTER"), "released");
 		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_MASK,
-				false), "pressed");
+		false), "pressed");
 		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.SHIFT_MASK,
-				true), "released");
-
+		true), "released");
+		
 	}
-
-
+	
+	
 	/**
-	 * Removes a {@link SearchListener} from this tool bar.
-	 *
-	 * @param l The listener to remove
-	 * @see #addSearchListener(SearchListener)
-	 */
+	* Removes a {@link SearchListener} from this tool bar.
+	*
+	* @param l The listener to remove
+	* @see #addSearchListener(SearchListener)
+	*/
 	public void removeSearchListener(SearchListener l) {
 		listenerList.remove(SearchListener.class, l);
 	}
-
-
+	
+	
 	/**
-	 * Makes the find field on this toolbar request focus.  If it is already
-	 * focused, its text is selected.
-	 */
+	* Makes the find field on this toolbar request focus.  If it is already
+	* focused, its text is selected.
+	*/
 	@Override
 	public boolean requestFocusInWindow() {
 		JTextComponent findField = UIUtil.getTextComponent(findCombo);
 		findField.selectAll();
 		return findField.requestFocusInWindow();
 	}
-
-
+	
+	
 	/**
-	 * Callback called when a contained combo box has its LookAndFeel
-	 * modified.  This is a hack for us to add listeners back to it.
-	 *
-	 * @param combo The combo box.
-	 */
+	* Callback called when a contained combo box has its LookAndFeel
+	* modified.  This is a hack for us to add listeners back to it.
+	*
+	* @param combo The combo box.
+	*/
 	void searchComboUpdateUICallback(SearchComboBox combo) {
 		findFieldListener.install(UIUtil.getTextComponent(combo));
 	}
-
-
-    /**
-     * Sets the image to display by this dialog's text fields when content
-     * assistance is available.
-     *
-     * @param image The image.  If this is {@code null}, a default image
-     *        (a light bulb) is used).  This should be kept small, around
-     *        8x8 for standard resolution monitors.
-     */
-    public void setContentAssistImage(Image image) {
-        findCombo.setContentAssistImage(image);
-    }
-
-
+	
+	
+	/**
+	* Sets the image to display by this dialog's text fields when content
+	* assistance is available.
+	*
+	* @param image The image.  If this is {@code null}, a default image
+	*        (a light bulb) is used).  This should be kept small, around
+	*        8x8 for standard resolution monitors.
+	*/
+	public void setContentAssistImage(Image image) {
+		findCombo.setContentAssistImage(image);
+	}
+	
+	
 	protected void setFindText(String text) {
 		UIUtil.getTextComponent(findCombo).setText(text);
 		//findCombo.setSelectedItem(text);
 	}
-
-
+	
+	
 	/**
-	 * Sets the delay between when the user types and when a "mark all"
-	 * event is fired (assuming "mark all" is enabled), in milliseconds.
-	 *
-	 * @param millis The new delay.  This should be &gt;= zero.
-	 * @see #getMarkAllDelay()
-	 */
+	* Sets the delay between when the user types and when a "mark all"
+	* event is fired (assuming "mark all" is enabled), in milliseconds.
+	*
+	* @param millis The new delay.  This should be &gt;= zero.
+	* @see #getMarkAllDelay()
+	*/
 	public void setMarkAllDelay(int millis) {
 		markAllTimer.setInitialDelay(millis);
 	}
-
-
+	
+	
 	protected void setReplaceText(String text) {
 		if (replaceCombo!=null) {
 			UIUtil.getTextComponent(replaceCombo).setText(text);
 			//replaceCombo.setSelectedItem(text);
 		}
 	}
-
-
+	
+	
 	/**
-	 * Sets the search context for this tool bar.  You'll usually want to call
-	 * this method for all tool bars and give them the same search context,
-	 * so that their options (match case, etc.) stay in sync with one another.
-	 *
-	 * @param context The new search context.  This cannot be <code>null</code>.
-	 * @see #getSearchContext()
-	 */
+	* Sets the search context for this tool bar.  You'll usually want to call
+	* this method for all tool bars and give them the same search context,
+	* so that their options (match case, etc.) stay in sync with one another.
+	*
+	* @param context The new search context.  This cannot be <code>null</code>.
+	* @see #getSearchContext()
+	*/
 	public void setSearchContext(SearchContext context) {
 		if (this.context!=null) {
 			this.context.removePropertyChangeListener(listener);
@@ -604,20 +609,20 @@ public class FindToolBar extends JPanel {
 		this.context.addPropertyChangeListener(listener);
 		initUIFromContext();
 	}
-
-
+	
+	
 	/**
-	 * Listens for events in this tool bar.  Keeps the UI in sync with the
-	 * search context and vice versa.
-	 */
+	* Listens for events in this tool bar.  Keeps the UI in sync with the
+	* search context and vice versa.
+	*/
 	private class ToolBarListener extends MouseAdapter
-			implements ActionListener, PropertyChangeListener {
-
+	implements ActionListener, PropertyChangeListener {
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
+			
 			Object source = e.getSource();
-
+			
 			if (source==matchCaseCheckBox) {
 				context.setMatchCase(matchCaseCheckBox.isSelected());
 				if (markAllCheckBox.isSelected()) {
@@ -646,9 +651,9 @@ public class FindToolBar extends JPanel {
 			else {
 				handleSearchAction(e);
 			}
-
+			
 		}
-
+		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() instanceof JCheckBox) { // Always true
@@ -656,13 +661,13 @@ public class FindToolBar extends JPanel {
 				findCombo.requestFocusInWindow();
 			}
 		}
-
+		
 		@Override
 		public void propertyChange(PropertyChangeEvent e) {
-
+			
 			// A property changed on the context itself.
 			String prop = e.getPropertyName();
-
+			
 			if (SearchContext.PROPERTY_MATCH_CASE.equals(prop)) {
 				boolean newValue = (Boolean) e.getNewValue();
 				matchCaseCheckBox.setSelected(newValue);
@@ -672,12 +677,12 @@ public class FindToolBar extends JPanel {
 				wholeWordCheckBox.setSelected(newValue);
 			}
 			//else if (SearchContext.PROPERTY_SEARCH_FORWARD.equals(prop)) {
-			//	boolean newValue = ((Boolean)e.getNewValue()).booleanValue();
-			//	...
+				//	boolean newValue = ((Boolean)e.getNewValue()).booleanValue();
+				//	...
 			//}
 			//else if (SearchContext.PROPERTY_SELECTION_ONLY.equals(prop)) {
-			//	boolean newValue = ((Boolean)e.getNewValue()).booleanValue();
-			//	...
+				//	boolean newValue = ((Boolean)e.getNewValue()).booleanValue();
+				//	...
 			//}
 			else if (SearchContext.PROPERTY_USE_REGEX.equals(prop)) {
 				boolean newValue = (Boolean) e.getNewValue();
@@ -714,25 +719,24 @@ public class FindToolBar extends JPanel {
 				boolean newValue = (Boolean)e.getNewValue();
 				wrapCheckBox.setSelected(newValue);
 			}
-
+			
 		}
-
+		
 	}
-
-
+	
+	
 	/**
-	 * Listens for events in the Find (and Replace, in the subclass) search
-	 * field.
-	 */
-	protected class FindFieldListener extends KeyAdapter
-					implements DocumentListener, FocusListener {
-
+	* Listens for events in the Find (and Replace, in the subclass) search
+	* field.
+	*/
+	protected class FindFieldListener extends KeyAdapter implements DocumentListener, FocusListener {
+		
 		protected boolean selectAll;
-
+		
 		@Override
 		public void changedUpdate(DocumentEvent e) {
 		}
-
+		
 		@Override
 		public void focusGained(FocusEvent e) {
 			JTextField field = (JTextField)e.getComponent();
@@ -741,11 +745,11 @@ public class FindToolBar extends JPanel {
 			}
 			selectAll = true;
 		}
-
+		
 		@Override
 		public void focusLost(FocusEvent e) {
 		}
-
+		
 		protected void handleDocumentEvent(DocumentEvent e) {
 			handleToggleButtons();
 			if (!settingFindTextFromEvent) {
@@ -758,24 +762,24 @@ public class FindToolBar extends JPanel {
 				}
 				else { // Replace field's document
 					JTextComponent replaceField = UIUtil.getTextComponent(
-							replaceCombo);
+					replaceCombo);
 					context.setReplaceWith(replaceField.getText());
 					// Don't re-fire "mark all" events for "replace" text edits
 				}
 			}
 		}
-
+		
 		@Override
 		public void insertUpdate(DocumentEvent e) {
 			handleDocumentEvent(e);
 		}
-
+		
 		public void install(JTextComponent field) {
 			field.getDocument().addDocumentListener(this);
 			field.addKeyListener(this);
 			field.addFocusListener(this);
 		}
-
+		
 		@Override
 		public void keyTyped(KeyEvent e) {
 			if (e.getKeyChar()=='\n') {
@@ -785,28 +789,28 @@ public class FindToolBar extends JPanel {
 				doSearch(forward);
 			}
 		}
-
+		
 		@Override
 		public void removeUpdate(DocumentEvent e) {
 			handleDocumentEvent(e);
 		}
-
+		
 	}
-
-
+	
+	
 	/**
-	 * Called when the user edits the "Find" field's contents, after a slight
-	 * delay.  Fires a "mark all" search event for applications that want to
-	 * display "mark all" results on the fly.
-	 */
+	* Called when the user edits the "Find" field's contents, after a slight
+	* delay.  Fires a "mark all" search event for applications that want to
+	* display "mark all" results on the fly.
+	*/
 	private class MarkAllEventNotifier implements ActionListener {
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			fireMarkAllEvent();
 		}
-
+		
 	}
-
-
+	
+	
 }

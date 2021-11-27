@@ -47,6 +47,7 @@ import javax.imageio.ImageIO;
 import omega.gset.Generator;
 
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -208,7 +209,6 @@ public class Screen extends JFrame {
 			e.printStackTrace();
 		}
 		
-		setTitle("Omega Integrated Development Environment " + VERSION);
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
 		setLocationRelativeTo(null);
