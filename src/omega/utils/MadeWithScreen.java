@@ -41,10 +41,16 @@ import static omega.utils.UIManager.*;
 public class MadeWithScreen extends JDialog{
      private TextComp rImageComp;
      private TextComp rLinkComp;
+     
      private TextComp lafImageComp;
      private TextComp lafLinkComp;
+     
      private TextComp fluentImageComp;
      private TextComp fluentLinkComp;
+     
+     private TextComp jetImageComp;
+     private TextComp jetLinkComp;
+     
      private TextComp omegauiImageComp;
      private TextComp omegauiLinkComp;
      
@@ -54,13 +60,13 @@ public class MadeWithScreen extends JDialog{
           setUndecorated(true);
           pack();
           createBufferStrategy(3);
-          setSize(400, 400);
+          setSize(400, 460);
           setLocationRelativeTo(null);
           setBackground(new Color(0, 0, 0, 0));
           FlexPanel panel = new FlexPanel(null, back1, back3);
           panel.setPaintGradientEnabled(true);
           panel.setArc(0, 0);
-          setShape(new RoundRectangle2D.Float(0, 0, 400, 400, 20, 20));
+          setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
           setContentPane(panel);
           addMouseListener(new MouseAdapter(){
                @Override
@@ -113,16 +119,7 @@ public class MadeWithScreen extends JDialog{
           lafMessage.setFont(PX14);
           lafLinkComp.add(lafMessage);
           
-          fluentImageComp = new TextComp("", c2, c2, c2, null){
-               @Override
-               public void draw(Graphics2D g){
-                    g.drawImage(IconManager.fluentlinuxImage, getWidth()/2 - 25/2, getHeight()/2 - 25/2, 25, 25, null);
-                    g.drawImage(IconManager.fluentconsoleImage, 2, 2, 25, 25, null);
-                    g.drawImage(IconManager.fluentshellImage, 32, 32, 25, 25, null);
-                    g.drawImage(IconManager.fluentwindowsImage, 32, 2, 25, 25, null);
-                    g.drawImage(IconManager.fluentmacImage, 2, 32, 25, 25, null);
-               }
-          };
+          fluentImageComp = new TextComp(IconManager.fluenticons8Logo, 50, 50, c2, c2, c2, null);
           fluentImageComp.setBounds(50, 190, 60, 60);
           fluentImageComp.setFont(PX22);
           fluentImageComp.setClickable(false);
@@ -140,16 +137,35 @@ public class MadeWithScreen extends JDialog{
           fluentMessage.setArc(0, 0);
           fluentMessage.setFont(PX14);
           fluentLinkComp.add(fluentMessage);
+          
+          jetImageComp = new TextComp(IconManager.fluentjetbrainsLogo, 50, 50, c2, c2, c2, null);
+          jetImageComp.setBounds(50, 260, 60, 60);
+          jetImageComp.setFont(PX22);
+          jetImageComp.setClickable(false);
+          add(jetImageComp);
+          
+          jetLinkComp = new TextComp("Jediterm", "https://github.com/JetBrains/jediterm", c2, c2, TOOLMENU_COLOR2, ()->{
+               openURl(jetLinkComp.getToolTipText());
+          });
+          jetLinkComp.setBounds(120, 260, getWidth() - 200, 60);
+          jetLinkComp.setFont(PX20);
+          add(jetLinkComp);
+          
+          TextComp jetMessage = new TextComp("with theming tweaks", c2, c2, TOOLMENU_COLOR4, null);
+          jetMessage.setBounds(0, fluentLinkComp.getHeight() - 25, fluentLinkComp.getWidth(), 25);
+          jetMessage.setArc(0, 0);
+          jetMessage.setFont(PX14);
+          jetLinkComp.add(jetMessage);
 
           omegauiImageComp = new TextComp(IconManager.ideImage64, 64, 64, c2, c2, c2, null);
-          omegauiImageComp.setBounds(40, 260, 70, 70);
+          omegauiImageComp.setBounds(40, 330, 70, 70);
           omegauiImageComp.setClickable(false);
           add(omegauiImageComp);
           
           omegauiLinkComp = new TextComp("Omega UI", "https://github.com/omegaui", c2, c2, TOOLMENU_COLOR3, ()->{
                openURl(omegauiLinkComp.getToolTipText());
           });
-          omegauiLinkComp.setBounds(120, 260, getWidth() - 190, 70);
+          omegauiLinkComp.setBounds(120, 330, getWidth() - 190, 70);
           omegauiLinkComp.setFont(PX26);
           add(omegauiLinkComp);
           

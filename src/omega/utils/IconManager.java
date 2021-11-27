@@ -82,6 +82,7 @@ public class IconManager {
      public static BufferedImage fluentemptylogImage = getFluentIcon("empty-log-48.png");
      public static BufferedImage fluentarchiveImage = getFluentIcon("archive-48.png");
      public static BufferedImage fluentxmlImage = getFluentIcon("xml-transformer-48.png");
+     public static BufferedImage fluentmoduleImage = getFluentIcon("module-48.png");
      
      public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
      public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");
@@ -93,6 +94,16 @@ public class IconManager {
      public static BufferedImage fluentrustImage = getFluentIcon("rust-48.png");
      public static BufferedImage fluentjuliaImage = getFluentIcon("julia-48.png");
      public static BufferedImage fluentanylangImage = getFluentIcon("any-lang-48.png");
+     
+     public static BufferedImage fluentrsyntaxtextareaLogo = getFluentIcon("rsyntaxtextarea-logo.png");
+     public static BufferedImage fluentjavaLogo = getFluentIcon("java-logo.png");
+     public static BufferedImage fluentflatlafNonOfficialLogo = getFluentIcon("flatlaf.png");
+     public static BufferedImage fluentapacheLogo = getFluentIcon("apache-logo.png");
+     public static BufferedImage fluentjetbrainsLogo = getFluentIcon("jetbrains-logo.png");
+     public static BufferedImage fluenticons8Logo = getFluentIcon("icons8-240.png");
+     public static BufferedImage fluentgithubLogo = getFluentIcon("github-240.png");
+     public static BufferedImage fluentjavamascotLogo = getFluentIcon("java-mascot-logo.png");
+     public static BufferedImage fluentgoogleguavaLogo = getFluentIcon("google-guava-logo.png");
      
      public static BufferedImage fluentvariableImage = getFluentIcon("variable-48.png");
      public static BufferedImage fluentconstantImage = getFluentIcon("final-state-48.png");

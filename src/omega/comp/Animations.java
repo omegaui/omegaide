@@ -26,6 +26,7 @@ public class Animations {
 	}
 
 	public static void putComp(TextComp comp, AnimationLayer layer){
+		prepareTextComp(comp);
 		comp.setAnimationLayer(layer);
 		comps.add(comp);
 	}

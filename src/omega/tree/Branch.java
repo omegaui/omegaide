@@ -362,6 +362,8 @@ public class Branch extends JComponent{
 				for(File fx : files){
 					if(fx.getName().equals(".projectInfo"))
 						return IconManager.fluentfolderImage;
+					if(fx.getName().startsWith("build.gradle"))
+						return IconManager.fluentmoduleImage;
 				}
 			}
 			if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
