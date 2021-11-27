@@ -11,7 +11,7 @@
    <baseFont family="Ubuntu Mono" size="14"/>
    
    <!--  General editor colors. -->
-   <background color="f1f1f1" />
+   <background color="ffffff" />
    <caret color="363636" />
    <selection fg="ffffff" bg="526da5" />
    <currentLineHighlight color="ffffd7" fade="false" />

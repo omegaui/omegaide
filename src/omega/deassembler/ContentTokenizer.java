@@ -141,24 +141,26 @@ public class ContentTokenizer {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
 			LinkedList<DataMember> staticMembers = new LinkedList<>();
-			LinkedList<String> decompiledStaticDataFromClasses = new LinkedList<>();
-			//Adding static data members & methods
-			for(SourceReader.Import im : reader.imports){
-				if(im.isStatic){
-					if(decompiledStaticDataFromClasses.contains(im.pack))
-						continue;
-					
-					if(CodeFramework.isSource(im.pack))
-						staticMembers = new SourceReader(CodeFramework.getContent(im.pack)).getDataMembers("static");
-					else
-						staticMembers = Screen.getFileView().getJDKManager().prepareReader(im.pack).getDataMembers("static");
-					decompiledStaticDataFromClasses.add(im.pack);
-					
-					for(DataMember dx : staticMembers){
-						dataMembers.add(dx);
+			if(!text.contains(".")){
+				LinkedList<String> decompiledStaticDataFromClasses = new LinkedList<>();
+				//Adding static data members & methods
+				for(SourceReader.Import im : reader.imports){
+					if(im.isStatic){
+						if(decompiledStaticDataFromClasses.contains(im.pack))
+							continue;
+						
+						if(CodeFramework.isSource(im.pack))
+							staticMembers = new SourceReader(CodeFramework.getContent(im.pack)).getDataMembers("static");
+						else
+							staticMembers = Screen.getFileView().getJDKManager().prepareReader(im.pack).getDataMembers("static");
+						decompiledStaticDataFromClasses.add(im.pack);
+						
+						for(DataMember dx : staticMembers){
+							dataMembers.add(dx);
+						}
+						
+						staticMembers.clear();
 					}
-					
-					staticMembers.clear();
 				}
 			}
 			//Searching whether you need Class names as suggestion

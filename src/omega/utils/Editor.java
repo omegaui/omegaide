@@ -231,7 +231,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
 		getAttachment().getGutter().setIconRowHeaderInheritsGutterBackground(true);
-		getAttachment().getGutter().iconArea.setBackground(UIManager.back1);
+		getAttachment().getGutter().iconArea.setBackground(UIManager.c2);
 
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CREATED, this, currentFile));
 	}	
