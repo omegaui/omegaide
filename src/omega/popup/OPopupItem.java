@@ -84,7 +84,7 @@ public class OPopupItem extends JComponent{
 				if(!isEnabled() || e.getButton() == 3)
 					return;
 				
-				popup.setVisible(false);
+				popup.dispose();
 				if(OPopupItem.this.run != null)
 					OPopupItem.this.run.run();
 			}
