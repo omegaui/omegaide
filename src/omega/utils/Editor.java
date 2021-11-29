@@ -280,12 +280,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					timer += 1000;
 					updates = 0;
 					frames = 0;
-					
+
 					if(DataManager.isParsingEnabled()) {
 						if(currentFile.getName().endsWith(".java")){
 							SyntaxParsers.javaSyntaxParser.parse();
 						}
 					}
+					System.gc();
 				}
 			}
 		}).start();
@@ -523,6 +524,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		savedText = "";
 		
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CLOSED, this, currentFile));
+
+		cocontentWindow.
 	}
 	
 	public void reloadFile() {
@@ -636,7 +639,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		BasicHighlight.highlightJava(this);
+		//BasicHighlight.highlightJava(this);
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_CONTROL)
 			ctrl = true;
@@ -1043,7 +1046,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		public void setVisible(boolean value){
 			try{
 				replaceToolBar.getSearchContext().setMarkAll(value);
-		}catch(Exception e){ System.err.println(e); }
+			}
+			catch(Exception e){ 
+				System.err.println(e); 
+			}
 			super.setVisible(value);
 		}
 	}

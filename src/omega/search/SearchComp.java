@@ -117,7 +117,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
-		searchWindow.setVisible(false);
+		searchWindow.dispose();
 		Screen.getScreen().loadFile(file);
 	}
 	

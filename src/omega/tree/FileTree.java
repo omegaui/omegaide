@@ -104,25 +104,29 @@ public class FileTree extends JComponent{
 	}
 	
 	public void stopPaintLoop(){
-		loopRunning = false;
-		Branch selection = null;
-		for(Branch b : branches){
-			if(b.enter){
-				selection = b;
-				break;
-			}
-		}
-		if(selection == null || pressedBranch == null) return;
-		if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
-		
-		//Doing move or copy operation
-		int res = ChoiceDialog.makeChoice("Select an action!", "Move", "Copy");
-		if(res == ChoiceDialog.CANCEL)
+		if(!loopRunning)
 			return;
-		if(res == ChoiceDialog.CHOICE1)
-			FileOperationManager.move(pressedBranch.file, selection.file);
-		else
-			FileOperationManager.copy(pressedBranch.file, selection.file);
+		new Thread(()->{
+			loopRunning = false;
+			Branch selection = null;
+			for(Branch b : branches){
+				if(b.enter){
+					selection = b;
+					break;
+				}
+			}
+			if(selection == null || pressedBranch == null) return;
+			if(pressedBranch.file.getAbsolutePath().equals(selection.file.getAbsolutePath()) || !selection.file.isDirectory()) return;
+			
+			//Doing move or copy operation
+			int res = ChoiceDialog.makeChoice("Select an action!", "Move", "Copy");
+			if(res == ChoiceDialog.CANCEL)
+				return;
+			if(res == ChoiceDialog.CHOICE1)
+				FileOperationManager.move(pressedBranch.file, selection.file);
+			else
+				FileOperationManager.copy(pressedBranch.file, selection.file);
+		}).start();
 	}
 	
 	public void gen(File file){

@@ -1,19 +1,19 @@
 /**
-  * FileView
-  * Copyright (C) 2021 Omega UI
+* FileView
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.utils.systems;
@@ -48,16 +48,16 @@ import omega.utils.DataManager;
 import omega.utils.FileSelectionDialog;
 import omega.utils.Editor;
 public class FileView extends View {
-
+	
 	private static String projectPath = null;
 	private ProjectDataBase projectManager;
-     private ArgumentManager argumentManager;
+	private ArgumentManager argumentManager;
 	private FileCreator fileCreator;
-     private BuildPathManager dependencyView;
-     private ExtendedBuildPathManager extendedDependencyView;
+	private BuildPathManager dependencyView;
+	private ExtendedBuildPathManager extendedDependencyView;
 	private SearchWindow searchWindow;
-     private JDKManager jdkManager;
-
+	private JDKManager jdkManager;
+	
 	public FileView(String title, Screen window) {
 		super(title, window);
 		dependencyView = new BuildPathManager(window);
@@ -67,47 +67,47 @@ public class FileView extends View {
 		init();
 		setSize(getWidth(), getHeight());
 	}
-
+	
 	private void init() {
 		fileCreator = new FileCreator(getScreen());
 	}
-
+	
 	public void readJDK(){
-          if(projectManager.jdkPath == null)
-               return;
-          
-          int version = 0;
-          if(jdkManager != null)
-               version = jdkManager.getVersionAsInt();
-          
-          int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
-          if(version != versionThis)
-               Assembly.deassemble();
-
-          if(jdkManager != null)
-          	jdkManager.clear();
-     	
-          jdkManager = new JDKManager(new File(projectManager.jdkPath));
-          jdkManager.readSources(projectPath);
-          readDependencies();
+		if(projectManager.jdkPath == null)
+			return;
+		
+		int version = 0;
+		if(jdkManager != null)
+			version = jdkManager.getVersionAsInt();
+		
+		int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
+		if(version != versionThis)
+			Assembly.deassemble();
+		
+		if(jdkManager != null)
+			jdkManager.clear();
+		
+		jdkManager = new JDKManager(new File(projectManager.jdkPath));
+		jdkManager.readSources(projectPath);
+		readDependencies();
 	}
-
-     public void readDependencies(){
-     	if(jdkManager == null) 
-     		return;
-          LinkedList<String> paths = new LinkedList<>();
-          projectManager.jars.forEach(path->{
-               jdkManager.readJar(path, false);
-               paths.add(path);
-          });
-          projectManager.modules.forEach(path->{
-               jdkManager.readJar(path, true);
-               paths.add(path);
-          });
-          jdkManager.prepareDependencyLoader(paths);
-          jdkManager.readResources(projectPath, projectManager.resourceRoots);
-          paths.clear();
-     }
+	
+	public void readDependencies(){
+		if(jdkManager == null)
+			return;
+		LinkedList<String> paths = new LinkedList<>();
+		projectManager.jars.forEach(path->{
+			jdkManager.readJar(path, false);
+			paths.add(path);
+		});
+		projectManager.modules.forEach(path->{
+			jdkManager.readJar(path, true);
+			paths.add(path);
+		});
+		jdkManager.prepareDependencyLoader(paths);
+		jdkManager.readResources(projectPath, projectManager.resourceRoots);
+		paths.clear();
+	}
 	
 	public void setProjectPath(String path) {
 		if(projectPath != null) {
@@ -115,11 +115,11 @@ public class FileView extends View {
 				return;
 			}
 		}
-          if(projectPath != null){
-               if(getScreen().getToolMenu().hidden) {
-                    getScreen().getToolMenu().structureComp.doClick();
-               }
-          }
+		if(projectPath != null){
+			if(getScreen().getToolMenu().hidden) {
+				getScreen().getToolMenu().structureComp.doClick();
+			}
+		}
 		new Thread(()->Screen.addAndSaveRecents(path)).start();
 		projectPath = path;
 		if(Screen.launcher != null)
@@ -135,55 +135,55 @@ public class FileView extends View {
 			}
 		}
 		catch(Exception ex) {
-		     ex.printStackTrace();
-	     }
+			ex.printStackTrace();
+		}
 		getScreen().getTabPanel().closeAllTabs();
 		projectManager = new ProjectDataBase();
-          getScreen().manageTools(projectManager);
-          if(projectManager.non_java){
-               argumentManager = new ArgumentManager();
-          }
+		getScreen().manageTools(projectManager);
+		if(projectManager.non_java){
+			argumentManager = new ArgumentManager();
+		}
 		searchWindow.cleanAndLoad(new File(projectPath));
-          if(!projectManager.non_java) {
-     		if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists())
-     			Screen.notify("No JDK Defined for Project " + Screen.getFileView().getProjectName(), 3000, null);
-     		else
-     			readJDK();
-                    
-     		Screen.hideNotif();
-     		
-     		try {
-     		     Screen.getProjectView().reload();
-     		     new Thread(()->{
-     		     	try{
-     		     		Editor.deleteDir(JavaSyntaxParser.BUILDSPACE_DIR);
-     		     	}
-     		     	catch(Exception e){
-     		     		e.printStackTrace();
-     		     	}
-		     	}).start();
-		     }
-		     catch(Exception e) {
-                    
-	          }
-          }
+		if(!projectManager.non_java) {
+			if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists())
+				Screen.notify("No JDK Defined for Project " + Screen.getFileView().getProjectName(), 3000, null);
+			else
+				readJDK();
+			
+			Screen.hideNotif();
+			
+			try {
+				Screen.getProjectView().reload();
+				new Thread(()->{
+					try{
+						Editor.deleteDir(JavaSyntaxParser.BUILDSPACE_DIR);
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}
+				}).start();
+			}
+			catch(Exception e) {
+				
+			}
+		}
 		getScreen().getToolMenu().reloadItems(projectManager.non_java);
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CHANGED, this, projectPath));
 	}
-
+	
 	public String getProjectPath() {
 		return projectPath;
 	}
-
+	
 	public void saveAll() {
 		if(projectManager != null) {
 			projectManager.save();
-               if(projectManager.non_java){
-                    argumentManager.save();
-               }
+			if(projectManager.non_java){
+				argumentManager.save();
+			}
 		}
 	}
-
+	
 	public boolean open(String type) {
 		FileSelectionDialog fs = new FileSelectionDialog(getScreen());
 		if(type.equals("Project")) {
@@ -202,7 +202,7 @@ public class FileView extends View {
 		else {
 			fs.setTitle("Open File");
 			fs.setCurrentDirectory(new File(projectPath));
-               LinkedList<File> files = fs.selectFiles();
+			LinkedList<File> files = fs.selectFiles();
 			if(!files.isEmpty()) {
 				for(File file : files)
 					getScreen().loadFile(file);
@@ -210,7 +210,7 @@ public class FileView extends View {
 		}
 		return false;
 	}
-
+	
 	public void closeProject() {
 		saveAll();
 		getScreen().saveEssential();
@@ -230,33 +230,33 @@ public class FileView extends View {
 	public FileCreator getFileCreator() {
 		return fileCreator;
 	}
-     
-     public ProjectDataBase getProjectManager(){
-          return projectManager;
-     }
-
-     public BuildPathManager getDependencyView() {
-          return dependencyView;
-     }
-     
-     public ExtendedBuildPathManager getExtendedDependencyView() {
-          return extendedDependencyView;
-     }
-
-     public ArgumentManager getArgumentManager() {
-          return argumentManager;
-     }
-
-     public JDKManager getJDKManager() {
-          return jdkManager;
-     }
-     
-     public String getProjectName() {
-          if(projectPath == null)
-               return "";
-          return projectPath.substring(projectPath.lastIndexOf(File.separatorChar) + 1);
-     }
-
+	
+	public ProjectDataBase getProjectManager(){
+		return projectManager;
+	}
+	
+	public BuildPathManager getDependencyView() {
+		return dependencyView;
+	}
+	
+	public ExtendedBuildPathManager getExtendedDependencyView() {
+		return extendedDependencyView;
+	}
+	
+	public ArgumentManager getArgumentManager() {
+		return argumentManager;
+	}
+	
+	public JDKManager getJDKManager() {
+		return jdkManager;
+	}
+	
+	public String getProjectName() {
+		if(projectPath == null)
+			return "";
+		return projectPath.substring(projectPath.lastIndexOf(File.separatorChar) + 1);
+	}
+	
 	public static void checkDir(File file) {
 		if(!file.exists()) {
 			file.mkdir();

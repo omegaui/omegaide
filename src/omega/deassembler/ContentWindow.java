@@ -239,6 +239,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 		decideLocation();
 		setVisible(true);
 		repaint();
+		
+		dataMembers.clear();
 	}
 	
 	public void decideLocation(){
