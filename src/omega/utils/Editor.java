@@ -1,23 +1,19 @@
 /**
 * The IDE 's Default Editor
 * Copyright (C) 2021 Omega UI
-
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
-
 * This program is distributed in the hope that it will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
-
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
 package omega.utils;
-
 import omega.plugin.event.PluginReactionEvent;
 
 import omega.utils.systems.View;
@@ -96,7 +92,6 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import java.nio.charset.StandardCharsets;
 
 import static omega.deassembler.Assembly.*;
-import static java.awt.event.KeyEvent.*;
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, MouseMotionListener, SearchListener, FocusListener {
 	private static Screen screen;
 	private static PrintArea printArea;
@@ -111,14 +106,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public static KeyListener keyListener;
 	
 	public volatile File currentFile;
-	
 	public volatile boolean call = false;
 	
-	private volatile boolean initializedJavaKeyStrokes = false;
-	
 	private static boolean launched = false;
-
-	private KeyStrokeListener keyStrokeListener;
 	
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
@@ -127,6 +117,43 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	public JavaJumpToDefinitionPanel javaJumpToDefinitionPanel;
 	
+	private static volatile boolean ctrl;
+	private static volatile boolean shift;
+	
+	// Auto-Imports
+	private static volatile boolean o; 
+	// Find and Replace
+	private static volatile boolean f; 
+	// Run
+	private static volatile boolean r; 
+	// Build
+	private static volatile boolean b; 
+	// Save
+	private static volatile boolean s; 
+	// Click Editor Image
+	private static volatile boolean c; 
+	// getters and setters
+	private static volatile boolean g; 
+	// override methods
+	private static volatile boolean i; 
+	// instant launch
+	private static volatile boolean l; 
+	// instant run
+	private static volatile boolean f1; 
+	// duplicate
+	private static volatile boolean d; 
+	// jump-to-definition
+	private static volatile boolean j;
+	// tab-size
+	private static volatile boolean t;
+	// increase font-size
+	private static volatile boolean plus;
+	// decrease font-size
+	private static volatile boolean minus; 
+	// search-dialog
+	private static volatile boolean p; 
+	// comment-out (Single-Line Only)
+	private static volatile boolean slash; 
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -176,7 +203,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	
 	private void initView() {
-		addKeyListener((keyStrokeListener = new KeyStrokeListener()));
 		addKeyListener((keyListener = this));
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -204,41 +230,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		getAttachment().getGutter().setIconRowHeaderInheritsGutterBackground(true);
 		getAttachment().getGutter().iconArea.setBackground(UIManager.c2);
 
-		initKeyStrokes();
-
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CREATED, this, currentFile));
-	}
-
-	public void initKeyStrokes(){
-		//Initializing KeyStrokeData
-		
-		keyStrokeListener.putShortcutKeyStroke(()->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F);
-		keyStrokeListener.putShortcutKeyStroke(()->saveCurrentFile(), VK_CONTROL, VK_S);
-		keyStrokeListener.putShortcutKeyStroke(()->javaJumpToDefinitionPanel.setVisible(true), VK_CONTROL, VK_J);
-		keyStrokeListener.putShortcutKeyStroke(()->doDuplicate(), VK_CONTROL, VK_D);
-		keyStrokeListener.putShortcutKeyStroke(()->increaseFont(), VK_CONTROL, VK_SHIFT, VK_PLUS).setStopKeys(VK_TAB);
-		keyStrokeListener.putShortcutKeyStroke(()->decreaseFont(), VK_CONTROL, VK_SHIFT, VK_MINUS).setStopKeys(VK_TAB);
-		keyStrokeListener.putShortcutKeyStroke(()->increaseTabSize(), VK_CONTROL, VK_SHIFT, VK_TAB, VK_PLUS);
-		keyStrokeListener.putShortcutKeyStroke(()->decreaseFont(), VK_CONTROL, VK_SHIFT, VK_TAB, VK_MINUS);
-		keyStrokeListener.putShortcutKeyStroke(()->triggerBuild(), VK_CONTROL, VK_B);
-		keyStrokeListener.putShortcutKeyStroke(()->triggerRun(), VK_CONTROL, VK_SHIFT, VK_R);
-		keyStrokeListener.putShortcutKeyStroke(()->triggerInstantRun(), VK_CONTROL, VK_SHIFT, VK_F1);
-		keyStrokeListener.putShortcutKeyStroke(()->launchCurrentFile(), VK_CONTROL, VK_SHIFT, VK_L);
-		keyStrokeListener.putShortcutKeyStroke(()->triggerJavaCommentMarker(), VK_CONTROL, VK_SHIFT, VK_SLASH);
-		keyStrokeListener.putShortcutKeyStroke(()->saveImage(), VK_CONTROL, VK_SHIFT, VK_C);
-		keyStrokeListener.putAutoResetShortcutKeyStroke(()->showSearchDialog(), VK_CONTROL, VK_SHIFT, VK_P);
-		keyStrokeListener.putShortcutKeyStroke(()->triggerSnippets(), VK_TAB);
-	}
-
-	public void initJavaFileKeyStrokes(){
-		if(currentFile != null && currentFile.getName().endsWith(".java") && !initializedJavaKeyStrokes){
-			initializedJavaKeyStrokes = true;
-			keyStrokeListener.putShortcutKeyStroke(()->triggerImportFramework(), VK_CONTROL, VK_SHIFT, VK_O);
-			keyStrokeListener.putAutoResetShortcutKeyStroke(()->showGSDialog(), VK_CONTROL, VK_SHIFT, VK_G);
-			keyStrokeListener.putAutoResetShortcutKeyStroke(()->showIODialog(), VK_CONTROL, VK_SHIFT, VK_I);
-			keyStrokeListener.putShortcutKeyStroke(()->autoIndent(), VK_CONTROL, VK_I);
-		}
-	}
+	}	
 	
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);
@@ -458,7 +451,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			setStyle(this, currentFile);
 			setCaretPosition(0);
 			JavaCodeNavigator.install(this);
-			initJavaFileKeyStrokes();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -468,7 +460,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void saveCurrentFile() {
 		if(savedText.equals(getText()))
 			return;
-		if(currentFile == null || !currentFile.exists()){
+		if(currentFile == null || !currentFile.exists())
+			{
 			int res = ChoiceDialog.makeChoice("Data in the editor does not corresponds to any existing file. Do you want to save it?", "Save", "Lose");
 			if(res == ChoiceDialog.CHOICE1)
 				saveFileAs();
@@ -638,130 +631,173 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		super.setSize(width, height);
 		javaErrorPanel.relocate();
 	}
-
-	public void doDuplicate(){
-		if(getSelectedText() == null || getSelectedText().equals("")){
-			String text = getText();
-			text = text.substring(0, getCaretPosition());
-			if(text.contains("\n"))
-				text = text.substring(text.lastIndexOf('\n') + 1);
-			insert("\n" + text, getCaretPosition());
-		}
-		else{
-			String text = getSelectedText();
-			insert(text, getCaretPosition());
-		}
-	}
-
-	public void increaseFont(){
-		UIManager.fontSize++;
-		screen.getUIManager().save();
-		screen.loadThemes();
-	}
-
-	public void decreaseFont(){
-		if(UIManager.fontSize > 8){
-			UIManager.fontSize--;
-			screen.getUIManager().save();
-			screen.loadThemes();
-		}
-	}
-
-	public void increaseTabSize(){
-		setTabSize(getTabSize() + 1);
-		DataManager.setTabSize(getTabSize());
-	}
-
-	public void decreaseTabSize(){
-		if(getTabSize() > 1){
-			setTabSize(getTabSize() - 1);
-			DataManager.setTabSize(getTabSize());
-		}
-	}
-
-	public void triggerBuild(){
-		if(screen.getToolMenu().buildComp.isClickable()){
-			if(GradleProcessManager.isGradleProject())
-				GradleProcessManager.build();
-			else
-				Screen.getBuildView().compileProject();
-		}
-	}
-
-	public void triggerRun(){
-		if(screen.getToolMenu().buildComp.isClickable()){
-			if(GradleProcessManager.isGradleProject())
-				GradleProcessManager.run();
-			else
-				Screen.getRunView().run();
-		}
-	}
-
-	public void triggerInstantRun(){
-		if(screen.getToolMenu().buildComp.isClickable())
-			Screen.getRunView().instantRun();
-	}
-
-	public void showSearchDialog(){
-		Screen.getFileView().getSearchWindow().setVisible(true);
-	}
-
-	public void triggerSnippets(){
-		String codeX = getText();
-		codeX = codeX.substring(0, getCaretPosition());
-		int index = 0;
-		if(codeX.contains("\n")){
-			index = codeX.lastIndexOf('\n') + 1;
-			codeX = codeX.substring(index);
-		}
-		if(codeX.contains(";")){
-			index = codeX.lastIndexOf(';') + 1;
-			codeX = codeX.substring(codeX.lastIndexOf(';') + 1);
-		}
-		String cx = codeX;
-		if(codeX.startsWith(" ")) {
-			index = codeX.lastIndexOf(' ') + 1;
-			codeX = codeX.substring(codeX.lastIndexOf(' ') + 1);
-		}
-		if(codeX.startsWith("\t")) {
-			index += codeX.lastIndexOf('\t') + 1;
-			codeX = codeX.substring(codeX.lastIndexOf('\t') + 1);
-		}
-		
-		codeX = codeX.trim();
-		
-		if(SnippetBase.hasSnippet(codeX))
-			SnippetBase.insertSnippet(this, codeX, index = getCaretPosition() - codeX.length(), cx.substring(0, cx.indexOf(codeX)));
-	}
-
-	public void triggerImportFramework(){
-		new Thread(()->ImportFramework.addImports(ImportFramework.findClasses(getText()), this)).start();
-	}
-
-	public void showGSDialog(){
-		Generator.gsView.genView(this);
-	}
-
-	public void showIODialog(){
-		Generator.overView.genView(this);
-	}
-
-	public void autoIndent(){
-		IndentationFramework.indent(this);
-	}
-
-	public void launchCurrentFile(){
-		ToolMenu.processWizard.launch(currentFile);
-	}
-
-	public void triggerJavaCommentMarker(){
-		JavaCommentMarker.markSingleLineComment(this, getCaretLineNumber());
-	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		//BasicHighlight.highlightJava(this);
 		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_CONTROL)
+			ctrl = true;
+		else if(code == KeyEvent.VK_SHIFT)
+			shift = true;
+		else if(code == KeyEvent.VK_O)
+			o = true;
+		else if(code == KeyEvent.VK_F)
+			f = true;
+		else if(code == KeyEvent.VK_R)
+			r = true;
+		else if(code == KeyEvent.VK_S)
+			s = true;
+		else if(code == KeyEvent.VK_B)
+			b = true;
+		else if(code == KeyEvent.VK_C)
+			c = true;
+		else if(code == KeyEvent.VK_G)
+			g = true;
+		else if(code == KeyEvent.VK_I)
+			i = true;
+		else if(code == KeyEvent.VK_L)
+			l = true;
+		else if(code == KeyEvent.VK_F1)
+			f1 = true;
+		else if(code == KeyEvent.VK_D)
+			d = true;
+		else if(code == KeyEvent.VK_J)
+			j = true;
+		else if(code == KeyEvent.VK_T)
+			t = true;
+		else if(code == KeyEvent.VK_P)
+			p = true;
+		else if(code == KeyEvent.VK_PLUS || code == KeyEvent.VK_EQUALS)
+			plus = true;
+		else if(code == KeyEvent.VK_MINUS)
+			minus = true;
+		else if(code == KeyEvent.VK_SLASH)
+			slash = true;
+
+		if(ctrl && shift && f) {
+			fAndR.setVisible(!fAndR.isVisible());
+			f = false;
+			shift = false;
+			ctrl = false;
+		}
+		
+		if(ctrl && s){
+			saveCurrentFile();
+			s = false;
+			ctrl = false;
+		}
+		
+		if(ctrl && j){
+			javaJumpToDefinitionPanel.setVisible(true);
+			j = false;
+			ctrl = false;
+			e.consume();
+		}
+		
+		if(ctrl && d){
+			if(getSelectedText() == null || getSelectedText().equals("")){
+				String text = getText();
+				text = text.substring(0, getCaretPosition());
+				if(text.contains("\n"))
+					text = text.substring(text.lastIndexOf('\n') + 1);
+				insert("\n" + text, getCaretPosition());
+			}
+			else{
+				String text = getSelectedText();
+				insert(text, getCaretPosition());
+			}
+			d = false;
+			e.consume();
+		}
+
+		if(!t){
+			if(ctrl && shift && plus){
+				UIManager.fontSize++;
+				screen.getUIManager().save();
+				screen.loadThemes();
+	
+				plus = false;
+			}
+	
+			if(ctrl && shift && minus){
+				if(UIManager.fontSize > 8){
+					UIManager.fontSize--;
+					screen.getUIManager().save();
+					screen.loadThemes();
+		
+					minus = false;
+				}
+			}
+		}
+
+		if(ctrl && shift && plus && t){
+			setTabSize(getTabSize() + 1);
+			DataManager.setTabSize(getTabSize());
+			
+			plus = false;
+		}
+
+		if(ctrl && shift && minus && t){
+			if(getTabSize() > 1){
+				setTabSize(getTabSize() - 1);
+				DataManager.setTabSize(getTabSize());
+	
+				minus = false;
+			}
+		}
+		
+		if(ctrl && b && screen.getToolMenu().buildComp.isClickable()){
+			if(GradleProcessManager.isGradleProject())
+				GradleProcessManager.build();
+			else
+				Screen.getBuildView().compileProject();
+			b = false;
+			ctrl = false;
+		}
+		
+		if(ctrl && shift && c){
+			saveImage();
+			c = false;
+			shift = false;
+			ctrl = false;
+		}
+
+		if(ctrl && shift && p){
+			Screen.getFileView().getSearchWindow().setVisible(true);
+
+			ctrl = false;
+			shift = false;
+			p = false;
+		}
+		
+		if(code == KeyEvent.VK_TAB){
+			String codeX = getText();
+			codeX = codeX.substring(0, getCaretPosition());
+			int index = 0;
+			if(codeX.contains("\n")){
+				index = codeX.lastIndexOf('\n') + 1;
+				codeX = codeX.substring(index);
+			}
+			if(codeX.contains(";")){
+				index = codeX.lastIndexOf(';') + 1;
+				codeX = codeX.substring(codeX.lastIndexOf(';') + 1);
+			}
+			String cx = codeX;
+			if(codeX.startsWith(" ")) {
+				index = codeX.lastIndexOf(' ') + 1;
+				codeX = codeX.substring(codeX.lastIndexOf(' ') + 1);
+			}
+			if(codeX.startsWith("\t")) {
+				index += codeX.lastIndexOf('\t') + 1;
+				codeX = codeX.substring(codeX.lastIndexOf('\t') + 1);
+			}
+			codeX = codeX.trim();
+			if(SnippetBase.hasSnippet(codeX)){
+				SnippetBase.insertSnippet(this, codeX, index = getCaretPosition() - codeX.length(), cx.substring(0, cx.indexOf(codeX)));
+				e.consume();
+			}
+		}
 		
 		if(code == KeyEvent.VK_BACK_SPACE)
 			autoSymbolExclusion(e);
@@ -770,6 +806,63 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		
 		if(currentFile != null) {
 			//Managing KeyBoard Shortcuts
+			if(ctrl && shift && o && currentFile.getName().endsWith(".java")) {
+				new Thread(()->ImportFramework.addImports(ImportFramework.findClasses(getText()), this)).start();
+				o = false;
+				shift = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && g && currentFile.getName().endsWith(".java")) {
+				Generator.gsView.genView(this);
+				g = false;
+				shift = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && !shift && i && currentFile.getName().endsWith(".java")) {
+				IndentationFramework.indent(this);
+				i = false;
+				shift = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && i && currentFile.getName().endsWith(".java")) {
+				Generator.overView.genView(this);
+				i = false;
+				shift = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && r && screen.getToolMenu().buildComp.isClickable()){
+				if(GradleProcessManager.isGradleProject())
+					GradleProcessManager.run();
+				else
+					Screen.getRunView().run();
+				shift = false;
+				r = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && f1 && screen.getToolMenu().buildComp.isClickable()) {
+				Screen.getRunView().instantRun();
+				f1 = false;
+				shift = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && l){
+				ToolMenu.processWizard.launch(currentFile);
+				shift = false;
+				l = false;
+				ctrl = false;
+			}
+			
+			if(ctrl && shift && slash){
+				JavaCommentMarker.markSingleLineComment(this, getCaretLineNumber());
+				slash = false;
+				e.consume();
+			}
 			
 			if(contentWindow.isVisible()) {
 				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
@@ -792,8 +885,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 						contentWindow.setVisible(false);
 					return;
 				}
-				if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_UP || code == KeyEvent.VK_ENTER) {
-					if((contentWindow.index == 0 && code == KeyEvent.VK_UP) || ((contentWindow.index == contentWindow.hints.size() - 1) && code == KeyEvent.VK_DOWN)) {
+				if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if((contentWindow.index == 0 && e.getKeyCode() == KeyEvent.VK_UP) || ((contentWindow.index == contentWindow.hints.size() - 1) && e.getKeyCode() == KeyEvent.VK_DOWN)) {
 						contentWindow.setVisible(false);
 						return;
 					}
@@ -812,10 +905,50 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			default:
 		}
 		
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_CONTROL)
+			ctrl = false;
+		else if(code == KeyEvent.VK_SHIFT)
+			shift = false;
+		else if(code == KeyEvent.VK_O)
+			o = false;
+		else if(code == KeyEvent.VK_F)
+			f = false;
+		else if(code == KeyEvent.VK_R)
+			r = false;
+		else if(code == KeyEvent.VK_S)
+			s = false;
+		else if(code == KeyEvent.VK_B)
+			b = false;
+		else if(code == KeyEvent.VK_C)
+			c = false;
+		else if(code == KeyEvent.VK_G)
+			g = false;
+		else if(code == KeyEvent.VK_I)
+			i = false;
+		else if(code == KeyEvent.VK_L)
+			l = false;
+		else if(code == KeyEvent.VK_F1)
+			f1 = false;
+		else if(code == KeyEvent.VK_D)
+			d = false;
+		else if(code == KeyEvent.VK_J)
+			j = false;
+		else if(code == KeyEvent.VK_T)
+			t = false;
+		else if(code == KeyEvent.VK_P)
+			p = false;
+		else if(code == KeyEvent.VK_PLUS || code == KeyEvent.VK_EQUALS)
+			plus = false;
+		else if(code == KeyEvent.VK_MINUS)
+			minus = false;
+		else if(code == KeyEvent.VK_SLASH)
+			slash = false;
+		
 		if(currentFile != null) {
 			//Code Assist
 			char c = e.getKeyChar();
-			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || code == KeyEvent.VK_BACK_SPACE) {
 				if(DataManager.isContentAssistRealTime())
 					call = true;
 			}
@@ -1037,4 +1170,3 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		return scrollPane;
 	}
 }
-
