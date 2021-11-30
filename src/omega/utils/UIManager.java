@@ -110,9 +110,9 @@ public class UIManager extends DataBase {
 	public static final Color color7 = new Color(0, 255, 0, 130);
 	
 	//Some Backgrounds
-	public static Color back1 = Color.decode("#f1f1f1");
-	public static Color back2 = Color.decode("#f0f0f0");
-	public static Color back3 = Color.decode("#D3D4D4");
+	public static Color back1 = Color.decode("#f3f3f3");
+	public static Color back2 = Color.decode("#fcfcfc");
+	public static Color back3 = Color.decode("#eaeaea");
 	
 	// IDE Component Fonts -- Finals
 	public static final Font PX12 = new Font(fontName, Font.BOLD, 12);
@@ -160,7 +160,7 @@ public class UIManager extends DataBase {
 			}
 			else {
 				c1 = Color.decode("#132162");
-				c2 = Color.decode("#111111");
+				c2 = Color.decode("#1e1e1e");
 				c3 = Color.decode("#3CE5DD");
 				TOOLMENU_COLOR1 = Color.decode("#f0b40f");
 				TOOLMENU_COLOR1_SHADE = new Color(TOOLMENU_COLOR1.getRed(), TOOLMENU_COLOR1.getGreen(), TOOLMENU_COLOR1.getBlue(), 40);
@@ -173,9 +173,9 @@ public class UIManager extends DataBase {
 				TOOLMENU_COLOR5 = Color.decode("#7f6021");
 				TOOLMENU_COLOR5_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 				TOOLMENU_GRADIENT = Color.decode("#132132");
-				back1 = Color.decode("#101010");
-				back2 = Color.decode("#222222");
-				back3 = Color.decode("#333333");
+				back1 = Color.decode("#252526");
+				back2 = Color.decode("#333333");
+				back3 = Color.decode("#303030");
 			}
 		}
 		catch(Exception e) {

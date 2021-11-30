@@ -72,7 +72,7 @@ public class Branch extends JComponent{
 	public static final Color SOURCE_COLOR = ANY_COLOR;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 220);
 	public static final Color IMAGE_COLOR = new Color(50, 100, 50, 220);
-	public static final Color LINUX_COLOR = new Color(100, 50, 50, 220);
+	public static final Color LINUX_COLOR = new Color(175, 50, 50, 220);
 	public static final Color EMPTY_COLOR = Color.LIGHT_GRAY;
 	public static final Color WEB_COLOR = TOOLMENU_COLOR3;
 	public static final Color XML_COLOR = LINUX_COLOR;
@@ -97,7 +97,7 @@ public class Branch extends JComponent{
 		g.drawImage(iconX, 0, 0, null);
 		g.dispose();
 		
-		//setFont(PX14);
+		setBackground(UIManager.back1);
 		setFont(UBUNTU_PX14);
 		if(expand){
 			type = "";
@@ -206,7 +206,7 @@ public class Branch extends JComponent{
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(UIManager.c2);
+			g.setColor(UIManager.back1);
 			g.fillRect(0, 0, size, size);
 			g.drawImage(originalIcon.getScaledInstance(size, size, Image.SCALE_SMOOTH), 0, 0, size, size, null);
 			g.dispose();
@@ -278,7 +278,7 @@ public class Branch extends JComponent{
 		if(file.isDirectory())
 			g.setColor(getBackground());
 		else
-			g.setPaint(new GradientPaint(enter ? (OPTIMAL_X - 2) : 0, 0, UIManager.c2, getWidth(), getHeight(), getBackground()));
+			g.setPaint(new GradientPaint(enter ? (OPTIMAL_X - 2) : 0, 0, UIManager.back1, getWidth(), getHeight(), getBackground()));
 		g.fillRect(enter ? (OPTIMAL_X - 2) : 0, 0, getWidth(), getHeight());
 		
 		if(file.isDirectory())

@@ -77,8 +77,8 @@ public class FileTree extends JComponent{
 			setLayout(new BorderLayout());
 			panel = new JPanel(null);
 			scrollPane = new JScrollPane(panel);
-			scrollPane.setBackground(omega.utils.UIManager.c2);
-			panel.setBackground(omega.utils.UIManager.c2);
+			scrollPane.setBackground(omega.utils.UIManager.back1);
+			panel.setBackground(omega.utils.UIManager.back1);
 			add(scrollPane, BorderLayout.CENTER);
 		}
 	}

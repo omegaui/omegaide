@@ -192,6 +192,7 @@ public class ToolMenu extends JPanel {
 		setSize(screen.getWidth(), 120);
 		setPreferredSize(getSize());
 		UIManager.setData(this);
+		setBackground(back2);
 		addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
@@ -215,18 +216,18 @@ public class ToolMenu extends JPanel {
 		catch(Exception e){
 			System.err.println(e);
 		}
-		iconComp = new TextComp(image, 30, 30, c2, c2, c2, null);
+		iconComp = new TextComp(image, 30, 30, back2, back2, back2, null);
 		iconComp.setBounds(0, 0, 30, 30);
 		iconComp.setClickable(false);
 		iconComp.setArc(0, 0);
 		add(iconComp);
 		
-		langComp = new TextComp(IconManager.fluentjavaImage, 25, 25, back2, c2, c2, this::changeLang);
+		langComp = new TextComp(IconManager.fluentjavaImage, 25, 25, back3, back2, back2, this::changeLang);
 		langComp.setBounds(30, 0, 30, 30);
 		langComp.setArc(0, 0);
 		add(langComp);
 		
-		titleComp = new TextComp("Omega IDE", c2, c2, glow, null);
+		titleComp = new TextComp("Omega IDE", back2, back2, glow, null);
 		titleComp.setClickable(false);
 		titleComp.setFont(PX16);
 		titleComp.setArc(0, 0);
@@ -250,17 +251,17 @@ public class ToolMenu extends JPanel {
 		});
 		add(titleComp);
 		
-		closeComp = new TextComp("", c1, c2, c3, this::disposeAll){
+		closeComp = new TextComp("", c1, back2, c3, this::disposeAll){
 			@Override
 			public void draw(Graphics2D g){
-				g.setColor(c2);
+				g.setColor(back2);
 				g.fillRect(0, 0, getWidth(), getHeight());
 				g.setColor(closeWinColor);
 				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
 				if(isMouseEntered()){
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
-					g.setColor(c2);
+					g.setColor(back2);
 					g.drawString("x", getWidth()/2 - g.getFontMetrics().stringWidth("x")/2,
 					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 				}
@@ -268,17 +269,17 @@ public class ToolMenu extends JPanel {
 		};
 		add(closeComp);
 		
-		maximizeComp = new TextComp("", c1, c2, c3, this::maximize){
+		maximizeComp = new TextComp("", c1, back2, c3, this::maximize){
 			@Override
 			public void draw(Graphics2D g){
-				g.setColor(c2);
+				g.setColor(back2);
 				g.fillRect(0, 0, getWidth(), getHeight());
 				g.setColor(maximizeWinColor);
 				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
 				if(isMouseEntered()){
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
-					g.setColor(c2);
+					g.setColor(back2);
 					g.drawString(maximized ? "><" : "<>", getWidth()/2 - g.getFontMetrics().stringWidth("<>")/2,
 					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 				}
@@ -286,17 +287,17 @@ public class ToolMenu extends JPanel {
 		};
 		add(maximizeComp);
 		
-		minimizeComp = new TextComp("", c1, c2, c3, this::minimize){
+		minimizeComp = new TextComp("", c1, back2, c3, this::minimize){
 			@Override
 			public void draw(Graphics2D g){
-				g.setColor(c2);
+				g.setColor(back2);
 				g.fillRect(0, 0, getWidth(), getHeight());
 				g.setColor(minimizeWinColor);
 				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
 				if(isMouseEntered()){
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
-					g.setColor(c2);
+					g.setColor(back2);
 					g.drawString("-", getWidth()/2 - g.getFontMetrics().stringWidth("-")/2,
 					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 				}
@@ -355,25 +356,25 @@ public class ToolMenu extends JPanel {
 		taskMenu.setFont(PX14);
 		setTask("Hover to see Memory Statistics");
 		
-		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
+		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
 		openProjectComp.setBounds(0, 55, 30, 30);
 		openProjectComp.setFont(omega.utils.UIManager.PX14);
 		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
 		
-		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
+		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
 		openFileComp.setBounds(32, 55, 30, 30);
 		openFileComp.setFont(omega.utils.UIManager.PX14);
 		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
 		
-		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Project", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
+		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
 		newProjectComp.setBounds(64, 55, 30, 30);
 		newProjectComp.setFont(omega.utils.UIManager.PX14);
 		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
 		
-		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
+		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
 		newFileComp.setBounds(96, 55, 30, 30);
 		newFileComp.setFont(PX14);
 		newFileComp.setArcVisible(true, false, true, false);
@@ -383,7 +384,7 @@ public class ToolMenu extends JPanel {
 		sep0.setBounds(130, 50, 2, 40);
 		addComp(sep0);
 		
-		runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+		runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
 			if(runComp.isClickable() && buildComp.isClickable()){
 				if(GradleProcessManager.isGradleProject())
 					GradleProcessManager.run();
@@ -406,14 +407,14 @@ public class ToolMenu extends JPanel {
 		runComp.setArcVisible(true, false, true, false);
 		add(runComp);
 		
-		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
 			Screen.getRunView().instantRun();
 		});
 		instantRunComp.setBounds(172, 55, 30, 30);
 		instantRunComp.setArcVisible(true, false, true, false);
 		add(instantRunComp);
 		
-		buildComp = new TextComp(fluentbuildImage, 20, 20, "Time to Build", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+		buildComp = new TextComp(fluentbuildImage, 20, 20, "Time to Build", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
 			if(runComp.isClickable() && buildComp.isClickable()){
 				if(GradleProcessManager.isGradleProject())
 					GradleProcessManager.build();
@@ -426,7 +427,7 @@ public class ToolMenu extends JPanel {
 		buildComp.setArcVisible(false, true, false, true);
 		add(buildComp);
 		
-		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
 			Screen.getRunView().instantBuild();
 		});
 		instantBuildComp.setBounds(236, 55, 30, 30);
@@ -437,7 +438,7 @@ public class ToolMenu extends JPanel {
 		sep1.setBounds(272, 50, 2, 40);
 		addComp(sep1);
 		
-		contentComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
+		contentComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
 			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
 			contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 			contentComp.repaint();
@@ -459,7 +460,7 @@ public class ToolMenu extends JPanel {
 		contentComp.setArcVisible(false, true, false, true);
 		addComp(contentComp);
 		
-		contentModeComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
+		contentModeComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
 			DataManager.setContentModeJava(!DataManager.isContentModeJava());
 			contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 			contentModeComp.repaint();
@@ -481,7 +482,7 @@ public class ToolMenu extends JPanel {
 		contentModeComp.setArcVisible(false, true, false, true);
 		addComp(contentModeComp);
 		
-		asteriskComp = new TextComp("", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
+		asteriskComp = new TextComp("", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
 			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
 			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 			asteriskComp.repaint();
@@ -502,7 +503,7 @@ public class ToolMenu extends JPanel {
 		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		addComp(asteriskComp);
 		
-		structureComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
+		structureComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3, ()->{
 			hidden = !hidden;
 			screen.screenHasProjectView = !screen.screenHasProjectView;
 			Screen.getProjectView().organizeProjectViewDefaults();
@@ -528,7 +529,7 @@ public class ToolMenu extends JPanel {
 		structureComp.setArcVisible(true, false, true, false);
 		addComp(structureComp);
 		
-		operateComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->{
+		operateComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3, ()->{
 			if(!oPHidden) {
 				screen.getOperationPanel().setVisible(false);
 				oPHidden = true;
@@ -557,13 +558,13 @@ public class ToolMenu extends JPanel {
 		operateComp.setArcVisible(true, false, true, false);
 		addComp(operateComp);
 		
-		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
+		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
 		addComp(searchComp);
 		
 		sep4 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		addComp(sep4);
 		
-		structureViewComp = new TextComp(fluentstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
+		structureViewComp = new TextComp(fluentstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
 		structureViewComp.setFont(omega.utils.UIManager.PX18);
 		structureViewComp.setToolTipText("Lets see that class");
 		addComp(structureViewComp);
@@ -578,7 +579,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Faster Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal)
 		.createItem("Full-Fledge Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showJetTerminal);
 		
-		shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, null);
+		shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, null);
 		shellComp.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
@@ -595,7 +596,7 @@ public class ToolMenu extends JPanel {
 		sep5.setBounds(521, 50, 2, 40);
 		addComp(sep5);
 		
-		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3,
+		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3,
 		()->{
 			Screen.pickTheme(DataManager.getTheme());
 			if(!themeComp.getText().equals(DataManager.getTheme())){
@@ -969,7 +970,7 @@ public class ToolMenu extends JPanel {
 		});
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
-		.createItem("Save All Editors", IconManager.fileImage, ()->screen.saveAllEditors())
+		.createItem("Save All Editors", IconManager.fluentsaveImage, ()->screen.saveAllEditors())
 		.createItem("Restart", IconManager.fluentcloseImage, ()->{
 			
 			Screen.notify("Terminating Running Applications");
@@ -1136,6 +1137,7 @@ public class ToolMenu extends JPanel {
 			setToolTipText(text);
 			UIManager.setData(this);
 			setForeground(TOOLMENU_COLOR3);
+			setBackground(back2);
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -1209,6 +1211,7 @@ public class ToolMenu extends JPanel {
 		public Menu(OPopupWindow popup, String text) {
 			this.text = text;
 			UIManager.setData(this);
+			setBackground(back2);
 			setForeground(TOOLMENU_COLOR2);
 			addMouseListener(new MouseAdapter() {
 				@Override

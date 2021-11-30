@@ -339,7 +339,7 @@ public class TabPanel extends JPanel{
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(omega.utils.UIManager.back2);
+			g.setColor(omega.utils.UIManager.c2);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			g.setColor(omega.utils.UIManager.TOOLMENU_COLOR3);
 			g.setFont(omega.utils.UIManager.PX28);

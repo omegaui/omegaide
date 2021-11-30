@@ -216,7 +216,7 @@ public class BuildLog extends JPanel {
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(back2);
+			g.setColor(back1);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			g.setColor(TOOLMENU_COLOR2);
 			g.setFont(PX18);

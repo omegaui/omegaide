@@ -10,7 +10,7 @@
    <baseFont family="Ubuntu Mono" size="14"/>
    
    <!--  General editor colors.15151A -->
-   <background color="101010"/>
+   <background color="1e1e1e"/>
    <caret color="f0b40f"/>
    <selection useFG="true" bg="800707" roundedEdges="false"/>
    <currentLineHighlight color="2F393C" fade="false"/>
