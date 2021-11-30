@@ -25,31 +25,35 @@ import java.awt.event.KeyEvent;
 
 import static java.awt.event.KeyEvent.*;
 public class KeyStrokeListener implements KeyListener{
-	
-	public LinkedList<KeyStrokeData> keyStrokes;
-	public LinkedList<Key> shortcutKeys;
-	
+
+	public LinkedList<Key> keys = new LinkedList<>();
+	public LinkedList<KeyStrokeData> keyStrokes = new LinkedList<>();
+
 	public KeyStrokeListener(){
-		keyStrokes = new LinkedList<>();
-		shortcutKeys = new LinkedList<>();
 		
-		shortcutKeys.add(new Key(VK_CONTROL));
-		shortcutKeys.add(new Key(VK_SHIFT));
-		shortcutKeys.add(new Key(VK_ALT));
-		shortcutKeys.add(new Key(VK_WINDOWS));
 	}
-	
-	public KeyStrokeData putKeyStroke(Runnable pressAction, int... keys){
-		keyStrokes.add(new KeyStrokeData(pressAction, keys));
-		return keyStrokes.getLast();
+
+	public KeyStrokeData putKeyStroke(KeyStrokeDataListener listener, int... key){
+		var stroke = new KeyStrokeData(listener, key);
+		keyStrokes.add(stroke);
+		return stroke;
 	}
-	
-	public KeyStrokeData putShortcutKeyStroke(Runnable pressAction, int... keys){
-		return putKeyStroke(pressAction, keys).setBeShortcutAware(true);
+
+	public boolean offerKey(Key key){
+		for(Key kx : keys){
+			if(kx.key == key.key)
+				return false;
+		}
+		this.keys.add(key);
+		return true;
 	}
-	
-	public KeyStrokeData putAutoResetShortcutKeyStroke(Runnable pressAction, int... keys){
-		return putKeyStroke(pressAction, keys).setBeShortcutAware(true).setResetOnActionTrigger(true);
+
+	public Key huntKey(int key){
+		for(Key kx : keys){
+			if(kx.key == key)
+				return kx;
+		}
+		return new Key(key);
 	}
 	
 	@Override
@@ -59,14 +63,63 @@ public class KeyStrokeListener implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		shortcutKeys.forEach(key->key.checkPressed(e.getKeyCode(), true));
-		keyStrokes.forEach(keyStrokeData->keyStrokeData.toggle(e, e.getKeyCode(), true));
+		keys.forEach(key->key.checkPressed(e.getKeyCode(), true));
+		keyStrokes.forEach(keyStrokeData->keyStrokeData.stroke(e));
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		shortcutKeys.forEach(key->key.checkPressed(e.getKeyCode(), false));
-		keyStrokes.forEach(keyStrokeData->keyStrokeData.toggle(e, e.getKeyCode(), false));
+		keys.forEach(key->key.checkPressed(e.getKeyCode(), false));
+	}
+
+	public interface KeyStrokeDataListener {
+		void listen(KeyEvent e);
+	}
+
+	public class KeyStrokeData {
+		public LinkedList<Key> keys = new LinkedList<>();
+		public LinkedList<Key> stopKeys = new LinkedList<>();
+		public KeyStrokeDataListener listener;
+
+		public KeyStrokeData(KeyStrokeDataListener listener, int... keys){
+			this.listener = listener;
+			for(int key : keys){
+				this.keys.add(huntKey(key));
+			}
+		}
+
+		public KeyStrokeData setStopKeys(int... keys){
+			for(int key : keys)
+				this.stopKeys.add(huntKey(key));
+			return this;
+		}
+
+		public void stroke(KeyEvent e){
+			if(isStrokable())
+				listener.listen(e);
+		}
+
+		public boolean containsStrokeKey(Key key){
+			return this.keys.contains(key);
+		}
+
+		public boolean containsStopKey(Key key){
+			return this.stopKeys.contains(key);
+		}
+
+		public boolean isStrokable(){
+			int strokeKeysLength = 0;
+			int stopKeysLength = 0;
+			for(Key kx : KeyStrokeListener.this.keys){
+				if(kx.isPressed()){
+					if(containsStrokeKey(kx))
+						strokeKeysLength++;
+					else if(containsStopKey(kx))
+						stopKeysLength++;
+				}
+			}
+			return (strokeKeysLength == this.keys.size()) && stopKeysLength == 0;
+		}
 	}
 	
 	public class Key {
@@ -75,6 +128,7 @@ public class KeyStrokeListener implements KeyListener{
 		
 		public Key(int key){
 			this.key = key;
+			offerKey(this);
 		}
 		
 		public void checkPressed(int key, boolean pressed){
@@ -89,92 +143,5 @@ public class KeyStrokeListener implements KeyListener{
 		public boolean isPressed(){
 			return pressed;
 		}
-	}
-	
-	public class KeyStrokeData {
-		
-		public LinkedList<Key> keys = new LinkedList<>();
-		public LinkedList<Key> stopKeys = new LinkedList<>();
-		
-		public Runnable pressAction = ()->{};
-		
-		public volatile boolean beShortcutAware = false;
-		public volatile boolean resetOnActionTrigger = false;
-		
-		public KeyStrokeData(Runnable pressAction, int... keys){
-			if(keys != null && keys.length > 0){
-				for(int key : keys)
-					this.keys.add(new Key(key));
-			}
-			
-			this.pressAction = pressAction;
-		}
-		
-		public KeyStrokeData setStopKeys(int... keys){
-			for(int kx : keys){
-				stopKeys.add(new Key(kx));
-			}
-			return this;
-		}
-		
-		public KeyStrokeData setBeShortcutAware(boolean value){
-			this.beShortcutAware = value;
-			return this;
-		}
-		
-		public KeyStrokeData setResetOnActionTrigger(boolean value){
-			this.resetOnActionTrigger = value;
-			return this;
-		}
-		
-		public void toggle(KeyEvent e, int keyCode, boolean isPressed){
-			for(Key kx : stopKeys){
-				if(kx.key == keyCode)
-					kx.setPressed(isPressed);
-			}
-			if(beShortcutAware){
-				for(Key kx : shortcutKeys){
-					if(!containsKey(kx.key) && kx.isPressed())
-						return;
-				}
-			}
-			for(Key kx : keys){
-				if(kx.key == keyCode)
-					kx.setPressed(isPressed);
-			}
-			if(isStrokable()){
-				System.out.println("Running ...");
-				e.consume();
-				pressAction.run();
-				if(resetOnActionTrigger)
-					resetStrokes();
-			}
-		}
-		
-		public void resetStrokes(){
-			for(Key kx : keys)
-				kx.setPressed(false);
-		}
-		
-		public boolean containsKey(int key){
-			for(Key kx : keys){
-				if(kx.key == key)
-					return true;
-			}
-			return false;
-		}
-		
-		public boolean isStrokable(){
-			for(Key kx : keys){
-				if(!kx.isPressed())
-					return false;
-			}
-			for(Key kx : stopKeys){
-				if(kx.isPressed())
-					return false;
-			}
-			return true;
-		}
-		
 	}
 }
