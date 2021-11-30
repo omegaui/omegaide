@@ -64,7 +64,7 @@ public class BuildLog extends JPanel {
 	public BuildLog(){
 		super(new BorderLayout());
 		setBackground(c2);
-		headComp = new TextComp("Build Resulted in the following Error(s)", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, null);
+		headComp = new TextComp("Build Resulted in the following Error(s)", TOOLMENU_COLOR5_SHADE, TOOLMENU_COLOR5, c2, null);
 		headComp.setFont(PX14);
 		headComp.setClickable(false);
 		headComp.setArc(0, 0);

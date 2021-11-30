@@ -80,6 +80,7 @@ public class KeyStrokeListener implements KeyListener{
 		public LinkedList<Key> keys = new LinkedList<>();
 		public LinkedList<Key> stopKeys = new LinkedList<>();
 		public KeyStrokeDataListener listener;
+		public volatile boolean useAutoReset = false;
 
 		public KeyStrokeData(KeyStrokeDataListener listener, int... keys){
 			this.listener = listener;
@@ -94,17 +95,39 @@ public class KeyStrokeListener implements KeyListener{
 			return this;
 		}
 
-		public void stroke(KeyEvent e){
-			if(isStrokable())
+		public KeyStrokeData useAutoReset(){
+			this.useAutoReset = true;
+			return this;
+		}
+
+		public synchronized void stroke(KeyEvent e){
+			if(isStrokable()){
 				listener.listen(e);
+				if(useAutoReset)
+					autoReset();
+			}
+		}
+
+		public void autoReset(){
+			for(Key kx : this.keys){
+				huntKey(kx.key).setPressed(false);
+			}
 		}
 
 		public boolean containsStrokeKey(Key key){
-			return this.keys.contains(key);
+			for(Key kx : this.keys){
+				if(kx.key == key.key)
+					return true;
+			}
+			return false;
 		}
 
 		public boolean containsStopKey(Key key){
-			return this.stopKeys.contains(key);
+			for(Key kx : this.stopKeys){
+				if(kx.key == key.key)
+					return true;
+			}
+			return false;
 		}
 
 		public boolean isStrokable(){
@@ -132,8 +155,9 @@ public class KeyStrokeListener implements KeyListener{
 		}
 		
 		public void checkPressed(int key, boolean pressed){
-			if(this.key == key)
+			if(this.key == key){
 				setPressed(pressed);
+			}
 		}
 		
 		public void setPressed(boolean pressed){
@@ -142,6 +166,11 @@ public class KeyStrokeListener implements KeyListener{
 		
 		public boolean isPressed(){
 			return pressed;
+		}
+
+		@Override
+		public String toString(){
+			return KeyEvent.getKeyText(key);
 		}
 	}
 }
