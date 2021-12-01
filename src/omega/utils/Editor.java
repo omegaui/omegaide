@@ -212,7 +212,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public void initKeyStrokes(){
 		//Initializing KeyStrokeData
-		keyStrokeListener = new KeyStrokeListener();
+		keyStrokeListener = new KeyStrokeListener(this);
 		addKeyListener(keyStrokeListener);
 		
 		keyStrokeListener.putKeyStroke((e)->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F);

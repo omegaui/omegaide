@@ -17,11 +17,15 @@
 */
 
 package omega.utils;
+import java.awt.Component;
+
 
 import java.util.LinkedList;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import static java.awt.event.KeyEvent.*;
 public class KeyStrokeListener implements KeyListener{
@@ -29,8 +33,13 @@ public class KeyStrokeListener implements KeyListener{
 	public LinkedList<Key> keys = new LinkedList<>();
 	public LinkedList<KeyStrokeData> keyStrokes = new LinkedList<>();
 
-	public KeyStrokeListener(){
-		
+	public KeyStrokeListener(Component c){
+		c.addFocusListener(new FocusAdapter(){
+			@Override
+			public void focusLost(FocusEvent e){
+				keyStrokes.forEach(keyStrokeData->keyStrokeData.autoReset());
+			}
+		});
 	}
 
 	public KeyStrokeData putKeyStroke(KeyStrokeDataListener listener, int... key){
