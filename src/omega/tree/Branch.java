@@ -285,17 +285,14 @@ public class Branch extends JComponent{
 			g.setColor(getForeground());
 		else
 			g.setColor(enter ? UIManager.glow : getForeground());
-		g.drawString(name, OPTIMAL_X, (getHeight()/2) + 2);
+		g.drawString(name, OPTIMAL_X, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
 
 		g.setFont(PX14);
 		
 		if(!type.equals("?"))
-			g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, (getHeight()/2) + 2);
+			g.drawString(type, getWidth() - g.getFontMetrics().stringWidth(type) - 2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent());
 		
 		g.drawImage(icon, 12, getHeight()/2 - IMAGE_SIZE/2, IMAGE_SIZE, IMAGE_SIZE, null);
-		if(enter){
-			g.fillRect(OPTIMAL_X, (getHeight()/2) + getFont().getSize()/2 - 2, g.getFontMetrics().stringWidth(name), 2);
-		}
 	}
 	
 	public static Color getColor(String fileName){

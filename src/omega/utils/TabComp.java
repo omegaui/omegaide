@@ -99,9 +99,13 @@ public class TabComp {
 			else
 				image = IconManager.fluentshellImage;
 		}
+		if(popUp == null)
+			alpha = c2;
 		iconButton = new TextComp(image, 25, 25, toolTip, alpha, c2, FORE, ()->{});
-		iconButton.setArc(2, 2);
+		iconButton.setArc(5, 5);
 		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 20, 28));
+		
+		putAnimationLayer(iconButton, getImageSizeAnimationLayer(20, -4, true), ACTION_MOUSE_ENTERED);
 		
 		if(popUp != null) {
 			iconButton.addMouseListener(new MouseAdapter() {

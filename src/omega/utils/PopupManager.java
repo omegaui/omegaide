@@ -58,8 +58,8 @@ public class PopupManager {
 		else {
 			if(editor.currentFile != null && editor.currentFile.getName().contains("."))
 				popup.createItem("Launch", IconManager.fluentlaunchImage, ()->ToolMenu.processWizard.launch(editor.currentFile));
-			popup.createItem("Save", IconManager.fileImage, ()->editor.saveCurrentFile())
-			.createItem("Save As", IconManager.fileImage, ()->{
+			popup.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
+			.createItem("Save As", IconManager.fluentsaveImage, ()->{
 				editor.saveFileAs();
 				Screen.getProjectView().reload();
 			})
