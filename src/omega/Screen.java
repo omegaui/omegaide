@@ -16,6 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.instant.support.build.gradle.GradleProcessManager;
+
 import omega.comp.Animations;
 
 import omega.plugin.event.PluginReactionManager;
@@ -41,6 +43,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.KeyEvent;
 
 import javax.imageio.ImageIO;
 
@@ -99,6 +102,9 @@ import omega.launcher.Launcher;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JButton;
+import javax.swing.JLayeredPane;
+
+import static java.awt.event.KeyEvent.*;
 public class Screen extends JFrame {
 	public JSplitPane splitPane;
 	public JSplitPane compilancePane;
@@ -213,6 +219,7 @@ public class Screen extends JFrame {
 		setSize(1000, 650);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -338,6 +345,41 @@ public class Screen extends JFrame {
 			launcher.setVisible(true);
 		}
 	}
+	public void triggerBuild(KeyEvent e){
+		if(toolMenu.buildComp.isClickable()){
+			if(GradleProcessManager.isGradleProject())
+				GradleProcessManager.build();
+			else
+				Screen.getBuildView().compileProject();
+
+			e.consume();
+		}
+	}
+
+	public void triggerRun(KeyEvent e){
+		if(toolMenu.buildComp.isClickable()){
+			if(GradleProcessManager.isGradleProject())
+				GradleProcessManager.run();
+			else
+				Screen.getRunView().run();
+			
+			e.consume();
+		}
+	}
+
+	public void triggerInstantRun(KeyEvent e){
+		if(toolMenu.buildComp.isClickable()){
+			Screen.getRunView().instantRun();
+			
+			e.consume();
+		}
+	}
+
+	public void showSearchDialog(KeyEvent e){
+		fileView.getSearchWindow().setVisible(true);
+		
+		e.consume();
+	}
 	
 	@Override
 	public void setSize(int w, int h){
@@ -462,8 +504,7 @@ public class Screen extends JFrame {
 	public static void openInDesktop(File file) {
 		try {
 			new Thread(()->{
-				try {
-					java.awt.Desktop.getDesktop().open(file);
+				try {					java.awt.Desktop.getDesktop().open(file);
 				}
 				catch(Exception ex){
 					ex.printStackTrace();
@@ -477,8 +518,7 @@ public class Screen extends JFrame {
 	
 	public Editor loadFile(File file) {
 		String fn = file.getName();
-		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
-			openInDesktop(file);
+		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){			openInDesktop(file);
 			return null;
 		}
 		if(tabPanel.viewImage(file)) return null;

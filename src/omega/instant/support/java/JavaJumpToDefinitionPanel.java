@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 import java.awt.Rectangle;
 
 import java.util.LinkedList;
-
 import omega.comp.FlexPanel;
 import omega.comp.TextComp;
 import omega.comp.NoCaretField;

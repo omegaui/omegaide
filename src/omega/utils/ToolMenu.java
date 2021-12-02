@@ -76,6 +76,7 @@ import omega.popup.NotificationPopup;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
 import javax.swing.JComponent;
+
 import static omega.utils.UIManager.*;
 import static omega.utils.IconManager.*;
 import static omega.comp.Animations.*;
@@ -198,6 +199,7 @@ public class ToolMenu extends JPanel {
 			public void mousePressed(MouseEvent e){
 				pressX = e.getX();
 				pressY = e.getY();
+				grabFocus();
 			}
 		});
 		addMouseMotionListener(new MouseAdapter(){

@@ -64,7 +64,7 @@ public class TextComp extends JComponent{
 	public int textHeight;
 	
 	private String dir;
-
+	
 	public AnimationLayer animationLayer;
 	
 	public Color color1;
@@ -195,11 +195,11 @@ public class TextComp extends JComponent{
 		this.arcY = y;
 		repaint();
 	}
-
+	
 	public void setAnimationLayer(AnimationLayer layer){
 		this.animationLayer = layer;
 	}
-
+	
 	public void triggerAnimation(){
 		animationLayer.animate(this);
 	}

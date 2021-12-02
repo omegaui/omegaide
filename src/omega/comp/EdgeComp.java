@@ -123,7 +123,7 @@ public class EdgeComp extends JComponent {
 	public void setLookLikeLabel(boolean lookLikeLabel) {
 		this.lookLikeLabel = lookLikeLabel;
 	}
-		
+	
 	public java.lang.Runnable getOnAction() {
 		return action;
 	}

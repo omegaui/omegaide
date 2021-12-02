@@ -1,19 +1,19 @@
 /**
-  * A TextField with no caret navigation
-  * Copyright (C) 2021 Omega UI
+* A TextField with no caret navigation
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.comp;
@@ -58,19 +58,19 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	private volatile boolean x;
 	private volatile boolean c;
 	private volatile boolean v;
-     private volatile boolean editable = true;
+	private volatile boolean editable = true;
 	
 	public NoCaretField(String text, Color c1, Color c2, Color c3){
 		this.text = text;
 		this.lines = new LinkedList<>();
 		addKeyListener(this);
 		addFocusListener(this);
-          addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e){
-               	grabFocus();
-               }
-          });
+		addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				grabFocus();
+			}
+		});
 		setColors(c1, c2, c3);
 	}
 	public NoCaretField(String text, String message, Color c1, Color c2, Color c3){
@@ -94,15 +94,15 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			lastText = text;
 		}
 		else {
-               if(lastText == null || lastText.equals("")){
-                    lastText = "";
-                    int i = 0;
-                    x = getWidth()/2 - g.getFontMetrics().stringWidth(lastText)/2 - 10;
-                    while(x > BORDER_GAP && i < text.length()){
-                         x = getWidth()/2 - g.getFontMetrics().stringWidth(lastText)/2 - 10;
-                         lastText += text.charAt(i++);
-                    }
-               }
+			if(lastText == null || lastText.equals("")){
+				lastText = "";
+				int i = 0;
+				x = getWidth()/2 - g.getFontMetrics().stringWidth(lastText)/2 - 10;
+				while(x > BORDER_GAP && i < text.length()){
+					x = getWidth()/2 - g.getFontMetrics().stringWidth(lastText)/2 - 10;
+					lastText += text.charAt(i++);
+				}
+			}
 			String tempText = ".." + text.substring(text.length() - lastText.length() + 5);
 			x = getWidth()/2 - g.getFontMetrics().stringWidth(tempText)/2;
 			g.drawString(tempText, x, y);
@@ -112,8 +112,8 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			g.drawString(message, getWidth()/2 - g.getFontMetrics().stringWidth(message)/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		}
 		else {
-               if(!isFocusOwner())
-                    g.setColor(color3);
+			if(!isFocusOwner())
+				g.setColor(color3);
 			g.fillRoundRect(getWidth()/2 + g.getFontMetrics().stringWidth(lastText)/2 - 1, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1 + BORDER_GAP, BORDER_GAP, BORDER_GAP, BORDER_GAP, BORDER_GAP);
 		}
 	}
@@ -160,36 +160,36 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 		if(ctrl && c){
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(text), null);
 			c = false;
-               return;
+			return;
 		}
 		if(ctrl && v){
 			Transferable obj = (Transferable)Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 			if(obj != null){
-                    try{
-                         if(!(obj.getTransferData(DataFlavor.stringFlavor) instanceof InputStream))
-                              setText(text + obj.getTransferData(DataFlavor.stringFlavor).toString());
-                    }
-                    catch(Exception ex){ 
-                    	ex.printStackTrace();
-                    }
+				try{
+					if(!(obj.getTransferData(DataFlavor.stringFlavor) instanceof InputStream))
+						setText(text + obj.getTransferData(DataFlavor.stringFlavor).toString());
+				}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}
 			v = false;
-               return;
+			return;
 		}
-          if(editable){
-     		if(Character.isLetterOrDigit(ch) || isSymbol(ch))
-     			text += ch;
-     		else if(code == VK_BACK_SPACE){
-     			if(text.length() == 1)
-     				text = "";
-     			else if(text.length() > 1)
-     				text = text.substring(0, text.length() - 1);
-     		}
-     		else if(code == VK_ENTER){
-     			if(action != null)
-     				new Thread(action).start();
-     		}
-          }
+		if(editable){
+			if(Character.isLetterOrDigit(ch) || isSymbol(ch))
+				text += ch;
+			else if(code == VK_BACK_SPACE){
+				if(text.length() == 1)
+					text = "";
+				else if(text.length() > 1)
+					text = text.substring(0, text.length() - 1);
+			}
+			else if(code == VK_ENTER){
+				if(action != null)
+					new Thread(action).start();
+			}
+		}
 		repaint();
 	}
 	@Override
@@ -228,22 +228,22 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 		this.message = message;
 		repaint();
 	}
-     public void notify(String text){
-     	message = text;
-          setText("");
-     }
+	public void notify(String text){
+		message = text;
+		setText("");
+	}
 	public char[] getIgnorableCharacters() {
 		return ignorableCharacters;
 	}
 	public void setIgnorableCharacters(char... ignorableCharacters) {
 		this.ignorableCharacters = ignorableCharacters;
 	}
-     public void setEditable(boolean value){
-     	editable = value;
-     }
-     public boolean isEditable(){
-     	return editable;
-     }
+	public void setEditable(boolean value){
+		editable = value;
+	}
+	public boolean isEditable(){
+		return editable;
+	}
 	public boolean isSymbol(char ch){
 		return "`~!@#$%^&*()_+-={}|[]\\:\";\'<>?,./]) ".contains(ch + "");
 	}
