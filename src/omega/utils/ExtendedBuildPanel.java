@@ -48,7 +48,7 @@ public class ExtendedBuildPanel extends JPanel{
 	}
 	
 	public void init(){
-		flagComp = new TextComp("Add an Agrument", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::addFlagBox);
+		flagComp = new TextComp("Add an Agrument", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, this::addFlagBox);
 		flagComp.setBounds(extendedBuildPathManager.getWidth()/2 - extendedBuildPathManager.getWidth()/4, 10, extendedBuildPathManager.getWidth()/2, 25);
 		flagComp.setFont(PX14);
 		add(flagComp);

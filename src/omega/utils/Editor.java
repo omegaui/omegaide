@@ -219,10 +219,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->saveCurrentFile(), VK_CONTROL, VK_S).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->javaJumpToDefinitionPanel.setVisible(true), VK_CONTROL, VK_J);
 		keyStrokeListener.putKeyStroke((e)->doDuplicate(e), VK_CONTROL, VK_D).setStopKeys(VK_SHIFT);
-		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_PLUS).setStopKeys(VK_TAB);
-		keyStrokeListener.putKeyStroke((e)->decreaseFont(e), VK_CONTROL, VK_SHIFT, VK_MINUS).setStopKeys(VK_TAB);
-		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_TAB, VK_PLUS);
-		keyStrokeListener.putKeyStroke((e)->decreaseFont(e), VK_CONTROL, VK_SHIFT, VK_TAB, VK_MINUS);
+		
+		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_EQUALS).setStopKeys(VK_T);
+		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_PLUS).setStopKeys(VK_T);
+		keyStrokeListener.putKeyStroke((e)->decreaseFont(e), VK_CONTROL, VK_SHIFT, VK_MINUS).setStopKeys(VK_T);
+		
+		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_EQUALS);
+		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_PLUS);
+		keyStrokeListener.putKeyStroke((e)->decreaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_MINUS);
+		
 		keyStrokeListener.putKeyStroke((e)->triggerBuild(e), VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->triggerRun(e), VK_CONTROL, VK_SHIFT, VK_R);
 		keyStrokeListener.putKeyStroke((e)->triggerInstantRun(e), VK_CONTROL, VK_SHIFT, VK_F1);

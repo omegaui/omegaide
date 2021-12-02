@@ -635,6 +635,7 @@ public class RunView extends View {
 	
 	public void run() {
 		getScreen().saveAllEditors();
+		System.gc();
 		if(omega.Screen.getFileView().getProjectManager().non_java){
 			runNJ();
 			return;

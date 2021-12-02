@@ -1,19 +1,19 @@
 /**
-  * BuildPathManager
-  * Copyright (C) 2021 Omega UI
+* BuildPathManager
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.utils;
@@ -49,10 +49,11 @@ public class BuildPathManager extends JDialog {
 	private TextComp nativeTab;
 	private TextComp resourceRootTab;
 	private TextComp moduleTab;
+	
 	private JFileChooser fileChooser;
+	
 	private int state = 0;
-     private int pressX;
-     private int pressY;
+	
 	private FileSelectionDialog fs;
 	
 	public BuildPathManager(omega.Screen screen){
@@ -70,57 +71,57 @@ public class BuildPathManager extends JDialog {
 	public void init(){
 		fs = new FileSelectionDialog(this);
 		
-		jarTab = new TextComp("Jars", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(0)){
-               @Override
-               public void draw(Graphics2D g){
-                    if(state == 0){
-                         g.setColor(color3);
-                         g.fillRect(0, getHeight() - 3, getWidth(), 3);
-                    }
-               }
-	     };
+		jarTab = new TextComp("Jars", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->setView(0)){
+			@Override
+			public void draw(Graphics2D g){
+				if(state == 0){
+					g.setColor(color3);
+					g.fillRect(0, getHeight() - 3, getWidth(), 3);
+				}
+			}
+		};
 		jarTab.setBounds(0, 0, 175, 40);
 		jarTab.setFont(PX16);
 		jarTab.setArc(0, 0);
 		add(jarTab);
 		
-		nativeTab = new TextComp("Native Roots", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(1)){
-               @Override
-               public void draw(Graphics2D g){
-                    if(state == 1){
-                         g.setColor(color3);
-                         g.fillRect(0, getHeight() - 3, getWidth(), 3);
-                    }
-               }
-          };
+		nativeTab = new TextComp("Native Roots", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->setView(1)){
+			@Override
+			public void draw(Graphics2D g){
+				if(state == 1){
+					g.setColor(color3);
+					g.fillRect(0, getHeight() - 3, getWidth(), 3);
+				}
+			}
+		};
 		nativeTab.setBounds(175, 0, 175, 40);
 		nativeTab.setFont(PX16);
 		nativeTab.setArc(0, 0);
 		add(nativeTab);
 		
-		resourceRootTab = new TextComp("Resource Roots", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(2)){
-               @Override
-               public void draw(Graphics2D g){
-                    if(state == 2){
-                         g.setColor(color3);
-                         g.fillRect(0, getHeight() - 3, getWidth(), 3);
-                    }
-               }
-          };
+		resourceRootTab = new TextComp("Resource Roots", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->setView(2)){
+			@Override
+			public void draw(Graphics2D g){
+				if(state == 2){
+					g.setColor(color3);
+					g.fillRect(0, getHeight() - 3, getWidth(), 3);
+				}
+			}
+		};
 		resourceRootTab.setBounds(350, 0, 175, 40);
 		resourceRootTab.setFont(PX16);
 		resourceRootTab.setArc(0, 0);
 		add(resourceRootTab);
 		
-		moduleTab = new TextComp("Modules", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->setView(3)){
-               @Override
-               public void draw(Graphics2D g){
-                    if(state == 3){
-                         g.setColor(color3);
-                         g.fillRect(0, getHeight() - 3, getWidth(), 3);
-                    }
-               }
-          };
+		moduleTab = new TextComp("Modules", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->setView(3)){
+			@Override
+			public void draw(Graphics2D g){
+				if(state == 3){
+					g.setColor(color3);
+					g.fillRect(0, getHeight() - 3, getWidth(), 3);
+				}
+			}
+		};
 		moduleTab.setBounds(525, 0, 175, 40);
 		moduleTab.setFont(PX16);
 		moduleTab.setArc(0, 0);
@@ -140,39 +141,27 @@ public class BuildPathManager extends JDialog {
 		add(nativePanel);
 		add(resourceRootPanel);
 		add(modulePanel);
-          
-		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, c2, this::dispose);
+		
+		TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, back3, this::dispose);
 		closeComp.setBounds(0, getHeight() - 30, 160, 30);
 		closeComp.setFont(PX16);
 		closeComp.setArc(0, 0);
 		add(closeComp);
 		
-		TextComp addComp = new TextComp("Add", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->addPath());
+		TextComp addComp = new TextComp("Add", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->addPath());
 		addComp.setBounds(160, getHeight() - 30, 190, 30);
 		addComp.setFont(PX16);
 		addComp.setArc(0, 0);
 		add(addComp);
 		
-		TextComp remComp = new TextComp("Remove", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->removePath());
+		TextComp remComp = new TextComp("Remove", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->removePath());
 		remComp.setBounds(160 + 190, getHeight() - 30, 190, 30);
 		remComp.setFont(PX16);
 		remComp.setArc(0, 0);
 		add(remComp);
 		
-	     TextComp titleComp = new TextComp("Build Path Manager", TOOLMENU_COLOR1_SHADE, c2,  TOOLMENU_COLOR1, ()->{});
-          titleComp.addMouseListener(new MouseAdapter(){
-               @Override
-               public void mousePressed(MouseEvent e){
-               	pressX = e.getX();
-                    pressY = e.getY();
-               }
-          });
-          titleComp.addMouseMotionListener(new MouseAdapter(){
-               @Override
-               public void mouseDragged(MouseEvent e){
-               	setLocation(e.getXOnScreen() - pressX - titleComp.getX(), e.getYOnScreen() - pressY - titleComp.getY());
-               }
-          });
+		TextComp titleComp = new TextComp("Build Path Manager", TOOLMENU_COLOR1_SHADE, c2,  TOOLMENU_COLOR1, ()->{});
+		titleComp.attachDragger(this);
 		titleComp.setBounds(getWidth() - 160, getHeight() - 30, 160, 30);
 		titleComp.setFont(PX16);
 		titleComp.setClickable(false);
@@ -194,18 +183,18 @@ public class BuildPathManager extends JDialog {
 			fs.setFileExtensions(FileSelectionDialog.ALL_EXTENSIONS);
 			fs.setTitle("Select Native Library Roots");
 			LinkedList<File> files = fs.selectDirectories();
-               if(!files.isEmpty()){
-                    for(File file : files){
+			if(!files.isEmpty()){
+				for(File file : files){
 					Screen.getFileView().getProjectManager().natives.add(file.getAbsolutePath());
 				}
 			}
 		}
 		else if(state == 2){
-               fs.setFileExtensions(FileSelectionDialog.ALL_EXTENSIONS);
+			fs.setFileExtensions(FileSelectionDialog.ALL_EXTENSIONS);
 			fs.setTitle("Select Resource Roots");
-               LinkedList<File> files = fs.selectDirectories();
-               if(!files.isEmpty()){
-                    for(File file : files){
+			LinkedList<File> files = fs.selectDirectories();
+			if(!files.isEmpty()){
+				for(File file : files){
 					Screen.getFileView().getProjectManager().resourceRoots.add(file.getAbsolutePath());
 				}
 			}
@@ -214,13 +203,13 @@ public class BuildPathManager extends JDialog {
 			fs.setFileExtensions(".jar");
 			fs.setTitle("Select Module Files");
 			LinkedList<File> files = fs.selectFiles();
-               if(!files.isEmpty()){
-                    for(File file : files){
+			if(!files.isEmpty()){
+				for(File file : files){
 					Screen.getFileView().getProjectManager().modules.add(file.getAbsolutePath());
 				}
 			}
 		}
-          read();
+		read();
 	}
 	public void read(){
 		jarComps.forEach(jarPanel::remove);
@@ -272,7 +261,7 @@ public class BuildPathManager extends JDialog {
 		
 		for(String path : Screen.getFileView().getProjectManager().jars){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
-		     TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
+			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
 				comp.setColors(comp.color1, comp.color3, comp.color2);
 			});
@@ -287,7 +276,7 @@ public class BuildPathManager extends JDialog {
 		}
 		for(String path : Screen.getFileView().getProjectManager().natives){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
-		     TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
+			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
 				comp.setColors(comp.color1, comp.color3, comp.color2);
 			});
@@ -302,7 +291,7 @@ public class BuildPathManager extends JDialog {
 		}
 		for(String path : Screen.getFileView().getProjectManager().resourceRoots){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
-		     TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
+			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
 				comp.setColors(comp.color1, comp.color3, comp.color2);
 			});
@@ -317,7 +306,7 @@ public class BuildPathManager extends JDialog {
 		}
 		for(String path : Screen.getFileView().getProjectManager().modules){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
-		     TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
+			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
 				comp.setColors(comp.color1, comp.color3, comp.color2);
 			});
@@ -362,51 +351,51 @@ public class BuildPathManager extends JDialog {
 		resourceRootPanel.setVisible(state == 2);
 		modulePanel.setVisible(state == 3);
 	}
-     public String getModulePath(){
-          LinkedList<String> modules = Screen.getFileView().getProjectManager().modules;
-          if(modules.isEmpty())
-               return null;
-     	String path = "";
-          LinkedList<String> parentDirs = new LinkedList<>();
-          modules.forEach(modulePath->{
-               String parentPath = modulePath.substring(0, modulePath.lastIndexOf(File.separatorChar));
-               boolean contains = false;
-               for(String parent : parentDirs){
-                    if(parent.equals(parentPath)){
-                         contains = true;
-                         break;
-                    }
-               }
-               if(!contains)
-                    parentDirs.add(parentPath);
-          });
-          
-          for(String p : parentDirs)
-               path += p + Screen.PATH_SEPARATOR;
-          
-          return path;
-     }
-     public String getModules(){
-          LinkedList<String> modules = Screen.getFileView().getProjectManager().modules;
-          if(modules.isEmpty())
-               return null;
-          String moduleNames = "";
-          for(String path : modules){
-               String name = path.substring(path.lastIndexOf(File.separatorChar) + 1, path.lastIndexOf('.'));
-               moduleNames += name + ",";
-          }
-          moduleNames = moduleNames.substring(0, moduleNames.length() - 1);
-          return moduleNames;
-     }
-     @Override
-     public void dispose(){
+	public String getModulePath(){
+		LinkedList<String> modules = Screen.getFileView().getProjectManager().modules;
+		if(modules.isEmpty())
+			return null;
+		String path = "";
+		LinkedList<String> parentDirs = new LinkedList<>();
+		modules.forEach(modulePath->{
+			String parentPath = modulePath.substring(0, modulePath.lastIndexOf(File.separatorChar));
+			boolean contains = false;
+			for(String parent : parentDirs){
+				if(parent.equals(parentPath)){
+					contains = true;
+					break;
+				}
+			}
+			if(!contains)
+				parentDirs.add(parentPath);
+		});
+		
+		for(String p : parentDirs)
+			path += p + Screen.PATH_SEPARATOR;
+		
+		return path;
+	}
+	public String getModules(){
+		LinkedList<String> modules = Screen.getFileView().getProjectManager().modules;
+		if(modules.isEmpty())
+			return null;
+		String moduleNames = "";
+		for(String path : modules){
+			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1, path.lastIndexOf('.'));
+			moduleNames += name + ",";
+		}
+		moduleNames = moduleNames.substring(0, moduleNames.length() - 1);
+		return moduleNames;
+	}
+	@Override
+	public void dispose(){
 		super.dispose();
 		new Thread(Screen.getFileView()::readJDK).start();
-     }
+	}
 	@Override
 	public void setVisible(boolean value){
 		if(value){
-               read();
+			read();
 			setView(state);
 		}
 		super.setVisible(value);

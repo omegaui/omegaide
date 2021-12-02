@@ -61,13 +61,13 @@ public class ExtendedBuildPathManager extends JDialog {
 		titleComp.setArc(0, 0);
 		add(titleComp);
 
-		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
+		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back1, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
 
-		compileComp = new TextComp("Compile Time", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		compileComp = new TextComp("Compile Time", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->{
 			state = 0;
 			compilePanel.setVisible(true);
 			runPanel.setVisible(false);
@@ -86,7 +86,7 @@ public class ExtendedBuildPathManager extends JDialog {
 		compileComp.setFont(PX14);
 		add(compileComp);
 
-		runComp = new TextComp("Run Time", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		runComp = new TextComp("Run Time", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR1, ()->{
 			state = 1;
 			runPanel.setVisible(true);
 			compilePanel.setVisible(false);

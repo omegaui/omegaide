@@ -69,7 +69,6 @@ public class NotificationPopup extends JDialog{
 
 		dialogImageComp = new TextComp(null, 25, 25, ALPHA, ALPHA, ALPHA, null);
 		dialogImageComp.setBounds(10, 7, 25, 25);
-		dialogImageComp.setClickable(false);
 		add(dialogImageComp);
 
 		titleComp = new TextComp("", ALPHA, ALPHA, glow, null);
