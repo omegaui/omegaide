@@ -372,5 +372,13 @@ public class JDKManager {
 		File file = new File(path);
 		return path != null && file.exists() && isJDK(file);
 	}
+
+	public static synchronized boolean isSourceClass(String className){
+		for(Import im : sources){
+			if(im.className.equals(className))
+				return true;
+		}
+		return false;
+	}
 }
 

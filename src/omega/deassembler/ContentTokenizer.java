@@ -17,6 +17,11 @@
 */
 
 package omega.deassembler;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+
+import java.awt.Color;
+
 import omega.jdk.Import;
 
 import omega.Screen;
@@ -30,6 +35,8 @@ import omega.snippet.SnippetBase;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+
+import static omega.utils.UIManager.*;
 public class ContentTokenizer {
 	
 	public static boolean isConditionalCode(String code){
@@ -237,4 +244,5 @@ public class ContentTokenizer {
 			}
 		}
 	}
+	
 }

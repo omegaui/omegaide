@@ -1225,6 +1225,9 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 				(t.isHyperlink() || linkGeneratorResult!=null)) {
 			return hyperlinkFG;
 		}
+//		if(omega.instant.support.BasicCodeHighlighter.isComputable(t)){
+//			return omega.instant.support.BasicCodeHighlighter.computeColor(t);
+//		}
 		return getForegroundForTokenType(t.getType());
 	}
 

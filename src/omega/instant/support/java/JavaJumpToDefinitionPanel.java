@@ -1,6 +1,5 @@
 package omega.instant.support.java;
 import omega.Screen;
-
 import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
