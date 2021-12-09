@@ -142,6 +142,7 @@ public class UIManager extends DataBase {
 		else {
 			glow = Color.BLACK;
 			highlight = Color.decode("#0000ff");
+			
 		}
 	}
 	
@@ -172,7 +173,7 @@ public class UIManager extends DataBase {
 				TOOLMENU_COLOR4_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 				TOOLMENU_COLOR5 = Color.decode("#7f6021");
 				TOOLMENU_COLOR5_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
-				TOOLMENU_GRADIENT = Color.decode("#132132");
+				TOOLMENU_GRADIENT = new Color(51, 51, 51, 140);
 				back1 = Color.decode("#252526");
 				back2 = Color.decode("#333333");
 				back3 = Color.decode("#303030");

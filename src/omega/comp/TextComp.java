@@ -45,6 +45,7 @@ public class TextComp extends JComponent{
 	private volatile boolean paintGradientEnabled = false;
 	private volatile boolean paintTextGradientEnabled = false;
 	private volatile boolean useSpeedMode = false;
+	private volatile boolean paintEnterFirst = true;
 	
 	public static final int GRADIENT_MODE_DEFAULT = 0;
 	public static final int GRADIENT_MODE_LINEAR = 1;
@@ -261,6 +262,15 @@ public class TextComp extends JComponent{
 		this.paintGradientEnabled = paintGradientEnabled;
 		repaint();
 	}
+
+	public boolean isPaintEnterFirst() {
+		return paintEnterFirst;
+	}
+	
+	public void setPaintEnterFirst(boolean paintEnterFirst) {
+		this.paintEnterFirst = paintEnterFirst;
+		repaint();
+	}	
 	
 	public boolean isPaintTextGradientEnabled() {
 		if(!paintTextGradientEnabled)
@@ -366,12 +376,14 @@ public class TextComp extends JComponent{
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		paintArc(g);
 		
-		if(enter || !clickable) paintEnter(g);
+		if(paintEnterFirst && (enter || !clickable)) paintEnter(g);
 		
 		if(press) paintPress(g);
 		
 		draw(g, x, y);
 		draw(g);
+
+		if(!paintEnterFirst && (enter || !clickable)) paintEnter(g);
 		
 		super.paint(graphics);
 		

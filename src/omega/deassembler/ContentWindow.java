@@ -88,7 +88,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			iconComp.setClickable(false);
 			add(iconComp);
 
-			nameComp = new TextComp(d.getRepresentableValue(), getColorShade(), c2, glow, null);
+			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_GRADIENT, c2, glow, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
@@ -96,6 +96,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			nameComp.setUseSpeedMode(true);
 			nameComp.addHighlightText(getHighlights());
 			nameComp.setHighlightColor(highlight);
+			nameComp.setPaintEnterFirst(isDarkMode());
 			add(nameComp);
 		}
 
@@ -150,6 +151,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		setBackground(c2);
 		setLayout(null);
 		add(scrollPane = new JScrollPane(panel = new JPanel(null)));
+		scrollPane.setBorder(null);
 		panel.setBackground(c2);
 	}
 	
