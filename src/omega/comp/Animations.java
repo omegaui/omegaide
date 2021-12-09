@@ -128,6 +128,8 @@ public class Animations {
 
 				if(!comp.enter)
 					comp.repaint();
+				
+				System.gc();
 			}).start();
 		};
 	}
@@ -187,6 +189,8 @@ public class Animations {
 				
 				if(!comp.enter)
 					comp.repaint();
+
+				System.gc();
 			}).start();
 		};
 	}
@@ -225,6 +229,8 @@ public class Animations {
 					
 					if(!comp.enter)
 						comp.repaint();
+					
+					System.gc();
 				}).start();
 			}
 		};
@@ -260,6 +266,8 @@ public class Animations {
 				
 				if(!comp.enter)
 					comp.repaint();
+				
+				System.gc();
 			}).start();
 		};
 	}
