@@ -58,11 +58,9 @@ public class MadeWithScreen extends JDialog{
           super(frame, true);
           setTitle("Made With");
           setUndecorated(true);
-          pack();
-          createBufferStrategy(3);
           setSize(400, 460);
           setLocationRelativeTo(null);
-          setBackground(new Color(0, 0, 0, 0));
+          setBackground(back1);
           FlexPanel panel = new FlexPanel(null, back1, back3);
           panel.setPaintGradientEnabled(true);
           panel.setArc(0, 0);
@@ -175,14 +173,7 @@ public class MadeWithScreen extends JDialog{
           omegaMessage.setFont(PX14);
           omegauiLinkComp.add(omegaMessage);
      }
-     @Override
-     public void paint(Graphics g){
-          if(getBufferStrategy() == null)
-               return;
-          BufferStrategy bs = getBufferStrategy();
-          super.paint(bs.getDrawGraphics());
-          bs.show();
-     }
+     
      public void openURl(String url){
           new Thread(()->{
                try{

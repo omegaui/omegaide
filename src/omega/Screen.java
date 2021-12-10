@@ -85,6 +85,7 @@ import omega.utils.ProjectDataBase;
 import omega.utils.Editor;
 import omega.utils.UIManager;
 import omega.utils.IconManager;
+import omega.utils.SplitPanel;
 
 import omega.tabPane.TabPanel;
 
@@ -106,10 +107,10 @@ import javax.swing.JLayeredPane;
 
 import static java.awt.event.KeyEvent.*;
 public class Screen extends JFrame {
-	public JSplitPane splitPane;
-	public JSplitPane compilancePane;
-	public JSplitPane rightTabPanelSplitPane;
-	public JSplitPane bottomTabPanelSplitPane;
+	public SplitPanel splitPane;
+	public SplitPanel compilancePane;
+	public SplitPanel rightTabPanelSplitPane;
+	public SplitPanel bottomTabPanelSplitPane;
 	
 	public Editor focussedEditor;
 	
@@ -149,8 +150,7 @@ public class Screen extends JFrame {
 	private static PluginsView pluginsView;
 	private static PluginReactionManager pluginReactionManager;
 	private static TerminalComp terminal;
-	private static ThemePicker picker;
-	
+	private static ThemePicker picker;	
 	public Screen() {
 		setUndecorated(true);
 		try {
@@ -240,9 +240,9 @@ public class Screen extends JFrame {
 		operationPane = new OperationPane(this);
 		terminal = new TerminalComp();
 		
-		rightTabPanelSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		bottomTabPanelSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		rightTabPanelSplitPane = new SplitPanel(JSplitPane.HORIZONTAL_SPLIT);
+		bottomTabPanelSplitPane = new SplitPanel(JSplitPane.VERTICAL_SPLIT);
+		splitPane = new SplitPanel(JSplitPane.HORIZONTAL_SPLIT);
 		
 		rightTabPanelSplitPane.setBorder(null);
 		bottomTabPanelSplitPane.setBorder(null);
@@ -252,13 +252,14 @@ public class Screen extends JFrame {
 		UIManager.setData(rightTabPanelSplitPane);
 		UIManager.setData(bottomTabPanelSplitPane);
 		
-		compilancePane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		compilancePane = new SplitPanel(JSplitPane.VERTICAL_SPLIT);
 		compilancePane.setTopComponent(splitPane);
 		compilancePane.setBottomComponent(operationPane);
-		compilancePane.setDividerSize(2);
+//		compilancePane.setDividerSize(2);
 		compilancePane.setDividerLocation(Screen.this.getHeight() - 400);
 		add(compilancePane, BorderLayout.CENTER);
 		UIManager.setData(compilancePane);
+		
 		tabPanel = new TabPanel(this);
 		rightTabPanel = new TabPanel(this);
 		bottomTabPanel = new TabPanel(this);
@@ -296,9 +297,9 @@ public class Screen extends JFrame {
 		bottomTabPanelSplitPane.setTopComponent(rightTabPanelSplitPane);
 		bottomTabPanelSplitPane.setBottomComponent(bottomTabPanel);
 		
-		splitPane.setDividerSize(2);
-		rightTabPanelSplitPane.setDividerSize(2);
-		bottomTabPanelSplitPane.setDividerSize(2);
+//		splitPane.setDividerSize(2);
+//		rightTabPanelSplitPane.setDividerSize(2);
+//		bottomTabPanelSplitPane.setDividerSize(2);
 		
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
