@@ -83,6 +83,7 @@ public class IconManager {
      public static BufferedImage fluentarchiveImage = getFluentIcon("archive-48.png");
      public static BufferedImage fluentxmlImage = getFluentIcon("xml-transformer-48.png");
      public static BufferedImage fluentmoduleImage = getFluentIcon("module-48.png");
+     public static BufferedImage fluentbookmarkImage = getFluentIcon("bookmark-48.png");
      
      public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
      public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");

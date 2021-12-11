@@ -147,7 +147,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		englishSpellingParser.setSquiggleUnderlineColor(omega.utils.UIManager.TOOLMENU_COLOR4);
 		addParser(englishSpellingParser);
 		
-		scrollPane = new RTextScrollPane(this, true);
+		scrollPane = new RTextScrollPane(this, true, omega.utils.UIManager.glow);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
 		

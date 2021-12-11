@@ -315,7 +315,7 @@ public class LineNumberList extends AbstractGutterComponent
 		}
 		g.setColor(bg);
 		g.fillRect(0,visibleRect.y, cellWidth,visibleRect.height);
-		g.setFont(getFont());
+		g.setFont(getTextArea().getFont());
 		if (aaHints!=null) {
 			((Graphics2D)g).addRenderingHints(aaHints);
 		}
@@ -366,6 +366,10 @@ public class LineNumberList extends AbstractGutterComponent
 			while (y<visibleRect.y+visibleRect.height+ascent && line<=textArea.getLineCount()) {
 				String number = Integer.toString(line + getLineNumberingStartIndex() - 1);
 				int width = metrics.stringWidth(number);
+				if(getTextArea().getCaretLineNumber() + 1 == line + getLineNumberingStartIndex() - 1)
+					g.setColor(omega.utils.UIManager.TOOLMENU_COLOR5);
+				else
+					g.setColor(getForeground());
 				g.drawString(number, rhs-width,y);
 				y += cellHeight;
 				if (fm!=null) {

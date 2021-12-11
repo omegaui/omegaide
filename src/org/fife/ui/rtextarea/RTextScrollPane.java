@@ -88,7 +88,7 @@ public class RTextScrollPane extends JScrollPane {
 	 * @param lineNumbers Whether line numbers should be enabled.
 	 */
 	public RTextScrollPane(RTextArea textArea, boolean lineNumbers) {
-		this(textArea, lineNumbers, omega.utils.UIManager.TOOLMENU_COLOR1);
+		this(textArea, lineNumbers, omega.utils.UIManager.glow);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class RTextScrollPane extends JScrollPane {
 	 * @param lineNumbers Whether line numbers should be enabled.
 	 */
 	public RTextScrollPane(Component comp, boolean lineNumbers) {
-		this(comp, lineNumbers, omega.utils.UIManager.TOOLMENU_COLOR1);
+		this(comp, lineNumbers, omega.utils.UIManager.glow);
 	}
 
 
@@ -130,12 +130,14 @@ public class RTextScrollPane extends JScrollPane {
 		RTextArea textArea = getFirstRTextAreaDescendant(comp);
 
 		// Create the gutter for this document.
-		Font defaultFont = new Font(omega.utils.UIManager.fontName, omega.utils.UIManager.fontState, omega.utils.UIManager.fontSize);
+		Font defaultFont = new Font(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
 		gutter = new Gutter(textArea);
 		gutter.setLineNumberFont(defaultFont);
 		gutter.setLineNumberColor(lineNumberColor);
+		gutter.setBookmarkIcon(new javax.swing.ImageIcon(omega.utils.IconManager.fluentbookmarkImage.getScaledInstance(defaultFont.getSize(), defaultFont.getSize(), java.awt.image.BufferedImage.SCALE_SMOOTH)));
+		gutter.setBookmarkingEnabled(true);
 		setLineNumbersEnabled(lineNumbers);
-          setFont(defaultFont);
+      	setFont(defaultFont);
 
 		// Set miscellaneous properties.
 		setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
