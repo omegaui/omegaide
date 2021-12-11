@@ -47,7 +47,7 @@ import java.util.StringTokenizer;
 import static omega.deassembler.Assembly.*;
 import static omega.utils.UIManager.*;
 import static omega.comp.Animations.*;
-public class CodeFramework{
+public class CodeFramework {
 	private static String text;
 	public static String lCode;
 	private static int caret;
