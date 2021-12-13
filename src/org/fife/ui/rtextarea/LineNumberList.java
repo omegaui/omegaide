@@ -660,6 +660,7 @@ public class LineNumberList extends AbstractGutterComponent
 					count++;
 				} while (lineCount >= 10);
 				cellWidth += fontMetrics.charWidth('9')*(count+1) + 3;
+				cellWidth += fontMetrics.charWidth('9')*(count+1) + 3;
 			}
 		}
 
