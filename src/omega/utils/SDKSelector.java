@@ -1,19 +1,19 @@
 /**
-  * SDKSelector
-  * Copyright (C) 2021 Omega UI
+* SDKSelector
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.utils;
@@ -57,13 +57,13 @@ public class SDKSelector extends JDialog {
 		setLocationRelativeTo(f);
 		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
 		setLayout(null);
-          
+		
 		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(0, 0, 30, 30);
 		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
-          
+		
 		TextComp titleComp = new TextComp("Select JDK Version", TOOLMENU_COLOR3, TOOLMENU_COLOR3, c2, null);
 		titleComp.setBounds(30, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX14);
@@ -85,7 +85,7 @@ public class SDKSelector extends JDialog {
 					g.setColor(TOOLMENU_COLOR3);
 					g.setFont(PX14);
 					g.drawString("No JDKs found at the specified path!", getWidth()/2 - g.getFontMetrics().stringWidth("No JDKs found at the specified path!")/2,
-     					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() - 15);
+					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() - 15);
 				}
 				else{
 					super.paint(graphics);
@@ -94,9 +94,10 @@ public class SDKSelector extends JDialog {
 		};
 		scrollPane.setBounds(0, 30, getWidth(), getHeight() - 30);
 		scrollPane.setBorder(null);
-          panel.setBackground(c2);
+		panel.setBackground(c2);
 		add(scrollPane);
 	}
+	
 	private void resolvePath() {
 		boxs.forEach(box->panel.remove(box));
 		boxs.clear();
@@ -134,7 +135,7 @@ public class SDKSelector extends JDialog {
 	private String getRelease(String path) {
 		File releaseFile = new File(path + File.separator + "release");
 		if(!releaseFile.exists()) return null;
-			try{
+		try{
 			Scanner reader = new Scanner(releaseFile);
 			while(reader.hasNextLine()){
 				String s = reader.nextLine();
@@ -157,13 +158,13 @@ public class SDKSelector extends JDialog {
 	public String getSelection() {
 		return selection;
 	}
-
-     @Override
-     public void paint(Graphics g){
-     	super.paint(g);
-          scrollPane.repaint();
-     }
-     
+	
+	@Override
+	public void paint(Graphics g){
+		super.paint(g);
+		scrollPane.repaint();
+	}
+	
 	@Override
 	public void setVisible(boolean value) {
 		if(value) {

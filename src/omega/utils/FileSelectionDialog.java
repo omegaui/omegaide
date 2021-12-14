@@ -151,10 +151,7 @@ public class FileSelectionDialog extends JDialog{
                     if(path.contains("\\"))
                          currentDir = new File(path.substring(0, path.lastIndexOf('\\')));
                     else{
-                         items.forEach(panel::remove);
-                         items.clear();
-
-                         block = 0;
+                         showWindowsRoots();
                     }
                }
                if(state == 0)
@@ -291,6 +288,80 @@ public class FileSelectionDialog extends JDialog{
                     return true;
           }
           return false;
+     }
+
+     public LinkedList<File> showWindowsRoots(){
+          state = 0;
+          selections.clear();
+          items.forEach(panel::remove);
+          items.clear();
+          block = 0;
+
+          currentDir = null;
+
+          File[] F = currentDir.listRoots();
+          if(F == null || F.length == 0)
+               return selections;
+
+          LinkedList<File> files = new LinkedList<>();
+          for(File f : F)
+               files.add(f);
+
+          F = null;
+          sort(files);
+
+          Color c1 = null;
+          Color c2 = UIManager.c2;
+          Color c3 = null;
+          for(File file : files){
+               if(isExtentionAllowed(file)){
+                    if(file.isDirectory()){
+                         c1 = TOOLMENU_COLOR1_SHADE;
+                         c3 = TOOLMENU_COLOR1;
+                    }
+                    else{
+                         c1 = TOOLMENU_COLOR2_SHADE;
+                         c3 = TOOLMENU_COLOR2;
+                    }
+                    String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
+                    if(!file.isDirectory())
+                         meta = "";
+                    ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+                    if(!file.isDirectory()){
+                         comp.setOnToggle((value)->{
+                              comp.setColors(comp.color1, comp.color3, comp.color2);
+                              if(value)
+                                   selections.add(file);
+                              else
+                                   selections.remove(file);
+                         });
+                    }
+                    else
+                         comp.toggleEnabled = false;
+                    comp.setBounds(0, block, 490, 25);
+                    if(file.isDirectory()){
+                         comp.addMouseListener(new MouseAdapter(){
+                              @Override
+                              public void mousePressed(MouseEvent e){
+                                   if(file.isDirectory() && file.listFiles() != null && file.listFiles().length != 0){
+                                        currentDir = file;
+                                        selectFiles();
+                                   }
+                              }
+                         });
+                    }
+                    comp.setFont(PX14);
+                    comp.setArc(0, 0);
+                    panel.add(comp);
+                    items.add(comp);
+                    block += 25;
+               }
+          }
+          files.clear();
+          panel.setPreferredSize(new Dimension(490, block < 290 ? 290 : block));
+          triggerRepaint();
+          setVisible(true);
+          return selections;
      }
 
      public LinkedList<File> selectFiles(){
