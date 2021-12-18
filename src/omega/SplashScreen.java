@@ -13,6 +13,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.comp.Animations;
+
 import omega.utils.IconManager;
 
 import javax.swing.JFrame;
@@ -174,17 +176,18 @@ public class SplashScreen extends JFrame{
 		g.fillRect(getWidth()/2 - progress/2, getHeight() - 25, progress, 5);
 		g.drawString(ENCOURAGE, getWidth()/2 - g.getFontMetrics().stringWidth(ENCOURAGE)/2, getHeight() - 30);
 		g.setColor(PROGRESS_COLOR);
-		
-		if(x == 30) 
-			ground = false;
-		else if(x == 68) 
-			ground = true;
+
+		if(Animations.isAnimationsOn()){
+			if(x == 30) 
+				ground = false;
+			else if(x == 68) 
+				ground = true;
 			
-		if(ground) 
-			x--;
-		else
-			x++;
-		
+			if(ground) 
+				x--;
+			else
+				x++;
+		}
 		int[] X = {x, x - 15, x, x - 5, x};
 		int[] Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(X, Y, X.length);

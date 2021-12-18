@@ -18,6 +18,8 @@
 
 
 package omega.utils;
+import omega.framework.CodeFramework;
+
 import java.awt.geom.RoundRectangle2D;
 
 import omega.tree.Branch;
@@ -148,10 +150,17 @@ public class FileSelectionDialog extends JDialog{
                          currentDir = new File("/");
                }
                else if(File.pathSeparator.equals(";")){
-                    if(path.contains("\\"))
-                         currentDir = new File(path.substring(0, path.lastIndexOf('\\')));
-                    else{
-                         showWindowsRoots();
+                    if(path.contains("\\")){
+                    	if(path.endsWith(":\\")){
+                    		showWindowsRoots();
+                    		return;
+                    	}
+                    	else{
+                    		path = path.substring(0, path.lastIndexOf('\\'));
+                    		if(path.endsWith(":"))
+                    			path += "\\";
+                    		currentDir = new File(path);
+                    	}
                     }
                }
                if(state == 0)
@@ -297,15 +306,16 @@ public class FileSelectionDialog extends JDialog{
           items.clear();
           block = 0;
 
-          currentDir = null;
+          currentDir = new File("\\");
 
-          File[] F = currentDir.listRoots();
+          File[] F = File.listRoots();
           if(F == null || F.length == 0)
                return selections;
 
           LinkedList<File> files = new LinkedList<>();
-          for(File f : F)
+          for(File f : F){
                files.add(f);
+          }
 
           F = null;
           sort(files);
@@ -326,7 +336,7 @@ public class FileSelectionDialog extends JDialog{
                     String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
                     if(!file.isDirectory())
                          meta = "";
-                    ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+                    ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.toString() + meta, c1, c2, c3, false);
                     if(!file.isDirectory()){
                          comp.setOnToggle((value)->{
                               comp.setColors(comp.color1, comp.color3, comp.color2);

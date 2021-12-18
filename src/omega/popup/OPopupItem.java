@@ -17,6 +17,8 @@
 */
 
 package omega.popup;
+import omega.comp.Animations;
+
 import java.util.LinkedList;
 
 import java.awt.Graphics;
@@ -92,7 +94,7 @@ public class OPopupItem extends JComponent{
 	}
 
 	public void playEnterAnimation(){
-		if(image == null)
+		if(image == null|| !Animations.isAnimationsOn())
 			return;
 		new Thread(()->{
 			if(images.isEmpty())

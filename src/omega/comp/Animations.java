@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class Animations {
+	public static volatile boolean animationsOn = true;
+	
 	public static final String ANIMATION_STATE = "Animation Running";
 	
 	public static final int ACTION_MOUSE_ENTERED = 0;
@@ -20,6 +22,14 @@ public class Animations {
 	public static final int ACTION_MOUSE_DOUBLE_CLICKED = 4;
 
 	public static final LinkedList<TextComp> comps = new LinkedList<>();
+
+	public static boolean isAnimationsOn() {
+		return animationsOn;
+	}
+	
+	public static void setAnimationsOn(boolean animationsOn) {
+		Animations.animationsOn = animationsOn;
+	}
 	
 	public static void prepareTextComp(TextComp comp){
 		comp.map.put(ANIMATION_STATE, false);
@@ -32,6 +42,8 @@ public class Animations {
 	}
 
 	public synchronized static void animateAll(long delay){
+		if(!isAnimationsOn())
+			return;
 		new Thread(()->{
 			try{
 				Thread.sleep(delay);
@@ -53,6 +65,8 @@ public class Animations {
 			comp.addMouseListener(new MouseAdapter(){
 				@Override
 				public void mouseEntered(MouseEvent e){
+					if(!isAnimationsOn())
+						return;
 					layer.animate(comp);
 				}
 			});
@@ -61,6 +75,8 @@ public class Animations {
 			comp.addMouseListener(new MouseAdapter(){
 				@Override
 				public void mouseExited(MouseEvent e){
+					if(!isAnimationsOn())
+						return;
 					layer.animate(comp);
 				}
 			});
@@ -69,6 +85,8 @@ public class Animations {
 			comp.addMouseListener(new MouseAdapter(){
 				@Override
 				public void mousePressed(MouseEvent e){
+					if(!isAnimationsOn())
+						return;
 					layer.animate(comp);
 				}
 			});
@@ -77,6 +95,8 @@ public class Animations {
 			comp.addMouseListener(new MouseAdapter(){
 				@Override
 				public void mouseExited(MouseEvent e){
+					if(!isAnimationsOn())
+						return;
 					if(e.getClickCount() == 1)
 						layer.animate(comp);
 				}
@@ -86,6 +106,8 @@ public class Animations {
 			comp.addMouseListener(new MouseAdapter(){
 				@Override
 				public void mouseExited(MouseEvent e){
+					if(!isAnimationsOn())
+						return;
 					if(e.getClickCount() == 2)
 						layer.animate(comp);
 				}
@@ -95,6 +117,8 @@ public class Animations {
 	
 	public static AnimationLayer getLineAnimationLayer(int rate) {
 		return (comp)->{
+			if(!isAnimationsOn())
+				return;
 			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
 			if(animationRunning)
 				return;
@@ -136,6 +160,8 @@ public class Animations {
 
 	public static AnimationLayer getImageBoxAnimationLayer(int rate){
 		return (comp)->{
+			if(!isAnimationsOn())
+				return;
 			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
 			if(animationRunning || !comp.isDrawingImage())
 				return;
@@ -199,6 +225,8 @@ public class Animations {
 		return new ImageSizeTransitionAnimationLayer(){
 			@Override
 			public void animate(TextComp comp){
+				if(!isAnimationsOn())
+					return;
 				boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
 				if(animationRunning || !comp.isDrawingImage())
 					return;
@@ -238,6 +266,8 @@ public class Animations {
 	
 	public static AnimationLayer getImageFrameAnimationLayer(int rate, LinkedList<BufferedImage> images){
 		return (comp)->{
+			if(!isAnimationsOn())
+				return;
 			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
 			if(animationRunning || !comp.isDrawingImage() || images == null || images.isEmpty())
 				return;

@@ -414,7 +414,7 @@ public class JavaSyntaxParser {
 	public static String convertToProjectPath(String buildSpacePath){
 		if(!buildSpacePath.startsWith(BUILDSPACE_DIR.getAbsolutePath()))
 			return buildSpacePath;
-		String path = Screen.getFileView().getProjectPath();
+		String path = Screen.getFileView().getProjectPath() + (Screen.onWindows() ? File.separator : "");
 		buildSpacePath = buildSpacePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + (Screen.onWindows() ? 1 : 0));
 		return path + buildSpacePath;
 	}

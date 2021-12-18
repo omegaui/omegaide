@@ -150,10 +150,11 @@ public class Screen extends JFrame {
 	private static PluginsView pluginsView;
 	private static PluginReactionManager pluginReactionManager;
 	private static TerminalComp terminal;
-	private static ThemePicker picker;	
+	private static ThemePicker picker;
 	public Screen() {
 		setUndecorated(true);
 		try {
+			omega.comp.Animations.setAnimationsOn(!onWindows());
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
 				PATH_SEPARATOR = ";";

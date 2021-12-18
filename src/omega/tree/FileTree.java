@@ -333,6 +333,18 @@ public class FileTree extends JComponent{
 		return files;
 	}
 	
+	public synchronized static void loadFilesIncludeSubDirectories(LinkedList<File> files, File file, String ext){
+		if(file == null)
+			return;
+		File[] F = file.listFiles();
+		for(File f : F){
+			if(f.isDirectory())
+				loadFilesIncludeSubDirectories(files, f, ext);
+			else if(f.getName().endsWith(ext))
+				files.add(f);
+		}
+	}
+	
 	public static synchronized void sort(LinkedList<File> files){
 		try{
 			final LinkedList<File> tempFiles = new LinkedList<>();

@@ -17,6 +17,7 @@
 */
 
 package omega.utils.systems;
+import omega.tree.FileTree;
 
 import omega.token.factory.ShellTokenMaker;
 
@@ -436,26 +437,15 @@ public class RunView extends View {
 				getScreen().getToolMenu().runComp.setClickable(true);
 			}
 			catch(Exception e) {
-				
 				e.printStackTrace();
 			}
 		}).start();
 	}
 	
 	public boolean isRunCapable(File dir){
-		boolean value = false;
-		File[] F = dir.listFiles();
-		if(F != null && F.length != 0){
-			for(File f : F){
-				if(f.isDirectory())
-					value = isRunCapable(f);
-				else if(f.getName().endsWith(".class")){
-					value = true;
-					break;
-				}
-			}
-		}
-		return value;
+		LinkedList<File> byteCodes = new LinkedList<>();
+		FileTree.loadFilesIncludeSubDirectories(byteCodes, dir, ".class");
+		return !byteCodes.isEmpty();
 	}
 	
 	public void instantBuild(){
@@ -585,7 +575,7 @@ public class RunView extends View {
 				}
 				
 				boolean passed = true;
-				if(diagnostics.getDiagnostics() != null){
+				if(diagnostics.getDiagnostics() != null || !diagnostics.getDiagnostics().isEmpty()){
 					for(Diagnostic d : diagnostics.getDiagnostics()){
 						if(d.getKind() == Diagnostic.Kind.ERROR){
 							passed = false;
@@ -602,6 +592,7 @@ public class RunView extends View {
 					for(Diagnostic d : diagnostics.getDiagnostics()){
 						errorLog += d.toString() + "\n";
 					}
+					
 					Screen.getErrorHighlighter().loadErrors(errorLog);
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
