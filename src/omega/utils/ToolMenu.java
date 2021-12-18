@@ -790,6 +790,9 @@ public class ToolMenu extends JPanel {
 			DataManager.setHintFont(font);
 		})
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new omega.utils.WorkspaceSelector(screen).setVisible(true))
+		.createItem("Animations", IconManager.settingsImage, ()->{
+			Screen.showAnimationsDialog();
+		})
 		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
 			consoleSelector.setVisible(true);
 		})

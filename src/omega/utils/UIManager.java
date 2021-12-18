@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import omega.comp.Animations;
+
 import omega.Screen;
 
 import java.io.File;
@@ -37,6 +39,11 @@ import omega.database.DataEntry;
 */
 
 public class UIManager extends DataBase {
+	
+	/**
+	* The field carrying the default font name which was registered in omega.Screen
+	*/
+	public static volatile boolean animationsActive = true;
 	
 	/**
 	* The field carrying the default font name which was registered in omega.Screen
@@ -121,6 +128,7 @@ public class UIManager extends DataBase {
 	public static final Font PX18 = new Font(fontName, Font.BOLD, 18);
 	public static final Font PX20 = new Font(fontName, Font.BOLD, 20);
 	public static final Font PX22 = new Font(fontName, Font.BOLD, 22);
+	public static final Font PX24 = new Font(fontName, Font.BOLD, 24);
 	public static final Font PX26 = new Font(fontName, Font.BOLD, 26);
 	public static final Font PX28 = new Font(fontName, Font.BOLD, 28);
 	public static final Font PX36 = new Font(fontName, Font.BOLD, 36);
@@ -154,6 +162,7 @@ public class UIManager extends DataBase {
 			setFontName(e.getValue());
 			setFontSize(getEntryAt("Font", 1).getValueAsInt());
 			setFontState(getEntryAt("Font", 2).getValueAsInt());
+			setAnimationsActive(getEntryAt("Animations On", 0).getValueAsBoolean());
 			if(!isDarkMode()) {
 				c3 = color4;
 				c1 = new Color(0, 0, 255, 40);
@@ -212,9 +221,10 @@ public class UIManager extends DataBase {
 	@Override
 	public void save() {
 		clear();
+		addEntry("Animations On", animationsActive + "");
 		addEntry("Font", fontName);
 		addEntry("Font", fontSize + "");
-		addEntry("Font", fontState+ "");
+		addEntry("Font", fontState + "");
 		super.save();
 	}
 	
@@ -253,4 +263,14 @@ public class UIManager extends DataBase {
 	public static void setFontState(int fontState) {
 		UIManager.fontState = fontState;
 	}
+
+	public static boolean isAnimationsActive() {
+		return animationsActive;
+	}
+	
+	public static void setAnimationsActive(boolean animationsActive) {
+		UIManager.animationsActive = animationsActive;
+		Animations.setAnimationsOn(animationsActive);
+	}
+	
 }

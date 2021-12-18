@@ -86,6 +86,7 @@ import omega.utils.Editor;
 import omega.utils.UIManager;
 import omega.utils.IconManager;
 import omega.utils.SplitPanel;
+import omega.utils.AnimationsDialog;
 
 import omega.tabPane.TabPanel;
 
@@ -151,10 +152,12 @@ public class Screen extends JFrame {
 	private static PluginReactionManager pluginReactionManager;
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
+	private static AnimationsDialog animationsDialog;
 	public Screen() {
 		setUndecorated(true);
 		try {
-			omega.comp.Animations.setAnimationsOn(!onWindows());
+			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
+			
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
 				PATH_SEPARATOR = ";";
@@ -204,17 +207,12 @@ public class Screen extends JFrame {
 		UIManager.loadHighlight();
 		UIManager.setData(this);
 		
+		animationsDialog = new AnimationsDialog(this);
+		
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
 		Generator.init(this);
 		splash.setProgress(37, "welcome");
-		
-		try{
-			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
 		
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
@@ -549,7 +547,7 @@ public class Screen extends JFrame {
 		if(isFileOpened(file))
 			return null;
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
-		Editor editor = new Editor(this);
+		Editor editor = new Editor(this);		
 		editor.loadFile(file);
 		rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
 		return editor;
@@ -727,6 +725,10 @@ public class Screen extends JFrame {
 		picker.loadImage(defaultTheme + ".png");
 		picker.manageTheme();
 		picker.setVisible(true);
+	}
+
+	public static void showAnimationsDialog(){
+		animationsDialog.setVisible(true);
 	}
 	
 	public ToolMenu getToolMenu() {

@@ -217,7 +217,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		
 		keyStrokeListener.putKeyStroke((e)->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F);
 		keyStrokeListener.putKeyStroke((e)->saveCurrentFile(), VK_CONTROL, VK_S).setStopKeys(VK_SHIFT);
-		keyStrokeListener.putKeyStroke((e)->javaJumpToDefinitionPanel.setVisible(true), VK_CONTROL, VK_J);
+		keyStrokeListener.putKeyStroke((e)->{javaJumpToDefinitionPanel.setVisible(true);e.consume();}, VK_CONTROL, VK_J);
 		keyStrokeListener.putKeyStroke((e)->doDuplicate(e), VK_CONTROL, VK_D).setStopKeys(VK_SHIFT);
 		
 		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_EQUALS).setStopKeys(VK_T);

@@ -218,6 +218,8 @@ public class Branch extends JComponent{
 	}
 	
 	public synchronized void playEnterAnimation(){
+		if(!isAnimationsOn())
+			return;
 		new Thread(()->{
 			if(images.isEmpty())
 				prepareAnimationImages();

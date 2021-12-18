@@ -27,6 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import omega.comp.TextComp;
+import omega.comp.SwitchComp;
 
 import java.awt.image.BufferedImage;
 
@@ -57,6 +58,7 @@ public class ThemePicker extends JDialog {
 	private TextComp titleComp;
 	private TextComp lightComp;
 	private TextComp darkComp;
+	
 	public boolean lightMode = true;
 	
 	public ThemePicker(Screen screen){
