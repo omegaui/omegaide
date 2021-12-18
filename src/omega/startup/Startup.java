@@ -1,5 +1,5 @@
 /**
-* Checks for license agreement and IDE resources.
+* Checks for license agreement and Writes IDE resources.
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify
@@ -81,6 +81,7 @@ public class Startup extends JDialog {
 		init();
 		setVisible(true);
 	}
+	
 	public void init(){
 		closeBtn = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
 		closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
@@ -149,6 +150,7 @@ public class Startup extends JDialog {
 			new Startup(screen).repaint();
 		}
 	}
+	
 	public static void writeUIFiles(){
 		File f = new File(".omega-ide");
 		if(!f.exists()){
@@ -185,6 +187,7 @@ public class Startup extends JDialog {
 		f = new File(".omega-ide" + File.separator + ".generated-pty-native-libs");
 		if(!f.exists()){
 			System.out.println("Writing Native Files for Terminal Emulation ...");
+			System.out.println("It's a one time process!");
 			
 			loadDefaultFile("linux" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86/libpty.so");
 			loadDefaultFile("linux" + File.separator + "x86_64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86_64/libpty.so");
@@ -192,14 +195,22 @@ public class Startup extends JDialog {
 			loadDefaultFile("macosx" + File.separator + "x86_64" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/macosx/x86_64/libpty.dylib");
 			loadDefaultFile("x86" + File.separator + "libwinpty.dll", ".omega-ide/pty4j-libs/x86/libwinpty.dll");
 			loadDefaultFile("x86" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/x86/winpty-agent.exe");
+			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty.dll", ".omega-ide/pty4j-libs/win/x86_64/winpty.dll");
+			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-agent.exe");
+			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-debugserver.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-debugserver.exe");
 			
-			System.out.println("Writing Native Files for Terminal Emulation ... Done!");
+			System.out.println("Writing Native Library for Terminal Emulation ... Done!");
 
 			try{
 				f.createNewFile();
 			}
 			catch(Exception e){
-				e.printStackTrace();
+				System.err.println("An Exception occured in generating the \".generated-pty-native-libs\" file.");
+				System.err.println("This usually means that you are running the IDE in a non-owned directory");
+				System.err.println("due to this the system denied permission for creating the file, ");
+				System.err.println("try running the IDE in an owned directory (like your home folder). If still this exception is occuring then, ");
+				System.err.println("Please Open an issue with this log message on https://github.com/omegaui/omegaide");
+				System.err.println(e);
 			}
 			System.out.println("Launching...");
 		}
