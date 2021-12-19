@@ -265,6 +265,9 @@ public class TabPanel extends JPanel{
 		tabHolders.remove(names.indexOf(name));
 		names.remove(name);
 		removeAction.run();
+		if(tabPane.getTabCount() == 0){
+			ToolMenu.pathBox.setPath(null);
+		}
 	}
 	
 	public void closeAllTabs() {
