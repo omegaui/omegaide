@@ -1048,6 +1048,13 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 	 */
 	public Color getBackgroundForToken(Token token) {
 		Color c = null;
+		
+		if(omega.instant.support.BasicCodeHighlighter.canComputeBackground(this, token)){
+			c = omega.instant.support.BasicCodeHighlighter.computeBackgroundColor(token);
+			if(c != null)
+				return c;
+		}
+		
 		if (getHighlightSecondaryLanguages()) {
 			// 1-indexed, since 0 == main language.
 			int languageIndex = token.getLanguageIndex() - 1;
@@ -1225,9 +1232,11 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 				(t.isHyperlink() || linkGeneratorResult!=null)) {
 			return hyperlinkFG;
 		}
-//		if(omega.instant.support.BasicCodeHighlighter.isComputable(t)){
-//			return omega.instant.support.BasicCodeHighlighter.computeColor(t);
-//		}
+		if(omega.instant.support.BasicCodeHighlighter.canComputeForeground(this, t)){
+			Color c = omega.instant.support.BasicCodeHighlighter.computeForegroundColor(t);
+			if(c != null)
+				return c;
+		}
 		return getForegroundForTokenType(t.getType());
 	}
 

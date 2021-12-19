@@ -1,54 +1,120 @@
 /**
-* Return the suitable color for some token types
+* Return the suitable color for some target tokens
+* Copyright (C) 2021 Omega UI
+
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.instant.support;
-import omega.jdk.JDKManager;
-
 import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import java.awt.Color;
 
 import static omega.utils.UIManager.*;
 public class BasicCodeHighlighter {
 	
-	public static Color varColor = Color.decode("#486d71");
-	public static Color classColor = Color.decode("#8d8b60");
-	public static Color sourceClassColor = Color.decode("#71935c");
-	public static Color operatorColor = Color.decode("#83605f");
-	public static Color constantColor = Color.decode("#FFCD22");
+	public static Color valueKeyColor;
+	public static Color returnKeyColor;
+	public static Color javaConstantColor;
 	
-	public static synchronized boolean isComputable(Token t){
-		return t.getType() != Token.RESERVED_WORD && t.getType() != Token.RESERVED_WORD_2 && (
-			switch(t.getType()){
-				case Token.IDENTIFIER:
-				case Token.OPERATOR:
-					yield true;
-				default:
-					yield false;
-			}
-		);
+	public static Color valueKeyForeColor = glow;
+	public static Color returnKeyForeColor = glow;
+	public static Color javaConstantForeColor = glow;
+	static{
+		valueKeyColor = TOOLMENU_COLOR2_SHADE;
+		valueKeyForeColor = TOOLMENU_COLOR2;
+		
+		returnKeyColor = TOOLMENU_COLOR3_SHADE;
+		returnKeyForeColor = TOOLMENU_COLOR3;
+		
+		javaConstantColor = TOOLMENU_COLOR1_SHADE;
+		javaConstantForeColor = TOOLMENU_COLOR1;
 	}
 	
-	public static synchronized Color computeColor(Token t){
+	public static synchronized boolean canComputeBackground(RSyntaxTextArea textArea, Token t){
+		return textArea.getSyntaxEditingStyle() == textArea.SYNTAX_STYLE_JAVA
+		&& switch(t.getType()){
+			case Token.RESERVED_WORD:
+			case Token.RESERVED_WORD_2:
+			case Token.LITERAL_BOOLEAN:
+			case Token.IDENTIFIER:
+				yield true;
+			default:
+				yield false;
+		};
+	}
+	
+	public static synchronized boolean canComputeForeground(RSyntaxTextArea textArea, Token t){
+		return textArea.getSyntaxEditingStyle() == textArea.SYNTAX_STYLE_JAVA
+		&& switch(t.getType()){
+			case Token.RESERVED_WORD:
+			case Token.RESERVED_WORD_2:
+			case Token.LITERAL_BOOLEAN:
+			case Token.IDENTIFIER:
+				yield true;
+			default:
+				yield false;
+		};
+	}
+	
+	public static synchronized Color computeForegroundColor(Token t){
 		String text = t.getLexeme();
-		if(Character.isLowerCase(text.charAt(0)))
-			return varColor;
-		if(Character.isUpperCase(text.charAt(0))){
-			if(JDKManager.isSourceClass(text))
-				return sourceClassColor;
-			boolean isConstant = true;
-			for(int i = 1; i < text.length(); i++){
-				if(Character.isLetter(text.charAt(i)) && !Character.isUpperCase(text.charAt(i))){
-					isConstant = false;
-				}
-			}
-			if(isConstant)
-				return constantColor;
-			return classColor;
+		if(isValueKeyword(text)){
+			return valueKeyForeColor;
 		}
-		if(t.getType() == Token.OPERATOR || t.getType() == Token.SEPARATOR)
-			return operatorColor;
-		return glow;
+		else if(isReturnKeyword(text)){
+			return returnKeyForeColor;
+		}
+		else if(isJavaConstant(text)){
+			return javaConstantForeColor;
+		}
+		return null;
+	}
+	
+	public static synchronized Color computeBackgroundColor(Token t){
+		String text = t.getLexeme();
+		if(isValueKeyword(text)){
+			return valueKeyColor;
+		}
+		else if(isReturnKeyword(text)){
+			return returnKeyColor;
+		}
+		else if(isJavaConstant(text)){
+			return javaConstantColor;
+		}
+		return null;
+	}
+	
+	public static synchronized boolean isValueKeyword(String text){
+		return text.equals("null") || text.equals("true") || text.equals("false");
+	}
+	
+	public static synchronized boolean isReturnKeyword(String text){
+		return text.equals("yield") || text.equals("return");
+	}
+	
+	public static synchronized boolean isJavaConstant(String text){
+		boolean containsLetter = false;
+		for(int i = 0; i < text.length(); i++){
+			char ch = text.charAt(i);
+			if(Character.isLetter(ch)){
+				containsLetter = true;
+				if(Character.isLowerCase(ch))
+					return false;
+			}
+		}
+		return containsLetter;
 	}
 }
