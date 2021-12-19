@@ -332,7 +332,7 @@ public class RunView extends View {
 				
 				if(!NATIVE_PATH.equals("")) {
 					NATIVE_PATH = NATIVE_PATH.substring(0, NATIVE_PATH.length() - 1);
-					NATIVE_PATH = NATIVE_PATH + omega.Screen.PATH_SEPARATOR + "$PATH";
+					NATIVE_PATH += omega.Screen.PATH_SEPARATOR + "$PATH";
 				}
 				else
 					NATIVE_PATH = "$PATH";
@@ -345,7 +345,6 @@ public class RunView extends View {
 				if(!depenPath.equals("")) {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
-				
 				
 				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
 				if(Screen.getFileView().getProjectManager().jdkPath == null){
@@ -413,7 +412,7 @@ public class RunView extends View {
 				String name = "Run("+mainClass;
 				int count = OperationPane.count(name);
 				if(count > -1)
-					name = name + " " + count;
+					name += " " + count;
 				name =  name + ")";
 				
 				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
@@ -780,7 +779,7 @@ public class RunView extends View {
 				}
 				if(!NATIVE_PATH.equals("")) {
 					NATIVE_PATH = NATIVE_PATH.substring(0, NATIVE_PATH.length() - 1);
-					NATIVE_PATH = NATIVE_PATH + omega.Screen.PATH_SEPARATOR + "$PATH";
+					NATIVE_PATH += omega.Screen.PATH_SEPARATOR + "$PATH";
 				}
 				else
 					NATIVE_PATH = "$PATH";
@@ -857,7 +856,7 @@ public class RunView extends View {
 				String name = "Run("+mainClass;
 				int count = OperationPane.count(name);
 				if(count > -1) {
-					name = name + " " + count;
+					name += " " + count;
 				}
 				name =  name + ")";
 				
