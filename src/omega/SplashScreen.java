@@ -88,7 +88,6 @@ public class SplashScreen extends JFrame{
 			@Override
 			public void mousePressed(MouseEvent e){
 				render();
-				paint(getGraphics());
 				mouseX = e.getX();
 				mouseY = e.getY();
 			}
@@ -111,8 +110,6 @@ public class SplashScreen extends JFrame{
 			long lastTime = System.nanoTime();
 			double ns = 1000000000 / 30;
 			double delta = 0;
-			int updates = 0;
-			int frames = 0;
 			long timer = System.currentTimeMillis();
 			long now = 0;
 			while(progress < 100 && isVisible()){
@@ -121,25 +118,18 @@ public class SplashScreen extends JFrame{
 				lastTime = now;
 				if(delta >= 1){
 					render();
-					paint(getGraphics());
 					
-					updates++;
 					delta--;
 				}
-				
-				frames++;
 	
 				if(System.currentTimeMillis() - timer > 1000){
 					timer += 1000;
-					updates = 0;
-					frames = 0;
 				}
 			}
 			dispose();
 		}).start();
 	}
 	public void render(){
-		setBackground(Screen.onWindows() ? BACK_COLOR : ALPHA);
 		BufferStrategy bs = getBufferStrategy();
 		if(bs == null){
 			createBufferStrategy(3);
@@ -188,12 +178,14 @@ public class SplashScreen extends JFrame{
 			else
 				x++;
 		}
+		
 		int[] X = {x, x - 15, x, x - 5, x};
 		int[] Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(X, Y, X.length);
 		int[] _X = {getWidth() - x - 1, getWidth() - x - 15 - 1 + 20, getWidth() - x - 1, getWidth() - x + 15 - 1, getWidth() - x - 1};
 		int[] _Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(_X, _Y, X.length);
+			
 		g.setColor(BACK_COLOR);
 		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
