@@ -126,7 +126,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public JavaErrorPanel javaErrorPanel;
 	
 	public JavaJumpToDefinitionPanel javaJumpToDefinitionPanel;
-	
+
+	public SearchContext lastSearchContext;
 	
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
 	
@@ -206,6 +207,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addFocusListener(this);
+		
+		addCaretListener((e)->findSelection());
 
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CREATED, this, currentFile));
 	}
@@ -217,7 +220,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		
 		keyStrokeListener.putKeyStroke((e)->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F);
 		keyStrokeListener.putKeyStroke((e)->saveCurrentFile(), VK_CONTROL, VK_S).setStopKeys(VK_SHIFT);
-		keyStrokeListener.putKeyStroke((e)->{javaJumpToDefinitionPanel.setVisible(true);e.consume();}, VK_CONTROL, VK_J);
 		keyStrokeListener.putKeyStroke((e)->doDuplicate(e), VK_CONTROL, VK_D).setStopKeys(VK_SHIFT);
 		
 		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_EQUALS).setStopKeys(VK_T);
@@ -245,6 +247,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			keyStrokeListener.putKeyStroke((e)->showGSDialog(e), VK_CONTROL, VK_SHIFT, VK_G).useAutoReset();
 			keyStrokeListener.putKeyStroke((e)->showIODialog(e), VK_CONTROL, VK_SHIFT, VK_I).useAutoReset();
 			keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
+			keyStrokeListener.putKeyStroke((e)->{javaJumpToDefinitionPanel.setVisible(true);e.consume();}, VK_CONTROL, VK_J);
 		}
 	}
 	
@@ -798,6 +801,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 		e.consume();
 	}
+
+	public void findSelection(){
+		String text = getSelectedText();
+		if(text != null && text.length() > 0){
+			lastSearchContext = new SearchContext(text, true);
+			lastSearchContext.setWholeWord(true);
+			searchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
+		}
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {		
@@ -936,13 +948,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	
 	public class FindAndReplace extends JComponent{
-		private ReplaceToolBar replaceToolBar;
+		public ReplaceToolBar replaceToolBar;
 		public FindAndReplace(){
 			setLayout(new BorderLayout());
 			setPreferredSize(new Dimension(400, 60));
 			replaceToolBar = new ReplaceToolBar(Editor.this);
 			add(replaceToolBar, BorderLayout.CENTER);
 			setVisible(false);
+			
 		}
 		@Override
 		public void setVisible(boolean value){
@@ -991,23 +1004,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		switch (type) {
 			default:
 			case MARK_ALL:
-			result = SearchEngine.markAll(this, context);
-			break;
+				result = SearchEngine.markAll(this, context);
+				break;
 			case FIND:
-			result = SearchEngine.find(this, context);
-			if (!result.wasFound() || result.isWrapped()) {
-				javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
-			}
-			break;
+				result = SearchEngine.find(this, context);
+				if (!result.wasFound() || result.isWrapped()) {
+					javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
+				}
+				break;
 			case REPLACE:
-			result = SearchEngine.replace(this, context);
-			if (!result.wasFound() || result.isWrapped()) {
-				javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
-			}
-			break;
+				result = SearchEngine.replace(this, context);
+				if (!result.wasFound() || result.isWrapped()) {
+					javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
+				}
+				break;
 			case REPLACE_ALL:
-			result = SearchEngine.replaceAll(this, context);
-			break;
+				result = SearchEngine.replaceAll(this, context);
+				break;
 		}
 		String text;
 		if (result.wasFound()) {
@@ -1044,6 +1057,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		contentWindow.setVisible(false);
 		javaJumpToDefinitionPanel.setVisible(false);
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
+		if(lastSearchContext != null){
+			lastSearchContext.setMarkAll(false);
+			fAndR.replaceToolBar.fireSearchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
+			lastSearchContext = null;
+		}
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {

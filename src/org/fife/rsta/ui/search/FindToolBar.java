@@ -241,7 +241,6 @@ public class FindToolBar extends JPanel {
 		findButton.setActionCommand("FindNext");
 		findButton.addActionListener(listener);
 		findButton.setEnabled(false);
-		
 	}
 	
 	
@@ -250,7 +249,7 @@ public class FindToolBar extends JPanel {
 	*
 	* @param delay If the delay should be honored.
 	*/
-	protected void doMarkAll(boolean delay) {
+	public void doMarkAll(boolean delay) {
 		if (context.getMarkAll() && !settingFindTextFromEvent) {
 			if (delay) {
 				markAllTimer.restart();
@@ -275,7 +274,7 @@ public class FindToolBar extends JPanel {
 	/**
 	* Fires a "mark all" search event.
 	*/
-	private void fireMarkAllEvent() {
+	public void fireMarkAllEvent() {
 		SearchEvent se = new SearchEvent(this, SearchEvent.Type.MARK_ALL,
 		context);
 		fireSearchEvent(se);
@@ -290,7 +289,7 @@ public class FindToolBar extends JPanel {
 	* @param e The <code>ActionEvent</code> object coming from a
 	*        child component.
 	*/
-	protected void fireSearchEvent(SearchEvent e) {
+	public void fireSearchEvent(SearchEvent e) {
 		// Process the listeners last to first, notifying
 		// those that are interested in this event
 		SearchListener[] listeners = listenerList.
@@ -761,8 +760,7 @@ public class FindToolBar extends JPanel {
 					}
 				}
 				else { // Replace field's document
-					JTextComponent replaceField = UIUtil.getTextComponent(
-					replaceCombo);
+					JTextComponent replaceField = UIUtil.getTextComponent(replaceCombo);
 					context.setReplaceWith(replaceField.getText());
 					// Don't re-fire "mark all" events for "replace" text edits
 				}
