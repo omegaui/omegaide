@@ -804,7 +804,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public void findSelection(){
 		String text = getSelectedText();
-		if(text != null && text.length() > 0){
+		if(text != null && text.trim().length() > 0 && !text.contains("\n")){
 			lastSearchContext = new SearchContext(text, true);
 			lastSearchContext.setWholeWord(true);
 			searchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
