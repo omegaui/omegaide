@@ -88,7 +88,7 @@ public class Branch extends JComponent{
 		this.name = file.getName();
 		this.expand = file.isDirectory();
 		
-		this.icon = file.getName().endsWith(".java") ? IconManager.fluentfileImage : getPreferredImage(file);
+		this.icon = file.getName().endsWith(".java") ? IconManager.fluentsourcefileImage : getPreferredImage(file);
 		this.originalIcon = icon;
 		Image iconX = this.icon.getScaledInstance(IMAGE_SIZE, IMAGE_SIZE, Image.SCALE_SMOOTH);
 		this.icon = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_ARGB);

@@ -35,6 +35,7 @@ public class IconManager {
 	//Fluent Icon Pack
 	public static BufferedImage fluentfolderImage = getFluentIcon("program-50.png");
 	public static BufferedImage fluentfileImage = getFluentIcon("code-file-50.png");
+	public static BufferedImage fluentsourcefileImage = getFluentIcon("source-code-set-96.png");
 	public static BufferedImage fluentnewfolderImage = getFluentIcon("add-folder-50.png");
 	public static BufferedImage fluentnewfileImage = getFluentIcon("add-file-50.png");
 	public static BufferedImage fluentconsoleImage = getFluentIcon("console-50.png");
@@ -48,9 +49,9 @@ public class IconManager {
 	public static BufferedImage fluentrunImage = getFluentIcon("play-50.png");
 	public static BufferedImage fluentbuildImage = getFluentIcon("hammer-50.png");
 	public static BufferedImage fluentpackageImage = getFluentIcon("box-64.png");
-	public static BufferedImage fluentstructureImage = getFluentIcon("unit-50.png");
+	public static BufferedImage fluentstructureImage = getFluentIcon("structure-96.png");
 	public static BufferedImage fluentsearchImage = getFluentIcon("inspect-code-50.png");
-	public static BufferedImage fluentprojectstructureImage = getFluentIcon("goto-50.png");
+	public static BufferedImage fluentprojectstructureImage = getFluentIcon("file-explorer-96.png");
 	public static BufferedImage fluentcloseImage = getFluentIcon("close-window-50.png");
 	public static BufferedImage fluentclearSymbolImage = getFluentIcon("clear-symbol-48.png");
 	public static BufferedImage fluentskipImage = getFluentIcon("skip-48.png");
@@ -58,8 +59,8 @@ public class IconManager {
 	public static BufferedImage fluentsettingsImage = getFluentIcon("gear-50.png");
 	public static BufferedImage fluentresourceImage = getFluentIcon("natural-food-48.png");
 	public static BufferedImage fluentoutImage = getFluentIcon("out-48.png");
-	public static BufferedImage fluentanyfileImage = getFluentIcon("file-50.png");
-	public static BufferedImage fluentimagefileImage = getFluentIcon("image-file-50.png");
+	public static BufferedImage fluentanyfileImage = getFluentIcon("file-64.png");
+	public static BufferedImage fluentimagefileImage = getFluentIcon("panorama-96.png");
 	public static BufferedImage fluentsadImage = getFluentIcon("sad-48.png");
 	public static BufferedImage fluentdemonImage = getFluentIcon("demon-48.png");
 	public static BufferedImage fluentpoisonImage = getFluentIcon("poison-48.png");
@@ -69,11 +70,11 @@ public class IconManager {
 	public static BufferedImage fluenterrorImage = getFluentIcon("error-30.png");
 	public static BufferedImage fluentlevelupImage = getFluentIcon("up-3-50.png");
 	public static BufferedImage fluentplainfolderImage = getFluentIcon("folder-50.png");
-	public static BufferedImage fluenthomeImage = getFluentIcon("person-at-home-50.png");
+	public static BufferedImage fluenthomeImage = getFluentIcon("home-folder-48.png");
 	public static BufferedImage fluentwebImage = getFluentIcon("web-shield-50.png");
 	public static BufferedImage fluentwindowsImage = getFluentIcon("windows-10-50.png");
 	public static BufferedImage fluentlinuxImage = getFluentIcon("penguin-50.png");
-	public static BufferedImage fluentshellImage = getFluentIcon("snail-50.png");
+	public static BufferedImage fluentshellImage = getFluentIcon("run-command-96.png");
 	public static BufferedImage fluentmacImage = getFluentIcon("apple-logo-50.png");
 	public static BufferedImage fluentgradleImage = getFluentIcon("elephant-50.png");
 	public static BufferedImage fluentsourceImage = getFluentIcon("source-code-50.png");

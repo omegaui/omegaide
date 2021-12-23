@@ -28,9 +28,11 @@ import java.awt.image.BufferedImage;
 import static omega.comp.Animations.*;
 public class ToggleComp extends TextComp {
 	
-	private volatile boolean state = false;
 	private ToggleListener toggleListener = (value)->{};
-	public boolean toggleEnabled = true;
+	
+	private volatile boolean state = false;
+	public volatile boolean toggleEnabled = true;
+	
 	private BufferedImage image;
 	private int w;
 	private int h;
@@ -106,7 +108,7 @@ public class ToggleComp extends TextComp {
 			g.fillRoundRect(2, 2, getHeight() - 4, getHeight() - 4, arcX, arcY);
 		}
 		if(image != null){
-			g.drawImage(image, getHeight()/2 - w/2, getHeight()/2 - h/2, w, h, this);
+			g.drawImage(image.getScaledInstance(w, h, BufferedImage.SCALE_SMOOTH), getHeight()/2 - w/2, getHeight()/2 - h/2, w, h, this);
 		}
 		if(state){
 			g.fillRect(alignX, getHeight() - 2, g.getFontMetrics().stringWidth(getText()), 2);
