@@ -1,14 +1,20 @@
 >JDK Path
 -/usr/lib/jvm/jdk-17
->Compile_Time
--
->Run_Time
--
 >Main Class
 -omega.IDE
 >Non-Java Project
 -false
+>Language Tag
+-0
 >Project Classpath : Required Jars
 -project-root$/lib/flatlaf-0.46.jar
+-project-root$/lib/annotations.jar
+-project-root$/lib/guava-14.0.1.jar
+-project-root$/lib/jediterm-pty-2.2.jar
+-project-root$/lib/jna-platform.jar
+-project-root$/lib/jna.jar
+-project-root$/lib/log4j-1.2.14.jar
+-project-root$/lib/purejavacomm-0.0.17.jar
+-project-root$/lib/pty4j-0.7.2.jar
 >Project Classpath : Required Resource Roots
 -project-root$/res

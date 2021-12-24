@@ -192,6 +192,9 @@ public class FileSelectionDialog extends JDialog{
 		selectionField.setBounds(0, getHeight() - 30, getWidth() - 50, 30);
 		selectionField.setOnAction(()->{
 			File file = new File(selectionField.getText());
+			if(!file.exists()){
+				file = new File(currentDir.getAbsolutePath(), selectionField.getText());
+			}
 			if(file.exists()) {
 				if(state == 0){
 					if(file.isDirectory()){
