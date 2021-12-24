@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 /**
  * Listens for cuts and copies from instances of {@link RTextArea}.  This is
  * used for the "clipboard history" shortcut (Ctrl+Shift+V by default).<p>
@@ -28,109 +27,99 @@ import java.util.List;
  */
 public final class ClipboardHistory {
 
-	private static ClipboardHistory instance;
+  private static ClipboardHistory instance;
 
-	private List<String> history;
-	private int maxSize;
+  private List<String> history;
+  private int maxSize;
 
-	private static final int DEFAULT_MAX_SIZE = 12;
+  private static final int DEFAULT_MAX_SIZE = 12;
 
+  private ClipboardHistory() {
+    history = new ArrayList<>();
+    maxSize = DEFAULT_MAX_SIZE;
+  }
 
-	private ClipboardHistory() {
-		history = new ArrayList<>();
-		maxSize = DEFAULT_MAX_SIZE;
-	}
+  /**
+   * Adds an entry to the clipboard history.
+   *
+   * @param str The text to add.
+   * @see #getHistory()
+   */
+  public void add(String str) {
+    int size = history.size();
+    if (size == 0) {
+      history.add(str);
+    } else {
+      int index = history.indexOf(str);
+      if (index != size - 1) {
+        if (index > -1) {
+          history.remove(index);
+        }
+        history.add(str);
+      }
+      trim();
+    }
+  }
 
+  /**
+   * Returns the singleton instance of this class, lazily creating it if
+   * necessary.<p>
+   *
+   * This method should only be called on the EDT.
+   *
+   * @return The singleton instance of this class.
+   */
+  public static ClipboardHistory get() {
+    if (instance == null) {
+      instance = new ClipboardHistory();
+    }
+    return instance;
+  }
 
-	/**
-	 * Adds an entry to the clipboard history.
-	 *
-	 * @param str The text to add.
-	 * @see #getHistory()
-	 */
-	public void add(String str) {
-		int size = history.size();
-		if (size==0) {
-			history.add(str);
-		}
-		else {
-			int index = history.indexOf(str);
-			if (index!=size-1) {
-				if (index>-1) {
-					history.remove(index);
-				}
-				history.add(str);
-			}
-			trim();
-		}
-	}
+  /**
+   * Returns the clipboard history, in most-recently-used order.
+   *
+   * @return The clipboard history.
+   */
+  public List<String> getHistory() {
+    List<String> copy = new ArrayList<>(this.history);
+    Collections.reverse(copy);
+    return copy;
+  }
 
+  /**
+   * Returns the maximum number of clipboard values remembered.
+   *
+   * @return The maximum number of clipboard values remembered.
+   * @see #setMaxSize(int)
+   */
+  public int getMaxSize() {
+    return maxSize;
+  }
 
-	/**
-	 * Returns the singleton instance of this class, lazily creating it if
-	 * necessary.<p>
-	 *
-	 * This method should only be called on the EDT.
-	 *
-	 * @return The singleton instance of this class.
-	 */
-	public static ClipboardHistory get() {
-		if (instance==null) {
-			instance = new ClipboardHistory();
-		}
-		return instance;
-	}
+  /**
+   * Sets the maximum number of clipboard values remembered.
+   *
+   * @param maxSize The maximum number of clipboard values to remember.
+   * @throws IllegalArgumentException If <code>maxSize</code> is not greater
+   *         than zero.
+   * @see #getMaxSize()
+   */
+  public void setMaxSize(int maxSize) {
+    if (maxSize <= 0) {
+      throw new IllegalArgumentException("Maximum size must be >= 0");
+    }
+    this.maxSize = maxSize;
+    trim();
+  }
 
-
-	/**
-	 * Returns the clipboard history, in most-recently-used order.
-	 *
-	 * @return The clipboard history.
-	 */
-	public List<String> getHistory() {
-		List<String> copy = new ArrayList<>(this.history);
-		Collections.reverse(copy);
-		return copy;
-	}
-
-
-	/**
-	 * Returns the maximum number of clipboard values remembered.
-	 *
-	 * @return The maximum number of clipboard values remembered.
-	 * @see #setMaxSize(int)
-	 */
-	public int getMaxSize() {
-		return maxSize;
-	}
-
-
-	/**
-	 * Sets the maximum number of clipboard values remembered.
-	 *
-	 * @param maxSize The maximum number of clipboard values to remember.
-	 * @throws IllegalArgumentException If <code>maxSize</code> is not greater
-	 *         than zero.
-	 * @see #getMaxSize()
-	 */
-	public void setMaxSize(int maxSize) {
-		if (maxSize<=0) {
-			throw new IllegalArgumentException("Maximum size must be >= 0");
-		}
-		this.maxSize = maxSize;
-		trim();
-	}
-
-
-	/**
-	 * Ensures the remembered set of strings is not larger than the maximum
-	 * allowed size.
-	 */
-	private void trim() {
-		while (history.size()>maxSize) {
-			history.remove(0);
-		}
-	}
-
-
+  /**
+   * Ensures the remembered set of strings is not larger than the maximum
+   * allowed size.
+   */
+  private void trim() {
+    while (history.size() > maxSize) {
+      history.remove(0);
+    }
+  }
 }

@@ -9,11 +9,8 @@
 package org.fife.ui.rsyntaxtextarea.templates;
 
 import java.io.Serializable;
-
 import javax.swing.text.BadLocationException;
-
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-
 
 /**
  * A "code template" is a kind of macro for commonly-typed code.  It
@@ -42,34 +39,28 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  * @version 0.1
  * @see StaticCodeTemplate
  */
-public interface CodeTemplate extends Cloneable, Comparable<CodeTemplate>,
-		Serializable {
+public interface CodeTemplate
+  extends Cloneable, Comparable<CodeTemplate>, Serializable {
+  /**
+   * Creates a deep copy of this template.
+   *
+   * @return A deep copy of this template.
+   */
+  Object clone();
 
+  /**
+   * Returns the ID of this code template.
+   *
+   * @return The template's ID.
+   */
+  String getID();
 
-	/**
-	 * Creates a deep copy of this template.
-	 *
-	 * @return A deep copy of this template.
-	 */
-	Object clone();
-
-
-	/**
-	 * Returns the ID of this code template.
-	 *
-	 * @return The template's ID.
-	 */
-	String getID();
-
-
-	/**
-	 * Invokes this code template.  The changes are made to the given text
-	 * area.
-	 *
-	 * @param textArea The text area to operate on.
-	 * @throws BadLocationException If something bad happens.
-	 */
-	void invoke(RSyntaxTextArea textArea) throws BadLocationException;
-
-
+  /**
+   * Invokes this code template.  The changes are made to the given text
+   * area.
+   *
+   * @param textArea The text area to operate on.
+   * @throws BadLocationException If something bad happens.
+   */
+  void invoke(RSyntaxTextArea textArea) throws BadLocationException;
 }

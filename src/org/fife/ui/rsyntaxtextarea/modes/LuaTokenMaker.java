@@ -12,9 +12,7 @@ package org.fife.ui.rsyntaxtextarea.modes;
 
 import java.io.*;
 import javax.swing.text.Segment;
-
 import org.fife.ui.rsyntaxtextarea.*;
-
 
 /**
  * Scanner for the Lua programming language.<p>
@@ -73,46 +71,46 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED =
-    "\11\0\1\4\1\3\1\0\1\4\23\0\1\4\1\0\1\7\1\27"+
-    "\1\0\1\27\1\0\1\5\2\26\1\27\1\15\1\0\1\12\1\13"+
-    "\1\27\12\2\2\0\1\30\1\32\1\31\2\0\4\1\1\14\1\1"+
-    "\1\54\1\1\1\60\2\1\1\52\1\1\1\50\1\61\2\1\1\56"+
-    "\1\57\1\1\1\51\1\55\4\1\1\10\1\6\1\11\1\27\1\53"+
-    "\1\0\1\23\1\37\1\42\1\35\1\21\1\22\1\43\1\45\1\41"+
-    "\1\1\1\40\1\24\1\47\1\34\1\36\1\44\1\64\1\17\1\25"+
-    "\1\16\1\20\1\62\1\46\1\63\1\65\1\1\1\26\1\0\1\26"+
+    "\11\0\1\4\1\3\1\0\1\4\23\0\1\4\1\0\1\7\1\27" +
+    "\1\0\1\27\1\0\1\5\2\26\1\27\1\15\1\0\1\12\1\13" +
+    "\1\27\12\2\2\0\1\30\1\32\1\31\2\0\4\1\1\14\1\1" +
+    "\1\54\1\1\1\60\2\1\1\52\1\1\1\50\1\61\2\1\1\56" +
+    "\1\57\1\1\1\51\1\55\4\1\1\10\1\6\1\11\1\27\1\53" +
+    "\1\0\1\23\1\37\1\42\1\35\1\21\1\22\1\43\1\45\1\41" +
+    "\1\1\1\40\1\24\1\47\1\34\1\36\1\44\1\64\1\17\1\25" +
+    "\1\16\1\20\1\62\1\46\1\63\1\65\1\1\1\26\1\0\1\26" +
     "\1\33\uff81\0";
 
   /**
    * Translates characters to character classes
    */
-  private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
+  private static final char[] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
 
   /**
    * Translates DFA states to action switch labels.
    */
-  private static final int [] ZZ_ACTION = zzUnpackAction();
+  private static final int[] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\4\0\2\1\1\2\1\3\1\4\1\5\1\6\2\7"+
-    "\1\10\1\1\1\10\10\1\2\10\16\1\1\11\1\12"+
-    "\1\11\1\13\2\11\1\14\2\2\1\15\1\5\1\6"+
-    "\1\16\1\17\1\20\1\10\21\1\3\0\3\1\1\21"+
-    "\1\10\1\1\1\21\12\1\1\22\2\1\1\23\1\24"+
-    "\1\15\1\16\1\0\24\1\4\0\14\1\1\25\1\26"+
-    "\11\1\1\21\2\1\1\22\3\1\4\0\6\1\1\27"+
+    "\4\0\2\1\1\2\1\3\1\4\1\5\1\6\2\7" +
+    "\1\10\1\1\1\10\10\1\2\10\16\1\1\11\1\12" +
+    "\1\11\1\13\2\11\1\14\2\2\1\15\1\5\1\6" +
+    "\1\16\1\17\1\20\1\10\21\1\3\0\3\1\1\21" +
+    "\1\10\1\1\1\21\12\1\1\22\2\1\1\23\1\24" +
+    "\1\15\1\16\1\0\24\1\4\0\14\1\1\25\1\26" +
+    "\11\1\1\21\2\1\1\22\3\1\4\0\6\1\1\27" +
     "\13\1\1\27\2\0\10\1\2\0\15\1";
 
-  private static int [] zzUnpackAction() {
-    int [] result = new int[203];
+  private static int[] zzUnpackAction() {
+    int[] result = new int[203];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAction(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackAction(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -122,50 +120,49 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
     return j;
   }
 
-
   /**
    * Translates a state to a row index in the transition table
    */
-  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
+  private static final int[] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\66\0\154\0\242\0\330\0\u010e\0\u0144\0\330"+
-    "\0\u017a\0\u01b0\0\u01e6\0\u021c\0\330\0\u0252\0\u0288\0\330"+
-    "\0\u02be\0\u02f4\0\u032a\0\u0360\0\u0396\0\u03cc\0\u0402\0\u0438"+
-    "\0\u046e\0\u04a4\0\u04a4\0\u04da\0\u0510\0\u0546\0\u057c\0\u05b2"+
-    "\0\u05e8\0\u061e\0\u0654\0\u068a\0\u06c0\0\u06f6\0\u072c\0\u0762"+
-    "\0\u0798\0\330\0\u07ce\0\330\0\u0804\0\u083a\0\330\0\u0870"+
-    "\0\u08a6\0\330\0\u08dc\0\u0912\0\330\0\330\0\u0948\0\u097e"+
-    "\0\u09b4\0\u09ea\0\u0a20\0\u0a56\0\u0a8c\0\u0ac2\0\u0af8\0\u0b2e"+
-    "\0\u0b64\0\u0b9a\0\u0bd0\0\u0c06\0\u0c3c\0\u0c72\0\u0ca8\0\u0cde"+
-    "\0\u0d14\0\u0d4a\0\u0d80\0\u0db6\0\u0dec\0\u0e22\0\u0e58\0\u0e8e"+
-    "\0\u010e\0\u0ec4\0\u010e\0\u0efa\0\u0f30\0\u0f66\0\u0f9c\0\u0fd2"+
-    "\0\u1008\0\u103e\0\u1074\0\u10aa\0\u10e0\0\u010e\0\u1116\0\u114c"+
-    "\0\330\0\330\0\u01b0\0\u01e6\0\u1182\0\u11b8\0\u11ee\0\u1224"+
-    "\0\u125a\0\u1290\0\u12c6\0\u12fc\0\u1332\0\u1368\0\u139e\0\u13d4"+
-    "\0\u140a\0\u1440\0\u1476\0\u14ac\0\u14e2\0\u1518\0\u154e\0\u1584"+
-    "\0\u15ba\0\u15f0\0\u1626\0\u165c\0\u1692\0\u16c8\0\u16fe\0\u1734"+
-    "\0\u176a\0\u17a0\0\u17d6\0\u180c\0\u1842\0\u1878\0\u18ae\0\u18e4"+
-    "\0\u191a\0\330\0\u010e\0\u1950\0\u1986\0\u19bc\0\u19f2\0\u1a28"+
-    "\0\u1a5e\0\u1a94\0\u1aca\0\u1b00\0\u1b36\0\u1b6c\0\u1ba2\0\u1bd8"+
-    "\0\u1c0e\0\u1c44\0\u1c7a\0\u1cb0\0\u1ce6\0\u1d1c\0\u1d52\0\u1d88"+
-    "\0\u1dbe\0\u1df4\0\u1e2a\0\u1e60\0\u1e96\0\u010e\0\u1ecc\0\u1f02"+
-    "\0\u1f38\0\u1f6e\0\u1fa4\0\u1fda\0\u2010\0\u2046\0\u207c\0\u20b2"+
-    "\0\u20e8\0\330\0\u211e\0\u2154\0\u218a\0\u21c0\0\u21f6\0\u222c"+
-    "\0\u2262\0\u2298\0\u22ce\0\u2304\0\u233a\0\u2370\0\u23a6\0\u23dc"+
-    "\0\u2412\0\u2448\0\u247e\0\u24b4\0\u24ea\0\u2520\0\u2556\0\u258c"+
+    "\0\0\0\66\0\154\0\242\0\330\0\u010e\0\u0144\0\330" +
+    "\0\u017a\0\u01b0\0\u01e6\0\u021c\0\330\0\u0252\0\u0288\0\330" +
+    "\0\u02be\0\u02f4\0\u032a\0\u0360\0\u0396\0\u03cc\0\u0402\0\u0438" +
+    "\0\u046e\0\u04a4\0\u04a4\0\u04da\0\u0510\0\u0546\0\u057c\0\u05b2" +
+    "\0\u05e8\0\u061e\0\u0654\0\u068a\0\u06c0\0\u06f6\0\u072c\0\u0762" +
+    "\0\u0798\0\330\0\u07ce\0\330\0\u0804\0\u083a\0\330\0\u0870" +
+    "\0\u08a6\0\330\0\u08dc\0\u0912\0\330\0\330\0\u0948\0\u097e" +
+    "\0\u09b4\0\u09ea\0\u0a20\0\u0a56\0\u0a8c\0\u0ac2\0\u0af8\0\u0b2e" +
+    "\0\u0b64\0\u0b9a\0\u0bd0\0\u0c06\0\u0c3c\0\u0c72\0\u0ca8\0\u0cde" +
+    "\0\u0d14\0\u0d4a\0\u0d80\0\u0db6\0\u0dec\0\u0e22\0\u0e58\0\u0e8e" +
+    "\0\u010e\0\u0ec4\0\u010e\0\u0efa\0\u0f30\0\u0f66\0\u0f9c\0\u0fd2" +
+    "\0\u1008\0\u103e\0\u1074\0\u10aa\0\u10e0\0\u010e\0\u1116\0\u114c" +
+    "\0\330\0\330\0\u01b0\0\u01e6\0\u1182\0\u11b8\0\u11ee\0\u1224" +
+    "\0\u125a\0\u1290\0\u12c6\0\u12fc\0\u1332\0\u1368\0\u139e\0\u13d4" +
+    "\0\u140a\0\u1440\0\u1476\0\u14ac\0\u14e2\0\u1518\0\u154e\0\u1584" +
+    "\0\u15ba\0\u15f0\0\u1626\0\u165c\0\u1692\0\u16c8\0\u16fe\0\u1734" +
+    "\0\u176a\0\u17a0\0\u17d6\0\u180c\0\u1842\0\u1878\0\u18ae\0\u18e4" +
+    "\0\u191a\0\330\0\u010e\0\u1950\0\u1986\0\u19bc\0\u19f2\0\u1a28" +
+    "\0\u1a5e\0\u1a94\0\u1aca\0\u1b00\0\u1b36\0\u1b6c\0\u1ba2\0\u1bd8" +
+    "\0\u1c0e\0\u1c44\0\u1c7a\0\u1cb0\0\u1ce6\0\u1d1c\0\u1d52\0\u1d88" +
+    "\0\u1dbe\0\u1df4\0\u1e2a\0\u1e60\0\u1e96\0\u010e\0\u1ecc\0\u1f02" +
+    "\0\u1f38\0\u1f6e\0\u1fa4\0\u1fda\0\u2010\0\u2046\0\u207c\0\u20b2" +
+    "\0\u20e8\0\330\0\u211e\0\u2154\0\u218a\0\u21c0\0\u21f6\0\u222c" +
+    "\0\u2262\0\u2298\0\u22ce\0\u2304\0\u233a\0\u2370\0\u23a6\0\u23dc" +
+    "\0\u2412\0\u2448\0\u247e\0\u24b4\0\u24ea\0\u2520\0\u2556\0\u258c" +
     "\0\u25c2\0\u25f8\0\u262e";
 
-  private static int [] zzUnpackRowMap() {
-    int [] result = new int[203];
+  private static int[] zzUnpackRowMap() {
+    int[] result = new int[203];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackRowMap(String packed, int offset, int [] result) {
-    int i = 0;  /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackRowMap(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int high = packed.charAt(i++) << 16;
@@ -177,223 +174,223 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
   /**
    * The transition table of the DFA
    */
-  private static final int [] ZZ_TRANS = zzUnpackTrans();
+  private static final int[] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\5\1\6\1\7\1\10\1\11\1\12\1\5\1\13"+
-    "\1\14\1\15\1\16\1\17\1\6\1\20\1\21\1\22"+
-    "\1\23\1\24\1\25\1\26\1\27\1\30\1\15\1\20"+
-    "\1\31\1\32\2\33\1\34\1\35\1\36\1\37\1\6"+
-    "\1\40\1\41\1\42\1\43\1\6\1\44\1\45\1\46"+
-    "\2\6\1\47\7\6\1\50\2\6\3\51\1\52\5\51"+
-    "\1\53\57\51\1\54\5\51\1\55\54\51\3\56\1\57"+
-    "\62\56\67\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\32\6\1\0\1\60\1\7\10\0\1\7\1\61\1\0"+
-    "\3\60\1\61\4\60\6\0\32\60\4\0\1\11\61\0"+
-    "\3\12\1\0\1\12\1\62\1\63\57\12\3\13\1\0"+
-    "\2\13\1\64\1\65\56\13\10\0\1\66\67\0\1\67"+
-    "\55\0\1\7\10\0\1\70\53\0\2\6\11\0\1\6"+
-    "\1\0\1\6\1\71\6\6\6\0\2\6\1\72\6\6"+
-    "\1\73\17\6\1\74\1\0\2\6\11\0\1\6\1\0"+
-    "\3\6\1\75\1\6\1\76\2\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\1\77\31\6"+
-    "\1\0\2\6\11\0\1\6\1\0\1\6\1\100\4\6"+
-    "\1\101\1\6\6\0\1\102\31\6\1\0\2\6\11\0"+
-    "\1\6\1\0\2\6\1\103\2\6\1\104\2\6\6\0"+
-    "\2\6\1\105\27\6\1\0\2\6\11\0\1\6\1\0"+
-    "\7\6\1\106\6\0\1\107\31\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\2\6\1\110\27\6\1\0"+
-    "\2\6\11\0\1\6\1\0\3\6\1\111\4\6\6\0"+
-    "\32\6\21\0\1\112\3\0\1\113\4\0\1\20\1\0"+
-    "\1\114\63\0\1\20\34\0\2\6\11\0\1\6\1\0"+
-    "\3\6\1\115\4\6\6\0\2\6\1\116\2\6\1\117"+
-    "\24\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\2\6\1\120\27\6\1\0\2\6\11\0\1\6\1\0"+
-    "\1\6\1\121\6\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\1\6\1\122\6\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\4\6\1\123\3\6\6\0"+
-    "\1\123\7\6\1\124\21\6\1\0\2\6\11\0\1\6"+
-    "\1\0\10\6\6\0\2\6\1\125\27\6\1\0\2\6"+
-    "\11\0\1\6\1\0\3\6\1\126\4\6\6\0\2\6"+
-    "\1\127\27\6\1\0\2\6\11\0\1\6\1\0\1\6"+
-    "\1\130\3\6\1\131\2\6\6\0\6\6\1\132\23\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\11\6"+
-    "\1\133\20\6\1\0\2\6\11\0\1\6\1\0\10\6"+
-    "\6\0\2\6\1\134\27\6\1\0\2\6\11\0\1\6"+
-    "\1\0\10\6\6\0\15\6\1\135\14\6\1\0\2\6"+
-    "\11\0\1\6\1\0\10\6\6\0\20\6\1\136\1\137"+
-    "\10\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\10\6\1\140\21\6\3\51\1\0\5\51\1\0\54\51"+
-    "\11\0\1\141\65\0\1\142\54\0\3\56\1\0\62\56"+
-    "\1\0\2\60\11\0\1\60\1\0\10\60\6\0\32\60"+
-    "\1\0\2\60\7\0\1\60\1\0\12\60\6\0\32\60"+
-    "\3\12\1\0\1\12\1\143\1\63\57\12\3\13\1\0"+
-    "\2\13\1\64\1\144\56\13\10\0\1\145\70\0\1\20"+
-    "\53\0\2\6\11\0\1\6\1\0\2\6\1\146\5\6"+
-    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\7\6"+
-    "\1\147\6\0\1\150\31\6\1\0\2\6\11\0\1\6"+
-    "\1\0\3\6\1\151\4\6\6\0\32\6\1\0\2\6"+
-    "\11\0\1\6\1\0\10\6\6\0\10\6\1\152\21\6"+
-    "\1\0\2\6\11\0\1\6\1\0\1\153\7\6\6\0"+
-    "\10\6\1\154\17\6\1\155\1\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\12\6\1\156\17\6\1\0"+
-    "\2\6\11\0\1\6\1\0\1\157\7\6\6\0\10\6"+
-    "\1\160\21\6\1\0\2\6\11\0\1\6\1\0\1\6"+
-    "\1\161\6\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\7\6\1\162\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\1\6\1\123\30\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\1\163\31\6"+
-    "\1\0\2\6\11\0\1\6\1\0\6\6\1\164\1\6"+
-    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\1\6"+
-    "\1\123\6\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\7\6\1\165\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\1\6\1\121\30\6\1\0"+
-    "\2\6\11\0\1\6\1\0\5\6\1\166\2\6\6\0"+
-    "\6\6\1\167\23\6\1\0\2\6\11\0\1\6\1\0"+
-    "\1\170\5\6\1\171\1\6\6\0\32\6\36\0\1\172"+
-    "\45\0\1\173\67\0\1\174\2\0\1\175\43\0\2\6"+
-    "\11\0\1\6\1\0\10\6\6\0\27\6\1\176\2\6"+
-    "\1\0\2\6\11\0\1\6\1\0\1\121\7\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\6\6\1\123"+
-    "\1\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\4\6\1\177\3\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\3\6\1\200\4\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\5\6\1\131\2\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\6\6\1\201"+
-    "\1\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\1\170\7\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\1\202\7\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\5\6\1\203\24\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\5\6\1\204"+
-    "\24\6\1\0\2\6\11\0\1\6\1\0\5\6\1\205"+
-    "\2\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\5\6\1\206\24\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\1\6\1\207\30\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\16\6\1\210"+
-    "\13\6\1\0\2\6\11\0\1\211\1\0\10\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\6\6\1\132\23\6\10\0\1\212\56\0\2\6\11\0"+
-    "\1\6\1\0\3\6\1\213\4\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\1\214\7\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\2\6\1\215\5\6"+
-    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\10\6"+
-    "\6\0\1\123\31\6\1\0\2\6\11\0\1\6\1\0"+
-    "\3\6\1\136\4\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\2\6\1\216\5\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\3\6\1\217\4\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\2\6\1\220"+
-    "\5\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\3\6\1\221\3\6\1\222\6\0\7\6\1\222\22\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\5\6"+
-    "\1\117\24\6\1\0\2\6\11\0\1\6\1\0\5\6"+
-    "\1\223\2\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\10\6\6\0\2\6\1\224\27\6\1\0\2\6"+
-    "\11\0\1\6\1\0\3\6\1\225\4\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\6\6"+
-    "\1\226\23\6\1\0\2\6\11\0\1\6\1\0\7\6"+
-    "\1\146\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\3\6\1\227\4\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\1\6\1\230\30\6\1\0"+
-    "\2\6\11\0\1\6\1\0\5\6\1\117\2\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\4\6\1\231"+
-    "\3\6\6\0\13\6\1\232\16\6\1\0\2\6\11\0"+
-    "\1\6\1\0\3\6\1\233\4\6\6\0\32\6\22\0"+
-    "\1\234\62\0\1\235\115\0\1\236\65\0\1\237\17\0"+
-    "\2\6\11\0\1\6\1\0\1\136\7\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\5\6"+
-    "\1\240\24\6\1\0\2\6\11\0\1\6\1\0\5\6"+
-    "\1\241\2\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\6\6\1\242\1\6\6\0\32\6\1\0\2\6"+
-    "\11\0\1\6\1\0\10\6\6\0\2\6\1\123\27\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\1\176"+
-    "\31\6\1\0\2\6\11\0\1\6\1\0\1\6\1\243"+
-    "\6\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\6\6\1\244\1\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\6\6\1\245\1\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\2\6\1\240\5\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\16\6\1\246\13\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\22\6\1\247\7\6\1\0\2\6\11\0"+
-    "\1\6\1\0\1\6\1\250\6\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\13\6\1\251"+
-    "\16\6\1\0\2\6\11\0\1\6\1\0\1\6\1\151"+
-    "\6\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\5\6\1\252\2\6\6\0\32\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\5\6\1\253\24\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\30\6\1\254"+
-    "\1\6\1\0\2\6\11\0\1\6\1\0\3\6\1\176"+
-    "\4\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\6\6\1\255\23\6\1\0\2\6\11\0"+
-    "\1\6\1\0\1\6\1\136\6\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\5\6\1\256"+
-    "\24\6\1\0\2\6\11\0\1\6\1\0\1\257\7\6"+
-    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\1\6"+
-    "\1\176\6\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\4\6\1\177\2\6\1\147\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\3\6\1\260\4\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\3\6\1\261"+
-    "\4\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\6\6\1\176\23\6\31\0\1\262\75\0"+
-    "\1\263\63\0\1\264\47\0\1\234\45\0\2\6\11\0"+
-    "\1\6\1\0\6\6\1\152\1\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\4\6\1\123"+
-    "\25\6\1\0\2\6\11\0\1\6\1\0\3\6\1\265"+
-    "\4\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\7\6\1\136\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\6\6\1\136\1\6\6\0\32\6\1\0\2\6"+
-    "\11\0\1\6\1\0\3\6\1\123\4\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\23\6"+
-    "\1\266\6\6\1\0\2\6\11\0\1\6\1\0\10\6"+
-    "\6\0\5\6\1\267\24\6\1\0\2\6\11\0\1\6"+
-    "\1\0\10\6\6\0\3\6\1\270\26\6\1\0\2\6"+
-    "\11\0\1\6\1\0\1\123\7\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\1\6\1\152\6\6\6\0"+
-    "\32\6\1\0\2\6\11\0\1\6\1\0\2\6\1\271"+
-    "\5\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\4\6\1\136\25\6\1\0\2\6\11\0"+
-    "\1\6\1\0\4\6\1\123\3\6\6\0\32\6\1\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\5\6\1\272"+
-    "\24\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\1\273\31\6\1\0\2\6\11\0\1\6\1\0\1\274"+
-    "\7\6\6\0\32\6\34\0\1\275\52\0\1\276\45\0"+
-    "\2\6\11\0\1\6\1\0\10\6\6\0\6\6\1\277"+
-    "\23\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0"+
-    "\24\6\1\300\5\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\1\301\31\6\1\0\2\6\11\0\1\6"+
-    "\1\0\3\6\1\224\4\6\6\0\32\6\1\0\2\6"+
-    "\11\0\1\6\1\0\5\6\1\244\2\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\2\6"+
-    "\1\151\27\6\1\0\2\6\11\0\1\6\1\0\10\6"+
-    "\6\0\26\6\1\136\3\6\1\0\2\6\11\0\1\6"+
-    "\1\0\5\6\1\302\2\6\6\0\32\6\43\0\1\234"+
-    "\41\0\1\234\47\0\2\6\11\0\1\6\1\0\1\303"+
-    "\7\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0"+
-    "\10\6\6\0\25\6\1\304\4\6\1\0\2\6\11\0"+
-    "\1\6\1\0\10\6\6\0\7\6\1\136\22\6\1\0"+
-    "\2\6\11\0\1\6\1\0\1\305\7\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\7\6"+
-    "\1\306\22\6\1\0\2\6\11\0\1\6\1\0\10\6"+
-    "\6\0\14\6\1\136\15\6\1\0\2\6\11\0\1\6"+
-    "\1\0\5\6\1\307\2\6\6\0\32\6\1\0\2\6"+
-    "\11\0\1\6\1\0\5\6\1\310\2\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\3\6"+
-    "\1\240\26\6\1\0\2\6\11\0\1\6\1\0\1\6"+
-    "\1\311\6\6\6\0\32\6\1\0\2\6\11\0\1\6"+
-    "\1\0\10\6\6\0\3\6\1\312\26\6\1\0\2\6"+
-    "\11\0\1\6\1\0\5\6\1\313\2\6\6\0\32\6"+
-    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\7\6"+
+    "\1\5\1\6\1\7\1\10\1\11\1\12\1\5\1\13" +
+    "\1\14\1\15\1\16\1\17\1\6\1\20\1\21\1\22" +
+    "\1\23\1\24\1\25\1\26\1\27\1\30\1\15\1\20" +
+    "\1\31\1\32\2\33\1\34\1\35\1\36\1\37\1\6" +
+    "\1\40\1\41\1\42\1\43\1\6\1\44\1\45\1\46" +
+    "\2\6\1\47\7\6\1\50\2\6\3\51\1\52\5\51" +
+    "\1\53\57\51\1\54\5\51\1\55\54\51\3\56\1\57" +
+    "\62\56\67\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\32\6\1\0\1\60\1\7\10\0\1\7\1\61\1\0" +
+    "\3\60\1\61\4\60\6\0\32\60\4\0\1\11\61\0" +
+    "\3\12\1\0\1\12\1\62\1\63\57\12\3\13\1\0" +
+    "\2\13\1\64\1\65\56\13\10\0\1\66\67\0\1\67" +
+    "\55\0\1\7\10\0\1\70\53\0\2\6\11\0\1\6" +
+    "\1\0\1\6\1\71\6\6\6\0\2\6\1\72\6\6" +
+    "\1\73\17\6\1\74\1\0\2\6\11\0\1\6\1\0" +
+    "\3\6\1\75\1\6\1\76\2\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\1\77\31\6" +
+    "\1\0\2\6\11\0\1\6\1\0\1\6\1\100\4\6" +
+    "\1\101\1\6\6\0\1\102\31\6\1\0\2\6\11\0" +
+    "\1\6\1\0\2\6\1\103\2\6\1\104\2\6\6\0" +
+    "\2\6\1\105\27\6\1\0\2\6\11\0\1\6\1\0" +
+    "\7\6\1\106\6\0\1\107\31\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\2\6\1\110\27\6\1\0" +
+    "\2\6\11\0\1\6\1\0\3\6\1\111\4\6\6\0" +
+    "\32\6\21\0\1\112\3\0\1\113\4\0\1\20\1\0" +
+    "\1\114\63\0\1\20\34\0\2\6\11\0\1\6\1\0" +
+    "\3\6\1\115\4\6\6\0\2\6\1\116\2\6\1\117" +
+    "\24\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\2\6\1\120\27\6\1\0\2\6\11\0\1\6\1\0" +
+    "\1\6\1\121\6\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\1\6\1\122\6\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\4\6\1\123\3\6\6\0" +
+    "\1\123\7\6\1\124\21\6\1\0\2\6\11\0\1\6" +
+    "\1\0\10\6\6\0\2\6\1\125\27\6\1\0\2\6" +
+    "\11\0\1\6\1\0\3\6\1\126\4\6\6\0\2\6" +
+    "\1\127\27\6\1\0\2\6\11\0\1\6\1\0\1\6" +
+    "\1\130\3\6\1\131\2\6\6\0\6\6\1\132\23\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\11\6" +
+    "\1\133\20\6\1\0\2\6\11\0\1\6\1\0\10\6" +
+    "\6\0\2\6\1\134\27\6\1\0\2\6\11\0\1\6" +
+    "\1\0\10\6\6\0\15\6\1\135\14\6\1\0\2\6" +
+    "\11\0\1\6\1\0\10\6\6\0\20\6\1\136\1\137" +
+    "\10\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\10\6\1\140\21\6\3\51\1\0\5\51\1\0\54\51" +
+    "\11\0\1\141\65\0\1\142\54\0\3\56\1\0\62\56" +
+    "\1\0\2\60\11\0\1\60\1\0\10\60\6\0\32\60" +
+    "\1\0\2\60\7\0\1\60\1\0\12\60\6\0\32\60" +
+    "\3\12\1\0\1\12\1\143\1\63\57\12\3\13\1\0" +
+    "\2\13\1\64\1\144\56\13\10\0\1\145\70\0\1\20" +
+    "\53\0\2\6\11\0\1\6\1\0\2\6\1\146\5\6" +
+    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\7\6" +
+    "\1\147\6\0\1\150\31\6\1\0\2\6\11\0\1\6" +
+    "\1\0\3\6\1\151\4\6\6\0\32\6\1\0\2\6" +
+    "\11\0\1\6\1\0\10\6\6\0\10\6\1\152\21\6" +
+    "\1\0\2\6\11\0\1\6\1\0\1\153\7\6\6\0" +
+    "\10\6\1\154\17\6\1\155\1\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\12\6\1\156\17\6\1\0" +
+    "\2\6\11\0\1\6\1\0\1\157\7\6\6\0\10\6" +
+    "\1\160\21\6\1\0\2\6\11\0\1\6\1\0\1\6" +
+    "\1\161\6\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\7\6\1\162\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\1\6\1\123\30\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\1\163\31\6" +
+    "\1\0\2\6\11\0\1\6\1\0\6\6\1\164\1\6" +
+    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\1\6" +
+    "\1\123\6\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\7\6\1\165\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\1\6\1\121\30\6\1\0" +
+    "\2\6\11\0\1\6\1\0\5\6\1\166\2\6\6\0" +
+    "\6\6\1\167\23\6\1\0\2\6\11\0\1\6\1\0" +
+    "\1\170\5\6\1\171\1\6\6\0\32\6\36\0\1\172" +
+    "\45\0\1\173\67\0\1\174\2\0\1\175\43\0\2\6" +
+    "\11\0\1\6\1\0\10\6\6\0\27\6\1\176\2\6" +
+    "\1\0\2\6\11\0\1\6\1\0\1\121\7\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\6\6\1\123" +
+    "\1\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\4\6\1\177\3\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\3\6\1\200\4\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\5\6\1\131\2\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\6\6\1\201" +
+    "\1\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\1\170\7\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\1\202\7\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\5\6\1\203\24\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\5\6\1\204" +
+    "\24\6\1\0\2\6\11\0\1\6\1\0\5\6\1\205" +
+    "\2\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\5\6\1\206\24\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\1\6\1\207\30\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\16\6\1\210" +
+    "\13\6\1\0\2\6\11\0\1\211\1\0\10\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\6\6\1\132\23\6\10\0\1\212\56\0\2\6\11\0" +
+    "\1\6\1\0\3\6\1\213\4\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\1\214\7\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\2\6\1\215\5\6" +
+    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\10\6" +
+    "\6\0\1\123\31\6\1\0\2\6\11\0\1\6\1\0" +
+    "\3\6\1\136\4\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\2\6\1\216\5\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\3\6\1\217\4\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\2\6\1\220" +
+    "\5\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\3\6\1\221\3\6\1\222\6\0\7\6\1\222\22\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\5\6" +
+    "\1\117\24\6\1\0\2\6\11\0\1\6\1\0\5\6" +
+    "\1\223\2\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\10\6\6\0\2\6\1\224\27\6\1\0\2\6" +
+    "\11\0\1\6\1\0\3\6\1\225\4\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\6\6" +
+    "\1\226\23\6\1\0\2\6\11\0\1\6\1\0\7\6" +
+    "\1\146\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\3\6\1\227\4\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\1\6\1\230\30\6\1\0" +
+    "\2\6\11\0\1\6\1\0\5\6\1\117\2\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\4\6\1\231" +
+    "\3\6\6\0\13\6\1\232\16\6\1\0\2\6\11\0" +
+    "\1\6\1\0\3\6\1\233\4\6\6\0\32\6\22\0" +
+    "\1\234\62\0\1\235\115\0\1\236\65\0\1\237\17\0" +
+    "\2\6\11\0\1\6\1\0\1\136\7\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\5\6" +
+    "\1\240\24\6\1\0\2\6\11\0\1\6\1\0\5\6" +
+    "\1\241\2\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\6\6\1\242\1\6\6\0\32\6\1\0\2\6" +
+    "\11\0\1\6\1\0\10\6\6\0\2\6\1\123\27\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\1\176" +
+    "\31\6\1\0\2\6\11\0\1\6\1\0\1\6\1\243" +
+    "\6\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\6\6\1\244\1\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\6\6\1\245\1\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\2\6\1\240\5\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\16\6\1\246\13\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\22\6\1\247\7\6\1\0\2\6\11\0" +
+    "\1\6\1\0\1\6\1\250\6\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\13\6\1\251" +
+    "\16\6\1\0\2\6\11\0\1\6\1\0\1\6\1\151" +
+    "\6\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\5\6\1\252\2\6\6\0\32\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\5\6\1\253\24\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\30\6\1\254" +
+    "\1\6\1\0\2\6\11\0\1\6\1\0\3\6\1\176" +
+    "\4\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\6\6\1\255\23\6\1\0\2\6\11\0" +
+    "\1\6\1\0\1\6\1\136\6\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\5\6\1\256" +
+    "\24\6\1\0\2\6\11\0\1\6\1\0\1\257\7\6" +
+    "\6\0\32\6\1\0\2\6\11\0\1\6\1\0\1\6" +
+    "\1\176\6\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\4\6\1\177\2\6\1\147\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\3\6\1\260\4\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\3\6\1\261" +
+    "\4\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\6\6\1\176\23\6\31\0\1\262\75\0" +
+    "\1\263\63\0\1\264\47\0\1\234\45\0\2\6\11\0" +
+    "\1\6\1\0\6\6\1\152\1\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\4\6\1\123" +
+    "\25\6\1\0\2\6\11\0\1\6\1\0\3\6\1\265" +
+    "\4\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\7\6\1\136\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\6\6\1\136\1\6\6\0\32\6\1\0\2\6" +
+    "\11\0\1\6\1\0\3\6\1\123\4\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\23\6" +
+    "\1\266\6\6\1\0\2\6\11\0\1\6\1\0\10\6" +
+    "\6\0\5\6\1\267\24\6\1\0\2\6\11\0\1\6" +
+    "\1\0\10\6\6\0\3\6\1\270\26\6\1\0\2\6" +
+    "\11\0\1\6\1\0\1\123\7\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\1\6\1\152\6\6\6\0" +
+    "\32\6\1\0\2\6\11\0\1\6\1\0\2\6\1\271" +
+    "\5\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\4\6\1\136\25\6\1\0\2\6\11\0" +
+    "\1\6\1\0\4\6\1\123\3\6\6\0\32\6\1\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\5\6\1\272" +
+    "\24\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\1\273\31\6\1\0\2\6\11\0\1\6\1\0\1\274" +
+    "\7\6\6\0\32\6\34\0\1\275\52\0\1\276\45\0" +
+    "\2\6\11\0\1\6\1\0\10\6\6\0\6\6\1\277" +
+    "\23\6\1\0\2\6\11\0\1\6\1\0\10\6\6\0" +
+    "\24\6\1\300\5\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\1\301\31\6\1\0\2\6\11\0\1\6" +
+    "\1\0\3\6\1\224\4\6\6\0\32\6\1\0\2\6" +
+    "\11\0\1\6\1\0\5\6\1\244\2\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\2\6" +
+    "\1\151\27\6\1\0\2\6\11\0\1\6\1\0\10\6" +
+    "\6\0\26\6\1\136\3\6\1\0\2\6\11\0\1\6" +
+    "\1\0\5\6\1\302\2\6\6\0\32\6\43\0\1\234" +
+    "\41\0\1\234\47\0\2\6\11\0\1\6\1\0\1\303" +
+    "\7\6\6\0\32\6\1\0\2\6\11\0\1\6\1\0" +
+    "\10\6\6\0\25\6\1\304\4\6\1\0\2\6\11\0" +
+    "\1\6\1\0\10\6\6\0\7\6\1\136\22\6\1\0" +
+    "\2\6\11\0\1\6\1\0\1\305\7\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\7\6" +
+    "\1\306\22\6\1\0\2\6\11\0\1\6\1\0\10\6" +
+    "\6\0\14\6\1\136\15\6\1\0\2\6\11\0\1\6" +
+    "\1\0\5\6\1\307\2\6\6\0\32\6\1\0\2\6" +
+    "\11\0\1\6\1\0\5\6\1\310\2\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\3\6" +
+    "\1\240\26\6\1\0\2\6\11\0\1\6\1\0\1\6" +
+    "\1\311\6\6\6\0\32\6\1\0\2\6\11\0\1\6" +
+    "\1\0\10\6\6\0\3\6\1\312\26\6\1\0\2\6" +
+    "\11\0\1\6\1\0\5\6\1\313\2\6\6\0\32\6" +
+    "\1\0\2\6\11\0\1\6\1\0\10\6\6\0\7\6" +
     "\1\152\22\6";
 
-  private static int [] zzUnpackTrans() {
-    int [] result = new int[9828];
+  private static int[] zzUnpackTrans() {
+    int[] result = new int[9828];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackTrans(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackTrans(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -404,7 +401,6 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
     return j;
   }
 
-
   /* error codes */
   private static final int ZZ_UNKNOWN_ERROR = 0;
   private static final int ZZ_NO_MATCH = 1;
@@ -414,31 +410,35 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
   private static final String ZZ_ERROR_MSG[] = {
     "Unkown internal scanner error",
     "Error: could not match input",
-    "Error: pushback value was too large"
+    "Error: pushback value was too large",
   };
 
   /**
    * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
    */
-  private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
+  private static final int[] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\4\0\1\11\2\1\1\11\4\1\1\11\2\1\1\11"+
-    "\31\1\1\11\1\1\1\11\2\1\1\11\2\1\1\11"+
-    "\2\1\2\11\23\1\3\0\24\1\2\11\2\1\1\0"+
-    "\24\1\4\0\14\1\1\11\21\1\4\0\22\1\1\11"+
+    "\4\0\1\11\2\1\1\11\4\1\1\11\2\1\1\11" +
+    "\31\1\1\11\1\1\1\11\2\1\1\11\2\1\1\11" +
+    "\2\1\2\11\23\1\3\0\24\1\2\11\2\1\1\0" +
+    "\24\1\4\0\14\1\1\11\21\1\4\0\22\1\1\11" +
     "\2\0\10\1\2\0\15\1";
 
-  private static int [] zzUnpackAttribute() {
-    int [] result = new int[203];
+  private static int[] zzUnpackAttribute() {
+    int[] result = new int[203];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAttribute(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackAttribute(
+    String packed,
+    int offset,
+    int[] result
+  ) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -479,148 +479,144 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
 
   /* user code: */
 
+  /**
+   * Constructor.  This must be here because JFlex does not generate a
+   * no-parameter constructor.
+   */
+  public LuaTokenMaker() {}
 
-	/**
-	 * Constructor.  This must be here because JFlex does not generate a
-	 * no-parameter constructor.
-	 */
-	public LuaTokenMaker() {
-	}
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param tokenType The token's type.
+   */
+  private void addToken(int tokenType) {
+    addToken(zzStartRead, zzMarkedPos - 1, tokenType);
+  }
 
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param tokenType The token's type.
+   */
+  private void addToken(int start, int end, int tokenType) {
+    int so = start + offsetShift;
+    addToken(zzBuffer, start, end, tokenType, so);
+  }
 
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param tokenType The token's type.
-	 */
-	private void addToken(int tokenType) {
-		addToken(zzStartRead, zzMarkedPos-1, tokenType);
-	}
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param array The character array.
+   * @param start The starting offset in the array.
+   * @param end The ending offset in the array.
+   * @param tokenType The token's type.
+   * @param startOffset The offset in the document at which this token
+   *                    occurs.
+   */
+  @Override
+  public void addToken(
+    char[] array,
+    int start,
+    int end,
+    int tokenType,
+    int startOffset
+  ) {
+    super.addToken(array, start, end, tokenType, startOffset);
+    zzStartRead = zzMarkedPos;
+  }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String[] getLineCommentStartAndEnd(int languageIndex) {
+    return new String[] { "--", null };
+  }
 
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param tokenType The token's type.
-	 */
-	private void addToken(int start, int end, int tokenType) {
-		int so = start + offsetShift;
-		addToken(zzBuffer, start,end, tokenType, so);
-	}
+  /**
+   * Returns the first token in the linked list of tokens generated
+   * from <code>text</code>.  This method must be implemented by
+   * subclasses so they can correctly implement syntax highlighting.
+   *
+   * @param text The text from which to get tokens.
+   * @param initialTokenType The token type we should start with.
+   * @param startOffset The offset into the document at which
+   *        <code>text</code> starts.
+   * @return The first <code>Token</code> in a linked list representing
+   *         the syntax highlighted text.
+   */
+  public Token getTokenList(
+    Segment text,
+    int initialTokenType,
+    int startOffset
+  ) {
+    resetTokenList();
+    this.offsetShift = -text.offset + startOffset;
 
+    // Start off in the proper state.
+    int state = Token.NULL;
+    switch (initialTokenType) {
+      case Token.COMMENT_MULTILINE:
+        state = MLC;
+        start = text.offset;
+        break;
+      case Token.LITERAL_STRING_DOUBLE_QUOTE:
+        state = LONGSTRING;
+        start = text.offset;
+        break;
+      default:
+        state = Token.NULL;
+    }
 
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param array The character array.
-	 * @param start The starting offset in the array.
-	 * @param end The ending offset in the array.
-	 * @param tokenType The token's type.
-	 * @param startOffset The offset in the document at which this token
-	 *                    occurs.
-	 */
-	@Override
-	public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
-		super.addToken(array, start,end, tokenType, startOffset);
-		zzStartRead = zzMarkedPos;
-	}
+    s = text;
+    try {
+      yyreset(zzReader);
+      yybegin(state);
+      return yylex();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      return new TokenImpl();
+    }
+  }
 
+  /**
+   * Refills the input buffer.
+   *
+   * @return      <code>true</code> if EOF was reached, otherwise
+   *              <code>false</code>.
+   */
+  private boolean zzRefill() {
+    return zzCurrentPos >= s.offset + s.count;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String[] getLineCommentStartAndEnd(int languageIndex) {
-		return new String[] { "--", null };
-	}
-
-
-	/**
-	 * Returns the first token in the linked list of tokens generated
-	 * from <code>text</code>.  This method must be implemented by
-	 * subclasses so they can correctly implement syntax highlighting.
-	 *
-	 * @param text The text from which to get tokens.
-	 * @param initialTokenType The token type we should start with.
-	 * @param startOffset The offset into the document at which
-	 *        <code>text</code> starts.
-	 * @return The first <code>Token</code> in a linked list representing
-	 *         the syntax highlighted text.
-	 */
-	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
-
-		resetTokenList();
-		this.offsetShift = -text.offset + startOffset;
-
-		// Start off in the proper state.
-		int state = Token.NULL;
-		switch (initialTokenType) {
-			case Token.COMMENT_MULTILINE:
-				state = MLC;
-				start = text.offset;
-				break;
-			case Token.LITERAL_STRING_DOUBLE_QUOTE:
-				state = LONGSTRING;
-				start = text.offset;
-				break;
-			default:
-				state = Token.NULL;
-		}
-
-		s = text;
-		try {
-			yyreset(zzReader);
-			yybegin(state);
-			return yylex();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			return new TokenImpl();
-		}
-
-	}
-
-
-	/**
-	 * Refills the input buffer.
-	 *
-	 * @return      <code>true</code> if EOF was reached, otherwise
-	 *              <code>false</code>.
-	 */
-	private boolean zzRefill() {
-		return zzCurrentPos>=s.offset+s.count;
-	}
-
-
-	/**
-	 * Resets the scanner to read from a new input stream.
-	 * Does not close the old reader.
-	 *
-	 * All internal variables are reset, the old input stream
-	 * <b>cannot</b> be reused (internal buffer is discarded and lost).
-	 * Lexical state is set to <tt>YY_INITIAL</tt>.
-	 *
-	 * @param reader   the new input stream
-	 */
-	public final void yyreset(Reader reader) {
-		// 's' has been updated.
-		zzBuffer = s.array;
-		/*
-		 * We replaced the line below with the two below it because zzRefill
-		 * no longer "refills" the buffer (since the way we do it, it's always
-		 * "full" the first time through, since it points to the segment's
-		 * array).  So, we assign zzEndRead here.
-		 */
-		//zzStartRead = zzEndRead = s.offset;
-		zzStartRead = s.offset;
-		zzEndRead = zzStartRead + s.count - 1;
-		zzCurrentPos = zzMarkedPos = s.offset;
-		zzLexicalState = YYINITIAL;
-		zzReader = reader;
-		zzAtEOF  = false;
-	}
-
-
-
+  /**
+   * Resets the scanner to read from a new input stream.
+   * Does not close the old reader.
+   *
+   * All internal variables are reset, the old input stream
+   * <b>cannot</b> be reused (internal buffer is discarded and lost).
+   * Lexical state is set to <tt>YY_INITIAL</tt>.
+   *
+   * @param reader   the new input stream
+   */
+  public final void yyreset(Reader reader) {
+    // 's' has been updated.
+    zzBuffer = s.array;
+    /*
+     * We replaced the line below with the two below it because zzRefill
+     * no longer "refills" the buffer (since the way we do it, it's always
+     * "full" the first time through, since it points to the segment's
+     * array).  So, we assign zzEndRead here.
+     */
+    //zzStartRead = zzEndRead = s.offset;
+    zzStartRead = s.offset;
+    zzEndRead = zzStartRead + s.count - 1;
+    zzCurrentPos = zzMarkedPos = s.offset;
+    zzLexicalState = YYINITIAL;
+    zzReader = reader;
+    zzAtEOF = false;
+  }
 
   /**
    * Creates a new scanner
@@ -648,30 +644,27 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
    * @param packed   the packed character translation table
    * @return         the unpacked character translation table
    */
-  private static char [] zzUnpackCMap(String packed) {
-    char [] map = new char[0x10000];
-    int i = 0;  /* index in packed string  */
-    int j = 0;  /* index in unpacked array */
+  private static char[] zzUnpackCMap(String packed) {
+    char[] map = new char[0x10000];
+    int i = 0;/* index in packed string  */
+    int j = 0;/* index in unpacked array */
     while (i < 164) {
-      int  count = packed.charAt(i++);
+      int count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
     }
     return map;
   }
 
-
   /**
    * Closes the input stream.
    */
   public final void yyclose() throws java.io.IOException {
-    zzAtEOF = true;            /* indicate end of file */
-    zzEndRead = zzStartRead;  /* invalidate buffer    */
+    zzAtEOF = true;/* indicate end of file */
+    zzEndRead = zzStartRead;/* invalidate buffer    */
 
-    if (zzReader != null)
-      zzReader.close();
+    if (zzReader != null) zzReader.close();
   }
-
 
   /**
    * Returns the current lexical state.
@@ -679,7 +672,6 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
   public final int yystate() {
     return zzLexicalState;
   }
-
 
   /**
    * Enters a new lexical state
@@ -690,14 +682,12 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
     zzLexicalState = newState;
   }
 
-
   /**
    * Returns the text matched by the current regular expression.
    */
   public final String yytext() {
-    return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+    return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
   }
-
 
   /**
    * Returns the character at position <tt>pos</tt> from the
@@ -711,17 +701,15 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
    * @return the character at position pos
    */
   public final char yycharat(int pos) {
-    return zzBuffer[zzStartRead+pos];
+    return zzBuffer[zzStartRead + pos];
   }
-
 
   /**
    * Returns the length of the matched text region.
    */
   public final int yylength() {
-    return zzMarkedPos-zzStartRead;
+    return zzMarkedPos - zzStartRead;
   }
-
 
   /**
    * Reports an error that occured while scanning.
@@ -741,14 +729,12 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
     String message;
     try {
       message = ZZ_ERROR_MSG[errorCode];
-    }
-    catch (ArrayIndexOutOfBoundsException e) {
+    } catch (ArrayIndexOutOfBoundsException e) {
       message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 
     throw new Error(message);
   }
-
 
   /**
    * Pushes the specified amount of characters back into the input stream.
@@ -758,13 +744,11 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
    * @param number  the number of characters to be read again.
    *                This number must not be greater than yylength()!
    */
-  public void yypushback(int number)  {
-    if ( number > yylength() )
-      zzScanError(ZZ_PUSHBACK_2BIG);
+  public void yypushback(int number) {
+    if (number > yylength()) zzScanError(ZZ_PUSHBACK_2BIG);
 
     zzMarkedPos -= number;
   }
-
 
   /**
    * Resumes scanning until the next regular expression is matched,
@@ -781,12 +765,12 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
     int zzCurrentPosL;
     int zzMarkedPosL;
     int zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer;
-    char [] zzCMapL = ZZ_CMAP;
+    char[] zzBufferL = zzBuffer;
+    char[] zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS;
-    int [] zzRowMapL = ZZ_ROWMAP;
-    int [] zzAttrL = ZZ_ATTRIBUTE;
+    int[] zzTransL = ZZ_TRANS;
+    int[] zzRowMapL = ZZ_ROWMAP;
+    int[] zzAttrL = ZZ_ATTRIBUTE;
 
     while (true) {
       zzMarkedPosL = zzMarkedPos;
@@ -797,45 +781,39 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
 
       zzState = zzLexicalState;
 
-
-      zzForAction: {
+      zzForAction:{
         while (true) {
-
-          if (zzCurrentPosL < zzEndReadL)
-            zzInput = zzBufferL[zzCurrentPosL++];
-          else if (zzAtEOF) {
+          if (zzCurrentPosL < zzEndReadL) zzInput =
+            zzBufferL[zzCurrentPosL++]; else if (zzAtEOF) {
             zzInput = YYEOF;
             break zzForAction;
-          }
-          else {
+          } else {
             // store back cached positions
-            zzCurrentPos  = zzCurrentPosL;
-            zzMarkedPos   = zzMarkedPosL;
+            zzCurrentPos = zzCurrentPosL;
+            zzMarkedPos = zzMarkedPosL;
             boolean eof = zzRefill();
             // get translated positions and possibly new buffer
-            zzCurrentPosL  = zzCurrentPos;
-            zzMarkedPosL   = zzMarkedPos;
-            zzBufferL      = zzBuffer;
-            zzEndReadL     = zzEndRead;
+            zzCurrentPosL = zzCurrentPos;
+            zzMarkedPosL = zzMarkedPos;
+            zzBufferL = zzBuffer;
+            zzEndReadL = zzEndRead;
             if (eof) {
               zzInput = YYEOF;
               break zzForAction;
-            }
-            else {
+            } else {
               zzInput = zzBufferL[zzCurrentPosL++];
             }
           }
-          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+          int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
           if (zzNext == -1) break zzForAction;
           zzState = zzNext;
 
           int zzAttributes = zzAttrL[zzState];
-          if ( (zzAttributes & 1) == 1 ) {
+          if ((zzAttributes & 1) == 1) {
             zzAction = zzState;
             zzMarkedPosL = zzCurrentPosL;
-            if ( (zzAttributes & 8) == 8 ) break zzForAction;
+            if ((zzAttributes & 8) == 8) break zzForAction;
           }
-
         }
       }
 
@@ -844,127 +822,197 @@ public class LuaTokenMaker extends AbstractJFlexTokenMaker {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 3:
-          { addNullToken(); return firstToken;
-          }
-        case 24: break;
-        case 13:
-          { addToken(Token.LITERAL_CHAR);
-          }
-        case 25: break;
-        case 15:
-          { start = zzMarkedPos-2; yybegin(LONGSTRING);
-          }
-        case 26: break;
-        case 19:
-          { yybegin(YYINITIAL); addToken(start,zzStartRead+1, Token.COMMENT_MULTILINE);
-          }
-        case 27: break;
-        case 4:
-          { addToken(Token.WHITESPACE);
-          }
-        case 28: break;
-        case 2:
-          { addToken(Token.LITERAL_NUMBER_FLOAT);
-          }
-        case 29: break;
-        case 17:
-          { addToken(Token.RESERVED_WORD);
-          }
-        case 30: break;
-        case 21:
-          { start = zzMarkedPos-4; yybegin(MLC);
-          }
-        case 31: break;
-        case 7:
-          { addToken(Token.SEPARATOR);
-          }
-        case 32: break;
-        case 1:
-          { addToken(Token.IDENTIFIER);
-          }
-        case 33: break;
-        case 18:
-          { addToken(Token.FUNCTION);
-          }
-        case 34: break;
-        case 5:
-          { addToken(Token.ERROR_CHAR); addNullToken(); return firstToken;
-          }
-        case 35: break;
-        case 6:
-          { addToken(Token.ERROR_STRING_DOUBLE); addNullToken(); return firstToken;
-          }
-        case 36: break;
-        case 23:
-          { addToken(Token.DATA_TYPE);
-          }
-        case 37: break;
-        case 22:
-          { addToken(Token.LITERAL_BOOLEAN);
-          }
-        case 38: break;
-        case 20:
-          { yybegin(YYINITIAL); addToken(start,zzStartRead+1, Token.LITERAL_STRING_DOUBLE_QUOTE);
-          }
-        case 39: break;
-        case 14:
-          { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
-          }
-        case 40: break;
-        case 11:
-          { addToken(start,zzStartRead-1, Token.LITERAL_STRING_DOUBLE_QUOTE); return firstToken;
-          }
-        case 41: break;
-        case 12:
-          { addToken(start,zzStartRead-1, Token.COMMENT_EOL); return firstToken;
-          }
-        case 42: break;
-        case 8:
-          { addToken(Token.OPERATOR);
-          }
-        case 43: break;
-        case 16:
-          { start = zzMarkedPos-2; yybegin(LINECOMMENT);
-          }
-        case 44: break;
-        case 9:
           {
+            addNullToken();
+            return firstToken;
           }
-        case 45: break;
+        case 24:
+          break;
+        case 13:
+          {
+            addToken(Token.LITERAL_CHAR);
+          }
+        case 25:
+          break;
+        case 15:
+          {
+            start = zzMarkedPos - 2;
+            yybegin(LONGSTRING);
+          }
+        case 26:
+          break;
+        case 19:
+          {
+            yybegin(YYINITIAL);
+            addToken(start, zzStartRead + 1, Token.COMMENT_MULTILINE);
+          }
+        case 27:
+          break;
+        case 4:
+          {
+            addToken(Token.WHITESPACE);
+          }
+        case 28:
+          break;
+        case 2:
+          {
+            addToken(Token.LITERAL_NUMBER_FLOAT);
+          }
+        case 29:
+          break;
+        case 17:
+          {
+            addToken(Token.RESERVED_WORD);
+          }
+        case 30:
+          break;
+        case 21:
+          {
+            start = zzMarkedPos - 4;
+            yybegin(MLC);
+          }
+        case 31:
+          break;
+        case 7:
+          {
+            addToken(Token.SEPARATOR);
+          }
+        case 32:
+          break;
+        case 1:
+          {
+            addToken(Token.IDENTIFIER);
+          }
+        case 33:
+          break;
+        case 18:
+          {
+            addToken(Token.FUNCTION);
+          }
+        case 34:
+          break;
+        case 5:
+          {
+            addToken(Token.ERROR_CHAR);
+            addNullToken();
+            return firstToken;
+          }
+        case 35:
+          break;
+        case 6:
+          {
+            addToken(Token.ERROR_STRING_DOUBLE);
+            addNullToken();
+            return firstToken;
+          }
+        case 36:
+          break;
+        case 23:
+          {
+            addToken(Token.DATA_TYPE);
+          }
+        case 37:
+          break;
+        case 22:
+          {
+            addToken(Token.LITERAL_BOOLEAN);
+          }
+        case 38:
+          break;
+        case 20:
+          {
+            yybegin(YYINITIAL);
+            addToken(start, zzStartRead + 1, Token.LITERAL_STRING_DOUBLE_QUOTE);
+          }
+        case 39:
+          break;
+        case 14:
+          {
+            addToken(Token.LITERAL_STRING_DOUBLE_QUOTE);
+          }
+        case 40:
+          break;
+        case 11:
+          {
+            addToken(start, zzStartRead - 1, Token.LITERAL_STRING_DOUBLE_QUOTE);
+            return firstToken;
+          }
+        case 41:
+          break;
+        case 12:
+          {
+            addToken(start, zzStartRead - 1, Token.COMMENT_EOL);
+            return firstToken;
+          }
+        case 42:
+          break;
+        case 8:
+          {
+            addToken(Token.OPERATOR);
+          }
+        case 43:
+          break;
+        case 16:
+          {
+            start = zzMarkedPos - 2;
+            yybegin(LINECOMMENT);
+          }
+        case 44:
+          break;
+        case 9:
+          {}
+        case 45:
+          break;
         case 10:
-          { addToken(start,zzStartRead-1, Token.COMMENT_MULTILINE); return firstToken;
+          {
+            addToken(start, zzStartRead - 1, Token.COMMENT_MULTILINE);
+            return firstToken;
           }
-        case 46: break;
+        case 46:
+          break;
         default:
           if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
             zzAtEOF = true;
             switch (zzLexicalState) {
-            case YYINITIAL: {
-              addNullToken(); return firstToken;
+              case YYINITIAL:
+                {
+                  addNullToken();
+                  return firstToken;
+                }
+              case 204:
+                break;
+              case LONGSTRING:
+                {
+                  addToken(
+                    start,
+                    zzStartRead - 1,
+                    Token.LITERAL_STRING_DOUBLE_QUOTE
+                  );
+                  return firstToken;
+                }
+              case 205:
+                break;
+              case LINECOMMENT:
+                {
+                  addToken(start, zzStartRead - 1, Token.COMMENT_EOL);
+                  return firstToken;
+                }
+              case 206:
+                break;
+              case MLC:
+                {
+                  addToken(start, zzStartRead - 1, Token.COMMENT_MULTILINE);
+                  return firstToken;
+                }
+              case 207:
+                break;
+              default:
+                return null;
             }
-            case 204: break;
-            case LONGSTRING: {
-              addToken(start,zzStartRead-1, Token.LITERAL_STRING_DOUBLE_QUOTE); return firstToken;
-            }
-            case 205: break;
-            case LINECOMMENT: {
-              addToken(start,zzStartRead-1, Token.COMMENT_EOL); return firstToken;
-            }
-            case 206: break;
-            case MLC: {
-              addToken(start,zzStartRead-1, Token.COMMENT_MULTILINE); return firstToken;
-            }
-            case 207: break;
-            default:
-            return null;
-            }
-          }
-          else {
+          } else {
             zzScanError(ZZ_NO_MATCH);
           }
       }
     }
   }
-
-
 }

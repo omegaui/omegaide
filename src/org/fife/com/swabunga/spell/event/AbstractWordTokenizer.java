@@ -21,7 +21,6 @@ package org.fife.com.swabunga.spell.event;
 
 import java.text.BreakIterator;
 
-
 /**
  * This class tokenizes a input string.
  *
@@ -76,8 +75,7 @@ public abstract class AbstractWordTokenizer implements WordTokenizer {
    * @return number of words so far iterated.
    */
   @Override
-public int getCurrentWordCount() {
-
+  public int getCurrentWordCount() {
     return wordCount;
   }
 
@@ -88,8 +86,7 @@ public int getCurrentWordCount() {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public int getCurrentWordEnd() {
-
+  public int getCurrentWordEnd() {
     if (currentWord == null) {
       throw new WordNotFoundException("No Words in current String");
     }
@@ -104,8 +101,7 @@ public int getCurrentWordEnd() {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public int getCurrentWordPosition() {
-
+  public int getCurrentWordPosition() {
     if (currentWord == null) {
       throw new WordNotFoundException("No Words in current String");
     }
@@ -119,8 +115,7 @@ public int getCurrentWordPosition() {
    * @return true if there are further words in the text.
    */
   @Override
-public boolean hasMoreWords() {
-
+  public boolean hasMoreWords() {
     return finder.hasNext();
   }
 
@@ -131,7 +126,7 @@ public boolean hasMoreWords() {
    * @throws WordNotFoundException search string contains no more words.
    */
   @Override
-public String nextWord() {
+  public String nextWord() {
     currentWord = finder.next();
 
     return currentWord.getText();
@@ -144,7 +139,7 @@ public String nextWord() {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public abstract void replaceWord(String newWord);
+  public abstract void replaceWord(String newWord);
 
   /**
    * Returns the current text that is being tokenized (includes any changes
@@ -153,8 +148,7 @@ public abstract void replaceWord(String newWord);
    * @return the text being tokenized.
    */
   @Override
-public String getContext() {
-
+  public String getContext() {
     return finder.toString();
   }
 
@@ -165,8 +159,7 @@ public String getContext() {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public boolean isNewSentence() {
-
+  public boolean isNewSentence() {
     return finder.startsSentence();
   }
 }

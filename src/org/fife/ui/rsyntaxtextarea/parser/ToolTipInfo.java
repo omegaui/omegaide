@@ -9,9 +9,7 @@
 package org.fife.ui.rsyntaxtextarea.parser;
 
 import java.net.URL;
-
 import javax.swing.event.HyperlinkListener;
-
 
 /**
  * Wrapper for a tool tip and a listener for hyperlink events in the tool
@@ -25,70 +23,63 @@ import javax.swing.event.HyperlinkListener;
  */
 public class ToolTipInfo {
 
-	private String text;
-	private HyperlinkListener listener;
-	private URL imageBase;
+  private String text;
+  private HyperlinkListener listener;
+  private URL imageBase;
 
+  /**
+   * Constructor.
+   *
+   * @param text The tool tip text, or <code>null</code> for none.
+   * @param listener The hyperlink listener, or <code>null</code> for none.
+   */
+  public ToolTipInfo(String text, HyperlinkListener listener) {
+    this(text, listener, null);
+  }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param text The tool tip text, or <code>null</code> for none.
-	 * @param listener The hyperlink listener, or <code>null</code> for none.
-	 */
-	public ToolTipInfo(String text, HyperlinkListener listener) {
-		this(text, listener, null);
-	}
+  /**
+   * Constructor.
+   *
+   * @param text The tool tip text, or <code>null</code> for none.
+   * @param l The hyperlink listener, or <code>null</code> for none.
+   * @param imageBase The base URL for images in the HTML <code>text</code>,
+   *        or <code>null</code> for the default.
+   */
+  public ToolTipInfo(String text, HyperlinkListener l, URL imageBase) {
+    this.text = text;
+    this.listener = l;
+    this.imageBase = imageBase;
+  }
 
+  /**
+   * Returns the listener to call when hyperlinks are clicked in the tool
+   * tip.
+   *
+   * @return The listener, or <code>null</code> for none.
+   */
+  public HyperlinkListener getHyperlinkListener() {
+    return listener;
+  }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param text The tool tip text, or <code>null</code> for none.
-	 * @param l The hyperlink listener, or <code>null</code> for none.
-	 * @param imageBase The base URL for images in the HTML <code>text</code>,
-	 *        or <code>null</code> for the default.
-	 */
-	public ToolTipInfo(String text, HyperlinkListener l, URL imageBase) {
-		this.text = text;
-		this.listener = l;
-		this.imageBase = imageBase;
-	}
+  /**
+   * Returns the base URL that any images in the HTML tool tip live in.
+   * This allows you to reference images in a jar file in your
+   * {@link org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip}s.
+   * Note that if what {@link #getToolTipText()} returns isn't HTML, this
+   * value is effectively ignored.
+   *
+   * @return The image base, or <code>null</code> for the default.
+   */
+  public URL getImageBase() {
+    return imageBase;
+  }
 
-
-	/**
-	 * Returns the listener to call when hyperlinks are clicked in the tool
-	 * tip.
-	 *
-	 * @return The listener, or <code>null</code> for none.
-	 */
-	public HyperlinkListener getHyperlinkListener() {
-		return listener;
-	}
-
-
-	/**
-	 * Returns the base URL that any images in the HTML tool tip live in.
-	 * This allows you to reference images in a jar file in your
-	 * {@link org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip}s.
-	 * Note that if what {@link #getToolTipText()} returns isn't HTML, this
-	 * value is effectively ignored.
-	 *
-	 * @return The image base, or <code>null</code> for the default.
-	 */
-	public URL getImageBase() {
-		return imageBase;
-	}
-
-
-	/**
-	 * Returns the tool tip text to display.
-	 *
-	 * @return The tool tip text, or <code>null</code> for none.
-	 */
-	public String getToolTipText() {
-		return text;
-	}
-
-
+  /**
+   * Returns the tool tip text to display.
+   *
+   * @return The tool tip text, or <code>null</code> for none.
+   */
+  public String getToolTipText() {
+    return text;
+  }
 }

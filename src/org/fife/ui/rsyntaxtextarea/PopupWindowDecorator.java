@@ -11,7 +11,6 @@ package org.fife.ui.rsyntaxtextarea;
 
 import javax.swing.JWindow;
 
-
 /**
  * A hook allowing hosting applications to decorate JWindows created by the
  * AutoComplete library.  For example, you could use the
@@ -23,46 +22,41 @@ import javax.swing.JWindow;
  */
 public abstract class PopupWindowDecorator {
 
-	/**
-	 * The singleton instance of this class.
-	 */
-	private static PopupWindowDecorator decorator;
+  /**
+   * The singleton instance of this class.
+   */
+  private static PopupWindowDecorator decorator;
 
+  /**
+   * Callback called whenever an appropriate JWindow is created by the
+   * AutoComplete library.  Implementations can decorate the window however
+   * they see fit.
+   *
+   * @param window The newly-created window.
+   */
+  public abstract void decorate(JWindow window);
 
-	/**
-	 * Callback called whenever an appropriate JWindow is created by the
-	 * AutoComplete library.  Implementations can decorate the window however
-	 * they see fit.
-	 *
-	 * @param window The newly-created window.
-	 */
-	public abstract void decorate(JWindow window);
+  /**
+   * Returns the singleton instance of this class.  This should only be
+   * called on the EDT.
+   *
+   * @return The singleton instance of this class, or <code>null</code>
+   *         for none.
+   * @see #set(PopupWindowDecorator)
+   */
+  public static PopupWindowDecorator get() {
+    return decorator;
+  }
 
-
-	/**
-	 * Returns the singleton instance of this class.  This should only be
-	 * called on the EDT.
-	 *
-	 * @return The singleton instance of this class, or <code>null</code>
-	 *         for none.
-	 * @see #set(PopupWindowDecorator)
-	 */
-	public static PopupWindowDecorator get() {
-		return decorator;
-	}
-
-
-	/**
-	 * Sets the singleton instance of this class.  This should only be called
-	 * on the EDT.
-	 *
-	 * @param decorator The new instance of this class.  This may be
-	 *        <code>null</code>.
-	 * @see #get()
-	 */
-	public static void set(PopupWindowDecorator decorator) {
-		PopupWindowDecorator.decorator = decorator;
-	}
-
-
+  /**
+   * Sets the singleton instance of this class.  This should only be called
+   * on the EDT.
+   *
+   * @param decorator The new instance of this class.  This may be
+   *        <code>null</code>.
+   * @see #get()
+   */
+  public static void set(PopupWindowDecorator decorator) {
+    PopupWindowDecorator.decorator = decorator;
+  }
 }

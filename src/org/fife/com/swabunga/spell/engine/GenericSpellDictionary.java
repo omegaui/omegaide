@@ -46,30 +46,30 @@ import java.util.Vector;
  */
 public class GenericSpellDictionary extends SpellDictionaryASpell {
 
-//tech_monkey: the alphabet / replace list stuff has been moved into the Transformator classes,
-//since they are so closely tied to how the phonetic transformations are done.
-//    /**
-//     * This replace list is used if no phonetic file is supplied or it doesn't
-//     * contain the alphabet.
-//     */
-//    protected static final char[] englishAlphabet =
-
+  //tech_monkey: the alphabet / replace list stuff has been moved into the Transformator classes,
+  //since they are so closely tied to how the phonetic transformations are done.
+  //    /**
+  //     * This replace list is used if no phonetic file is supplied or it doesn't
+  //     * contain the alphabet.
+  //     */
+  //    protected static final char[] englishAlphabet =
 
   /** A field indicating the initial hash map capacity (16KB) for the main
    *  dictionary hash map. Interested to see what the performance of a
    *  smaller initial capacity is like.
    */
-  private final static int INITIAL_CAPACITY = 16 * 1024;
+  private static final int INITIAL_CAPACITY = 16 * 1024;
 
   /**
    * The hashmap that contains the word dictionary. The map is hashed on the doublemeta
    * code. The map entry contains a LinkedList of words that have the same double meta code.
    */
-  protected HashMap<String, LinkedList<String>> mainDictionary = new HashMap<>(INITIAL_CAPACITY);
+  protected HashMap<String, LinkedList<String>> mainDictionary = new HashMap<>(
+    INITIAL_CAPACITY
+  );
 
   /** Holds the dictionary file for appending*/
   private File dictFile = null;
-
 
   /**
    * Dictionary constructor that uses the DoubleMeta class with the
@@ -80,7 +80,8 @@ public class GenericSpellDictionary extends SpellDictionaryASpell {
    * @throws java.io.IOException when problems occurs while reading the words
    * list file
    */
-  public GenericSpellDictionary(File wordList) throws FileNotFoundException, IOException {
+  public GenericSpellDictionary(File wordList)
+    throws FileNotFoundException, IOException {
     this(wordList, null);
   }
 
@@ -96,13 +97,12 @@ public class GenericSpellDictionary extends SpellDictionaryASpell {
    * @throws java.io.IOException when problems occurs while reading the
    * words list or phonetic file
    */
-  public GenericSpellDictionary(File wordList, File phonetic) throws FileNotFoundException, IOException {
-
+  public GenericSpellDictionary(File wordList, File phonetic)
+    throws FileNotFoundException, IOException {
     super(phonetic);
     dictFile = wordList;
     createDictionary(new BufferedReader(new FileReader(wordList)));
   }
-
 
   /**
    * Add a word permanently to the dictionary (and the dictionary file).
@@ -113,18 +113,18 @@ public class GenericSpellDictionary extends SpellDictionaryASpell {
   @Override
   public boolean addWord(String word) {
     putWord(word);
-    if (dictFile!=null) {
-	    try {
-	      FileWriter w = new FileWriter(dictFile.toString(), true);
-	      // Open with append.
-	      w.write(word);
-	      w.write("\n");
-	      w.close();
-	    } catch (IOException ex) {
-	      System.out.println("Error writing to dictionary file");
-	      ex.printStackTrace();
-	      return false;
-	    }
+    if (dictFile != null) {
+      try {
+        FileWriter w = new FileWriter(dictFile.toString(), true);
+        // Open with append.
+        w.write(word);
+        w.write("\n");
+        w.close();
+      } catch (IOException ex) {
+        System.out.println("Error writing to dictionary file");
+        ex.printStackTrace();
+        return false;
+      }
     }
     return true;
   }
@@ -172,8 +172,7 @@ public class GenericSpellDictionary extends SpellDictionaryASpell {
   public List<String> getWords(String code) {
     //Check the main dictionary.
     List<String> mainDictResult = mainDictionary.get(code);
-    if (mainDictResult == null)
-      return new Vector<>();
+    if (mainDictResult == null) return new Vector<>();
     return mainDictResult;
   }
 
@@ -185,12 +184,10 @@ public class GenericSpellDictionary extends SpellDictionaryASpell {
   @Override
   public boolean isCorrect(String word) {
     List<String> possible = getWords(getCode(word));
-    if (possible.contains(word))
-      return true;
+    if (possible.contains(word)) return true;
     //JMH should we always try the lowercase version. If I dont then capitalised
     //words are always returned as incorrect.
-    else if (possible.contains(word.toLowerCase()))
-      return true;
+    else if (possible.contains(word.toLowerCase())) return true;
     return false;
   }
 }

@@ -6,7 +6,6 @@
  */
 package org.fife.ui.autocomplete;
 
-
 /**
  * Passed to {@link ExternalURLHandler}s as a way for them to display a summary
  * for a new completion in response to a link event.
@@ -16,16 +15,12 @@ package org.fife.ui.autocomplete;
  * @see ExternalURLHandler
  */
 public interface DescWindowCallback {
-
-
-	/**
-	 * Callback allowing a new code completion's description to be displayed
-	 * in the description window.
-	 *
-	 * @param completion The new completion.
-	 * @param anchor The anchor to scroll to, or <code>null</code> if none.
-	 */
-	void showSummaryFor(Completion completion, String anchor);
-
-
+  /**
+   * Callback allowing a new code completion's description to be displayed
+   * in the description window.
+   *
+   * @param completion The new completion.
+   * @param anchor The anchor to scroll to, or <code>null</code> if none.
+   */
+  void showSummaryFor(Completion completion, String anchor);
 }

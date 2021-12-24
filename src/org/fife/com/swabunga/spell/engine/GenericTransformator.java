@@ -19,24 +19,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 package org.fife.com.swabunga.spell.engine;
 
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Vector;
-
 import org.fife.com.swabunga.util.StringUtility;
 
 /**
- * A Generic implementation of a transformator takes an 
+ * A Generic implementation of a transformator takes an
  * <a href="http://aspell.net/man-html/Phonetic-Code.html">
- * aspell phonetics file</a> and constructs some sort of transformation 
+ * aspell phonetics file</a> and constructs some sort of transformation
  * table using the inner class TransformationRule.
  * </p>
  * Basically, each transformation rule represent a line in the phonetic file.
  * One line contains two groups of characters separated by white space(s).
- * The first group is the <em>match expression</em>. 
+ * The first group is the <em>match expression</em>.
  * The <em>match expression</em> describe letters to associate with a syllable.
- * The second group is the <em>replacement expression</em> giving the phonetic 
+ * The second group is the <em>replacement expression</em> giving the phonetic
  * equivalent of the <em>match expression</em>.
  *
  * @see SpellDictionaryASpell SpellDictionaryASpell for information on getting
@@ -46,12 +44,38 @@ import org.fife.com.swabunga.util.StringUtility;
  */
 public class GenericTransformator implements Transformator {
 
-
   /**
    * This replace list is used if no phonetic file is supplied or it doesn't
    * contain the alphabet.
    */
-  private static final char[] defaultEnglishAlphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+  private static final char[] defaultEnglishAlphabet = {
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+  };
 
   /**
    * The alphabet start marker.
@@ -64,19 +88,23 @@ public class GenericTransformator implements Transformator {
    */
   public static final char ALPHABET_END = ']';
   /**
-   * Phonetic file keyword indicating that a different alphabet is used 
+   * Phonetic file keyword indicating that a different alphabet is used
    * for this language. The keyword must be followed an
-   * {@link GenericTransformator#ALPHABET_START ALPHABET_START} marker, 
+   * {@link GenericTransformator#ALPHABET_START ALPHABET_START} marker,
    * a list of characters defining the alphabet and a
    * {@link GenericTransformator#ALPHABET_END ALPHABET_END} marker.
    */
   public static final String KEYWORD_ALPHBET = "alphabet";
   /**
-   * Phonetic file lines starting with the keywords are skipped. 
+   * Phonetic file lines starting with the keywords are skipped.
    * The key words are: version, followup, collapse_result.
    * Comments, starting with '#', are also skipped to the end of line.
    */
-  public static final String[] IGNORED_KEYWORDS = {"version", "followup", "collapse_result"};
+  public static final String[] IGNORED_KEYWORDS = {
+    "version",
+    "followup",
+    "collapse_result",
+  };
 
   /**
    * Start a group of characters which can be appended to the match expression
@@ -111,7 +139,6 @@ public class GenericTransformator implements Transformator {
   public GenericTransformator(File phonetic) throws IOException {
     buildRules(new BufferedReader(new FileReader(phonetic)));
     alphabetString = washAlphabetIntoReplaceList(getReplaceList());
-
   }
 
   /**
@@ -121,8 +148,13 @@ public class GenericTransformator implements Transformator {
    * @throws java.io.IOException indicates a problem while reading
    * the phonetic file
    */
-  public GenericTransformator(File phonetic, String encoding) throws IOException {
-    buildRules(new BufferedReader(new InputStreamReader(new FileInputStream(phonetic), encoding)));
+  public GenericTransformator(File phonetic, String encoding)
+    throws IOException {
+    buildRules(
+      new BufferedReader(
+        new InputStreamReader(new FileInputStream(phonetic), encoding)
+      )
+    );
     alphabetString = washAlphabetIntoReplaceList(getReplaceList());
   }
 
@@ -150,27 +182,25 @@ public class GenericTransformator implements Transformator {
    * @return The washed alphabet to be used as replace list.
    */
   private char[] washAlphabetIntoReplaceList(char[] alphabet) {
-
     HashMap<String, Character> letters = new HashMap<>(alphabet.length);
 
-      for (char c : alphabet) {
-          String tmp = String.valueOf(c);
-          String code = transform(tmp);
-          if (!letters.containsKey(code)) {
-              letters.put(code, c);
-          }
+    for (char c : alphabet) {
+      String tmp = String.valueOf(c);
+      String code = transform(tmp);
+      if (!letters.containsKey(code)) {
+        letters.put(code, c);
       }
+    }
 
     Object[] tmpCharacters = letters.values().toArray();
     char[] washedArray = new char[tmpCharacters.length];
 
     for (int i = 0; i < tmpCharacters.length; i++) {
-      washedArray[i] = (Character)tmpCharacters[i];
+      washedArray[i] = (Character) tmpCharacters[i];
     }
 
     return washedArray;
   }
-
 
   /**
    * Takes out all single character replacements and put them in a char array.
@@ -182,13 +212,13 @@ public class GenericTransformator implements Transformator {
     TransformationRule rule;
     Vector<String> tmp = new Vector<>();
 
-    if (ruleArray == null)
-      return null;
-      for (Object o : ruleArray) {
-          rule = (TransformationRule)o;
-          if (rule.getReplaceExp().length() == 1)
-              tmp.addElement(rule.getReplaceExp());
-      }
+    if (ruleArray == null) return null;
+    for (Object o : ruleArray) {
+      rule = (TransformationRule) o;
+      if (rule.getReplaceExp().length() == 1) tmp.addElement(
+        rule.getReplaceExp()
+      );
+    }
     replacements = new char[tmp.size()];
     for (int i = 0; i < tmp.size(); i++) {
       replacements[i] = tmp.elementAt(i).charAt(0);
@@ -202,7 +232,7 @@ public class GenericTransformator implements Transformator {
    * @return char[] An array of chars representing the alphabet or null if no alphabet was available.
    */
   @Override
-public char[] getReplaceList() {
+  public char[] getReplaceList() {
     return alphabetString;
   }
 
@@ -212,10 +242,8 @@ public char[] getReplaceList() {
    * @return the phonetic transformation of the word
    */
   @Override
-public String transform(String word) {
-
-    if (ruleArray == null)
-      return null;
+  public String transform(String word) {
+    if (ruleArray == null) return null;
 
     TransformationRule rule;
     // robert: Use StringBuilder
@@ -224,33 +252,41 @@ public String transform(String word) {
     int startPos = 0, add = 1;
 
     while (startPos < strLength) {
-
       add = 1;
       if (Character.isDigit(str.charAt(startPos))) {
-        StringUtility.replace(str, startPos, startPos + DIGITCODE.length(), DIGITCODE);
+        StringUtility.replace(
+          str,
+          startPos,
+          startPos + DIGITCODE.length(),
+          DIGITCODE
+        );
         startPos += add;
         continue;
       }
 
-        for (Object o : ruleArray) {
-            //System.out.println("Testing rule#:"+i);
-            rule = (TransformationRule)o;
-            if (rule.startsWithExp() && startPos > 0)
-                continue;
-            if (startPos + rule.lengthOfMatch() > strLength) {
-                continue;
-            }
-            if (rule.isMatching(str, startPos)) {
-                String replaceExp = rule.getReplaceExp();
-
-                add = replaceExp.length();
-                StringUtility.replace(str, startPos, startPos + rule.getTakeOut(), replaceExp);
-                strLength -= rule.getTakeOut();
-                strLength += add;
-                //System.out.println("Replacing with rule#:"+i+" add="+add);
-                break;
-            }
+      for (Object o : ruleArray) {
+        //System.out.println("Testing rule#:"+i);
+        rule = (TransformationRule) o;
+        if (rule.startsWithExp() && startPos > 0) continue;
+        if (startPos + rule.lengthOfMatch() > strLength) {
+          continue;
         }
+        if (rule.isMatching(str, startPos)) {
+          String replaceExp = rule.getReplaceExp();
+
+          add = replaceExp.length();
+          StringUtility.replace(
+            str,
+            startPos,
+            startPos + rule.getTakeOut(),
+            replaceExp
+          );
+          strLength -= rule.getTakeOut();
+          strLength += add;
+          //System.out.println("Replacing with rule#:"+i+" add="+add);
+          break;
+        }
+      }
       startPos += add;
     }
     //System.out.println(word);
@@ -271,12 +307,10 @@ public String transform(String word) {
 
   // Here is where the real work of reading the phonetics file is done.
   private void buildRule(String str, Vector<TransformationRule> ruleList) {
-    if (str.length() < 1)
-      return;
-      for (String ignoredKeyword : IGNORED_KEYWORDS) {
-          if (str.startsWith(ignoredKeyword))
-              return;
-      }
+    if (str.length() < 1) return;
+    for (String ignoredKeyword : IGNORED_KEYWORDS) {
+      if (str.startsWith(ignoredKeyword)) return;
+    }
 
     // A different alphabet is used for this language, will be read into
     // the alphabetString variable.
@@ -290,19 +324,16 @@ public String transform(String word) {
     }
 
     // str contains two groups of characters separated by white space(s).
-    // The fisrt group is the "match expression". The second group is the 
-    // "replacement expression" giving the phonetic equivalent of the 
+    // The fisrt group is the "match expression". The second group is the
+    // "replacement expression" giving the phonetic equivalent of the
     // "match expression".
     TransformationRule rule = null;
     // robert: Prefer StringBuilder here
     StringBuilder matchExp = new StringBuilder();
     StringBuilder replaceExp = new StringBuilder();
-    boolean start = false,
-        end = false;
-    int takeOutPart = 0,
-        matchLength = 0;
-    boolean match = true,
-        inMulti = false;
+    boolean start = false, end = false;
+    int takeOutPart = 0, matchLength = 0;
+    boolean match = true, inMulti = false;
     for (int i = 0; i < str.length(); i++) {
       if (Character.isWhitespace(str.charAt(i))) {
         match = false;
@@ -314,15 +345,13 @@ public String transform(String word) {
               takeOutPart++;
               matchLength++;
             }
-            if (str.charAt(i) == STARTMULTI || str.charAt(i) == ENDMULTI)
-              inMulti = !inMulti;
+            if (
+              str.charAt(i) == STARTMULTI || str.charAt(i) == ENDMULTI
+            ) inMulti = !inMulti;
           }
-          if (str.charAt(i) == '-')
-            takeOutPart--;
-          if (str.charAt(i) == '^')
-            start = true;
-          if (str.charAt(i) == '$')
-            end = true;
+          if (str.charAt(i) == '-') takeOutPart--;
+          if (str.charAt(i) == '^') start = true;
+          if (str.charAt(i) == '$') end = true;
         } else {
           replaceExp.append(str.charAt(i));
         }
@@ -332,15 +361,29 @@ public String transform(String word) {
       replaceExp = new StringBuilder();
       //System.out.println("Changing _ to \"\" for "+matchExp.toString());
     }
-    rule = new TransformationRule(matchExp.toString(), replaceExp.toString(), takeOutPart, matchLength, start, end);
+    rule =
+      new TransformationRule(
+        matchExp.toString(),
+        replaceExp.toString(),
+        takeOutPart,
+        matchLength,
+        start,
+        end
+      );
     //System.out.println(rule.toString());
     ruleList.addElement(rule);
   }
 
   // Chars with special meaning to aspell. Not everyone is implemented here.
   private boolean isReservedChar(char ch) {
-    if (ch == '<' || ch == '>' || ch == '^' || ch == '$' || ch == '-' || Character.isDigit(ch))
-      return true;
+    if (
+      ch == '<' ||
+      ch == '>' ||
+      ch == '^' ||
+      ch == '$' ||
+      ch == '-' ||
+      Character.isDigit(ch)
+    ) return true;
     return false;
   }
 
@@ -355,9 +398,9 @@ public String transform(String word) {
 
   // Inner Classes
   /*
-  * Holds the match string and the replace string and all the rule attributes.
-  * Is responsible for indicating matches.
-  */
+   * Holds the match string and the replace string and all the rule attributes.
+   * Is responsible for indicating matches.
+   */
   private static class TransformationRule { // robert: make inner class static
 
     private String replace;
@@ -368,7 +411,14 @@ public String transform(String word) {
     private boolean start, end;
 
     // Constructor
-    public TransformationRule(String match, String replace, int takeout, int matchLength, boolean start, boolean end) {
+    public TransformationRule(
+      String match,
+      String replace,
+      int takeout,
+      int matchLength,
+      boolean start,
+      boolean end
+    ) {
       this.match = match.toCharArray();
       this.replace = replace;
       this.takeOut = takeout;
@@ -378,44 +428,31 @@ public String transform(String word) {
     }
 
     /*
-    * Returns true if word from pos and forward matches the match string.
-    * Precondition: wordPos+matchLength<word.length()
-    */
+     * Returns true if word from pos and forward matches the match string.
+     * Precondition: wordPos+matchLength<word.length()
+     */
     // robert: Prefer CharSequence interface here
     public boolean isMatching(CharSequence word, int wordPos) {
       boolean matching = true, inMulti = false, multiMatch = false;
       char matchCh;
 
-        for (char c : match) {
-            matchCh = c;
-            if (matchCh == STARTMULTI || matchCh == ENDMULTI) {
-                inMulti = !inMulti;
-                if (!inMulti)
-                    matching = matching & multiMatch;
-                else
-                    multiMatch = false;
-            }
-            else {
-                if (matchCh != word.charAt(wordPos)) {
-                    if (inMulti)
-                        multiMatch = multiMatch | false;
-                    else
-                        matching = false;
-                }
-                else {
-                    if (inMulti)
-                        multiMatch = multiMatch | true;
-                    else
-                        matching = true;
-                }
-                if (!inMulti)
-                    wordPos++;
-                if (!matching)
-                    break;
-            }
+      for (char c : match) {
+        matchCh = c;
+        if (matchCh == STARTMULTI || matchCh == ENDMULTI) {
+          inMulti = !inMulti;
+          if (!inMulti) matching = matching & multiMatch; else multiMatch =
+            false;
+        } else {
+          if (matchCh != word.charAt(wordPos)) {
+            if (inMulti) multiMatch = multiMatch | false; else matching = false;
+          } else {
+            if (inMulti) multiMatch = multiMatch | true; else matching = true;
+          }
+          if (!inMulti) wordPos++;
+          if (!matching) break;
         }
-      if (end && wordPos != word.length())
-        matching = false;
+      }
+      if (end && wordPos != word.length()) matching = false;
       return matching;
     }
 
@@ -437,9 +474,21 @@ public String transform(String word) {
 
     // Just for debugging purposes.
     @Override
-	public String toString() {
-      return "Match:" + String.valueOf(match) + " Replace:" + replace + " TakeOut:" + takeOut + " MatchLength:" + matchLength + " Start:" + start + " End:" + end;
+    public String toString() {
+      return (
+        "Match:" +
+        String.valueOf(match) +
+        " Replace:" +
+        replace +
+        " TakeOut:" +
+        takeOut +
+        " MatchLength:" +
+        matchLength +
+        " Start:" +
+        start +
+        " End:" +
+        end
+      );
     }
-
   }
 }

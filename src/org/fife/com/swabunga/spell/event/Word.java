@@ -60,7 +60,6 @@ public class Word {
    * @return the end index of the word.
    */
   public int getEnd() {
-
     return end;
   }
 
@@ -79,7 +78,6 @@ public class Word {
    * @return the start index.
    */
   public int getStart() {
-
     return start;
   }
 
@@ -98,7 +96,6 @@ public class Word {
    * @return the String representing the word.
    */
   public String getText() {
-
     return text;
   }
 
@@ -118,7 +115,6 @@ public class Word {
    * @return the length of the word.
    */
   public int length() {
-
     return text.length();
   }
 
@@ -127,8 +123,7 @@ public class Word {
    * @return the text representing the word.
    */
   @Override
-public String toString() {
-
+  public String toString() {
     return text;
   }
 

@@ -1,4 +1,5 @@
 package omega.comp;
+
 public interface AnimationLayer {
-	void animate(TextComp comp);
+  void animate(TextComp comp);
 }

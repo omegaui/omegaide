@@ -8,7 +8,6 @@
  */
 package org.fife.ui.rsyntaxtextarea;
 
-
 /**
  * An abstract implementation of the
  * {@link org.fife.ui.rsyntaxtextarea.TokenMaker} interface.  It should
@@ -22,46 +21,40 @@ package org.fife.ui.rsyntaxtextarea;
  */
 public abstract class AbstractTokenMaker extends TokenMakerBase {
 
-	/**
-	 * Hash table of words to highlight and what token type they are.
-	 * The keys are the words to highlight, and their values are the
-	 * token types, for example, <code>Token.RESERVED_WORD</code> or
-	 * <code>Token.FUNCTION</code>.
-	 */
-	protected TokenMap wordsToHighlight;
+  /**
+   * Hash table of words to highlight and what token type they are.
+   * The keys are the words to highlight, and their values are the
+   * token types, for example, <code>Token.RESERVED_WORD</code> or
+   * <code>Token.FUNCTION</code>.
+   */
+  protected TokenMap wordsToHighlight;
 
+  /**
+   * Constructor.
+   */
+  public AbstractTokenMaker() {
+    wordsToHighlight = getWordsToHighlight();
+  }
 
-	/**
-	 * Constructor.
-	 */
-	public AbstractTokenMaker() {
-		wordsToHighlight = getWordsToHighlight();
-	}
+  /**
+   * Returns the words to highlight for this programming language.
+   *
+   * @return A <code>TokenMap</code> containing the words to highlight for
+   *         this programming language.
+   */
+  public abstract TokenMap getWordsToHighlight();
 
-
-	/**
-	 * Returns the words to highlight for this programming language.
-	 *
-	 * @return A <code>TokenMap</code> containing the words to highlight for
-	 *         this programming language.
-	 */
-	public abstract TokenMap getWordsToHighlight();
-
-
-	/**
-	 * Removes the token last added from the linked list of tokens.  The
-	 * programmer should never have to call this directly; it can be called
-	 * by subclasses of <code>TokenMaker</code> if necessary.
-	 */
-	public void removeLastToken() {
-		if (previousToken==null) {
-			firstToken = currentToken = null;
-		}
-		else {
-			currentToken = previousToken;
-			currentToken.setNextToken(null);
-		}
-	}
-
-
+  /**
+   * Removes the token last added from the linked list of tokens.  The
+   * programmer should never have to call this directly; it can be called
+   * by subclasses of <code>TokenMaker</code> if necessary.
+   */
+  public void removeLastToken() {
+    if (previousToken == null) {
+      firstToken = currentToken = null;
+    } else {
+      currentToken = previousToken;
+      currentToken.setNextToken(null);
+    }
+  }
 }

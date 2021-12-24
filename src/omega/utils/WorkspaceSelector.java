@@ -17,83 +17,103 @@
 */
 
 package omega.utils;
-import omega.Screen;
 
+import static omega.utils.UIManager.*;
+
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
-
 import java.util.LinkedList;
-
-import omega.comp.TextComp;
-
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import omega.Screen;
+import omega.comp.TextComp;
 
-import java.awt.geom.RoundRectangle2D;
+public class WorkspaceSelector extends JDialog {
 
-import static omega.utils.UIManager.*;
-public class WorkspaceSelector extends JDialog{
-     public WorkspaceSelector(Screen screen){
-     	super(screen);
-		setUndecorated(true);
-          
-          JPanel panel = new JPanel(null);
-          panel.setBackground(c2);
-          setContentPane(panel);
-          
-          setLayout(null);
-          setBackground(c2);
-          setTitle("Select Workspace Directory");
-          setModal(true);
-          setSize(400, 120);
-          setLocationRelativeTo(null);
-          setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
-          setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-          init();
-     }
+  public WorkspaceSelector(Screen screen) {
+    super(screen);
+    setUndecorated(true);
 
-     public void init(){
-          TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->dispose());
-          closeComp.setBounds(0, 0, 30, 30);
-          closeComp.setFont(PX14);
-          closeComp.setArc(0, 0);
-          add(closeComp);
+    JPanel panel = new JPanel(null);
+    panel.setBackground(c2);
+    setContentPane(panel);
 
-          TextComp titleComp = new TextComp("Select Workspace Directory", TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
-          titleComp.setBounds(30, 0, getWidth() - 30, 30);
-          titleComp.setClickable(false);
-          titleComp.setFont(PX14);
-          titleComp.setArc(0, 0);
-          titleComp.attachDragger(this);
-          add(titleComp);
-          
-          JTextField textField = new JTextField(DataManager.getWorkspace().equals("") ? "e.g : Documents/Omega Projects" : DataManager.getWorkspace());
-          textField.setBounds(20, 50, getWidth() - 30, 30);
-          textField.setFont(PX14);
-          textField.setBackground(c2);
-          textField.setForeground(glow);
-          textField.setEditable(false);
-          add(textField);
+    setLayout(null);
+    setBackground(c2);
+    setTitle("Select Workspace Directory");
+    setModal(true);
+    setSize(400, 120);
+    setLocationRelativeTo(null);
+    setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 15, 15));
+    setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    init();
+  }
 
-          FileSelectionDialog fs = new FileSelectionDialog(this);
-          fs.setTitle("Choose only one directory");
+  public void init() {
+    TextComp closeComp = new TextComp(
+      "x",
+      TOOLMENU_COLOR2_SHADE,
+      c2,
+      TOOLMENU_COLOR2,
+      () -> dispose()
+    );
+    closeComp.setBounds(0, 0, 30, 30);
+    closeComp.setFont(PX14);
+    closeComp.setArc(0, 0);
+    add(closeComp);
 
-          TextComp chooseComp = new TextComp("Browse", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
-               LinkedList<File> files = fs.selectDirectories();
-               new Thread(()->{
-	               if(!files.isEmpty()){
-	                    DataManager.setWorkspace(files.get(0).getAbsolutePath());
-	                    textField.setText(DataManager.getWorkspace());
-	                    setTitle("Lets Proceed Forward");
-	                    titleComp.setClickable(true);
-	                    titleComp.setText(getTitle());
-	               }
-          	}).start();
-          });
-          chooseComp.setBounds(getWidth()/2 - 30, 95, 60, 25);
-          chooseComp.setFont(PX14);
-          chooseComp.setArc(5, 5);
-          add(chooseComp);
-     }
+    TextComp titleComp = new TextComp(
+      "Select Workspace Directory",
+      TOOLMENU_COLOR4_SHADE,
+      c2,
+      TOOLMENU_COLOR3,
+      () -> setVisible(false)
+    );
+    titleComp.setBounds(30, 0, getWidth() - 30, 30);
+    titleComp.setClickable(false);
+    titleComp.setFont(PX14);
+    titleComp.setArc(0, 0);
+    titleComp.attachDragger(this);
+    add(titleComp);
+
+    JTextField textField = new JTextField(
+      DataManager.getWorkspace().equals("")
+        ? "e.g : Documents/Omega Projects"
+        : DataManager.getWorkspace()
+    );
+    textField.setBounds(20, 50, getWidth() - 30, 30);
+    textField.setFont(PX14);
+    textField.setBackground(c2);
+    textField.setForeground(glow);
+    textField.setEditable(false);
+    add(textField);
+
+    FileSelectionDialog fs = new FileSelectionDialog(this);
+    fs.setTitle("Choose only one directory");
+
+    TextComp chooseComp = new TextComp(
+      "Browse",
+      TOOLMENU_COLOR1_SHADE,
+      c2,
+      TOOLMENU_COLOR1,
+      () -> {
+        LinkedList<File> files = fs.selectDirectories();
+        new Thread(() -> {
+          if (!files.isEmpty()) {
+            DataManager.setWorkspace(files.get(0).getAbsolutePath());
+            textField.setText(DataManager.getWorkspace());
+            setTitle("Lets Proceed Forward");
+            titleComp.setClickable(true);
+            titleComp.setText(getTitle());
+          }
+        })
+          .start();
+      }
+    );
+    chooseComp.setBounds(getWidth() / 2 - 30, 95, 60, 25);
+    chooseComp.setFont(PX14);
+    chooseComp.setArc(5, 5);
+    add(chooseComp);
+  }
 }
-

@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 package org.fife.com.swabunga.spell.event;
 
-
 /**
  * This class tokenizes a input string.
  *
@@ -65,7 +64,6 @@ public class StringWordTokenizer extends AbstractWordTokenizer {
     finder.setText(s);
   }
 
-
   //~ Methods .................................................................
 
   /**
@@ -76,7 +74,6 @@ public class StringWordTokenizer extends AbstractWordTokenizer {
    */
   @Deprecated
   public String getFinalText() {
-
     return getContext();
   }
 
@@ -87,7 +84,7 @@ public class StringWordTokenizer extends AbstractWordTokenizer {
    * @throws WordNotFoundException current word not yet set.
    */
   @Override
-public void replaceWord(String s) {
+  public void replaceWord(String s) {
     finder.replace(s);
   }
 }

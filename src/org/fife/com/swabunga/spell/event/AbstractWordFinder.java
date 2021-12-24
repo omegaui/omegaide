@@ -61,6 +61,7 @@ public abstract class AbstractWordFinder implements WordFinder {
     text = "";
     setup();
   }
+
   //~ Methods ...............................................................
 
   /**
@@ -70,7 +71,7 @@ public abstract class AbstractWordFinder implements WordFinder {
    * @return the following word.
    */
   @Override
-public abstract Word next();
+  public abstract Word next();
 
   /**
    * Return the text being searched. May have changed since first set
@@ -79,17 +80,16 @@ public abstract Word next();
    * @return the text being searched.
    */
   @Override
-public String getText() {
-
+  public String getText() {
     return text;
   }
-  
+
   /**
    * Defines the text to search.
    * @param newText The text to be analyzed
    */
   @Override
-public void setText(String newText) {
+  public void setText(String newText) {
     text = newText;
     setup();
   }
@@ -101,8 +101,7 @@ public void setText(String newText) {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public Word current() {
-
+  public Word current() {
     if (currentWord == null) {
       throw new WordNotFoundException("No Words in current String");
     }
@@ -115,10 +114,8 @@ public Word current() {
    * @return true if there are further words in the string.
    */
   @Override
-public boolean hasNext() {
-
+  public boolean hasNext() {
     return nextWord != null;
-
   }
 
   /**
@@ -128,14 +125,15 @@ public boolean hasNext() {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public void replace(String newWord) {
-
+  public void replace(String newWord) {
     if (currentWord == null) {
       throw new WordNotFoundException("No Words in current String");
     }
 
     // robert: Use StringBuilder
-    StringBuilder sb = new StringBuilder(text.substring(0, currentWord.getStart()));
+    StringBuilder sb = new StringBuilder(
+      text.substring(0, currentWord.getStart())
+    );
     sb.append(newWord);
     sb.append(text.substring(currentWord.getEnd()));
     int diff = newWord.length() - currentWord.getText().length();
@@ -150,7 +148,6 @@ public void replace(String newWord) {
     int start = currentWord.getStart();
     sentenceIterator.following(start);
     startsSentence = sentenceIterator.current() == start;
-
   }
 
   /**
@@ -158,8 +155,7 @@ public void replace(String newWord) {
    * @throws WordNotFoundException current word has not yet been set.
    */
   @Override
-public boolean startsSentence() {
-
+  public boolean startsSentence() {
     if (currentWord == null) {
       throw new WordNotFoundException("No Words in current String");
     }
@@ -174,8 +170,7 @@ public boolean startsSentence() {
    * @return the text being searched.
    */
   @Override
-public String toString() {
-
+  public String toString() {
     return text;
   }
 
@@ -187,9 +182,7 @@ public String toString() {
   protected void setSentenceIterator(Word wd) {
     int current = sentenceIterator.current();
 
-    if (current == currentWord.getStart())
-      startsSentence = true;
-    else {
+    if (current == currentWord.getStart()) startsSentence = true; else {
       startsSentence = false;
 
       if (currentWord.getEnd() > current) {
@@ -218,16 +211,17 @@ public String toString() {
 
     switch (curr) {
       case '\'':
-          // robert: Not sure why these are 'word characters'; they definitely mess
-          // things up for spell-checking code
-//      case '@':
-//      case '.':
-//      case '_':
+        // robert: Not sure why these are 'word characters'; they definitely mess
+        // things up for spell-checking code
+        //      case '@':
+        //      case '.':
+        //      case '_':
         char prev = text.charAt(posn - 1);
         char next = text.charAt(posn + 1);
-        out = (Character.isLetterOrDigit(prev) && Character.isLetterOrDigit(next));
+        out =
+          (Character.isLetterOrDigit(prev) && Character.isLetterOrDigit(next));
         break;
-      default  :
+      default:
         out = Character.isLetterOrDigit(curr);
     }
 
@@ -235,12 +229,12 @@ public String toString() {
   }
 
   /**
-   * Ignores or skip over text starting from the index position specified 
-   * if it contains the <code>startIgnore</code>, and until the 
-   * first non letter or digit character is encountered or end of text is 
+   * Ignores or skip over text starting from the index position specified
+   * if it contains the <code>startIgnore</code>, and until the
+   * first non letter or digit character is encountered or end of text is
    * detected.
    * @param index The start position in text.
-   * @param startIgnore The character that should be at <code>index</code> 
+   * @param startIgnore The character that should be at <code>index</code>
    * position to start skipping through.
    * @return The index position pointing after the skipped characters or the
    * original index if the ignore condition could not be met.
@@ -250,12 +244,12 @@ public String toString() {
   }
 
   /**
-   * Ignores or skip over text starting from the index position specified 
-   * if it contains the <code>startIgnore</code>, and until the 
-   * <code>endIgnore</code> character is encountered or end of text is 
+   * Ignores or skip over text starting from the index position specified
+   * if it contains the <code>startIgnore</code>, and until the
+   * <code>endIgnore</code> character is encountered or end of text is
    * detected.
    * @param index The start position in text.
-   * @param startIgnore The character that should be at <code>index</code> 
+   * @param startIgnore The character that should be at <code>index</code>
    * position to start skipping through.
    * @param endIgnore The character which mark the end of skipping through. If
    * the value of endIgnore is <code>null</code>, skipping characters stop
@@ -268,12 +262,12 @@ public String toString() {
   }
 
   /**
-   * Ignores or skip over text starting from the index position specified 
-   * if it contains the <code>startIgnore</code>, and until the 
-   * <code>endIgnore</code> character is encountered or end of text is 
+   * Ignores or skip over text starting from the index position specified
+   * if it contains the <code>startIgnore</code>, and until the
+   * <code>endIgnore</code> character is encountered or end of text is
    * detected.
    * @param index The start position in text.
-   * @param startIgnore The character that should be at <code>index</code> 
+   * @param startIgnore The character that should be at <code>index</code>
    * position to start skipping through.
    * @param endIgnore The character which mark the end of skipping through. If
    * the value of endIgnore is <code>null</code>, skipping characters stop
@@ -291,10 +285,10 @@ public String toString() {
         newIndex++;
         while (newIndex < text.length()) {
           curChar = text.charAt(newIndex);
-          if (endIgnore != null && curChar.equals(endIgnore)){
+          if (endIgnore != null && curChar.equals(endIgnore)) {
             newIndex++;
             break;
-          } else if (endIgnore == null && !Character.isLetterOrDigit(curChar)){
+          } else if (endIgnore == null && !Character.isLetterOrDigit(curChar)) {
             break;
           }
           newIndex++;
@@ -306,19 +300,18 @@ public String toString() {
   }
 
   /**
-   * Ignores or skip over text starting from the index position specified 
-   * if it contains the <code>startIgnore</code> string, and until the 
-   * <code>endIgnore</code> string is encountered or end of text is 
+   * Ignores or skip over text starting from the index position specified
+   * if it contains the <code>startIgnore</code> string, and until the
+   * <code>endIgnore</code> string is encountered or end of text is
    * detected.
    * @param index The start position in text.
-   * @param startIgnore The string that should be at <code>index</code> 
+   * @param startIgnore The string that should be at <code>index</code>
    * position to start skipping through.
    * @param endIgnore The string which mark the end of skipping through.
    * @return The index position pointing after the skipped characters or the
    * original index if the ignore condition could not be met.
    */
   protected int ignore(int index, String startIgnore, String endIgnore) {
-
     //{{{
     int newIndex = index;
     int len = text.length();
@@ -331,10 +324,8 @@ public String toString() {
       //            System.out.println(seg + ":" + seg.length()+ ":" + startIgnore + ":" + slen);
       if (seg.equals(startIgnore)) {
         newIndex += slen;
-        cycle:          while (true) {
-
+        cycle:while (true) {
           if (newIndex == (text.length() - elen)) {
-
             break cycle;
           }
 
@@ -361,7 +352,7 @@ public String toString() {
     sentenceIterator = BreakIterator.getSentenceInstance();
     sentenceIterator.setText(text);
   }
-  
+
   /**
    * Defines the starting positions for text analysis
    */
@@ -379,6 +370,4 @@ public String toString() {
       nextWord = null;
     }
   }
-
-  
 }

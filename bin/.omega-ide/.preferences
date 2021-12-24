@@ -1,0 +1,30 @@
+>Default Project
+-
+>Content Assist Real-Time
+-true
+>Content Mode Java
+-true
+>Use Star Imports
+-false
+>Folder Containing Java Development Kits and Environments
+-
+>Projects Home
+-
+>Theme
+-light
+>Source Defender Enabled
+-true
+>System Console Launch Command
+-gnome-terminal
+>Gradle Build Script
+-gradle
+>Instant Mode
+-instant-mode-speed
+>Hint Font
+-Ubuntu
+-1
+-12
+>Parsing Enabled
+-false
+>Tab Size
+-5

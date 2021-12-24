@@ -11,7 +11,6 @@ package org.fife.ui.rsyntaxtextarea;
 
 import javax.swing.text.Segment;
 
-
 /**
  * Base class for JFlex-generated token makers.  This class attempts to factor
  * out all common code from these classes.  Many methods <em>almost</em> could
@@ -23,30 +22,26 @@ import javax.swing.text.Segment;
  */
 public abstract class AbstractJFlexTokenMaker extends TokenMakerBase {
 
-	protected Segment s;
+  protected Segment s;
 
-	protected int start;		// Just for states.
-	protected int offsetShift;	// As parser always starts at 0, but our line doesn't.
+  protected int start; // Just for states.
+  protected int offsetShift; // As parser always starts at 0, but our line doesn't.
 
+  /**
+   * Declared here so we can define overloads that refer to this method.
+   *
+   * @param newState The new JFlex state to enter.
+   */
+  public abstract void yybegin(int newState);
 
-	/**
-	 * Declared here so we can define overloads that refer to this method.
-	 *
-	 * @param newState The new JFlex state to enter.
-	 */
-	public abstract void yybegin(int newState);
-
-
-	/**
-	 * Starts a new JFlex state and changes the current language index.
-	 *
-	 * @param state The new JFlex state to enter.
-	 * @param languageIndex The new language index.
-	 */
-	protected void yybegin(int state, int languageIndex) {
-		yybegin(state);
-		setLanguageIndex(languageIndex);
-	}
-
-
+  /**
+   * Starts a new JFlex state and changes the current language index.
+   *
+   * @param state The new JFlex state to enter.
+   * @param languageIndex The new language index.
+   */
+  protected void yybegin(int state, int languageIndex) {
+    yybegin(state);
+    setLanguageIndex(languageIndex);
+  }
 }

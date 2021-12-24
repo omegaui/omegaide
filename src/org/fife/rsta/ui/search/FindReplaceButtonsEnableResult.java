@@ -20,24 +20,23 @@ package org.fife.rsta.ui.search;
 // dialogs that extend AbstractSearchDialog, such as a FindInFilesDialog.
 public class FindReplaceButtonsEnableResult {
 
-	private boolean enable;
-	private String error;
+  private boolean enable;
+  private String error;
 
-	public FindReplaceButtonsEnableResult(boolean enable, String error) {
-		this.enable = enable;
-		this.error = error;
-	}
+  public FindReplaceButtonsEnableResult(boolean enable, String error) {
+    this.enable = enable;
+    this.error = error;
+  }
 
-	public boolean getEnable() {
-		return enable;
-	}
+  public boolean getEnable() {
+    return enable;
+  }
 
-	public String getError() {
-		return error;
-	}
+  public String getError() {
+    return error;
+  }
 
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
-
+  public void setEnable(boolean enable) {
+    this.enable = enable;
+  }
 }

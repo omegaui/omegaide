@@ -9,13 +9,11 @@
 package org.fife.ui.rsyntaxtextarea.parser;
 
 import java.io.IOException;
-
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.fife.io.DocumentReader;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.xml.sax.EntityResolver;
@@ -23,7 +21,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
-
 
 /**
  * A parser for XML documents.  Adds squiggle underlines for any XML errors
@@ -59,91 +56,91 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XmlParser extends AbstractParser {
 
-	private SAXParserFactory spf;
-	private DefaultParseResult result;
-	private EntityResolver entityResolver;
+  private SAXParserFactory spf;
+  private DefaultParseResult result;
+  private EntityResolver entityResolver;
 
+  public XmlParser() {
+    this(null);
+  }
 
-	public XmlParser() {
-		this(null);
-	}
+  /**
+   * Constructor allowing DTD validation of documents.
+   *
+   * @param resolver An entity resolver to use if validation is enabled.
+   * @see #setValidating(boolean)
+   */
+  public XmlParser(EntityResolver resolver) {
+    this.entityResolver = resolver;
+    result = new DefaultParseResult(this);
+    try {
+      spf = SAXParserFactory.newInstance();
+    } catch (FactoryConfigurationError fce) {
+      fce.printStackTrace();
+    }
+  }
 
+  /**
+   * Returns whether this parser does DTD validation.
+   *
+   * @return Whether this parser does DTD validation.
+   * @see #setValidating(boolean)
+   */
+  public boolean isValidating() {
+    return spf.isValidating();
+  }
 
-	/**
-	 * Constructor allowing DTD validation of documents.
-	 *
-	 * @param resolver An entity resolver to use if validation is enabled.
-	 * @see #setValidating(boolean)
-	 */
-	public XmlParser(EntityResolver resolver) {
-		this.entityResolver = resolver;
-		result = new DefaultParseResult(this);
-		try {
-			spf = SAXParserFactory.newInstance();
-		} catch (FactoryConfigurationError fce) {
-			fce.printStackTrace();
-		}
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ParseResult parse(RSyntaxDocument doc, String style) {
+    result.clearNotices();
+    Element root = doc.getDefaultRootElement();
+    result.setParsedLines(0, root.getElementCount() - 1);
 
+    if (spf == null || doc.getLength() == 0) {
+      return result;
+    }
 
-	/**
-	 * Returns whether this parser does DTD validation.
-	 *
-	 * @return Whether this parser does DTD validation.
-	 * @see #setValidating(boolean)
-	 */
-	public boolean isValidating() {
-		return spf.isValidating();
-	}
+    try {
+      SAXParser sp = spf.newSAXParser();
+      Handler handler = new Handler(doc);
+      DocumentReader r = new DocumentReader(doc);
+      InputSource input = new InputSource(r);
+      sp.parse(input, handler);
+      r.close();
+    } catch (SAXParseException spe) {
+      // A fatal parse error - ignore; a ParserNotice was already created.
+    } catch (Exception e) {
+      //e.printStackTrace(); // Will print if DTD specified and can't be found
+      result.addNotice(
+        new DefaultParserNotice(
+          this,
+          "Error parsing XML: " + e.getMessage(),
+          0,
+          -1,
+          -1
+        )
+      );
+    }
 
+    return result;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ParseResult parse(RSyntaxDocument doc, String style) {
+  /**
+   * Sets whether this parser will use DTD validation if required.
+   *
+   * @param validating Whether DTD validation should be enabled.  If this is
+   *        <code>true</code>, documents must specify a DOCTYPE, and you
+   *        should have used the constructor specifying an entity resolver.
+   * @see #isValidating()
+   */
+  public void setValidating(boolean validating) {
+    spf.setValidating(validating);
+  }
 
-		result.clearNotices();
-		Element root = doc.getDefaultRootElement();
-		result.setParsedLines(0, root.getElementCount()-1);
-
-		if (spf==null || doc.getLength()==0) {
-			return result;
-		}
-
-		try {
-			SAXParser sp = spf.newSAXParser();
-			Handler handler = new Handler(doc);
-			DocumentReader r = new DocumentReader(doc);
-			InputSource input = new InputSource(r);
-			sp.parse(input, handler);
-			r.close();
-		} catch (SAXParseException spe) {
-			// A fatal parse error - ignore; a ParserNotice was already created.
-		} catch (Exception e) {
-			//e.printStackTrace(); // Will print if DTD specified and can't be found
-			result.addNotice(new DefaultParserNotice(this,
-					"Error parsing XML: " + e.getMessage(), 0, -1, -1));
-		}
-
-		return result;
-
-	}
-
-
-	/**
-	 * Sets whether this parser will use DTD validation if required.
-	 *
-	 * @param validating Whether DTD validation should be enabled.  If this is
-	 *        <code>true</code>, documents must specify a DOCTYPE, and you
-	 *        should have used the constructor specifying an entity resolver.
-	 * @see #isValidating()
-	 */
-	public void setValidating(boolean validating) {
-		spf.setValidating(validating);
-	}
-
-/*
+  /*
 	public static void main(String[] args) {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		org.fife.ui.rsyntaxtextarea.RSyntaxTextArea textArea = new
@@ -172,58 +169,60 @@ public class XmlParser extends AbstractParser {
 	}
 */
 
-	/**
-	 * Callback notified when errors are found in the XML document.  Adds a
-	 * notice to be squiggle-underlined.
-	 */
-	private final class Handler extends DefaultHandler {
+  /**
+   * Callback notified when errors are found in the XML document.  Adds a
+   * notice to be squiggle-underlined.
+   */
+  private final class Handler extends DefaultHandler {
 
-		private Document doc;
+    private Document doc;
 
-		private Handler(Document doc) {
-			this.doc = doc;
-		}
+    private Handler(Document doc) {
+      this.doc = doc;
+    }
 
-		private void doError(SAXParseException e, ParserNotice.Level level) {
-			int line = e.getLineNumber() - 1;
-			Element root = doc.getDefaultRootElement();
-			Element elem = root.getElement(line);
-			int offs = elem.getStartOffset();
-			int len = elem.getEndOffset() - offs;
-			if (line==root.getElementCount()-1) {
-				len++;
-			}
-			DefaultParserNotice pn = new DefaultParserNotice(XmlParser.this,
-											e.getMessage(), line, offs, len);
-			pn.setLevel(level);
-			result.addNotice(pn);
-		}
+    private void doError(SAXParseException e, ParserNotice.Level level) {
+      int line = e.getLineNumber() - 1;
+      Element root = doc.getDefaultRootElement();
+      Element elem = root.getElement(line);
+      int offs = elem.getStartOffset();
+      int len = elem.getEndOffset() - offs;
+      if (line == root.getElementCount() - 1) {
+        len++;
+      }
+      DefaultParserNotice pn = new DefaultParserNotice(
+        XmlParser.this,
+        e.getMessage(),
+        line,
+        offs,
+        len
+      );
+      pn.setLevel(level);
+      result.addNotice(pn);
+    }
 
-		@Override
-		public void error(SAXParseException e) {
-			doError(e, ParserNotice.Level.ERROR);
-		}
+    @Override
+    public void error(SAXParseException e) {
+      doError(e, ParserNotice.Level.ERROR);
+    }
 
-		@Override
-		public void fatalError(SAXParseException e) {
-			doError(e, ParserNotice.Level.ERROR);
-		}
+    @Override
+    public void fatalError(SAXParseException e) {
+      doError(e, ParserNotice.Level.ERROR);
+    }
 
-		@Override
-		public InputSource resolveEntity(String publicId, String systemId)
-								throws IOException, SAXException {
-			if (entityResolver!=null) {
-				return entityResolver.resolveEntity(publicId, systemId);
-			}
-			return super.resolveEntity(publicId, systemId);
-		}
+    @Override
+    public InputSource resolveEntity(String publicId, String systemId)
+      throws IOException, SAXException {
+      if (entityResolver != null) {
+        return entityResolver.resolveEntity(publicId, systemId);
+      }
+      return super.resolveEntity(publicId, systemId);
+    }
 
-		@Override
-		public void warning(SAXParseException e) {
-			doError(e, ParserNotice.Level.WARNING);
-		}
-
-	}
-
-
+    @Override
+    public void warning(SAXParseException e) {
+      doError(e, ParserNotice.Level.WARNING);
+    }
+  }
 }

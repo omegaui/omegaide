@@ -11,8 +11,6 @@ package org.fife.rsta.ui;
 import java.awt.*;
 import javax.swing.*;
 
-
-
 /**
  * A panel to be used as the content pane for <code>JDialog</code>s
  * and <code>JFrame</code>s that are resizable.  This panel has
@@ -24,45 +22,40 @@ import javax.swing.*;
  */
 public class ResizableFrameContentPane extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private SizeGripIcon gripIcon;
+  private SizeGripIcon gripIcon;
 
+  /**
+   * Constructor.
+   */
+  public ResizableFrameContentPane() {
+    gripIcon = new SizeGripIcon();
+  }
 
-	/**
-	 * Constructor.
-	 */
-	public ResizableFrameContentPane() {
-		gripIcon = new SizeGripIcon();
-	}
+  /**
+   * Constructor.
+   *
+   * @param layout The layout manager.
+   */
+  public ResizableFrameContentPane(LayoutManager layout) {
+    super(layout);
+    gripIcon = new SizeGripIcon();
+  }
 
-
-	/**
-	 * Constructor.
-	 *
-	 * @param layout The layout manager.
-	 */
-	public ResizableFrameContentPane(LayoutManager layout) {
-		super(layout);
-		gripIcon = new SizeGripIcon();
-	}
-
-
-	/**
-	 * Paints this panel.
-	 *
-	 * @param g The graphics context.
-	 */
-	/*
-	 * We override paint() instead of paintComponent() as if we do the latter,
-	 * sometimes child panels will be painted over our size grip, rendering it
-	 * invisible.
-	 */
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		gripIcon.paintIcon(this, g, this.getX(), this.getY());
-	}
-
-
+  /**
+   * Paints this panel.
+   *
+   * @param g The graphics context.
+   */
+  /*
+   * We override paint() instead of paintComponent() as if we do the latter,
+   * sometimes child panels will be painted over our size grip, rendering it
+   * invisible.
+   */
+  @Override
+  public void paint(Graphics g) {
+    super.paint(g);
+    gripIcon.paintIcon(this, g, this.getX(), this.getY());
+  }
 }

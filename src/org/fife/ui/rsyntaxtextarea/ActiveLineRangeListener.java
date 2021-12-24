@@ -11,7 +11,6 @@ package org.fife.ui.rsyntaxtextarea;
 
 import java.util.EventListener;
 
-
 /**
  * Listens for "active line range" events from an <code>RSyntaxTextArea</code>.
  * If a text area contains some semantic knowledge of the programming language
@@ -29,16 +28,12 @@ import java.util.EventListener;
  * @version 1.0
  */
 public interface ActiveLineRangeListener extends EventListener {
-
-
-	/**
-	 * Called whenever the "active line range" changes.
-	 *
-	 * @param e Information about the line range change.  If there is no longer
-	 *        an "active line range," the "minimum" and "maximum" line values
-	 *        should both be <code>-1</code>.
-	 */
-	void activeLineRangeChanged(ActiveLineRangeEvent e);
-
-
+  /**
+   * Called whenever the "active line range" changes.
+   *
+   * @param e Information about the line range change.  If there is no longer
+   *        an "active line range," the "minimum" and "maximum" line values
+   *        should both be <code>-1</code>.
+   */
+  void activeLineRangeChanged(ActiveLineRangeEvent e);
 }

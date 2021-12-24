@@ -17,26 +17,16 @@
 */
 
 package omega;
+
 public class IDE {
-	
-	//The Object of the Main Window
-	public static Screen screen;
-	
-	/*
-	* The main method
-	*/
-	public static void main(String[] args) {
-		screen = new Screen();
-	}
+
+  //The Object of the Main Window
+  public static Screen screen;
+
+  /*
+   * The main method
+   */
+  public static void main(String[] args) {
+    screen = new Screen();
+  }
 }
-
-
-
-
-
-
-
-
-
-
-

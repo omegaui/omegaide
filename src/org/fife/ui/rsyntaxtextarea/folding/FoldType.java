@@ -8,7 +8,6 @@
  */
 package org.fife.ui.rsyntaxtextarea.folding;
 
-
 /**
  * Constants representing the "type" of a folded region.  Implementations of
  * {@link FoldParser} can also define their own folded region types, provided
@@ -28,32 +27,29 @@ package org.fife.ui.rsyntaxtextarea.folding;
  * @see Fold
  */
 public interface FoldType {
+  /**
+   * Denotes a <code>Fold</code> as being a region of code.
+   */
+  int CODE = 0;
 
-	/**
-	 * Denotes a <code>Fold</code> as being a region of code.
-	 */
-	int CODE							= 0;
+  /**
+   * Denotes a <code>Fold</code> as being a multi-line comment.
+   */
+  int COMMENT = 1;
 
-	/**
-	 * Denotes a <code>Fold</code> as being a multi-line comment.
-	 */
-	int COMMENT							= 1;
+  /**
+   * Denotes a <code>Fold</code> as being a section of import statements
+   * (Java), include statements (C), etc.
+   */
+  int IMPORTS = 2;
 
-	/**
-	 * Denotes a <code>Fold</code> as being a section of import statements
-	 * (Java), include statements (C), etc.
-	 */
-	int IMPORTS							= 2;
-
-	/**
-	 * Users building advanced editors such as IDE's, that want to allow their
-	 * users to auto-expand/collapse foldable regions of a specific type other
-	 * than comments, should define their custom fold types using values
-	 * <code>FOLD_TYPE_USER_DEFINED_MIN + <em>n</em></code>.  That way, if
-	 * new default fold types are added to this interface in the future, your
-	 * code won't suddenly break when upgrading to a new version of RSTA.
-	 */
-	int FOLD_TYPE_USER_DEFINED_MIN		= 1000;
-
-
+  /**
+   * Users building advanced editors such as IDE's, that want to allow their
+   * users to auto-expand/collapse foldable regions of a specific type other
+   * than comments, should define their custom fold types using values
+   * <code>FOLD_TYPE_USER_DEFINED_MIN + <em>n</em></code>.  That way, if
+   * new default fold types are added to this interface in the future, your
+   * code won't suddenly break when upgrading to a new version of RSTA.
+   */
+  int FOLD_TYPE_USER_DEFINED_MIN = 1000;
 }

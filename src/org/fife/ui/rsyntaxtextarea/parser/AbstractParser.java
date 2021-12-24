@@ -10,7 +10,6 @@ package org.fife.ui.rsyntaxtextarea.parser;
 
 import java.net.URL;
 
-
 /**
  * A base class for {@link Parser} implementations.  Most <code>Parser</code>s
  * should be able to extend this class.
@@ -20,78 +19,70 @@ import java.net.URL;
  */
 public abstract class AbstractParser implements Parser {
 
-	/**
-	 * Whether this parser is enabled.  If this is <code>false</code>, then
-	 * this parser will not be run.
-	 */
-	private boolean enabled;
+  /**
+   * Whether this parser is enabled.  If this is <code>false</code>, then
+   * this parser will not be run.
+   */
+  private boolean enabled;
 
-	/**
-	 * Listens for events from
-	 * {@link org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip}s generated
-	 * from this parser's notices.
-	 */
-	private ExtendedHyperlinkListener linkListener;
+  /**
+   * Listens for events from
+   * {@link org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip}s generated
+   * from this parser's notices.
+   */
+  private ExtendedHyperlinkListener linkListener;
 
+  /**
+   * Constructor.
+   */
+  protected AbstractParser() {
+    setEnabled(true);
+  }
 
-	/**
-	 * Constructor.
-	 */
-	protected AbstractParser() {
-		setEnabled(true);
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ExtendedHyperlinkListener getHyperlinkListener() {
+    return linkListener;
+  }
 
+  /**
+   * Returns <code>null</code>.  Parsers that wish to show images in their
+   * tool tips should override this method to return the image base URL.
+   *
+   * @return <code>null</code> always.
+   */
+  @Override
+  public URL getImageBase() {
+    return null;
+  }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public ExtendedHyperlinkListener getHyperlinkListener() {
-		return linkListener;
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isEnabled() {
+    return enabled;
+  }
 
+  /**
+   * Toggles whether this parser is enabled.
+   *
+   * @param enabled Whether this parser is enabled.
+   * @see #isEnabled()
+   */
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 
-	/**
-	 * Returns <code>null</code>.  Parsers that wish to show images in their
-	 * tool tips should override this method to return the image base URL.
-	 *
-	 * @return <code>null</code> always.
-	 */
-	@Override
-	public URL getImageBase() {
-		return null;
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-
-	/**
-	 * Toggles whether this parser is enabled.
-	 *
-	 * @param enabled Whether this parser is enabled.
-	 * @see #isEnabled()
-	 */
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-
-	/**
-	 * Returns the listener for this parser.
-	 *
-	 * @param listener The new listener.
-	 * @see #getHyperlinkListener()
-	 */
-	public void setHyperlinkListener(ExtendedHyperlinkListener listener) {
-		linkListener = listener;
-	}
-
-
+  /**
+   * Returns the listener for this parser.
+   *
+   * @param listener The new listener.
+   * @see #getHyperlinkListener()
+   */
+  public void setHyperlinkListener(ExtendedHyperlinkListener listener) {
+    linkListener = listener;
+  }
 }

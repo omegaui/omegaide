@@ -17,86 +17,109 @@
 */
 
 package omega.instant.support.universal;
-import omega.Screen;
-
-import omega.utils.IconManager;
-import omega.utils.JetRunPanel;
 
 import java.io.File;
 import java.io.PrintWriter;
-
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.Arrays;
-
+import omega.Screen;
 import omega.database.DataBase;
-public class ProcessManager extends DataBase{
-	public static LinkedList<ProcessData> dataSet = new LinkedList<>();
-	public ProcessManager(){
-		super(".omega-ide" + File.separator + ".processExecutionData");
-		load();
-	}
-	
-	public void load(){
-		getDataSetNames().forEach(set->{
-			LinkedList<String> cmds = new LinkedList<>();
-			getEntries(set).forEach(entry->cmds.add(entry.getValue()));
-			dataSet.add(new ProcessData(set, cmds));
-		});
-	}
-	
-	@Override
-	public void save(){
-		clear();
-		dataSet.forEach(data->{
-			data.executionCommand.forEach(cmd->addEntry(data.fileExt, cmd));
-		});
-		super.save();
-	}
-	
-	public void add(String ext, LinkedList<String> cmd){
-		dataSet.add(new ProcessData(ext, cmd));
-	}
-	
-	public LinkedList<String> getExecutionCommand(File file){
-		String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-		for(ProcessData data : dataSet){
-			if(data.fileExt.equals(ext))
-				return data.executionCommand;
-		}
-		return new LinkedList<String>();
-	}
-	
-	public synchronized void launch(File file){
-		new Thread(()->{
-			try{
-				Screen.getScreen().saveAllEditors();
-				LinkedList<String> cmd = (LinkedList<String>)getExecutionCommand(file).clone();
-				
-				cmd.add(file.getName());
-				
-				String[] commandsAsArray = new String[cmd.size()];
-				for(int i = 0; i < cmd.size(); i++){
-					commandsAsArray[i] = cmd.get(i);
-				}
-				
-				JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, file.getParentFile().getAbsolutePath());
-				printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
-				printArea.print("# File Launched!");
-				printArea.print("-------------------------Execution Begins Here-------------------------");
-				printArea.start();
-				
-				Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+import omega.utils.IconManager;
+import omega.utils.JetRunPanel;
 
-				while(printArea.terminalPanel.process.isAlive());
-				
-				printArea.print("-------------------------Execution Ends Here-------------------------");
-				printArea.print("Launch finished with Exit Code " + printArea.terminalPanel.process.exitValue());
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		}).start();
-	}
+public class ProcessManager extends DataBase {
+
+  public static LinkedList<ProcessData> dataSet = new LinkedList<>();
+
+  public ProcessManager() {
+    super(".omega-ide" + File.separator + ".processExecutionData");
+    load();
+  }
+
+  public void load() {
+    getDataSetNames()
+      .forEach(set -> {
+        LinkedList<String> cmds = new LinkedList<>();
+        getEntries(set).forEach(entry -> cmds.add(entry.getValue()));
+        dataSet.add(new ProcessData(set, cmds));
+      });
+  }
+
+  @Override
+  public void save() {
+    clear();
+    dataSet.forEach(data -> {
+      data.executionCommand.forEach(cmd -> addEntry(data.fileExt, cmd));
+    });
+    super.save();
+  }
+
+  public void add(String ext, LinkedList<String> cmd) {
+    dataSet.add(new ProcessData(ext, cmd));
+  }
+
+  public LinkedList<String> getExecutionCommand(File file) {
+    String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+    for (ProcessData data : dataSet) {
+      if (data.fileExt.equals(ext)) return data.executionCommand;
+    }
+    return new LinkedList<String>();
+  }
+
+  public synchronized void launch(File file) {
+    new Thread(() -> {
+      try {
+        Screen.getScreen().saveAllEditors();
+        LinkedList<String> cmd = (LinkedList<String>) getExecutionCommand(file)
+          .clone();
+
+        cmd.add(file.getName());
+
+        String[] commandsAsArray = new String[cmd.size()];
+        for (int i = 0; i < cmd.size(); i++) {
+          commandsAsArray[i] = cmd.get(i);
+        }
+
+        JetRunPanel printArea = new JetRunPanel(
+          false,
+          commandsAsArray,
+          file.getParentFile().getAbsolutePath()
+        );
+        printArea.launchAsTerminal(
+          () -> launch(file),
+          IconManager.fluentlaunchImage,
+          "Re-launch"
+        );
+        printArea.print("# File Launched!");
+        printArea.print(
+          "-------------------------Execution Begins Here-------------------------"
+        );
+        printArea.start();
+
+        Screen
+          .getScreen()
+          .getOperationPanel()
+          .addTab(
+            "Launch (" + file.getName() + ")",
+            IconManager.fluentquickmodeonImage,
+            printArea,
+            printArea::killProcess
+          );
+
+        while (printArea.terminalPanel.process.isAlive());
+
+        printArea.print(
+          "-------------------------Execution Ends Here-------------------------"
+        );
+        printArea.print(
+          "Launch finished with Exit Code " +
+          printArea.terminalPanel.process.exitValue()
+        );
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    })
+      .start();
+  }
 }
-

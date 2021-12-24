@@ -48,17 +48,20 @@ import java.util.*;
  */
 // robert: Converted use of Vectors to ArrayLists; we're single-threaded
 public class SpellDictionaryHashMap extends SpellDictionaryASpell {
+
   /** A field indicating the initial hash map capacity (16KB) for the main
    *  dictionary hash map. Interested to see what the performance of a
    *  smaller initial capacity is like.
    */
-  private final static int INITIAL_CAPACITY = 16 * 1024;
+  private static final int INITIAL_CAPACITY = 16 * 1024;
 
   /**
    * The hashmap that contains the word dictionary. The map is hashed on the doublemeta
    * code. The map entry contains a LinkedList of words that have the same double meta code.
    */
-  private HashMap<String, List<String>> mainDictionary = new HashMap<>(INITIAL_CAPACITY);
+  private HashMap<String, List<String>> mainDictionary = new HashMap<>(
+    INITIAL_CAPACITY
+  );
 
   /** Holds the dictionary file for appending*/
   private File dictFile = null;
@@ -90,7 +93,8 @@ public class SpellDictionaryHashMap extends SpellDictionaryASpell {
    * @throws java.io.IOException indicates problems reading the words list
    * file
    */
-  public SpellDictionaryHashMap(File wordList) throws FileNotFoundException, IOException {
+  public SpellDictionaryHashMap(File wordList)
+    throws FileNotFoundException, IOException {
     this(new FileReader(wordList));
     dictFile = wordList;
   }
@@ -106,7 +110,8 @@ public class SpellDictionaryHashMap extends SpellDictionaryASpell {
    * @throws java.io.IOException indicates problems reading the words list
    * file
    */
-  public SpellDictionaryHashMap(File wordList, File phonetic) throws FileNotFoundException, IOException {
+  public SpellDictionaryHashMap(File wordList, File phonetic)
+    throws FileNotFoundException, IOException {
     super(phonetic);
     dictFile = wordList;
     createDictionary(new BufferedReader(new FileReader(wordList)));
@@ -125,7 +130,11 @@ public class SpellDictionaryHashMap extends SpellDictionaryASpell {
    * @throws java.io.IOException indicates problems reading the words list
    * or phonetic information
    */
-  public SpellDictionaryHashMap(File wordList, File phonetic, String phoneticEncoding) throws FileNotFoundException, IOException {
+  public SpellDictionaryHashMap(
+    File wordList,
+    File phonetic,
+    String phoneticEncoding
+  ) throws FileNotFoundException, IOException {
     super(phonetic, phoneticEncoding);
     dictFile = wordList;
     createDictionary(new BufferedReader(new FileReader(wordList)));
@@ -140,7 +149,8 @@ public class SpellDictionaryHashMap extends SpellDictionaryASpell {
    * @throws java.io.IOException indicates problems reading the words list
    * or phonetic information
    */
-  public SpellDictionaryHashMap(Reader wordList, Reader phonetic) throws IOException {
+  public SpellDictionaryHashMap(Reader wordList, Reader phonetic)
+    throws IOException {
     super(phonetic);
     dictFile = null;
     createDictionary(new BufferedReader(wordList));
@@ -159,7 +169,8 @@ public class SpellDictionaryHashMap extends SpellDictionaryASpell {
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public void addDictionary(File wordList) throws FileNotFoundException, IOException {
+  public void addDictionary(File wordList)
+    throws FileNotFoundException, IOException {
     addDictionaryHelper(new BufferedReader(new FileReader(wordList)));
   }
 
@@ -184,20 +195,20 @@ public class SpellDictionaryHashMap extends SpellDictionaryASpell {
    * <p>This needs to be made thread safe (synchronized)</p>
    */
   @Override
-public boolean addWord(String word) {
+  public boolean addWord(String word) {
     putWord(word);
-    if (dictFile!=null) {
-	    try {
-	    	// Append new word to user's word file
-	    	BufferedWriter w = new BufferedWriter(new FileWriter(dictFile, true));
-	    	w.write(word);
-	    	w.write("\n");
-	    	w.close();
-	    	return true;
-	    } catch (IOException ex) {
-	      System.out.println("Error writing to dictionary file");
-	      ex.printStackTrace();
-	    }
+    if (dictFile != null) {
+      try {
+        // Append new word to user's word file
+        BufferedWriter w = new BufferedWriter(new FileWriter(dictFile, true));
+        w.write(word);
+        w.write("\n");
+        w.close();
+        return true;
+      } catch (IOException ex) {
+        System.out.println("Error writing to dictionary file");
+        ex.printStackTrace();
+      }
     }
     // Only return true if added to dictionary file.
     return false;
@@ -212,9 +223,9 @@ public boolean addWord(String word) {
    * load the data in. I suspect that we could speed this up quite allot.
    */
   protected void createDictionary(BufferedReader in) throws IOException {
-	  // robert: Optimized ever-so-slightly
+    // robert: Optimized ever-so-slightly
     String line;
-    while ((line=in.readLine())!=null) {
+    while ((line = in.readLine()) != null) {
       if (line.length() > 0) {
         putWord(line);
       }
@@ -235,13 +246,13 @@ public boolean addWord(String word) {
    * to subclass for the cases where duplicates are bad.
    */
   protected void addDictionaryHelper(BufferedReader in) throws IOException {
-	  // robert: Optimized ever-so-slightly
-	    String line;
-	    while ((line=in.readLine())!=null) {
-	      if (line.length() > 0) {
-	        putWordUnique(line);
-	      }
-	    }
+    // robert: Optimized ever-so-slightly
+    String line;
+    while ((line = in.readLine()) != null) {
+      if (line.length() > 0) {
+        putWordUnique(line);
+      }
+    }
   }
 
   /**
@@ -264,30 +275,24 @@ public boolean addWord(String word) {
    * @param word The word to add
    */
   protected void putWordUnique(String word) {
-
     String code = getCode(word);
     List<String> list = mainDictionary.get(code);
 
     if (list != null) {
+      boolean isAlready = false;
 
-        boolean isAlready = false;
-
-        for (String s : list) {
-            if (word.equalsIgnoreCase(s)) {
-                isAlready = true;
-                break;
-            }
+      for (String s : list) {
+        if (word.equalsIgnoreCase(s)) {
+          isAlready = true;
+          break;
         }
+      }
 
-      if (!isAlready)
-        list.add(word);
-
+      if (!isAlready) list.add(word);
     } else {
-
       list = new ArrayList<>();
       list.add(word);
       mainDictionary.put(code, list);
-
     }
   }
 
@@ -298,8 +303,7 @@ public boolean addWord(String word) {
   public List<String> getWords(String code) {
     //Check the main dictionary.
     List<String> mainDictResult = mainDictionary.get(code);
-    if (mainDictResult == null)
-      return Collections.emptyList();
+    if (mainDictResult == null) return Collections.emptyList();
     return mainDictResult;
   }
 
@@ -309,12 +313,10 @@ public boolean addWord(String word) {
   @Override
   public boolean isCorrect(String word) {
     List<String> possible = getWords(getCode(word));
-    if (possible.contains(word))
-      return true;
+    if (possible.contains(word)) return true;
     //JMH should we always try the lowercase version. If I dont then capitalized
     //words are always returned as incorrect.
-    else if (possible.contains(word.toLowerCase()))
-      return true;
+    else if (possible.contains(word.toLowerCase())) return true;
     return false;
   }
 }

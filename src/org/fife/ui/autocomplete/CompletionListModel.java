@@ -11,9 +11,7 @@ package org.fife.ui.autocomplete;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.swing.AbstractListModel;
-
 
 /**
  * A list model implementation that allows the bulk addition of elements.
@@ -25,60 +23,53 @@ import javax.swing.AbstractListModel;
  */
 class CompletionListModel extends AbstractListModel<Completion> {
 
-	/**
-	 * Container for items in this model.
-	 */
-	private List<Completion> delegate;
+  /**
+   * Container for items in this model.
+   */
+  private List<Completion> delegate;
 
+  /**
+   * Constructor.
+   */
+  CompletionListModel() {
+    delegate = new ArrayList<>();
+  }
 
-	/**
-	 * Constructor.
-	 */
-	CompletionListModel() {
-		delegate = new ArrayList<>();
-	}
+  /**
+   * Removes all of the elements from this list.  The list will
+   * be empty after this call returns (unless it throws an exception).
+   *
+   * @see #setContents(Collection)
+   */
+  public void clear() {
+    int end = delegate.size() - 1;
+    delegate.clear();
+    if (end >= 0) {
+      fireIntervalRemoved(this, 0, end);
+    }
+  }
 
+  @Override
+  public Completion getElementAt(int index) {
+    return delegate.get(index);
+  }
 
-	/**
-	 * Removes all of the elements from this list.  The list will
-	 * be empty after this call returns (unless it throws an exception).
-	 *
-	 * @see #setContents(Collection)
-	 */
-	public void clear() {
-		int end = delegate.size()-1;
-		delegate.clear();
-		if (end >= 0) {
-			fireIntervalRemoved(this, 0, end);
-		}
-	}
+  @Override
+  public int getSize() {
+    return delegate.size();
+  }
 
-
-	@Override
-	public Completion getElementAt(int index) {
-		return delegate.get(index);
-	}
-
-
-	@Override
-	public int getSize() {
-		return delegate.size();
-	}
-
-
-	/**
-	 * Sets the contents of this model.  All previous contents are removed.
-	 *
-	 * @param contents The new contents of this model.
-	 */
-	public void setContents(Collection<Completion> contents) {
-		clear();
-		int count = contents.size();
-		if (count>0) {
-			delegate.addAll(contents);
-			fireIntervalAdded(this, 0, count-1); // endpoints included (!)
-		}
-	}
-
-
+  /**
+   * Sets the contents of this model.  All previous contents are removed.
+   *
+   * @param contents The new contents of this model.
+   */
+  public void setContents(Collection<Completion> contents) {
+    clear();
+    int count = contents.size();
+    if (count > 0) {
+      delegate.addAll(contents);
+      fireIntervalAdded(this, 0, count - 1); // endpoints included (!)
+    }
+  }
 }

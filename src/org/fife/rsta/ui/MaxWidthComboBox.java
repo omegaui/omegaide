@@ -12,7 +12,6 @@ import java.awt.Dimension;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
-
 /**
  * A combo box whose width cannot go over a specified value.  This class is
  * useful when you have a layout manager that adheres to the combo box's
@@ -27,76 +26,69 @@ import javax.swing.JComboBox;
  */
 public class MaxWidthComboBox<E> extends JComboBox<E> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * The width of this combo box will never be greater than this value.
-	 */
-	private int maxWidth;
+  /**
+   * The width of this combo box will never be greater than this value.
+   */
+  private int maxWidth;
 
+  /**
+   * Constructor.
+   *
+   * @param maxWidth The maximum width for this combo box.
+   */
+  public MaxWidthComboBox(int maxWidth) {
+    this.maxWidth = maxWidth;
+  }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param maxWidth The maximum width for this combo box.
-	 */
-	public MaxWidthComboBox(int maxWidth) {
-		this.maxWidth = maxWidth;
-	}
+  /**
+   * Constructor.
+   *
+   * @param model The model for this combo box.
+   * @param maxWidth The maximum width for this combo box.
+   */
+  public MaxWidthComboBox(ComboBoxModel<E> model, int maxWidth) {
+    super(model);
+    this.maxWidth = maxWidth;
+  }
 
+  /**
+   * Overridden to ensure that the returned size has width no greater than
+   * the specified maximum.
+   *
+   * @return The maximum size of this combo box.
+   */
+  @Override
+  public Dimension getMaximumSize() {
+    Dimension size = super.getMaximumSize();
+    size.width = Math.min(size.width, maxWidth);
+    return size;
+  }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param model The model for this combo box.
-	 * @param maxWidth The maximum width for this combo box.
-	 */
-	public MaxWidthComboBox(ComboBoxModel<E> model, int maxWidth) {
-		super(model);
-		this.maxWidth = maxWidth;
-	}
+  /**
+   * Overridden to ensure that the returned size has width no greater than
+   * the specified maximum.
+   *
+   * @return The minimum size of this combo box.
+   */
+  @Override
+  public Dimension getMinimumSize() {
+    Dimension size = super.getMinimumSize();
+    size.width = Math.min(size.width, maxWidth);
+    return size;
+  }
 
-
-	/**
-	 * Overridden to ensure that the returned size has width no greater than
-	 * the specified maximum.
-	 *
-	 * @return The maximum size of this combo box.
-	 */
-	@Override
-	public Dimension getMaximumSize() {
-		Dimension size = super.getMaximumSize();
-		size.width = Math.min(size.width, maxWidth);
-		return size;
-	}
-
-
-	/**
-	 * Overridden to ensure that the returned size has width no greater than
-	 * the specified maximum.
-	 *
-	 * @return The minimum size of this combo box.
-	 */
-	@Override
-	public Dimension getMinimumSize() {
-		Dimension size = super.getMinimumSize();
-		size.width = Math.min(size.width, maxWidth);
-		return size;
-	}
-
-
-	/**
-	 * Overridden to ensure that the returned size has width no greater than
-	 * the specified maximum.
-	 *
-	 * @return The preferred size of this combo box.
-	 */
-	@Override
-	public Dimension getPreferredSize() {
-		Dimension size = super.getPreferredSize();
-		size.width = Math.min(size.width, maxWidth);
-		return size;
-	}
-
-
+  /**
+   * Overridden to ensure that the returned size has width no greater than
+   * the specified maximum.
+   *
+   * @return The preferred size of this combo box.
+   */
+  @Override
+  public Dimension getPreferredSize() {
+    Dimension size = super.getPreferredSize();
+    size.width = Math.min(size.width, maxWidth);
+    return size;
+  }
 }

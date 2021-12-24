@@ -17,20 +17,20 @@
 */
 
 package omega.plugin;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.URL;
 
-import java.io.InputStream;
-import java.io.BufferedInputStream;
 public class Downloader {
-     public static InputStream openStream(String url){
-     	InputStream in = null;
-          try{
-          	in = new BufferedInputStream(new URL(url).openStream());
-          }
-          catch(Exception e){ 
-          	System.err.println(e); 
-          }
-          return in;
-     }
-}
 
+  public static InputStream openStream(String url) {
+    InputStream in = null;
+    try {
+      in = new BufferedInputStream(new URL(url).openStream());
+    } catch (Exception e) {
+      System.err.println(e);
+    }
+    return in;
+  }
+}

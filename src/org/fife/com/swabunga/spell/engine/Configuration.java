@@ -21,7 +21,6 @@ package org.fife.com.swabunga.spell.engine;
 
 import java.security.AccessControlException;
 
-
 /**
  * The various settings used to control how a spell checker works are read from here.
  * Includes the COST_* constants that decide how to figure the cost of converting one word to
@@ -61,9 +60,9 @@ public abstract class Configuration {
    */
   public static final String COST_SUBST_CHARS = "EDIT_SUB";
 
-//    public static final String EDIT_SIMILAR = "EDIT_SIMILAR"; //DMV: these does not seem to be used at all
-//    public static final String EDIT_MIN = "EDIT_MIN";
-//    public static final String EDIT_MAX = "EDIT_MAX";
+  //    public static final String EDIT_SIMILAR = "EDIT_SIMILAR"; //DMV: these does not seem to be used at all
+  //    public static final String EDIT_MIN = "EDIT_MIN";
+  //    public static final String EDIT_MAX = "EDIT_MAX";
 
   /** the maximum cost of suggested spelling. Any suggestions that cost more are thrown away
    * <br/> integer greater than 1)
@@ -75,19 +74,24 @@ public abstract class Configuration {
   /**  words that have mixed case are not spell checked, example: "SpellChecker"<br/>(boolean) */
   public static final String SPELL_IGNOREMIXEDCASE = "SPELL_IGNOREMIXEDCASE";
   /** words that look like an Internet address are not spell checked, example: "http://www.google.com" <br/>(boolean)*/
-  public static final String SPELL_IGNOREINTERNETADDRESSES = "SPELL_IGNOREINTERNETADDRESS";
+  public static final String SPELL_IGNOREINTERNETADDRESSES =
+    "SPELL_IGNOREINTERNETADDRESS";
   /** words that have digits in them are not spell checked, example: "mach5" <br/>(boolean) */
   public static final String SPELL_IGNOREDIGITWORDS = "SPELL_IGNOREDIGITWORDS";
   /** I don't know what this does. It doesn't seem to be used <br/>(boolean) */
-  public static final String SPELL_IGNOREMULTIPLEWORDS = "SPELL_IGNOREMULTIPLEWORDS";
+  public static final String SPELL_IGNOREMULTIPLEWORDS =
+    "SPELL_IGNOREMULTIPLEWORDS";
   /** the first word of a sentence is expected to start with an upper case letter <br/>(boolean) */
-  public static final String SPELL_IGNORESENTENCECAPITALIZATION = "SPELL_IGNORESENTENCECAPTILIZATION";
+  public static final String SPELL_IGNORESENTENCECAPITALIZATION =
+    "SPELL_IGNORESENTENCECAPTILIZATION";
 
   /** Whether to ignore words that are a single letter (common in programming) */
-  public static final String SPELL_IGNORESINGLELETTERS = "SPELL_IGNORESINGLELETTERS";
+  public static final String SPELL_IGNORESINGLELETTERS =
+    "SPELL_IGNORESINGLELETTERS";
 
   /** Whether to inspect {@code camelCase} words (common in programming) */
-  public static final String SPELL_ANALYZECAMELCASEWORDS = "SPELL_ANALYZECAMELCASEWORDS";
+  public static final String SPELL_ANALYZECAMELCASEWORDS =
+    "SPELL_ANALYZECAMELCASEWORDS";
 
   /**
    * Gets one of the integer constants
@@ -122,14 +126,14 @@ public abstract class Configuration {
    * @return Configuration
    */
   public static final Configuration getConfiguration() {
-  	try {
-  		String config = System.getProperty("jazzy.config"); // added by bd
-  		if (config != null && config.length() > 0)
-  			return getConfiguration(config);
-  	} 
-  	catch (Exception e) {
-  		e.printStackTrace();
-  	} 
+    try {
+      String config = System.getProperty("jazzy.config"); // added by bd
+      if (config != null && config.length() > 0) return getConfiguration(
+        config
+      );
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return getConfiguration(null);
   }
 
@@ -139,13 +143,16 @@ public abstract class Configuration {
    * @return Configuration
    */
   public static final Configuration getConfiguration(String className) {
-
     Configuration result;
 
     if (className != null && className.length() > 0) {
       try {
         result = (Configuration) Class.forName(className).newInstance();
-      } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+      } catch (
+        InstantiationException
+        | IllegalAccessException
+        | ClassNotFoundException e
+      ) {
         result = new PropertyConfiguration();
       }
     } else {

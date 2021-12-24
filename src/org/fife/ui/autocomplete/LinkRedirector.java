@@ -8,7 +8,6 @@ package org.fife.ui.autocomplete;
 
 import java.net.URL;
 
-
 /**
  * Possibly redirects one URL to another.  Useful if you want "external" URL's
  * in code completion documentation to point to a local copy instead, for
@@ -18,9 +17,5 @@ import java.net.URL;
  * @version 1.0
  */
 public interface LinkRedirector {
-
-
-	URL possiblyRedirect(URL original);
-
-
+  URL possiblyRedirect(URL original);
 }

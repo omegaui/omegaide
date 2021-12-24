@@ -12,7 +12,6 @@ package org.fife.ui.autocomplete;
 import java.util.List;
 import javax.swing.text.JTextComponent;
 
-
 /**
  * Provides completions for a {@link ParameterizedCompletion}'s parameters.
  * So, for example, if the user code-completes a function or method, if
@@ -23,18 +22,16 @@ import javax.swing.text.JTextComponent;
  * @version 1.0
  */
 public interface ParameterChoicesProvider {
-
-
-	/**
-	 * Returns a list of choices for a specific parameter.
-	 *
-	 * @param tc The text component.
-	 * @param param The currently focused parameter.
-	 * @return The list of parameters.  This may be <code>null</code> for
-	 *         "no parameters," but might also be an empty list.
-	 */
-	List<Completion> getParameterChoices(JTextComponent tc,
-								ParameterizedCompletion.Parameter param);
-
-
+  /**
+   * Returns a list of choices for a specific parameter.
+   *
+   * @param tc The text component.
+   * @param param The currently focused parameter.
+   * @return The list of parameters.  This may be <code>null</code> for
+   *         "no parameters," but might also be an empty list.
+   */
+  List<Completion> getParameterChoices(
+    JTextComponent tc,
+    ParameterizedCompletion.Parameter param
+  );
 }

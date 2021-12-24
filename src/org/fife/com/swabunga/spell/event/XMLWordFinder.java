@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //:folding=indent:
 package org.fife.com.swabunga.spell.event;
 
-
 /**
  * A word finder for XML or HTML documents, which searches text for sequences
  * of letters, but ignores the text inside any tags.
@@ -52,10 +51,10 @@ public class XMLWordFinder extends AbstractWordFinder {
    * @throws WordNotFoundException search string contains no more words.
    */
   @Override
-public Word next() {
-
-    if (currentWord == null)
-      throw new WordNotFoundException("No more words found.");
+  public Word next() {
+    if (currentWord == null) throw new WordNotFoundException(
+      "No more words found."
+    );
 
     currentWord.copy(nextWord);
 
@@ -65,8 +64,8 @@ public Word next() {
     boolean finished = false;
     boolean started = false;
 
-    search:      /* Find words. */
-    while (i < text.length() && !finished) {
+    /* Find words. */
+    search:while (i < text.length() && !finished) {
       if (!started && isWordChar(i)) {
         nextWord.setStart(i++);
         started = true;

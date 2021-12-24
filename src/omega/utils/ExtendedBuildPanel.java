@@ -17,91 +17,125 @@
 */
 
 package omega.utils;
+
+import static omega.comp.Animations.*;
+import static omega.utils.UIManager.*;
+
 import java.awt.Dimension;
-
 import java.util.LinkedList;
-
-import omega.comp.TextComp;
-import omega.comp.FlexPanel;
-import omega.comp.RTextField;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import omega.comp.FlexPanel;
+import omega.comp.RTextField;
+import omega.comp.TextComp;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
-public class ExtendedBuildPanel extends JPanel{
-	
-	private TextComp flagComp;
-	private TextComp valueComp;
-	private ExtendedBuildPathManager extendedBuildPathManager;
-	private FlexPanel panel;
-	private JScrollPane scrollPane;
-	private LinkedList<RTextField> flags = new LinkedList<>();
-	private int block;
-	
-	public ExtendedBuildPanel(ExtendedBuildPathManager extendedBuildPathManager){
-		super(null);
-		this.extendedBuildPathManager = extendedBuildPathManager;
-		setBackground(c2);
-		init();
-	}
-	
-	public void init(){
-		flagComp = new TextComp("Add an Agrument", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, this::addFlagBox);
-		flagComp.setBounds(extendedBuildPathManager.getWidth()/2 - extendedBuildPathManager.getWidth()/4, 10, extendedBuildPathManager.getWidth()/2, 25);
-		flagComp.setFont(PX14);
-		add(flagComp);
+public class ExtendedBuildPanel extends JPanel {
 
-		scrollPane = new JScrollPane(panel = new FlexPanel(null, c2, null));
-		scrollPane.setBounds(0, 40, extendedBuildPathManager.getWidth(), extendedBuildPathManager.getHeight() - 70 - 40);
-		panel.setArc(0, 0);
-		add(scrollPane);
-	}
-	
-	public void addFlagBox(){
-		RTextField flagField = new RTextField("Flag", "--", TOOLMENU_COLOR3, c2, glow);
-		flagField.setBounds(0, block, extendedBuildPathManager.getWidth(), 25);
-		flagField.setFont(PX14);
-		flagField.setArc(0, 0);
-		panel.add(flagField);
-		flags.add(flagField);
+  private TextComp flagComp;
+  private TextComp valueComp;
+  private ExtendedBuildPathManager extendedBuildPathManager;
+  private FlexPanel panel;
+  private JScrollPane scrollPane;
+  private LinkedList<RTextField> flags = new LinkedList<>();
+  private int block;
 
-		block += 25;
-		
-		panel.setPreferredSize(new Dimension(extendedBuildPathManager.getWidth(), block));
-		scrollPane.getVerticalScrollBar().setVisible(true);
-		repaint();
-	}
+  public ExtendedBuildPanel(ExtendedBuildPathManager extendedBuildPathManager) {
+    super(null);
+    this.extendedBuildPathManager = extendedBuildPathManager;
+    setBackground(c2);
+    init();
+  }
 
-	public void loadFlags(LinkedList<String> textFlags){
-		flags.forEach(panel::remove);
-		flags.clear();
+  public void init() {
+    flagComp =
+      new TextComp(
+        "Add an Agrument",
+        TOOLMENU_COLOR2_SHADE,
+        back3,
+        TOOLMENU_COLOR2,
+        this::addFlagBox
+      );
+    flagComp.setBounds(
+      extendedBuildPathManager.getWidth() /
+      2 -
+      extendedBuildPathManager.getWidth() /
+      4,
+      10,
+      extendedBuildPathManager.getWidth() / 2,
+      25
+    );
+    flagComp.setFont(PX14);
+    add(flagComp);
 
-		block = 0;
+    scrollPane = new JScrollPane(panel = new FlexPanel(null, c2, null));
+    scrollPane.setBounds(
+      0,
+      40,
+      extendedBuildPathManager.getWidth(),
+      extendedBuildPathManager.getHeight() - 70 - 40
+    );
+    panel.setArc(0, 0);
+    add(scrollPane);
+  }
 
-		textFlags.forEach(text->{
-			RTextField flagField = new RTextField("Flag", "--", TOOLMENU_COLOR3, c2, glow);
-			flagField.setText(text);
-			flagField.setBounds(0, block, extendedBuildPathManager.getWidth(), 25);
-			flagField.setFont(PX14);
-			flagField.setArc(0, 0);
-			panel.add(flagField);
-			flags.add(flagField);
+  public void addFlagBox() {
+    RTextField flagField = new RTextField(
+      "Flag",
+      "--",
+      TOOLMENU_COLOR3,
+      c2,
+      glow
+    );
+    flagField.setBounds(0, block, extendedBuildPathManager.getWidth(), 25);
+    flagField.setFont(PX14);
+    flagField.setArc(0, 0);
+    panel.add(flagField);
+    flags.add(flagField);
 
-			block += 25;
-		});
-		panel.setPreferredSize(new Dimension(extendedBuildPathManager.getWidth(), block));
-		scrollPane.getVerticalScrollBar().setVisible(true);
-		repaint();
-	}
+    block += 25;
 
-	public LinkedList<String> getFlags(){
-		LinkedList<String> textFlags = new LinkedList<>();
-		flags.forEach(flag->{
-			if(flag.hasText())
-				textFlags.add(flag.getText());
-		});
-		return textFlags;
-	}
+    panel.setPreferredSize(
+      new Dimension(extendedBuildPathManager.getWidth(), block)
+    );
+    scrollPane.getVerticalScrollBar().setVisible(true);
+    repaint();
+  }
+
+  public void loadFlags(LinkedList<String> textFlags) {
+    flags.forEach(panel::remove);
+    flags.clear();
+
+    block = 0;
+
+    textFlags.forEach(text -> {
+      RTextField flagField = new RTextField(
+        "Flag",
+        "--",
+        TOOLMENU_COLOR3,
+        c2,
+        glow
+      );
+      flagField.setText(text);
+      flagField.setBounds(0, block, extendedBuildPathManager.getWidth(), 25);
+      flagField.setFont(PX14);
+      flagField.setArc(0, 0);
+      panel.add(flagField);
+      flags.add(flagField);
+
+      block += 25;
+    });
+    panel.setPreferredSize(
+      new Dimension(extendedBuildPathManager.getWidth(), block)
+    );
+    scrollPane.getVerticalScrollBar().setVisible(true);
+    repaint();
+  }
+
+  public LinkedList<String> getFlags() {
+    LinkedList<String> textFlags = new LinkedList<>();
+    flags.forEach(flag -> {
+      if (flag.hasText()) textFlags.add(flag.getText());
+    });
+    return textFlags;
+  }
 }

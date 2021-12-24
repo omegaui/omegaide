@@ -21,19 +21,20 @@ package org.fife.com.swabunga.util;
 
 import java.util.List;
 
-
 public class VectorUtility {
 
-	public static <T> List<T> addAll(List<T> dest, List<T> src) {
-		return addAll(dest, src, true);
-	}
+  public static <T> List<T> addAll(List<T> dest, List<T> src) {
+    return addAll(dest, src, true);
+  }
 
-	public static <T> List<T> addAll(List<T> dest, List<T> src, boolean allowDuplicates) {
-		for (T value : src) {
-			if (allowDuplicates || !dest.contains(value))
-				dest.add(value);
-		}
-		return dest;
-	}
-
+  public static <T> List<T> addAll(
+    List<T> dest,
+    List<T> src,
+    boolean allowDuplicates
+  ) {
+    for (T value : src) {
+      if (allowDuplicates || !dest.contains(value)) dest.add(value);
+    }
+    return dest;
+  }
 }

@@ -21,7 +21,7 @@ package org.fife.com.swabunga.spell.event;
 
 /**
  * A basic word finder, which searches text for sequences of letters.
- * 
+ *
  * @author Anthony Roy  (ajr@antroy.co.uk)
  */
 public class DefaultWordFinder extends AbstractWordFinder {
@@ -32,7 +32,7 @@ public class DefaultWordFinder extends AbstractWordFinder {
 
   /**
    * Creates a new DefaultWordFinder object.
-   * 
+   *
    * @param inText the String to search
    */
   public DefaultWordFinder(String inText) {
@@ -51,12 +51,12 @@ public class DefaultWordFinder extends AbstractWordFinder {
   /**
    * This method scans the text from the end of the last word,  and returns a
    * new Word object corresponding to the next word.
-   * 
+   *
    * @return the next word.
    * @throws WordNotFoundException search string contains no more words.
    */
   @Override
-public Word next() {
+  public Word next() {
     if (nextWord == null) {
       throw new WordNotFoundException("No more words found.");
     }
@@ -75,8 +75,7 @@ public Word next() {
       }
       i++;
     }
-    if (!finished)
-      nextWord = null;
+    if (!finished) nextWord = null;
 
     return currentWord;
   }
@@ -91,27 +90,22 @@ public Word next() {
     // If we're dealing with a possible 'internet word' we need to provide
     // some special handling
     //if (SpellChecker.isINETWord(text.substring(startPos))) {
-	  // robert: trying to be smarter avoiding email addresses (see SpellChecker changes)
+    // robert: trying to be smarter avoiding email addresses (see SpellChecker changes)
     if (SpellChecker.beginsAsINETWord(text.substring(startPos))) {
       for (int i = startPos; i < text.length(); i++) {
         char ch = text.charAt(i);
-        if (Character.isLetterOrDigit(ch))
-          continue;
+        if (Character.isLetterOrDigit(ch)) continue;
 
-        if (ch == '\r' || ch == '\n')
-          return i;
+        if (ch == '\r' || ch == '\n') return i;
         // Chop off any characters that might be enclosing the 'internet word'. eg ',",),]
-        if (Character.isSpaceChar(ch))
-          if (i > 0 && Character.isLetterOrDigit(text.charAt(i - 1)))
-            return i;
-          else
-            return i - 1;
+        if (Character.isSpaceChar(ch)) if (
+          i > 0 && Character.isLetterOrDigit(text.charAt(i - 1))
+        ) return i; else return i - 1;
       }
       return text.length();
     } else {
       for (int i = startPos; i < text.length(); i++) {
-        if (!isWordChar(i))
-          return i;
+        if (!isWordChar(i)) return i;
       }
       return text.length();
     }

@@ -14,7 +14,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.swing.text.TabExpander;
 
-
 /**
  * A token painter that visibly renders whitespace (spaces and tabs).<p>
  *
@@ -47,139 +46,142 @@ import javax.swing.text.TabExpander;
  */
 class VisibleWhitespaceTokenPainter extends DefaultTokenPainter {
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected float paintImpl(
+    Token token,
+    Graphics2D g,
+    float x,
+    float y,
+    RSyntaxTextArea host,
+    TabExpander e,
+    float clipStart,
+    boolean selected,
+    boolean useSTC
+  ) {
+    int origX = (int) x;
+    int textOffs = token.getTextOffset();
+    char[] text = token.getTextArray();
+    int end = textOffs + token.length();
+    float nextX = x;
+    int flushLen = 0;
+    int flushIndex = textOffs;
+    Color fg = useSTC
+      ? host.getSelectedTextColor()
+      : host.getForegroundForToken(token);
+    Color bg = selected ? null : host.getBackgroundForToken(token);
+    g.setFont(host.getFontForTokenType(token.getType()));
+    FontMetrics fm = host.getFontMetricsForTokenType(token.getType());
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected float paintImpl(Token token, Graphics2D g, float x, float y,
-			RSyntaxTextArea host, TabExpander e, float clipStart,
-			boolean selected, boolean useSTC) {
+    int ascent = fm.getAscent();
+    int height = fm.getHeight();
 
-		int origX = (int)x;
-		int textOffs = token.getTextOffset();
-		char[] text = token.getTextArray();
-		int end = textOffs + token.length();
-		float nextX = x;
-		int flushLen = 0;
-		int flushIndex = textOffs;
-		Color fg = useSTC ? host.getSelectedTextColor() :
-			host.getForegroundForToken(token);
-		Color bg = selected ? null : host.getBackgroundForToken(token);
-		g.setFont(host.getFontForTokenType(token.getType()));
-		FontMetrics fm = host.getFontMetricsForTokenType(token.getType());
+    for (int i = textOffs; i < end; i++) {
+      switch (text[i]) {
+        case '\t':
+          // Fill in background.
+          nextX = x + fm.charsWidth(text, flushIndex, flushLen);
+          float nextNextX = e.nextTabStop(nextX, 0);
+          if (bg != null) {
+            paintBackground(x, y, nextNextX - x, height, g, ascent, host, bg);
+          }
+          g.setColor(fg);
 
-		int ascent = fm.getAscent();
-		int height = fm.getHeight();
+          // Paint chars cached before the tab.
+          if (flushLen > 0) {
+            g.drawChars(text, flushIndex, flushLen, (int) x, (int) y);
+            flushLen = 0;
+          }
+          flushIndex = i + 1;
 
-		for (int i=textOffs; i<end; i++) {
+          // Draw an arrow representing the tab.
+          int halfHeight = height / 2;
+          int quarterHeight = halfHeight / 2;
+          int ymid = (int) y - ascent + halfHeight;
+          g.drawLine((int) nextX, ymid, (int) nextNextX, ymid);
+          g.drawLine(
+            (int) nextNextX,
+            ymid,
+            (int) nextNextX - 4,
+            ymid - quarterHeight
+          );
+          g.drawLine(
+            (int) nextNextX,
+            ymid,
+            (int) nextNextX - 4,
+            ymid + quarterHeight
+          );
 
-			switch (text[i]) {
+          x = nextNextX;
+          break;
+        case ' ':
+          // NOTE:  There is a little bit of a "fudge factor"
+          // here when "smooth text" is enabled, as "width"
+          // below may well not be the width given to the space
+          // by fm.charsWidth() (it depends on how it places the
+          // space with respect to the preceding character).
+          // But, we assume the approximation is close enough for
+          // our drawing a dot for the space.
 
-				case '\t':
+          // "flushLen+1" ensures text is aligned correctly (or,
+          // aligned the same as in getWidth()).
+          nextX = x + fm.charsWidth(text, flushIndex, flushLen + 1);
+          int width = fm.charWidth(' ');
 
-					// Fill in background.
-					nextX = x+fm.charsWidth(text, flushIndex,flushLen);
-					float nextNextX = e.nextTabStop(nextX, 0);
-					if (bg!=null) {
-						paintBackground(x,y, nextNextX-x,height, g,
-										ascent, host, bg);
-					}
-					g.setColor(fg);
+          // Paint background.
+          if (bg != null) {
+            paintBackground(x, y, nextX - x, height, g, ascent, host, bg);
+          }
+          g.setColor(fg);
 
-					// Paint chars cached before the tab.
-					if (flushLen > 0) {
-						g.drawChars(text, flushIndex, flushLen, (int)x,(int)y);
-						flushLen = 0;
-					}
-					flushIndex = i + 1;
+          // Paint chars before space.
+          if (flushLen > 0) {
+            g.drawChars(text, flushIndex, flushLen, (int) x, (int) y);
+            flushLen = 0;
+          }
 
-					// Draw an arrow representing the tab.
-					int halfHeight = height / 2;
-					int quarterHeight = halfHeight / 2;
-					int ymid = (int)y - ascent + halfHeight;
-					g.drawLine((int)nextX,ymid, (int)nextNextX,ymid);
-					g.drawLine((int)nextNextX,ymid, (int)nextNextX-4,ymid-quarterHeight);
-					g.drawLine((int)nextNextX,ymid, (int)nextNextX-4,ymid+quarterHeight);
+          // Paint a dot representing the space.
+          int dotX = (int) (nextX - width / 2f); // "2.0f" for FindBugs
+          int dotY = (int) (y - ascent + height / 2f); // Ditto
+          g.drawLine(dotX, dotY, dotX, dotY);
+          flushIndex = i + 1;
+          x = nextX;
+          break;
+        case '\f':
+        // ???
+        // fall-through for now.
 
-					x = nextNextX;
-					break;
+        default:
+          flushLen += 1;
+          break;
+      }
+    }
 
-				case ' ':
+    nextX = x + fm.charsWidth(text, flushIndex, flushLen);
 
-					// NOTE:  There is a little bit of a "fudge factor"
-					// here when "smooth text" is enabled, as "width"
-					// below may well not be the width given to the space
-					// by fm.charsWidth() (it depends on how it places the
-					// space with respect to the preceding character).
-					// But, we assume the approximation is close enough for
-					// our drawing a dot for the space.
+    if (flushLen > 0 && nextX >= clipStart) {
+      if (bg != null) {
+        paintBackground(x, y, nextX - x, height, g, ascent, host, bg);
+      }
+      g.setColor(fg);
+      g.drawChars(text, flushIndex, flushLen, (int) x, (int) y);
+    }
 
-					// "flushLen+1" ensures text is aligned correctly (or,
-					// aligned the same as in getWidth()).
-					nextX = x+fm.charsWidth(text, flushIndex,flushLen+1);
-					int width = fm.charWidth(' ');
+    if (host.getUnderlineForToken(token)) {
+      g.setColor(fg);
+      int y2 = (int) (y + 1);
+      g.drawLine(origX, y2, (int) nextX, y2);
+    }
 
-					// Paint background.
-					if (bg!=null) {
-						paintBackground(x,y, nextX-x,height, g,
-										ascent, host, bg);
-					}
-					g.setColor(fg);
+    // Don't check if it's whitespace - some TokenMakers may return types
+    // other than Token.WHITESPACE for spaces (such as Token.IDENTIFIER).
+    // This also allows us to paint tab lines for MLC's.
+    if (host.getPaintTabLines() && origX == host.getMargin().left) { // && isWhitespace()) {
+      paintTabLines(token, origX, (int) y, (int) nextX, g, e, host);
+    }
 
-					// Paint chars before space.
-					if (flushLen>0) {
-						g.drawChars(text, flushIndex, flushLen, (int)x,(int)y);
-						flushLen = 0;
-					}
-
-					// Paint a dot representing the space.
-					int dotX = (int)(nextX - width/2f); // "2.0f" for FindBugs
-					int dotY = (int)(y - ascent + height/2f); // Ditto
-					g.drawLine(dotX, dotY, dotX, dotY);
-					flushIndex = i + 1;
-					x = nextX;
-					break;
-
-
-				case '\f':
-					// ???
-					// fall-through for now.
-
-				default:
-					flushLen += 1;
-					break;
-
-			}
-		}
-
-		nextX = x+fm.charsWidth(text, flushIndex,flushLen);
-
-		if (flushLen>0 && nextX>=clipStart) {
-			if (bg!=null) {
-				paintBackground(x,y, nextX-x,height, g,
-							ascent, host, bg);
-			}
-			g.setColor(fg);
-			g.drawChars(text, flushIndex, flushLen, (int)x,(int)y);
-		}
-
-		if (host.getUnderlineForToken(token)) {
-			g.setColor(fg);
-			int y2 = (int)(y+1);
-			g.drawLine(origX,y2, (int)nextX,y2);
-		}
-
-		// Don't check if it's whitespace - some TokenMakers may return types
-		// other than Token.WHITESPACE for spaces (such as Token.IDENTIFIER).
-		// This also allows us to paint tab lines for MLC's.
-		if (host.getPaintTabLines() && origX==host.getMargin().left) {// && isWhitespace()) {
-			paintTabLines(token, origX, (int)y, (int)nextX, g, e, host);
-		}
-
-		return nextX;
-
-	}
-
-
+    return nextX;
+  }
 }

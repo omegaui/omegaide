@@ -37,7 +37,6 @@ package org.fife.com.swabunga.spell.event;
  */
 
 public interface WordFinder {
-
   //~ Methods .................................................................
 
   /**
@@ -97,6 +96,5 @@ public interface WordFinder {
    * @throws WordNotFoundException current word has not yet been set.
    */
   boolean startsSentence();
-
   // void setText();
 }

@@ -23,9 +23,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.Properties;
 
-
 /**
- * Implementation class to read the properties controlling the spell engine. 
+ * Implementation class to read the properties controlling the spell engine.
  * The properties are read form the <code>configuration.properties</code> file.
  *
  * @author aim4min
@@ -47,7 +46,12 @@ public class PropertyConfiguration extends Configuration {
   public PropertyConfiguration() {
     prop = new Properties();
     try {
-      filename = getClass().getClassLoader().getResource("org/fife/com/swabunga/spell/engine/configuration.properties");
+      filename =
+        getClass()
+          .getClassLoader()
+          .getResource(
+            "org/fife/com/swabunga/spell/engine/configuration.properties"
+          );
       InputStream in = filename.openStream();
       prop.load(in);
     } catch (Exception e) {
@@ -60,30 +64,27 @@ public class PropertyConfiguration extends Configuration {
    * @see org.fife.com.swabunga.spell.engine.Configuration#getBoolean(String)
    */
   @Override
-public boolean getBoolean(String key) {
-	  // robert: Avoid Boolean allocations
-	  return Boolean.parseBoolean(prop.getProperty(key));
+  public boolean getBoolean(String key) {
+    // robert: Avoid Boolean allocations
+    return Boolean.parseBoolean(prop.getProperty(key));
   }
 
   /**
    * @see org.fife.com.swabunga.spell.engine.Configuration#getInteger(String)
    */
   @Override
-public int getInteger(String key) {
-	  // robert: Avoid Integer allocations
-	  return Integer.parseInt(prop.getProperty(key), 10);
+  public int getInteger(String key) {
+    // robert: Avoid Integer allocations
+    return Integer.parseInt(prop.getProperty(key), 10);
   }
 
   /**
    * @see org.fife.com.swabunga.spell.engine.Configuration#setBoolean(String, boolean)
    */
   @Override
-public void setBoolean(String key, boolean value) {
+  public void setBoolean(String key, boolean value) {
     String string = null;
-    if (value)
-      string = "true";
-    else
-      string = "false";
+    if (value) string = "true"; else string = "false";
 
     prop.setProperty(key, string);
     save();
@@ -93,13 +94,13 @@ public void setBoolean(String key, boolean value) {
    * @see org.fife.com.swabunga.spell.engine.Configuration#setInteger(String, int)
    */
   @Override
-public void setInteger(String key, int value) {
+  public void setInteger(String key, int value) {
     prop.setProperty(key, Integer.toString(value));
     save();
   }
 
   /**
-   * Writes the property list (key and element pairs) in the 
+   * Writes the property list (key and element pairs) in the
    * PropertyConfiguration file.
    */
   public void save() {
@@ -108,8 +109,6 @@ public void setInteger(String key, int value) {
       FileOutputStream fout = new FileOutputStream(file);
       prop.store(fout, "HEADER");
       fout.close(); // robert: close stream
-    } catch (IOException e) {
-    }
+    } catch (IOException e) {}
   }
-
 }

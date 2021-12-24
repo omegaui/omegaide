@@ -37,7 +37,6 @@ package org.fife.com.swabunga.spell.event;
  * @author Jason Height (jheight@chariot.net.au)
  */
 public interface WordTokenizer {
-
   //~ Methods .................................................................
 
   /**

@@ -19,11 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 package org.fife.com.swabunga.spell.event;
 
+import java.text.BreakIterator;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Segment;
-import java.text.BreakIterator;
-
 
 /** This class tokenizes a swing document model. It also allows for the
  *  document model to be changed when corrections occur.
@@ -31,6 +30,7 @@ import java.text.BreakIterator;
  * @author Jason Height (jheight@chariot.net.au)
  */
 public class DocumentWordTokenizer implements WordTokenizer {
+
   /** Holds the start character position of the current word*/
   private int currentWordPos = 0;
   /** Holds the end character position of the current word*/
@@ -82,12 +82,15 @@ public class DocumentWordTokenizer implements WordTokenizer {
    * word in the buffer from the start position
    */
   private static int getNextWordStart(Segment text, int startPos) {
-    if (startPos <= text.getEndIndex())
-      for (char ch = text.setIndex(startPos); ch != Segment.DONE; ch = text.next()) {
-        if (Character.isLetterOrDigit(ch)) {
-          return text.getIndex();
-        }
+    if (startPos <= text.getEndIndex()) for (
+      char ch = text.setIndex(startPos);
+      ch != Segment.DONE;
+      ch = text.next()
+    ) {
+      if (Character.isLetterOrDigit(ch)) {
+        return text.getIndex();
       }
+    }
     return -1;
   }
 
@@ -95,13 +98,16 @@ public class DocumentWordTokenizer implements WordTokenizer {
    *
    */
   private static int getNextWordEnd(Segment text, int startPos) {
-    for (char ch = text.setIndex(startPos); ch != Segment.DONE; ch = text.next()) {
+    for (
+      char ch = text.setIndex(startPos);
+      ch != Segment.DONE;
+      ch = text.next()
+    ) {
       if (!Character.isLetterOrDigit(ch)) {
         if (ch == '-' || ch == '\'') { // handle ' and - inside words
           char ch2 = text.next();
           text.previous();
-          if (ch2 != Segment.DONE && Character.isLetterOrDigit(ch2))
-            continue;
+          if (ch2 != Segment.DONE && Character.isLetterOrDigit(ch2)) continue;
         }
         return text.getIndex();
       }
@@ -114,39 +120,40 @@ public class DocumentWordTokenizer implements WordTokenizer {
    * @return true if more words can be found in the text.
    */
   @Override
-public boolean hasMoreWords() {
+  public boolean hasMoreWords() {
     return moreTokens;
   }
-  
+
   /**
    * Sets the current word position at the start of the word containing
    * the char at position pos. This way a call to nextWord() will return
    * this word.
-   * 
+   *
    * @param pos position in the word we want to set as current.
    */
-  public void posStartFullWordFrom(int pos){
-  	currentWordPos=text.getBeginIndex();
-  	if(pos>text.getEndIndex())
-  		pos=text.getEndIndex();
-  	for (char ch = text.setIndex(pos); ch != Segment.DONE; ch = text.previous()) {
-  		if (!Character.isLetterOrDigit(ch)) {
-  			if (ch == '-' || ch == '\'') { // handle ' and - inside words
-  				char ch2 = text.previous();
-  				text.next();
-  				if (ch2 != Segment.DONE && Character.isLetterOrDigit(ch2))
-  					continue;
-  			}
-  			currentWordPos=text.getIndex()+1;
-  			break;
-  		}
-  	}
-  	//System.out.println("CurPos:"+currentWordPos);
-  	if(currentWordPos==0)
-  		first=true;
-  	moreTokens=true;
-  	currentWordEnd = getNextWordEnd(text, currentWordPos);
-  	nextWordPos = getNextWordStart(text, currentWordEnd + 1);
+  public void posStartFullWordFrom(int pos) {
+    currentWordPos = text.getBeginIndex();
+    if (pos > text.getEndIndex()) pos = text.getEndIndex();
+    for (
+      char ch = text.setIndex(pos);
+      ch != Segment.DONE;
+      ch = text.previous()
+    ) {
+      if (!Character.isLetterOrDigit(ch)) {
+        if (ch == '-' || ch == '\'') { // handle ' and - inside words
+          char ch2 = text.previous();
+          text.next();
+          if (ch2 != Segment.DONE && Character.isLetterOrDigit(ch2)) continue;
+        }
+        currentWordPos = text.getIndex() + 1;
+        break;
+      }
+    }
+    //System.out.println("CurPos:"+currentWordPos);
+    if (currentWordPos == 0) first = true;
+    moreTokens = true;
+    currentWordEnd = getNextWordEnd(text, currentWordPos);
+    nextWordPos = getNextWordStart(text, currentWordEnd + 1);
   }
 
   /**
@@ -154,8 +161,8 @@ public boolean hasMoreWords() {
    * @return the number of words found so far.
    */
   @Override
-public int getCurrentWordPosition() {
-	  // robert: bug fix - segment's start offset may be != 0
+  public int getCurrentWordPosition() {
+    // robert: bug fix - segment's start offset may be != 0
     return currentWordPos - text.offset;
   }
 
@@ -164,8 +171,8 @@ public int getCurrentWordPosition() {
    * @return index of the end of the current word in the text.
    */
   @Override
-public int getCurrentWordEnd() {
-	  // robert: bug fix - segment's start offset may be != 0
+  public int getCurrentWordEnd() {
+    // robert: bug fix - segment's start offset may be != 0
     return currentWordEnd - text.offset;
   }
 
@@ -176,35 +183,31 @@ public int getCurrentWordEnd() {
    * @return the next word in the iteration.
    */
   @Override
-public String nextWord() {
+  public String nextWord() {
     if (!first) {
       currentWordPos = nextWordPos;
       currentWordEnd = getNextWordEnd(text, currentWordPos);
       nextWordPos = getNextWordStart(text, currentWordEnd + 1);
     }
     int current = sentenceIterator.current();
-    if (current == currentWordPos)
-      startsSentence = true;
-    else {
+    if (current == currentWordPos) startsSentence = true; else {
       startsSentence = false;
-      if (currentWordEnd > current)
-        sentenceIterator.next();
+      if (currentWordEnd > current) sentenceIterator.next();
     }
     //The nextWordPos has already been populated
     String word = null;
     try {
-    	// robert: bug fix - Segment's begin offset may be != 0
-        int offs = currentWordPos - text.offset;
-        word = document.getText(offs, currentWordEnd - currentWordPos);
+      // robert: bug fix - Segment's begin offset may be != 0
+      int offs = currentWordPos - text.offset;
+      word = document.getText(offs, currentWordEnd - currentWordPos);
       //word = document.getText(currentWordPos, currentWordEnd - currentWordPos);
     } catch (BadLocationException ex) {
-    	ex.printStackTrace();
+      ex.printStackTrace();
       moreTokens = false;
     }
     wordCount++;
     first = false;
-    if (nextWordPos == -1)
-      moreTokens = false;
+    if (nextWordPos == -1) moreTokens = false;
     return word;
   }
 
@@ -213,7 +216,7 @@ public String nextWord() {
    * @return the number of words found so far.
    */
   @Override
-public int getCurrentWordCount() {
+  public int getCurrentWordCount() {
     return wordCount;
   }
 
@@ -221,7 +224,7 @@ public int getCurrentWordCount() {
    * @param newWord The new word to replace the misspelled one
    */
   @Override
-public void replaceWord(String newWord) {
+  public void replaceWord(String newWord) {
     if (currentWordPos != -1) {
       try {
         document.remove(currentWordPos, currentWordEnd - currentWordPos);
@@ -233,14 +236,14 @@ public void replaceWord(String newWord) {
       }
       //Position after the newly replaced word(s)
       first = true;
-      currentWordPos = getNextWordStart(text, currentWordPos + newWord.length());
+      currentWordPos =
+        getNextWordStart(text, currentWordPos + newWord.length());
       if (currentWordPos != -1) {
         currentWordEnd = getNextWordEnd(text, currentWordPos);
         nextWordPos = getNextWordStart(text, currentWordEnd);
         sentenceIterator.setText(text);
         sentenceIterator.following(currentWordPos);
-      } else
-        moreTokens = false;
+      } else moreTokens = false;
     }
   }
 
@@ -249,7 +252,7 @@ public void replaceWord(String newWord) {
    * @return The text, including changes.
    */
   @Override
-public String getContext() {
+  public String getContext() {
     return text.toString();
   }
 
@@ -257,18 +260,17 @@ public String getContext() {
    * @return true if the current word is at the start of a sentence
    */
   @Override
-public boolean isNewSentence() {
+  public boolean isNewSentence() {
     // BreakIterator doesn't work when the first word in a sentence is not
-	// capitalized, but we need to check for capitalization
-    if (startsSentence || currentWordPos < 2)
-      return(true);
-    
+    // capitalized, but we need to check for capitalization
+    if (startsSentence || currentWordPos < 2) return (true);
+
     String textBefore = null;
     try {
-      textBefore = document.getText(currentWordPos-2, 2);
+      textBefore = document.getText(currentWordPos - 2, 2);
     } catch (BadLocationException ex) {
-      return(false);
+      return (false);
     }
-    return(textBefore != null && ".".equals(textBefore.trim()));
+    return (textBefore != null && ".".equals(textBefore.trim()));
   }
 }

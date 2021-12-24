@@ -16,37 +16,50 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.terminal;
-import omega.utils.IconManager;
-
-import omega.terminal.jediterm.JetTerminal;
 
 import omega.Screen;
-
+import omega.terminal.jediterm.JetTerminal;
 import omega.token.factory.ShellTokenMaker;
+import omega.utils.IconManager;
+
 public class TerminalComp {
 
-	public int count = 1;
-	
-	public void showTerminal(){
-		Terminal terminal = new Terminal();
-		ShellTokenMaker.apply(terminal.getOutputArea());
-		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ((count - 1) + "") : ""), IconManager.fluentconsoleImage, terminal, ()->{
-			count--;
-			terminal.exit();
-		});
-		terminal.launchTerminal();
-		count++;
-	}
-	
-	public void showJetTerminal(){
-		JetTerminal jetTerminal = new JetTerminal();
-		jetTerminal.start();
-		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ((count - 1) + "") : ""), IconManager.fluentconsoleImage, jetTerminal, ()->{
-			count--;
-			jetTerminal.exit();
-		});
-		count++;
-	}
-	
-}
+  public int count = 1;
 
+  public void showTerminal() {
+    Terminal terminal = new Terminal();
+    ShellTokenMaker.apply(terminal.getOutputArea());
+    Screen
+      .getScreen()
+      .getOperationPanel()
+      .addTab(
+        "Terminal" + (count > 1 ? ((count - 1) + "") : ""),
+        IconManager.fluentconsoleImage,
+        terminal,
+        () -> {
+          count--;
+          terminal.exit();
+        }
+      );
+    terminal.launchTerminal();
+    count++;
+  }
+
+  public void showJetTerminal() {
+    JetTerminal jetTerminal = new JetTerminal();
+    jetTerminal.start();
+    Screen
+      .getScreen()
+      .getOperationPanel()
+      .addTab(
+        "Terminal" + (count > 1 ? ((count - 1) + "") : ""),
+        IconManager.fluentconsoleImage,
+        jetTerminal,
+        () -> {
+          count--;
+          jetTerminal.exit();
+        }
+      );
+    count++;
+  }
+}

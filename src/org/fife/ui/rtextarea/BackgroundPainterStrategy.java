@@ -12,7 +12,6 @@ package org.fife.ui.rtextarea;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-
 /**
  * Interface for classes that paint the background of an
  * <code>RTextAreaBase</code>.  The Strategy pattern is used for this
@@ -29,16 +28,12 @@ import java.awt.Rectangle;
  * @see org.fife.ui.rtextarea.ColorBackgroundPainterStrategy
  */
 public interface BackgroundPainterStrategy {
-
-
-	/**
-	 * Paints the background.
-	 *
-	 * @param g The graphics context.
-	 * @param bounds The bounds of the object whose backgrouns we're
-	 *        painting.
-	 */
-	void paint(Graphics g, Rectangle bounds);
-
-
+  /**
+   * Paints the background.
+   *
+   * @param g The graphics context.
+   * @param bounds The bounds of the object whose backgrouns we're
+   *        painting.
+   */
+  void paint(Graphics g, Rectangle bounds);
 }

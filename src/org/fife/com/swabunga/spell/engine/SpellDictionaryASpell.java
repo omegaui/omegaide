@@ -59,7 +59,6 @@ import java.util.*;
  */
 public abstract class SpellDictionaryASpell implements SpellDictionary {
 
-
   /** The reference to a Transformator, used to transform a word into it's phonetic code. */
   private Transformator tf;
 
@@ -72,10 +71,8 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    * information
    */
   public SpellDictionaryASpell(File phonetic) throws IOException {
-    if (phonetic == null)
-      tf = new DoubleMeta();
-    else
-      tf = new GenericTransformator(phonetic);
+    if (phonetic == null) tf = new DoubleMeta(); else tf =
+      new GenericTransformator(phonetic);
   }
 
   /**
@@ -87,11 +84,10 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    * @throws java.io.IOException  indicates problems reading the phonetic
    * information
    */
-  public SpellDictionaryASpell(File phonetic, String encoding) throws IOException {
-    if (phonetic == null)
-      tf = new DoubleMeta();
-    else
-      tf = new GenericTransformator(phonetic, encoding);
+  public SpellDictionaryASpell(File phonetic, String encoding)
+    throws IOException {
+    if (phonetic == null) tf = new DoubleMeta(); else tf =
+      new GenericTransformator(phonetic, encoding);
   }
 
   /**
@@ -103,10 +99,8 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    * information
    */
   public SpellDictionaryASpell(Reader phonetic) throws IOException {
-    if (phonetic == null)
-      tf = new DoubleMeta();
-    else
-      tf = new GenericTransformator(phonetic);
+    if (phonetic == null) tf = new DoubleMeta(); else tf =
+      new GenericTransformator(phonetic);
   }
 
   /**
@@ -121,7 +115,7 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    */
   @Override
   public List<Word> getSuggestions(String word, int threshold) {
-  	return getSuggestions(word,threshold,null);
+    return getSuggestions(word, threshold, null);
   }
 
   /**
@@ -136,12 +130,10 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    */
   @Override
   public List<Word> getSuggestions(String word, int threshold, int[][] matrix) {
+    int i;
+    int j;
 
-  	int i;
-  	int j;
-
-  	if(matrix == null)
-  		matrix = new int[0][0];
+    if (matrix == null) matrix = new int[0][0];
 
     HashMap<String, String> nearmisscodes = new HashMap<>();
     String code = getCode(word);
@@ -155,7 +147,7 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
     nearmisscodes = new HashMap<>();
     char[] charArray = word.toCharArray();
     char a;
-    char b ;
+    char b;
 
     for (i = 0; i < word.length() - 1; i++) {
       a = charArray[i];
@@ -192,8 +184,7 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
         String s = getCode(new String(charArray));
         nearmisscodes.put(s, s);
       }
-      if (iy == 0)
-        break;
+      if (iy == 0) break;
       charArray[iy] = charArray[iy - 1];
       --iy;
     }
@@ -209,8 +200,7 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
     while (true) {
       String s = getCode(new String(charArray));
       nearmisscodes.put(s, s);
-      if (ii == 0)
-        break;
+      if (ii == 0) break;
       b = a;
       a = charArray2[ii - 1];
       charArray2[ii - 1] = b;
@@ -221,9 +211,11 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
 
     List<Word> wordlist = getWordsFromCode(word, nearmisscodes);
 
-    if (wordlist.size() == 0 && phoneticList.size() == 0)
-      addBestGuess(word, phoneticList, matrix);
-
+    if (wordlist.size() == 0 && phoneticList.size() == 0) addBestGuess(
+      word,
+      phoneticList,
+      matrix
+    );
 
     // We sort a Vector at the end instead of maintaining a
     // continuously sorted TreeSet because every time you add a collection
@@ -246,11 +238,11 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    * @param wordList - the linked list that will get the best guess
    */
   private void addBestGuess(String word, List<Word> wordList, int[][] matrix) {
-  	if(matrix == null)
-  		matrix = new int[0][0];
+    if (matrix == null) matrix = new int[0][0];
 
-    if (wordList.size() != 0)
-      throw new InvalidParameterException("the wordList vector must be empty");
+    if (wordList.size() != 0) throw new InvalidParameterException(
+      "the wordList vector must be empty"
+    );
 
     int bestScore = Integer.MAX_VALUE;
 
@@ -269,13 +261,14 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
 
     //now, only pull out the guesses that had the best score
     for (Word candidate : candidates) {
-      if (candidate.getCost() == bestScore)
-        wordList.add(candidate);
+      if (candidate.getCost() == bestScore) wordList.add(candidate);
     }
-
   }
 
-  private List<Word> getWordsFromCode(String word, HashMap<String, String> codes) {
+  private List<Word> getWordsFromCode(
+    String word,
+    HashMap<String, String> codes
+  ) {
     Configuration config = Configuration.getConfiguration();
     List<Word> result = new ArrayList<>();
     int[][] matrix = new int[0][0];
@@ -313,14 +306,12 @@ public abstract class SpellDictionaryASpell implements SpellDictionary {
    * Returns true if the word is correctly spelled against the current word list.
    */
   @Override
-public boolean isCorrect(String word) {
+  public boolean isCorrect(String word) {
     List<String> possible = getWords(getCode(word));
-    if (possible.contains(word))
-      return true;
+    if (possible.contains(word)) return true;
     //JMH should we always try the lowercase version. If I don't then
     // capitalized words are always returned as incorrect.
-    else if (possible.contains(word.toLowerCase()))
-      return true;
+    else if (possible.contains(word.toLowerCase())) return true;
     return false;
   }
 }

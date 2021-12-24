@@ -12,9 +12,7 @@ package org.fife.ui.rsyntaxtextarea.modes;
 
 import java.io.*;
 import javax.swing.text.Segment;
-
 import org.fife.ui.rsyntaxtextarea.*;
-
 
 /**
  * Scanner for plain text files.
@@ -67,35 +65,35 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED =
-    "\11\0\1\3\1\2\25\0\1\3\1\4\1\0\1\4\1\6\1\4"+
-    "\7\4\1\4\1\21\1\5\12\1\1\17\1\4\1\0\1\4\1\0"+
-    "\2\4\32\1\1\4\1\0\1\4\1\0\1\4\1\0\4\1\1\16"+
-    "\1\13\1\1\1\7\1\14\2\1\1\15\3\1\1\11\2\1\1\12"+
+    "\11\0\1\3\1\2\25\0\1\3\1\4\1\0\1\4\1\6\1\4" +
+    "\7\4\1\4\1\21\1\5\12\1\1\17\1\4\1\0\1\4\1\0" +
+    "\2\4\32\1\1\4\1\0\1\4\1\0\1\4\1\0\4\1\1\16" +
+    "\1\13\1\1\1\7\1\14\2\1\1\15\3\1\1\11\2\1\1\12" +
     "\1\10\2\1\1\20\3\1\3\0\1\4\uff81\0";
 
   /**
    * Translates characters to character classes
    */
-  private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
+  private static final char[] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
 
   /**
    * Translates DFA states to action switch labels.
    */
-  private static final int [] ZZ_ACTION = zzUnpackAction();
+  private static final int[] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\2\1\1\2\1\3\14\1\1\0\1\4\2\0";
 
-  private static int [] zzUnpackAction() {
-    int [] result = new int[21];
+  private static int[] zzUnpackAction() {
+    int[] result = new int[21];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAction(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackAction(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -105,27 +103,26 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
     return j;
   }
 
-
   /**
    * Translates a state to a row index in the transition table
    */
-  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
+  private static final int[] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\22\0\44\0\22\0\66\0\110\0\132\0\154"+
-    "\0\176\0\220\0\242\0\264\0\306\0\330\0\352\0\374"+
+    "\0\0\0\22\0\44\0\22\0\66\0\110\0\132\0\154" +
+    "\0\176\0\220\0\242\0\264\0\306\0\330\0\352\0\374" +
     "\0\u010e\0\u0120\0\u0132\0\u0144\0\u0132";
 
-  private static int [] zzUnpackRowMap() {
-    int [] result = new int[21];
+  private static int[] zzUnpackRowMap() {
+    int[] result = new int[21];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackRowMap(String packed, int offset, int [] result) {
-    int i = 0;  /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackRowMap(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int high = packed.charAt(i++) << 16;
@@ -137,36 +134,36 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
   /**
    * The transition table of the DFA
    */
-  private static final int [] ZZ_TRANS = zzUnpackTrans();
+  private static final int[] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\5\3\2\1\6\3\3\1\7"+
-    "\3\3\1\2\1\10\1\2\23\0\1\3\5\0\10\3"+
-    "\1\0\1\3\4\0\1\5\17\0\1\3\5\0\1\3"+
-    "\1\11\6\3\1\0\1\3\2\0\1\3\5\0\1\3"+
-    "\1\12\3\3\1\13\2\3\1\0\1\3\2\0\1\3"+
-    "\5\0\10\3\1\0\1\14\2\0\1\3\5\0\1\3"+
-    "\1\15\6\3\1\0\1\3\2\0\1\3\5\0\2\3"+
-    "\1\16\5\3\1\0\1\3\2\0\1\3\5\0\6\3"+
-    "\1\17\1\3\1\0\1\3\2\0\1\3\5\0\10\3"+
-    "\1\0\1\20\2\0\1\3\5\0\2\3\1\21\5\3"+
-    "\1\0\1\3\2\0\1\3\5\0\10\3\1\22\1\3"+
-    "\2\0\1\3\5\0\7\3\1\16\1\0\1\3\2\0"+
-    "\1\3\5\0\10\3\1\0\1\3\1\23\1\0\1\3"+
-    "\5\0\3\3\1\16\4\3\1\22\1\3\6\0\1\24"+
-    "\15\0\1\23\2\0\1\25\12\23\1\25\1\23\1\25"+
+    "\1\2\1\3\1\4\1\5\3\2\1\6\3\3\1\7" +
+    "\3\3\1\2\1\10\1\2\23\0\1\3\5\0\10\3" +
+    "\1\0\1\3\4\0\1\5\17\0\1\3\5\0\1\3" +
+    "\1\11\6\3\1\0\1\3\2\0\1\3\5\0\1\3" +
+    "\1\12\3\3\1\13\2\3\1\0\1\3\2\0\1\3" +
+    "\5\0\10\3\1\0\1\14\2\0\1\3\5\0\1\3" +
+    "\1\15\6\3\1\0\1\3\2\0\1\3\5\0\2\3" +
+    "\1\16\5\3\1\0\1\3\2\0\1\3\5\0\6\3" +
+    "\1\17\1\3\1\0\1\3\2\0\1\3\5\0\10\3" +
+    "\1\0\1\20\2\0\1\3\5\0\2\3\1\21\5\3" +
+    "\1\0\1\3\2\0\1\3\5\0\10\3\1\22\1\3" +
+    "\2\0\1\3\5\0\7\3\1\16\1\0\1\3\2\0" +
+    "\1\3\5\0\10\3\1\0\1\3\1\23\1\0\1\3" +
+    "\5\0\3\3\1\16\4\3\1\22\1\3\6\0\1\24" +
+    "\15\0\1\23\2\0\1\25\12\23\1\25\1\23\1\25" +
     "\5\0\1\23\14\0";
 
-  private static int [] zzUnpackTrans() {
-    int [] result = new int[342];
+  private static int[] zzUnpackTrans() {
+    int[] result = new int[342];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackTrans(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackTrans(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -177,7 +174,6 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
     return j;
   }
 
-
   /* error codes */
   private static final int ZZ_UNKNOWN_ERROR = 0;
   private static final int ZZ_NO_MATCH = 1;
@@ -187,27 +183,31 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
   private static final String ZZ_ERROR_MSG[] = {
     "Unkown internal scanner error",
     "Error: could not match input",
-    "Error: pushback value was too large"
+    "Error: pushback value was too large",
   };
 
   /**
    * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
    */
-  private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
+  private static final int[] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\1\0\1\11\1\1\1\11\15\1\1\0\1\1\2\0";
 
-  private static int [] zzUnpackAttribute() {
-    int [] result = new int[21];
+  private static int[] zzUnpackAttribute() {
+    int[] result = new int[21];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAttribute(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackAttribute(
+    String packed,
+    int offset,
+    int[] result
+  ) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -248,144 +248,134 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
 
   /* user code: */
 
+  /**
+   * Constructor.  This must be here because JFlex does not generate a
+   * no-parameter constructor.
+   */
+  public PlainTextTokenMaker() {}
 
-	/**
-	 * Constructor.  This must be here because JFlex does not generate a
-	 * no-parameter constructor.
-	 */
-	public PlainTextTokenMaker() {
-	}
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param tokenType The token's type.
+   * @param link Whether this token is a hyperlink.
+   */
+  private void addToken(int tokenType, boolean link) {
+    int so = zzStartRead + offsetShift;
+    super.addToken(zzBuffer, zzStartRead, zzMarkedPos - 1, tokenType, so, link);
+    zzStartRead = zzMarkedPos;
+  }
 
+  /**
+   * Always returns <code>Token.NULL</code>, as there are no multiline
+   * tokens in properties files.
+   *
+   * @param text The line of tokens to examine.
+   * @param initialTokenType The token type to start with (i.e., the value
+   *        of <code>getLastTokenTypeOnLine</code> for the line before
+   *        <code>text</code>).
+   * @return <code>Token.NULL</code>.
+   */
+  @Override
+  public int getLastTokenTypeOnLine(Segment text, int initialTokenType) {
+    return Token.NULL;
+  }
 
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param tokenType The token's type.
-	 * @param link Whether this token is a hyperlink.
-	 */
-	private void addToken(int tokenType, boolean link) {
-		int so = zzStartRead + offsetShift;
-		super.addToken(zzBuffer, zzStartRead,zzMarkedPos-1, tokenType, so, link);
-		zzStartRead = zzMarkedPos;
-	}
+  /**
+   * Returns the text to place at the beginning and end of a
+   * line to "comment" it in a this programming language.
+   *
+   * @return <code>null</code>, as there are no comments in plain text.
+   */
+  @Override
+  public String[] getLineCommentStartAndEnd(int languageIndex) {
+    return null;
+  }
 
+  /**
+   * Always returns <tt>false</tt>, as you never want "mark occurrences"
+   * working in plain text files.
+   *
+   * @param type The token type.
+   * @return Whether tokens of this type should have "mark occurrences"
+   *         enabled.
+   */
+  @Override
+  public boolean getMarkOccurrencesOfTokenType(int type) {
+    return false;
+  }
 
-	/**
-	 * Always returns <code>Token.NULL</code>, as there are no multiline
-	 * tokens in properties files.
-	 *
-	 * @param text The line of tokens to examine.
-	 * @param initialTokenType The token type to start with (i.e., the value
-	 *        of <code>getLastTokenTypeOnLine</code> for the line before
-	 *        <code>text</code>).
-	 * @return <code>Token.NULL</code>.
-	 */
-	@Override
-	public int getLastTokenTypeOnLine(Segment text, int initialTokenType) {
-		return Token.NULL;
-	}
+  /**
+   * Returns the first token in the linked list of tokens generated
+   * from <code>text</code>.  This method must be implemented by
+   * subclasses so they can correctly implement syntax highlighting.
+   *
+   * @param text The text from which to get tokens.
+   * @param initialTokenType The token type we should start with.
+   * @param startOffset The offset into the document at which
+   *        <code>text</code> starts.
+   * @return The first <code>Token</code> in a linked list representing
+   *         the syntax highlighted text.
+   */
+  @Override
+  public Token getTokenList(
+    Segment text,
+    int initialTokenType,
+    int startOffset
+  ) {
+    resetTokenList();
+    this.offsetShift = -text.offset + startOffset;
 
+    // Start off in the proper state.
+    s = text;
+    try {
+      yyreset(zzReader);
+      yybegin(YYINITIAL);
+      return yylex();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      return new TokenImpl();
+    }
+  }
 
-	/**
-	 * Returns the text to place at the beginning and end of a
-	 * line to "comment" it in a this programming language.
-	 *
-	 * @return <code>null</code>, as there are no comments in plain text.
-	 */
-	@Override
-	public String[] getLineCommentStartAndEnd(int languageIndex) {
-		return null;
-	}
+  /**
+   * Refills the input buffer.
+   *
+   * @return      <code>true</code> if EOF was reached, otherwise
+   *              <code>false</code>.
+   * @exception   IOException  if any I/O-Error occurs.
+   */
+  private boolean zzRefill() {
+    return zzCurrentPos >= s.offset + s.count;
+  }
 
-
-	/**
-	 * Always returns <tt>false</tt>, as you never want "mark occurrences"
-	 * working in plain text files.
-	 *
-	 * @param type The token type.
-	 * @return Whether tokens of this type should have "mark occurrences"
-	 *         enabled.
-	 */
-	@Override
-	public boolean getMarkOccurrencesOfTokenType(int type) {
-		return false;
-	}
-
-
-	/**
-	 * Returns the first token in the linked list of tokens generated
-	 * from <code>text</code>.  This method must be implemented by
-	 * subclasses so they can correctly implement syntax highlighting.
-	 *
-	 * @param text The text from which to get tokens.
-	 * @param initialTokenType The token type we should start with.
-	 * @param startOffset The offset into the document at which
-	 *        <code>text</code> starts.
-	 * @return The first <code>Token</code> in a linked list representing
-	 *         the syntax highlighted text.
-	 */
-	@Override
-	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
-
-		resetTokenList();
-		this.offsetShift = -text.offset + startOffset;
-
-		// Start off in the proper state.
-		s = text;
-		try {
-			yyreset(zzReader);
-			yybegin(YYINITIAL);
-			return yylex();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			return new TokenImpl();
-		}
-
-	}
-
-
-	/**
-	 * Refills the input buffer.
-	 *
-	 * @return      <code>true</code> if EOF was reached, otherwise
-	 *              <code>false</code>.
-	 * @exception   IOException  if any I/O-Error occurs.
-	 */
-	private boolean zzRefill() {
-		return zzCurrentPos>=s.offset+s.count;
-	}
-
-
-	/**
-	 * Resets the scanner to read from a new input stream.
-	 * Does not close the old reader.
-	 *
-	 * All internal variables are reset, the old input stream
-	 * <b>cannot</b> be reused (internal buffer is discarded and lost).
-	 * Lexical state is set to <tt>YY_INITIAL</tt>.
-	 *
-	 * @param reader   the new input stream
-	 */
-	public final void yyreset(java.io.Reader reader) {
-		// 's' has been updated.
-		zzBuffer = s.array;
-		/*
-		 * We replaced the line below with the two below it because zzRefill
-		 * no longer "refills" the buffer (since the way we do it, it's always
-		 * "full" the first time through, since it points to the segment's
-		 * array).  So, we assign zzEndRead here.
-		 */
-		//zzStartRead = zzEndRead = s.offset;
-		zzStartRead = s.offset;
-		zzEndRead = zzStartRead + s.count - 1;
-		zzCurrentPos = zzMarkedPos = s.offset;
-		zzLexicalState = YYINITIAL;
-		zzReader = reader;
-		zzAtEOF  = false;
-	}
-
-
-
+  /**
+   * Resets the scanner to read from a new input stream.
+   * Does not close the old reader.
+   *
+   * All internal variables are reset, the old input stream
+   * <b>cannot</b> be reused (internal buffer is discarded and lost).
+   * Lexical state is set to <tt>YY_INITIAL</tt>.
+   *
+   * @param reader   the new input stream
+   */
+  public final void yyreset(java.io.Reader reader) {
+    // 's' has been updated.
+    zzBuffer = s.array;
+    /*
+     * We replaced the line below with the two below it because zzRefill
+     * no longer "refills" the buffer (since the way we do it, it's always
+     * "full" the first time through, since it points to the segment's
+     * array).  So, we assign zzEndRead here.
+     */
+    //zzStartRead = zzEndRead = s.offset;
+    zzStartRead = s.offset;
+    zzEndRead = zzStartRead + s.count - 1;
+    zzCurrentPos = zzMarkedPos = s.offset;
+    zzLexicalState = YYINITIAL;
+    zzReader = reader;
+    zzAtEOF = false;
+  }
 
   /**
    * Creates a new scanner
@@ -413,30 +403,27 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
    * @param packed   the packed character translation table
    * @return         the unpacked character translation table
    */
-  private static char [] zzUnpackCMap(String packed) {
-    char [] map = new char[0x10000];
-    int i = 0;  /* index in packed string  */
-    int j = 0;  /* index in unpacked array */
+  private static char[] zzUnpackCMap(String packed) {
+    char[] map = new char[0x10000];
+    int i = 0;/* index in packed string  */
+    int j = 0;/* index in unpacked array */
     while (i < 94) {
-      int  count = packed.charAt(i++);
+      int count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
     }
     return map;
   }
 
-
   /**
    * Closes the input stream.
    */
   public final void yyclose() throws java.io.IOException {
-    zzAtEOF = true;            /* indicate end of file */
-    zzEndRead = zzStartRead;  /* invalidate buffer    */
+    zzAtEOF = true;/* indicate end of file */
+    zzEndRead = zzStartRead;/* invalidate buffer    */
 
-    if (zzReader != null)
-      zzReader.close();
+    if (zzReader != null) zzReader.close();
   }
-
 
   /**
    * Returns the current lexical state.
@@ -445,25 +432,22 @@ public class PlainTextTokenMaker extends AbstractJFlexTokenMaker {
     return zzLexicalState;
   }
 
-
   /**
    * Enters a new lexical state
    *
    * @param newState the new lexical state
    */
   @Override
-public final void yybegin(int newState) {
+  public final void yybegin(int newState) {
     zzLexicalState = newState;
   }
-
 
   /**
    * Returns the text matched by the current regular expression.
    */
   public final String yytext() {
-    return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+    return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
   }
-
 
   /**
    * Returns the character at position <tt>pos</tt> from the
@@ -477,17 +461,15 @@ public final void yybegin(int newState) {
    * @return the character at position pos
    */
   public final char yycharat(int pos) {
-    return zzBuffer[zzStartRead+pos];
+    return zzBuffer[zzStartRead + pos];
   }
-
 
   /**
    * Returns the length of the matched text region.
    */
   public final int yylength() {
-    return zzMarkedPos-zzStartRead;
+    return zzMarkedPos - zzStartRead;
   }
-
 
   /**
    * Reports an error that occured while scanning.
@@ -507,14 +489,12 @@ public final void yybegin(int newState) {
     String message;
     try {
       message = ZZ_ERROR_MSG[errorCode];
-    }
-    catch (ArrayIndexOutOfBoundsException e) {
+    } catch (ArrayIndexOutOfBoundsException e) {
       message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 
     throw new Error(message);
   }
-
 
   /**
    * Pushes the specified amount of characters back into the input stream.
@@ -524,13 +504,11 @@ public final void yybegin(int newState) {
    * @param number  the number of characters to be read again.
    *                This number must not be greater than yylength()!
    */
-  public void yypushback(int number)  {
-    if ( number > yylength() )
-      zzScanError(ZZ_PUSHBACK_2BIG);
+  public void yypushback(int number) {
+    if (number > yylength()) zzScanError(ZZ_PUSHBACK_2BIG);
 
     zzMarkedPos -= number;
   }
-
 
   /**
    * Resumes scanning until the next regular expression is matched,
@@ -547,12 +525,12 @@ public final void yybegin(int newState) {
     int zzCurrentPosL;
     int zzMarkedPosL;
     int zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer;
-    char [] zzCMapL = ZZ_CMAP;
+    char[] zzBufferL = zzBuffer;
+    char[] zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS;
-    int [] zzRowMapL = ZZ_ROWMAP;
-    int [] zzAttrL = ZZ_ATTRIBUTE;
+    int[] zzTransL = ZZ_TRANS;
+    int[] zzRowMapL = ZZ_ROWMAP;
+    int[] zzAttrL = ZZ_ATTRIBUTE;
 
     while (true) {
       zzMarkedPosL = zzMarkedPos;
@@ -563,45 +541,39 @@ public final void yybegin(int newState) {
 
       zzState = zzLexicalState;
 
-
-      zzForAction: {
+      zzForAction:{
         while (true) {
-
-          if (zzCurrentPosL < zzEndReadL)
-            zzInput = zzBufferL[zzCurrentPosL++];
-          else if (zzAtEOF) {
+          if (zzCurrentPosL < zzEndReadL) zzInput =
+            zzBufferL[zzCurrentPosL++]; else if (zzAtEOF) {
             zzInput = YYEOF;
             break zzForAction;
-          }
-          else {
+          } else {
             // store back cached positions
-            zzCurrentPos  = zzCurrentPosL;
-            zzMarkedPos   = zzMarkedPosL;
+            zzCurrentPos = zzCurrentPosL;
+            zzMarkedPos = zzMarkedPosL;
             boolean eof = zzRefill();
             // get translated positions and possibly new buffer
-            zzCurrentPosL  = zzCurrentPos;
-            zzMarkedPosL   = zzMarkedPos;
-            zzBufferL      = zzBuffer;
-            zzEndReadL     = zzEndRead;
+            zzCurrentPosL = zzCurrentPos;
+            zzMarkedPosL = zzMarkedPos;
+            zzBufferL = zzBuffer;
+            zzEndReadL = zzEndRead;
             if (eof) {
               zzInput = YYEOF;
               break zzForAction;
-            }
-            else {
+            } else {
               zzInput = zzBufferL[zzCurrentPosL++];
             }
           }
-          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+          int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
           if (zzNext == -1) break zzForAction;
           zzState = zzNext;
 
           int zzAttributes = zzAttrL[zzState];
-          if ( (zzAttributes & 1) == 1 ) {
+          if ((zzAttributes & 1) == 1) {
             zzAction = zzState;
             zzMarkedPosL = zzCurrentPosL;
-            if ( (zzAttributes & 8) == 8 ) break zzForAction;
+            if ((zzAttributes & 8) == 8) break zzForAction;
           }
-
         }
       }
 
@@ -610,39 +582,48 @@ public final void yybegin(int newState) {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 3:
-          { addToken(Token.WHITESPACE, false);
+          {
+            addToken(Token.WHITESPACE, false);
           }
-        case 5: break;
+        case 5:
+          break;
         case 2:
-          { addNullToken(); return firstToken;
+          {
+            addNullToken();
+            return firstToken;
           }
-        case 6: break;
+        case 6:
+          break;
         case 4:
-          { addToken(Token.IDENTIFIER, true);
+          {
+            addToken(Token.IDENTIFIER, true);
           }
-        case 7: break;
+        case 7:
+          break;
         case 1:
-          { addToken(Token.IDENTIFIER, false);
+          {
+            addToken(Token.IDENTIFIER, false);
           }
-        case 8: break;
+        case 8:
+          break;
         default:
           if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
             zzAtEOF = true;
             switch (zzLexicalState) {
-            case YYINITIAL: {
-              addNullToken(); return firstToken;
+              case YYINITIAL:
+                {
+                  addNullToken();
+                  return firstToken;
+                }
+              case 22:
+                break;
+              default:
+                return null;
             }
-            case 22: break;
-            default:
-            return null;
-            }
-          }
-          else {
+          } else {
             zzScanError(ZZ_NO_MATCH);
           }
       }
     }
   }
-
-
 }

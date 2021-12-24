@@ -78,16 +78,16 @@ public class SpellDictionaryDichoDisk extends SpellDictionaryASpell {
   }
 
   /**
-  * Dictionary constructor that uses an aspell phonetic file to
-  * build the transformation table.
-  * @param wordList The file containing the words list for the dictionary
-  * @param phonetic The file to use for phonetic transformation of the
-  * wordlist.
-  * @throws java.io.FileNotFoundException indicates problems locating the
-  * file on the system
-  * @throws java.io.IOException indicates problems reading the words list
-  * file
-  */
+   * Dictionary constructor that uses an aspell phonetic file to
+   * build the transformation table.
+   * @param wordList The file containing the words list for the dictionary
+   * @param phonetic The file to use for phonetic transformation of the
+   * wordlist.
+   * @throws java.io.FileNotFoundException indicates problems locating the
+   * file on the system
+   * @throws java.io.IOException indicates problems reading the words list
+   * file
+   */
   public SpellDictionaryDichoDisk(File wordList, File phonetic)
     throws FileNotFoundException, IOException {
     super(phonetic);
@@ -95,19 +95,22 @@ public class SpellDictionaryDichoDisk extends SpellDictionaryASpell {
   }
 
   /**
-  * Dictionary constructor that uses an aspell phonetic file to
-  * build the transformation table.
-  * @param wordList The file containing the words list for the dictionary
-  * @param phonetic The file to use for phonetic transformation of the
-  * wordlist.
-  * @param encoding Uses the character set encoding specified
-  * @throws java.io.FileNotFoundException indicates problems locating the
-  * file on the system
-  * @throws java.io.IOException indicates problems reading the words list
-  * file
-  */
-  public SpellDictionaryDichoDisk(File wordList, File phonetic, String encoding)
-    throws FileNotFoundException, IOException {
+   * Dictionary constructor that uses an aspell phonetic file to
+   * build the transformation table.
+   * @param wordList The file containing the words list for the dictionary
+   * @param phonetic The file to use for phonetic transformation of the
+   * wordlist.
+   * @param encoding Uses the character set encoding specified
+   * @throws java.io.FileNotFoundException indicates problems locating the
+   * file on the system
+   * @throws java.io.IOException indicates problems reading the words list
+   * file
+   */
+  public SpellDictionaryDichoDisk(
+    File wordList,
+    File phonetic,
+    String encoding
+  ) throws FileNotFoundException, IOException {
     super(phonetic, encoding);
     this.encoding = encoding;
     dictFile = new RandomAccessFile(wordList, "r");
@@ -119,93 +122,81 @@ public class SpellDictionaryDichoDisk extends SpellDictionaryASpell {
    * @param word The word to add.
    */
   @Override
-public boolean addWord(String word) {
-    System.err.println("error: addWord is not implemented for SpellDictionaryDichoDisk");
+  public boolean addWord(String word) {
+    System.err.println(
+      "error: addWord is not implemented for SpellDictionaryDichoDisk"
+    );
     return false;
   }
 
   /**
-    * Search the dictionary file for the words corresponding to the code
-    * within positions p1 - p2
-    */
-   private LinkedList<String> dichoFind(String code, long p1, long p2) throws IOException {
-     //System.out.println("dichoFind("+code+","+p1+","+p2+")");
-     long pm = (p1 + p2) / 2;
+   * Search the dictionary file for the words corresponding to the code
+   * within positions p1 - p2
+   */
+  private LinkedList<String> dichoFind(String code, long p1, long p2)
+    throws IOException {
+    //System.out.println("dichoFind("+code+","+p1+","+p2+")");
+    long pm = (p1 + p2) / 2;
     dictFile.seek(pm);
     String l;
-    if (encoding == null)
-      l = dictFile.readLine();
-    else
-      l = dictReadLine();
+    if (encoding == null) l = dictFile.readLine(); else l = dictReadLine();
     pm = dictFile.getFilePointer();
-    if (encoding == null)
-      l = dictFile.readLine();
-    else
-      l = dictReadLine();
+    if (encoding == null) l = dictFile.readLine(); else l = dictReadLine();
     long pm2 = dictFile.getFilePointer();
-    if (pm2 >= p2)
-      return(seqFind(code, p1, p2));
+    if (pm2 >= p2) return (seqFind(code, p1, p2));
     int istar = l.indexOf('*');
-    if (istar == -1)
-      throw new IOException("bad format: no * !");
+    if (istar == -1) throw new IOException("bad format: no * !");
     String testcode = l.substring(0, istar);
     int comp = code.compareTo(testcode);
-    if (comp < 0)
-      return(dichoFind(code, p1, pm-1));
-    else if (comp > 0)
-      return(dichoFind(code, pm2, p2));
-    else {
-      LinkedList<String> l1 = dichoFind(code, p1, pm-1);
+    if (comp < 0) return (dichoFind(code, p1, pm - 1)); else if (
+      comp > 0
+    ) return (dichoFind(code, pm2, p2)); else {
+      LinkedList<String> l1 = dichoFind(code, p1, pm - 1);
       LinkedList<String> l2 = dichoFind(code, pm2, p2);
-      String word = l.substring(istar+1);
+      String word = l.substring(istar + 1);
       l1.add(word);
       l1.addAll(l2);
-      return(l1);
+      return (l1);
     }
-   }
+  }
 
-   private LinkedList<String> seqFind(String code, long p1, long p2) throws IOException {
-     //System.out.println("seqFind("+code+","+p1+","+p2+")");
-     LinkedList<String> list = new LinkedList<>();
+  private LinkedList<String> seqFind(String code, long p1, long p2)
+    throws IOException {
+    //System.out.println("seqFind("+code+","+p1+","+p2+")");
+    LinkedList<String> list = new LinkedList<>();
     dictFile.seek(p1);
     while (dictFile.getFilePointer() < p2) {
       String l;
-      if (encoding == null)
-        l = dictFile.readLine();
-      else
-        l = dictReadLine();
+      if (encoding == null) l = dictFile.readLine(); else l = dictReadLine();
       int istar = l.indexOf('*');
-      if (istar == -1)
-        throw new IOException("bad format: no * !");
+      if (istar == -1) throw new IOException("bad format: no * !");
       String testcode = l.substring(0, istar);
       if (testcode.equals(code)) {
-        String word = l.substring(istar+1);
+        String word = l.substring(istar + 1);
         list.add(word);
       }
     }
-    return(list);
-   }
+    return (list);
+  }
 
-   /**
-     * Read a line of dictFile with a specific encoding
-     */
-   private String dictReadLine() throws IOException {
-     int max = 255;
-     byte b=0;
+  /**
+   * Read a line of dictFile with a specific encoding
+   */
+  private String dictReadLine() throws IOException {
+    int max = 255;
+    byte b = 0;
     byte[] buf = new byte[max];
-    int i=0;
-     try {
-       for (; b != '\n' && b != '\r' && i<max-1; i++) {
+    int i = 0;
+    try {
+      for (; b != '\n' && b != '\r' && i < max - 1; i++) {
         b = dictFile.readByte();
-         buf[i] = b;
+        buf[i] = b;
       }
-    } catch (EOFException ex) {
-    }
-    if (i == 0)
-      return("");
-    String s = new String(buf, 0, i-1, encoding);
-    return(s);
-   }
+    } catch (EOFException ex) {}
+    if (i == 0) return ("");
+    String s = new String(buf, 0, i - 1, encoding);
+    return (s);
+  }
 
   /**
    * Returns a list of strings (words) for the code.
@@ -214,10 +205,10 @@ public boolean addWord(String word) {
    */
   @Override
   public List<String> getWords(String code) {
-     //System.out.println("getWords("+code+")");
+    //System.out.println("getWords("+code+")");
     LinkedList<String> list;
     try {
-      list = dichoFind(code, 0, dictFile.length()-1);
+      list = dichoFind(code, 0, dictFile.length() - 1);
       //System.out.println(list);
     } catch (IOException ex) {
       System.err.println("IOException: " + ex.getMessage());
@@ -225,6 +216,4 @@ public boolean addWord(String word) {
     }
     return list;
   }
-
 }
-

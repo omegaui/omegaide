@@ -17,7 +17,7 @@
 */
 
 package omega.comp;
-public interface ToggleListener {
-	void toggle(boolean status);
-}
 
+public interface ToggleListener {
+  void toggle(boolean status);
+}

@@ -12,9 +12,7 @@ package org.fife.ui.rsyntaxtextarea.modes;
 
 import java.io.*;
 import javax.swing.text.Segment;
-
 import org.fife.ui.rsyntaxtextarea.*;
-
 
 /**
  * This class splits up text into tokens representing a CSV file.<p>
@@ -73,27 +71,26 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
   /**
    * Translates characters to character classes
    */
-  private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
+  private static final char[] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
 
   /**
    * Translates DFA states to action switch labels.
    */
-  private static final int [] ZZ_ACTION = zzUnpackAction();
+  private static final int[] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\5";
+    "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7" + "\1\5";
 
-  private static int [] zzUnpackAction() {
-    int [] result = new int[10];
+  private static int[] zzUnpackAction() {
+    int[] result = new int[10];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAction(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackAction(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -103,26 +100,24 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
     return j;
   }
 
-
   /**
    * Translates a state to a row index in the transition table
    */
-  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
+  private static final int[] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\4\0\10\0\14\0\14\0\14\0\20\0\24"+
-    "\0\14\0\14";
+    "\0\0\0\4\0\10\0\14\0\14\0\14\0\20\0\24" + "\0\14\0\14";
 
-  private static int [] zzUnpackRowMap() {
-    int [] result = new int[10];
+  private static int[] zzUnpackRowMap() {
+    int[] result = new int[10];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackRowMap(String packed, int offset, int [] result) {
-    int i = 0;  /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackRowMap(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int high = packed.charAt(i++) << 16;
@@ -134,22 +129,21 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
   /**
    * The transition table of the DFA
    */
-  private static final int [] ZZ_TRANS = zzUnpackTrans();
+  private static final int[] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\3\1\4\1\5\1\6\1\7\1\10\1\7\1\11"+
-    "\1\3\7\0\1\7\1\0\1\7\2\0\1\12\2\0";
+    "\1\3\1\4\1\5\1\6\1\7\1\10\1\7\1\11" + "\1\3\7\0\1\7\1\0\1\7\2\0\1\12\2\0";
 
-  private static int [] zzUnpackTrans() {
-    int [] result = new int[24];
+  private static int[] zzUnpackTrans() {
+    int[] result = new int[24];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackTrans(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackTrans(String packed, int offset, int[] result) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -160,7 +154,6 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
     return j;
   }
 
-
   /* error codes */
   private static final int ZZ_UNKNOWN_ERROR = 0;
   private static final int ZZ_NO_MATCH = 1;
@@ -170,27 +163,30 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
   private static final String ZZ_ERROR_MSG[] = {
     "Unkown internal scanner error",
     "Error: could not match input",
-    "Error: pushback value was too large"
+    "Error: pushback value was too large",
   };
 
   /**
    * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
    */
-  private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
+  private static final int[] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
-  private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\1\3\11\2\1\2\11";
+  private static final String ZZ_ATTRIBUTE_PACKED_0 = "\2\0\1\1\3\11\2\1\2\11";
 
-  private static int [] zzUnpackAttribute() {
-    int [] result = new int[10];
+  private static int[] zzUnpackAttribute() {
+    int[] result = new int[10];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
   }
 
-  private static int zzUnpackAttribute(String packed, int offset, int [] result) {
-    int i = 0;       /* index in packed string  */
-    int j = offset;  /* index in unpacked array */
+  private static int zzUnpackAttribute(
+    String packed,
+    int offset,
+    int[] result
+  ) {
+    int i = 0;/* index in packed string  */
+    int j = offset;/* index in unpacked array */
     int l = packed.length();
     while (i < l) {
       int count = packed.charAt(i++);
@@ -231,197 +227,191 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
 
   /* user code: */
 
-	/**
-	 * Internal type denoting line ending in an unterminated string.
-	 * The state to return to is embedded in the actual end token type.
-	 */
-	public static final int INTERNAL_STRING				= -(1<<11);
+  /**
+   * Internal type denoting line ending in an unterminated string.
+   * The state to return to is embedded in the actual end token type.
+   */
+  public static final int INTERNAL_STRING = -(1 << 11);
 
+  /**
+   * A simple counter, {@code 0} for even, {@code 1} for odd.
+   */
+  private int evenOdd;
 
-	/**
-	 * A simple counter, {@code 0} for even, {@code 1} for odd.
+  /**
+   * Constructor.  This must be here because JFlex does not generate a
+   * no-parameter constructor.
+   */
+  public CsvTokenMaker() {
+    super();
+  }
+
+  /**
+   * Adds the token specified to the current linked list of tokens as an
+   * "end token;" that is, at <code>zzMarkedPos</code>.
+   *
+   * @param tokenType The token's type.
+   */
+  private void addEndToken(int tokenType) {
+    addToken(zzMarkedPos, zzMarkedPos, tokenType);
+  }
+
+  /**
+   * Adds a token for either an even column or an odd column.
+   */
+  private void addEvenOrOddColumnToken() {
+    addEvenOrOddColumnToken(zzStartRead, zzMarkedPos - 1);
+  }
+
+  /**
+   * Adds a token for either an even column or an odd column.
+   */
+  private void addEvenOrOddColumnToken(int start, int end) {
+    addToken(start, end, evenOdd == 0 ? Token.IDENTIFIER : Token.DATA_TYPE);
+  }
+
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param tokenType The token's type.
+   */
+  private void addToken(int tokenType) {
+    addToken(zzStartRead, zzMarkedPos - 1, tokenType);
+  }
+
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param tokenType The token's type.
+   */
+  private void addToken(int start, int end, int tokenType) {
+    int so = start + offsetShift;
+    addToken(zzBuffer, start, end, tokenType, so);
+  }
+
+  /**
+   * Adds the token specified to the current linked list of tokens.
+   *
+   * @param array The character array.
+   * @param start The starting offset in the array.
+   * @param end The ending offset in the array.
+   * @param tokenType The token's type.
+   * @param startOffset The offset in the document at which this token
+   *                    occurs.
+   */
+  @Override
+  public void addToken(
+    char[] array,
+    int start,
+    int end,
+    int tokenType,
+    int startOffset
+  ) {
+    super.addToken(array, start, end, tokenType, startOffset);
+    zzStartRead = zzMarkedPos;
+  }
+
+  /**
+   * Returns the closest {@link TokenTypes "standard" token type} for a given
+   * "internal" token type (e.g. one whose value is <code>&lt; 0</code>).
+   */
+  @Override
+  public int getClosestStandardTokenTypeForInternalType(int type) {
+    return type == INTERNAL_STRING
+      ? TokenTypes.LITERAL_STRING_DOUBLE_QUOTE
+      : type;
+  }
+
+  @Override
+  public boolean getMarkOccurrencesOfTokenType(int type) {
+    return type == Token.IDENTIFIER || type == Token.DATA_TYPE;
+  }
+
+  /**
+   * Returns the first token in the linked list of tokens generated
+   * from <code>text</code>.  This method must be implemented by
+   * subclasses so they can correctly implement syntax highlighting.
+   *
+   * @param text The text from which to get tokens.
+   * @param initialTokenType The token type we should start with.
+   * @param startOffset The offset into the document at which
+   *        <code>text</code> starts.
+   * @return The first <code>Token</code> in a linked list representing
+   *         the syntax highlighted text.
+   */
+  public Token getTokenList(
+    Segment text,
+    int initialTokenType,
+    int startOffset
+  ) {
+    resetTokenList();
+    this.offsetShift = -text.offset + startOffset;
+
+    // Start off in the proper state.
+    int state = YYINITIAL;
+    evenOdd = 0;
+    if (initialTokenType < -1024) {
+      state = STRING;
+      evenOdd = initialTokenType & 1; // Should always be 0 or 1 anyway, but just to be safe
+      start = text.offset;
+    }
+
+    s = text;
+    try {
+      yyreset(zzReader);
+      yybegin(state);
+      return yylex();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+      return new TokenImpl();
+    }
+  }
+
+  /**
+   * Overridden to accept letters, digits, underscores, and hyphens.
+   */
+  @Override
+  public boolean isIdentifierChar(int languageIndex, char ch) {
+    return Character.isLetterOrDigit(ch) || ch == '-' || ch == '.' || ch == '_';
+  }
+
+  /**
+   * Refills the input buffer.
+   *
+   * @return      <code>true</code> if EOF was reached, otherwise
+   *              <code>false</code>.
+   */
+  private boolean zzRefill() {
+    return zzCurrentPos >= s.offset + s.count;
+  }
+
+  /**
+   * Resets the scanner to read from a new input stream.
+   * Does not close the old reader.
+   *
+   * All internal variables are reset, the old input stream
+   * <b>cannot</b> be reused (internal buffer is discarded and lost).
+   * Lexical state is set to <tt>YY_INITIAL</tt>.
+   *
+   * @param reader   the new input stream
+   */
+  public final void yyreset(java.io.Reader reader) {
+    // 's' has been updated.
+    zzBuffer = s.array;
+    /*
+     * We replaced the line below with the two below it because zzRefill
+     * no longer "refills" the buffer (since the way we do it, it's always
+     * "full" the first time through, since it points to the segment's
+     * array).  So, we assign zzEndRead here.
      */
-	private int evenOdd;
-
-	/**
-	 * Constructor.  This must be here because JFlex does not generate a
-	 * no-parameter constructor.
-	 */
-	public CsvTokenMaker() {
-		super();
-	}
-
-
-	/**
-	 * Adds the token specified to the current linked list of tokens as an
-	 * "end token;" that is, at <code>zzMarkedPos</code>.
-	 *
-	 * @param tokenType The token's type.
-	 */
-	private void addEndToken(int tokenType) {
-		addToken(zzMarkedPos,zzMarkedPos, tokenType);
-	}
-
-
-	/**
-	 * Adds a token for either an even column or an odd column.
-	 */
-	private void addEvenOrOddColumnToken() {
-		addEvenOrOddColumnToken(zzStartRead, zzMarkedPos-1);
-	}
-
-
-	/**
-	 * Adds a token for either an even column or an odd column.
-	 */
-	private void addEvenOrOddColumnToken(int start, int end) {
-		addToken(start, end, evenOdd == 0 ? Token.IDENTIFIER : Token.DATA_TYPE);
-	}
-
-
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param tokenType The token's type.
-	 */
-	private void addToken(int tokenType) {
-		addToken(zzStartRead, zzMarkedPos-1, tokenType);
-	}
-
-
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param tokenType The token's type.
-	 */
-	private void addToken(int start, int end, int tokenType) {
-		int so = start + offsetShift;
-		addToken(zzBuffer, start,end, tokenType, so);
-	}
-
-
-	/**
-	 * Adds the token specified to the current linked list of tokens.
-	 *
-	 * @param array The character array.
-	 * @param start The starting offset in the array.
-	 * @param end The ending offset in the array.
-	 * @param tokenType The token's type.
-	 * @param startOffset The offset in the document at which this token
-	 *                    occurs.
-	 */
-	@Override
-	public void addToken(char[] array, int start, int end, int tokenType, int startOffset) {
-		super.addToken(array, start,end, tokenType, startOffset);
-		zzStartRead = zzMarkedPos;
-	}
-
-
-	/**
-	 * Returns the closest {@link TokenTypes "standard" token type} for a given
-	 * "internal" token type (e.g. one whose value is <code>&lt; 0</code>).
-	 */
-	@Override
-	public int getClosestStandardTokenTypeForInternalType(int type) {
-		return type == INTERNAL_STRING ? TokenTypes.LITERAL_STRING_DOUBLE_QUOTE : type;
-	}
-
-
-	@Override
-	public boolean getMarkOccurrencesOfTokenType(int type) {
-		return type == Token.IDENTIFIER || type == Token.DATA_TYPE;
-	}
-
-
-	/**
-	 * Returns the first token in the linked list of tokens generated
-	 * from <code>text</code>.  This method must be implemented by
-	 * subclasses so they can correctly implement syntax highlighting.
-	 *
-	 * @param text The text from which to get tokens.
-	 * @param initialTokenType The token type we should start with.
-	 * @param startOffset The offset into the document at which
-	 *        <code>text</code> starts.
-	 * @return The first <code>Token</code> in a linked list representing
-	 *         the syntax highlighted text.
-	 */
-	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
-
-		resetTokenList();
-		this.offsetShift = -text.offset + startOffset;
-
-		// Start off in the proper state.
-		int state = YYINITIAL;
-		evenOdd = 0;
-        if (initialTokenType<-1024) {
-            state = STRING;
-            evenOdd = initialTokenType & 1; // Should always be 0 or 1 anyway, but just to be safe
-            start = text.offset;
-        }
-
-		s = text;
-		try {
-			yyreset(zzReader);
-			yybegin(state);
-			return yylex();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			return new TokenImpl();
-		}
-
-	}
-
-
-	/**
-	 * Overridden to accept letters, digits, underscores, and hyphens.
-	 */
-	@Override
-	public boolean isIdentifierChar(int languageIndex, char ch) {
-		return Character.isLetterOrDigit(ch) || ch=='-' || ch=='.' || ch=='_';
-	}
-
-
-	/**
-	 * Refills the input buffer.
-	 *
-	 * @return      <code>true</code> if EOF was reached, otherwise
-	 *              <code>false</code>.
-	 */
-	private boolean zzRefill() {
-		return zzCurrentPos>=s.offset+s.count;
-	}
-
-
-	/**
-	 * Resets the scanner to read from a new input stream.
-	 * Does not close the old reader.
-	 *
-	 * All internal variables are reset, the old input stream
-	 * <b>cannot</b> be reused (internal buffer is discarded and lost).
-	 * Lexical state is set to <tt>YY_INITIAL</tt>.
-	 *
-	 * @param reader   the new input stream
-	 */
-	public final void yyreset(java.io.Reader reader) {
-		// 's' has been updated.
-		zzBuffer = s.array;
-		/*
-		 * We replaced the line below with the two below it because zzRefill
-		 * no longer "refills" the buffer (since the way we do it, it's always
-		 * "full" the first time through, since it points to the segment's
-		 * array).  So, we assign zzEndRead here.
-		 */
-		//zzStartRead = zzEndRead = s.offset;
-		zzStartRead = s.offset;
-		zzEndRead = zzStartRead + s.count - 1;
-		zzCurrentPos = zzMarkedPos = s.offset;
-		zzLexicalState = YYINITIAL;
-		zzReader = reader;
-		zzAtEOF  = false;
-	}
-
-
-
+    //zzStartRead = zzEndRead = s.offset;
+    zzStartRead = s.offset;
+    zzEndRead = zzStartRead + s.count - 1;
+    zzCurrentPos = zzMarkedPos = s.offset;
+    zzLexicalState = YYINITIAL;
+    zzReader = reader;
+    zzAtEOF = false;
+  }
 
   /**
    * Creates a new scanner
@@ -449,30 +439,27 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
    * @param packed   the packed character translation table
    * @return         the unpacked character translation table
    */
-  private static char [] zzUnpackCMap(String packed) {
-    char [] map = new char[0x10000];
-    int i = 0;  /* index in packed string  */
-    int j = 0;  /* index in unpacked array */
+  private static char[] zzUnpackCMap(String packed) {
+    char[] map = new char[0x10000];
+    int i = 0;/* index in packed string  */
+    int j = 0;/* index in unpacked array */
     while (i < 14) {
-      int  count = packed.charAt(i++);
+      int count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
     }
     return map;
   }
 
-
   /**
    * Closes the input stream.
    */
   public final void yyclose() throws java.io.IOException {
-    zzAtEOF = true;            /* indicate end of file */
-    zzEndRead = zzStartRead;  /* invalidate buffer    */
+    zzAtEOF = true;/* indicate end of file */
+    zzEndRead = zzStartRead;/* invalidate buffer    */
 
-    if (zzReader != null)
-      zzReader.close();
+    if (zzReader != null) zzReader.close();
   }
-
 
   /**
    * Returns the current lexical state.
@@ -480,7 +467,6 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
   public final int yystate() {
     return zzLexicalState;
   }
-
 
   /**
    * Enters a new lexical state
@@ -491,14 +477,12 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
     zzLexicalState = newState;
   }
 
-
   /**
    * Returns the text matched by the current regular expression.
    */
   public final String yytext() {
-    return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+    return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
   }
-
 
   /**
    * Returns the character at position <tt>pos</tt> from the
@@ -512,17 +496,15 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
    * @return the character at position pos
    */
   public final char yycharat(int pos) {
-    return zzBuffer[zzStartRead+pos];
+    return zzBuffer[zzStartRead + pos];
   }
-
 
   /**
    * Returns the length of the matched text region.
    */
   public final int yylength() {
-    return zzMarkedPos-zzStartRead;
+    return zzMarkedPos - zzStartRead;
   }
-
 
   /**
    * Reports an error that occured while scanning.
@@ -542,14 +524,12 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
     String message;
     try {
       message = ZZ_ERROR_MSG[errorCode];
-    }
-    catch (ArrayIndexOutOfBoundsException e) {
+    } catch (ArrayIndexOutOfBoundsException e) {
       message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
     }
 
     throw new Error(message);
   }
-
 
   /**
    * Pushes the specified amount of characters back into the input stream.
@@ -559,13 +539,11 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
    * @param number  the number of characters to be read again.
    *                This number must not be greater than yylength()!
    */
-  public void yypushback(int number)  {
-    if ( number > yylength() )
-      zzScanError(ZZ_PUSHBACK_2BIG);
+  public void yypushback(int number) {
+    if (number > yylength()) zzScanError(ZZ_PUSHBACK_2BIG);
 
     zzMarkedPos -= number;
   }
-
 
   /**
    * Resumes scanning until the next regular expression is matched,
@@ -582,12 +560,12 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
     int zzCurrentPosL;
     int zzMarkedPosL;
     int zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer;
-    char [] zzCMapL = ZZ_CMAP;
+    char[] zzBufferL = zzBuffer;
+    char[] zzCMapL = ZZ_CMAP;
 
-    int [] zzTransL = ZZ_TRANS;
-    int [] zzRowMapL = ZZ_ROWMAP;
-    int [] zzAttrL = ZZ_ATTRIBUTE;
+    int[] zzTransL = ZZ_TRANS;
+    int[] zzRowMapL = ZZ_ROWMAP;
+    int[] zzAttrL = ZZ_ATTRIBUTE;
 
     while (true) {
       zzMarkedPosL = zzMarkedPos;
@@ -598,45 +576,39 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
 
       zzState = zzLexicalState;
 
-
-      zzForAction: {
+      zzForAction:{
         while (true) {
-
-          if (zzCurrentPosL < zzEndReadL)
-            zzInput = zzBufferL[zzCurrentPosL++];
-          else if (zzAtEOF) {
+          if (zzCurrentPosL < zzEndReadL) zzInput =
+            zzBufferL[zzCurrentPosL++]; else if (zzAtEOF) {
             zzInput = YYEOF;
             break zzForAction;
-          }
-          else {
+          } else {
             // store back cached positions
-            zzCurrentPos  = zzCurrentPosL;
-            zzMarkedPos   = zzMarkedPosL;
+            zzCurrentPos = zzCurrentPosL;
+            zzMarkedPos = zzMarkedPosL;
             boolean eof = zzRefill();
             // get translated positions and possibly new buffer
-            zzCurrentPosL  = zzCurrentPos;
-            zzMarkedPosL   = zzMarkedPos;
-            zzBufferL      = zzBuffer;
-            zzEndReadL     = zzEndRead;
+            zzCurrentPosL = zzCurrentPos;
+            zzMarkedPosL = zzMarkedPos;
+            zzBufferL = zzBuffer;
+            zzEndReadL = zzEndRead;
             if (eof) {
               zzInput = YYEOF;
               break zzForAction;
-            }
-            else {
+            } else {
               zzInput = zzBufferL[zzCurrentPosL++];
             }
           }
-          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+          int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
           if (zzNext == -1) break zzForAction;
           zzState = zzNext;
 
           int zzAttributes = zzAttrL[zzState];
-          if ( (zzAttributes & 1) == 1 ) {
+          if ((zzAttributes & 1) == 1) {
             zzAction = zzState;
             zzMarkedPosL = zzCurrentPosL;
-            if ( (zzAttributes & 8) == 8 ) break zzForAction;
+            if ((zzAttributes & 8) == 8) break zzForAction;
           }
-
         }
       }
 
@@ -645,58 +617,77 @@ public class CsvTokenMaker extends AbstractJFlexCTokenMaker {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 6:
-          { yybegin(YYINITIAL); addEvenOrOddColumnToken(start, zzStartRead);
-          }
-        case 8: break;
-        case 4:
-          { addNullToken(); return firstToken;
-          }
-        case 9: break;
-        case 7:
-          { addEvenOrOddColumnToken(start, zzEndRead);
-                                addEndToken(INTERNAL_STRING | evenOdd); return firstToken;
-          }
-        case 10: break;
-        case 3:
-          { addToken(Token.OPERATOR);
-                                evenOdd = (evenOdd + 1) & 1;
-          }
-        case 11: break;
-        case 1:
-          { addEvenOrOddColumnToken();
-          }
-        case 12: break;
-        case 2:
-          { start = zzMarkedPos - 1; yybegin(STRING);
-          }
-        case 13: break;
-        case 5:
           {
+            yybegin(YYINITIAL);
+            addEvenOrOddColumnToken(start, zzStartRead);
           }
-        case 14: break;
+        case 8:
+          break;
+        case 4:
+          {
+            addNullToken();
+            return firstToken;
+          }
+        case 9:
+          break;
+        case 7:
+          {
+            addEvenOrOddColumnToken(start, zzEndRead);
+            addEndToken(INTERNAL_STRING | evenOdd);
+            return firstToken;
+          }
+        case 10:
+          break;
+        case 3:
+          {
+            addToken(Token.OPERATOR);
+            evenOdd = (evenOdd + 1) & 1;
+          }
+        case 11:
+          break;
+        case 1:
+          {
+            addEvenOrOddColumnToken();
+          }
+        case 12:
+          break;
+        case 2:
+          {
+            start = zzMarkedPos - 1;
+            yybegin(STRING);
+          }
+        case 13:
+          break;
+        case 5:
+          {}
+        case 14:
+          break;
         default:
           if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
             zzAtEOF = true;
             switch (zzLexicalState) {
-            case STRING: {
-              addEvenOrOddColumnToken(start, zzEndRead);
-                                addEndToken(INTERNAL_STRING | evenOdd); return firstToken;
+              case STRING:
+                {
+                  addEvenOrOddColumnToken(start, zzEndRead);
+                  addEndToken(INTERNAL_STRING | evenOdd);
+                  return firstToken;
+                }
+              case 11:
+                break;
+              case YYINITIAL:
+                {
+                  addNullToken();
+                  return firstToken;
+                }
+              case 12:
+                break;
+              default:
+                return null;
             }
-            case 11: break;
-            case YYINITIAL: {
-              addNullToken(); return firstToken;
-            }
-            case 12: break;
-            default:
-            return null;
-            }
-          }
-          else {
+          } else {
             zzScanError(ZZ_NO_MATCH);
           }
       }
     }
   }
-
-
 }

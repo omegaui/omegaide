@@ -9,9 +9,7 @@
 package org.fife.rsta.ui.search;
 
 import java.util.EventListener;
-
 import org.fife.ui.rtextarea.SearchEngine;
-
 
 /**
  * Listens for events fired from a Find or Replace dialog/tool bar.
@@ -23,17 +21,12 @@ import org.fife.ui.rtextarea.SearchEngine;
  * @version 1.0
  */
 public interface SearchListener extends EventListener {
+  /**
+   * Callback called whenever a search event occurs.
+   *
+   * @param e The event.
+   */
+  void searchEvent(SearchEvent e);
 
-
-	/**
-	 * Callback called whenever a search event occurs.
-	 *
-	 * @param e The event.
-	 */
-	void searchEvent(SearchEvent e);
-
-
-	String getSelectedText();
-
-
+  String getSelectedText();
 }

@@ -16,11 +16,9 @@ import javax.swing.Icon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
-
 import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
 import org.fife.ui.rtextarea.GutterIconInfo;
 import org.fife.ui.rtextarea.IconRowHeader;
-
 
 /**
  * A row header component that takes code folding into account when painting
@@ -31,223 +29,208 @@ import org.fife.ui.rtextarea.IconRowHeader;
  */
 public class FoldingAwareIconRowHeader extends IconRowHeader {
 
+  /**
+   * Constructor.
+   *
+   * @param textArea The parent text area.
+   */
+  public FoldingAwareIconRowHeader(RSyntaxTextArea textArea) {
+    super(textArea);
+  }
 
-	/**
-	 * Constructor.
-	 *
-	 * @param textArea The parent text area.
-	 */
-	public FoldingAwareIconRowHeader(RSyntaxTextArea textArea) {
-		super(textArea);
-	}
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  protected void paintComponent(Graphics g) {
+    // When line wrap is not enabled, take the faster code path.
+    if (textArea == null) {
+      return;
+    }
+    RSyntaxTextArea rsta = (RSyntaxTextArea) textArea;
+    FoldManager fm = rsta.getFoldManager();
+    if (!fm.isCodeFoldingSupportedAndEnabled()) {
+      super.paintComponent(g);
+      return;
+    }
 
+    visibleRect = g.getClipBounds(visibleRect);
+    if (visibleRect == null) { // ???
+      visibleRect = getVisibleRect();
+    }
+    //System.out.println("IconRowHeader repainting: " + visibleRect);
+    if (visibleRect == null) {
+      return;
+    }
+    paintBackgroundImpl(g, visibleRect);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void paintComponent(Graphics g) {
+    if (textArea.getLineWrap()) {
+      paintComponentWrapped(g);
+      return;
+    }
 
-		// When line wrap is not enabled, take the faster code path.
-		if (textArea==null) {
-			return;
-		}
-		RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
-		FoldManager fm = rsta.getFoldManager();
-		if (!fm.isCodeFoldingSupportedAndEnabled()) {
-			super.paintComponent(g);
-			return;
-		}
+    Document doc = textArea.getDocument();
+    Element root = doc.getDefaultRootElement();
+    textAreaInsets = textArea.getInsets(textAreaInsets);
+    if (visibleRect.y < textAreaInsets.top) {
+      visibleRect.height -= (textAreaInsets.top - visibleRect.y);
+      visibleRect.y = textAreaInsets.top;
+    }
 
-		visibleRect = g.getClipBounds(visibleRect);
-		if (visibleRect==null) { // ???
-			visibleRect = getVisibleRect();
-		}
-		//System.out.println("IconRowHeader repainting: " + visibleRect);
-		if (visibleRect==null) {
-			return;
-		}
-		paintBackgroundImpl(g, visibleRect);
+    // Get the first line to paint.
+    int cellHeight = textArea.getLineHeight();
+    int topLine = (visibleRect.y - textAreaInsets.top) / cellHeight;
 
-		if (textArea.getLineWrap()) {
-			paintComponentWrapped(g);
-			return;
-		}
+    // Get where to start painting (top of the row).
+    // We need to be "scrolled up" up just enough for the missing part of
+    // the first line.
+    int y = topLine * cellHeight + textAreaInsets.top;
 
-		Document doc = textArea.getDocument();
-		Element root = doc.getDefaultRootElement();
-		textAreaInsets = textArea.getInsets(textAreaInsets);
-		if (visibleRect.y<textAreaInsets.top) {
-			visibleRect.height -= (textAreaInsets.top - visibleRect.y);
-			visibleRect.y = textAreaInsets.top;
-		}
+    // AFTER calculating visual offset to paint at, account for folding.
+    topLine += fm.getHiddenLineCountAbove(topLine, true);
 
-		// Get the first line to paint.
-		int cellHeight = textArea.getLineHeight();
-		int topLine = (visibleRect.y-textAreaInsets.top)/cellHeight;
+    // Paint the active line range.
+    if (activeLineRangeStart > -1 && activeLineRangeEnd > -1) {
+      Color activeLineRangeColor = getActiveLineRangeColor();
+      g.setColor(activeLineRangeColor);
+      try {
+        int realY1 = rsta.yForLine(activeLineRangeStart);
+        if (realY1 > -1) { // Not in a collapsed fold...
+          int y1 = realY1; //Math.max(y, realY1);
 
-		// Get where to start painting (top of the row).
-		// We need to be "scrolled up" up just enough for the missing part of
-		// the first line.
-		int y = topLine*cellHeight + textAreaInsets.top;
+          int y2 = rsta.yForLine(activeLineRangeEnd);
+          if (y2 == -1) { // In a collapsed fold
+            y2 = y1;
+          }
+          y2 += cellHeight - 1;
 
-		// AFTER calculating visual offset to paint at, account for folding.
-		topLine += fm.getHiddenLineCountAbove(topLine, true);
+          if (y2 < visibleRect.y || y1 > visibleRect.y + visibleRect.height) {
+            //System.out.println("... nothing to paint, bailing...");
+            return;
+          }
+          y1 = Math.max(y, realY1);
+          y2 = Math.min(y2, visibleRect.y + visibleRect.height);
+          //System.out.println(y1 + "... " + y2 + "; " + realY1 + ", " + visibleRect);
 
-		// Paint the active line range.
-		if (activeLineRangeStart>-1 && activeLineRangeEnd>-1) {
-			Color activeLineRangeColor = getActiveLineRangeColor();
-			g.setColor(activeLineRangeColor);
-			try {
+          int j = y1;
+          while (j <= y2) {
+            int yEnd = Math.min(y2, j + getWidth());
+            int xEnd = yEnd - j;
+            g.drawLine(0, j, xEnd, yEnd);
+            j += 2;
+          }
 
-				int realY1 = rsta.yForLine(activeLineRangeStart);
-				if (realY1>-1) { // Not in a collapsed fold...
+          int i = 2;
+          while (i < getWidth()) {
+            int yEnd = y1 + getWidth() - i;
+            g.drawLine(i, y1, getWidth(), yEnd);
+            i += 2;
+          }
 
-					int  y1 = realY1;//Math.max(y, realY1);
+          if (realY1 >= y && realY1 < visibleRect.y + visibleRect.height) {
+            g.drawLine(0, realY1, getWidth(), realY1);
+          }
+          if (y2 >= y && y2 < visibleRect.y + visibleRect.height) {
+            g.drawLine(0, y2, getWidth(), y2);
+          }
+        }
+      } catch (BadLocationException ble) {
+        ble.printStackTrace(); // Never happens
+      }
+    }
 
-					int y2 = rsta.yForLine(activeLineRangeEnd);
-					if (y2==-1) { // In a collapsed fold
-						y2 = y1;
-					}
-					y2 += cellHeight - 1;
+    // Paint icons
+    if (trackingIcons != null) {
+      int lastLine = textArea.getLineCount() - 1;
+      for (int i = trackingIcons.size() - 1; i >= 0; i--) { // Last to first
+        GutterIconInfo ti = getTrackingIcon(i);
+        if (ti == null) continue;
+        int offs = ti.getMarkedOffset();
+        if (offs >= 0 && offs <= doc.getLength()) {
+          int line = root.getElementIndex(offs);
+          if (line <= lastLine && line >= topLine) {
+            try {
+              Icon icon = ti.getIcon();
+              if (icon != null) {
+                int lineY = rsta.yForLine(line);
+                if (lineY >= y && lineY <= visibleRect.y + visibleRect.height) {
+                  int y2 = lineY + (cellHeight - icon.getIconHeight()) / 2;
+                  icon.paintIcon(this, g, 0, y2);
+                  lastLine = line - 1; // Paint only 1 icon per line
+                }
+              }
+            } catch (BadLocationException ble) {
+              ble.printStackTrace(); // Never happens
+            }
+          } else if (line < topLine) {
+            break; // All other lines are above us, so quit now
+          }
+        }
+      }
+    }
+  }
 
-					if (y2<visibleRect.y || y1>visibleRect.y+visibleRect.height) {
-						//System.out.println("... nothing to paint, bailing...");
-						return;
-					}
-					y1 = Math.max(y, realY1);
-					y2 = Math.min(y2, visibleRect.y+visibleRect.height);
-					//System.out.println(y1 + "... " + y2 + "; " + realY1 + ", " + visibleRect);
+  /**
+   * Paints icons when line wrapping is enabled.  Note that this does not
+   * override the parent class's implementation to avoid this version being
+   * called when line wrapping is disabled.
+   */
+  private void paintComponentWrapped(Graphics g) {
+    // The variables we use are as follows:
+    // - visibleRect is the "visible" area of the text area; e.g.
+    // [0,100, 300,100+(lineCount*cellHeight)-1].
+    // actualTop.y is the topmost-pixel in the first logical line we
+    // paint.  Note that we may well not paint this part of the logical
+    // line, as it may be broken into many physical lines, with the first
+    // few physical lines scrolled past.  Note also that this is NOT the
+    // visible rect of this line number list; this line number list has
+    // visible rect == [0,0, insets.left-1,visibleRect.height-1].
 
-					int j = y1;
-					while (j<=y2) {
-						int yEnd = Math.min(y2, j+getWidth());
-						int xEnd = yEnd-j;
-						g.drawLine(0,j, xEnd,yEnd);
-						j += 2;
-					}
+    // We avoid using modelToView/viewToModel where possible, as these
+    // methods trigger a parsing of the line into syntax tokens, which is
+    // costly.  It's cheaper to just grab the child views' bounds.
 
-					int i = 2;
-					while (i<getWidth()) {
-						int yEnd = y1 + getWidth() - i;
-						g.drawLine(i,y1, getWidth(),yEnd);
-						i += 2;
-					}
+    RSyntaxTextArea rsta = (RSyntaxTextArea) textArea;
+    //		boolean currentLineHighlighted = textArea.getHighlightCurrentLine();
+    Document doc = textArea.getDocument();
+    Element root = doc.getDefaultRootElement();
+    int topPosition = textArea.viewToModel(
+      new Point(visibleRect.x, visibleRect.y)
+    );
+    int topLine = root.getElementIndex(topPosition);
 
-					if (realY1>=y && realY1<visibleRect.y+visibleRect.height) {
-						g.drawLine(0,realY1, getWidth(),realY1);
-					}
-					if (y2>=y && y2<visibleRect.y+visibleRect.height) {
-						g.drawLine(0,y2, getWidth(),y2);
-					}
+    int topY = visibleRect.y;
+    int bottomY = visibleRect.y + visibleRect.height;
+    int cellHeight = textArea.getLineHeight();
 
-				}
-
-			} catch (BadLocationException ble) {
-				ble.printStackTrace(); // Never happens
-			}
-		}
-
-		// Paint icons
-		if (trackingIcons!=null) {
-			int lastLine = textArea.getLineCount() - 1;
-			for (int i=trackingIcons.size()-1; i>=0; i--) { // Last to first
-				GutterIconInfo ti = getTrackingIcon(i);
-				if(ti == null)
-					continue;
-				int offs = ti.getMarkedOffset();
-				if (offs>=0 && offs<=doc.getLength()) {
-					int line = root.getElementIndex(offs);
-					if (line<=lastLine && line>=topLine) {
-						try {
-							Icon icon = ti.getIcon();
-							if (icon!=null) {
-								int lineY = rsta.yForLine(line);
-								if (lineY>=y && lineY<=visibleRect.y+visibleRect.height) {
-									int y2 = lineY + (cellHeight-icon.getIconHeight())/2;
-									icon.paintIcon(this, g, 0, y2);
-									lastLine = line-1; // Paint only 1 icon per line
-								}
-							}
-						} catch (BadLocationException ble) {
-							ble.printStackTrace(); // Never happens
-						}
-					}
-					else if (line<topLine) {
-						break; // All other lines are above us, so quit now
-					}
-				}
-			}
-		}
-
-	}
-
-
-	/**
-	 * Paints icons when line wrapping is enabled.  Note that this does not
-	 * override the parent class's implementation to avoid this version being
-	 * called when line wrapping is disabled.
-	 */
-	private void paintComponentWrapped(Graphics g) {
-
-		// The variables we use are as follows:
-		// - visibleRect is the "visible" area of the text area; e.g.
-		// [0,100, 300,100+(lineCount*cellHeight)-1].
-		// actualTop.y is the topmost-pixel in the first logical line we
-		// paint.  Note that we may well not paint this part of the logical
-		// line, as it may be broken into many physical lines, with the first
-		// few physical lines scrolled past.  Note also that this is NOT the
-		// visible rect of this line number list; this line number list has
-		// visible rect == [0,0, insets.left-1,visibleRect.height-1].
-
-		// We avoid using modelToView/viewToModel where possible, as these
-		// methods trigger a parsing of the line into syntax tokens, which is
-		// costly.  It's cheaper to just grab the child views' bounds.
-
-		RSyntaxTextArea rsta = (RSyntaxTextArea)textArea;
-//		boolean currentLineHighlighted = textArea.getHighlightCurrentLine();
-		Document doc = textArea.getDocument();
-		Element root = doc.getDefaultRootElement();
-		int topPosition = textArea.viewToModel(
-								new Point(visibleRect.x,visibleRect.y));
-		int topLine = root.getElementIndex(topPosition);
-
-		int topY = visibleRect.y;
-		int bottomY = visibleRect.y + visibleRect.height;
-		int cellHeight = textArea.getLineHeight();
-
-		// Paint icons
-		if (trackingIcons!=null) {
-			int lastLine = textArea.getLineCount() - 1;
-			for (int i=trackingIcons.size()-1; i>=0; i--) { // Last to first
-				GutterIconInfo ti = getTrackingIcon(i);
-				Icon icon = ti.getIcon();
-				if (icon!=null) {
-					int iconH = icon.getIconHeight();
-					int offs = ti.getMarkedOffset();
-					if (offs>=0 && offs<=doc.getLength()) {
-						int line = root.getElementIndex(offs);
-						if (line<=lastLine && line>=topLine) {
-							try {
-								int lineY = rsta.yForLine(line);
-								if (lineY<=bottomY && (lineY+iconH>=topY)) {
-									int y2 = lineY + (cellHeight-iconH)/2;
-									ti.getIcon().paintIcon(this, g, 0, y2);
-									lastLine = line-1; // Paint only 1 icon per line
-								}
-							} catch (BadLocationException ble) {
-								ble.printStackTrace(); // Never happens
-							}
-						}
-						else if (line<topLine) {
-							break; // All other lines are above us, so quit now
-						}
-					}
-				}
-			}
-		}
-
-	}
-
-
+    // Paint icons
+    if (trackingIcons != null) {
+      int lastLine = textArea.getLineCount() - 1;
+      for (int i = trackingIcons.size() - 1; i >= 0; i--) { // Last to first
+        GutterIconInfo ti = getTrackingIcon(i);
+        Icon icon = ti.getIcon();
+        if (icon != null) {
+          int iconH = icon.getIconHeight();
+          int offs = ti.getMarkedOffset();
+          if (offs >= 0 && offs <= doc.getLength()) {
+            int line = root.getElementIndex(offs);
+            if (line <= lastLine && line >= topLine) {
+              try {
+                int lineY = rsta.yForLine(line);
+                if (lineY <= bottomY && (lineY + iconH >= topY)) {
+                  int y2 = lineY + (cellHeight - iconH) / 2;
+                  ti.getIcon().paintIcon(this, g, 0, y2);
+                  lastLine = line - 1; // Paint only 1 icon per line
+                }
+              } catch (BadLocationException ble) {
+                ble.printStackTrace(); // Never happens
+              }
+            } else if (line < topLine) {
+              break; // All other lines are above us, so quit now
+            }
+          }
+        }
+      }
+    }
+  }
 }

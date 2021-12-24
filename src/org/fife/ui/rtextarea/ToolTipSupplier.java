@@ -11,7 +11,6 @@ package org.fife.ui.rtextarea;
 
 import java.awt.event.MouseEvent;
 
-
 /**
  * A <tt>ToolTipSupplier</tt> can create tool tip text for an <tt>RTextArea</tt>
  * on its behalf.  A text area will check its <tt>ToolTipSupplier</tt> for a
@@ -24,16 +23,12 @@ import java.awt.event.MouseEvent;
  * @version 1.0
  */
 public interface ToolTipSupplier {
-
-
-	/**
-	 * Returns the tool tip text to display for a given mouse event.
-	 *
-	 * @param textArea The text area.
-	 * @param e The mouse event.
-	 * @return The tool tip, or <code>null</code> if none.
-	 */
-	String getToolTipText(RTextArea textArea, MouseEvent e);
-
-
+  /**
+   * Returns the tool tip text to display for a given mouse event.
+   *
+   * @param textArea The text area.
+   * @param e The mouse event.
+   * @return The tool tip, or <code>null</code> if none.
+   */
+  String getToolTipText(RTextArea textArea, MouseEvent e);
 }

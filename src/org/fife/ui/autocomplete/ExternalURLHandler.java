@@ -11,7 +11,6 @@ package org.fife.ui.autocomplete;
 
 import javax.swing.event.HyperlinkEvent;
 
-
 /**
  * A callback for when an external URL is clicked in the description window.
  * If no handler is installed, and if running in Java 6, the system default
@@ -29,18 +28,13 @@ import javax.swing.event.HyperlinkEvent;
  * @see AutoCompletion#setExternalURLHandler(ExternalURLHandler)
  */
 public interface ExternalURLHandler {
-
-
-	/**
-	 * Called when an external URL is clicked in the description window.
-	 *
-	 * @param e The event containing the hyperlink clicked.
-	 * @param c The completion currently being displayed.
-	 * @param callback Allows you to display new content in the description
-	 *        window.
-	 */
-	void urlClicked(HyperlinkEvent e, Completion c,
-						DescWindowCallback callback);
-
-
+  /**
+   * Called when an external URL is clicked in the description window.
+   *
+   * @param e The event containing the hyperlink clicked.
+   * @param c The completion currently being displayed.
+   * @param callback Allows you to display new content in the description
+   *        window.
+   */
+  void urlClicked(HyperlinkEvent e, Completion c, DescWindowCallback callback);
 }

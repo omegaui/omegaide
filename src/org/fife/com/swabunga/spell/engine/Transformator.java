@@ -27,7 +27,6 @@ package org.fife.com.swabunga.spell.engine;
  * @author Robert Gustavsson (robert@lindesign.se)
  */
 public interface Transformator {
-
   /**
    * Take the given word, and return the best phonetic hash for it.
    * @param word the word to transform

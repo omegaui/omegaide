@@ -27,7 +27,6 @@ import java.util.List;
  * of suggestions for misspelled words.
  */
 public interface SpellDictionary {
-
   /**
    * Add a word permanently to the dictionary.
    * @param word The word to add to the dictionary
@@ -86,6 +85,9 @@ public interface SpellDictionary {
    * @return List a List of suggested words
    * @see org.fife.com.swabunga.spell.engine.Word
    */
-  List<Word> getSuggestions(String sourceWord, int scoreThreshold , int[][] matrix);
-
+  List<Word> getSuggestions(
+    String sourceWord,
+    int scoreThreshold,
+    int[][] matrix
+  );
 }

@@ -29,6 +29,7 @@ import java.util.Comparator;
  *  </p>
  */
 public class Word implements Comparator<Word> {
+
   private String word;
   private int score;
 
@@ -61,7 +62,7 @@ public class Word implements Comparator<Word> {
    */
   @Override
   public int compare(Word o1, Word o2) {
-      return Integer.compare(o1.getCost(), o2.getCost());
+    return Integer.compare(o1.getCost(), o2.getCost());
   }
 
   /**
@@ -71,8 +72,9 @@ public class Word implements Comparator<Word> {
    */
   @Override
   public boolean equals(Object o) {
-    if (o instanceof Word)  // added by bd
-      return(((Word)o).getWord().equals(getWord()));
+    if (
+      o instanceof Word
+    ) return (((Word) o).getWord().equals(getWord())); // added by bd
     return false;
   }
 
@@ -93,7 +95,6 @@ public class Word implements Comparator<Word> {
   public int hashCode() {
     return word.hashCode();
   }
-
 
   /**
    * sets suggested spelling
@@ -121,4 +122,3 @@ public class Word implements Comparator<Word> {
     return word;
   }
 }
-

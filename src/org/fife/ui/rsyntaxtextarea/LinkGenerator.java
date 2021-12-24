@@ -10,7 +10,6 @@
  */
 package org.fife.ui.rsyntaxtextarea;
 
-
 /**
  * Generates hyperlinks in a document.  If one of these is installed on an
  * <code>RSyntaxTextArea</code> it is queried when the mouse is moved and
@@ -30,20 +29,16 @@ package org.fife.ui.rsyntaxtextarea;
  * @version 1.0
  */
 public interface LinkGenerator {
-
-
-	/**
-	 * If a region of text under the mouse position should be considered a
-	 * hyperlink, a result object is returned.  This object describes what
-	 * region of text is the link, and what action to perform if the link is
-	 * clicked.
-	 *
-	 * @param textArea The text component.
-	 * @param offs The offset in the document under the mouse position.
-	 * @return The link information, or <code>null</code> if no link is at the
-	 *         specified offset.
-	 */
-	LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, int offs);
-
-
+  /**
+   * If a region of text under the mouse position should be considered a
+   * hyperlink, a result object is returned.  This object describes what
+   * region of text is the link, and what action to perform if the link is
+   * clicked.
+   *
+   * @param textArea The text component.
+   * @param offs The offset in the document under the mouse position.
+   * @return The link information, or <code>null</code> if no link is at the
+   *         specified offset.
+   */
+  LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, int offs);
 }

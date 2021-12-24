@@ -6,7 +6,6 @@
  */
 package org.fife.ui.rtextarea;
 
-
 /**
  * Provides various ways to render a caret such as {@link ConfigurableCaret}..
  *
@@ -24,15 +23,13 @@ package org.fife.ui.rtextarea;
  * @version 1.0
  */
 public enum CaretStyle {
+  VERTICAL_LINE_STYLE,
 
-	VERTICAL_LINE_STYLE,
+  UNDERLINE_STYLE,
 
-	UNDERLINE_STYLE,
+  BLOCK_STYLE,
 
-	BLOCK_STYLE,
+  BLOCK_BORDER_STYLE,
 
-	BLOCK_BORDER_STYLE,
-
-	THICK_VERTICAL_LINE_STYLE
-
+  THICK_VERTICAL_LINE_STYLE,
 }
