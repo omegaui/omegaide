@@ -17,7 +17,7 @@
 */
 
 package omega.utils.systems;
-import omega.tree.FileTree;
+import omega.tree.FileTreePanel;
 
 import omega.token.factory.ShellTokenMaker;
 
@@ -283,7 +283,7 @@ public class RunView extends View {
 						terminal.printText("Unable to Run the Specified Command!");
 					
 					runningApps.remove(terminal.terminalPanel.process);
-					Screen.getProjectView().reload();
+					Screen.getFileView().getFileTreePanel().refresh();
 				}).start();
 				
 			}
@@ -430,7 +430,7 @@ public class RunView extends View {
 						terminal.printText("Unable to Run the Specified Command!");
 					
 					runningApps.remove(terminal.terminalPanel.process);
-					Screen.getProjectView().reload();
+					Screen.getFileView().getFileTreePanel().refresh();
 				}).start();
 				
 				getScreen().getToolMenu().runComp.setClickable(true);
@@ -443,7 +443,7 @@ public class RunView extends View {
 	
 	public boolean isRunCapable(File dir){
 		LinkedList<File> byteCodes = new LinkedList<>();
-		FileTree.loadFilesIncludeSubDirectories(byteCodes, dir, ".class");
+		FileTreePanel.loadFilesIncludeSubDirectories(byteCodes, dir, ".class");
 		return !byteCodes.isEmpty();
 	}
 	
@@ -746,7 +746,7 @@ public class RunView extends View {
 					
 					Screen.setStatus("Building Project -- Double Click to kill this process", 90, IconManager.fluentrunImage);
 					getScreen().getToolMenu().buildComp.setClickable(true);
-					Screen.getProjectView().reload();
+					Screen.getFileView().getFileTreePanel().refresh();
 					if(compileProcess.exitValue() != 0) {
 						Screen.setStatus("", 100, null);
 						runningApps.remove(compileProcess);
@@ -870,7 +870,7 @@ public class RunView extends View {
 					terminal.printText("---<>--------------------------------------<>---");
 					terminal.printText("Program Execution finished with Exit Code " + terminal.terminalPanel.process.exitValue());
 					runningApps.remove(terminal.terminalPanel.process);
-					Screen.getProjectView().reload();
+					Screen.getFileView().getFileTreePanel().refresh();
 				}).start();
 								
 				getScreen().getToolMenu().runComp.setClickable(true);

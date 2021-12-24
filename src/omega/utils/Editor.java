@@ -507,7 +507,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			new File(Screen.getFileView().getProjectPath() + File.separator + "out").mkdir();
 			path += File.separator + "out" + File.separator + currentFile.getName() + "_lines_" + getLineCount() + ".jpg";
 			if(ImageIO.write(image, "JPG", new File(path))) {
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 			}
 		}
 		catch(Exception e) {
@@ -522,7 +522,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				PrintWriter writer = new PrintWriter(new File(path), StandardCharsets.UTF_8);
 				writer.println(getText());
 				writer.close();
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -583,10 +583,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 			else {
 				printArea.print("Successfully Deleted "+currentFile.getName());
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 				savedText = "";
 				currentFile = null;
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 			}
 		}
 		catch(Exception e) {
@@ -622,7 +622,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 						return;
 					try {
 						deleteDir(currentFile);
-						Screen.getProjectView().reload();
+						Screen.getFileView().getFileTreePanel().refresh();
 					}
 					catch(Exception e) {
 						
@@ -635,7 +635,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(res0 != ChoiceDialog.CHOICE1)
 					return;
 				if(currentFile.delete()) {
-					Screen.getProjectView().reload();
+					Screen.getFileView().getFileTreePanel().refresh();
 				}
 			}
 			catch(Exception e) {

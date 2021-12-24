@@ -153,7 +153,7 @@ public class BuildView extends View {
 			finally {
 				getScreen().getToolMenu().buildComp.setClickable(true);
 				getScreen().getToolMenu().runComp.setClickable(true);
-				getScreen().getProjectView().reload();
+				getScreen().getFileView().getFileTreePanel().refresh();
 			}
 		}).start();
 	}
@@ -316,7 +316,7 @@ public class BuildView extends View {
 				compileProcess = null;
 				getScreen().getToolMenu().buildComp.setClickable(true);
 				getScreen().getToolMenu().runComp.setClickable(true);
-				Screen.getProjectView().reload();
+				getScreen().getFileView().getFileTreePanel().refresh();
 			}
 			catch(Exception e) {
 				e.printStackTrace();

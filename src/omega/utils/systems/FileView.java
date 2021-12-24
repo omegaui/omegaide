@@ -17,6 +17,8 @@
 */
 
 package omega.utils.systems;
+import omega.tree.FileTreePanel;
+
 import omega.plugin.event.PluginReactionEvent;
 
 import omega.Screen;
@@ -38,6 +40,7 @@ import omega.jdk.JDKManager;
 import omega.search.SearchWindow;
 
 import omega.utils.systems.creators.FileCreator;
+import omega.utils.systems.creators.FileOperationManager;
 
 import omega.instant.support.ArgumentManager;
 
@@ -50,25 +53,33 @@ import omega.utils.Editor;
 public class FileView extends View {
 	
 	private static String projectPath = null;
+
+	private FileTreePanel fileTreePanel;
+	
 	private ProjectDataBase projectManager;
 	private ArgumentManager argumentManager;
 	private FileCreator fileCreator;
 	private BuildPathManager dependencyView;
 	private ExtendedBuildPathManager extendedDependencyView;
+	private FileOperationManager fileOperationManager;
 	private SearchWindow searchWindow;
 	private JDKManager jdkManager;
 	
 	public FileView(String title, Screen window) {
 		super(title, window);
-		dependencyView = new BuildPathManager(window);
-		extendedDependencyView = new ExtendedBuildPathManager(window);
-		searchWindow = new SearchWindow(window);
 		setLayout(new FlowLayout());
 		init();
 		setSize(getWidth(), getHeight());
 	}
 	
 	private void init() {
+
+		fileTreePanel = new FileTreePanel();
+		
+		fileOperationManager = new FileOperationManager(getScreen());
+		dependencyView = new BuildPathManager(getScreen());
+		extendedDependencyView = new ExtendedBuildPathManager(getScreen());
+		searchWindow = new SearchWindow(getScreen());
 		fileCreator = new FileCreator(getScreen());
 	}
 	
@@ -110,40 +121,36 @@ public class FileView extends View {
 	}
 	
 	public void setProjectPath(String path) {
-		if(projectPath != null) {
-			if(projectPath.equals(path)){
-				return;
-			}
-		}
-		if(projectPath != null){
-			if(getScreen().getToolMenu().hidden) {
-				getScreen().getToolMenu().structureComp.doClick();
-			}
-		}
-		new Thread(()->Screen.addAndSaveRecents(path)).start();
+		if(!new File(path).exists())
+			return;
+		
+		if(projectPath != null && projectPath.equals(path))
+			return;
+
 		projectPath = path;
+		
+		new Thread(()->{
+			fileTreePanel.init(new File(path));
+			Screen.addAndSaveRecents(path);
+			searchWindow.cleanAndLoad(new File(projectPath));
+		}).start();
+		
 		if(Screen.launcher != null)
 			Screen.launcher.dispose();
+		
 		DataManager.setDefaultProjectPath(projectPath);
 		Screen.notify("Loading Project \"" + getProjectName() + "\"");
 		getScreen().setProject(getProjectName());
-		try {
-			Screen.getProjectView().getProjectView().setVisible(true);
-			if(getScreen().screenHasProjectView) {
-				Screen.getProjectView().organizeProjectViewDefaults();
-				getScreen().setVisible(true);
-			}
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-		}
+		
 		getScreen().getTabPanel().closeAllTabs();
+		
 		projectManager = new ProjectDataBase();
+		
 		getScreen().manageTools(projectManager);
-		if(projectManager.non_java){
+		
+		if(projectManager.non_java)
 			argumentManager = new ArgumentManager();
-		}
-		searchWindow.cleanAndLoad(new File(projectPath));
+		
 		if(!projectManager.non_java) {
 			if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists())
 				Screen.notify("No JDK Defined for Project " + Screen.getFileView().getProjectName(), 3000, null);
@@ -153,7 +160,6 @@ public class FileView extends View {
 			Screen.hideNotif();
 			
 			try {
-				Screen.getProjectView().reload();
 				new Thread(()->{
 					try{
 						Editor.deleteDir(JavaSyntaxParser.BUILDSPACE_DIR);
@@ -222,6 +228,10 @@ public class FileView extends View {
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CLOSED, this, projectPath));
 		Screen.launcher.setVisible(true);
 	}
+
+	public FileTreePanel getFileTreePanel() {
+		return fileTreePanel;
+	}
 	
 	public SearchWindow getSearchWindow() {
 		return searchWindow;
@@ -245,6 +255,10 @@ public class FileView extends View {
 	
 	public ArgumentManager getArgumentManager() {
 		return argumentManager;
+	}
+	
+	public FileOperationManager getFileOperationManager(){
+		return fileOperationManager;
 	}
 	
 	public JDKManager getJDKManager() {

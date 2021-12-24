@@ -1,6 +1,4 @@
 package omega.search;
-import omega.tree.Branch;
-
 import omega.Screen;
 
 import java.awt.event.MouseAdapter;
@@ -21,7 +19,7 @@ import java.io.File;
 
 import javax.swing.JComponent;
 
-import static omega.tree.Branch.*;
+import static omega.tree.FileTreeBranch.*;
 import static omega.utils.UIManager.*;
 import static omega.utils.FileSelectionDialog.*;
 import static omega.comp.Animations.*;
@@ -50,14 +48,14 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	}
 	
 	public void initUI(){
-		iconComp = new TextComp(Branch.getPreferredImage(file), getHeight(), getHeight(), ALPHA, ALPHA, ALPHA, null);
+		iconComp = new TextComp(getPreferredImageForFile(file), getHeight(), getHeight(), ALPHA, ALPHA, ALPHA, null);
 		iconComp.setBounds(0, 0, getHeight(), getHeight());
 		iconComp.setClickable(false);
 		iconComp.setArc(0, 0);
 		iconComp.addMouseListener(this);
 		add(iconComp);
 		
-		nameComp = new TextComp(file.getName(), file.getAbsolutePath(), ALPHA, ALPHA, getColor(file.getName()), null);
+		nameComp = new TextComp(file.getName(), file.getAbsolutePath(), ALPHA, ALPHA, getPreferredColorForFile(file), null);
 		nameComp.setLocation(iconComp.getX() + iconComp.getWidth() + 4, 2);
 		nameComp.setSize(getWidth() - nameComp.getX() - 80, getHeight()/2);
 		nameComp.setFont(UBUNTU_PX14);

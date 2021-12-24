@@ -188,7 +188,7 @@ public class JDKManager {
 		return releaseFile.exists();
 	}
 	
-	public void readSources(String projectPath){
+	public synchronized void readSources(String projectPath){
 		sources.forEach(imports::remove);
 		sources.clear();
 		File srcDir = new File(projectPath + File.separator + "src");
@@ -196,6 +196,7 @@ public class JDKManager {
 		loadFiles(srcDir, sourceFiles, ".java");
 		if(sourceFiles.isEmpty())
 			return;
+		
 		sourceFiles.forEach(source->{
 			String sourcePath = source.getAbsolutePath();
 			sourcePath = sourcePath.substring(sourcePath.indexOf("src") + "src".length() + 1);

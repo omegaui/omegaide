@@ -16,13 +16,12 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 package omega.utils;
+import omega.tree.FileTreeBranch;
+
 import omega.framework.CodeFramework;
 
 import java.awt.geom.RoundRectangle2D;
-
-import omega.tree.Branch;
 
 import omega.Screen;
 
@@ -335,7 +334,7 @@ public class FileSelectionDialog extends JDialog{
 				String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
 				if(!file.isDirectory())
 					meta = "";
-				ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.toString() + meta, c1, c2, c3, false);
+				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.toString() + meta, c1, c2, c3, false);
 				if(!file.isDirectory()){
 					comp.setOnToggle((value)->{
 						comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -410,7 +409,7 @@ public class FileSelectionDialog extends JDialog{
 				String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
 				if(!file.isDirectory())
 					meta = "";
-				ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
 				if(!file.isDirectory()){
 					comp.setOnToggle((value)->{
 						comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -486,7 +485,7 @@ public class FileSelectionDialog extends JDialog{
 				String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
 				if(!file.isDirectory())
 					meta = "";
-				ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
 				if(file.isDirectory()){
 					comp.setOnToggle((value)->{
 						comp.setColors(comp.color1, comp.color3, comp.color2);
@@ -561,7 +560,7 @@ public class FileSelectionDialog extends JDialog{
 				String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
 				if(!file.isDirectory())
 					meta = "";
-				ToggleComp comp = new ToggleComp(Branch.getPreferredImage(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
+				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
 				comp.setOnToggle((value)->{
 					comp.setColors(comp.color1, comp.color3, comp.color2);
 					if(value)

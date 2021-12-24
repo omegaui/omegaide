@@ -505,15 +505,7 @@ public class ToolMenu extends JPanel {
 		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		addComp(asteriskComp);
 		
-		structureComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3, ()->{
-			hidden = !hidden;
-			screen.screenHasProjectView = !screen.screenHasProjectView;
-			Screen.getProjectView().organizeProjectViewDefaults();
-			screen.doLayout();
-			Screen.getProjectView().setVisible(false);
-			structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
-			structureComp.repaint();
-			}){
+		structureComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3, screen::toggleFileTree){
 			@Override
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
@@ -943,7 +935,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Add Additional Flags", IconManager.projectImage, ()->{
 			Screen.getFileView().getExtendedDependencyView().setVisible(true);
 		})
-		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectView().reload())
+		.createItem("Refresh", IconManager.projectImage, ()->Screen.getFileView().getFileTreePanel().refresh())
 		.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
 		.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
 		.createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));

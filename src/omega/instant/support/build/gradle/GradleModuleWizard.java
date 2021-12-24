@@ -1,19 +1,19 @@
 /**
-  * The Default Gradle Module Wizard
-  * Copyright (C) 2021 Omega UI
+* The Default Gradle Module Wizard
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package omega.instant.support.build.gradle;
@@ -65,8 +65,8 @@ public class GradleModuleWizard extends JDialog{
 	private TextComp createComp;
 	
 	public GradleModuleWizard(JFrame f){
-          super(f, false);
-          setTitle("Gradle Module Wizard");
+		super(f, false);
+		setTitle("Gradle Module Wizard");
 		setUndecorated(true);
 		setSize(700, 400);
 		setLocationRelativeTo(null);
@@ -240,7 +240,7 @@ public class GradleModuleWizard extends JDialog{
 		generateApplicationTemplate(result2.getText());
 		generateBuildTemplate(result3.getText());
 		titleComp.setText("Module Generated Successfully");
-          Screen.getProjectView().reload();
+		Screen.getFileView().getFileTreePanel().refresh();
 	}
 	public void generateApplicationTemplate(String language){
 		String moduleName = nameField.getText();

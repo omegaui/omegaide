@@ -54,7 +54,7 @@ public class GradleProcessManager {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			Screen.getProjectView().reload();
+			Screen.getFileView().getFileTreePanel().refresh();
 		}).start();
 	}
 	public static void run(){
@@ -87,7 +87,7 @@ public class GradleProcessManager {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			Screen.getProjectView().reload();
+			Screen.getFileView().getFileTreePanel().refresh();
 		}).start();
 	}
 	public static void build(){
@@ -117,7 +117,7 @@ public class GradleProcessManager {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			Screen.getProjectView().reload();
+			Screen.getFileView().getFileTreePanel().refresh();
 		}).start();
 	}
 }

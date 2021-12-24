@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import java.awt.image.BufferedImage;
+
 import omega.comp.Animations;
 
 import omega.Screen;
@@ -29,6 +31,9 @@ import java.io.FileOutputStream;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Graphics;
 
 import omega.database.DataBase;
 import omega.database.DataEntry;
@@ -84,6 +89,9 @@ public class UIManager extends DataBase {
 	* The Base Solid Color of UI Elements
 	*/
 	public static Color c3;
+	
+	//Image Object to be used for computing text dimension.
+	public static BufferedImage testImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
 	
 	// IDE Component Colors -- Default Mode -- LIGHT
 	
@@ -191,6 +199,25 @@ public class UIManager extends DataBase {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static int computeWidth(String name, Font font){
+		Graphics2D g = (Graphics2D)testImage.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setFont(font);
+		return g.getFontMetrics().stringWidth(name);
+	}
+
+	public static int computeHeight(Font font){
+		Graphics g = testImage.getGraphics();
+		g.setFont(font);
+		return g.getFontMetrics().getHeight();
+	}
+
+	public static void drawAtCenter(String text, Graphics2D g, Component c){
+		g.drawString(text, c.getWidth()/2 - computeWidth(text, g.getFont())/2, 
+			c.getHeight()/2 - computeHeight(g.getFont())/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 	}
 	
 	/**

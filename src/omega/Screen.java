@@ -37,8 +37,6 @@ import omega.startup.Startup;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import omega.tree.FileTree;
-
 import java.awt.geom.RoundRectangle2D;
 
 import java.awt.event.WindowAdapter;
@@ -93,7 +91,6 @@ import omega.tabPane.TabPanel;
 import omega.utils.systems.OperationPane;
 import omega.utils.systems.RunView;
 import omega.utils.systems.BuildView;
-import omega.utils.systems.ProjectView;
 import omega.utils.systems.FileView;
 
 import omega.snippet.SnippetView;
@@ -123,7 +120,6 @@ public class Screen extends JFrame {
 	public static String PATH_SEPARATOR = ":";
 	
 	public volatile boolean active = true;
-	public volatile boolean screenHasProjectView = true;
 	public volatile boolean focusMode = false;
 	
 	private SplashScreen splash;
@@ -144,7 +140,6 @@ public class Screen extends JFrame {
 	private static BasicHighlight basicHighlight;
 	private static RecentsManager recentsManager;
 	private static ErrorHighlighter errorHighlighter;
-	private static ProjectView projectView;
 	private static UniversalSettingsWizard universalSettings;
 	private static PluginManager pluginManager;
 	private static PluginStore pluginStore;
@@ -254,7 +249,6 @@ public class Screen extends JFrame {
 		compilancePane = new SplitPanel(JSplitPane.VERTICAL_SPLIT);
 		compilancePane.setTopComponent(splitPane);
 		compilancePane.setBottomComponent(operationPane);
-//		compilancePane.setDividerSize(2);
 		compilancePane.setDividerLocation(Screen.this.getHeight() - 400);
 		add(compilancePane, BorderLayout.CENTER);
 		UIManager.setData(compilancePane);
@@ -296,10 +290,6 @@ public class Screen extends JFrame {
 		bottomTabPanelSplitPane.setTopComponent(rightTabPanelSplitPane);
 		bottomTabPanelSplitPane.setBottomComponent(bottomTabPanel);
 		
-//		splitPane.setDividerSize(2);
-//		rightTabPanelSplitPane.setDividerSize(2);
-//		bottomTabPanelSplitPane.setDividerSize(2);
-		
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
 		
@@ -312,13 +302,13 @@ public class Screen extends JFrame {
 		recentsManager = new RecentsManager(this);
 		
 		splash.setProgress(77, "initializing");
-		fileView = new FileView("File", this);
+		fileView = new FileView("FileManager", this);
 		universalSettings = new UniversalSettingsWizard(this);
-		buildView = new BuildView("Build", this);
-		runView = new RunView("Run", this, true);
-		projectView = new ProjectView("Project", this);
-		splitPane.setLeftComponent(projectView.getProjectView());
+		buildView = new BuildView("BuildManager", this);
+		runView = new RunView("RunManager", this, true);
+
 		splitPane.setDividerLocation(300);
+		splitPane.setLeftComponent(fileView.getFileTreePanel());
 		
 		splash.setProgress(83, "plugging in");
 		pluginManager = new PluginManager();
@@ -338,7 +328,10 @@ public class Screen extends JFrame {
 		
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
-			Animations.animateAll(500);
+			new Thread(()->{
+				while(!isVisible());
+				Animations.animateAll(500);
+			}).start();
 		}
 		else {
 			launcher = new omega.launcher.Launcher();
@@ -390,43 +383,8 @@ public class Screen extends JFrame {
 		setShape(new RoundRectangle2D.Double(0, 0, w, h, arc, arc));
 	}
 	
-	@Override
-	public void setVisible(boolean value) {
-		if(value & screenHasProjectView) {
-			splitPane.setDividerLocation(300);
-			compilancePane.setDividerLocation(Screen.this.getHeight() - 400);
-			projectView.organizeProjectViewDefaults();
-			if(projectView.tree.getRoot() == null || !projectView.tree.getRoot().getAbsolutePath().equals(Screen.getFileView().getProjectPath())) {
-				if(Screen.getFileView().getProjectPath() != null){
-					projectView.tree = new FileTree(Screen.getFileView().getProjectPath());
-					projectView.tree.gen(projectView.tree.getRoot());
-				}
-			}
-			projectView.tree.repaint();
-			screenHasProjectView = false;
-			Screen.getProjectView().organizeProjectViewDefaults();
-			doLayout();
-			Screen.getProjectView().setVisible(false);
-			screenHasProjectView = true;
-			Screen.getProjectView().organizeProjectViewDefaults();
-			doLayout();
-			Screen.getProjectView().setVisible(false);
-		}
-		super.setVisible(value);
-	}
-	
-	public void justVisible(boolean value){
-		super.setVisible(value);
-	}
-	
-	public void setToView() {
-		int x = splitPane.getDividerLocation();
-		splitPane.setLeftComponent(projectView.getProjectView());
-		Screen.getProjectView().getProjectView().setVisible(true);
-	}
-	
-	public void setToNull() {
-		splitPane.remove(projectView.getProjectView());
+	public void toggleFileTree(){
+		fileView.getFileTreePanel().setVisible(!fileView.getFileTreePanel().isVisible());
 	}
 	
 	public static void notify(String text) {
@@ -498,13 +456,13 @@ public class Screen extends JFrame {
 	
 	public void setProject(String projectName) {
 		loadTitle(projectName);
-		splitPane.setDividerLocation(300);
 	}
 	
 	public static void openInDesktop(File file) {
 		try {
 			new Thread(()->{
-				try {					java.awt.Desktop.getDesktop().open(file);
+				try {
+					java.awt.Desktop.getDesktop().open(file);
 				}
 				catch(Exception ex){
 					ex.printStackTrace();
@@ -518,7 +476,8 @@ public class Screen extends JFrame {
 	
 	public Editor loadFile(File file) {
 		String fn = file.getName();
-		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){			openInDesktop(file);
+		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
+			openInDesktop(file);
 			return null;
 		}
 		if(tabPanel.viewImage(file)) return null;
@@ -586,6 +545,7 @@ public class Screen extends JFrame {
 	public void loadProject(File file) {
 		fileView.saveAll();
 		fileView.setProjectPath(file.getAbsolutePath());
+		setVisible(true);
 	}
 	
 	public boolean isFileOpened(File file) {
@@ -634,7 +594,7 @@ public class Screen extends JFrame {
 		if(!canRecord)
 			return file.getAbsolutePath();
 		else
-			res = res.substring(0,res.length() - 1);
+			res = res.substring(0, res.length() - 1);
 		return res;
 	}
 	
@@ -698,10 +658,6 @@ public class Screen extends JFrame {
 	
 	public static RunView getRunView() {
 		return runView;
-	}
-	
-	public static ProjectView getProjectView() {
-		return projectView;
 	}
 	
 	public static ErrorHighlighter getErrorHighlighter() {

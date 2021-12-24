@@ -51,7 +51,7 @@ public class SideMenu extends JPanel {
 		sep = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
 		add(sep);
 		
-		projectTabComp = new TextComp(fluentprojectstructureImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureComp.runnable.run());
+		projectTabComp = new TextComp(fluentprojectstructureImage, 20, 20, back2, back2, TOOLMENU_COLOR1, screen::toggleFileTree);
 		projectTabComp.setBounds(0, 0, 30, 25);
 		projectTabComp.setArc(2, 2);
 		add(projectTabComp);
@@ -62,7 +62,7 @@ public class SideMenu extends JPanel {
 		shellComp.setArc(2, 2);
 		add(shellComp);
 		
-		structureComp = new TextComp(fluentstructureImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->Screen.getScreen().getToolMenu().structureView.setVisible(true));
+		structureComp = new TextComp(fluentstructureImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->screen.getToolMenu().structureView.setVisible(true));
 		structureComp.setBounds(0, 50, 30, 25);
 		structureComp.setFont(PX18);
 		structureComp.setArc(2, 2);

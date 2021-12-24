@@ -47,7 +47,7 @@ public class PopupManager {
 			.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
 			.createItem("Save As", IconManager.fluentsaveImage, ()->{
 				editor.saveFileAs();
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 			})
 			.createItem("Discard", IconManager.closeImage, ()->{
 				editor.reloadFile();
@@ -61,7 +61,7 @@ public class PopupManager {
 			popup.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
 			.createItem("Save As", IconManager.fluentsaveImage, ()->{
 				editor.saveFileAs();
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 			})
 			.createItem("Discard", IconManager.closeImage, ()->{
 				editor.discardData();
@@ -111,14 +111,14 @@ public class PopupManager {
 				}
 				else
 					Editor.deleteFile(file);
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileTreePanel().refresh();
 			});
 		}
-		popup.createItem("Refresh", null, ()->Screen.getProjectView().reload());
+		popup.createItem("Refresh", null, Screen.getFileView().getFileTreePanel()::refresh);
 		if(!file.isDirectory()) {
 			popup.createItem("Rename", IconManager.fluentrenameImage, ()->{
-				Screen.getProjectView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
-				Screen.getProjectView().reload();
+				Screen.getFileView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
+				Screen.getFileView().getFileTreePanel().refresh();
 			});
 		}
 		

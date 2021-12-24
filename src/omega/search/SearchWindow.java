@@ -17,14 +17,14 @@
 */
 
 package omega.search;
+import omega.utils.systems.creators.FileOperationManager;
+
 import omega.utils.UIManager;
 import omega.utils.IconManager;
 
 import omega.Screen;
 
 import java.awt.image.BufferedImage;
-
-import omega.tree.FileTree;
 
 import java.awt.Dimension;
 
@@ -205,7 +205,7 @@ public class SearchWindow extends JDialog{
 	public void cleanAndLoad(File f){
 		this.files.clear();
 		load(f);
-		omega.tree.FileTree.sort(this.files);
+		FileOperationManager.sort(this.files);
 	}
 	
 	public void load(File f){

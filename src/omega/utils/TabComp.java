@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import omega.tree.FileTreeBranch;
+
 import omega.Screen;
 
 import java.io.File;
@@ -25,8 +27,6 @@ import java.awt.image.BufferedImage;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import omega.tree.Branch;
 
 import omega.popup.OPopupWindow;
 
@@ -57,14 +57,9 @@ public class TabComp {
 		
 		String text = !toolTip.startsWith("src") ? ("{" + name + "}") : name;
 		
-		Graphics graphics = omega.Screen.getScreen().getGraphics();
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setFont(UBUNTU_PX14);
-		int width = g.getFontMetrics().stringWidth(text) + 10;
+		int width = computeWidth(text, UBUNTU_PX14) + 10;
 		
-		TextComp comp = new TextComp(text, toolTip, TOOLMENU_GRADIENT, c2, Branch.getColor(name), null);
+		TextComp comp = new TextComp(text, toolTip, TOOLMENU_GRADIENT, c2, FileTreeBranch.getPreferredColorForFile(new File(name)), null);
 		comp.setArc(6, 6);
 		final Color FORE = comp.color3;
 		final MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -85,8 +80,6 @@ public class TabComp {
 		comp.setPreferredSize(new Dimension(width, 28));
 		areas.add(comp);
 		
-		putAnimationLayer(comp, getLineAnimationLayer(1), ACTION_MOUSE_ENTERED);
-		
 		String baseName = getBaseName(name);
 		TextComp iconButton = null;
 		
@@ -94,16 +87,17 @@ public class TabComp {
 		BufferedImage image = imageX;
 		if(image == null){
 			if(c instanceof Editor){
-				image = Branch.getPreferredImage(((Editor)c).currentFile);
+				image = FileTreeBranch.getPreferredImageForFile(((Editor)c).currentFile);
 			}
 			else
 				image = IconManager.fluentshellImage;
 		}
 		if(popUp == null)
 			alpha = c2;
+		
 		iconButton = new TextComp(image, 25, 25, toolTip, alpha, c2, FORE, ()->{});
-		iconButton.setArc(5, 5);
-		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 20, 28));
+		iconButton.setArc(0, 0);
+		iconButton.setPreferredSize(new Dimension(baseName.length() > 2 ? (baseName.length() > 3 ? 40 : 30) : 28, 28));
 		
 		putAnimationLayer(iconButton, getImageSizeAnimationLayer(20, -4, true), ACTION_MOUSE_ENTERED);
 		
