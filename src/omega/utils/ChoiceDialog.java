@@ -34,12 +34,16 @@ public class ChoiceDialog extends JDialog{
 	private TextComp choice1Comp;
 	private TextComp choice2Comp;
 	private TextComp cancelComp;
+	
 	public static int CHOICE1 = 0;
 	public static int CHOICE2 = 1;
 	public static int CANCEL = 2;
 	public int choice = CANCEL;
+	
 	private static ChoiceDialog choiceDialog;
+	
 	private JPanel panel = new JPanel(null);
+	
 	public ChoiceDialog(JFrame frame){
 		super(frame, true);
 		setUndecorated(true);

@@ -206,7 +206,7 @@ public class Startup extends JDialog {
 			}
 			catch(Exception e){
 				System.err.println("An Exception occured in generating the \".generated-pty-native-libs\" file.");
-				System.err.println("This usually means that you are running the IDE in a non-owned directory");
+				System.err.println("This usually means that you are running the IDE in an non-owned directory");
 				System.err.println("due to this the system denied permission for creating the file, ");
 				System.err.println("try running the IDE in an owned directory (like your home folder). If still this exception is occuring then, ");
 				System.err.println("Please Open an issue with this log message on https://github.com/omegaui/omegaide");

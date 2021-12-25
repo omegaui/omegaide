@@ -61,7 +61,6 @@ public class FileView extends View {
 	private FileCreator fileCreator;
 	private BuildPathManager dependencyView;
 	private ExtendedBuildPathManager extendedDependencyView;
-	private FileOperationManager fileOperationManager;
 	private SearchWindow searchWindow;
 	private JDKManager jdkManager;
 	
@@ -76,7 +75,6 @@ public class FileView extends View {
 
 		fileTreePanel = new FileTreePanel();
 		
-		fileOperationManager = new FileOperationManager(getScreen());
 		dependencyView = new BuildPathManager(getScreen());
 		extendedDependencyView = new ExtendedBuildPathManager(getScreen());
 		searchWindow = new SearchWindow(getScreen());
@@ -255,10 +253,6 @@ public class FileView extends View {
 	
 	public ArgumentManager getArgumentManager() {
 		return argumentManager;
-	}
-	
-	public FileOperationManager getFileOperationManager(){
-		return fileOperationManager;
 	}
 	
 	public JDKManager getJDKManager() {

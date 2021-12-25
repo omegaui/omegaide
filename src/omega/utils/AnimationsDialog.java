@@ -134,6 +134,8 @@ public class AnimationsDialog extends JDialog{
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		closeComp.setArc(0, 0);
 		add(closeComp);
+
+		putAnimationLayer(closeComp, getImageSizeAnimationLayer(20, 5, true), ACTION_MOUSE_ENTERED);
 	}
 
 	@Override

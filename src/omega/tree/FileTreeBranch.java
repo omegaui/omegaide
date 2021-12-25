@@ -137,13 +137,11 @@ public class FileTreeBranch extends JComponent {
 	
 	public void initKeyStrokes(){
 		KeyStrokeListener listener = new KeyStrokeListener(this);
-		listener.putKeyStroke((e)->{
-			if(setMode(EDIT_FILE_NAME_MODE)){
-				fileTreePanel.collapseBranch(FileTreeBranch.this);
-				showRenameField();
-			}
-		}, VK_F2).setStopKeys(VK_CONTROL, VK_ALT);
-		
+		if(!file.isDirectory()){
+			listener.putKeyStroke((e)->{
+				renameView();
+			}, VK_F2).setStopKeys(VK_CONTROL, VK_ALT);
+		}
 		listener.putKeyStroke((e)->{
 			clickAction.run();
 		}, VK_ENTER).setStopKeys(VK_CONTROL, VK_ALT);
@@ -213,6 +211,11 @@ public class FileTreeBranch extends JComponent {
 		
 		FileOperationManager.silentMoveFile(file, new File(file.getParentFile().getAbsolutePath(), e.getActionCommand()));
 		fileTreePanel.refresh();
+	}
+
+	public void renameView(){
+		if(setMode(EDIT_FILE_NAME_MODE))
+			showRenameField();
 	}
 	
 	public void showRenameField(){

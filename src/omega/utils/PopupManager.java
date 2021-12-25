@@ -17,6 +17,8 @@
 */
 
 package omega.utils;
+import omega.tree.FileTreeBranch;
+
 import java.awt.Toolkit;
 
 import omega.Screen;
@@ -116,9 +118,8 @@ public class PopupManager {
 		}
 		popup.createItem("Refresh", null, Screen.getFileView().getFileTreePanel()::refresh);
 		if(!file.isDirectory()) {
-			popup.createItem("Rename", IconManager.fluentrenameImage, ()->{
-				Screen.getFileView().getFileOperationManager().rename("Rename " + file.getName(), "rename", file);
-				Screen.getFileView().getFileTreePanel().refresh();
+			popup.createItem("Rename (F2)", IconManager.fluentrenameImage, ()->{
+				Screen.getFileView().getFileTreePanel().findBranch(file).renameView();
 			});
 		}
 		
