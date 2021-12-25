@@ -7,8 +7,7 @@
 >Language Tag
 -0
 >Opened Editors on Main Tab Panel
--project-root$/README.md
--project-root$/src/org/fife/com/swabunga/spell/event/AbstractWordFinder.java
+-
 >Project Classpath : Required Jars
 -project-root$/lib/flatlaf-0.46.jar
 -project-root$/lib/annotations.jar
