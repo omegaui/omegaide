@@ -1,4 +1,7 @@
 bin/
-out/
+out/.omega-ide
+out/linux
+out/macosx
+out/win
+out/x86
 .sources
-.projectInfo
