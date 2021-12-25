@@ -152,7 +152,7 @@ public class Screen extends JFrame {
 		setUndecorated(true);
 		try {
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
-			
+
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
 				PATH_SEPARATOR = ";";
