@@ -436,7 +436,7 @@ public class TextComp extends JComponent{
 					String lpart = text.substring(0, text.indexOf(match));
 					int width = g.getFontMetrics().stringWidth(lpart);
 					g.setColor(color2);
-					g.drawString(match, textX + width, textY);
+					g.fillRect(textX + width, 0, g.getFontMetrics().stringWidth(match), getHeight());
 					g.setColor(colorH);
 					g.drawString(match, textX + width, textY);
 				}
