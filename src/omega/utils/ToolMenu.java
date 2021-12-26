@@ -170,7 +170,6 @@ public class ToolMenu extends JPanel {
 	
 	private Dimension lastSize;
 	
-	private boolean maximized = false;
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
 		if(projectWizard == null){
@@ -205,7 +204,7 @@ public class ToolMenu extends JPanel {
 		addMouseMotionListener(new MouseAdapter(){
 			@Override
 			public void mouseDragged(MouseEvent e){
-				if(!maximized)
+				if(screen.getExtendedState() == Screen.NORMAL)
 					screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
 			}
 		});
@@ -247,7 +246,7 @@ public class ToolMenu extends JPanel {
 		titleComp.addMouseMotionListener(new MouseAdapter(){
 			@Override
 			public void mouseDragged(MouseEvent e){
-				if(!maximized)
+				if(screen.getExtendedState() == Screen.NORMAL)
 					screen.setLocation(e.getXOnScreen() - pressX - 60, e.getYOnScreen() - pressY);
 			}
 		});
@@ -282,7 +281,7 @@ public class ToolMenu extends JPanel {
 					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
 					g.setFont(PX14);
 					g.setColor(back2);
-					g.drawString(maximized ? "><" : "<>", getWidth()/2 - g.getFontMetrics().stringWidth("<>")/2,
+					g.drawString((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? "><" : "<>", getWidth()/2 - g.getFontMetrics().stringWidth("<>")/2,
 					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 				}
 			}
@@ -682,9 +681,8 @@ public class ToolMenu extends JPanel {
 	}
 	
 	public void maximize(){
-		screen.setExtendedState(!maximized ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
-		maximized = !maximized;
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(maximized ? PluginReactionEvent.EVENT_TYPE_IDE_MAXIMIZED : PluginReactionEvent.EVENT_TYPE_IDE_RESTORED, this, maximized));
+		screen.setExtendedState((screen.getExtendedState() == Screen.NORMAL) ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? PluginReactionEvent.EVENT_TYPE_IDE_MAXIMIZED : PluginReactionEvent.EVENT_TYPE_IDE_RESTORED, this, ((screen.getExtendedState() == Screen.MAXIMIZED_BOTH))));
 	}
 	
 	public void disposeAll(){

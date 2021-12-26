@@ -361,7 +361,7 @@ public class JavaSyntaxParser {
 			depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
 		}
 		else{
-			dynamicBuildInfoPopup.showIt();
+			dynamicBuildInfoPopup.locateOnBottomLeft().showIt();
 			Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0, IconManager.fluentbriefImage);
 		}
 		

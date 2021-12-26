@@ -214,7 +214,6 @@ public class Screen extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -433,7 +432,14 @@ public class Screen extends JFrame {
 		if(value != 100)
 			Screen.getScreen().getBottomPane().setMessage(status, image);
 		else
-			Screen.getScreen().getBottomPane().setMessage("Status of any process running will appear here!", image);
+			Screen.getScreen().getBottomPane().setMessage("Status of any running process will appear here!", image, "running process");
+	}
+	
+	public static void setStatus(String status, int value, BufferedImage image, String... highlightTexts) {
+		if(value != 100)
+			Screen.getScreen().getBottomPane().setMessage(status, image, highlightTexts);
+		else
+			Screen.getScreen().getBottomPane().setMessage("Status of any running process will appear here!", image, "running process");
 	}
 	
 	@Override

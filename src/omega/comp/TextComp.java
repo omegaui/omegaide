@@ -434,10 +434,11 @@ public class TextComp extends JComponent{
 				String token = "";
 				if(matchLength <= text.length()){
 					String lpart = text.substring(0, text.indexOf(match));
+					int width = g.getFontMetrics().stringWidth(lpart);
 					g.setColor(color2);
-					g.drawString(match, textX + g.getFontMetrics().stringWidth(lpart), textY);
+					g.drawString(match, textX + width, textY);
 					g.setColor(colorH);
-					g.drawString(match, textX + g.getFontMetrics().stringWidth(lpart), textY);
+					g.drawString(match, textX + width, textY);
 				}
 			}
 		}

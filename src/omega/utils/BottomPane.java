@@ -69,6 +69,7 @@ public class BottomPane extends JPanel {
 		messageComp.alignX = 15;
 		messageComp.w = 25;
 		messageComp.h = 25;
+		messageComp.setHighlightColor(TOOLMENU_COLOR1);
 		messageComp.setPreferredSize(new Dimension(100, 25));
 		messageComp.setArc(0, 0);
 		messageComp.addMouseListener(new MouseAdapter(){
@@ -160,6 +161,13 @@ public class BottomPane extends JPanel {
 	public void setMessage(String text, BufferedImage image){
 		messageComp.image = image;
 		messageComp.alignX = image != null ? 35 : 15;
+		messageComp.setText(text);
+	}
+	
+	public void setMessage(String text, BufferedImage image, String... highlightTexts){
+		messageComp.image = image;
+		messageComp.alignX = image != null ? 35 : 15;
+		messageComp.addHighlightText(highlightTexts);
 		messageComp.setText(text);
 	}
 	

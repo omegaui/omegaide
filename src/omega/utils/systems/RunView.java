@@ -168,7 +168,7 @@ public class RunView extends View {
 					
 					runningApps.add(printArea.terminalPanel.process);
 
-					Screen.setStatus("Building Project -- Double Click to kill this process", 70, IconManager.fluentbuildImage);
+					Screen.setStatus("Building Project -- Double Click to kill this process", 70, IconManager.fluentbuildImage, "Building Project");
 					Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
 						Screen.setStatus("Killing Build Process", 10, IconManager.closeImage);
 						if(printArea.terminalPanel.process.isAlive())
@@ -232,7 +232,7 @@ public class RunView extends View {
 			omega.Screen.getFileView().getArgumentManager().genLists();
 			LinkedList<String> args = Screen.getFileView().getArgumentManager().run_time_args;
 			
-			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
+			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage, "Running Project");
 			String status = "Successfully";
 			
 			String name = "Run";
@@ -346,10 +346,10 @@ public class RunView extends View {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
 				
-				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
+				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage, "Running Project");
 				if(Screen.getFileView().getProjectManager().jdkPath == null){
 					getScreen().getToolMenu().runComp.setClickable(true);
-					Screen.setStatus("Please Setup the Project JDK First!", 99, IconManager.fluentbrokenbotImage);
+					Screen.setStatus("Please Setup the Project JDK First!", 99, IconManager.fluentbrokenbotImage, "JDK");
 					return;
 				}
 				
@@ -456,7 +456,7 @@ public class RunView extends View {
 		new Thread(()->{
 			try{
 				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
-					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentrocketbuildImage);
+					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentrocketbuildImage, "select", "JDK");
 					return;
 				}
 				
@@ -477,7 +477,7 @@ public class RunView extends View {
 				
 				fx = null;
 				
-				Screen.setStatus("Building Project -- Instant Build", 0, IconManager.fluentrocketbuildImage);
+				Screen.setStatus("Building Project -- Instant Build", 0, IconManager.fluentrocketbuildImage, "Building Project");
 				DiagnosticCollector<JavaFileObject> diagnostics = SyntaxParsers.javaSyntaxParser.compileFullProject();
 				if(diagnostics == null){
 					Screen.setStatus("", 100, null);
@@ -513,7 +513,7 @@ public class RunView extends View {
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
 				
-				Screen.setStatus("Building Project, Accomplished Successfully -- Instant Build", 0, IconManager.fluentrocketbuildImage);
+				Screen.setStatus("Building Project, Accomplished Successfully -- Instant Build", 0, IconManager.fluentrocketbuildImage, "Building Project, Accomplished Successfully");
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -533,11 +533,11 @@ public class RunView extends View {
 		new Thread(()->{
 			try{
 				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
-					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
+					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage, "select", "JDK");
 					return;
 				}
 				String text = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? "instant-mode-speed" : "instant-mode-accuracy";
-				Screen.setStatus("Building Project -- Instant Run : " + text, 0, IconManager.fluentrocketImage);
+				Screen.setStatus("Building Project -- Instant Run : " + text, 0, IconManager.fluentrocketImage, "Building Project");
 				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
 				
 				if(diagnostics == null){
@@ -596,19 +596,19 @@ public class RunView extends View {
 					buildLog.setHeading("Build Resulted in following Error(s)");
 					buildLog.genView(errorLog);
 					getScreen().getOperationPanel().addTab("Compilation", IconManager.fluentbrokenbotImage, buildLog, ()->{});
-					Screen.setStatus("Avoid closing editors after editing else instant run will not be able to run successfully.", 10, IconManager.fluentbrokenbotImage);
+					Screen.setStatus("Avoid closing editors after editing as instant run only recompiles opened editors!", 10, IconManager.fluentbrokenbotImage, "instant run only recompiles opened editors");
 					System.gc();
 					return;
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
 				
 				if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
-					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0, IconManager.fluentbrokenbotImage);
+					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0, IconManager.fluentbrokenbotImage, "Rebuild the Project First");
 					System.gc();
 					return;
 				}
 				
-				Screen.setStatus("Running Project -- Instant Run", 50, IconManager.fluentrocketImage);
+				Screen.setStatus("Running Project -- Instant Run", 50, IconManager.fluentrocketImage, "Running Project");
 				justRun();
 				Screen.setStatus("Running Project", 100, null);
 				
@@ -666,7 +666,7 @@ public class RunView extends View {
 					int percent = 70;
 					
 					wasKilled = false;
-					Screen.setStatus("Building Project -- Double Click to kill this process", percent, IconManager.fluentrunImage);
+					Screen.setStatus("Building Project -- Double Click to kill this process", percent, IconManager.fluentrunImage, "Building Project");
 					Screen.getScreen().getBottomPane().setDoubleClickAction(()->{
 						new Thread(()->{
 							wasKilled = true;
@@ -744,7 +744,7 @@ public class RunView extends View {
 					}
 					errorReader.close();
 					
-					Screen.setStatus("Building Project -- Double Click to kill this process", 90, IconManager.fluentrunImage);
+					Screen.setStatus("Building Project -- Double Click to kill this process", 90, IconManager.fluentrunImage, "Building Project");
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					Screen.getFileView().getFileTreePanel().refresh();
 					if(compileProcess.exitValue() != 0) {
