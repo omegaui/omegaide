@@ -177,7 +177,7 @@ public class SourceDefender extends JDialog {
 			printArea.setLogMode(true);
 			JScrollPane scrollPane = new JScrollPane(printArea);
 			scrollPane.setBackground(c2);
-			Screen.getScreen().getOperationPanel().addTab("Backup Operation", scrollPane, ()->{
+			Screen.getScreen().getOperationPanel().addTab("Backup Operation", IconManager.fluentsaveImage, scrollPane, ()->{
 				Screen.setStatus("Backup is still running in background!", 10, IconManager.fluentinfoImage);
 			});
 			printArea.clearTerminal();

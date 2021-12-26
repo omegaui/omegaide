@@ -16,6 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import omega.tree.FileTreeBranch;
+
 import omega.instant.support.build.gradle.GradleProcessManager;
 
 import omega.comp.Animations;
@@ -85,6 +87,7 @@ import omega.utils.UIManager;
 import omega.utils.IconManager;
 import omega.utils.SplitPanel;
 import omega.utils.AnimationsDialog;
+import omega.utils.PopupManager;
 
 import omega.tabPane.TabPanel;
 
@@ -252,35 +255,13 @@ public class Screen extends JFrame {
 		add(compilancePane, BorderLayout.CENTER);
 		UIManager.setData(compilancePane);
 		
-		tabPanel = new TabPanel(this);
-		rightTabPanel = new TabPanel(this);
-		bottomTabPanel = new TabPanel(this);
-		rightTabPanel.setAddAction(()->{
-			if(rightTabPanel.tabPane.getTabCount() > 0){
-				rightTabPanel.setVisible(true);
-				rightTabPanelSplitPane.setDividerLocation(rightTabPanelSplitPane.getWidth()/2);
-			}
-		});
+		tabPanel = new TabPanel(TabPanel.TAB_LOCATION_TOP);
+		rightTabPanel = new TabPanel(TabPanel.TAB_LOCATION_TOP);
+		bottomTabPanel = new TabPanel(TabPanel.TAB_LOCATION_TOP);
+
+		rightTabPanel.setHideOnEmpty(true);
+		bottomTabPanel.setHideOnEmpty(true);
 		
-		rightTabPanel.setRemoveAction(()->{
-			if(rightTabPanel.tabPane.getTabCount() == 0)
-				rightTabPanel.setVisible(false);
-		});
-		
-		bottomTabPanel.setAddAction(()->{
-			if(bottomTabPanel.tabPane.getTabCount() > 0){
-				bottomTabPanel.setVisible(true);
-				bottomTabPanelSplitPane.setDividerLocation(bottomTabPanelSplitPane.getWidth()/2);
-			}
-		});
-		
-		bottomTabPanel.setRemoveAction(()->{
-			if(bottomTabPanel.tabPane.getTabCount() == 0)
-				bottomTabPanel.setVisible(false);
-		});
-		
-		rightTabPanel.setVisible(false);
-		bottomTabPanel.setVisible(false);
 		splitPane.setRightComponent(bottomTabPanelSplitPane);
 		
 		rightTabPanelSplitPane.setLeftComponent(tabPanel);
@@ -490,14 +471,16 @@ public class Screen extends JFrame {
 		if(tabPanel.viewArchive(file)) return null;
 		if(isFileOpened(file)){
 			Editor e = getEditor(file);
-			tabPanel.setActiveEditor(e);
+			tabPanel.showTab(e.getAttachment());
+			rightTabPanel.showTab(e.getAttachment());
+			bottomTabPanel.showTab(e.getAttachment());
 			e.grabFocus();
 			return e;
 		}
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		tabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
+		tabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor));
 		return editor;
 	}
 	
@@ -509,12 +492,18 @@ public class Screen extends JFrame {
 		}
 		if(rightTabPanel.viewImage(file)) return null;
 		if(rightTabPanel.viewArchive(file)) return null;
-		if(isFileOpened(file))
-			return null;
+		if(isFileOpened(file)){
+			Editor e = getEditor(file);
+			tabPanel.showTab(e.getAttachment());
+			rightTabPanel.showTab(e.getAttachment());
+			bottomTabPanel.showTab(e.getAttachment());
+			e.grabFocus();
+			return e;
+		}
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);		
 		editor.loadFile(file);
-		rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
+		rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor));
 		return editor;
 	}
 	
@@ -528,14 +517,16 @@ public class Screen extends JFrame {
 		if(bottomTabPanel.viewArchive(file)) return null;
 		if(isFileOpened(file)){
 			Editor e = getEditor(file);
-			tabPanel.setActiveEditor(e);
+			tabPanel.showTab(e.getAttachment());
+			rightTabPanel.showTab(e.getAttachment());
+			bottomTabPanel.showTab(e.getAttachment());
 			e.grabFocus();
 			return e;
 		}
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		bottomTabPanel.addTab(file.getName(), file.getAbsolutePath(), editor, getPackName(file));
+		bottomTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor));
 		return editor;
 	}
 	
@@ -555,10 +546,7 @@ public class Screen extends JFrame {
 	}
 	
 	public boolean isFileOpened(File file) {
-		LinkedList<Editor> allEditors = new LinkedList<>();
-		tabPanel.getEditors().forEach(allEditors::add);
-		rightTabPanel.getEditors().forEach(allEditors::add);
-		bottomTabPanel.getEditors().forEach(allEditors::add);
+		LinkedList<Editor> allEditors = getAllEditors();
 		for(Editor e : allEditors) {
 			if(e.currentFile != null) {
 				if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath())){
@@ -571,10 +559,7 @@ public class Screen extends JFrame {
 	}
 	
 	public Editor getEditor(File file) {
-		LinkedList<Editor> allEditors = new LinkedList<>();
-		tabPanel.getEditors().forEach(allEditors::add);
-		rightTabPanel.getEditors().forEach(allEditors::add);
-		bottomTabPanel.getEditors().forEach(allEditors::add);
+		LinkedList<Editor> allEditors = getAllEditors();
 		for(Editor e : allEditors) {
 			if(e.currentFile != null) {
 				if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath())){

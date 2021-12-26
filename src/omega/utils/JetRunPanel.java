@@ -43,7 +43,7 @@ public class JetRunPanel extends JPanel {
 	}
 	
 	public void init(){
-		actionPanel = new FlexPanel(null, back1, null);
+		actionPanel = new FlexPanel(null, c2, null);
 		actionPanel.setArc(10, 10);
 		add(actionPanel);
 		

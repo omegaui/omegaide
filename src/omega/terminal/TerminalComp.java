@@ -30,7 +30,7 @@ public class TerminalComp {
 	public void showTerminal(){
 		Terminal terminal = new Terminal();
 		ShellTokenMaker.apply(terminal.getOutputArea());
-		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ((count - 1) + "") : ""), IconManager.fluentconsoleImage, terminal, ()->{
+		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ("(" + (count - 1) + ")") : ""), IconManager.fluentconsoleImage, terminal, ()->{
 			count--;
 			terminal.exit();
 		});
@@ -41,7 +41,7 @@ public class TerminalComp {
 	public void showJetTerminal(){
 		JetTerminal jetTerminal = new JetTerminal();
 		jetTerminal.start();
-		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ((count - 1) + "") : ""), IconManager.fluentconsoleImage, jetTerminal, ()->{
+		Screen.getScreen().getOperationPanel().addTab("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""), IconManager.fluentconsoleImage, jetTerminal, ()->{
 			count--;
 			jetTerminal.exit();
 		});

@@ -51,6 +51,11 @@ public class UIManager extends DataBase {
 	public static volatile boolean animationsActive = true;
 	
 	/**
+	* The field carrying the default tab Height
+	*/
+	public static int tabHeight = 40;
+	
+	/**
 	* The field carrying the default font name which was registered in omega.Screen
 	*/
 	public static String fontName = "Ubuntu Mono";

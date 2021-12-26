@@ -25,6 +25,8 @@ import java.awt.image.BufferedImage;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import java.util.LinkedList;
 
@@ -215,6 +217,38 @@ public class OPopupWindow extends JDialog{
 	
 	public static OPopupWindow gen(String name, Window owner, int animaTime, boolean scrollable){
 		return new OPopupWindow(name, owner, animaTime, scrollable);
+	}
+	
+	public void invokeOnMouseLeftPress(Component c, Runnable onPress){
+		invokeOnMouseLeftPress(this, c, onPress);
+	}
+
+	public void invokeOnMouseRightPress(Component c, Runnable onPress){
+		invokeOnMouseRightPress(this, c, onPress);
+	}
+
+	public static void invokeOnMouseLeftPress(OPopupWindow popup, Component c, Runnable onPress){
+		c.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				onPress.run();
+				popup.setLocation(e.getLocationOnScreen());
+				popup.setVisible(true);
+			}
+		});
+	}
+
+	public static void invokeOnMouseRightPress(OPopupWindow popup, Component c, Runnable onPress){
+		c.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(e.getButton() == 3){
+					onPress.run();
+					popup.setLocation(e.getLocationOnScreen());
+					popup.setVisible(true);
+				}
+			}
+		});
 	}
 }
 

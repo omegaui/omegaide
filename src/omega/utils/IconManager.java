@@ -94,6 +94,7 @@ public class IconManager {
 	public static BufferedImage fluentpowerImage = getFluentIcon("power-60.png");
 	public static BufferedImage fluentthunderboltImage = getFluentIcon("thuder-bolt-96.png");
 	public static BufferedImage fluenttargetImage = getFluentIcon("target-100.png");
+	public static BufferedImage fluenttabsHolderIcon = getFluentIcon("apps-tab-96.png");
 	
 	public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
 	public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");

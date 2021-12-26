@@ -196,7 +196,7 @@ public class BuildLog extends JPanel {
 						if(ch == '\n')
 							lineN++;
 						if(lineN == errorSet.line){
-							Screen.getScreen().getTabPanel().getTabPane().setSelectedIndex(Screen.getScreen().getTabPanel().getEditors().indexOf(editor));
+							Screen.getScreen().getTabPanel().showTab(editor);
 							editor.setCaretPosition(i);
 							break;
 						}

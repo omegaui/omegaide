@@ -1,4 +1,6 @@
 package omega.terminal.jediterm;
+import java.awt.event.FocusListener;
+
 import java.awt.Color;
 
 import java.nio.charset.Charset;
@@ -56,6 +58,7 @@ public class JetTerminal extends JPanel{
 			widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
 		else
 			widget.setTtyConnector(getConnector(command));
+		
 		panel.add(widget);
 	}
 	
@@ -93,6 +96,12 @@ public class JetTerminal extends JPanel{
 	public void relocate(){
 		panel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
 		widget.setBounds(5, 5, panel.getWidth() - 10, panel.getHeight() - 10);
+	}
+
+	@Override
+	public void addFocusListener(FocusListener focusListener){
+		super.addFocusListener(focusListener);
+		widget.getTerminalPanel().addFocusListener(focusListener);
 	}
 
 	@Override

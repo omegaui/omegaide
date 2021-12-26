@@ -33,6 +33,17 @@ import java.io.File;
 public class PopupManager {
 	public static final byte SOURCE_FILE = 0;
 	public static final byte NON_SOURCE_FILE = 1;
+	
+	public static OPopupWindow createMenu(Editor editor) {
+		if(editor.currentFile != null) {
+			if(editor.currentFile.getName().endsWith(".java"))
+				return createPopup(SOURCE_FILE, editor, Screen.getScreen());
+			else
+				return createPopup(NON_SOURCE_FILE, editor, Screen.getScreen());
+		}
+		return null;
+	}
+	
 	public static OPopupWindow createPopup(byte type, Editor editor, Screen screen) {
 		OPopupWindow popup = new OPopupWindow("Tab Menu", screen, 0, false);
 		
