@@ -30,6 +30,7 @@ public class JetTerminal extends JPanel{
 	public PtyProcess process;
 	public String[] command;
 	public String directory;
+	private Runnable onProcessExited;
 	
 	public JetTerminal(){
 		super(null);
@@ -86,6 +87,12 @@ public class JetTerminal extends JPanel{
 
 	public void start(){
 		widget.start();
+		if(onProcessExited != null){
+			new Thread(()->{
+				while(process.isAlive());
+				onProcessExited.run();
+			}).start();
+		}
 	}
 
 	public void exit(){
@@ -109,4 +116,13 @@ public class JetTerminal extends JPanel{
 		relocate();
 		super.layout();
 	}
+
+	public java.lang.Runnable getOnProcessExited() {
+		return onProcessExited;
+	}
+	
+	public void setOnProcessExited(java.lang.Runnable onProcessExited) {
+		this.onProcessExited = onProcessExited;
+	}
+	
 }

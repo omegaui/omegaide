@@ -26,6 +26,7 @@ import omega.token.factory.ShellTokenMaker;
 public class TerminalComp {
 
 	public int count = 1;
+	public String name = "";
 	
 	public void showTerminal(){
 		Terminal terminal = new Terminal();
@@ -40,8 +41,13 @@ public class TerminalComp {
 	
 	public void showJetTerminal(){
 		JetTerminal jetTerminal = new JetTerminal();
+		final String name = ("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""));
+		jetTerminal.setOnProcessExited(()->{
+			count--;
+			Screen.getScreen().getOperationPanel().removeTab(name);
+		});
 		jetTerminal.start();
-		Screen.getScreen().getOperationPanel().addTab("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""), IconManager.fluentconsoleImage, jetTerminal, ()->{
+		Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentconsoleImage, jetTerminal, ()->{
 			count--;
 			jetTerminal.exit();
 		});
