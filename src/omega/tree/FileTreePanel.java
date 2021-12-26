@@ -178,7 +178,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 				x = bx.getX() + bx.getWidth();
 			}
 		}
-		return x + 2;
+		return x + optimumBranchSize;
 	}
 	
 	public int getLastBranchLastYPoint(){
@@ -193,7 +193,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		panel.setSize(w, h);
 		panel.setPreferredSize(panel.getSize());
 		
-		Screen.getScreen().splitPane.setDividerLocation((w > 300) ? (w + 25) : 300);
+		Screen.getScreen().splitPane.setDividerLocation((w >= 300) ? (w + 25) : 300);
 	}
 	
 	@Override
