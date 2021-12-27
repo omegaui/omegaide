@@ -39,8 +39,6 @@ import omega.startup.Startup;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import java.awt.geom.RoundRectangle2D;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.KeyEvent;
@@ -352,15 +350,6 @@ public class Screen extends JFrame {
 		fileView.getSearchWindow().setVisible(true);
 		
 		e.consume();
-	}
-	
-	@Override
-	public void setSize(int w, int h){
-		super.setSize(w, h);
-		int arc = 20;
-		if(getExtendedState() != NORMAL)
-			arc = 0;
-		setShape(new RoundRectangle2D.Double(0, 0, w, h, arc, arc));
 	}
 	
 	public void toggleFileTree(){
