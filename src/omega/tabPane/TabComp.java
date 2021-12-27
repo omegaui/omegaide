@@ -117,6 +117,28 @@ public class TabComp extends JComponent implements FocusListener{
 	public void showTab(){
 		tabPanel.setActiveTab(tabData);
 		tabData.getComponent().grabFocus();
+		
+		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
+			try{
+				((JComponent)scrollPane.getViewport().getView()).grabFocus();
+			}
+			catch(Exception e){
+				
+			}
+		}
+
+		else if(tabData.getComponent() instanceof JScrollPane scrollPane){
+			try{
+				((JComponent)scrollPane.getViewport().getView()).grabFocus();
+			}
+			catch(Exception e){
+				
+			}
+		}
+		
+		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
+			runPanel.terminalPanel.grabFocus();
+		}
 	}
 
 	public void closeTab(){
