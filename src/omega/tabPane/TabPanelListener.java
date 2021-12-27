@@ -18,7 +18,8 @@
 
 package omega.tabPane;
 public interface TabPanelListener {
-	void tabAdded(TabPanel tabPanel);
-	void tabRemoved(TabPanel tabPanel);
+	void tabAdded(TabData tabData);
+	void tabRemoved(TabData tabData);
 	void goneEmpty(TabPanel tabPanel);
+	void tabActivated(TabData tabData);
 }

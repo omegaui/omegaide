@@ -102,9 +102,9 @@ public class UIManager extends DataBase {
 	
 	/**
 	* The Following Colors are distributed according to the positions of the Buttons along with the separators in the omega.utils.ToolMenu class
-	* Containing Four Solid Colors, their shades and gradient
+	* Containing Five Solid Colors, their shades and gradient
 	* By Default they are assigned Light Mode Values so that
-	* if the system didn't permits the IDE to read UI files(happens when in a locked directory),
+	* if the system didn't permits the IDE to read UI files(happens when in a non-owned directory),
 	* the IDE will still have its colors and can launch without exceptions.
 	*/
 	public static Color TOOLMENU_COLOR1 = new Color(26, 36, 219);
@@ -134,7 +134,7 @@ public class UIManager extends DataBase {
 	public static Color back2 = Color.decode("#fcfcfc");
 	public static Color back3 = Color.decode("#eaeaea");
 	
-	// IDE Component Fonts -- Finals
+	//IDE Component Fonts -- Finals
 	public static final Font PX12 = new Font(fontName, Font.BOLD, 12);
 	public static final Font PX14 = new Font(fontName, Font.BOLD, 14);
 	public static final Font PX16 = new Font(fontName, Font.BOLD, 16);
@@ -144,6 +144,7 @@ public class UIManager extends DataBase {
 	public static final Font PX24 = new Font(fontName, Font.BOLD, 24);
 	public static final Font PX26 = new Font(fontName, Font.BOLD, 26);
 	public static final Font PX28 = new Font(fontName, Font.BOLD, 28);
+	public static final Font PX30 = new Font(fontName, Font.BOLD, 30);
 	public static final Font PX36 = new Font(fontName, Font.BOLD, 36);
 	public static final Font PX40 = new Font(fontName, Font.BOLD, 40);
 	public static final Font UBUNTU_PX12 = new Font("Ubuntu", Font.BOLD, 12);

@@ -73,8 +73,9 @@ public class TabPanel extends JPanel{
 	
 	private TabsHolderPanel tabsHolder;
 	private TabCompHolderPanel tabCompHolder;
+	private TabHistory tabHistory;
 	
-	private TabPanelListener tabPanelListener;
+	private LinkedList<TabPanelListener> tabPanelListeners = new LinkedList<>();
 	
 	private TabData activeTabData;
 	
@@ -102,6 +103,8 @@ public class TabPanel extends JPanel{
 		
 		tabCompHolder = new TabCompHolderPanel(this);
 		add(tabCompHolder, BorderLayout.CENTER);
+		
+		tabHistory = new TabHistory(this);
 	}
 	
 	public void addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Runnable removeAction) {
@@ -131,8 +134,8 @@ public class TabPanel extends JPanel{
 		if(!isVisible())
 			setVisible(true);
 		
-		if(tabPanelListener != null)
-			tabPanelListener.tabAdded(this);
+		if(!tabPanelListeners.isEmpty())
+			tabPanelListeners.forEach(listener->listener.tabAdded(tabData));
 
 		if(wasEmpty){
 			//omega.tabPane.TabCompHolder is showing an abnormal behavior(sometimes, don't know the exact condition of why it occurs)
@@ -162,10 +165,10 @@ public class TabPanel extends JPanel{
 		if(hideOnEmpty && isEmpty())
 			setVisible(false);
 		
-		if(tabPanelListener != null){
-			tabPanelListener.tabRemoved(this);
+		if(!tabPanelListeners.isEmpty()){
+			tabPanelListeners.forEach(listener->listener.tabRemoved(tabData));
 			if(isEmpty())
-				tabPanelListener.goneEmpty(this);
+				tabPanelListeners.forEach(listener->listener.goneEmpty(this));
 		}
 		repaint();
 	}
@@ -175,8 +178,10 @@ public class TabPanel extends JPanel{
 			return;
 		tabsHolder.showTab(tabData);
 		tabCompHolder.showTabComponent(tabData);
-		
+
 		activeTabData = tabData;
+		
+		tabPanelListeners.forEach(listener->listener.tabActivated(tabData));
 	}
 	
 	public boolean contains(JComponent comp){
@@ -305,12 +310,17 @@ public class TabPanel extends JPanel{
 			setVisible(false);
 	}
 	
-	public omega.tabPane.TabPanelListener getTabPanelListener() {
-		return tabPanelListener;
+	public LinkedList<TabPanelListener> getTabPanelListeners() {
+		return tabPanelListeners;
 	}
 	
-	public void setTabPanelListener(omega.tabPane.TabPanelListener tabPanelListener) {
-		this.tabPanelListener = tabPanelListener;
+	public void addTabPanelListener(TabPanelListener tabPanelListener) {
+		if(!tabPanelListeners.contains(tabPanelListener))
+			tabPanelListeners.add(tabPanelListener);
+	}
+
+	public omega.tabPane.TabHistory getTabHistory() {
+		return tabHistory;
 	}
 	
 	@Override

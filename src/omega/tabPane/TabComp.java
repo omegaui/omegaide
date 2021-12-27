@@ -133,13 +133,14 @@ public class TabComp extends JComponent implements FocusListener{
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
-		if(focussed){
+		if(focussed)
 			g.setPaint(new GradientPaint(0, 0, TOOLMENU_COLOR1, getWidth(), getHeight(), TOOLMENU_COLOR2));
-			g.fillRect(0, getHeight() - 2, getWidth(), 2);
-			g.fillRect(0, 0, 2, getHeight());
-			g.fillRect(getWidth() - 2, 0, 2, getHeight());
-			g.fillRect(0, 0, getWidth(), 2);
-		}
+		else
+			g.setPaint(new GradientPaint(0, 0, back3, getWidth(), getHeight(), back1));
+		g.fillRect(0, getHeight() - 2, getWidth(), 2);
+		g.fillRect(0, 0, 2, getHeight());
+		g.fillRect(getWidth() - 2, 0, 2, getHeight());
+		g.fillRect(0, 0, getWidth(), 2);
 		super.paint(g);
 	}
 

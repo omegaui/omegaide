@@ -57,15 +57,15 @@ public class OperationPane extends JPanel{
 		setVisible(false);
 		UIManager.setData(this);
 
-		tabPane.setTabPanelListener(new TabPanelListener(){
+		tabPane.addTabPanelListener(new TabPanelListener(){
 			@Override
-			public void tabAdded(TabPanel panel){
+			public void tabAdded(TabData tabData){
 				add(tabPane, BorderLayout.CENTER);
 				setVisible(true);
 			}
 			
 			@Override
-			public void tabRemoved(TabPanel panel){
+			public void tabRemoved(TabData tabData){
 				
 			}
 			
@@ -73,6 +73,11 @@ public class OperationPane extends JPanel{
 			public void goneEmpty(TabPanel panel){
 				remove(tabPane);
 				setVisible(false);
+			}
+
+			@Override
+			public void tabActivated(TabData tabData){
+				
 			}
 		});
 	}
