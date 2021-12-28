@@ -156,7 +156,8 @@ public class TabPanel extends JPanel{
 	}
 	
 	public void removeTab(TabData tabData){
-		
+		if(tabData == null)
+			return;
 		tabsHolder.removeTabHolder(tabData);
 		tabCompHolder.putOffTab(tabData);
 		
@@ -248,10 +249,12 @@ public class TabPanel extends JPanel{
 	
 	public Editor findEditor(File file) {
 		for(TabData dx : tabs){
-			if(dx.getComponent() instanceof Editor e){
-				if(e.currentFile != null) {
-					if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath()))
-						return e;
+			if(dx.getComponent() instanceof RTextScrollPane scrollPane){
+				if(scrollPane.getViewport().getView() instanceof Editor e){
+					if(e.currentFile != null) {
+						if(e.currentFile.getAbsolutePath().equals(file.getAbsolutePath()))
+							return e;
+					}
 				}
 			}
 		}
