@@ -344,15 +344,15 @@ public class FileTreeBranch extends JComponent {
 				return IconManager.fluentfileImage;
 			if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
 				return IconManager.fluentwebImage;
-			if(ext.equals(".sh") || ext.equals(".run") || ext.equals(".dll") || ext.equals(".so") || file.getName().endsWith(".dylib"))
+			if(ext.equals(".sh") || ext.equals(".run"))
 				return IconManager.fluentshellImage;
-			if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb"))
+			if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb") || ext.equals(".so"))
 				return IconManager.fluentlinuxImage;
 			if(ext.equalsIgnoreCase(".fxml") || ext.equals(".xml"))
 				return IconManager.fluentxmlImage;
-			if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi"))
+			if(ext.equals(".cmd") || ext.equals(".bat") || ext.equals(".exe") || ext.equals(".msi") || ext.equals(".dll"))
 				return IconManager.fluentwindowsImage;
-			if(ext.equals(".dmg"))
+			if(ext.equals(".dmg") || file.getName().endsWith(".dylib"))
 				return IconManager.fluentmacImage;
 			if(file.getName().endsWith(".zip") || file.getName().endsWith(".7z") || file.getName().endsWith(".tar") || file.getName().endsWith(".tar.gz") || file.getName().endsWith(".jar"))
 				return IconManager.fluentarchiveImage;
