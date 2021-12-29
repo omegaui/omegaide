@@ -262,7 +262,7 @@ public class PluginStore extends JDialog{
 			}
 			in.close();
 			out.close();
-			restartPopup.showIt();
+			restartPopup.locateOnBottomLeft().showIt();
 			refresh();
 		}
 		catch(Exception e){
