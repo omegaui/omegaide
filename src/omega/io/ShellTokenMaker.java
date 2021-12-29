@@ -216,7 +216,7 @@ public class ShellTokenMaker extends AbstractTokenMaker {
      }
      public static void apply(RSyntaxTextArea textArea){
           AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
-          atmf.putMapping("text/universalshell", "omega.token.factory.ShellTokenMaker");
+          atmf.putMapping("text/universalshell", "omega.io.ShellTokenMaker");
           textArea.setSyntaxEditingStyle("text/universalshell");
      }
 }

@@ -240,7 +240,7 @@ public class RustTokenMaker extends AbstractTokenMaker {
      }
      public static void apply(RSyntaxTextArea textArea){
      	AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
-     	atmf.putMapping("text/rust", "omega.token.factory.RustTokenMaker");
+     	atmf.putMapping("text/rust", "omega.io.RustTokenMaker");
      	textArea.setSyntaxEditingStyle("text/rust");
      }
 }
