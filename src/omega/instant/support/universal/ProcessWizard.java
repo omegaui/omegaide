@@ -17,14 +17,19 @@
 */
 
 package omega.instant.support.universal;
+import omega.io.IconManager;
+
+import omega.ui.dialog.ChoiceDialog;
+
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
+import omegaui.component.FlexPanel;
+
 import omega.instant.support.ArgumentWindow;
 
 import java.awt.geom.RoundRectangle2D;
 
 import omega.Screen;
-
-import omega.utils.ChoiceDialog;
-import omega.utils.IconManager;
 
 import java.io.File;
 
@@ -32,15 +37,12 @@ import java.awt.Dimension;
 
 import java.util.LinkedList;
 
-import omega.comp.TextComp;
-import omega.comp.NoCaretField;
-import omega.comp.FlexPanel;
-
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class ProcessWizard extends JDialog{
 	private ProcessManager processManager;
 	private ArgumentWindow commandWindow;

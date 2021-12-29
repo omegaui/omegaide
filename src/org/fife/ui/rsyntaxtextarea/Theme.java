@@ -131,7 +131,7 @@ public class Theme {
 	 */
 	public Theme(RSyntaxTextArea textArea) {
 
-		baseFont = new Font(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
+		baseFont = new Font(omega.io.UIManager.fontName, Font.BOLD, omega.io.UIManager.fontSize);
 		bgColor = textArea.getBackground();
 		caretColor = textArea.getCaretColor();
 		useSelectionFG = textArea.getUseSelectedTextColor();

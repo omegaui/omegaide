@@ -367,7 +367,7 @@ public class LineNumberList extends AbstractGutterComponent
 				String number = Integer.toString(line + getLineNumberingStartIndex() - 1);
 				int width = metrics.stringWidth(number);
 				if(getTextArea().getCaretLineNumber() + 1 == line + getLineNumberingStartIndex() - 1)
-					g.setColor(omega.utils.UIManager.TOOLMENU_COLOR5);
+					g.setColor(omega.io.UIManager.TOOLMENU_COLOR5);
 				else
 					g.setColor(getForeground());
 				g.drawString(number, rhs-width,y);

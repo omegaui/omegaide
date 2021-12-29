@@ -17,6 +17,11 @@
 */
 
 package omega.plugin.management;
+import omega.io.IconManager;
+
+import omegaui.component.TextComp;
+import omegaui.component.FlexPanel;
+
 import omega.Screen;
 
 import javax.imageio.ImageIO;
@@ -32,11 +37,6 @@ import java.awt.Rectangle;
 
 import java.util.LinkedList;
 
-import omega.utils.IconManager;
-
-import omega.comp.TextComp;
-import omega.comp.FlexPanel;
-
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JFrame;
@@ -44,8 +44,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JDialog;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class PluginsView extends JDialog{
 	public PluginManager pluginManager;
 	

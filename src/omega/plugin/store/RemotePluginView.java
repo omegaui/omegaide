@@ -17,6 +17,10 @@
 */
 
 package omega.plugin.store;
+import omega.io.IconManager;
+
+import omegaui.component.TextComp;
+
 import javax.imageio.ImageIO;
 
 import java.awt.image.BufferedImage;
@@ -27,17 +31,13 @@ import java.net.URL;
 
 import omega.plugin.PluginCategory;
 
-import omega.utils.IconManager;
-
-import omega.comp.TextComp;
-
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class RemotePluginView extends JDialog{
 	public PluginStore pluginStore;
 	public RemotePluginInfo remotePluginInfo;

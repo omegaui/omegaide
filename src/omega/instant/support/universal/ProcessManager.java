@@ -17,10 +17,13 @@
 */
 
 package omega.instant.support.universal;
-import omega.Screen;
+import omega.io.IconManager;
 
-import omega.utils.IconManager;
-import omega.utils.JetRunPanel;
+import omega.ui.panel.JetRunPanel;
+
+import omegaui.dynamic.database.DataBase;
+
+import omega.Screen;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -28,8 +31,6 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Arrays;
-
-import omega.database.DataBase;
 public class ProcessManager extends DataBase{
 	public static LinkedList<ProcessData> dataSet = new LinkedList<>();
 	public ProcessManager(){

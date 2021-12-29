@@ -69,20 +69,22 @@ public class ReplaceToolBar extends FindToolBar {
 		
 		Box panel = new Box(BoxLayout.LINE_AXIS);
 		
-		JPanel bp = new JPanel(new GridLayout(2,2, 5,5));
-		bp.setBackground(omega.utils.UIManager.c2);
+		JPanel bp = new JPanel(new GridLayout(2, 2, 5,5));
+		bp.setBackground(omega.io.UIManager.c2);
 		panel.add(bp);
 		
 		createFindButtons();
 		
 		Component filler = Box.createRigidArea(new Dimension(5, 5));
 		
-		bp.add(findButton);       bp.add(replaceButton);
-		bp.add(replaceAllButton); bp.add(filler);
+		bp.add(findButton);       
+		bp.add(replaceButton);
+		bp.add(replaceAllButton); 
+		bp.add(filler);
 		panel.add(bp);
 		
 		JPanel optionPanel = new JPanel(new SpringLayout());
-		optionPanel.setBackground(omega.utils.UIManager.c2);
+		optionPanel.setBackground(omega.io.UIManager.c2);
 		matchCaseCheckBox = createCB("MatchCase");
 		regexCheckBox = createCB("RegEx");
 		wholeWordCheckBox = createCB("WholeWord");
@@ -124,26 +126,26 @@ public class ReplaceToolBar extends FindToolBar {
 		findFieldListener = new ReplaceFindFieldListener();
 		
 		JPanel temp = new JPanel(new SpringLayout());
-		temp.setBackground(omega.utils.UIManager.c2);
+		temp.setBackground(omega.io.UIManager.c2);
 		
 		JLabel findLabel = new JLabel(MSG.getString("FindWhat"));
-		findLabel.setBackground(omega.utils.UIManager.c2);
+		findLabel.setBackground(omega.io.UIManager.c2);
 		JLabel replaceLabel = new JLabel(MSG.getString("ReplaceWith"));
-		replaceLabel.setBackground(omega.utils.UIManager.c2);
+		replaceLabel.setBackground(omega.io.UIManager.c2);
 		
 		findCombo = new SearchComboBox(this, false);
-		findCombo.setBackground(omega.utils.UIManager.c2);
-		findCombo.setFont(omega.utils.UIManager.PX14);
+		findCombo.setBackground(omega.io.UIManager.c2);
+		findCombo.setFont(omega.io.UIManager.PX14);
 		JTextComponent findField = UIUtil.getTextComponent(findCombo);
 		findFieldListener.install(findField);
-		findField.setFont(omega.utils.UIManager.PX14);
+		findField.setFont(omega.io.UIManager.PX14);
 		Container fcp = createContentAssistablePanel(findCombo);
 		
 		replaceCombo = new SearchComboBox(this, true);
-		replaceCombo.setBackground(omega.utils.UIManager.c2);
-		replaceCombo.setFont(omega.utils.UIManager.PX14);
+		replaceCombo.setBackground(omega.io.UIManager.c2);
+		replaceCombo.setFont(omega.io.UIManager.PX14);
 		JTextComponent replaceField = UIUtil.getTextComponent(replaceCombo);
-		replaceField.setFont(omega.utils.UIManager.PX14);
+		replaceField.setFont(omega.io.UIManager.PX14);
 		findFieldListener.install(replaceField);
 		Container rcp = createContentAssistablePanel(replaceCombo);
 		

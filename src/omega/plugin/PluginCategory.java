@@ -17,20 +17,21 @@
 */
 
 package omega.plugin;
-import omega.utils.IconManager;
+import omega.io.IconManager;
+
+import java.awt.Color;
+
+import omegaui.component.TextComp;
+import omegaui.component.EdgeComp;
 
 import java.awt.geom.RoundRectangle2D;
-
-import omega.comp.EdgeComp;
-import omega.comp.TextComp;
 
 import javax.swing.JFrame;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import java.awt.Color;
-
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public final class PluginCategory extends JDialog{
 	public static final String EDITING = "editing";
 	public static final String UTILITY = "utility";

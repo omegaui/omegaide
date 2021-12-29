@@ -19,15 +19,15 @@
 package omega.instant.support.build.gradle;
 import omega.Screen;
 
-import omega.utils.DataManager;
+import omega.io.DataManager;
 
-import omega.comp.TextComp;
-import omega.comp.NoCaretField;
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
 public class GradleBuildScriptManager extends JDialog{
 	private TextComp titleComp;
 	private TextComp cancelComp;

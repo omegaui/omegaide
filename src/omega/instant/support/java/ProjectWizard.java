@@ -17,6 +17,16 @@
 */
 
 package omega.instant.support.java;
+import omega.io.DataManager;
+import omega.io.ProjectDataBase;
+
+import omega.ui.dialog.SDKSelector;
+import omega.ui.dialog.FileSelectionDialog;
+import omega.ui.dialog.WorkspaceSelector;
+
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
+
 import omega.Screen;
 
 import java.util.LinkedList;
@@ -26,20 +36,12 @@ import java.io.File;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import omega.utils.SDKSelector;
-import omega.utils.FileSelectionDialog;
-import omega.utils.WorkspaceSelector;
-import omega.utils.DataManager;
-import omega.utils.ProjectDataBase;
-
-import omega.comp.TextComp;
-import omega.comp.NoCaretField;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class ProjectWizard extends JDialog{
 	private TextComp titleComp;
 	private TextComp projectNameLabel;

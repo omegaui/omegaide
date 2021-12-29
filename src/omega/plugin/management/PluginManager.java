@@ -17,18 +17,18 @@
 */
 
 package omega.plugin.management;
+import omega.ui.dialog.ChoiceDialog;
+
+import omegaui.dynamic.database.DataBase;
+
 import omega.plugin.Plugin;
 
 import omega.plugin.store.PluginStore;
-
-import omega.utils.ChoiceDialog;
 
 import java.util.LinkedList;
 import java.util.HashMap;
 
 import java.io.File;
-
-import omega.database.DataBase;
 public class PluginManager extends DataBase{
 	public static final String PLUGINS_DATA_BASE = ".omega-ide" + File.separator + ".pluginDB";
 	public static final File PLUGINS_DIRECTORY = new File(".omega-ide" + File.separator + "plugins");

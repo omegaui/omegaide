@@ -9,7 +9,7 @@ package org.fife.print;
  * This library is distributed under a modified BSD license.  See the included
  * LICENSE file for details.
  */
-import omega.utils.UIManager;
+import omega.io.UIManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;

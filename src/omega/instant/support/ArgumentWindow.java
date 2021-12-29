@@ -1,15 +1,15 @@
 package omega.instant.support;
-import omega.utils.IconManager;
+import omega.io.IconManager;
+
+import omegaui.component.TextComp;
+import omegaui.component.FlexPanel;
+import omegaui.component.RTextField;
 
 import omega.Screen;
 
 import java.awt.Dimension;
 
 import java.util.LinkedList;
-
-import omega.comp.TextComp;
-import omega.comp.FlexPanel;
-import omega.comp.RTextField;
 
 import java.awt.geom.RoundRectangle2D;
 
@@ -18,8 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JDialog;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class ArgumentWindow extends JDialog{
 
 	private TextComp titleComp;

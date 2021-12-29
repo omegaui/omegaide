@@ -13,11 +13,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
-import omega.comp.Animations;
+import omega.io.IconManager;
 
-import omega.utils.IconManager;
-
-import javax.swing.JFrame;
+import omegaui.component.animation.Animations;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
@@ -37,8 +35,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import javax.swing.JFrame;
+
 import static omega.Screen.VERSION;
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
 public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
@@ -53,7 +53,7 @@ public class SplashScreen extends JFrame{
 	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, SHADE);
 	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
 	private static GradientPaint gradient2 = new GradientPaint(100, 150, isDarkMode() ? TOOLMENU_COLOR3 : TOOLMENU_COLOR1, 300, 300, TOOLMENU_COLOR4);
-	private static BufferedImage image = (BufferedImage)omega.utils.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
+	private static BufferedImage image = (BufferedImage)omega.io.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
 	private volatile int progress = 0;
 	private int x = 40, y = 163;
 	private volatile boolean ground = false;

@@ -17,6 +17,10 @@
 */
 
 package omega.instant.support.build.gradle;
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
+import omegaui.component.FlexPanel;
+
 import omega.Screen;
 
 import java.io.File;
@@ -25,15 +29,11 @@ import java.io.PrintWriter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import omega.comp.TextComp;
-import omega.comp.NoCaretField;
-import omega.comp.FlexPanel;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
 public class GradleModuleWizard extends JDialog{
 	private int pressX;
 	private int pressY;

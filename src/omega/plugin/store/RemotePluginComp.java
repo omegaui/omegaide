@@ -17,6 +17,11 @@
 */
 
 package omega.plugin.store;
+import omega.io.IconManager;
+
+import omegaui.component.FlexPanel;
+import omegaui.component.TextComp;
+
 import omega.plugin.PluginCategory;
 
 import java.awt.Graphics2D;
@@ -27,17 +32,12 @@ import java.awt.event.MouseEvent;
 
 import java.net.URL;
 
-import omega.utils.IconManager;
-
 import javax.imageio.ImageIO;
-
-import omega.comp.FlexPanel;
-import omega.comp.TextComp;
 
 import javax.swing.JComponent;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class RemotePluginComp extends FlexPanel{
 
 	public PluginStore pluginStore;

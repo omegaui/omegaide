@@ -1,11 +1,11 @@
 package omega.instant.support;
-import java.util.HashMap;
-
-import omega.instant.support.c.CErrorHighlighter;
-
 import omega.instant.support.python.PythonErrorHighlighter;
 
 import omega.instant.support.kotlin.KotlinErrorHighlighter;
+
+import omega.instant.support.c.CErrorHighlighter;
+
+import java.util.HashMap;
 
 import omega.Screen;
 public class ErrorHighlighters {

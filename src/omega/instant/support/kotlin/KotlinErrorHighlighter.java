@@ -16,32 +16,28 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.instant.support.kotlin;
+import omega.io.IconManager;
+
+import omega.ui.component.Editor;
+
+import omega.instant.support.java.framework.CodeFramework;
+
+import omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo;
+
 import omega.instant.support.AbstractErrorHighlighter;
+import omega.instant.support.Highlight;
+
+import omega.Screen;
 
 import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
 
 import javax.swing.ImageIcon;
 
-import omega.framework.CodeFramework;
-
-import omega.highlightUnit.Highlight;
-
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 import javax.swing.text.DefaultHighlighter;
 
-import omega.Screen;
-
-import omega.utils.UIManager;
-import omega.utils.Editor;
-import omega.utils.IconManager;
-
 import java.io.File;
-
-import omega.instant.support.java.JavaSyntaxParser;
-import omega.instant.support.java.JavaSyntaxParserGutterIconInfo;
-
-import omega.deassembler.CodeTokenizer;
 
 import java.awt.Color;
 import java.awt.Image;

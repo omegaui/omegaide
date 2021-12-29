@@ -17,6 +17,16 @@
 */
 
 package omega.instant.support;
+import omega.io.IconManager;
+
+import omega.ui.popup.OPopupWindow;
+
+import omega.ui.dialog.FileSelectionDialog;
+
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
+import omegaui.component.EdgeComp;
+
 import omega.Screen;
 
 import java.awt.Graphics;
@@ -25,8 +35,6 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import omega.popup.OPopupWindow;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.FileOutputStream;
@@ -34,23 +42,15 @@ import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import omega.utils.FileSelectionDialog;
-import omega.utils.IconManager;
-
-import omega.comp.TextComp;
-import omega.comp.NoCaretField;
-import omega.comp.EdgeComp;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class FileWizard extends JDialog{
 	
 	private TextComp iconComp;
-	
 	
 	private NoCaretField nameField;
 	private TextComp typeComp;

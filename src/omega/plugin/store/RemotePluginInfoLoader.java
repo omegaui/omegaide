@@ -17,10 +17,10 @@
 */
 
 package omega.plugin.store;
-import java.net.URL;
+import omegaui.dynamic.database.DataBase;
+import omegaui.dynamic.database.DataEntry;
 
-import omega.database.DataBase;
-import omega.database.DataEntry;
+import java.net.URL;
 
 import java.io.File;
 import java.io.PrintWriter;

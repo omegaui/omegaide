@@ -16,11 +16,31 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
-import omega.tree.FileTreeBranch;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import java.awt.image.BufferedImage;
+
+import omega.instant.support.LanguageTagView;
 
 import omega.instant.support.build.gradle.GradleProcessManager;
 
-import omega.comp.Animations;
+import omegaui.component.animation.Animations;
+
+import java.io.File;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.KeyEvent;
+
+import omega.instant.support.java.generator.Generator;
+
+import javax.swing.plaf.ColorUIResource;
+
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
+import javax.imageio.ImageIO;
 
 import omega.plugin.event.PluginReactionManager;
 import omega.plugin.event.PluginReactionEvent;
@@ -30,37 +50,21 @@ import omega.plugin.store.PluginStore;
 import omega.plugin.management.PluginManager;
 import omega.plugin.management.PluginsView;
 
-import java.awt.image.BufferedImage;
-
-import omega.instant.support.LanguageTagView;
-
-import omega.startup.Startup;
-
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
-
-import javax.imageio.ImageIO;
-
-import omega.gset.Generator;
-
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.FontUIResource;
-
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-
-import java.io.File;
-
-import omega.terminal.TerminalComp;
-
 import omega.instant.support.universal.UniversalSettingsWizard;
 
-import omega.highlightUnit.BasicHighlight;
-import omega.highlightUnit.ErrorHighlighter;
+import omega.instant.support.java.highlighter.ErrorHighlighter;
+
+import omega.io.DataManager;
+import omega.io.RunView;
+import omega.io.BuildView;
+import omega.io.RecentsManager;
+import omega.io.SnippetBase;
+import omega.io.ProjectDataBase;
+import omega.io.PopupManager;
+import omega.io.UIManager;
+import omega.io.FileView;
+import omega.io.Startup;
+import omega.io.IconManager;
 
 import java.awt.Robot;
 import java.awt.Color;
@@ -70,39 +74,26 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Component;
 import java.awt.Desktop;
-import java.awt.Toolkit;
 
-import omega.utils.ToolMenu;
-import omega.utils.SideMenu;
-import omega.utils.BottomPane;
-import omega.utils.DataManager;
-import omega.utils.RecentsManager;
-import omega.utils.ThemePicker;
-import omega.utils.WorkspaceSelector;
-import omega.utils.ProjectDataBase;
-import omega.utils.Editor;
-import omega.utils.UIManager;
-import omega.utils.IconManager;
-import omega.utils.SplitPanel;
-import omega.utils.AnimationsDialog;
-import omega.utils.PopupManager;
+import omega.ui.component.ToolMenu;
+import omega.ui.component.TerminalComp;
+import omega.ui.component.FileTreeBranch;
+import omega.ui.component.Editor;
 
-import omega.tabPane.TabPanel;
+import omega.ui.dialog.Launcher;
+import omega.ui.dialog.SnippetView;
+import omega.ui.dialog.ThemePicker;
+import omega.ui.dialog.AnimationsDialog;
+import omega.ui.dialog.WorkspaceSelector;
 
-import omega.utils.systems.OperationPane;
-import omega.utils.systems.RunView;
-import omega.utils.systems.BuildView;
-import omega.utils.systems.FileView;
-
-import omega.snippet.SnippetView;
-import omega.snippet.SnippetBase;
-
-import omega.launcher.Launcher;
+import omega.ui.panel.SplitPanel;
+import omega.ui.panel.OperationPane;
+import omega.ui.panel.TabPanel;
+import omega.ui.panel.SideMenu;
+import omega.ui.panel.BottomPane;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
-import javax.swing.JButton;
-import javax.swing.JLayeredPane;
 
 import static java.awt.event.KeyEvent.*;
 public class Screen extends JFrame {
@@ -138,7 +129,6 @@ public class Screen extends JFrame {
 	private static RunView runView;
 	private static FileView fileView;
 	private static BuildView buildView;
-	private static BasicHighlight basicHighlight;
 	private static RecentsManager recentsManager;
 	private static ErrorHighlighter errorHighlighter;
 	private static UniversalSettingsWizard universalSettings;
@@ -186,9 +176,9 @@ public class Screen extends JFrame {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
 			
-			javax.swing.UIManager.put("ToolTip.font", omega.utils.UIManager.PX14);
-			javax.swing.UIManager.put("Button.font", omega.utils.UIManager.PX14);
-			javax.swing.UIManager.put("Label.font", omega.utils.UIManager.PX14);
+			javax.swing.UIManager.put("ToolTip.font", omega.io.UIManager.PX14);
+			javax.swing.UIManager.put("Button.font", omega.io.UIManager.PX14);
+			javax.swing.UIManager.put("Label.font", omega.io.UIManager.PX14);
 			javax.swing.UIManager.put("ScrollBar.thumb", new ColorUIResource(x));
 			javax.swing.UIManager.put("ScrollBar.track", new ColorUIResource(y));
 			javax.swing.UIManager.put("ScrollPane.background", new ColorUIResource(y));
@@ -230,7 +220,6 @@ public class Screen extends JFrame {
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
 		errorHighlighter = new ErrorHighlighter();
-		basicHighlight = new BasicHighlight();
 		operationPane = new OperationPane(this);
 		terminal = new TerminalComp();
 		
@@ -280,15 +269,20 @@ public class Screen extends JFrame {
 		recentsManager = new RecentsManager(this);
 		
 		splash.setProgress(77, "initializing");
-		fileView = new FileView("FileManager", this);
+		
+		fileView = new FileView(this);
+		
 		universalSettings = new UniversalSettingsWizard(this);
-		buildView = new BuildView("BuildManager", this);
-		runView = new RunView("RunManager", this, true);
+		
+		buildView = new BuildView(this);
+		
+		runView = new RunView(this);
 
 		splitPane.setDividerLocation(300);
 		splitPane.setLeftComponent(fileView.getFileTreePanel());
 		
 		splash.setProgress(83, "plugging in");
+		
 		pluginManager = new PluginManager();
 		pluginStore = new PluginStore(this, pluginManager);
 		pluginsView = new PluginsView(this, pluginManager);
@@ -312,7 +306,7 @@ public class Screen extends JFrame {
 			}).start();
 		}
 		else {
-			launcher = new omega.launcher.Launcher();
+			launcher = new Launcher();
 			launcher.setVisible(true);
 		}
 	}
@@ -642,10 +636,6 @@ public class Screen extends JFrame {
 	
 	public static ErrorHighlighter getErrorHighlighter() {
 		return errorHighlighter;
-	}
-	
-	public static BasicHighlight getBasicHighlight() {
-		return basicHighlight;
 	}
 	
 	public static UniversalSettingsWizard getUniversalSettingsView() {

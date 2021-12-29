@@ -90,7 +90,7 @@ public class FindToolBar extends JPanel {
 	public FindToolBar(SearchListener listener) {
 		
 		// Keep focus in this component when tabbing through search controls
-		setBackground(omega.utils.UIManager.c2);
+		setBackground(omega.io.UIManager.c2);
 		setFocusCycleRoot(true);
 		
 		markAllTimer = new Timer(300, new MarkAllEventNotifier());
@@ -143,7 +143,7 @@ public class FindToolBar extends JPanel {
 	protected Container createButtonPanel() {
 		
 		Box panel = new Box(BoxLayout.LINE_AXIS);
-		panel.setBackground(omega.utils.UIManager.c2);
+		panel.setBackground(omega.io.UIManager.c2);
 		createFindButtons();
 		
 		//JPanel bp = new JPanel(new GridLayout(1,2, 5,0));
@@ -155,23 +155,23 @@ public class FindToolBar extends JPanel {
 		panel.add(Box.createHorizontalStrut(6));
 		
 		matchCaseCheckBox = createCB("MatchCase");
-		matchCaseCheckBox.setFont(omega.utils.UIManager.PX14);
+		matchCaseCheckBox.setFont(omega.io.UIManager.PX14);
 		panel.add(matchCaseCheckBox);
 		
 		regexCheckBox = createCB("RegEx");
-		regexCheckBox.setFont(omega.utils.UIManager.PX14);
+		regexCheckBox.setFont(omega.io.UIManager.PX14);
 		panel.add(regexCheckBox);
 		
 		wholeWordCheckBox = createCB("WholeWord");
-		wholeWordCheckBox.setFont(omega.utils.UIManager.PX14);
+		wholeWordCheckBox.setFont(omega.io.UIManager.PX14);
 		panel.add(wholeWordCheckBox);
 		
 		markAllCheckBox = createCB("MarkAll");
-		markAllCheckBox.setFont(omega.utils.UIManager.PX14);
+		markAllCheckBox.setFont(omega.io.UIManager.PX14);
 		panel.add(markAllCheckBox);
 		
 		wrapCheckBox = createCB("Wrap");
-		wrapCheckBox.setFont(omega.utils.UIManager.PX14);
+		wrapCheckBox.setFont(omega.io.UIManager.PX14);
 		panel.add(wrapCheckBox);
 		
 		return panel;
@@ -182,7 +182,7 @@ public class FindToolBar extends JPanel {
 		JCheckBox cb = new JCheckBox(SEARCH_MSG.getString(key));
 		cb.addActionListener(listener);
 		cb.addMouseListener(listener);
-		cb.setBackground(omega.utils.UIManager.c2);
+		cb.setBackground(omega.io.UIManager.c2);
 		return cb;
 	}
 	
@@ -195,10 +195,10 @@ public class FindToolBar extends JPanel {
 	*/
 	protected Container createContentAssistablePanel(JComponent comp) {
 		JPanel temp = new JPanel(new BorderLayout());
-		temp.setBackground(omega.utils.UIManager.c2);
+		temp.setBackground(omega.io.UIManager.c2);
 		temp.add(comp);
 		AssistanceIconPanel aip = new AssistanceIconPanel(comp);
-		aip.setBackground(omega.utils.UIManager.c2);
+		aip.setBackground(omega.io.UIManager.c2);
 		temp.add(aip, BorderLayout.LINE_START);
 		return temp;
 	}
@@ -208,7 +208,7 @@ public class FindToolBar extends JPanel {
 		
 		findFieldListener = new FindFieldListener();
 		JPanel temp = new JPanel(new BorderLayout());
-		temp.setBackground(omega.utils.UIManager.c2);
+		temp.setBackground(omega.io.UIManager.c2);
 		
 		findCombo = new SearchComboBox(this, false);
 		JTextComponent findField = UIUtil.getTextComponent(findCombo);

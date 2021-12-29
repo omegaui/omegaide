@@ -17,15 +17,16 @@
 */
 
 package omega.instant.support.build.gradle;
+import omega.io.DataManager;
+import omega.io.IconManager;
+
+import omega.ui.panel.JetRunPanel;
+
 import java.util.Scanner;
 
 import omega.Screen;
 
 import java.io.File;
-
-import omega.utils.DataManager;
-import omega.utils.IconManager;
-import omega.utils.JetRunPanel;
 public class GradleProcessManager {
 	
 	private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";

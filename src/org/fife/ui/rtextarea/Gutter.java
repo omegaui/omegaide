@@ -137,7 +137,7 @@ public class Gutter extends JPanel {
 
 		listener = new TextAreaListener();
 		lineNumberColor = Color.gray;
-		lineNumberFont = new Font(omega.utils.UIManager.fontName, omega.utils.UIManager.fontState, omega.utils.UIManager.fontSize);
+		lineNumberFont = new Font(omega.io.UIManager.fontName, omega.io.UIManager.fontState, omega.io.UIManager.fontSize);
 		lineNumberingStartIndex = 1;
 		iconRowHeaderInheritsGutterBackground = false;
 

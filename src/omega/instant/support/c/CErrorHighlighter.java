@@ -16,39 +16,32 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.instant.support.c;
-import omega.instant.support.AbstractErrorHighlighter;
-
-import javax.swing.ImageIcon;
-
-import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
-
-import omega.framework.CodeFramework;
-
-import omega.highlightUnit.Highlight;
-
 import javax.swing.text.Highlighter;
-import javax.swing.text.Highlighter.HighlightPainter;
-import javax.swing.text.DefaultHighlighter;
+
+import omega.io.IconManager;
+
+import omega.ui.component.Editor;
 
 import omega.Screen;
 
-import omega.utils.UIManager;
-import omega.utils.Editor;
-import omega.utils.IconManager;
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+
+import java.awt.Image;
+import java.awt.Color;
+
+import javax.swing.ImageIcon;
 
 import java.io.File;
 
-import omega.instant.support.java.JavaSyntaxParser;
-import omega.instant.support.java.JavaSyntaxParserGutterIconInfo;
+import omega.instant.support.java.framework.CodeFramework;
 
-import omega.deassembler.CodeTokenizer;
-
-import java.awt.Color;
-import java.awt.Image;
+import omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-import java.util.Locale;
+
+import omega.instant.support.AbstractErrorHighlighter;
+import omega.instant.support.Highlight;
 public class CErrorHighlighter implements AbstractErrorHighlighter {
 	
 	private LinkedList<Highlight> highlights;

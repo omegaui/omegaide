@@ -446,7 +446,7 @@ public abstract class RTextAreaBase extends JTextArea {
 	public static Font getDefaultFont() {
 		StyleContext sc = StyleContext.getDefaultStyleContext();
 		Font font = null;
-		font = sc.getFont(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
+		font = sc.getFont(omega.io.UIManager.fontName, Font.BOLD, omega.io.UIManager.fontSize);
 		return font;
 	}
 
@@ -910,7 +910,7 @@ try {
 	 * @see #getCurrentLineHighlightColor
 	 */
 	public void setCurrentLineHighlightColor(Color color) {
-		color = omega.utils.UIManager.isDarkMode() ? new Color(249, 56, 0, 20) : new Color(0, 0, 255, 20);
+		color = omega.io.UIManager.isDarkMode() ? new Color(249, 56, 0, 20) : new Color(0, 0, 255, 20);
 		if (color==null) {
 			throw new NullPointerException();
 		}

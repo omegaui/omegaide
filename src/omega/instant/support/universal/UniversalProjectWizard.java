@@ -17,25 +17,27 @@
 */
 
 package omega.instant.support.universal;
+import omega.io.ProjectDataBase;
+import omega.io.DataManager;
+
+import omega.ui.dialog.WorkspaceSelector;
+
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
+
 import omega.Screen;
 
 import java.io.File;
 
-import omega.utils.WorkspaceSelector;
-import omega.utils.ProjectDataBase;
-import omega.utils.DataManager;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import omega.comp.TextComp;
-import omega.comp.NoCaretField;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import static omega.utils.UIManager.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class UniversalProjectWizard extends JDialog{
 	private TextComp titleComp;
 	private TextComp projectNameLabel;

@@ -1,8 +1,12 @@
 package omega.instant.support;
+import omega.io.IconManager;
+
+import omegaui.component.animation.ImageSizeTransitionAnimationLayer;
+
 import omega.plugin.event.PluginReactionEvent;
 
-import omega.utils.IconManager;
-import omega.utils.DataManager;
+import omegaui.component.FlexPanel;
+import omegaui.component.TextComp;
 
 import java.awt.image.BufferedImage;
 
@@ -11,18 +15,14 @@ import java.awt.Graphics2D;
 
 import java.util.LinkedList;
 
-import omega.comp.FlexPanel;
-import omega.comp.TextComp;
-import omega.comp.ImageSizeTransitionAnimationLayer;
-
 import omega.Screen;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class LanguageTagView extends JDialog{
 	public static final int LANGUAGE_TAG_JAVA = 0;
 	public static final int LANGUAGE_TAG_PYTHON = 1;

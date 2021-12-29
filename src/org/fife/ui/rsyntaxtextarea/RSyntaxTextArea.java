@@ -1049,8 +1049,8 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 	public Color getBackgroundForToken(Token token) {
 		Color c = null;
 		
-		if(omega.instant.support.BasicCodeHighlighter.canComputeBackground(this, token)){
-			c = omega.instant.support.BasicCodeHighlighter.computeBackgroundColor(token);
+		if(omega.instant.support.java.highlighter.BasicCodeHighlighter.canComputeBackground(this, token)){
+			c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeBackgroundColor(token);
 			if(c != null)
 				return c;
 		}
@@ -1195,11 +1195,11 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
      
 	public Font getFontForTokenType(int type) {
 		Font f = syntaxScheme.getStyle(type).font;
-          int style = omega.utils.UIManager.fontState;
+          int style = omega.io.UIManager.fontState;
           if(type == TokenTypes.RESERVED_WORD_2 || type == TokenTypes.DATA_TYPE || type == TokenTypes.ANNOTATION)
                style = Font.BOLD + Font.ITALIC;
           if(f == null){
-          	f = new Font(omega.utils.UIManager.fontName, Font.BOLD, omega.utils.UIManager.fontSize);
+          	f = new Font(omega.io.UIManager.fontName, Font.BOLD, omega.io.UIManager.fontSize);
           }
           f = new Font(f.getName(), style, f.getSize());
 		return f != null ? f : getFont();
@@ -1232,8 +1232,8 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 				(t.isHyperlink() || linkGeneratorResult!=null)) {
 			return hyperlinkFG;
 		}
-		if(omega.instant.support.BasicCodeHighlighter.canComputeForeground(this, t)){
-			Color c = omega.instant.support.BasicCodeHighlighter.computeForegroundColor(t);
+		if(omega.instant.support.java.highlighter.BasicCodeHighlighter.canComputeForeground(this, t)){
+			Color c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeForegroundColor(t);
 			if(c != null)
 				return c;
 		}

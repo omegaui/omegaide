@@ -17,7 +17,15 @@
 */
 
 package omega.plugin.store;
-import omega.popup.NotificationPopup;
+import omega.io.IconManager;
+
+import omega.ui.dialog.ChoiceDialog;
+
+import omega.ui.popup.NotificationPopup;
+
+import omegaui.component.TextComp;
+import omegaui.component.FlexPanel;
+import omegaui.component.NoCaretField;
 
 import omega.Screen;
 
@@ -40,20 +48,13 @@ import java.awt.geom.RoundRectangle2D;
 import omega.plugin.PluginCategory;
 import omega.plugin.Downloader;
 
-import omega.utils.IconManager;
-import omega.utils.ChoiceDialog;
-
-import omega.comp.TextComp;
-import omega.comp.FlexPanel;
-import omega.comp.NoCaretField;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JDialog;
 
-import static omega.utils.UIManager.*;
-import static omega.comp.Animations.*;
+import static omega.io.UIManager.*;
+import static omegaui.component.animation.Animations.*;
 public class PluginStore extends JDialog{
 	public PluginManager pluginManager;
 	public PluginCategory pluginCategory;
