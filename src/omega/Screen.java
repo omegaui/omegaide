@@ -554,20 +554,20 @@ public class Screen extends JFrame {
 		return null;
 	}
 	
-	public String getPackName(File file) {
+	public static String getPackName(File file) {
 		String res = "";
 		boolean canRecord = false;
 		StringTokenizer tokenizer = new StringTokenizer(file.getAbsolutePath(), File.separator);
 		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
 			if(canRecord)
-				res += token + ".";
+				res += token + File.separator;
 			else if(token.equals(getFileView().getProjectName()))
 				canRecord = true;
 		}
 		if(!canRecord)
 			return file.getAbsolutePath();
-		else
+		else if(!res.trim().equals(""))
 			res = res.substring(0, res.length() - 1);
 		return res;
 	}
