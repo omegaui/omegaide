@@ -197,7 +197,7 @@ public class Startup extends JDialog {
 			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-agent.exe");
 			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-debugserver.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-debugserver.exe");
 			
-			System.out.println("Writing Native Library for Terminal Emulation ... Done!");
+			System.out.println("Writing Native Files for Terminal Emulation ... Done!");
 
 			try{
 				f.createNewFile();
@@ -210,7 +210,17 @@ public class Startup extends JDialog {
 				System.err.println("Please Open an issue with this log message on https://github.com/omegaui/omegaide");
 				System.err.println(e);
 			}
-			System.out.println("Launching...");
+			try{
+				System.out.println("Writing Plugin List ...");
+				f = new File(".omega-ide", ".pluginDB");
+				f.createNewFile();
+				System.out.println("Writing Plugin List ... Done!");
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			System.out.println("Launching Omega IDE ...");
 		}
 	}
 
