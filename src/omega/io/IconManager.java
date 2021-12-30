@@ -90,6 +90,7 @@ public class IconManager {
 	public static BufferedImage fluentemptyBoxImage = getFluentIcon("empty-box-96.png");
 	public static BufferedImage fluentsparkleImage = getFluentIcon("sparkle-96.png");
 	public static BufferedImage fluentwindRoseImage = getFluentIcon("wind-rose-96.png");
+	public static BufferedImage fluentbrowsefolderImage = getFluentIcon("browse-folder-96.png");
 	
 	public static BufferedImage fluentenergyImage = getFluentIcon("energy-64.png");
 	public static BufferedImage fluentatomicImage = getFluentIcon("atomic-60.png");

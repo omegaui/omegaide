@@ -37,7 +37,7 @@ import omega.instant.support.build.gradle.GradleProcessManager;
 import omega.instant.support.universal.ProcessWizard;
 import omega.instant.support.universal.UniversalProjectWizard;
 
-import omega.instant.support.java.ProjectWizard;
+import omega.instant.support.java.JavaProjectWizard;
 
 import omega.ui.dialog.InfoScreen;
 import omega.ui.dialog.SourceDefender;
@@ -151,7 +151,7 @@ public class ToolMenu extends JPanel {
 	public static InfoScreen infoScreen;
 	public static ToolMenuPathBox pathBox;
 	public static SourceDefender sourceDefender;
-	public static ProjectWizard projectWizard;
+	public static JavaProjectWizard javaProjectWizard;
 	public static ProcessWizard processWizard;
 	public static StructureView structureView;
 	public static MadeWithScreen madeWithScreen;
@@ -190,10 +190,10 @@ public class ToolMenu extends JPanel {
 	
 	public ToolMenu(Screen screen) {
 		this.screen = screen;
-		if(projectWizard == null){
+		if(javaProjectWizard == null){
 			infoScreen = new InfoScreen(screen);
 			sourceDefender = new SourceDefender(screen);
-			projectWizard = new ProjectWizard(screen);
+			javaProjectWizard = new JavaProjectWizard(screen);
 			processWizard = new ProcessWizard(screen);
 			structureView = new StructureView(screen);
 			madeWithScreen = new MadeWithScreen(screen);
@@ -387,7 +387,7 @@ public class ToolMenu extends JPanel {
 		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
 		
-		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->projectWizard.setVisible(true));
+		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create Java New Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->javaProjectWizard.setVisible(true));
 		newProjectComp.setBounds(64, 55, 30, 30);
 		newProjectComp.setFont(PX14);
 		newProjectComp.setArcVisible(true, false, true, false);
@@ -684,7 +684,6 @@ public class ToolMenu extends JPanel {
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 
-
 		ImageSizeTransitionAnimationLayer layer = (ImageSizeTransitionAnimationLayer)getImageSizeAnimationLayer(25, -5, true);
 		languageTagView.prepareLayer(layer, iconComp, -5, true);
 		
@@ -960,7 +959,7 @@ public class ToolMenu extends JPanel {
 		//New Menu Items
 		filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getFileView().open("File"))
 		.createItem("Open Project", IconManager.projectImage, ()->Screen.getFileView().open("Project"))
-		.createItem("New Project", IconManager.projectImage, ()->projectWizard.setVisible(true))
+		.createItem("New Project (Java)", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
 		.createItem("New Project (non-java project)", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
 		recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(350).height(250);
 		fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{

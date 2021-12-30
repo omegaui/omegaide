@@ -108,7 +108,7 @@ public class Launcher extends JFrame{
 		leftPanel.add(openComp);
 		
 		TextComp njComp = new TextComp("New Java Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-			ToolMenu.projectWizard.setVisible(true);
+			ToolMenu.javaProjectWizard.setVisible(true);
 		});
 		njComp.setBounds(10, 40, 180, 25);
 		njComp.setFont(PX14);

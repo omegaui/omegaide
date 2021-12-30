@@ -55,15 +55,21 @@ import static omegaui.component.animation.Animations.*;
 
 public class BuildLog extends JPanel {
 	private LinkedList<TextComp> fileComps = new LinkedList<>();
+	
 	private TextComp headComp;
+	
 	private Error currentError;
+	
 	private JSplitPane splitPane;
 	private JScrollPane fileScrollPane;
 	private JScrollPane errorScrollPane;
+	
 	private JPanel filePanel;
 	private RTextArea errorArea;
+	
 	private int block;
 	private int maxW;
+	
 	public BuildLog(){
 		super(new BorderLayout());
 		setBackground(c2);

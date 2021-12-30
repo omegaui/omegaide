@@ -183,9 +183,9 @@ public class JDKManager {
 		File[] files = dir.listFiles();
 		if(files == null || files.length == 0)
 			return false;
-		String releaseFilePath = dir.getAbsolutePath() + File.separator + "release";
-		File releaseFile = new File(releaseFilePath);
-		return releaseFile.exists();
+		File releaseFile = new File(dir.getAbsolutePath(), "release");
+		File compiler = new File(dir.getAbsolutePath() + File.separator + "bin", "javac" + (Screen.onWindows() ? ".exe" : ""));
+		return releaseFile.exists() && compiler.exists();
 	}
 	
 	public synchronized void readSources(String projectPath){
