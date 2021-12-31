@@ -290,7 +290,8 @@ public class FileTreeBranch extends JComponent {
 	}
 	
 	public boolean isParentOf(FileTreeBranch branch){
-		return branch.getFile().getAbsolutePath().startsWith(getFile().getAbsolutePath());
+		return branch.getFile().getAbsolutePath().startsWith(getFile().getAbsolutePath()) && 
+				branch.getFile().getAbsolutePath().charAt(getFile().getAbsolutePath().length()) == File.separatorChar;
 	}
 
 	public static BufferedImage getPreferredImageForFile(File file){
@@ -324,7 +325,7 @@ public class FileTreeBranch extends JComponent {
 			String ext = file.getName().substring(file.getName().lastIndexOf('.'));
 			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp") || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
 				return IconManager.fluentimagefileImage;
-			if(ext.equals(".java"))
+			if(ext.equals(".java") || ext.equals(".class"))
 				return IconManager.fluentjavaImage;
 			if(ext.equals(".py"))
 				return IconManager.fluentpythonImage;
