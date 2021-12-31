@@ -331,7 +331,7 @@ public class RTextAreaEditorKit extends DefaultEditorKit {
 	 * @return The line number list.
 	 */
 	public LineNumberList createLineNumberList(RTextArea textArea) {
-		return new LineNumberList(textArea);
+		return new LineNumberList(textArea, omega.io.UIManager.c2, omega.io.UIManager.TOOLMENU_COLOR5);
 	}
 
 

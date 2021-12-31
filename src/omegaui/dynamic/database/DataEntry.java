@@ -32,6 +32,8 @@ public class DataEntry{
 	}
 
 	public void evaluateLines(){
+		if(value == null)
+			return;
 		lines.clear();
 		if(value.contains("\n")){
 			lines.add(value.substring(0, value.indexOf("\n")));
@@ -100,6 +102,8 @@ public class DataEntry{
 	}
 	
 	public String toDataForm(){
+		if(lines.isEmpty())
+			return null;
 		String result = DataBase.VALUE_PREFIX + lines.get(0);
 		for(int i = 1; i < lines().size(); i++){
 			result += "\n" + DataBase.LINE_PREFIX + lines.get(i);
