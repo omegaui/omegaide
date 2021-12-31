@@ -27,15 +27,13 @@ import omega.instant.support.java.management.JDKManager;
 
 import java.io.File;
 
-import omega.io.DataManager;
 import omega.io.IconManager;
+import omega.io.DataManager;
 import omega.io.ProjectDataBase;
 
 import omegaui.component.TextComp;
 import omegaui.component.EdgeComp;
 import omegaui.component.NoCaretField;
-
-import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JPanel;
 import javax.swing.JDialog;

@@ -68,8 +68,8 @@ public class BottomPane extends JPanel {
 		};
 		messageComp.setFont(PX14);
 		messageComp.alignX = 15;
-		messageComp.w = 25;
-		messageComp.h = 25;
+		messageComp.w = 20;
+		messageComp.h = 20;
 		messageComp.setHighlightColor(TOOLMENU_COLOR1);
 		messageComp.setPreferredSize(new Dimension(100, 25));
 		messageComp.setArc(0, 0);

@@ -40,7 +40,20 @@ public class ImportFramework {
 	//when classes in different packages have a same name.
 	private static ImportResolver imR = new ImportResolver();
 	
-	/**
+	/*
+	* The constant holding the allowed symbols in Identifier naming rules
+	*/
+	public static final String ALLOWED_IDENTIFIER_SYMBOLS = "$_";
+	
+	/*
+	* Method to check whether the specified symbol is allowed in Identifier name or not.
+	* @param ch = the symbol
+	*/
+	public static boolean isAllowed(char ch){
+		return ALLOWED_IDENTIFIER_SYMBOLS.contains(ch + "");
+	}
+	
+	/*
 	* The method that search for classes in the passed code (String text)
 	* @param text = The Code
 	*/
@@ -53,25 +66,39 @@ public class ImportFramework {
 		catch(Exception e) {
 			return cls;
 		}
-		int pos = 0;
-		for(int i = 0; i < text.length(); i++){
-			char ch = text.charAt(i);
-			if(!"\"\'_S".contains(ch + "") && !Character.isLetterOrDigit(ch)){
-				String sx = text.substring(pos, i).trim();
-				if(sx.equals(""))
-					continue;
-				if(text.charAt(i - sx.length()) != '.'){
-					pos = i + 1;
-					if(sx.length() > 0 && Character.isUpperCase(sx.charAt(0)) && !SourceReader.isInnerLine(sx) && !cls.contains(sx)){
-						cls.add(sx);
+		LinkedList<String> tokens = CodeTokenizer.tokenizeWithoutLoss(text, '\n');
+		int pos;
+		int currentCharIndex = -1;
+		char ch;
+		String sx;
+		for(String line : tokens){
+			pos = 0;
+			sx = "";
+			for(int i = 0; i < line.length(); i++){
+				ch = line.charAt(i);
+				currentCharIndex++;
+				if(Character.isLetterOrDigit(ch) || isAllowed(ch)){
+					sx += ch;
+				}
+				else {
+					sx = sx.trim();
+					pos = currentCharIndex - sx.length() - 1;
+					if(sx.length() > 0 && pos > -1 && text.charAt(pos) != '.'){
+						if(Character.isUpperCase(sx.charAt(0))){
+							if(!cls.contains(sx)){
+								cls.add(sx);
+							}
+						}
 					}
+					sx = "";
 				}
 			}
 		}
+		tokens.clear();
 		return cls;
 	}
 	
-	/**
+	/*
 	* The method removes all the comments, chars & String from the code
 	* @param text = The code
 	*/
@@ -96,7 +123,8 @@ public class ImportFramework {
 			}
 			cLine = "";
 			//Skipping Comments
-			if(line.startsWith("//")) continue;
+			if(line.startsWith("//"))
+				continue;
 			if(line.startsWith("/*")){
 				commentStarts = true;
 				continue;
@@ -107,6 +135,15 @@ public class ImportFramework {
 			}
 			else if(commentStarts) continue;
 				text += line + "\n";
+		}
+		tokens = CodeTokenizer.tokenize(text, '\n');
+		text = "";
+		int index;
+		for(String line : tokens){
+			if(line.contains("//")){
+				line = line.substring(0, line.indexOf("//")).trim();
+			}
+			text += line + "\n";
 		}
 		return text;
 	}
