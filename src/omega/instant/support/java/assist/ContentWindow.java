@@ -80,16 +80,16 @@ public class ContentWindow extends JPanel implements KeyListener{
 		}
 
 		public void init(){
-			setBackground(c2);
+			setBackground(back1);
 			setBorder(null);
 			
-			iconComp = new TextComp(getIcon(), optimalHintHeight - 5, optimalHintHeight - 5, c2, c2, c2, null);
+			iconComp = new TextComp(getIcon(), optimalHintHeight - 5, optimalHintHeight - 5, getBackground(), getBackground(), getBackground(), null);
 			iconComp.setBounds(0, 0, optimalHintHeight, optimalHintHeight);
 			iconComp.setArc(0, 0);
 			iconComp.setClickable(false);
 			add(iconComp);
 
-			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_GRADIENT, c2, glow, null);
+			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_GRADIENT, getBackground(), glow, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
@@ -153,7 +153,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		setLayout(null);
 		add(scrollPane = new JScrollPane(panel = new JPanel(null)));
 		scrollPane.setBorder(null);
-		panel.setBackground(c2);
+		panel.setBackground(back1);
 	}
 	
 	public void genView(LinkedList<DataMember> dataMembers, Graphics g){
