@@ -14,6 +14,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
+import javax.swing.ImageIcon;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -258,7 +261,14 @@ public class IconRowHeader extends AbstractGutterComponent implements MouseListe
 	@Override
 	public Dimension getPreferredSize() {
 		int h = textArea!=null ? textArea.getHeight() : 100; // Arbitrary
-		return new Dimension((textArea != null && textArea.getGraphics() != null)? (width = textArea.getGraphics().getFontMetrics().getHeight() + 2) : width, h);
+		return new Dimension((textArea != null && textArea.getGraphics() != null)? (width = omega.io.UIManager.computeHeight(textArea.getFont())) : width, h);
+	}
+
+	@Override
+	public void setFont(Font font){
+		super.setFont(font);
+		if(textArea != null)
+			width = omega.io.UIManager.computeHeight(textArea.getFont());
 	}
 
 

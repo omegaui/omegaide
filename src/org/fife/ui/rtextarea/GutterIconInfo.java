@@ -7,8 +7,11 @@
  * LICENSE file for details.
  */
 package org.fife.ui.rtextarea;
+import java.awt.Image;
+
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 
 /**
@@ -31,7 +34,6 @@ public interface GutterIconInfo {
 	 * @return The icon being rendered.
 	 */
 	Icon getIcon();
-
 
 	/**
 	 * Returns the offset that is being tracked.  The line of this offset is

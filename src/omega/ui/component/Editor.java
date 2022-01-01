@@ -648,6 +648,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		javaErrorPanel.relocate();
 	}
 
+	@Override
+	public void setFont(Font font){
+		super.setFont(font);
+		if(scrollPane != null){
+			if(scrollPane.getGutter() != null){
+				if(scrollPane.getGutter().lineNumberList != null)
+					scrollPane.getGutter().lineNumberList.setFont(font);
+				if(scrollPane.getGutter().iconArea != null)
+					scrollPane.getGutter().iconArea.setFont(font);
+			}
+		}
+	}
+
 	public void doDuplicate(KeyEvent e){
 		if(getSelectedText() == null || getSelectedText().equals("")){
 			String text = getText();

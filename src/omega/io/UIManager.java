@@ -210,6 +210,8 @@ public class UIManager extends DataBase {
 	}
 
 	public static int computeWidth(String name, Font font){
+		if(font == null)
+			return 8;
 		Graphics2D g = (Graphics2D)testImage.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -218,6 +220,8 @@ public class UIManager extends DataBase {
 	}
 
 	public static int computeHeight(Font font){
+		if(font == null)
+			return 8;
 		Graphics g = testImage.getGraphics();
 		g.setFont(font);
 		return g.getFontMetrics().getHeight();

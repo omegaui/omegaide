@@ -83,7 +83,7 @@ public class Gutter extends JPanel {
 	/**
 	 * Renders line numbers.
 	 */
-	private LineNumberList lineNumberList;
+	public LineNumberList lineNumberList;
 
 	/**
 	 * The color used to render line numbers.
