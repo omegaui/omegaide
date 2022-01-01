@@ -16,6 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.ui.component;
+import omega.instant.support.java.misc.JDKSelectionDialog;
+
 import omega.instant.support.java.generator.Generator;
 
 import omega.instant.support.java.parser.JavaSyntaxParser;
@@ -49,7 +51,6 @@ import omega.ui.dialog.InstructionWindow;
 import omega.ui.dialog.ColorPicker;
 import omega.ui.dialog.FontChooser;
 import omega.ui.dialog.WorkspaceSelector;
-import omega.ui.dialog.SDKSelector;
 import omega.ui.dialog.FileSelectionDialog;
 
 import omegaui.component.TextComp;
@@ -433,7 +434,7 @@ public class ToolMenu extends JPanel {
 		instantRunComp.setArcVisible(true, false, true, false);
 		add(instantRunComp);
 		
-		buildComp = new TextComp(fluentbuildImage, 20, 20, "Time to Build", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
+		buildComp = new TextComp(fluentbuildImage, 20, 20, "Build Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
 			if(runComp.isClickable() && buildComp.isClickable()){
 				if(GradleProcessManager.isGradleProject())
 					GradleProcessManager.build();
@@ -849,11 +850,10 @@ public class ToolMenu extends JPanel {
 			.showIt();
 		});
 		
-		SDKSelector sdkSelector = new SDKSelector(screen);
+		JDKSelectionDialog jdkSelectionDialog = new JDKSelectionDialog(screen);
 		
 		jdkItem = new OPopupItem(setPopup, "Project JDK : None", IconManager.fluentsourceImage, ()->{
-			sdkSelector.setVisible(true);
-			String sel = sdkSelector.getSelection();
+			String sel = jdkSelectionDialog.makeChoice();
 			if(Screen.isNotNull(sel)) {
 				Screen.getFileView().getProjectManager().setJDKPath(sel);
 				jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());

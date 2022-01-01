@@ -17,9 +17,10 @@
 */
 
 package omega.instant.support.java;
+import omega.instant.support.java.misc.JDKSelectionDialog;
+
 import omega.Screen;
 
-import omega.ui.dialog.SDKSelector;
 import omega.ui.dialog.WorkspaceSelector;
 import omega.ui.dialog.FileSelectionDialog;
 
@@ -68,7 +69,7 @@ public class JavaProjectWizard extends JDialog {
 	private TextComp cancelComp;
 
 	private FileSelectionDialog fileSelectionDialog;
-	private SDKSelector sdkSelector;
+	private JDKSelectionDialog jdkSelectionDialog;
 	
 	public JavaProjectWizard(Screen screen){
 		super(screen, false);
@@ -236,12 +237,11 @@ public class JavaProjectWizard extends JDialog {
 	}
 	
 	public void selectJDK(){
-		if(sdkSelector == null)
-			sdkSelector = new SDKSelector(Screen.getScreen());
+		if(jdkSelectionDialog == null)
+			jdkSelectionDialog = new JDKSelectionDialog(Screen.getScreen());
 		
-		sdkSelector.setVisible(true);
+		String res = jdkSelectionDialog.makeChoice();
 		
-		String res = sdkSelector.getSelection();
 		if(res != null){
 			File file = new File(res);
 			if(file.exists()){
