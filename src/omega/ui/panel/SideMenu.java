@@ -68,7 +68,7 @@ public class SideMenu extends JPanel {
 		structureComp.setArc(2, 2);
 		add(structureComp);
 		
-		searchComp = new TextComp(fluentsearchImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
+		searchComp = new TextComp(fluentsearchImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
 		searchComp.setBounds(0, 75, 30, 25);
 		searchComp.setArc(2, 2);
 		add(searchComp);

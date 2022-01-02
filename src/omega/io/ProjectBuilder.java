@@ -1,5 +1,5 @@
 /**
-* BuildView
+* ProjectBuilder
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ import omega.Screen;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
-public class BuildView {
+public class ProjectBuilder {
 	
 	private Screen screen;
 	
@@ -69,7 +69,7 @@ public class BuildView {
 	public BuildLog buildLog;
 	public String errorlog = "";
 	
-	public BuildView(Screen window) {
+	public ProjectBuilder(Screen window) {
 		this.screen = window;
 		
 		buildLog = new BuildLog();
@@ -88,8 +88,8 @@ public class BuildView {
 	
 	public void compile(){
 		new Thread(()->{
-			LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
-			if(Screen.getFileView().getArgumentManager().getCompileCommand().trim().equals("")){
+			LinkedList<String> args = Screen.getProjectFile().getArgumentManager().compile_time_args;
+			if(Screen.getProjectFile().getArgumentManager().getCompileCommand().trim().equals("")){
 				NotificationPopup.create(getScreen())
 				.size(500, 120)
 				.title("Project Management")
@@ -103,8 +103,8 @@ public class BuildView {
 			}
 			getScreen().getToolMenu().buildComp.setClickable(false);
 			getScreen().getToolMenu().runComp.setClickable(false);
-			omega.Screen.getFileView().getArgumentManager().genLists();
-			String compileDir = Screen.getFileView().getArgumentManager().compileDir;
+			omega.Screen.getProjectFile().getArgumentManager().genLists();
+			String compileDir = Screen.getProjectFile().getArgumentManager().compileDir;
 			String[] commandsAsArray = new String[args.size()];
 				for(int i = 0; i < args.size(); i++){
 					commandsAsArray[i] = args.get(i);
@@ -117,7 +117,7 @@ public class BuildView {
 				getScreen().getOperationPanel().addTab("Build", IconManager.fluenttesttubeImage, printArea, printArea::killProcess);
 				
 				printArea.print("Building Project...\n\"" + args + "\"");
-				printArea.print("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
+				printArea.print("Executing ... " + Screen.getProjectFile().getArgumentManager().getCompileCommand());
 				printArea.start();
 				
 				errorlog = "";
@@ -147,7 +147,7 @@ public class BuildView {
 			finally {
 				getScreen().getToolMenu().buildComp.setClickable(true);
 				getScreen().getToolMenu().runComp.setClickable(true);
-				getScreen().getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			}
 		}).start();
 	}
@@ -193,7 +193,7 @@ public class BuildView {
 		
 		getScreen().saveAllEditors();
 		
-		if(omega.Screen.getFileView().getProjectManager().non_java){
+		if(omega.Screen.getProjectFile().getProjectManager().non_java){
 			compile();
 			return;
 		}
@@ -204,7 +204,7 @@ public class BuildView {
 				createClassList();
 				if(classess.isEmpty())
 					return;
-				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)) {
+				if(!JDKManager.isJDKPathValid(Screen.getProjectFile().getProjectManager().jdkPath)) {
 					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
 					return;
 				}
@@ -218,7 +218,7 @@ public class BuildView {
 				getScreen().getToolMenu().runComp.setClickable(false);
 				
 				String status = " Successfully";
-				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+				String jdkPath = String.copyValueOf(Screen.getProjectFile().getProjectManager().jdkPath.toCharArray());
 				
 				if(jdkPath != null && new File(jdkPath).exists())
 					jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
@@ -226,14 +226,14 @@ public class BuildView {
 				String cmd = "";
 				String depenPath = "";
 				
-				if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
+				if(!Screen.getProjectFile().getProjectManager().jars.isEmpty()) {
 					
-					for(String d : Screen.getFileView().getProjectManager().jars)
+					for(String d : Screen.getProjectFile().getProjectManager().jars)
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
 				}
 				
-				if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-					for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+				if(!Screen.getProjectFile().getProjectManager().resourceRoots.isEmpty()) {
+					for(String d : Screen.getProjectFile().getProjectManager().resourceRoots)
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
 				}
 				
@@ -245,7 +245,7 @@ public class BuildView {
 				else
 					cmd = "javac" + cmd;
 				
-				File workingDir = new File(Screen.getFileView().getProjectPath());
+				File workingDir = new File(Screen.getProjectFile().getProjectPath());
 				LinkedList<String> commands = new LinkedList<>();
 				commands.add(cmd);
 				commands.add("-d");
@@ -256,8 +256,8 @@ public class BuildView {
 					commands.add(depenPath);
 				}
 				
-				String modulePath = Screen.getFileView().getDependencyView().getModulePath();
-				String modules = Screen.getFileView().getDependencyView().getModules();
+				String modulePath = Screen.getProjectFile().getDependencyView().getModulePath();
+				String modules = Screen.getProjectFile().getDependencyView().getModules();
 				if(Screen.isNotNull(modulePath)){
 					commands.add("--module-path");
 					commands.add(modulePath);
@@ -265,9 +265,9 @@ public class BuildView {
 					commands.add(modules);
 				}
 				
-				Screen.getFileView().getProjectManager().compileTimeFlags.forEach(commands::add);
+				Screen.getProjectFile().getProjectManager().compileTimeFlags.forEach(commands::add);
 				
-				commands.add("@" + BuildView.SRC_LIST);
+				commands.add("@" + ProjectBuilder.SRC_LIST);
 				
 				String[] commandsAsArray = new String[commands.size()];
 				
@@ -277,7 +277,7 @@ public class BuildView {
 				
 				compileProcess = new ProcessBuilder(commandsAsArray).directory(workingDir).start();
 				
-				buildLog.setHeading("Building Project with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+				buildLog.setHeading("Building Project with JDK v" + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 				
 				getScreen().getOperationPanel().addTab("Compilation", IconManager.fluenttesttubeImage, buildLog, ()->{
 					if(compileProcess != null && compileProcess.isAlive())
@@ -309,7 +309,7 @@ public class BuildView {
 				compileProcess = null;
 				getScreen().getToolMenu().buildComp.setClickable(true);
 				getScreen().getToolMenu().runComp.setClickable(true);
-				getScreen().getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -318,7 +318,7 @@ public class BuildView {
 	}
 	
 	public static void optimizeProjectOutputs(){
-		File outputDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
+		File outputDir = new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 		LinkedList<File> files = new LinkedList<>();
 		loadClassFiles(outputDir, files);
 		if(files.isEmpty())
@@ -326,7 +326,7 @@ public class BuildView {
 		for(File file : files) {
 			file.delete();
 		}
-		FileView.checkDir(outputDir);
+		ProjectFile.checkDir(outputDir);
 	}
 	
 	public static void loadClassFiles(File out, LinkedList<File> files) {
@@ -386,11 +386,11 @@ public class BuildView {
 	}
 	
 	public void createClassList() {
-		if(omega.Screen.getFileView().getProjectManager().non_java) return;
+		if(omega.Screen.getProjectFile().getProjectManager().non_java) return;
 		classess.clear();
 		try {
 			LinkedList<String> dirs = new LinkedList<>();
-			loadData(dirs, new File(Screen.getFileView().getProjectPath() + File.separator + "src").listFiles());
+			loadData(dirs, new File(Screen.getProjectFile().getProjectPath() + File.separator + "src").listFiles());
 			
 			while(!dirs.isEmpty()) {
 				try {
@@ -430,7 +430,7 @@ public class BuildView {
 				paths.add(res);
 			});
 			//Creating SourcePath
-			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getFileView().getProjectPath() + File.separator + SRC_LIST));
+			PrintWriter writer = new PrintWriter(new FileOutputStream(Screen.getProjectFile().getProjectPath() + File.separator + SRC_LIST));
 			paths.forEach(path->writer.println(path));
 			writer.close();
 		}

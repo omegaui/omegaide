@@ -85,12 +85,12 @@ public class CErrorHighlighter implements AbstractErrorHighlighter {
 					code = token.substring(token.indexOf('|') + 1).trim();
 					
 					if(!path.contains(File.separator)){
-						path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;
+						path = Screen.getProjectFile().getArgumentManager().compileDir + File.separator + path;
 					}
 					
 					File file = new File(path);
 					if(file.exists()){
-						Editor e = Screen.getFileView().getScreen().loadFile(file);
+						Editor e = Screen.getProjectFile().getScreen().loadFile(file);
 						try{
 							ImageIcon icon = new ImageIcon(message.startsWith("warning") ? IconManager.fluentwarningImage : IconManager.fluenterrorImage);
 							int size = e.getGraphics().getFontMetrics().getHeight();

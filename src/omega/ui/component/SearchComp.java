@@ -84,7 +84,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 
 		String parentName = Screen.getPackName(file.getParentFile());
 		if(parentName.trim().equals(""))
-			parentName = Screen.getFileView().getProjectName();
+			parentName = Screen.getProjectFile().getProjectName();
 		
 		parentComp = new TextComp(parentName, ALPHA, ALPHA, TOOLMENU_COLOR4, null);
 		parentComp.setBounds(nameComp.getX(), nameComp.getY() + nameComp.getHeight() + 2, nameComp.getWidth(), nameComp.getHeight());

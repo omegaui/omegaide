@@ -501,11 +501,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		try {
 			BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 			paint(image.getGraphics() != null ? image.createGraphics() : image.getGraphics());
-			String path = Screen.getFileView().getProjectPath();
-			new File(Screen.getFileView().getProjectPath() + File.separator + "out").mkdir();
+			String path = Screen.getProjectFile().getProjectPath();
+			new File(Screen.getProjectFile().getProjectPath() + File.separator + "out").mkdir();
 			path += File.separator + "out" + File.separator + currentFile.getName() + "_lines_" + getLineCount() + ".jpg";
 			if(ImageIO.write(image, "JPG", new File(path))) {
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			}
 		}
 		catch(Exception e) {
@@ -520,7 +520,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				PrintWriter writer = new PrintWriter(new File(path), StandardCharsets.UTF_8);
 				writer.println(getText());
 				writer.close();
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -579,10 +579,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				
 			}
 			else {
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 				savedText = "";
 				currentFile = null;
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			}
 		}
 		catch(Exception e) {
@@ -618,7 +618,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 						return;
 					try {
 						deleteDir(currentFile);
-						Screen.getFileView().getFileTreePanel().refresh();
+						Screen.getProjectFile().getFileTreePanel().refresh();
 					}
 					catch(Exception e) {
 						
@@ -631,7 +631,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(res0 != ChoiceDialog.CHOICE1)
 					return;
 				if(currentFile.delete()) {
-					Screen.getFileView().getFileTreePanel().refresh();
+					Screen.getProjectFile().getFileTreePanel().refresh();
 				}
 			}
 			catch(Exception e) {
@@ -713,7 +713,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(GradleProcessManager.isGradleProject())
 				GradleProcessManager.build();
 			else
-				Screen.getBuildView().compileProject();
+				Screen.getProjectBuilder().compileProject();
 
 			e.consume();
 		}
@@ -724,7 +724,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			if(GradleProcessManager.isGradleProject())
 				GradleProcessManager.run();
 			else
-				Screen.getRunView().run();
+				Screen.getProjectRunner().run();
 			
 			e.consume();
 		}
@@ -732,14 +732,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public void triggerInstantRun(KeyEvent e){
 		if(screen.getToolMenu().buildComp.isClickable()){
-			Screen.getRunView().instantRun();
+			Screen.getProjectRunner().instantRun();
 			
 			e.consume();
 		}
 	}
 
 	public void showSearchDialog(KeyEvent e){
-		Screen.getFileView().getSearchWindow().setVisible(true);
+		Screen.getProjectFile().getSearchWindow().setVisible(true);
 		
 		e.consume();
 	}

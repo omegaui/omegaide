@@ -114,7 +114,7 @@ public class Terminal extends JPanel {
 	public void launchTerminal(){
 		new Thread(()->{
 			try{
-				shellProcess = new ProcessBuilder(shell).directory(new File(Screen.getFileView().getProjectPath())).start();
+				shellProcess = new ProcessBuilder(shell).directory(new File(Screen.getProjectFile().getProjectPath())).start();
 				inputReader = new Scanner(shellProcess.getInputStream());
 				errorReader = new Scanner(shellProcess.getErrorStream());
 				writer = new PrintWriter(shellProcess.getOutputStream());

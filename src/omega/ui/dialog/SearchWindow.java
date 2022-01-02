@@ -164,7 +164,7 @@ public class SearchWindow extends JDialog{
 		closeComp.setArc(0, 0);
 		add(closeComp);
 		
-		TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->cleanAndLoad(new File(Screen.getFileView().getProjectPath())));
+		TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->cleanAndLoad(new File(Screen.getProjectFile().getProjectPath())));
 		reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
 		reloadComp.setArc(0, 0);
 		reloadComp.setFont(PX14);

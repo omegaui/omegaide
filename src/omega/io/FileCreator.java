@@ -33,8 +33,8 @@ public class FileCreator {
 	}
 	
 	public void show(String type) {
-          fileWizard.parentRoot.setToolTipText(Screen.getFileView().getProjectPath() + File.separator + "src");
-		if(Screen.getFileView().getProjectPath() != null && new File(Screen.getFileView().getProjectPath()).exists())
+          fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
+		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
 			fileWizard.show(type);
 	}
 

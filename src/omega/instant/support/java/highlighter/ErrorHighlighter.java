@@ -77,9 +77,9 @@ public class ErrorHighlighter {
 				else if(canRecord) {
 					code = token.trim();
 					File file = new File(path);
-					Editor e = Screen.getFileView().getScreen().getTabPanel().findEditor(file);
+					Editor e = Screen.getProjectFile().getScreen().getTabPanel().findEditor(file);
 					if(e == null) {
-						e = Screen.getFileView().getScreen().loadFile(file);
+						e = Screen.getProjectFile().getScreen().loadFile(file);
 					}
 					Highlighter h = e.getHighlighter();
 					HighlightPainter hp = new DefaultHighlighter.DefaultHighlightPainter(color);

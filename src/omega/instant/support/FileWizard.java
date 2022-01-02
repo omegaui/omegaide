@@ -165,7 +165,7 @@ public class FileWizard extends JDialog{
 		if(type.equals("directory")){
 			File dir = new File(parentRoot.getToolTipText() + File.separator + nameField.getText());
 			dir.mkdir();
-			Screen.getFileView().getFileTreePanel().refresh();
+			Screen.getProjectFile().getFileTreePanel().refresh();
 			return;
 		}
 		if(!type.equals("Custom File")){
@@ -197,7 +197,7 @@ public class FileWizard extends JDialog{
 					nameField.setText("Access Denied");
 				}
 				try{
-					Screen.getFileView().getFileTreePanel().refresh();
+					Screen.getProjectFile().getFileTreePanel().refresh();
 					Screen.getScreen().loadFile(file);
 				}
 				catch(Exception e){
@@ -211,8 +211,8 @@ public class FileWizard extends JDialog{
 	
 	public void show(String type){
 		typeBtn.setText(type);
-		if(Screen.getFileView().getProjectPath() != null && new File(Screen.getFileView().getProjectPath()).exists())
-			parentRoot.setToolTipText(Screen.getFileView().getProjectPath() + File.separator + "src");
+		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
+			parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
 		setVisible(true);
 	}
 	
@@ -226,7 +226,7 @@ public class FileWizard extends JDialog{
 			}
 			writer.close();
 			omega.Screen.getScreen().loadFile(file);
-			Screen.getFileView().getFileTreePanel().refresh();
+			Screen.getProjectFile().getFileTreePanel().refresh();
 		}
 		catch(Exception e){
 			e.printStackTrace();

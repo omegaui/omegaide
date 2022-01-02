@@ -88,8 +88,8 @@ public class ProjectDistructionWizard extends JDialog{
 		deleteComp = new TextComp("", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
 			try{
 				dispose();
-				File projectDir = new File(Screen.getFileView().getProjectPath());
-				Screen.getFileView().closeProject();
+				File projectDir = new File(Screen.getProjectFile().getProjectPath());
+				Screen.getProjectFile().closeProject();
 				Editor.deleteDir(projectDir);
 				Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_DELETED, this, null));
 			}

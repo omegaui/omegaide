@@ -282,7 +282,7 @@ public class StructureView extends JDialog {
 				if(Assembly.has(im.getImport()))
 					reader = Assembly.getReader(im.getImport());
 				else
-					reader = Screen.getFileView().getJDKManager().prepareReader(im.getImport());
+					reader = Screen.getProjectFile().getJDKManager().prepareReader(im.getImport());
 				
 				if(reader.dataMembers == null)
 					return;
@@ -318,13 +318,13 @@ public class StructureView extends JDialog {
 				options.add("-public");
 				String depenPath = "";
 				
-				if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
-					for(String d : Screen.getFileView().getProjectManager().jars)
+				if(!Screen.getProjectFile().getProjectManager().jars.isEmpty()) {
+					for(String d : Screen.getProjectFile().getProjectManager().jars)
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
 				}
 				
-				if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-					for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+				if(!Screen.getProjectFile().getProjectManager().resourceRoots.isEmpty()) {
+					for(String d : Screen.getProjectFile().getProjectManager().resourceRoots)
 						depenPath += d + omega.Screen.PATH_SEPARATOR;
 				}
 				
@@ -333,7 +333,7 @@ public class StructureView extends JDialog {
 					options.add(depenPath);
 				}
 				
-				String modulePath = Screen.getFileView().getDependencyView().getModulePath();
+				String modulePath = Screen.getProjectFile().getDependencyView().getModulePath();
 				if(Screen.isNotNull(modulePath)){
 					options.add("--module-path");
 					options.add(modulePath);
@@ -345,7 +345,7 @@ public class StructureView extends JDialog {
 				
 				options.add(im.getImport());
 				
-				Process process = new ProcessBuilder(options).directory(new File(Screen.getFileView().getProjectPath())).start();
+				Process process = new ProcessBuilder(options).directory(new File(Screen.getProjectFile().getProjectPath())).start();
 				new Thread(()->{
 					try(Scanner errorReader = new Scanner(process.getErrorStream())){
 						while(process.isAlive()){

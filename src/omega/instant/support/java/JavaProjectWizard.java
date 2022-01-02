@@ -279,7 +279,7 @@ public class JavaProjectWizard extends JDialog {
 		
 		Screen.getScreen().loadProject(root);
 		
-		ProjectDataBase dataBase = Screen.getFileView().getProjectManager();
+		ProjectDataBase dataBase = Screen.getProjectFile().getProjectManager();
 		dataBase.setJDKPath(jdkComp.getToolTipText());
 		dataBase.save();
 		

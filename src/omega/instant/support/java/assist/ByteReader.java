@@ -159,7 +159,7 @@ public class ByteReader {
 			name = name.substring(name.indexOf(' ') + 1);
 		
 		if(!name.equals("java.lang.Object"))
-			value = Screen.getFileView().getJDKManager().prepareReader(name).isSubClass(className);
+			value = Screen.getProjectFile().getJDKManager().prepareReader(name).isSubClass(className);
 		
 		return isInternalReader(className) || value;
 	}

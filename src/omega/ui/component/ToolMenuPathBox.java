@@ -57,8 +57,8 @@ public class ToolMenuPathBox extends JComponent{
 			return;
 		}
 		
-		if(path.startsWith(Screen.getFileView().getProjectPath()))
-			path = path.substring(Screen.getFileView().getProjectPath().length());
+		if(path.startsWith(Screen.getProjectFile().getProjectPath()))
+			path = path.substring(Screen.getProjectFile().getProjectPath().length());
 		block = 0;
 		LinkedList<String> tokens = CodeTokenizer.tokenize(path, File.separatorChar);
 		tokens.add(path.substring(path.lastIndexOf(File.separator) + 1));

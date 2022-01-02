@@ -32,21 +32,21 @@ public class GradleProcessManager {
 	private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";
 	
 	public static boolean isGradleProject(){
-		File settings = new File(Screen.getFileView().getProjectPath(), "settings.gradle");
+		File settings = new File(Screen.getProjectFile().getProjectPath(), "settings.gradle");
 		return settings.exists();
 	}
 	public static void init(){
 		new Thread(()->{
 			try{
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{"gradle" + ext, "init"}, Screen.getFileView().getProjectPath());
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{"gradle" + ext, "init"}, Screen.getProjectFile().getProjectPath());
 				printArea.print("# Executing : gradle init");
 				printArea.print("--------------------------------------------------");
 				printArea.start();
 				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
-				if(!Screen.getFileView().getProjectManager().non_java){
-					Screen.getFileView().getProjectManager().non_java = true;
-					Screen.getScreen().manageTools(Screen.getFileView().getProjectManager());
-					Screen.getFileView().getProjectManager().save();
+				if(!Screen.getProjectFile().getProjectManager().non_java){
+					Screen.getProjectFile().getProjectManager().non_java = true;
+					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+					Screen.getProjectFile().getProjectManager().save();
 				}
 				while(printArea.terminalPanel.process.isAlive());
 				printArea.print("--------------------------------------------------");
@@ -55,7 +55,7 @@ public class GradleProcessManager {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			Screen.getFileView().getFileTreePanel().refresh();
+			Screen.getProjectFile().getFileTreePanel().refresh();
 		}).start();
 	}
 	public static void run(){
@@ -63,14 +63,14 @@ public class GradleProcessManager {
 			try{
                 Screen.getScreen().saveAllEditors();
 				
-				if(!Screen.getFileView().getProjectManager().non_java){
-					Screen.getFileView().getProjectManager().non_java = true;
-					Screen.getScreen().manageTools(Screen.getFileView().getProjectManager());
-					Screen.getFileView().getProjectManager().save();
+				if(!Screen.getProjectFile().getProjectManager().non_java){
+					Screen.getProjectFile().getProjectManager().non_java = true;
+					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+					Screen.getProjectFile().getProjectManager().save();
 				}
 				
 				
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "run"}, Screen.getFileView().getProjectPath());
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "run"}, Screen.getProjectFile().getProjectPath());
 				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, DataManager.getGradleCommand() + " run");
 				
 				printArea.print("# Executing : " + DataManager.getGradleCommand() +" run");
@@ -88,20 +88,20 @@ public class GradleProcessManager {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			Screen.getFileView().getFileTreePanel().refresh();
+			Screen.getProjectFile().getFileTreePanel().refresh();
 		}).start();
 	}
 	public static void build(){
 		new Thread(()->{
 			try{
                 Screen.getScreen().saveAllEditors();
-				if(!Screen.getFileView().getProjectManager().non_java){
-					Screen.getFileView().getProjectManager().non_java = true;
-					Screen.getScreen().manageTools(Screen.getFileView().getProjectManager());
-					Screen.getFileView().getProjectManager().save();
+				if(!Screen.getProjectFile().getProjectManager().non_java){
+					Screen.getProjectFile().getProjectManager().non_java = true;
+					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+					Screen.getProjectFile().getProjectManager().save();
 				}
 				
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "build"}, Screen.getFileView().getProjectPath());
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "build"}, Screen.getProjectFile().getProjectPath());
 				printArea.setLogMode(true);
 				printArea.print("# Executing : " + DataManager.getGradleCommand() +" build");
 				printArea.print("--------------------------------------------------");
@@ -118,7 +118,7 @@ public class GradleProcessManager {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			Screen.getFileView().getFileTreePanel().refresh();
+			Screen.getProjectFile().getFileTreePanel().refresh();
 		}).start();
 	}
 }

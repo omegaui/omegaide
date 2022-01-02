@@ -248,9 +248,9 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		scrollPane.getVerticalScrollBar().setValue(scrollPosition);
 		
 		new Thread(()->{
-			if(Screen.getFileView().getJDKManager() != null)
-				Screen.getFileView().getJDKManager().readSources(getRoot().getAbsolutePath());
-			Screen.getFileView().getSearchWindow().cleanAndLoad(new File(Screen.getFileView().getProjectPath()));
+			if(Screen.getProjectFile().getJDKManager() != null)
+				Screen.getProjectFile().getJDKManager().readSources(getRoot().getAbsolutePath());
+			Screen.getProjectFile().getSearchWindow().cleanAndLoad(new File(Screen.getProjectFile().getProjectPath()));
 		}).start();
 	}
 	

@@ -1,5 +1,5 @@
 /**
-* RunView
+* ProjectRunner
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify
@@ -71,7 +71,7 @@ import java.util.Scanner;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
-public class RunView {
+public class ProjectRunner {
 	
 	private Screen screen;
 	
@@ -92,7 +92,7 @@ public class RunView {
 	
 	private volatile boolean wasKilled = false;
 	
-	public RunView(Screen window) {
+	public ProjectRunner(Screen window) {
 		this.screen = window;
 		
 		buildLog = new BuildLog();
@@ -142,11 +142,11 @@ public class RunView {
 			getScreen().getToolMenu().buildComp.setClickable(false);
 			getScreen().getToolMenu().runComp.setClickable(false);
 			getScreen().getOperationPanel().removeTab("Build");
-			omega.Screen.getFileView().getArgumentManager().genLists();
-			LinkedList<String> args = Screen.getFileView().getArgumentManager().compile_time_args;
-			if(Screen.isNotNull(Screen.getFileView().getArgumentManager().getCompileCommand())){
+			omega.Screen.getProjectFile().getArgumentManager().genLists();
+			LinkedList<String> args = Screen.getProjectFile().getArgumentManager().compile_time_args;
+			if(Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getCompileCommand())){
 				Screen.setStatus("Building Project", 45, IconManager.fluentbuildImage);
-				String compileDir = Screen.getFileView().getArgumentManager().compileDir;
+				String compileDir = Screen.getProjectFile().getArgumentManager().compileDir;
 				
 				String[] commandsAsArray = new String[args.size()];
 				for(int i = 0; i < args.size(); i++){
@@ -157,7 +157,7 @@ public class RunView {
 				printArea.setLogMode(true);
 				try {
 					printArea.printText("Building Project ...");
-					printArea.printText("Executing ... " + Screen.getFileView().getArgumentManager().getCompileCommand());
+					printArea.printText("Executing ... " + Screen.getProjectFile().getArgumentManager().getCompileCommand());
 					
 					printArea.start();
 					
@@ -224,8 +224,8 @@ public class RunView {
 		new Thread(()->{
 			getScreen().getToolMenu().runComp.setClickable(false);
 			getScreen().getOperationPanel().removeTab("Build");
-			omega.Screen.getFileView().getArgumentManager().genLists();
-			LinkedList<String> args = Screen.getFileView().getArgumentManager().run_time_args;
+			omega.Screen.getProjectFile().getArgumentManager().genLists();
+			LinkedList<String> args = Screen.getProjectFile().getArgumentManager().run_time_args;
 			
 			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage, "Running Project");
 			String status = "Successfully";
@@ -235,7 +235,7 @@ public class RunView {
 			if(count > -1)
 				name = name + " " + count;
 
-			if(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand())){
+			if(!Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getRunCommand())){
 				NotificationPopup.create(getScreen())
 				.size(500, 120)
 				.title("Project Management")
@@ -253,10 +253,10 @@ public class RunView {
 				commandsAsArray[i] = args.get(i);
 			}
 			
-			String runDir = Screen.getFileView().getArgumentManager().runDir;
+			String runDir = Screen.getProjectFile().getArgumentManager().runDir;
 			JetRunPanel terminal = new JetRunPanel(false, commandsAsArray, runDir);
 			try{
-				terminal.printText("Running Project...\n" + Screen.getFileView().getArgumentManager().getRunCommand());
+				terminal.printText("Running Project...\n" + Screen.getProjectFile().getArgumentManager().getRunCommand());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 
@@ -278,7 +278,7 @@ public class RunView {
 						terminal.printText("Unable to Run the Specified Command!");
 					
 					runningApps.remove(terminal.terminalPanel.process);
-					Screen.getFileView().getFileTreePanel().refresh();
+					Screen.getProjectFile().getFileTreePanel().refresh();
 				}).start();
 				
 			}
@@ -297,7 +297,7 @@ public class RunView {
 	
 	public void justRun(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getFileView().getProjectManager().non_java){
+		if(omega.Screen.getProjectFile().getProjectManager().non_java){
 			justRunNJ();
 			return;
 		}
@@ -321,7 +321,7 @@ public class RunView {
 				Screen.setStatus("Running Project", 23, IconManager.fluentrunImage);
 				
 				NATIVE_PATH = "";
-				for(String d : Screen.getFileView().getProjectManager().natives) {
+				for(String d : Screen.getProjectFile().getProjectManager().natives) {
 					NATIVE_PATH += d + omega.Screen.PATH_SEPARATOR;
 				}
 				
@@ -333,29 +333,29 @@ public class RunView {
 					NATIVE_PATH = "$PATH";
 				
 				String depenPath = "";
-				for(String d : Screen.getFileView().getProjectManager().jars)
+				for(String d : Screen.getProjectFile().getProjectManager().jars)
 					depenPath += d + omega.Screen.PATH_SEPARATOR;
-				for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+				for(String d : Screen.getProjectFile().getProjectManager().resourceRoots)
 					depenPath += d + omega.Screen.PATH_SEPARATOR;
 				if(!depenPath.equals("")) {
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				}
 				
 				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage, "Running Project");
-				if(Screen.getFileView().getProjectManager().jdkPath == null){
+				if(Screen.getProjectFile().getProjectManager().jdkPath == null){
 					getScreen().getToolMenu().runComp.setClickable(true);
 					Screen.setStatus("Please Setup the Project JDK First!", 99, IconManager.fluentbrokenbotImage, "JDK");
 					return;
 				}
 				
-				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+				String jdkPath = String.copyValueOf(Screen.getProjectFile().getProjectManager().jdkPath.toCharArray());
 				String cmd = null;
 				if(jdkPath != null && new File(jdkPath).exists())
 					cmd = jdkPath + File.separator + "bin" + File.separator + "java";
 				else
 					cmd = "java" + cmd;
 				
-				File workingDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
+				File workingDir = new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 				LinkedList<String> commands = new LinkedList<>();
 				commands.add(cmd);
 				
@@ -364,8 +364,8 @@ public class RunView {
 					commands.add(depenPath + File.pathSeparator + ".");
 				}
 				
-				String modulePath = Screen.getFileView().getDependencyView().getModulePath();
-				String modules = Screen.getFileView().getDependencyView().getModules();
+				String modulePath = Screen.getProjectFile().getDependencyView().getModulePath();
+				String modules = Screen.getProjectFile().getDependencyView().getModules();
 				if(Screen.isNotNull(modulePath)){
 					commands.add("--module-path");
 					commands.add(modulePath);
@@ -376,7 +376,7 @@ public class RunView {
 				if(Screen.isNotNull(NATIVE_PATH))
 					commands.add("-Djava.library.path=" + NATIVE_PATH);
 				
-				Screen.getFileView().getProjectManager().runTimeFlags.forEach(commands::add);
+				Screen.getProjectFile().getProjectManager().runTimeFlags.forEach(commands::add);
 				
 				commands.add(mainClass);
 				
@@ -398,7 +398,7 @@ public class RunView {
 					instantRun();
 				});
 				
-				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 				
@@ -425,7 +425,7 @@ public class RunView {
 						terminal.printText("Unable to Run the Specified Command!");
 					
 					runningApps.remove(terminal.terminalPanel.process);
-					Screen.getFileView().getFileTreePanel().refresh();
+					Screen.getProjectFile().getFileTreePanel().refresh();
 				}).start();
 				
 				getScreen().getToolMenu().runComp.setClickable(true);
@@ -444,13 +444,13 @@ public class RunView {
 	
 	public void instantBuild(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getFileView().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
+		if(omega.Screen.getProjectFile().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
 			return;
 		}
 		
 		new Thread(()->{
 			try{
-				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+				if(!JDKManager.isJDKPathValid(Screen.getProjectFile().getProjectManager().jdkPath)){
 					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentrocketbuildImage, "select", "JDK");
 					return;
 				}
@@ -521,13 +521,13 @@ public class RunView {
 	
 	public void instantRun(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getFileView().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
+		if(omega.Screen.getProjectFile().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
 			return;
 		}
 		
 		new Thread(()->{
 			try{
-				if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+				if(!JDKManager.isJDKPathValid(Screen.getProjectFile().getProjectManager().jdkPath)){
 					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage, "select", "JDK");
 					return;
 				}
@@ -540,14 +540,14 @@ public class RunView {
 				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
 				
 				if(diagnostics == null){
-					if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
+					if(!isRunCapable(new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin"))) {
 						NotificationPopup.create(Screen.getScreen())
 						.size(400, 120)
 						.title("Instant Dynamic Compiler", TOOLMENU_COLOR4)
 						.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
 						.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
 						.dialogIcon(IconManager.fluenterrorImage)
-						.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
+						.iconButton(IconManager.fluentbuildImage, Screen.getProjectBuilder()::compileProject, "Click to Clean & Build")
 						.build()
 						.locateOnBottomLeft()
 						.showIt();
@@ -601,7 +601,7 @@ public class RunView {
 				}
 				Screen.getErrorHighlighter().removeAllHighlights();
 				
-				if(!isRunCapable(new File(Screen.getFileView().getProjectPath() + File.separator + "bin"))) {
+				if(!isRunCapable(new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin"))) {
 					Screen.setStatus("None Compiled Codes Present, Aborting Instant Run. Rebuild the Project First -- Instant Run", 0, IconManager.fluentbrokenbotImage, "Rebuild the Project First");
 					System.gc();
 					return;
@@ -625,7 +625,7 @@ public class RunView {
 	public void run() {
 		getScreen().saveAllEditors();
 		System.gc();
-		if(omega.Screen.getFileView().getProjectManager().non_java){
+		if(omega.Screen.getProjectFile().getProjectManager().non_java){
 			runNJ();
 			return;
 		}
@@ -648,16 +648,16 @@ public class RunView {
 			
 			try {
 				try {
-					if(!JDKManager.isJDKPathValid(Screen.getFileView().getProjectManager().jdkPath)){
+					if(!JDKManager.isJDKPathValid(Screen.getProjectFile().getProjectManager().jdkPath)){
 						Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage);
 						return;
 					}
-					Screen.getBuildView().createClassList();
-					if(Screen.getBuildView().classess.isEmpty())
+					Screen.getProjectBuilder().createClassList();
+					if(Screen.getProjectBuilder().classess.isEmpty())
 						return;
 					getScreen().getOperationPanel().removeTab("Compilation");
 					Screen.getErrorHighlighter().removeAllHighlights();
-					BuildView.optimizeProjectOutputs();
+					ProjectBuilder.optimizeProjectOutputs();
 					getScreen().getToolMenu().buildComp.setClickable(false);
 					getScreen().getToolMenu().runComp.setClickable(false);
 					errorlog = "";
@@ -677,19 +677,19 @@ public class RunView {
 						}).start();
 					});
 					
-					String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+					String jdkPath = String.copyValueOf(Screen.getProjectFile().getProjectManager().jdkPath.toCharArray());
 					if(jdkPath != null && new File(jdkPath).exists())
 						jdkPath = String.copyValueOf(jdkPath.toCharArray()) + File.separator + "bin" + File.separator;
 					
 					String cmd = "";
 					String depenPath = "";
-					if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
-						for(String d : Screen.getFileView().getProjectManager().jars) {
+					if(!Screen.getProjectFile().getProjectManager().jars.isEmpty()) {
+						for(String d : Screen.getProjectFile().getProjectManager().jars) {
 							depenPath += d + omega.Screen.PATH_SEPARATOR;
 						}
 					}
-                    if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-                         for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+                    if(!Screen.getProjectFile().getProjectManager().resourceRoots.isEmpty()) {
+                         for(String d : Screen.getProjectFile().getProjectManager().resourceRoots)
                               depenPath += d + omega.Screen.PATH_SEPARATOR;
                     }
 					if(!depenPath.equals("")) {
@@ -701,7 +701,7 @@ public class RunView {
 					else
 						cmd = "javac" + cmd;
 					
-					File workingDir = new File(Screen.getFileView().getProjectPath());
+					File workingDir = new File(Screen.getProjectFile().getProjectPath());
 					LinkedList<String> commands = new LinkedList<>();
 					commands.add(cmd);
 					commands.add("-d");
@@ -712,8 +712,8 @@ public class RunView {
 						commands.add(depenPath);
 					}
 					
-					String modulePath = Screen.getFileView().getDependencyView().getModulePath();
-					String modules = Screen.getFileView().getDependencyView().getModules();
+					String modulePath = Screen.getProjectFile().getDependencyView().getModulePath();
+					String modules = Screen.getProjectFile().getDependencyView().getModules();
 					if(Screen.isNotNull(modulePath)){
 						commands.add("--module-path");
 						commands.add(modulePath);
@@ -721,9 +721,9 @@ public class RunView {
 						commands.add(modules);
 					}
 					
-					Screen.getFileView().getProjectManager().compileTimeFlags.forEach(commands::add);
+					Screen.getProjectFile().getProjectManager().compileTimeFlags.forEach(commands::add);
 					
-					commands.add("@" + BuildView.SRC_LIST);
+					commands.add("@" + ProjectBuilder.SRC_LIST);
 					
 					String[] commandsAsArray = new String[commands.size()];
 					
@@ -745,7 +745,7 @@ public class RunView {
 					
 					Screen.setStatus("Building Project -- Double Click to kill this process", 90, IconManager.fluentrunImage, "Building Project");
 					getScreen().getToolMenu().buildComp.setClickable(true);
-					Screen.getFileView().getFileTreePanel().refresh();
+					Screen.getProjectFile().getFileTreePanel().refresh();
 					if(compileProcess.exitValue() != 0) {
 						Screen.setStatus("", 100, null);
 						runningApps.remove(compileProcess);
@@ -773,7 +773,7 @@ public class RunView {
 				Screen.setStatus("Running Project", 23, IconManager.fluentrunImage);
 				
 				NATIVE_PATH = "";
-				for(String d : Screen.getFileView().getProjectManager().natives) {
+				for(String d : Screen.getProjectFile().getProjectManager().natives) {
 					NATIVE_PATH += d + omega.Screen.PATH_SEPARATOR;
 				}
 				if(!NATIVE_PATH.equals("")) {
@@ -784,28 +784,28 @@ public class RunView {
 					NATIVE_PATH = "$PATH";
 				
 				String depenPath = "";
-				for(String d : Screen.getFileView().getProjectManager().jars)
+				for(String d : Screen.getProjectFile().getProjectManager().jars)
 					depenPath += d + omega.Screen.PATH_SEPARATOR;
-				for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+				for(String d : Screen.getProjectFile().getProjectManager().resourceRoots)
 					depenPath += d + omega.Screen.PATH_SEPARATOR;
 				if(!depenPath.equals(""))
 					depenPath = depenPath.substring(0, depenPath.length() - 1);
 				
 				
 				Screen.setStatus("Running Project", 56, IconManager.fluentrunImage);
-				if(Screen.getFileView().getProjectManager().jdkPath == null){
+				if(Screen.getProjectFile().getProjectManager().jdkPath == null){
 					getScreen().getToolMenu().runComp.setClickable(true);
 					Screen.setStatus("Please Setup the Project JDK First!", 99, IconManager.fluentbrokenbotImage);
 					return;
 				}
-				String jdkPath = String.copyValueOf(Screen.getFileView().getProjectManager().jdkPath.toCharArray());
+				String jdkPath = String.copyValueOf(Screen.getProjectFile().getProjectManager().jdkPath.toCharArray());
 				String cmd = null;
 				if(jdkPath != null && new File(jdkPath).exists())
 					cmd = jdkPath + File.separator + "bin" + File.separator + "java";
 				else
 					cmd = "java" + cmd;
 				
-				File workingDir = new File(Screen.getFileView().getProjectPath() + File.separator + "bin");
+				File workingDir = new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 				LinkedList<String> commands = new LinkedList<>();
 				commands.add(cmd);
 				
@@ -814,8 +814,8 @@ public class RunView {
 					commands.add(depenPath + File.pathSeparator + ".");
 				}
 				
-				String modulePath = Screen.getFileView().getDependencyView().getModulePath();
-				String modules = Screen.getFileView().getDependencyView().getModules();
+				String modulePath = Screen.getProjectFile().getDependencyView().getModulePath();
+				String modules = Screen.getProjectFile().getDependencyView().getModules();
 				if(Screen.isNotNull(modulePath)){
 					commands.add("--module-path");
 					commands.add(modulePath);
@@ -826,7 +826,7 @@ public class RunView {
 				if(Screen.isNotNull(NATIVE_PATH))
 					commands.add("-Djava.library.path=" + NATIVE_PATH);
 				
-				Screen.getFileView().getProjectManager().runTimeFlags.forEach(commands::add);
+				Screen.getProjectFile().getProjectManager().runTimeFlags.forEach(commands::add);
 				
 				commands.add(mainClass);
 				
@@ -848,7 +848,7 @@ public class RunView {
 				});
 				runningApps.add(terminal.terminalPanel.process);
 				
-				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getFileView().getJDKManager().getVersionAsInt());
+				terminal.printText("running \""+mainClass+"\" with JDK v" + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
 				
@@ -869,7 +869,7 @@ public class RunView {
 					terminal.printText("---<>--------------------------------------<>---");
 					terminal.printText("Program Execution finished with Exit Code " + terminal.terminalPanel.process.exitValue());
 					runningApps.remove(terminal.terminalPanel.process);
-					Screen.getFileView().getFileTreePanel().refresh();
+					Screen.getProjectFile().getFileTreePanel().refresh();
 				}).start();
 								
 				getScreen().getToolMenu().runComp.setClickable(true);

@@ -128,8 +128,8 @@ public class ExtendedBuildPathManager extends JDialog {
 	@Override
 	public void setVisible(boolean value){
 		if(value){
-	          compilePanel.loadFlags(Screen.getFileView().getProjectManager().compileTimeFlags);
-	          runPanel.loadFlags(Screen.getFileView().getProjectManager().runTimeFlags);
+	          compilePanel.loadFlags(Screen.getProjectFile().getProjectManager().compileTimeFlags);
+	          runPanel.loadFlags(Screen.getProjectFile().getProjectManager().runTimeFlags);
 		}
 	     super.setVisible(value);
 	}
@@ -138,11 +138,11 @@ public class ExtendedBuildPathManager extends JDialog {
 	public void dispose(){
 		super.dispose();
 		try{
-			Screen.getFileView().getProjectManager().compileTimeFlags.clear();
-			Screen.getFileView().getProjectManager().runTimeFlags.clear();
+			Screen.getProjectFile().getProjectManager().compileTimeFlags.clear();
+			Screen.getProjectFile().getProjectManager().runTimeFlags.clear();
 			
-			getCompileTimeFlags().forEach(Screen.getFileView().getProjectManager().compileTimeFlags::add);
-			getRunTimeFlags().forEach(Screen.getFileView().getProjectManager().runTimeFlags::add);
+			getCompileTimeFlags().forEach(Screen.getProjectFile().getProjectManager().compileTimeFlags::add);
+			getRunTimeFlags().forEach(Screen.getProjectFile().getProjectManager().runTimeFlags::add);
 		}
 		catch(Exception e){
 			e.printStackTrace();

@@ -16,6 +16,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega;
+import javax.swing.filechooser.FileView;
+
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -55,16 +57,16 @@ import omega.instant.support.universal.UniversalSettingsWizard;
 import omega.instant.support.java.highlighter.ErrorHighlighter;
 
 import omega.io.DataManager;
-import omega.io.RunView;
-import omega.io.BuildView;
 import omega.io.RecentsManager;
 import omega.io.SnippetBase;
 import omega.io.ProjectDataBase;
 import omega.io.PopupManager;
 import omega.io.UIManager;
-import omega.io.FileView;
 import omega.io.Startup;
 import omega.io.IconManager;
+import omega.io.ProjectFile;
+import omega.io.ProjectRunner;
+import omega.io.ProjectBuilder;
 
 import java.awt.Robot;
 import java.awt.Color;
@@ -126,9 +128,9 @@ public class Screen extends JFrame {
 	private static Robot robot;
 	private static UIManager uiManager;
 	private static DataManager dataManager;
-	private static RunView runView;
-	private static FileView fileView;
-	private static BuildView buildView;
+	private static ProjectFile projectFile;
+	private static ProjectRunner projectRunner;
+	private static ProjectBuilder projectBuilder;
 	private static RecentsManager recentsManager;
 	private static ErrorHighlighter errorHighlighter;
 	private static UniversalSettingsWizard universalSettings;
@@ -270,16 +272,16 @@ public class Screen extends JFrame {
 		
 		splash.setProgress(77, "initializing");
 		
-		fileView = new FileView(this);
+		projectFile = new ProjectFile(this);
 		
 		universalSettings = new UniversalSettingsWizard(this);
 		
-		buildView = new BuildView(this);
+		projectBuilder = new ProjectBuilder(this);
 		
-		runView = new RunView(this);
+		projectRunner = new ProjectRunner(this);
 
 		splitPane.setDividerLocation(300);
-		splitPane.setLeftComponent(fileView.getFileTreePanel());
+		splitPane.setLeftComponent(projectFile.getFileTreePanel());
 		
 		splash.setProgress(83, "plugging in");
 		
@@ -315,7 +317,7 @@ public class Screen extends JFrame {
 			if(GradleProcessManager.isGradleProject())
 				GradleProcessManager.build();
 			else
-				Screen.getBuildView().compileProject();
+				projectBuilder.compileProject();
 
 			e.consume();
 		}
@@ -326,7 +328,7 @@ public class Screen extends JFrame {
 			if(GradleProcessManager.isGradleProject())
 				GradleProcessManager.run();
 			else
-				Screen.getRunView().run();
+				projectRunner.run();
 			
 			e.consume();
 		}
@@ -334,43 +336,20 @@ public class Screen extends JFrame {
 
 	public void triggerInstantRun(KeyEvent e){
 		if(toolMenu.buildComp.isClickable()){
-			Screen.getRunView().instantRun();
+			projectRunner.instantRun();
 			
 			e.consume();
 		}
 	}
 
 	public void showSearchDialog(KeyEvent e){
-		fileView.getSearchWindow().setVisible(true);
+		projectFile.getSearchWindow().setVisible(true);
 		
 		e.consume();
 	}
 	
 	public void toggleFileTree(){
-		fileView.getFileTreePanel().setVisible(!fileView.getFileTreePanel().isVisible());
-	}
-	
-	public static void notify(String text) {
-		getScreen().setTitle(text);
-	}
-	
-	public static void hideNotif() {
-		getScreen().loadTitle(getFileView().getProjectName());
-	}
-	
-	public static void notify(String text, long time, Runnable task) {
-		getScreen().setTitle(text);
-		new Thread(()->{
-			try{
-				Thread.sleep(time);
-			}
-			catch(Exception e) {
-				
-			}
-			getScreen().loadTitle(getFileView().getProjectName());
-			if(task != null)
-				task.run();
-		}).start();
+		projectFile.getFileTreePanel().setVisible(!projectFile.getFileTreePanel().isVisible());
 	}
 	
 	public void manageTools(ProjectDataBase manager){
@@ -386,7 +365,7 @@ public class Screen extends JFrame {
 		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.non_java);
 		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.non_java);
 		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.non_java);
-		toolMenu.typeItem.setName(fileView.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
+		toolMenu.typeItem.setName(projectFile.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
 		sideMenu.structureComp.setVisible(!manager.non_java);
 		toolMenu.changeLocations(manager.non_java);
 		sideMenu.changeLocations(manager.non_java);
@@ -523,8 +502,8 @@ public class Screen extends JFrame {
 	}
 	
 	public void loadProject(File file) {
-		fileView.saveAll();
-		fileView.setProjectPath(file.getAbsolutePath());
+		projectFile.saveAll();
+		projectFile.setProjectPath(file.getAbsolutePath());
 		setVisible(true);
 	}
 	
@@ -562,7 +541,7 @@ public class Screen extends JFrame {
 			String token = tokenizer.nextToken();
 			if(canRecord)
 				res += token + File.separator;
-			else if(token.equals(getFileView().getProjectName()))
+			else if(token.equals(projectFile.getProjectName()))
 				canRecord = true;
 		}
 		if(!canRecord)
@@ -586,9 +565,8 @@ public class Screen extends JFrame {
 	@Override
 	public void dispose(){
 		active = false;
-		Screen.notify("Terminating Running Applications");
 		try{
-			for(Process p : runView.runningApps) {
+			for(Process p : projectRunner.runningApps) {
 				if(p.isAlive())
 					p.destroyForcibly();
 			}
@@ -596,15 +574,13 @@ public class Screen extends JFrame {
 		catch(Exception e) {
 			
 		}
-		Screen.notify("Saving UI and Data");
 		pluginManager.save();
 		uiManager.save();
 		dataManager.saveData();
 		SnippetBase.save();
-		Screen.notify("Saving Project");
 		saveAllEditors();
 		try{
-			getFileView().getProjectManager().save();
+			projectFile.getProjectManager().save();
 		}
 		catch(Exception e2) {
 			
@@ -615,23 +591,23 @@ public class Screen extends JFrame {
 	}
 	
 	public static final Screen getScreen() {
-		return Screen.getFileView().getScreen();
+		return Screen.getProjectFile().getScreen();
 	}
 	
 	public static RecentsManager getRecentsManager() {
 		return recentsManager;
 	}
 	
-	public static FileView getFileView() {
-		return fileView;
+	public static ProjectFile getProjectFile() {
+		return projectFile;
 	}
 	
-	public static BuildView getBuildView() {
-		return buildView;
+	public static ProjectRunner getProjectRunner() {
+		return projectRunner;
 	}
 	
-	public static RunView getRunView() {
-		return runView;
+	public static ProjectBuilder getProjectBuilder() {
+		return projectBuilder;
 	}
 	
 	public static ErrorHighlighter getErrorHighlighter() {
@@ -809,9 +785,7 @@ public class Screen extends JFrame {
 	public void saveEssential() {
 		uiManager.save();
 		dataManager.saveData();
-		notify("Saving Project");
 		saveAllEditors();
-		hideNotif();
 	}
 	
 	public static boolean onWindows(){

@@ -48,7 +48,7 @@ public final class ErrorHighlighters {
 	}
 	
 	public static void showErrors(String errorLog){
-		int tag = Screen.getFileView().getProjectManager().getLanguageTag();
+		int tag = Screen.getProjectFile().getProjectManager().getLanguageTag();
 		if(tag == LanguageTagView.LANGUAGE_TAG_C || tag == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
 			cErrorHighlighter.loadErrors(errorLog);
 		else if(tag == LanguageTagView.LANGUAGE_TAG_KOTLIN)
@@ -60,7 +60,7 @@ public final class ErrorHighlighters {
 	}
 	
 	public static boolean isLoggerPresentForCurrentLang(){
-		int tag = Screen.getFileView().getProjectManager().getLanguageTag();
+		int tag = Screen.getProjectFile().getProjectManager().getLanguageTag();
 		return (tag == LanguageTagView.LANGUAGE_TAG_C) || (tag == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
 		|| (tag == LanguageTagView.LANGUAGE_TAG_PYTHON) || (tag == LanguageTagView.LANGUAGE_TAG_KOTLIN)
 		|| externalErrorHighlighters.get(tag) != null;

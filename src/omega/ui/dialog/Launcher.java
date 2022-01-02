@@ -101,7 +101,7 @@ public class Launcher extends JFrame{
 		
 		//Left Final Components
 		TextComp openComp = new TextComp("Open a Project", TOOLMENU_COLOR3, TOOLMENU_COLOR3_SHADE, c2, ()->{
-			Screen.getFileView().open("Project");
+			Screen.getProjectFile().open("Project");
 		});
 		openComp.setBounds(10, 10, 180, 25);
 		openComp.setFont(PX14);

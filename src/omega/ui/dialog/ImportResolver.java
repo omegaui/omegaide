@@ -48,7 +48,7 @@ public class ImportResolver extends JDialog {
 	private int block;
 	
 	public ImportResolver() {
-		super(Screen.getFileView().getScreen(), true);
+		super(Screen.getProjectFile().getScreen(), true);
 		setTitle("Import Resolver");
 		setUndecorated(true);
 		setResizable(false);

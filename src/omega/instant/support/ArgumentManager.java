@@ -37,7 +37,7 @@ public class ArgumentManager extends DataBase{
 	public LinkedList<ListMaker> units = new LinkedList<>();
 	
 	public ArgumentManager(){
-		super(Screen.getFileView().getProjectPath() + File.separator + ".args");
+		super(Screen.getProjectFile().getProjectPath() + File.separator + ".args");
 		compile_time_args.clear();
 		run_time_args.clear();
 		load();
@@ -80,7 +80,7 @@ public class ArgumentManager extends DataBase{
 	
 	public void writeList(String name, LinkedList<File> files, boolean sur){
 		try{
-			PrintWriter writer = new PrintWriter(new File(Screen.getFileView().getProjectPath() + File.separator + name));
+			PrintWriter writer = new PrintWriter(new File(Screen.getProjectFile().getProjectPath() + File.separator + name));
 			files.forEach(file->{
 				if(sur)
 					writer.println("\"" + file.getAbsolutePath() + "\"");

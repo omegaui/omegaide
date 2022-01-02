@@ -124,8 +124,8 @@ public class OverView extends JDialog{
      }
 
      public void genView(RSyntaxTextArea textArea){
-          if(omega.Screen.getFileView().getProjectManager().non_java) return;
-          if(textArea == null) return;
+          if(omega.Screen.getProjectFile().getProjectManager().non_java || textArea == null)
+          	return;
           new Thread(()->{
                this.textArea = textArea;
                comps.forEach(panel::remove);
@@ -144,7 +144,7 @@ public class OverView extends JDialog{
                               if(Assembly.has(path))
                                    bx = Assembly.getReader(path);
                               else 
-                                   bx = omega.Screen.getFileView().getJDKManager().prepareReader(path);
+                                   bx = omega.Screen.getProjectFile().getJDKManager().prepareReader(path);
                               brs.add(bx);
                          }
                     }
@@ -158,7 +158,7 @@ public class OverView extends JDialog{
                          if(Assembly.has(path))
                               bx = Assembly.getReader(path);
                          else 
-                              bx = omega.Screen.getFileView().getJDKManager().prepareReader(path);
+                              bx = omega.Screen.getProjectFile().getJDKManager().prepareReader(path);
                          brs.add(bx);
                     }
                }

@@ -85,7 +85,7 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 						//System.out.println(text);
 					}
 					catch(Exception ex){
-						Screen.notify("Code Navigation Encountered an Exception");
+						//Nothing Here!
 					}
 				}).start();
 			}
@@ -156,9 +156,6 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 				else {
 					//Nothing Designed for this situation yet!
 				}
-			}
-			else{
-				Screen.notify("Couldn't find any matches");
 			}
 		}
 	}

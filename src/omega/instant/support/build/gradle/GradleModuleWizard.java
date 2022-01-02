@@ -240,11 +240,11 @@ public class GradleModuleWizard extends JDialog{
 		generateApplicationTemplate(result2.getText());
 		generateBuildTemplate(result3.getText());
 		titleComp.setText("Module Generated Successfully");
-		Screen.getFileView().getFileTreePanel().refresh();
+		Screen.getProjectFile().getFileTreePanel().refresh();
 	}
 	public void generateApplicationTemplate(String language){
 		String moduleName = nameField.getText();
-		File moduleFile = new File(Screen.getFileView().getProjectPath(), moduleName);
+		File moduleFile = new File(Screen.getProjectFile().getProjectPath(), moduleName);
 		if(moduleFile.exists()){
 			titleComp.setText("Module Already Exists");
 			titleComp.setColors(TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, c2);
@@ -273,7 +273,7 @@ public class GradleModuleWizard extends JDialog{
 	public void generateBuildTemplate(String descriptor){
 		boolean groovyDSL = descriptor.equalsIgnoreCase("groovy");
 		String buildName = groovyDSL ? "build.gradle" : "build.gradle.kts";
-		try(PrintWriter writer = new PrintWriter(new File(Screen.getFileView().getProjectPath() + File.separator + nameField.getText(), buildName))){
+		try(PrintWriter writer = new PrintWriter(new File(Screen.getProjectFile().getProjectPath() + File.separator + nameField.getText(), buildName))){
 			writer.println(getTemplate("plugins"));
 			writer.println(getTemplate("repositories"));
 			writer.println(getTemplate("dependencies"));

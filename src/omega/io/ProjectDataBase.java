@@ -48,7 +48,7 @@ public class ProjectDataBase extends DataBase{
 	public LinkedList<String> runTimeFlags = new LinkedList<>();
 	
 	public ProjectDataBase() {
-		super(Screen.getFileView().getProjectPath() + File.separator + ".projectInfo");
+		super(Screen.getProjectFile().getProjectPath() + File.separator + ".projectInfo");
 		load();
 	}
 	
@@ -59,7 +59,7 @@ public class ProjectDataBase extends DataBase{
 		if(!non_java) {
 			jdk = new File(jdkPath != null ? jdkPath : "");
 			try {
-				Screen.getRunView().mainClass = mainClass;
+				Screen.getProjectRunner().mainClass = mainClass;
 			}
 			catch(Exception e) {
 				
@@ -84,7 +84,7 @@ public class ProjectDataBase extends DataBase{
 				value = modifyProjectPath(value);
 				File f = new File(value);
 				if(f.exists())
-					Screen.getFileView().getScreen().loadFile(f);
+					Screen.getProjectFile().getScreen().loadFile(f);
 			}
 		}
 		if(rightEditors != null){
@@ -93,7 +93,7 @@ public class ProjectDataBase extends DataBase{
 				value = modifyProjectPath(value);
 				File f = new File(value);
 				if(f.exists())
-					Screen.getFileView().getScreen().loadFileOnRightTabPanel(f);
+					Screen.getProjectFile().getScreen().loadFileOnRightTabPanel(f);
 			}
 		}
 		if(bottomEditors != null){
@@ -102,7 +102,7 @@ public class ProjectDataBase extends DataBase{
 				value = modifyProjectPath(value);
 				File f = new File(value);
 				if(f.exists())
-					Screen.getFileView().getScreen().loadFileOnBottomTabPanel(f);
+					Screen.getProjectFile().getScreen().loadFileOnBottomTabPanel(f);
 			}
 		}
 		if(jars != null){
@@ -157,20 +157,20 @@ public class ProjectDataBase extends DataBase{
 	public void save() {
 		clear();
 		addEntry("JDK Path", jdkPath);
-		addEntry("Main Class", Screen.getRunView().mainClass != null ? Screen.getRunView().mainClass : "");
+		addEntry("Main Class", Screen.getProjectRunner().mainClass != null ? Screen.getProjectRunner().mainClass : "");
 		addEntry("Non-Java Project", String.valueOf(non_java));
 		addEntry("Language Tag", getLanguageTag() + "");
-		Screen.getFileView().getScreen().getTabPanel().getEditors().forEach(editor->{
+		Screen.getProjectFile().getScreen().getTabPanel().getEditors().forEach(editor->{
 			if(editor.currentFile != null) {
 				addEntry("Opened Editors on Main Tab Panel", genProjectRootPath(editor.currentFile.getAbsolutePath()));
 			}
 		});
-		Screen.getFileView().getScreen().getRightTabPanel().getEditors().forEach(editor->{
+		Screen.getProjectFile().getScreen().getRightTabPanel().getEditors().forEach(editor->{
 			if(editor.currentFile != null) {
 				addEntry("Opened Editors on Right Tab Panel", genProjectRootPath(editor.currentFile.getAbsolutePath()));
 			}
 		});
-		Screen.getFileView().getScreen().getBottomTabPanel().getEditors().forEach(editor->{
+		Screen.getProjectFile().getScreen().getBottomTabPanel().getEditors().forEach(editor->{
 			if(editor.currentFile != null) {
 				addEntry("Opened Editors on Bottom Tab Panel", genProjectRootPath(editor.currentFile.getAbsolutePath()));
 			}
@@ -187,10 +187,10 @@ public class ProjectDataBase extends DataBase{
 		modules.forEach(path->{
 			addEntry("Project Classpath : Required Modules", genProjectRootPath(path));
 		});
-		Screen.getFileView().getExtendedDependencyView().getCompileTimeFlags().forEach(flag->{
+		Screen.getProjectFile().getExtendedDependencyView().getCompileTimeFlags().forEach(flag->{
 			addEntry("Flags : Compile Time", flag);
 		});
-		Screen.getFileView().getExtendedDependencyView().getRunTimeFlags().forEach(flag->{
+		Screen.getProjectFile().getExtendedDependencyView().getRunTimeFlags().forEach(flag->{
 			addEntry("Flags : Run Time", flag);
 		});
 		super.save();
@@ -231,7 +231,7 @@ public class ProjectDataBase extends DataBase{
 	
 	public void setJDKPath(String path){
 		this.jdkPath = path;
-		Screen.getFileView().readJDK();
+		Screen.getProjectFile().readJDK();
 	}
 	
 	public int getLanguageTag() {

@@ -19,10 +19,10 @@
 package omega.instant.support.java.parser;
 import omega.ui.component.Editor;
 
+import omega.io.ProjectBuilder;
 import omega.io.FileOperationManager;
 import omega.io.IconManager;
 import omega.io.Startup;
-import omega.io.BuildView;
 
 import omega.ui.popup.NotificationPopup;
 
@@ -81,7 +81,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 													.message("Instant Mode Speed Requires Pre-Compiled Byte Codes", TOOLMENU_COLOR2)
 													.shortMessage("Click to Start a Headless Build", TOOLMENU_COLOR1)
 													.dialogIcon(IconManager.fluenterrorImage)
-													.iconButton(IconManager.fluentbuildImage, Screen.getBuildView()::compileProject, "Click to Clean & Build")
+													.iconButton(IconManager.fluentbuildImage, Screen.getProjectBuilder()::compileProject, "Click to Clean & Build")
 													.build()
 													.locateOnBottomLeft();
 														
@@ -123,7 +123,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 				JavaFileObject fileObject = (JavaFileObject)d.getSource();
 				String filePath = fileObject.toUri().getPath();
 				String srcDir = BUILDSPACE_DIR.getAbsolutePath();
-				filePath = Screen.getFileView().getProjectPath() + filePath.substring(srcDir.length() + (Screen.onWindows() ? 1 : 0));
+				filePath = Screen.getProjectFile().getProjectPath() + filePath.substring(srcDir.length() + (Screen.onWindows() ? 1 : 0));
 				Editor editor = Screen.getScreen().getEditor(new File(filePath));
 				
 				if(editor == null){
@@ -242,7 +242,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 				name += ".class";
 				String bytePath = file.getParentFile().getAbsolutePath();
 				bytePath = bytePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + 4);
-				bytePath = Screen.getFileView().getProjectPath() + File.separator + "bin" + bytePath;
+				bytePath = Screen.getProjectFile().getProjectPath() + File.separator + "bin" + bytePath;
 				File[] F = new File(bytePath).listFiles();
 				if(F == null || F.length == 0)
 					continue;
@@ -264,7 +264,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			
 			LinkedList<String> options = new LinkedList<>();
 			options.add("-d");
-			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
+			options.add(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
 			
@@ -283,8 +283,8 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		try{
 			LinkedList<String> files = new LinkedList<>();
-			Screen.getBuildView().createClassList();
-			Scanner reader = new Scanner(new File(Screen.getFileView().getProjectPath() + File.separator + ".sources"));
+			Screen.getProjectBuilder().createClassList();
+			Scanner reader = new Scanner(new File(Screen.getProjectFile().getProjectPath() + File.separator + ".sources"));
 			while(reader.hasNextLine()){
 				String line = reader.nextLine();
 				if(!line.startsWith("\""))
@@ -304,11 +304,11 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			
 			LinkedList<String> options = new LinkedList<>();
 			options.add("-d");
-			options.add(Screen.getFileView().getProjectPath() + File.separator + "bin");
+			options.add(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 			
 			getArgs().forEach(options::add);
 			
-			BuildView.optimizeProjectOutputs();
+			ProjectBuilder.optimizeProjectOutputs();
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
 
@@ -344,9 +344,9 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			LinkedList<Editor> editors = Screen.getScreen().getAllEditors();
 			for(Editor editor : editors){
 				File file = editor.currentFile;
-				if(file.getName().endsWith(".java") && file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src")){
+				if(file.getName().endsWith(".java") && file.getAbsolutePath().startsWith(Screen.getProjectFile().getProjectPath() + File.separator + "src")){
 					String filePath = file.getParentFile().getAbsolutePath();
-					String projectDir = Screen.getFileView().getProjectPath();
+					String projectDir = Screen.getProjectFile().getProjectPath();
 					String metaPath = filePath.substring(filePath.indexOf(projectDir) + projectDir.length());
 					String targetPath = BUILDSPACE_DIR.getAbsolutePath() + metaPath;
 					File targetDir = new File(targetPath);
@@ -365,19 +365,19 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 	public static LinkedList<String> getArgs(){
 		String depenPath = "";
 		
-		if(!Screen.getFileView().getProjectManager().jars.isEmpty()) {
-			for(String d : Screen.getFileView().getProjectManager().jars)
+		if(!Screen.getProjectFile().getProjectManager().jars.isEmpty()) {
+			for(String d : Screen.getProjectFile().getProjectManager().jars)
 				depenPath += d + omega.Screen.PATH_SEPARATOR;
 		}
 		
-		if(!Screen.getFileView().getProjectManager().resourceRoots.isEmpty()) {
-			for(String d : Screen.getFileView().getProjectManager().resourceRoots)
+		if(!Screen.getProjectFile().getProjectManager().resourceRoots.isEmpty()) {
+			for(String d : Screen.getProjectFile().getProjectManager().resourceRoots)
 				depenPath += d + omega.Screen.PATH_SEPARATOR;
 		}
 		
-		File[] files = new File(Screen.getFileView().getProjectPath() + File.separator + "bin").listFiles();
+		File[] files = new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin").listFiles();
 		if(files != null && files.length != 0) {
-			depenPath += Screen.getFileView().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
+			depenPath += Screen.getProjectFile().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
 		}
 		else{
 			dynamicBuildInfoPopup.locateOnBottomLeft().showIt();
@@ -393,8 +393,8 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			commands.add(depenPath);
 		}
 		
-		String modulePath = Screen.getFileView().getDependencyView().getModulePath();
-		String modules = Screen.getFileView().getDependencyView().getModules();
+		String modulePath = Screen.getProjectFile().getDependencyView().getModulePath();
+		String modules = Screen.getProjectFile().getDependencyView().getModules();
 		if(Screen.isNotNull(modulePath)){
 			commands.add("--module-path");
 			commands.add(modulePath);
@@ -402,7 +402,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			commands.add(modules);
 		}
 		
-		Screen.getFileView().getProjectManager().compileTimeFlags.forEach(commands::add);
+		Screen.getProjectFile().getProjectManager().compileTimeFlags.forEach(commands::add);
 		return commands;
 	}
 	
@@ -433,7 +433,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 	public static String convertToProjectPath(String buildSpacePath){
 		if(!buildSpacePath.startsWith(BUILDSPACE_DIR.getAbsolutePath()))
 			return buildSpacePath;
-		String path = Screen.getFileView().getProjectPath() + (Screen.onWindows() ? File.separator : "");
+		String path = Screen.getProjectFile().getProjectPath() + (Screen.onWindows() ? File.separator : "");
 		buildSpacePath = buildSpacePath.substring(BUILDSPACE_DIR.getAbsolutePath().length() + (Screen.onWindows() ? 1 : 0));
 		return path + buildSpacePath;
 	}

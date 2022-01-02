@@ -82,7 +82,7 @@ public class BottomPane extends JPanel {
 		});
 		add(messageComp);
 		
-		searchComp = new TextComp(IconManager.fluentsearchImage, 20, 20, TOOLMENU_COLOR1_SHADE, back1, glow, ()->Screen.getFileView().getSearchWindow().setVisible(true));
+		searchComp = new TextComp(IconManager.fluentsearchImage, 20, 20, TOOLMENU_COLOR1_SHADE, back1, glow, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
 		searchComp.setArc(0, 0);
 		add(searchComp);
 		

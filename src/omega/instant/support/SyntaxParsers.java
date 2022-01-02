@@ -30,7 +30,7 @@ public final class SyntaxParsers {
 	public static LinkedList<AbstractSyntaxParser> syntaxParsers = new LinkedList<>();
 
 	public synchronized static void parse(){
-		int langTag = Screen.getFileView().getProjectManager().getLanguageTag();
+		int langTag = Screen.getProjectFile().getProjectManager().getLanguageTag();
 		if(langTag == LanguageTagView.LANGUAGE_TAG_JAVA)
 			javaSyntaxParser.parse();
 		else{

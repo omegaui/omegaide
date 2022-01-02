@@ -88,7 +88,7 @@ public class ListMaker extends JComponent {
           add(quoteComp);
 
           dirComp = new TextComp("Working Directory", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->{
-          	fc.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()));
+          	fc.setCurrentDirectory(new File(Screen.getProjectFile().getProjectPath()));
                LinkedList<File> selections = fc.selectDirectories();
                if(!selections.isEmpty()){
                     dirComp.setToolTipText(selections.get(0).getAbsolutePath());

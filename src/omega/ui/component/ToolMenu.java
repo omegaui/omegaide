@@ -376,13 +376,13 @@ public class ToolMenu extends JPanel {
 		taskMenu.setFont(PX14);
 		setTask("Hover to see Memory Statistics");
 		
-		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().open("Project"));
+		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().open("Project"));
 		openProjectComp.setBounds(0, 55, 30, 30);
 		openProjectComp.setFont(PX14);
 		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
 		
-		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().open("File"));
+		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().open("File"));
 		openFileComp.setBounds(32, 55, 30, 30);
 		openFileComp.setFont(PX14);
 		openFileComp.setArcVisible(true, false, true, false);
@@ -394,7 +394,7 @@ public class ToolMenu extends JPanel {
 		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
 		
-		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().getFileCreator().show("Custom File"));
+		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getFileCreator().show("Custom File"));
 		newFileComp.setBounds(96, 55, 30, 30);
 		newFileComp.setFont(PX14);
 		newFileComp.setArcVisible(true, false, true, false);
@@ -409,7 +409,7 @@ public class ToolMenu extends JPanel {
 				if(GradleProcessManager.isGradleProject())
 					GradleProcessManager.run();
 				else
-					Screen.getRunView().run();
+					Screen.getProjectRunner().run();
 			}
 		});
 		runComp.setBounds(140, 55, 30, 30);
@@ -420,7 +420,7 @@ public class ToolMenu extends JPanel {
 					if(GradleProcessManager.isGradleProject())
 						return;
 					if(runComp.isClickable() && buildComp.isClickable())
-						Screen.getRunView().justRun();
+						Screen.getProjectRunner().justRun();
 				}
 			}
 		});
@@ -428,7 +428,7 @@ public class ToolMenu extends JPanel {
 		add(runComp);
 		
 		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			Screen.getRunView().instantRun();
+			Screen.getProjectRunner().instantRun();
 		});
 		instantRunComp.setBounds(172, 55, 30, 30);
 		instantRunComp.setArcVisible(true, false, true, false);
@@ -439,7 +439,7 @@ public class ToolMenu extends JPanel {
 				if(GradleProcessManager.isGradleProject())
 					GradleProcessManager.build();
 				else
-					Screen.getBuildView().compileProject();
+					Screen.getProjectBuilder().compileProject();
 			}
 		});
 		buildComp.setBounds(204, 55, 30, 30);
@@ -448,7 +448,7 @@ public class ToolMenu extends JPanel {
 		add(buildComp);
 		
 		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			Screen.getRunView().instantBuild();
+			Screen.getProjectRunner().instantBuild();
 		});
 		instantBuildComp.setBounds(236, 55, 30, 30);
 		instantBuildComp.setArcVisible(false, true, false, true);
@@ -570,7 +570,7 @@ public class ToolMenu extends JPanel {
 		operateComp.setArcVisible(true, false, true, false);
 		addComp(operateComp);
 		
-		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getFileView().getSearchWindow().setVisible(true));
+		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
 		addComp(searchComp);
 		
 		sep4 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
@@ -619,9 +619,8 @@ public class ToolMenu extends JPanel {
 				.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
 				.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
 				.iconButton(IconManager.fluentcloseImage, ()->{
-					Screen.notify("Terminating Running Applications");
 					try{
-						for(Process p : Screen.getRunView().runningApps) {
+						for(Process p : Screen.getProjectRunner().runningApps) {
 							if(p.isAlive())
 								p.destroyForcibly();
 						}
@@ -629,13 +628,11 @@ public class ToolMenu extends JPanel {
 					catch(Exception e2) {
 						
 					}
-					Screen.notify("Saving UI and Data");
 					screen.getUIManager().save();
 					screen.getDataManager().saveData();
-					Screen.notify("Saving Project");
 					screen.saveAllEditors();
 					try{
-						Screen.getFileView().getProjectManager().save();
+						Screen.getProjectFile().getProjectManager().save();
 					}
 					catch(Exception e2) {
 						
@@ -766,8 +763,8 @@ public class ToolMenu extends JPanel {
 		allSettingsItem.setEnabled(non_java);
 		instantModeItem.setEnabled(!non_java);
 		parsingEnabledItem.setEnabled(!non_java);
-		if(Screen.getFileView().getJDKManager() != null)
-			jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
+		if(Screen.getProjectFile().getJDKManager() != null)
+			jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 		else
 			jdkItem.setName("Project JDK : None");
 		
@@ -781,7 +778,7 @@ public class ToolMenu extends JPanel {
 	
 	public void changeLang(){
 		languageTagView.setVisible(true);
-		langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getFileView().getProjectManager().getLanguageTag());
+		langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getProjectFile().getProjectManager().getLanguageTag());
 		langComp.repaint();
 	}
 	
@@ -810,10 +807,10 @@ public class ToolMenu extends JPanel {
 		
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
 		typeItem.setAction(()->{
-			omega.Screen.getFileView().getProjectManager().non_java = !omega.Screen.getFileView().getProjectManager().non_java;
-			typeItem.setName(omega.Screen.getFileView().getProjectManager().non_java ? "Project Type : Other/Gradle" : "Project Type : Java");
-			omega.Screen.getScreen().manageTools(omega.Screen.getFileView().getProjectManager());
-			omega.Screen.getFileView().getProjectManager().save();
+			omega.Screen.getProjectFile().getProjectManager().non_java = !omega.Screen.getProjectFile().getProjectManager().non_java;
+			typeItem.setName(omega.Screen.getProjectFile().getProjectManager().non_java ? "Project Type : Other/Gradle" : "Project Type : Java");
+			omega.Screen.getScreen().manageTools(omega.Screen.getProjectFile().getProjectManager());
+			omega.Screen.getProjectFile().getProjectManager().save();
 			typeItem.setToolTipText("Please Relaunch the IDE");
 			NotificationPopup.create(screen)
 			.title("Project Management")
@@ -821,9 +818,8 @@ public class ToolMenu extends JPanel {
 			.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
 			.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
 			.iconButton(IconManager.fluentcloseImage, ()->{
-				Screen.notify("Terminating Running Applications");
 				try{
-					for(Process p : Screen.getRunView().runningApps) {
+					for(Process p : Screen.getProjectRunner().runningApps) {
 						if(p.isAlive())
 							p.destroyForcibly();
 					}
@@ -831,14 +827,12 @@ public class ToolMenu extends JPanel {
 				catch(Exception e2) {
 					
 				}
-				Screen.notify("Saving UI and Data");
 				Screen.getPluginManager().save();
 				screen.getUIManager().save();
 				screen.getDataManager().saveData();
-				Screen.notify("Saving Project");
 				screen.saveAllEditors();
 				try{
-					Screen.getFileView().getProjectManager().save();
+					Screen.getProjectFile().getProjectManager().save();
 				}
 				catch(Exception e2) {
 					
@@ -855,8 +849,8 @@ public class ToolMenu extends JPanel {
 		jdkItem = new OPopupItem(setPopup, "Project JDK : None", IconManager.fluentsourceImage, ()->{
 			String sel = jdkSelectionDialog.makeChoice();
 			if(Screen.isNotNull(sel)) {
-				Screen.getFileView().getProjectManager().setJDKPath(sel);
-				jdkItem.setName("Project JDK : Java " + Screen.getFileView().getJDKManager().getVersionAsInt());
+				Screen.getProjectFile().getProjectManager().setJDKPath(sel);
+				jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 			}
 		});
 		
@@ -896,10 +890,10 @@ public class ToolMenu extends JPanel {
 		
 		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{
 			if(GradleProcessManager.isGradleProject()) {
-				Screen.getScreen().loadFile(new File(Screen.getFileView().getProjectPath(), "settings.gradle"));
+				Screen.getScreen().loadFile(new File(Screen.getProjectFile().getProjectPath(), "settings.gradle"));
 				return;
 			}
-			if(Screen.getFileView().getProjectManager().non_java)
+			if(Screen.getProjectFile().getProjectManager().non_java)
 				Screen.getUniversalSettingsView().setVisible(true);
 		});
 		
@@ -946,19 +940,19 @@ public class ToolMenu extends JPanel {
 	}
 	private void initProjectPopup() {
 		JFileChooser fileC = new JFileChooser();
-		projectPopup.createItem("Manage Build-Path", IconManager.projectImage, ()->Screen.getFileView().getDependencyView().setVisible(true))
+		projectPopup.createItem("Manage Build-Path", IconManager.projectImage, ()->Screen.getProjectFile().getDependencyView().setVisible(true))
 		.createItem("Add Additional Flags", IconManager.projectImage, ()->{
-			Screen.getFileView().getExtendedDependencyView().setVisible(true);
+			Screen.getProjectFile().getExtendedDependencyView().setVisible(true);
 		})
-		.createItem("Refresh", IconManager.projectImage, ()->Screen.getFileView().getFileTreePanel().refresh())
+		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectFile().getFileTreePanel().refresh())
 		.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
 		.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
 		.createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));
 	}
 	private void initFilePopup() {
 		//New Menu Items
-		filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getFileView().open("File"))
-		.createItem("Open Project", IconManager.projectImage, ()->Screen.getFileView().open("Project"))
+		filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getProjectFile().open("File"))
+		.createItem("Open Project", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
 		.createItem("New Project (Java)", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
 		.createItem("New Project (non-java project)", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
 		recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(350).height(250);
@@ -981,13 +975,11 @@ public class ToolMenu extends JPanel {
 			allProjectsPopup.setVisible(true);
 		});
 		filePopup.addItem(allMenu);
-		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getFileView().closeProject())
+		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
 		.createItem("Save All Editors", IconManager.fluentsaveImage, ()->screen.saveAllEditors())
 		.createItem("Restart", IconManager.fluentcloseImage, ()->{
-			
-			Screen.notify("Terminating Running Applications");
 			try{
-				for(Process p : Screen.getRunView().runningApps) {
+				for(Process p : Screen.getProjectRunner().runningApps) {
 					if(p.isAlive())
 						p.destroyForcibly();
 				}
@@ -995,14 +987,12 @@ public class ToolMenu extends JPanel {
 			catch(Exception e2) {
 				
 			}
-			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
-			Screen.notify("Saving Project");
 			screen.saveAllEditors();
 			try{
-				Screen.getFileView().getProjectManager().save();
+				Screen.getProjectFile().getProjectManager().save();
 			}
 			catch(Exception e2) {
 				
@@ -1024,14 +1014,12 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage,
 		()->{
-			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
-			Screen.notify("Saving Project");
 			screen.saveAllEditors();
 			try{
-				Screen.getFileView().getProjectManager().save();
+				Screen.getProjectFile().getProjectManager().save();
 			}
 			catch(Exception e2) {
 			}
@@ -1040,20 +1028,18 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Terminate Running Apps and Exit -Without saving opened editors", IconManager.closeImage,
 		()->{
-			Screen.notify("Terminating Running Applications");
 			try{
-				for(Process p : Screen.getRunView().runningApps) {
+				for(Process p : Screen.getProjectRunner().runningApps) {
 					if(p.isAlive())
 						p.destroyForcibly();
 				}
 			}
 			catch(Exception e2) {}
-			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
 			try{
-				Screen.getFileView().getProjectManager().save();
+				Screen.getProjectFile().getProjectManager().save();
 			}
 			catch(Exception e2) {
 			}
@@ -1062,9 +1048,8 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Exit", IconManager.closeImage,
 		()->{
-			Screen.notify("Terminating Running Applications");
 			try{
-				for(Process p : Screen.getRunView().runningApps) {
+				for(Process p : Screen.getProjectRunner().runningApps) {
 					if(p.isAlive())
 						p.destroyForcibly();
 				}
@@ -1072,14 +1057,12 @@ public class ToolMenu extends JPanel {
 			catch(Exception e2) {
 				
 			}
-			Screen.notify("Saving UI and Data");
 			Screen.getPluginManager().save();
 			screen.getUIManager().save();
 			screen.getDataManager().saveData();
-			Screen.notify("Saving Project");
 			screen.saveAllEditors();
 			try{
-				Screen.getFileView().getProjectManager().save();
+				Screen.getProjectFile().getProjectManager().save();
 			}
 			catch(Exception e2) {
 			}

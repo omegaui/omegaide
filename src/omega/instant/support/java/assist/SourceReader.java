@@ -164,7 +164,7 @@ public class SourceReader {
 							}
 						}
 						else {
-							ByteReader reader = omega.Screen.getFileView().getJDKManager().prepareReader(pack);
+							ByteReader reader = omega.Screen.getProjectFile().getJDKManager().prepareReader(pack);
 							for(DataMember m : reader.getDataMembers("static")) {
 								String nameX = m.name;
 								if(nameX.contains("()"))
@@ -368,7 +368,7 @@ public class SourceReader {
 							}
 						}
 						else {
-							ByteReader reader = omega.Screen.getFileView().getJDKManager().prepareReader(pack);
+							ByteReader reader = omega.Screen.getProjectFile().getJDKManager().prepareReader(pack);
 							for(DataMember m : reader.getDataMembers("static")) {
 								String nameX = m.name;
 								if(nameX.contains("()"))
@@ -642,7 +642,7 @@ public class SourceReader {
 			if(Assembly.has(parent))
 			     byteReader = Assembly.getReader(parent);
 			else 
-			     byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(parent);
+			     byteReader = omega.Screen.getProjectFile().getJDKManager().prepareReader(parent);
 			byteReader.dataMembers.forEach(this::offer);
 		}
 		else {
@@ -658,7 +658,7 @@ public class SourceReader {
 					if(Assembly.has(f)) 
 					     byteReader = Assembly.getReader(f);
 					else 
-					     byteReader = omega.Screen.getFileView().getJDKManager().prepareReader(f);
+					     byteReader = omega.Screen.getProjectFile().getJDKManager().prepareReader(f);
 					byteReader.dataMembers.forEach(this::offer);
 				}
 				else {
@@ -757,7 +757,7 @@ public class SourceReader {
 				return pack + "." + this.className + "." + r.className;
 		}
 		try{
-			className = Screen.getFileView().getJDKManager().checkInResourceRoots(pack, className);
+			className = Screen.getProjectFile().getJDKManager().checkInResourceRoots(pack, className);
 		}
 		catch(Exception e){
 			
@@ -770,7 +770,7 @@ public class SourceReader {
      	if(pack == null)
      		return;
           StringTokenizer tok = new StringTokenizer(pack, ".");
-          String path = Screen.getFileView().getProjectPath();
+          String path = Screen.getProjectFile().getProjectPath();
           if(path == null)
                return;
           pack = path + File.separator + "src";
@@ -828,7 +828,7 @@ public class SourceReader {
 				value = new SourceReader(CodeFramework.getContent(path)).isSubClass(className);
 			}
 			else{
-				value = Screen.getFileView().getJDKManager().prepareReader(path).isSubClass(className);
+				value = Screen.getProjectFile().getJDKManager().prepareReader(path).isSubClass(className);
 			}
 		}
 		return isInternalReader(className) || value;

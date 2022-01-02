@@ -307,19 +307,19 @@ public class FileTreeBranch extends JComponent {
 			}
 			else if(files == null || files.length == 0)
 				return IconManager.fluentemptyBoxImage;
-			if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "src"))
+			if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "src"))
 				return IconManager.fluentsourceImage;
-			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "bin"))
 				return IconManager.fluentbinaryImage;
-			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "res"))
+			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "res"))
 				return IconManager.fluentresourceImage;
-			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "out"))
+			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "out"))
 				return IconManager.fluentoutImage;
-			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "lib"))
+			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "lib"))
 				return IconManager.fluentpowerImage;
-			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "build"))
+			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "build"))
 				return IconManager.fluentbuildresultImage;
-			else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
+			else if(file.getAbsolutePath().startsWith(Screen.getProjectFile().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getProjectFile().getProjectPath() + File.separator + "bin"))
 				return IconManager.fluentwindRoseImage;
 			return IconManager.fluentplainfolderImage;
 		}

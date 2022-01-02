@@ -178,7 +178,7 @@ public class BuildPathManager extends JDialog {
 			LinkedList<File> files = fs.selectFiles();
 			if(!files.isEmpty()){
 				for(File file : files){
-					Screen.getFileView().getProjectManager().jars.add(file.getAbsolutePath());
+					Screen.getProjectFile().getProjectManager().jars.add(file.getAbsolutePath());
 				}
 			}
 		}
@@ -188,7 +188,7 @@ public class BuildPathManager extends JDialog {
 			LinkedList<File> files = fs.selectDirectories();
 			if(!files.isEmpty()){
 				for(File file : files){
-					Screen.getFileView().getProjectManager().natives.add(file.getAbsolutePath());
+					Screen.getProjectFile().getProjectManager().natives.add(file.getAbsolutePath());
 				}
 			}
 		}
@@ -198,7 +198,7 @@ public class BuildPathManager extends JDialog {
 			LinkedList<File> files = fs.selectDirectories();
 			if(!files.isEmpty()){
 				for(File file : files){
-					Screen.getFileView().getProjectManager().resourceRoots.add(file.getAbsolutePath());
+					Screen.getProjectFile().getProjectManager().resourceRoots.add(file.getAbsolutePath());
 				}
 			}
 		}
@@ -208,7 +208,7 @@ public class BuildPathManager extends JDialog {
 			LinkedList<File> files = fs.selectFiles();
 			if(!files.isEmpty()){
 				for(File file : files){
-					Screen.getFileView().getProjectManager().modules.add(file.getAbsolutePath());
+					Screen.getProjectFile().getProjectManager().modules.add(file.getAbsolutePath());
 				}
 			}
 		}
@@ -234,35 +234,35 @@ public class BuildPathManager extends JDialog {
 		Graphics g = Screen.getScreen().getGraphics();
 		g.setFont(PX14);
 		
-		for(String path : Screen.getFileView().getProjectManager().jars){
+		for(String path : Screen.getProjectFile().getProjectManager().jars){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			int w = g.getFontMetrics().stringWidth(path);
 			if(w > maxW0)
 				maxW0 = w;
 		}
 		
-		for(String path : Screen.getFileView().getProjectManager().natives){
+		for(String path : Screen.getProjectFile().getProjectManager().natives){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			int w = g.getFontMetrics().stringWidth(path);
 			if(w > maxW1)
 				maxW1 = w;
 		}
 		
-		for(String path : Screen.getFileView().getProjectManager().resourceRoots){
+		for(String path : Screen.getProjectFile().getProjectManager().resourceRoots){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			int w = g.getFontMetrics().stringWidth(path);
 			if(w > maxW2)
 				maxW2 = w;
 		}
 		
-		for(String path : Screen.getFileView().getProjectManager().modules){
+		for(String path : Screen.getProjectFile().getProjectManager().modules){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			int w = g.getFontMetrics().stringWidth(path);
 			if(w > maxW3)
 				maxW3 = w;
 		}
 		
-		for(String path : Screen.getFileView().getProjectManager().jars){
+		for(String path : Screen.getProjectFile().getProjectManager().jars){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
@@ -277,7 +277,7 @@ public class BuildPathManager extends JDialog {
 			jarComps.add(comp);
 			block0 += 30;
 		}
-		for(String path : Screen.getFileView().getProjectManager().natives){
+		for(String path : Screen.getProjectFile().getProjectManager().natives){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
@@ -292,7 +292,7 @@ public class BuildPathManager extends JDialog {
 			nativeComps.add(comp);
 			block1 += 30;
 		}
-		for(String path : Screen.getFileView().getProjectManager().resourceRoots){
+		for(String path : Screen.getProjectFile().getProjectManager().resourceRoots){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
@@ -307,7 +307,7 @@ public class BuildPathManager extends JDialog {
 			resourceRootComps.add(comp);
 			block2 += 30;
 		}
-		for(String path : Screen.getFileView().getProjectManager().modules){
+		for(String path : Screen.getProjectFile().getProjectManager().modules){
 			String name = path.substring(path.lastIndexOf(File.separatorChar) + 1);
 			TextComp comp = new TextComp(name, TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 			comp.setRunnable(()->{
@@ -331,19 +331,19 @@ public class BuildPathManager extends JDialog {
 	public void removePath(){
 		jarComps.forEach(comp->{
 			if(comp.color2 == TOOLMENU_COLOR3)
-				Screen.getFileView().getProjectManager().jars.remove(comp.getToolTipText());
+				Screen.getProjectFile().getProjectManager().jars.remove(comp.getToolTipText());
 		});
 		nativeComps.forEach(comp->{
 			if(comp.color2 == TOOLMENU_COLOR3)
-				Screen.getFileView().getProjectManager().natives.remove(comp.getToolTipText());
+				Screen.getProjectFile().getProjectManager().natives.remove(comp.getToolTipText());
 		});
 		resourceRootComps.forEach(comp->{
 			if(comp.color2 == TOOLMENU_COLOR3)
-				Screen.getFileView().getProjectManager().resourceRoots.remove(comp.getToolTipText());
+				Screen.getProjectFile().getProjectManager().resourceRoots.remove(comp.getToolTipText());
 		});
 		moduleComps.forEach(comp->{
 			if(comp.color2 == TOOLMENU_COLOR3)
-				Screen.getFileView().getProjectManager().modules.remove(comp.getToolTipText());
+				Screen.getProjectFile().getProjectManager().modules.remove(comp.getToolTipText());
 		});
 		read();
 	}
@@ -355,7 +355,7 @@ public class BuildPathManager extends JDialog {
 		modulePanel.setVisible(state == 3);
 	}
 	public String getModulePath(){
-		LinkedList<String> modules = Screen.getFileView().getProjectManager().modules;
+		LinkedList<String> modules = Screen.getProjectFile().getProjectManager().modules;
 		if(modules.isEmpty())
 			return null;
 		String path = "";
@@ -379,7 +379,7 @@ public class BuildPathManager extends JDialog {
 		return path;
 	}
 	public String getModules(){
-		LinkedList<String> modules = Screen.getFileView().getProjectManager().modules;
+		LinkedList<String> modules = Screen.getProjectFile().getProjectManager().modules;
 		if(modules.isEmpty())
 			return null;
 		String moduleNames = "";
@@ -393,7 +393,7 @@ public class BuildPathManager extends JDialog {
 	@Override
 	public void dispose(){
 		super.dispose();
-		new Thread(Screen.getFileView()::readJDK).start();
+		new Thread(Screen.getProjectFile()::readJDK).start();
 	}
 	@Override
 	public void setVisible(boolean value){

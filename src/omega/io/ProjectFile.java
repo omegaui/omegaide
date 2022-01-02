@@ -1,5 +1,5 @@
 /**
-* FileView
+* ProjectFile
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ import java.util.LinkedList;
 import java.io.File;
 
 import java.awt.FlowLayout;
-public class FileView {
+public class ProjectFile {
 
 	private Screen screen;
 	
@@ -60,7 +60,7 @@ public class FileView {
 	private SearchWindow searchWindow;
 	private JDKManager jdkManager;
 	
-	public FileView(Screen window) {
+	public ProjectFile(Screen window) {
 		this.screen = window;
 		
 		init();
@@ -132,7 +132,6 @@ public class FileView {
 			Screen.launcher.dispose();
 		
 		DataManager.setDefaultProjectPath(projectPath);
-		Screen.notify("Loading Project \"" + getProjectName() + "\"");
 		getScreen().setProject(getProjectName());
 		
 		getScreen().getTabPanel().closeAllTabs();
@@ -145,12 +144,8 @@ public class FileView {
 			argumentManager = new ArgumentManager();
 		
 		if(!projectManager.non_java) {
-			if(Screen.getFileView().getProjectManager().jdkPath == null || !new File(Screen.getFileView().getProjectManager().jdkPath).exists())
-				Screen.notify("No JDK Defined for Project " + Screen.getFileView().getProjectName(), 3000, null);
-			else
+			if(projectManager.jdkPath != null && new File(projectManager.jdkPath).exists())
 				readJDK();
-			
-			Screen.hideNotif();
 			
 			try {
 				new Thread(()->{

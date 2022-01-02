@@ -151,11 +151,11 @@ public class LanguageTagView extends JDialog{
 	}
 	
 	public void setActiveLang(int tag){
-		if(tag == Screen.getFileView().getProjectManager().getLanguageTag())
+		if(tag == Screen.getProjectFile().getProjectManager().getLanguageTag())
 			return;
 		
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, tag));
-		Screen.getFileView().getProjectManager().setLanguageTag(tag);
+		Screen.getProjectFile().getProjectManager().setLanguageTag(tag);
 		setVisible(false);
 	}
 	

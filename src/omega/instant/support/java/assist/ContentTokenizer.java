@@ -120,7 +120,7 @@ public class ContentTokenizer {
 	}
 	
 	public static void arrangeTokens(Editor e) {
-		if(!e.currentFile.getName().endsWith(".java") || Screen.getFileView().getProjectManager().non_java || !DataManager.isContentModeJava()){
+		if(!e.currentFile.getName().endsWith(".java") || Screen.getProjectFile().getProjectManager().non_java || !DataManager.isContentModeJava()){
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
 		}
@@ -139,7 +139,7 @@ public class ContentTokenizer {
 			return;
 		}
 		
-		if(Screen.getFileView().getJDKManager() == null && !Screen.getFileView().getProjectManager().non_java)
+		if(Screen.getProjectFile().getJDKManager() == null && !Screen.getProjectFile().getProjectManager().non_java)
 			return;
 		
 		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
@@ -157,7 +157,7 @@ public class ContentTokenizer {
 						if(CodeFramework.isSource(im.pack))
 							staticMembers = new SourceReader(CodeFramework.getContent(im.pack)).getDataMembers("static");
 						else
-							staticMembers = Screen.getFileView().getJDKManager().prepareReader(im.pack).getDataMembers("static");
+							staticMembers = Screen.getProjectFile().getJDKManager().prepareReader(im.pack).getDataMembers("static");
 						decompiledStaticDataFromClasses.add(im.pack);
 						
 						for(DataMember dx : staticMembers){

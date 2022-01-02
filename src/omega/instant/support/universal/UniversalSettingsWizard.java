@@ -91,12 +91,12 @@ public class UniversalSettingsWizard extends JDialog{
 		add(label0);
 		
 		runField = new TextComp("", "Click to Set Run Command", TOOLMENU_GRADIENT, back1, TOOLMENU_COLOR2, ()->{
-			commandWindow.loadView(Screen.getFileView().getArgumentManager().run_time_args);
+			commandWindow.loadView(Screen.getProjectFile().getArgumentManager().run_time_args);
 			commandWindow.setVisible(true);
 			if(commandWindow.isSaved()){
-				Screen.getFileView().getArgumentManager().run_time_args = commandWindow.getCommand();
-				Screen.getFileView().getArgumentManager().save();
-				runField.setText(Screen.getFileView().getArgumentManager().getRunCommand());
+				Screen.getProjectFile().getArgumentManager().run_time_args = commandWindow.getCommand();
+				Screen.getProjectFile().getArgumentManager().save();
+				runField.setText(Screen.getProjectFile().getArgumentManager().getRunCommand());
 			}
 		});
 		runField.setBounds(180, 50, getWidth() - 320, 25);
@@ -104,7 +104,7 @@ public class UniversalSettingsWizard extends JDialog{
 		add(runField);
 		
 		runWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Building", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
-			fc.setCurrentDirectory(new File(omega.Screen.getFileView().getProjectPath()));
+			fc.setCurrentDirectory(new File(omega.Screen.getProjectFile().getProjectPath()));
 			LinkedList<File> selections = fc.selectDirectories();
 			if(!selections.isEmpty()){
 				runWorkDirComp.setToolTipText(selections.get(0).getAbsolutePath());
@@ -123,12 +123,12 @@ public class UniversalSettingsWizard extends JDialog{
 		add(label1);
 		
 		compileField = new TextComp("", "Click to Set Compile Command", TOOLMENU_GRADIENT, back1, TOOLMENU_COLOR2, ()->{
-			commandWindow.loadView(Screen.getFileView().getArgumentManager().compile_time_args);
+			commandWindow.loadView(Screen.getProjectFile().getArgumentManager().compile_time_args);
 			commandWindow.setVisible(true);
 			if(commandWindow.isSaved()){
-				Screen.getFileView().getArgumentManager().compile_time_args = commandWindow.getCommand();
-				Screen.getFileView().getArgumentManager().save();
-				compileField.setText(Screen.getFileView().getArgumentManager().getCompileCommand());
+				Screen.getProjectFile().getArgumentManager().compile_time_args = commandWindow.getCommand();
+				Screen.getProjectFile().getArgumentManager().save();
+				compileField.setText(Screen.getProjectFile().getArgumentManager().getCompileCommand());
 			}
 		});
 		compileField.setBounds(180, 100, getWidth() - 320, 25);
@@ -136,7 +136,7 @@ public class UniversalSettingsWizard extends JDialog{
 		add(compileField);
 		
 		compileWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Running", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
-			fc.setCurrentDirectory(new File(Screen.getFileView().getProjectPath()));
+			fc.setCurrentDirectory(new File(Screen.getProjectFile().getProjectPath()));
 			LinkedList<File> selections = fc.selectDirectories();
 			if(!selections.isEmpty()){
 				compileWorkDirComp.setToolTipText(selections.get(0).getAbsolutePath());
@@ -197,15 +197,15 @@ public class UniversalSettingsWizard extends JDialog{
 		}
 		if(!checkPassed)
 			return;
-		Screen.getFileView().getArgumentManager().compileDir = compileWorkDirComp.getToolTipText();
-		Screen.getFileView().getArgumentManager().runDir = runWorkDirComp.getToolTipText();
-		Screen.getFileView().getArgumentManager().units.clear();
+		Screen.getProjectFile().getArgumentManager().compileDir = compileWorkDirComp.getToolTipText();
+		Screen.getProjectFile().getArgumentManager().runDir = runWorkDirComp.getToolTipText();
+		Screen.getProjectFile().getArgumentManager().units.clear();
 		lists.forEach(list->{
 			if(list.validateListMaker() && list.isEnabled()){
-				Screen.getFileView().getArgumentManager().units.add(list);
+				Screen.getProjectFile().getArgumentManager().units.add(list);
 			}
 		});
-		Screen.getFileView().getArgumentManager().save();
+		Screen.getProjectFile().getArgumentManager().save();
 	}
 	@Override
 	public void setVisible(boolean value){
@@ -213,10 +213,10 @@ public class UniversalSettingsWizard extends JDialog{
 			block = 0;
 			lists.forEach(panel::remove);
 			lists.clear();
-			compileField.setText(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getCompileCommand()) ? "Click to Enter Compile Command" : Screen.getFileView().getArgumentManager().getCompileCommand());
-			runField.setText(!Screen.isNotNull(Screen.getFileView().getArgumentManager().getRunCommand()) ? "Click to Enter Run Command" : Screen.getFileView().getArgumentManager().getRunCommand());
-			compileWorkDirComp.setToolTipText(Screen.getFileView().getArgumentManager().compileDir.equals("") ? "Working Directory" : Screen.getFileView().getArgumentManager().compileDir);
-			runWorkDirComp.setToolTipText(Screen.getFileView().getArgumentManager().runDir.equals("") ? "Working Directory" : Screen.getFileView().getArgumentManager().runDir);
+			compileField.setText(!Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getCompileCommand()) ? "Click to Enter Compile Command" : Screen.getProjectFile().getArgumentManager().getCompileCommand());
+			runField.setText(!Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getRunCommand()) ? "Click to Enter Run Command" : Screen.getProjectFile().getArgumentManager().getRunCommand());
+			compileWorkDirComp.setToolTipText(Screen.getProjectFile().getArgumentManager().compileDir.equals("") ? "Working Directory" : Screen.getProjectFile().getArgumentManager().compileDir);
+			runWorkDirComp.setToolTipText(Screen.getProjectFile().getArgumentManager().runDir.equals("") ? "Working Directory" : Screen.getProjectFile().getArgumentManager().runDir);
 			try{
 				compileWorkDirComp.setText(compileWorkDirComp.getToolTipText().substring(compileWorkDirComp.getToolTipText().lastIndexOf(File.separator) + 1));
 				runWorkDirComp.setText(runWorkDirComp.getToolTipText().substring(runWorkDirComp.getToolTipText().lastIndexOf(File.separator) + 1));
@@ -224,7 +224,7 @@ public class UniversalSettingsWizard extends JDialog{
 			catch(Exception e){
 				
 			}
-			Screen.getFileView().getArgumentManager().units.forEach(unit->{
+			Screen.getProjectFile().getArgumentManager().units.forEach(unit->{
 				unit.setLocation(0, block);
 				panel.add(unit);
 				lists.add(unit);

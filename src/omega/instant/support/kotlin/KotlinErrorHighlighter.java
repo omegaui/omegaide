@@ -77,7 +77,7 @@ public class KotlinErrorHighlighter implements AbstractErrorHighlighter {
 				if(!canRecord && CodeFramework.count(token, ':') >= 4 && !token.startsWith(" ")){
 					int index;
 					path = token.substring(0, index = token.indexOf(':')).trim();
-					path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;
+					path = Screen.getProjectFile().getArgumentManager().compileDir + File.separator + path;
 					line = Integer.parseInt(token.substring(index + 1, index = token.indexOf(':', index + 1)).trim());
 					index = token.indexOf(':', index + 1);
 					message = token.substring(index + 1).trim();
@@ -87,12 +87,12 @@ public class KotlinErrorHighlighter implements AbstractErrorHighlighter {
 					code = token.trim();
 					
 					if(!path.contains(File.separator)){
-						path = Screen.getFileView().getArgumentManager().compileDir + File.separator + path;
+						path = Screen.getProjectFile().getArgumentManager().compileDir + File.separator + path;
 					}
 					
 					File file = new File(path);
 					if(file.exists()){
-						Editor e = Screen.getFileView().getScreen().loadFile(file);
+						Editor e = Screen.getProjectFile().getScreen().loadFile(file);
 						try{
 							ImageIcon icon = new ImageIcon(IconManager.fluenterrorImage);
 							int size = e.getGraphics().getFontMetrics().getHeight();

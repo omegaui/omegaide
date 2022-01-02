@@ -52,7 +52,7 @@ public class JetTerminal extends JPanel{
 	
 	public JetTerminal(){
 		super(null);
-		this.directory = Screen.getFileView().getProjectPath();
+		this.directory = Screen.getProjectFile().getProjectPath();
 		init();
 	}
 	

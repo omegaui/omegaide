@@ -154,7 +154,7 @@ public class SourceDefender extends JDialog {
 		if(Screen.onWindows()){
 			backupTime = backupTime.replaceAll(":", ",");
 		}
-		final String backupTitle = new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTime;
+		final String backupTitle = new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTime;
 		LinkedList<Editor> editors = Screen.getScreen().getAllEditors();
 		editors.forEach(editor->{
 			addToBackup(backupTitle, editor.currentFile);
@@ -192,7 +192,7 @@ public class SourceDefender extends JDialog {
 			printArea.clearTerminal();
 			printArea.print("Restoring from backup ... \"" + backupTitle + "\"");
 			LinkedList<File> files = new LinkedList<>();
-			File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTitle);
+			File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTitle);
 			loadAllFiles(files, backupChannel);
 			printArea.print(files.size() + " files(s) will be restored!");
 			for(File file : files){
@@ -200,7 +200,7 @@ public class SourceDefender extends JDialog {
 				String backupPath = backupChannel.getAbsolutePath();
 				path = path.substring(path.indexOf(backupPath) + backupPath.length());
 				printArea.print("Restoring \"" + path + "\"");
-				path = Screen.getFileView().getProjectPath() + path;
+				path = Screen.getProjectFile().getProjectPath() + path;
 				try{
 					File targetFile = new File(path);
 					targetFile.getParentFile().mkdirs();
@@ -237,11 +237,11 @@ public class SourceDefender extends JDialog {
 
 	public void addToBackup(String backupTitle, File file){
 		String path = file.getAbsolutePath();
-		if(!path.startsWith(Screen.getFileView().getProjectPath())){
+		if(!path.startsWith(Screen.getProjectFile().getProjectPath())){
 			System.err.println("Cannot backup files that are located outside the project");
 			return;
 		}
-		String backupPath = path.substring(path.indexOf(Screen.getFileView().getProjectPath()) + Screen.getFileView().getProjectPath().length());
+		String backupPath = path.substring(path.indexOf(Screen.getProjectFile().getProjectPath()) + Screen.getProjectFile().getProjectPath().length());
 		backupPath = backupTitle + File.separator + backupPath;
 		File backupFile = new File(BACKUP_DIR, backupPath);
 		try{
@@ -267,13 +267,13 @@ public class SourceDefender extends JDialog {
 
 		block = 0;
 
-		File[] backups = new File(BACKUP_DIR + File.separator + new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName()).listFiles();
+		File[] backups = new File(BACKUP_DIR + File.separator + new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName()).listFiles();
 		if(backups == null || backups.length == 0)
 			return;
 		
 		for(File backup : backups){
 			TextComp comp = new TextComp(backup.getName(), "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
-				File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getFileView().getProjectName() + File.separator + backup.getName());
+				File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backup.getName());
 				LinkedList<File> files = new LinkedList<>();
 				loadAllFiles(files, backupChannel);
 				backupView.showView(backup.getName(), files);
@@ -371,7 +371,7 @@ public class SourceDefender extends JDialog {
 			fileComps.clear();
 			block = 0;
 			final String workspace = new File(DataManager.getWorkspace()).getName();
-			final String name = BACKUP_DIR + File.separator + workspace + File.separator + Screen.getFileView().getProjectName() + File.separator + backupTitle;
+			final String name = BACKUP_DIR + File.separator + workspace + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTitle;
 			files.forEach(file->{
 				String path = file.getAbsolutePath();
 				path = path.substring(path.lastIndexOf(name) + name.length());

@@ -52,18 +52,18 @@ public class PopupManager {
 		
 		if(type == SOURCE_FILE) {
 			popup.createItem("Run as Main Class", IconManager.runImage, ()->{
-				Screen.getRunView().setMainClassPath(editor.currentFile.getAbsolutePath());
-				Screen.getRunView().run();
+				Screen.getProjectRunner().setMainClassPath(editor.currentFile.getAbsolutePath());
+				Screen.getProjectRunner().run();
 			})
-			.createItem("Run Project", IconManager.runImage, ()->Screen.getRunView().run())
-			.createItem("Build Project", IconManager.buildImage, ()->Screen.getBuildView().compileProject())
+			.createItem("Run Project", IconManager.runImage, ()->Screen.getProjectRunner().run())
+			.createItem("Build Project", IconManager.buildImage, ()->Screen.getProjectBuilder().compileProject())
 			.createItem("Mark As Main", IconManager.fluentrocketImage, ()->{
-				Screen.getRunView().setMainClassPath(editor.currentFile.getAbsolutePath());
+				Screen.getProjectRunner().setMainClassPath(editor.currentFile.getAbsolutePath());
 			})
 			.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
 			.createItem("Save As", IconManager.fluentsaveImage, ()->{
 				editor.saveFileAs();
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			})
 			.createItem("Discard", IconManager.closeImage, ()->{
 				editor.reloadFile();
@@ -77,7 +77,7 @@ public class PopupManager {
 			popup.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
 			.createItem("Save As", IconManager.fluentsaveImage, ()->{
 				editor.saveFileAs();
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			})
 			.createItem("Discard", IconManager.closeImage, ()->{
 				editor.discardData();
@@ -93,18 +93,18 @@ public class PopupManager {
 	}
 	
 	public static void createTreePopup(OPopupWindow popup, File file) {
-		if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath())){
+		if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath())){
 			popup.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init);
 			popup.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true));
 		}
 		if(file.isDirectory()) {
-			popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getFileView().getFileCreator().showDirView(file.getAbsolutePath()))
-			.createItem("New File", IconManager.fluentnewfileImage, ()->Screen.getFileView().getFileCreator().showFileView(file.getAbsolutePath()))
-			.createItem("New Class", IconManager.fluentclassFileImage, ()->Screen.getFileView().getFileCreator().showFileView("class", file.getAbsolutePath()))
-			.createItem("New Record", IconManager.fluentrecordFileImage, ()->Screen.getFileView().getFileCreator().showFileView("record", file.getAbsolutePath()))
-			.createItem("New Interface", IconManager.fluentinterfaceFileImage, ()->Screen.getFileView().getFileCreator().showFileView("interface", file.getAbsolutePath()))
-			.createItem("New Enum", IconManager.fluentenumFileImage, ()->Screen.getFileView().getFileCreator().showFileView("enum", file.getAbsolutePath()))
-			.createItem("New Annotation", IconManager.fluentannotationFileImage, ()->Screen.getFileView().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
+			popup.createItem("New Directory", IconManager.projectImage, ()->Screen.getProjectFile().getFileCreator().showDirView(file.getAbsolutePath()))
+			.createItem("New File", IconManager.fluentnewfileImage, ()->Screen.getProjectFile().getFileCreator().showFileView(file.getAbsolutePath()))
+			.createItem("New Class", IconManager.fluentclassFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("class", file.getAbsolutePath()))
+			.createItem("New Record", IconManager.fluentrecordFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("record", file.getAbsolutePath()))
+			.createItem("New Interface", IconManager.fluentinterfaceFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("interface", file.getAbsolutePath()))
+			.createItem("New Enum", IconManager.fluentenumFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("enum", file.getAbsolutePath()))
+			.createItem("New Annotation", IconManager.fluentannotationFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
 		}
 		popup.createItem("Open in Desktop", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(file));
 		if(!file.isDirectory()) {
@@ -112,7 +112,7 @@ public class PopupManager {
 			.createItem("Open On Right Tab Panel", IconManager.fluenteditFileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
 			.createItem("Open On Bottom Tab Panel", IconManager.fluenteditFileImage, ()->Screen.getScreen().loadFileOnBottomTabPanel(file));
 		}
-		if(!file.getAbsolutePath().equals(Screen.getFileView().getProjectPath())){
+		if(!file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath())){
 			popup.createItem("Delete", IconManager.closeImage, ()->{
 				if(file.isDirectory()){
 					try{
@@ -127,13 +127,13 @@ public class PopupManager {
 				}
 				else
 					Editor.deleteFile(file);
-				Screen.getFileView().getFileTreePanel().refresh();
+				Screen.getProjectFile().getFileTreePanel().refresh();
 			});
 		}
-		popup.createItem("Refresh", null, Screen.getFileView().getFileTreePanel()::refresh);
+		popup.createItem("Refresh", null, Screen.getProjectFile().getFileTreePanel()::refresh);
 		if(!file.isDirectory()) {
 			popup.createItem("Rename (F2)", IconManager.fluentrenameImage, ()->{
-				Screen.getFileView().getFileTreePanel().findBranch(file).renameView();
+				Screen.getProjectFile().getFileTreePanel().findBranch(file).renameView();
 			});
 		}
 		
