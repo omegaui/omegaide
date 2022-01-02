@@ -531,6 +531,10 @@ public class RunView {
 					Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage, "select", "JDK");
 					return;
 				}
+				
+				getScreen().getOperationPanel().removeTab("Compilation");
+				Screen.getErrorHighlighter().removeAllHighlights();
+				
 				String text = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? "instant-mode-speed" : "instant-mode-accuracy";
 				Screen.setStatus("Building Project -- Instant Run : " + text, 0, IconManager.fluentrocketImage, "Building Project");
 				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();

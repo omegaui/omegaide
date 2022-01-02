@@ -29,6 +29,8 @@ import omega.ui.popup.NotificationPopup;
 import omega.instant.support.java.highlighter.JavaErrorData;
 
 import omega.instant.support.Highlight;
+import omega.instant.support.LanguageTagView;
+import omega.instant.support.AbstractSyntaxParser;
 
 import omega.Screen;
 
@@ -57,7 +59,7 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
 import static omega.io.UIManager.*;
-public class JavaSyntaxParser {
+public class JavaSyntaxParser extends AbstractSyntaxParser{
 	private JavaCompiler compiler;
 	private StandardJavaFileManager fileManager;
 	
@@ -86,8 +88,9 @@ public class JavaSyntaxParser {
 	public JavaSyntaxParser(){
 		compiler = ToolProvider.getSystemJavaCompiler();
 	}
-	
-	public synchronized void parse(){
+
+	@Override
+	public void parse(){
 		if(parsing || packingCodes)
 			return;
 		new Thread(()->{
@@ -183,6 +186,12 @@ public class JavaSyntaxParser {
 			System.gc();
 		}).start();
 	}
+
+	@Override
+	public int getLanguageTag() {
+		return LanguageTagView.LANGUAGE_TAG_JAVA;
+	}
+	
 	
 	public DiagnosticCollector<JavaFileObject> compile(){
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();

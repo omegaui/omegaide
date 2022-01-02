@@ -26,7 +26,7 @@ import omega.instant.support.c.CErrorHighlighter;
 import java.util.HashMap;
 
 import omega.Screen;
-public class ErrorHighlighters {
+public final class ErrorHighlighters {
 	public static CErrorHighlighter cErrorHighlighter = new CErrorHighlighter();
 	public static KotlinErrorHighlighter kotlinErrorHighlighter = new KotlinErrorHighlighter();
 	public static PythonErrorHighlighter pythonErrorHighlighter = new PythonErrorHighlighter();

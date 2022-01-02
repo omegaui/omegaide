@@ -296,10 +296,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					updates = 0;
 					frames = 0;
 
-					if(DataManager.isParsingEnabled()) {
-						if(currentFile.getName().endsWith(".java")){
-							SyntaxParsers.javaSyntaxParser.parse();
-						}
+					if(DataManager.isParsingEnabled()) {	
+						SyntaxParsers.parse();
 					}
 				}
 			}
