@@ -85,8 +85,6 @@ public class JavaSyntaxParser {
 														
 	public JavaSyntaxParser(){
 		compiler = ToolProvider.getSystemJavaCompiler();
-		
-		fileManager = compiler.getStandardFileManager(null, null, null);
 	}
 	
 	public synchronized void parse(){
@@ -195,6 +193,9 @@ public class JavaSyntaxParser {
 				return null;
 			}
 			
+		
+			fileManager = compiler.getStandardFileManager(null, null, null);
+			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
 			
 			LinkedList<String> options = new LinkedList<>();
@@ -204,6 +205,8 @@ public class JavaSyntaxParser {
 			getArgs().forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+			
+			fileManager.close();
 			System.gc();
 		}
 		catch(Exception e){
@@ -246,6 +249,8 @@ public class JavaSyntaxParser {
 			
 			System.gc();
 			
+			fileManager = compiler.getStandardFileManager(null, null, null);
+			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
 			
 			LinkedList<String> options = new LinkedList<>();
@@ -255,6 +260,8 @@ public class JavaSyntaxParser {
 			getArgs().forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+
+			fileManager.close();
 			System.gc();
 		}
 		catch(Exception e){
@@ -281,6 +288,9 @@ public class JavaSyntaxParser {
 				return null;
 			}
 			
+		
+			fileManager = compiler.getStandardFileManager(null, null, null);
+			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
 			
 			LinkedList<String> options = new LinkedList<>();
@@ -292,6 +302,8 @@ public class JavaSyntaxParser {
 			BuildView.optimizeProjectOutputs();
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+
+			fileManager.close();
 			System.gc();
 		}
 		catch(Exception e){
