@@ -317,6 +317,8 @@ public class FileTreeBranch extends JComponent {
 				return IconManager.fluentoutImage;
 			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "lib"))
 				return IconManager.fluentpowerImage;
+			else if(file.getAbsolutePath().equals(Screen.getFileView().getProjectPath() + File.separator + "build"))
+				return IconManager.fluentbuildresultImage;
 			else if(file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "src") || file.getAbsolutePath().startsWith(Screen.getFileView().getProjectPath() + File.separator + "bin"))
 				return IconManager.fluentwindRoseImage;
 			return IconManager.fluentplainfolderImage;
