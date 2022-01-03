@@ -200,7 +200,7 @@ public class UIManager extends DataBase {
 				TOOLMENU_COLOR5_SHADE = new Color(TOOLMENU_COLOR4.getRed(), TOOLMENU_COLOR4.getGreen(), TOOLMENU_COLOR4.getBlue(), 40);
 				TOOLMENU_GRADIENT = new Color(51, 51, 51, 140);
 				back1 = Color.decode("#252526");
-				back2 = Color.decode("#333333");
+				back2 = Color.decode("#2A2A2A");
 				back3 = Color.decode("#303030");
 			}
 		}
