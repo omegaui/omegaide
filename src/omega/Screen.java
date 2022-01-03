@@ -365,7 +365,7 @@ public class Screen extends JFrame {
 		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.non_java);
 		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.non_java);
 		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.non_java);
-		toolMenu.typeItem.setName(projectFile.getProjectManager().non_java ? "Project Type : Non-Java" : "Project Type : Java");
+		toolMenu.typeItem.setName(projectFile.getProjectManager().non_java ? "Project Type : Other/Gradle" : "Project Type : Java");
 		sideMenu.structureComp.setVisible(!manager.non_java);
 		toolMenu.changeLocations(manager.non_java);
 		sideMenu.changeLocations(manager.non_java);

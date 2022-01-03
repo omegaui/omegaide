@@ -164,6 +164,8 @@ public class ToolMenu extends JPanel {
 	public static InstructionWindow instructionWindow;
 	public static ColorPicker colorPicker;
 	public static LanguageTagView languageTagView;
+
+	public static NotificationPopup projectTypeNotificationPopup = null;
 	
 	private int pressX;
 	private int pressY;
@@ -206,6 +208,35 @@ public class ToolMenu extends JPanel {
 			instructionWindow = new InstructionWindow(screen);
 			colorPicker = new ColorPicker(screen);
 			languageTagView = new LanguageTagView(screen);
+
+			projectTypeNotificationPopup = NotificationPopup.create(screen)
+												.title("Project Type Management")
+												.dialogIcon(IconManager.fluentfolderImage)
+												.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+												.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
+												.iconButton(IconManager.fluentcloseImage, ()->{
+													try{
+														for(Process p : Screen.getProjectRunner().runningApps) {
+															if(p.isAlive())
+																p.destroyForcibly();
+														}
+													}
+													catch(Exception e2) {
+														
+													}
+													Screen.getPluginManager().save();
+													Screen.getUIManager().save();
+													Screen.getDataManager().saveData();
+													Screen.getScreen().saveAllEditors();
+													try{
+														Screen.getProjectFile().getProjectManager().save();
+													}
+													catch(Exception e2) {
+														
+													}
+													System.exit(0);
+												}, "You need to manually start the IDE again!")
+												.build();
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -781,6 +812,15 @@ public class ToolMenu extends JPanel {
 		langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getProjectFile().getProjectManager().getLanguageTag());
 		langComp.repaint();
 	}
+
+	public void setProjectType(boolean non_java){
+		Screen.getProjectFile().getProjectManager().non_java = non_java;
+		Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+		Screen.getProjectFile().getProjectManager().save();
+		projectTypeNotificationPopup.
+			locateOnBottomLeft()
+			.showIt();
+	}
 	
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
@@ -807,41 +847,7 @@ public class ToolMenu extends JPanel {
 		
 		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
 		typeItem.setAction(()->{
-			omega.Screen.getProjectFile().getProjectManager().non_java = !omega.Screen.getProjectFile().getProjectManager().non_java;
-			typeItem.setName(omega.Screen.getProjectFile().getProjectManager().non_java ? "Project Type : Other/Gradle" : "Project Type : Java");
-			omega.Screen.getScreen().manageTools(omega.Screen.getProjectFile().getProjectManager());
-			omega.Screen.getProjectFile().getProjectManager().save();
-			typeItem.setToolTipText("Please Relaunch the IDE");
-			NotificationPopup.create(screen)
-			.title("Project Management")
-			.dialogIcon(IconManager.fluentfolderImage)
-			.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
-			.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
-			.iconButton(IconManager.fluentcloseImage, ()->{
-				try{
-					for(Process p : Screen.getProjectRunner().runningApps) {
-						if(p.isAlive())
-							p.destroyForcibly();
-					}
-				}
-				catch(Exception e2) {
-					
-				}
-				Screen.getPluginManager().save();
-				screen.getUIManager().save();
-				screen.getDataManager().saveData();
-				screen.saveAllEditors();
-				try{
-					Screen.getProjectFile().getProjectManager().save();
-				}
-				catch(Exception e2) {
-					
-				}
-				System.exit(0);
-			}, "You need to start the IDE again manually!")
-			.build()
-			.locateOnBottomLeft()
-			.showIt();
+			setProjectType(!Screen.getProjectFile().getProjectManager().non_java);
 		});
 		
 		JDKSelectionDialog jdkSelectionDialog = new JDKSelectionDialog(screen);
