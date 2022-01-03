@@ -26,6 +26,8 @@ import omega.instant.support.java.framework.IndentationFramework;
 import omega.instant.support.build.gradle.GradleProcessManager;
 
 import omega.instant.support.SyntaxParsers;
+import omega.instant.support.CodeFrameworks;
+import omega.instant.support.ContentTokenizers;
 
 import omega.io.DataManager;
 import omega.io.RustTokenMaker;
@@ -307,11 +309,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void readCode() {
 		if(call) {
 			call = false;
-			System.gc();
-			if(!CodeFramework.resolving) {
-				ContentTokenizer.arrangeTokens(this);
-				System.gc();
-			}
+			if(!CodeFrameworks.isResolving())
+				ContentTokenizers.arrangeTokens(this);
 		}
 	}
 	

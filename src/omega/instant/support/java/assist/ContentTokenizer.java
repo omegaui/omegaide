@@ -17,6 +17,9 @@
 */
 
 package omega.instant.support.java.assist;
+import omega.instant.support.AbstractContentTokenizer;
+import omega.instant.support.CodeFrameworks;
+
 import omega.instant.support.java.management.Import;
 
 import omega.Screen;
@@ -35,7 +38,7 @@ import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
 import static omega.io.UIManager.*;
-public class ContentTokenizer {
+public class ContentTokenizer extends AbstractContentTokenizer{
 	
 	public static boolean isConditionalCode(String code){
 		return isObjectInstantiationCode(code);
@@ -75,6 +78,11 @@ public class ContentTokenizer {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean canArrangeTokens(Editor editor) {
+		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java");
 	}
 	
 	public static void arrangeTokens(Editor e, String text){
@@ -118,8 +126,9 @@ public class ContentTokenizer {
 		else
 			e.contentWindow.setVisible(false);
 	}
-	
-	public static void arrangeTokens(Editor e) {
+
+	@Override
+	public void arrangeTokens(Editor e) {
 		if(!e.currentFile.getName().endsWith(".java") || Screen.getProjectFile().getProjectManager().non_java || !DataManager.isContentModeJava()){
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
@@ -142,7 +151,7 @@ public class ContentTokenizer {
 		if(Screen.getProjectFile().getJDKManager() == null && !Screen.getProjectFile().getProjectManager().non_java)
 			return;
 		
-		if(!text.contains(".") || !CodeFramework.think(e, e.getText(), e.getCaretPosition())) {
+		if(!text.contains(".") || !CodeFrameworks.javaCodeFramework.think(e, e.getText(), e.getCaretPosition())) {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
 			LinkedList<DataMember> staticMembers = new LinkedList<>();

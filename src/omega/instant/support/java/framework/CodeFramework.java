@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.java.framework;
+import omega.instant.support.AbstractCodeFramework;
+
 import omega.Screen;
 
 import omega.ui.component.Editor;
@@ -44,14 +46,28 @@ import java.util.StringTokenizer;
 import static omega.instant.support.java.assist.Assembly.*;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
-public class CodeFramework {
-	private static String text;
+public class CodeFramework extends AbstractCodeFramework{
+	public static String text;
 	public static String lCode;
-	private static int caret;
-	public static volatile boolean resolving = false;
-	private static Editor editor;
+	
+	public static int caret;
+	
+	public static Editor editor;
 
-	public static boolean think(Editor e, String text, int caret){
+	public static volatile boolean resolving = false;
+
+	@Override
+	public boolean canThink(Editor editor) {
+		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java");
+	}
+
+	@Override
+	public boolean isResolving() {
+		return resolving;
+	}
+	
+	@Override
+	public boolean think(Editor e, String text, int caret){
 		boolean value = false;
 		CodeFramework.editor = e;
 		CodeFramework.text = text;
