@@ -208,7 +208,7 @@ public class UIManager extends DataBase {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public static int computeWidth(String name, Font font){
 		if(font == null)
 			return 8;
@@ -218,7 +218,7 @@ public class UIManager extends DataBase {
 		g.setFont(font);
 		return g.getFontMetrics().stringWidth(name);
 	}
-
+	
 	public static int computeHeight(Font font){
 		if(font == null)
 			return 8;
@@ -226,10 +226,10 @@ public class UIManager extends DataBase {
 		g.setFont(font);
 		return g.getFontMetrics().getHeight();
 	}
-
+	
 	public static void drawAtCenter(String text, Graphics2D g, Component c){
-		g.drawString(text, c.getWidth()/2 - computeWidth(text, g.getFont())/2, 
-			c.getHeight()/2 - computeHeight(g.getFont())/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+		g.drawString(text, c.getWidth()/2 - computeWidth(text, g.getFont())/2,
+		c.getHeight()/2 - computeHeight(g.getFont())/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 	}
 	
 	/**
@@ -302,7 +302,7 @@ public class UIManager extends DataBase {
 	public static void setFontState(int fontState) {
 		UIManager.fontState = fontState;
 	}
-
+	
 	public static boolean isAnimationsActive() {
 		return animationsActive;
 	}

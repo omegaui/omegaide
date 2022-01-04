@@ -29,14 +29,3 @@ public class IDE {
 		screen = new Screen();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

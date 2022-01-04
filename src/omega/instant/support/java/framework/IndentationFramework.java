@@ -18,13 +18,22 @@
 */
 
 package omega.instant.support.java.framework;
+import omega.instant.support.AbstractIndentationFramework;
+
+import omega.ui.component.Editor;
+
 import omega.instant.support.java.assist.CodeTokenizer;
 
 import java.util.LinkedList;
 
-import org.fife.ui.rtextarea.RTextArea;
-public class IndentationFramework {
-	public static void indent(RTextArea textArea){
+public class IndentationFramework extends AbstractIndentationFramework{
+	@Override
+	public boolean canIndent(Editor editor) {
+		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java");
+	}
+	
+	@Override
+	public void indent(Editor textArea){
 		LinkedList<String> lines = CodeTokenizer.tokenizeWithoutLoss(textArea.getText(), '\n');
 		int caretPos = textArea.getCaretPosition();
 		int caretLineNumber = textArea.getCaretLineNumber();

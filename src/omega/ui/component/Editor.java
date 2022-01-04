@@ -7,7 +7,7 @@
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
+* This program is distributed in the hope that s.indit will be useful,
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 * GNU General Public License for more details.
@@ -21,13 +21,13 @@ import omega.instant.support.java.generator.Generator;
 
 import omega.instant.support.java.framework.CodeFramework;
 import omega.instant.support.java.framework.ImportFramework;
-import omega.instant.support.java.framework.IndentationFramework;
 
 import omega.instant.support.build.gradle.GradleProcessManager;
 
 import omega.instant.support.SyntaxParsers;
 import omega.instant.support.CodeFrameworks;
 import omega.instant.support.ContentTokenizers;
+import omega.instant.support.IndentationFrameworks;
 
 import omega.io.DataManager;
 import omega.io.RustTokenMaker;
@@ -240,6 +240,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->saveImage(), VK_CONTROL, VK_SHIFT, VK_C);
 		keyStrokeListener.putKeyStroke((e)->showSearchDialog(e), VK_CONTROL, VK_SHIFT, VK_P);
 		keyStrokeListener.putKeyStroke((e)->triggerSnippets(e), VK_TAB).setStopKeys(VK_CONTROL, VK_ALT, VK_WINDOWS);
+		keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
 	}
 
 	public void initJavaFileKeyStrokes(){
@@ -248,7 +249,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			keyStrokeListener.putKeyStroke((e)->triggerImportFramework(e), VK_CONTROL, VK_SHIFT, VK_O);
 			keyStrokeListener.putKeyStroke((e)->showGSDialog(e), VK_CONTROL, VK_SHIFT, VK_G).useAutoReset();
 			keyStrokeListener.putKeyStroke((e)->showIODialog(e), VK_CONTROL, VK_SHIFT, VK_I).useAutoReset();
-			keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
 			keyStrokeListener.putKeyStroke((e)->{javaJumpToDefinitionPanel.setVisible(true);e.consume();}, VK_CONTROL, VK_J);
 		}
 	}
@@ -793,7 +793,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	public void autoIndent(KeyEvent e){
-		IndentationFramework.indent(this);
+		IndentationFrameworks.indent(this);
 
 		e.consume();
 	}

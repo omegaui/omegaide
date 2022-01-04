@@ -192,7 +192,6 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 		return LanguageTagView.LANGUAGE_TAG_JAVA;
 	}
 	
-	
 	public DiagnosticCollector<JavaFileObject> compile(){
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		try{
