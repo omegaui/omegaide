@@ -52,16 +52,19 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 	public void keyTyped(KeyEvent keyEvent) {
 		
 	}
+	
 	@Override
 	public void keyPressed(KeyEvent keyEvent) {
 		if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
 			ctrl = true;
 	}
+	
 	@Override
 	public void keyReleased(KeyEvent keyEvent) {
 		if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
 			ctrl = false;
 	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		//Invoking Code Navigation

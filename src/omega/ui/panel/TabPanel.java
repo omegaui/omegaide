@@ -111,21 +111,21 @@ public class TabPanel extends JPanel{
 		tabHistory = new TabHistory(this);
 	}
 	
-	public void addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Runnable removeAction) {
-		addTab(new TabData(name, fullQualifiedName, toolTip, image, component, removeAction));
+	public JPanel addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Runnable removeAction) {
+		return addTab(new TabData(name, fullQualifiedName, toolTip, image, component, removeAction));
 	}
 	
-	public void addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Runnable removeAction, OPopupWindow popupWindow) {
-		addTab(new TabData(name, fullQualifiedName, toolTip, image, component, removeAction).setPopup(popupWindow));
+	public JPanel addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Runnable removeAction, OPopupWindow popupWindow) {
+		return addTab(new TabData(name, fullQualifiedName, toolTip, image, component, removeAction).setPopup(popupWindow));
 	}
 	
-	public void addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Color tabTextColor, Runnable removeAction, OPopupWindow popupWindow) {
-		addTab(new TabData(name, fullQualifiedName, toolTip, image, component, tabTextColor, removeAction).setPopup(popupWindow));
+	public JPanel addTab(String name, String fullQualifiedName, String toolTip, BufferedImage image, JComponent component, Color tabTextColor, Runnable removeAction, OPopupWindow popupWindow) {
+		return addTab(new TabData(name, fullQualifiedName, toolTip, image, component, tabTextColor, removeAction).setPopup(popupWindow));
 	}
 	
-	public void addTab(TabData tabData){
+	public JPanel addTab(TabData tabData){
 		if(isTabDataAlreadyPresent(tabData))
-			return;
+			return null;
 		boolean wasEmpty = tabs.isEmpty();
 		
 		tabs.add(tabData);
@@ -140,7 +140,7 @@ public class TabPanel extends JPanel{
 		
 		if(!tabPanelListeners.isEmpty())
 			tabPanelListeners.forEach(listener->listener.tabAdded(tabData));
-
+		
 		if(wasEmpty){
 			//omega.tabPane.TabCompHolder is showing an abnormal behavior(sometimes, don't know the exact condition of why it occurs)
 			//It does not gets visible on its own whenever the initial tab is added
@@ -149,6 +149,8 @@ public class TabPanel extends JPanel{
 			Screen.getScreen().splitPane.setDividerLocation(Screen.getScreen().splitPane.getDividerLocation() + 1);
 			Screen.getScreen().splitPane.setDividerLocation(Screen.getScreen().splitPane.getDividerLocation() - 1);
 		}
+
+		return tabData.getTabHolder().getHolderPanel();
 	}
 	
 	public boolean isTabDataAlreadyPresent(TabData tabData){

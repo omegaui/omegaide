@@ -936,7 +936,7 @@ public class CodeFramework extends AbstractCodeFramework{
 
 	public static void gen(LinkedList<DataMember> dataMembers){
 		LinkedList<DataMember> mx = new LinkedList<>();
-          lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
+      	lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
 				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
@@ -950,7 +950,7 @@ public class CodeFramework extends AbstractCodeFramework{
 
 	public static void gen(LinkedList<DataMember> dataMembers, Editor editor){
 		LinkedList<DataMember> mx = new LinkedList<>();
-          lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
+      	lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
 				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))

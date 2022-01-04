@@ -61,7 +61,7 @@ public class SourceReader {
 		}
 	}
 	
-	private String code;
+	public String code;
 	public String pack;
 	public String access;
 	public String modifier;
@@ -75,7 +75,9 @@ public class SourceReader {
 	public LinkedList<SourceReader> internalReaders = new LinkedList<>();
 	public LinkedList<Import> imports = new LinkedList<>();
 	public LinkedList<DataBlock> dataBlocks = new LinkedList<>();
+	
 	public volatile boolean recordingInternal;
+	
 	public SourceReader(String code){
 		this.code = code;
 		try {

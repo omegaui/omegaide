@@ -1,5 +1,5 @@
 /**
-* The IDE 's Key Input Listener -- Currently Unstable
+* The IDE 's Key Input Listener
 * Copyright (C) 2021 Omega UI
 
 * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@
 package omegaui.listener;
 import java.awt.Component;
 
-
 import java.util.LinkedList;
 
 import java.awt.event.KeyListener;
@@ -32,8 +31,10 @@ public class KeyStrokeListener implements KeyListener{
 
 	public LinkedList<Key> keys = new LinkedList<>();
 	public LinkedList<KeyStrokeData> keyStrokes = new LinkedList<>();
+	public Component c;
 
 	public KeyStrokeListener(Component c){
+		this.c = c;
 		c.addFocusListener(new FocusAdapter(){
 			@Override
 			public void focusLost(FocusEvent e){
@@ -72,13 +73,17 @@ public class KeyStrokeListener implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		keys.forEach(key->key.checkPressed(e.getKeyCode(), true));
-		keyStrokes.forEach(keyStrokeData->keyStrokeData.stroke(e));
+		synchronized(c){
+			keys.forEach(key->key.checkPressed(e.getKeyCode(), true));
+			keyStrokes.forEach(keyStrokeData->keyStrokeData.stroke(e));
+		}
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		keys.forEach(key->key.checkPressed(e.getKeyCode(), false));
+		synchronized(c){
+			keys.forEach(key->key.checkPressed(e.getKeyCode(), false));
+		}
 	}
 
 	public interface KeyStrokeDataListener {

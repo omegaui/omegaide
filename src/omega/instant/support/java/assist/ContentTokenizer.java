@@ -211,7 +211,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			
 			I = null;
 			for(SourceReader.Import im : imports){
-				dataMembers.add(new DataMember("", "", im.get(), im.name, null));
+				dataMembers.add(new DataMember("", "class", im.get(), im.name, null));
 			}
 			
 			for(DataMember m : reader.dataMembers) {

@@ -114,6 +114,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public KeyListener keyListener;
 	public KeyStrokeListener keyStrokeListener;
 	
+	public int keyCache = 0;
+	public int lastKeyCode = -1;
+	
 	public volatile File currentFile;
 	
 	public volatile boolean call = false;
@@ -221,9 +224,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		addKeyListener(keyStrokeListener);
 		
 		keyStrokeListener.putKeyStroke((e)->saveCurrentFile(), VK_CONTROL, VK_S).setStopKeys(VK_SHIFT);
-		keyStrokeListener.putKeyStroke((e)->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F).useAutoReset();
+		keyStrokeListener.putKeyStroke((e)->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F);
 		keyStrokeListener.putKeyStroke((e)->doDuplicate(e), VK_CONTROL, VK_D).setStopKeys(VK_SHIFT);
-				
+		
 		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_EQUALS).setStopKeys(VK_T);
 		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_PLUS).setStopKeys(VK_T);
 		keyStrokeListener.putKeyStroke((e)->decreaseFont(e), VK_CONTROL, VK_SHIFT, VK_MINUS).setStopKeys(VK_T);
@@ -820,64 +823,82 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e) {		
-		int code = e.getKeyCode();
-		
-		if(code == KeyEvent.VK_BACK_SPACE)
-			autoSymbolExclusion(e);
-		else
-			autoSymbolCompletion(e);
-		
-		if(currentFile != null) {
-			//Managing KeyBoard Shortcuts
+	public void keyPressed(KeyEvent e) {
+		synchronized(Editor.class){
+			int code = e.getKeyCode();
 			
-			if(contentWindow.isVisible()) {
-				if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
-				|| ";:|\\`~!".contains(e.getKeyChar() + "")) {
-					contentWindow.setVisible(false);
-					return;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					if(DataManager.isContentAssistRealTime())
-						call = true;
-					return;
-				}
-				if(e.getKeyCode() == KeyEvent.VK_SPACE){
-					String codeText = getText();
-					codeText = codeText.substring(0, getCaretPosition());
-					codeText = codeText.substring(codeText.lastIndexOf('\n') + 1).trim();
-					if(ContentTokenizer.isConditionalCode(codeText))
-						call = true;
-					else
-						contentWindow.setVisible(false);
-					return;
-				}
-				if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_UP || code == KeyEvent.VK_ENTER) {
-					if((contentWindow.index == 0 && code == KeyEvent.VK_UP) || ((contentWindow.index == contentWindow.hints.size() - 1) && code == KeyEvent.VK_DOWN)) {
+			if(lastKeyCode != code){
+				keyCache += code;
+				lastKeyCode = code;
+			}
+			
+			contentWindow.setIgnoreGenViewOnce(keyCache != 0);
+			
+			if(code == KeyEvent.VK_BACK_SPACE)
+				autoSymbolExclusion(e);
+			else
+				autoSymbolCompletion(e);
+			
+			if(currentFile != null) {
+				//Managing KeyBoard Shortcuts
+				
+				if(contentWindow.isVisible()) {
+					if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
+					|| ";:|\\`~!".contains(e.getKeyChar() + "")) {
 						contentWindow.setVisible(false);
 						return;
 					}
-					e.consume();
+					if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+						if(DataManager.isContentAssistRealTime())
+							call = true;
+						return;
+					}
+					if(e.getKeyCode() == KeyEvent.VK_SPACE){
+						String codeText = getText();
+						codeText = codeText.substring(0, getCaretPosition());
+						codeText = codeText.substring(codeText.lastIndexOf('\n') + 1).trim();
+						if(ContentTokenizer.isConditionalCode(codeText))
+							call = true;
+						else
+							contentWindow.setVisible(false);
+						return;
+					}
+					if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_UP || code == KeyEvent.VK_ENTER) {
+						if((contentWindow.index == 0 && code == KeyEvent.VK_UP) || ((contentWindow.index == contentWindow.hints.size() - 1) && code == KeyEvent.VK_DOWN)) {
+							contentWindow.setVisible(false);
+							return;
+						}
+						e.consume();
+					}
 				}
 			}
 		}
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent e) {		
-		switch(e.getKeyChar()){
-			case ',':
-			insert(" ", getCaretPosition());
-			return;
-			default:
-		}
-		
-		if(currentFile != null) {
-			//Code Assist
-			char c = e.getKeyChar();
-			if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-				if(DataManager.isContentAssistRealTime())
-					call = true;
+	public void keyReleased(KeyEvent e) {
+		synchronized(Editor.class){
+			keyCache -= e.getKeyCode();
+			
+			if(keyCache < 0)
+				keyCache = 0;
+			
+			switch(e.getKeyChar()){
+				case ',':
+				insert(" ", getCaretPosition());
+				return;
+				default:
+			}
+			
+			if(currentFile != null) {
+				//Code Assist
+				char c = e.getKeyChar();
+				if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					if(DataManager.isContentAssistRealTime()){
+						contentWindow.setIgnoreGenViewOnce(keyCache != 0);
+						call = true;
+					}
+				}
 			}
 		}
 	}

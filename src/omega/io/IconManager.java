@@ -121,7 +121,7 @@ public class IconManager {
 	public static BufferedImage fluentjavamascotLogo = getFluentIcon("java-mascot-logo.png");
 	public static BufferedImage fluentgoogleguavaLogo = getFluentIcon("google-guava-logo.png");
 	
-	public static BufferedImage fluentvariableImage = getFluentIcon("variable-48.png");
+	public static BufferedImage fluentvariableImage = getFluentIcon("variable-96.png");
 	public static BufferedImage fluentconstantImage = getFluentIcon("final-state-48.png");
 	public static BufferedImage fluentvolatileImage = getFluentIcon("volatile-48.png");
 	public static BufferedImage fluentsyncImage = getFluentIcon("sync-48.png");

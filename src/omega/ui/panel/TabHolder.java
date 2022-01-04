@@ -17,6 +17,8 @@
 */
 
 package omega.ui.panel;
+import java.awt.BorderLayout;
+
 import omegaui.component.FlexPanel;
 
 import omega.io.TabData;
@@ -29,6 +31,7 @@ public class TabHolder extends JPanel{
 	private TabData tabData;
 
 	private FlexPanel flexPanel;
+	private JPanel panel;
 	
 	public TabHolder(TabData tabData){
 		super(null);
@@ -42,14 +45,24 @@ public class TabHolder extends JPanel{
 	public void init(){
 		flexPanel = new FlexPanel(null, TOOLMENU_COLOR1_SHADE, null);
 		flexPanel.setArc(5, 5);
-		flexPanel.add(tabData.getComponent());
 		add(flexPanel);
+		
+		panel = new JPanel(new BorderLayout());
+		panel.setBackground(TOOLMENU_COLOR1_SHADE);
+		panel.setBorder(null);
+		panel.add(tabData.getComponent(), BorderLayout.CENTER);
+
+		flexPanel.add(panel);
+	}
+
+	public JPanel getHolderPanel(){
+		return panel;
 	}
 
 	@Override
 	public void layout(){
 		flexPanel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
-		tabData.getComponent().setBounds(5, 5, flexPanel.getWidth() - 10, flexPanel.getHeight() - 10);
+		panel.setBounds(5, 5, flexPanel.getWidth() - 10, flexPanel.getHeight() - 10);
 		super.layout();
 	}
 

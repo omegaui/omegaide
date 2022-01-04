@@ -59,6 +59,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 	public int index;
 	public static final int MINIMUM_HINT_HEIGHT = 30;
 	public int optimalHintHeight = MINIMUM_HINT_HEIGHT;
+
+	private volatile boolean ignoreGenViewOnce = false;
 	
 	public static Color highlightColor = glow;
 
@@ -124,17 +126,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		public void run(){
 			nameComp.runnable.run();
 		}
-
-		public Color getColorShade(){
-			if(d.modifier.contains("synchronized"))
-				return TOOLMENU_COLOR5_SHADE;
-			if(d.modifier.contains("final"))
-				return TOOLMENU_COLOR1_SHADE;
-			if(d.modifier.contains("volatile"))
-				return TOOLMENU_COLOR3_SHADE;
-			return d.isMethod() ? TOOLMENU_COLOR4_SHADE : TOOLMENU_COLOR2_SHADE;
-		}
-
+		
 		public BufferedImage getIcon(){
 			if(d.modifier.contains("synchronized"))
 				return IconManager.fluentsyncImage;
@@ -142,6 +134,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 				return IconManager.fluentconstantImage;
 			if(d.modifier.contains("volatile"))
 				return IconManager.fluentvolatileImage;
+			if(d.modifier.contains("class"))
+				return IconManager.fluentclassFileImage;
 			return d.isMethod() ? IconManager.fluentmethodImage : IconManager.fluentvariableImage;
 		}
 	}
@@ -155,12 +149,21 @@ public class ContentWindow extends JPanel implements KeyListener{
 		scrollPane.setBorder(null);
 		panel.setBackground(back1);
 	}
+
+	public boolean isIgnoreGenViewOnce() {
+		return ignoreGenViewOnce;
+	}
 	
-	public void genView(LinkedList<DataMember> dataMembers, Graphics g){
+	public void setIgnoreGenViewOnce(boolean ignoreGenViewOnce) {
+		this.ignoreGenViewOnce = ignoreGenViewOnce;
+	}
+	
+	public synchronized void genView(LinkedList<DataMember> dataMembers, Graphics g){
 		if(dataMembers.isEmpty()){
 			setVisible(false);
 			return;
 		}
+		
 		hints.forEach(panel::remove);
 		hints.clear();
 		
@@ -191,6 +194,11 @@ public class ContentWindow extends JPanel implements KeyListener{
 		final Editor e = editor;
 		final String match = CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition());
 		
+		if(isIgnoreGenViewOnce()){
+			setIgnoreGenViewOnce(false);
+			return;
+		}
+			
 		dataMembers.forEach(d->{
 			if(d.getRepresentableValue() != null){
 				HintComp hintComp = new HintComp(d, match, ()->{
@@ -218,7 +226,13 @@ public class ContentWindow extends JPanel implements KeyListener{
 			}
 		});
 		
-		if(block == 0) return;
+		if(block == 0) 
+			return;
+		
+		if(isIgnoreGenViewOnce()){
+			setIgnoreGenViewOnce(false);
+			return;
+		}
 		
 		hints.getFirst().setEnter(true);
 		hints.getFirst().setColor3(highlightColor);
