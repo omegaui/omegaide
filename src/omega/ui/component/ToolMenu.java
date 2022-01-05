@@ -950,7 +950,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Add Additional Flags", IconManager.projectImage, ()->{
 			Screen.getProjectFile().getExtendedDependencyView().setVisible(true);
 		})
-		.createItem("Refresh", IconManager.projectImage, ()->Screen.getProjectFile().getFileTreePanel().refresh())
+		.createItem("Refresh", IconManager.fluentrefreshIcon, ()->Screen.getProjectFile().getFileTreePanel().refresh())
 		.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
 		.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
 		.createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));

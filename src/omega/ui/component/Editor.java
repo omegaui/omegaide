@@ -243,6 +243,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->showSearchDialog(e), VK_CONTROL, VK_SHIFT, VK_P);
 		keyStrokeListener.putKeyStroke((e)->triggerSnippets(e), VK_TAB).setStopKeys(VK_CONTROL, VK_ALT, VK_WINDOWS);
 		keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
+		keyStrokeListener.putKeyStroke((e)->triggerJumpToDefinition(e), VK_CONTROL, VK_J).setStopKeys(VK_ALT, VK_SHIFT);
 	}
 
 	public void initJavaFileKeyStrokes(){
@@ -251,7 +252,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			keyStrokeListener.putKeyStroke((e)->triggerImportFramework(e), VK_CONTROL, VK_SHIFT, VK_O);
 			keyStrokeListener.putKeyStroke((e)->showGSDialog(e), VK_CONTROL, VK_SHIFT, VK_G).useAutoReset();
 			keyStrokeListener.putKeyStroke((e)->showIODialog(e), VK_CONTROL, VK_SHIFT, VK_I).useAutoReset();
-			keyStrokeListener.putKeyStroke((e)->triggerJumpToDefinition(e), VK_CONTROL, VK_J);
 		}
 	}
 	

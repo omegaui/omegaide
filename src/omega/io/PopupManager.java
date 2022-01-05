@@ -69,7 +69,7 @@ public class PopupManager {
 				editor.reloadFile();
 				screen.getTabPanel().remove(editor);
 			})
-			.createItem("Reload", null, ()->editor.reloadFile()).width(200);
+			.createItem("Reload", IconManager.fluentrefreshIcon, ()->editor.reloadFile()).width(200);
 		}
 		else {
 			if(editor.currentFile != null && editor.currentFile.getName().contains("."))
@@ -83,7 +83,7 @@ public class PopupManager {
 				editor.discardData();
 				screen.getTabPanel().remove(editor);
 			})
-			.createItem("Reload", null, ()->editor.reloadFile()).width(200);
+			.createItem("Reload", IconManager.fluentrefreshIcon, ()->editor.reloadFile()).width(200);
 		}
 		popup.createItem("Copy Path (\"path\")", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
 		popup.createItem("Copy Path", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
@@ -130,7 +130,7 @@ public class PopupManager {
 				Screen.getProjectFile().getFileTreePanel().refresh();
 			});
 		}
-		popup.createItem("Refresh", null, Screen.getProjectFile().getFileTreePanel()::refresh);
+		popup.createItem("Refresh", IconManager.fluentrefreshIcon, Screen.getProjectFile().getFileTreePanel()::refresh);
 		if(!file.isDirectory()) {
 			popup.createItem("Rename (F2)", IconManager.fluentrenameImage, ()->{
 				Screen.getProjectFile().getFileTreePanel().findBranch(file).renameView();

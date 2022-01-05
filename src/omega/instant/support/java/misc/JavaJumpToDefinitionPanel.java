@@ -57,14 +57,14 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 	public JavaJumpToDefinitionPanel(Editor editor){
 		super(editor);
 
-		textField = new NoCaretField("", "Search Members", TOOLMENU_COLOR2, back2, TOOLMENU_COLOR3);
+		textField = new NoCaretField("", "Search Members", TOOLMENU_COLOR2, back1, TOOLMENU_COLOR3);
 		textField.setFont(PX14);
 		textField.setOnAction(()->{
 			reload(textField.getText());
 		});
 		panel.add(textField);
 
-		reloadComp = new TextComp(IconManager.fluentresourceImage, 20, 20, "Click to Reload", TOOLMENU_COLOR5_SHADE, back2, glow, ()->{
+		reloadComp = new TextComp(IconManager.fluentrefreshIcon, 20, 20, "Click to Reload", TOOLMENU_COLOR5_SHADE, back2, glow, ()->{
 			reload(lastMatch);
 		});
 		reloadComp.setArc(5, 5);
@@ -72,6 +72,8 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 		reloadComp.setPaintTextGradientEnabled(true);
 		reloadComp.setGradientColor(TOOLMENU_COLOR2);
 		panel.add(reloadComp);
+
+		putAnimationLayer(reloadComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
 	}
 
 	@Override
@@ -105,7 +107,7 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 				if(!dx.getRepresentableValue().contains(match))
 					continue;
 				if(!dx.isMethod()){
-					EdgeComp comp = new EdgeComp(dx.getRepresentableValue(), TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, ()->jumpTo(dx));
+					EdgeComp comp = new EdgeComp(dx.getRepresentableValue(), TOOLMENU_COLOR4, TOOLMENU_GRADIENT, glow, ()->jumpTo(dx));
 					comp.setBounds(5, block, computeWidth(dx.getRepresentableValue(), PX14) + 20, 25);
 					comp.setFont(PX14);
 					comp.setUseFlatLineAtBack(true);
@@ -119,12 +121,12 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 				}
 			}
 			
-			//Installing Methods			
+			//Installing Methods		
 			for(DataMember dx : reader.ownedDataMembers){
 				if(!dx.getRepresentableValue().contains(match))
 					continue;
 				if(dx.isMethod()){
-					EdgeComp comp = new EdgeComp(dx.getRepresentableValue(), TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->jumpTo(dx));
+					EdgeComp comp = new EdgeComp(dx.getRepresentableValue(), TOOLMENU_COLOR2, TOOLMENU_GRADIENT, glow, ()->jumpTo(dx));
 					comp.setBounds(5, block, computeWidth(dx.getRepresentableValue(), PX14) + 20, 25);
 					comp.setFont(PX14);
 					comp.setUseFlatLineAtBack(true);
@@ -154,7 +156,12 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 	}
 
 	public void jumpTo(DataMember dx){
-		editor.setCaretPosition(JavaCodeNavigator.getLineOffset(editor, dx.lineNumber));
+		try{
+			editor.setCaretPosition(editor.getLineStartOffset(dx.lineNumber - 1));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	@Override

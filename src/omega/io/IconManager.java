@@ -92,6 +92,7 @@ public class IconManager {
 	public static BufferedImage fluentwindRoseImage = getFluentIcon("wind-rose-96.png");
 	public static BufferedImage fluentbrowsefolderImage = getFluentIcon("browse-folder-96.png");
 	public static BufferedImage fluentbuildresultImage = getFluentIcon("build-result-96.png");
+	public static BufferedImage fluentrefreshIcon = getFluentIcon("refresh-96.png");
 	
 	public static BufferedImage fluentenergyImage = getFluentIcon("energy-64.png");
 	public static BufferedImage fluentatomicImage = getFluentIcon("atomic-60.png");
@@ -99,6 +100,7 @@ public class IconManager {
 	public static BufferedImage fluentthunderboltImage = getFluentIcon("thuder-bolt-96.png");
 	public static BufferedImage fluenttargetImage = getFluentIcon("target-100.png");
 	public static BufferedImage fluenttabsHolderIcon = getFluentIcon("apps-tab-96.png");
+	
 	
 	public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
 	public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");
