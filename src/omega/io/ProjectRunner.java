@@ -230,10 +230,8 @@ public class ProjectRunner {
 			Screen.setStatus("Running Project", 56, IconManager.fluentrunImage, "Running Project");
 			String status = "Successfully";
 			
-			String name = "Run";
-			int count = OperationPane.count(name);
-			if(count > -1)
-				name = name + " " + count;
+			int count = OperationPane.count("Run");
+			String name = "Run" + ((count > -1) ? (" " + count) : "");
 
 			if(!Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getRunCommand())){
 				NotificationPopup.create(getScreen())
@@ -261,6 +259,11 @@ public class ProjectRunner {
 				terminal.printText("---<>--------------------------------------<>---");
 
 				terminal.start();
+				
+				terminal.reRunAction(()->{
+					getScreen().getOperationPanel().removeTab(name);
+					runNJ();
+				});
 				
 				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
 				
