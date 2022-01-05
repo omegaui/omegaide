@@ -49,6 +49,11 @@ import java.awt.Graphics;
 public class UIManager extends DataBase {
 	
 	/**
+	* The field carrying the maximized window state
+	*/
+	public static volatile int extendedState = Screen.NORMAL;
+	
+	/**
 	* The field carrying the default font name which was registered in omega.Screen
 	*/
 	public static volatile boolean animationsActive = true;
@@ -157,6 +162,8 @@ public class UIManager extends DataBase {
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
 		loadData();
+
+		screen.setExtendedState(extendedState);
 	}
 	
 	public static void loadHighlight(){
@@ -179,6 +186,7 @@ public class UIManager extends DataBase {
 			setFontSize(getEntryAt("Font", 1).getValueAsInt());
 			setFontState(getEntryAt("Font", 2).getValueAsInt());
 			setAnimationsActive(getEntryAt("Animations On", 0).getValueAsBoolean());
+			setExtendedState(getEntryAt("Main Window Extended State", 0).getValueAsInt());
 			if(!isDarkMode()) {
 				c3 = color4;
 				c1 = new Color(0, 0, 255, 40);
@@ -205,6 +213,11 @@ public class UIManager extends DataBase {
 			}
 		}
 		catch(Exception e) {
+			System.err.println("An Error Occured while loading the UI Data");
+			System.out.println("Rewriting UI Data ...");
+			loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
+			System.out.println("Rewriting UI Data ... Done!");
+			System.out.println("Restart the IDE!");
 			e.printStackTrace();
 		}
 	}
@@ -264,15 +277,14 @@ public class UIManager extends DataBase {
 		addEntry("Font", fontName);
 		addEntry("Font", fontSize + "");
 		addEntry("Font", fontState + "");
+		addEntry("Main Window Extended State", Screen.getScreen().getExtendedState() + "");
 		super.save();
 	}
 	
 	public static File loadDefaultFile(String fileName, String resName){
 		File file = new File(fileName);
 		try{
-			if(file.exists())
-				return file;
-			else
+			if(!file.exists())
 				file.getParentFile().mkdirs();
 			InputStream in = UIManager.class.getResourceAsStream("/" + resName);
 			OutputStream out = new FileOutputStream(file);
@@ -310,6 +322,14 @@ public class UIManager extends DataBase {
 	public static void setAnimationsActive(boolean animationsActive) {
 		UIManager.animationsActive = animationsActive;
 		Animations.setAnimationsOn(animationsActive);
+	}
+
+	public static int getExtendedState() {
+		return extendedState;
+	}
+
+	public static void setExtendedState(int extendedState) {
+		UIManager.extendedState = extendedState;
 	}
 	
 }
