@@ -312,6 +312,16 @@ public class Screen extends JFrame {
 			launcher.setVisible(true);
 		}
 	}
+	
+	public void setLeftComponent(Component c){
+		if(splitPane.getLeftComponent() != null){
+			splitPane.getLeftComponent().setVisible(false);
+		}
+		
+		splitPane.setLeftComponent(c);
+		c.setVisible(true);
+	}
+	
 	public void triggerBuild(KeyEvent e){
 		if(toolMenu.buildComp.isClickable()){
 			if(GradleProcessManager.isGradleProject())
@@ -347,9 +357,18 @@ public class Screen extends JFrame {
 		
 		e.consume();
 	}
+
+	public void toggleLeftComponent(Component c){
+		if(splitPane.getLeftComponent() != c){
+			setLeftComponent(c);
+		}
+		else{
+			c.setVisible(!c.isVisible());
+		}
+	}
 	
 	public void toggleFileTree(){
-		projectFile.getFileTreePanel().setVisible(!projectFile.getFileTreePanel().isVisible());
+		toggleLeftComponent(projectFile.getFileTreePanel());
 	}
 	
 	public void manageTools(ProjectDataBase manager){

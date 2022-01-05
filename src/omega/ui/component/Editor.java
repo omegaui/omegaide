@@ -28,6 +28,8 @@ import omega.instant.support.SyntaxParsers;
 import omega.instant.support.CodeFrameworks;
 import omega.instant.support.ContentTokenizers;
 import omega.instant.support.IndentationFrameworks;
+import omega.instant.support.AbstractJumpToDefinitionPanel;
+import omega.instant.support.JumpToDefinitionPanels;
 
 import omega.io.DataManager;
 import omega.io.RustTokenMaker;
@@ -131,7 +133,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	public JavaErrorPanel javaErrorPanel;
 	
-	public JavaJumpToDefinitionPanel javaJumpToDefinitionPanel;
+	public AbstractJumpToDefinitionPanel jumpToDefinitionPanel;
 
 	public SearchContext lastSearchContext;
 	
@@ -176,9 +178,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		
 		javaErrorPanel = new JavaErrorPanel(this);
 		add(javaErrorPanel);
-		
-		javaJumpToDefinitionPanel = new JavaJumpToDefinitionPanel(this);
-		add(javaJumpToDefinitionPanel);
 	}
 	
 	private void initView() {
@@ -252,7 +251,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			keyStrokeListener.putKeyStroke((e)->triggerImportFramework(e), VK_CONTROL, VK_SHIFT, VK_O);
 			keyStrokeListener.putKeyStroke((e)->showGSDialog(e), VK_CONTROL, VK_SHIFT, VK_G).useAutoReset();
 			keyStrokeListener.putKeyStroke((e)->showIODialog(e), VK_CONTROL, VK_SHIFT, VK_I).useAutoReset();
-			keyStrokeListener.putKeyStroke((e)->{javaJumpToDefinitionPanel.setVisible(true);e.consume();}, VK_CONTROL, VK_J);
+			keyStrokeListener.putKeyStroke((e)->triggerJumpToDefinition(e), VK_CONTROL, VK_J);
 		}
 	}
 	
@@ -821,13 +820,22 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			searchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
 		}
 	}
+
+	public void triggerJumpToDefinition(KeyEvent e){
+		if(jumpToDefinitionPanel == null)
+			jumpToDefinitionPanel = JumpToDefinitionPanels.get(this);
+		if(jumpToDefinitionPanel != null){
+			JumpToDefinitionPanels.putToView(jumpToDefinitionPanel);
+		}
+		e.consume();
+	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		synchronized(Editor.class){
 			int code = e.getKeyCode();
 			
-			if(lastKeyCode != code){
+			if(lastKeyCode != code && code != VK_SHIFT){
 				keyCache += code;
 				lastKeyCode = code;
 			}
@@ -878,7 +886,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void keyReleased(KeyEvent e) {
 		synchronized(Editor.class){
-			keyCache -= e.getKeyCode();
+			if(e.getKeyCode() != VK_SHIFT)
+				keyCache -= e.getKeyCode();
 			
 			if(keyCache < 0)
 				keyCache = 0;
@@ -1057,7 +1066,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
-		javaJumpToDefinitionPanel.setVisible(false);
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 		if(lastSearchContext != null){
 			lastSearchContext.setMarkAll(false);

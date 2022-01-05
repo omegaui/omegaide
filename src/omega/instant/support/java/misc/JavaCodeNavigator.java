@@ -55,14 +55,18 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 	
 	@Override
 	public void keyPressed(KeyEvent keyEvent) {
-		if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
-			ctrl = true;
+		synchronized(editor){
+			if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
+				ctrl = true;
+		}
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent keyEvent) {
-		if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
-			ctrl = false;
+		synchronized(editor){
+			if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
+				ctrl = false;
+		}
 	}
 	
 	@Override
