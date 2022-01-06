@@ -17,7 +17,6 @@
 */
 
 package omega.ui.component;
-import omega.ui.dialog.SearchWindow;
 
 import omegaui.component.FlexPanel;
 import omegaui.component.TextComp;
@@ -35,13 +34,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 
 import static omega.ui.component.FileTreeBranch.*;
 import static omega.ui.dialog.FileSelectionDialog.*;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class SearchComp extends FlexPanel implements MouseListener{
-	private SearchWindow searchWindow;
+	private JDialog searchWindow;
 	
 	private File file;
 	
@@ -52,14 +52,17 @@ public class SearchComp extends FlexPanel implements MouseListener{
 
 	private TextComp rightComp;
 	private TextComp bottomComp;
+
+	private Runnable clickAction;
 	
-	public SearchComp(SearchWindow window, File file){
+	public SearchComp(JDialog window, File file){
 		super(null, back1, c2);
 		setArc(0, 0);
 		setPaintGradientEnabled(true);
 
 		this.searchWindow = window;
 		this.file = file;
+		this.clickAction = ()->Screen.getScreen().loadFile(file);
 
 		addMouseListener(this);
 	}
@@ -113,6 +116,11 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		bottomComp.setFont(UBUNTU_PX12);
 		bottomComp.setArc(0, 0);
 		add(bottomComp);
+
+		if(file.isDirectory()){
+			rightComp.setVisible(false);
+			bottomComp.setVisible(false);
+		}
 	}
 
 	public void set(boolean enter){
@@ -137,7 +145,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
 		searchWindow.dispose();
-		Screen.getScreen().loadFile(file);
+		clickAction.run();
 	}
 	
 	@Override
@@ -149,13 +157,32 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	public void mouseClicked(MouseEvent mouseEvent) {
 		
 	}
+
+	public java.lang.Runnable getClickAction() {
+		return clickAction;
+	}
+	
+	public void setClickAction(java.lang.Runnable clickAction) {
+		this.clickAction = clickAction;
+	}
+
+	public java.io.File getFile() {
+		return file;
+	}
+	
+	@Override
+	public String getName(){
+		return file.getName();
+	}
 	
 	public String getExtension(){
 		String name = file.getName();
 		name = name.contains(".") ? name.substring(name.lastIndexOf('.') + 1) : name;
 		name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+		
 		if(name.equalsIgnoreCase("sh") || name.equalsIgnoreCase("run") || name.equalsIgnoreCase("bat") || name.equalsIgnoreCase("cmd"))
 			name = "Shell";
+		
 		return name;
 	}
 }

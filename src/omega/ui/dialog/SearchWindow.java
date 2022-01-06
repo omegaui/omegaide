@@ -70,8 +70,6 @@ public class SearchWindow extends JDialog{
 	private LinkedList<SearchComp> searchComps;
 	
 	private int pointer;
-	private int pressX;
-	private int pressY;
 	
 	public SearchWindow(Screen f){
 		super(f, false);

@@ -133,10 +133,10 @@ public class Animations {
 				
 				int length = 1;
 				
-				while(comp.isDrawingImage() ? (length < comp.w) : (length < comp.textWidth)){
+				while(comp.canDrawImage() ? (length < comp.w) : (length < comp.textWidth)){
 					g.setColor(comp.color3);
 					
-					if(comp.isDrawingImage())
+					if(comp.canDrawImage())
 						g.fillRect(comp.getWidth()/2 - length/2, comp.getHeight()/2 + comp.h/2, length++, 3);
 					else
 						g.fillRect(comp.alignX != -1 ? comp.textX : (comp.getWidth()/2 - length/2), comp.textY + 3, length++, 3);
@@ -165,7 +165,7 @@ public class Animations {
 			if(!isAnimationsOn())
 				return;
 			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
-			if(animationRunning || !comp.isDrawingImage())
+			if(animationRunning || !comp.canDrawImage())
 				return;
 			new Thread(()->{
 				Graphics2D g = (Graphics2D)comp.getGraphics();
@@ -183,7 +183,7 @@ public class Animations {
 				g.setColor(comp.color3);
 				
 				while(canPaint){
-					if(comp.isDrawingImage()){
+					if(comp.canDrawImage()){
 						//Drawing Horizontal Layer
 						if(lengthW <= width){
 							g.fillRect(comp.getWidth()/2 - lengthW/2, comp.getHeight()/2 + comp.h/2, lengthW, 3);
@@ -230,7 +230,7 @@ public class Animations {
 				if(!isAnimationsOn())
 					return;
 				boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
-				if(animationRunning || !comp.isDrawingImage())
+				if(animationRunning || !comp.canDrawImage())
 					return;
 				
 				new Thread(()->{
@@ -271,7 +271,7 @@ public class Animations {
 			if(!isAnimationsOn())
 				return;
 			boolean animationRunning = (boolean)comp.getValue(ANIMATION_STATE);
-			if(animationRunning || !comp.isDrawingImage() || images == null || images.isEmpty())
+			if(animationRunning || !comp.canDrawImage() || images == null || images.isEmpty())
 				return;
 			
 			new Thread(()->{

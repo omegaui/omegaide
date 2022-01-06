@@ -79,6 +79,7 @@ public class TextComp extends JComponent{
 	public Runnable runnable;
 	
 	public BufferedImage image;
+	public Image gifImage;
 	
 	public Window window;
 	
@@ -178,19 +179,39 @@ public class TextComp extends JComponent{
 		color3 = c3;
 		repaint();
 	}
+
+	public java.awt.Image getGifImage() {
+		return gifImage;
+	}
+	
+	public void setGifImage(java.awt.Image gifImage, int width, int height) {
+		this.gifImage = gifImage;
+		this.w = width;
+		this.h = height;
+	}
 	
 	public void attachDragger(Window window){
 		this.window = window;
 	}
 	
 	public void draw(Graphics2D g) {
-		if(isDrawingImage()){
-			g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, null);
+		if(canDrawImage()){
+			g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, this);
 		}
 	}
 	
-	public boolean isDrawingImage(){
+	public void drawGif(Graphics2D g) {
+		if(canDrawGifImage()){
+			g.drawImage(gifImage, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, this);
+		}
+	}
+	
+	public boolean canDrawImage(){
 		return image != null;
+	}
+	
+	public boolean canDrawGifImage(){
+		return gifImage != null;
 	}
 	
 	public void setArc(int x, int y){
@@ -384,6 +405,7 @@ public class TextComp extends JComponent{
 		
 		draw(g, x, y);
 		draw(g);
+		drawGif(g);
 
 		if(!paintEnterFirst && (enter || !clickable)) paintEnter(g);
 		

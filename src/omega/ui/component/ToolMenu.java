@@ -52,6 +52,7 @@ import omega.ui.dialog.ColorPicker;
 import omega.ui.dialog.FontChooser;
 import omega.ui.dialog.WorkspaceSelector;
 import omega.ui.dialog.FileSelectionDialog;
+import omega.ui.dialog.RecentsDialog;
 
 import omegaui.component.TextComp;
 
@@ -111,10 +112,7 @@ public class ToolMenu extends JPanel {
 	public OPopupWindow setPopup;
 	public OPopupWindow helpPopup;
 	
-	public static OPopupWindow recentFilePopup;
-	public static OPopupItem fileMenu;
-	public static OPopupWindow recentProjectPopup;
-	public static OPopupItem projectMenu;
+	public static OPopupItem recentsMenu;
 	public static OPopupWindow allProjectsPopup;
 	public static OPopupItem allMenu;
 	public static OPopupItem typeItem;
@@ -164,6 +162,7 @@ public class ToolMenu extends JPanel {
 	public static InstructionWindow instructionWindow;
 	public static ColorPicker colorPicker;
 	public static LanguageTagView languageTagView;
+	public static RecentsDialog recentsDialog;
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
 	
@@ -208,6 +207,7 @@ public class ToolMenu extends JPanel {
 			instructionWindow = new InstructionWindow(screen);
 			colorPicker = new ColorPicker(screen);
 			languageTagView = new LanguageTagView(screen);
+			recentsDialog = new RecentsDialog(screen);
 
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
 												.title("Project Type Management")
@@ -260,6 +260,7 @@ public class ToolMenu extends JPanel {
 		});
 		init();
 	}
+	
 	private void init() {
 		try{
 			image = ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon128" + (UIManager.isDarkMode() ? "_dark.png" : ".png")));
@@ -365,9 +366,9 @@ public class ToolMenu extends JPanel {
 		
 		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
 		initProjectPopup();
-		Menu projectMenu = new Menu(projectPopup, "Project");
-		projectMenu.setBounds(60, 30, 60, 20);
-		addComp(projectMenu);
+		Menu recentsMenu = new Menu(projectPopup, "Project");
+		recentsMenu.setBounds(60, 30, 60, 20);
+		addComp(recentsMenu);
 		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
 		
 		initToolMenu();
@@ -762,6 +763,7 @@ public class ToolMenu extends JPanel {
 		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
 		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
 	}
+	
 	public void changeLocations(boolean non_java){
 		if(non_java){
 			buildComp.setBounds(204 - 30, 55, 30, 30);
@@ -788,6 +790,7 @@ public class ToolMenu extends JPanel {
 		reloadItems(non_java);
 		repaint();
 	}
+	
 	public void reloadItems(boolean non_java){
 		jdkItem.setEnabled(!non_java);
 		jdkRootItem.setToolTipText(DataManager.getPathToJava());
@@ -961,25 +964,42 @@ public class ToolMenu extends JPanel {
 		.createItem("Open Project", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
 		.createItem("New Project (Java)", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
 		.createItem("New Project (non-java project)", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
-		recentFilePopup = OPopupWindow.gen("Recent Files Menu", screen, 0, true).width(350).height(250);
-		fileMenu = new OPopupItem(recentFilePopup, "Recent Files", IconManager.fileImage, ()->{
-			recentFilePopup.setLocationRelativeTo(null);
-			recentFilePopup.setVisible(true);
-		});
-		filePopup.addItem(fileMenu);
 		
-		recentProjectPopup = OPopupWindow.gen("Recent Projects Menu", screen, 0, true).width(350).height(250);
-		projectMenu = new OPopupItem(recentProjectPopup, "Recent Projects", IconManager.projectImage, ()->{
-			recentProjectPopup.setLocationRelativeTo(null);
-			recentProjectPopup.setVisible(true);
+		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", IconManager.fluentsearchImage, ()->{
+			recentsDialog.setVisible(true);
 		});
-		filePopup.addItem(projectMenu);
+		filePopup.addItem(recentsMenu);
 		
 		allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(350).height(250);
 		allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, ()->{
 			allProjectsPopup.setLocationRelativeTo(null);
 			allProjectsPopup.setVisible(true);
 		});
+
+		File home = new File(DataManager.getWorkspace());
+       	if(home.exists()){
+            allProjectsPopup.trash();
+            File[] files = home.listFiles();
+            for(int i = 0; i < files.length; i++){
+                 for(int j = 0; j < files.length - i - 1; j++){
+                 	if(files[j].getName().compareTo(files[j + 1].getName()) > 0){
+                           File f = files[j];
+                           files[j] = files[j + 1];
+                           files[j + 1] = f;
+                 	}
+                 }
+            }
+            
+            for(File fileZ : files){
+                 if(fileZ.isDirectory()){
+                      allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, ()->{
+                           Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
+                           screen.loadProject(fileZ);
+                      });
+                 }
+            }
+       	}
+		
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
 		.createItem("Save All Editors", IconManager.fluentsaveImage, ()->screen.saveAllEditors())

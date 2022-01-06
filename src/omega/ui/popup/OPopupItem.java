@@ -125,7 +125,7 @@ public class OPopupItem extends JComponent{
 		}).start();
 	}
 
-	public void prepareImages(){
+	public synchronized void prepareImages(){
 		int distance = 9;
 		
 		int size = 16;
