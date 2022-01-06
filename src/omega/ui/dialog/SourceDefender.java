@@ -1,19 +1,19 @@
 /**
-  * Backup Manager
-  * Copyright (C) 2021 Omega UI
+* Backup Manager
+* Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.ui.dialog;
 import omega.ui.component.Editor;
@@ -55,13 +55,15 @@ public class SourceDefender extends JDialog {
 	private SwitchComp sourceDefenceComp;
 	private SwitchComp destroyDefenceAfterExitComp;
 	private LinkedList<TextComp> backupSet = new LinkedList<>();
-
+	
 	public static final String BACKUP_DIR = ".omega-ide" + File.separator + "backups";
-
+	
+	public static volatile boolean backupCompleted = true;
+	
 	private JScrollPane scrollPane;
 	private JPanel panel;
 	private int block;
-
+	
 	private BackupView backupView;
 	
 	public SourceDefender(Screen screen){
@@ -79,14 +81,14 @@ public class SourceDefender extends JDialog {
 		setBackground(c2);
 		init();
 	}
-
+	
 	public void init(){
 		block = 0;
 		
 		File backupDir = new File(BACKUP_DIR);
 		if(!backupDir.exists())
 			backupDir.mkdirs();
-
+		
 		backupView = new BackupView();
 		
 		titleComp = new TextComp("Source Defender", "All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()), c2, c2, glow, null);
@@ -96,8 +98,9 @@ public class SourceDefender extends JDialog {
 		titleComp.attachDragger(this);
 		titleComp.setArc(0, 0);
 		add(titleComp);
-
-		TextComp openBackups = new TextComp("Browse", "Click to open backup folder in your system's shell", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
+		
+		TextComp openBackups = new TextComp("Browse", "Click to open backup folder in your system's shell", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1,
+		()->{
 			try{
 				Desktop.getDesktop().open(new File(BACKUP_DIR));
 			}
@@ -109,20 +112,20 @@ public class SourceDefender extends JDialog {
 		openBackups.setFont(PX14);
 		openBackups.setArc(0, 0);
 		add(openBackups);
-
+		
 		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
-
+		
 		TextComp label0 = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
 		label0.setText("Automatic Backup - " + (DataManager.isSourceDefenderEnabled() ? "On" : "Off"));
 		label0.setBounds(10, 40, 300, 30);
 		label0.setClickable(false);
 		label0.setFont(PX14);
 		add(label0);
-
+		
 		sourceDefenceComp = new SwitchComp(DataManager.isSourceDefenderEnabled(), TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE, (value)->{
 			label0.setText("Automatic Backup - " + (value ? "On" : "Off"));
 			DataManager.setSourceDefenderEnabled(value);
@@ -130,7 +133,7 @@ public class SourceDefender extends JDialog {
 		sourceDefenceComp.setBounds(320, 40, 70, 30);
 		sourceDefenceComp.setInBallColor(glow);
 		add(sourceDefenceComp);
-
+		
 		TextComp createBackupComp = new TextComp("Create Backup", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			new Thread(()->{
 				backupData();
@@ -140,7 +143,7 @@ public class SourceDefender extends JDialog {
 		createBackupComp.setBounds(getWidth()/2 - 100, 80, 200, 30);
 		createBackupComp.setFont(PX14);
 		add(createBackupComp);
-
+		
 		scrollPane = new JScrollPane(panel = new JPanel(null));
 		scrollPane.setBounds(10, 120, getWidth() - 20, getHeight() - 140);
 		scrollPane.setBackground(c2);
@@ -148,7 +151,7 @@ public class SourceDefender extends JDialog {
 		panel.setBackground(c2);
 		add(scrollPane);
 	}
-
+	
 	public void backupData(){
 		String backupTime = "backup " + (new Date().toString());
 		if(Screen.onWindows()){
@@ -171,23 +174,27 @@ public class SourceDefender extends JDialog {
 		comp.setArc(0, 0);
 		panel.add(comp);
 		backupSet.add(comp);
-
+		
 		block += 25;
 		
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));
 		repaint();
 	}
-
+	
 	public void restoreBackup(String backupTitle){
 		int res = ChoiceDialog.makeChoice("Do You Want to Restore this backup? Once started this process cannot be stopped!", "Yes", "No");
 		if(res == ChoiceDialog.CHOICE1){
 			setVisible(false);
+			
+			backupCompleted = false;
+			
 			RunPanel printArea = new RunPanel();
 			printArea.setLogMode(true);
 			JScrollPane scrollPane = new JScrollPane(printArea);
 			scrollPane.setBackground(c2);
 			Screen.getScreen().getOperationPanel().addTab("Backup Operation", IconManager.fluentsaveImage, scrollPane, ()->{
-				Screen.setStatus("Backup is still running in background!", 10, IconManager.fluentinfoImage);
+				if(!backupCompleted)
+					Screen.setStatus("Backup is still running in background!", 0, IconManager.fluentinfoImage);
 			});
 			printArea.clearTerminal();
 			printArea.print("Restoring from backup ... \"" + backupTitle + "\"");
@@ -220,9 +227,11 @@ public class SourceDefender extends JDialog {
 			printArea.print("-----------------------------------------");
 			printArea.print("All Backups are located at " + (new File(BACKUP_DIR).getAbsolutePath()));
 			printArea.print("You can create full project backups and also you can delete or modify backups from there.");
+			backupCompleted = true;
+			Screen.setStatus("Backup Restoration Completed Successfully!", 0, IconManager.fluentinfoImage);
 		}
 	}
-
+	
 	public void loadAllFiles(LinkedList<File> files, File dir){
 		File[] F = dir.listFiles();
 		if(F == null || F.length == 0)
@@ -234,7 +243,7 @@ public class SourceDefender extends JDialog {
 				files.add(f);
 		}
 	}
-
+	
 	public void addToBackup(String backupTitle, File file){
 		String path = file.getAbsolutePath();
 		if(!path.startsWith(Screen.getProjectFile().getProjectPath())){
@@ -259,14 +268,14 @@ public class SourceDefender extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
-
+	
+	
 	public void readBackups(){
 		backupSet.forEach(panel::remove);
 		backupSet.clear();
-
+		
 		block = 0;
-
+		
 		File[] backups = new File(BACKUP_DIR + File.separator + new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName()).listFiles();
 		if(backups == null || backups.length == 0)
 			return;
@@ -283,14 +292,14 @@ public class SourceDefender extends JDialog {
 			comp.setArc(0, 0);
 			panel.add(comp);
 			backupSet.add(comp);
-	
+			
 			block += 25;
 		}
 		
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));
 		repaint();
 	}
-
+	
 	@Override
 	public void setSize(int width, int height){
 		super.setSize(width, height);
@@ -306,13 +315,13 @@ public class SourceDefender extends JDialog {
 		}
 		super.setVisible(value);
 	}
-
+	
 	private class BackupView extends JWindow {
 		private TextComp titleComp;
 		private JScrollPane scrollPane;
 		private JPanel panel;
 		private String backupTitle;
-
+		
 		private int block = 0;
 		private LinkedList<TextComp> fileComps = new LinkedList<>();
 		
@@ -327,7 +336,7 @@ public class SourceDefender extends JDialog {
 			setLayout(null);
 			init();
 		}
-
+		
 		public void init(){
 			titleComp = new TextComp("", c2, c2, glow, null);
 			titleComp.setBounds(0, 0, getWidth(), 30);
@@ -336,33 +345,33 @@ public class SourceDefender extends JDialog {
 			titleComp.setArc(0, 0);
 			titleComp.attachDragger(this);
 			add(titleComp);
-
+			
 			TextComp label0 = new TextComp("Files to be re-written", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
 			label0.setBounds(5, 40, getWidth() - 10, 25);
 			label0.setFont(PX14);
 			label0.setClickable(false);
 			add(label0);
-
+			
 			scrollPane = new JScrollPane(panel = new JPanel(null));
 			scrollPane.setBounds(5, 80, getWidth() - 10, getHeight() - 120);
 			scrollPane.setBackground(c2);
 			panel.setBackground(c2);
 			add(scrollPane);
-
+			
 			TextComp closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
 			closeComp.setBounds(0, getHeight() - 27, getWidth()/2, 25);
 			closeComp.setFont(PX14);
 			add(closeComp);
-
+			
 			TextComp applyComp = new TextComp("Restore", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 				SourceDefender.this.setVisible(false);
-				restoreBackup(BackupView.this.backupTitle);
+				new Thread(()->restoreBackup(BackupView.this.backupTitle)).start();
 			});
 			applyComp.setBounds(getWidth()/2, getHeight() - 27, getWidth()/2, 25);
 			applyComp.setFont(PX14);
 			add(applyComp);
 		}
-
+		
 		public void showView(String backupTitle, LinkedList<File> files){
 			this.backupTitle = backupTitle;
 			titleComp.setText(backupTitle);
@@ -383,7 +392,7 @@ public class SourceDefender extends JDialog {
 				comp.setArc(0, 0);
 				panel.add(comp);
 				fileComps.add(comp);
-
+				
 				block += 25;
 			});
 			panel.setPreferredSize(new Dimension(scrollPane.getWidth(), block));

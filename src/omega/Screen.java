@@ -702,11 +702,11 @@ public class Screen extends JFrame {
 	}
 	
 	public void saveAllEditors() {
+		if(DataManager.isSourceDefenderEnabled())
+			ToolMenu.sourceDefender.backupData();
 		tabPanel.getEditors().forEach(w->w.saveCurrentFile());
 		rightTabPanel.getEditors().forEach(w->w.saveCurrentFile());
 		bottomTabPanel.getEditors().forEach(w->w.saveCurrentFile());
-		if(DataManager.isSourceDefenderEnabled())
-			ToolMenu.sourceDefender.backupData();
 	}
 	
 	public void loadThemes(){
