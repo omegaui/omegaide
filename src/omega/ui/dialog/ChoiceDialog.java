@@ -61,15 +61,11 @@ public class ChoiceDialog extends JDialog {
 	}
 
 	public void init(){
-		emojiComp = new TextComp("", c2, c2, c2, null){
-			@Override
-			public void draw(Graphics2D g){
-				g.drawImage(IconManager.fluentneutralemojiGif, getWidth()/2 - 98/2, getHeight()/2 - 98/2, 98, 98, this);
-			}
-		};
+		emojiComp = new TextComp("", c2, c2, c2, null);
 		emojiComp.setClickable(false);
 		emojiComp.setArc(10, 10);
 		emojiComp.attachDragger(this);
+		emojiComp.setGifImage(IconManager.fluentneutralemojiGif, 98, 98);
 		add(emojiComp);
 
 		textComp = new TextComp("Question?", back1, back1, glow, null);
