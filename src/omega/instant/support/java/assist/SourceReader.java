@@ -37,7 +37,6 @@ public class SourceReader {
 		public Import(String pack, String name){
 			this.name = name;
 			if(pack.startsWith("static ")){
-				System.out.println(pack);
 				isStatic = true;
 				staticMember = name;
 				this.name = pack.substring(pack.lastIndexOf('.') + 1).trim();
@@ -85,7 +84,7 @@ public class SourceReader {
 		}
 		catch(Exception e) {
 		     e.printStackTrace();
-	     }
+     	}
 	}
 
 	public SourceReader(String code, boolean readOnlyImports) {

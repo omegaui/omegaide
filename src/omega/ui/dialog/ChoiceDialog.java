@@ -17,109 +17,119 @@
 */
 
 package omega.ui.dialog;
+import java.awt.geom.RoundRectangle2D;
+
+import java.awt.Graphics2D;
+
+import omega.io.IconManager;
+
 import omegaui.component.TextComp;
 
-import omega.Screen;
-
-import java.awt.Graphics;
-
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
-public class ChoiceDialog extends JDialog{
-	private TextComp headerComp;
+
+public class ChoiceDialog extends JDialog {
+	
+	private TextComp emojiComp;
+	
+	private TextComp textComp;
 	private TextComp choice1Comp;
 	private TextComp choice2Comp;
 	private TextComp cancelComp;
-	
-	public static int CHOICE1 = 0;
-	public static int CHOICE2 = 1;
-	public static int CANCEL = 2;
+
+	public static final int CHOICE1 = 0;
+	public static final int CHOICE2 = 1;
+	public static final int CANCEL = 2;
 	public int choice = CANCEL;
-	
-	private static ChoiceDialog choiceDialog;
-	
-	private JPanel panel = new JPanel(null);
+
+	public static ChoiceDialog choiceDialog;
 	
 	public ChoiceDialog(JFrame frame){
 		super(frame, true);
-		setUndecorated(true);
-		setContentPane(panel);
 		setTitle("Choice Dialog");
-		setBackground(c2);
 		setLayout(null);
+		setUndecorated(true);
+		JPanel panel = new JPanel(null);
+		setContentPane(panel);
+		panel.setBackground(back3);
 		init();
+		setSize(500, 300);
 	}
-	
+
 	public void init(){
-		headerComp = new TextComp("", c2, c2, TOOLMENU_COLOR3, null);
-		headerComp.setFont(PX14);
-		headerComp.setClickable(false);
-		headerComp.setArc(0, 0);
-		headerComp.setLayout(null);
-		add(headerComp);
-		
-		choice1Comp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+		emojiComp = new TextComp("", c2, c2, c2, null){
+			@Override
+			public void draw(Graphics2D g){
+				g.drawImage(IconManager.fluentneutralemojiGif, getWidth()/2 - 98/2, getHeight()/2 - 98/2, 98, 98, this);
+			}
+		};
+		emojiComp.setClickable(false);
+		emojiComp.setArc(10, 10);
+		emojiComp.attachDragger(this);
+		add(emojiComp);
+
+		textComp = new TextComp("Question?", back1, back1, glow, null);
+		textComp.setFont(PX14);
+		textComp.setArc(0, 0);
+		textComp.setClickable(false);
+		textComp.attachDragger(this);
+		add(textComp);
+
+		choice1Comp = new TextComp("Choice 1", TOOLMENU_COLOR5_SHADE, back1, TOOLMENU_COLOR3, ()->{
 			choice = CHOICE1;
 			dispose();
 		});
-		choice1Comp.setFont(PX14);
-		choice1Comp.setArc(0, 0);
+		choice1Comp.setArc(5, 5);
+		choice1Comp.setFont(UBUNTU_PX14);
 		add(choice1Comp);
-		
-		choice2Comp = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
+
+		choice2Comp = new TextComp("Choice 2", TOOLMENU_COLOR5_SHADE, back1, TOOLMENU_COLOR3, ()->{
 			choice = CHOICE2;
-			setVisible(false);
+			dispose();
 		});
-		choice2Comp.setFont(PX14);
-		choice2Comp.setArc(0, 0);
+		choice2Comp.setArc(5, 5);
+		choice2Comp.setFont(UBUNTU_PX14);
 		add(choice2Comp);
-		
-		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR3, TOOLMENU_COLOR2, c2, ()->{
-			choice = CANCEL;
-			setVisible(false);
-		});
+
+		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, this::dispose);
 		cancelComp.setFont(PX14);
-		cancelComp.setArc(0, 0);
-		headerComp.add(cancelComp);
+		cancelComp.setArc(5, 5);
+		add(cancelComp);
 	}
-	
-	public void plotComps(){
-		headerComp.setBounds(0, 0, getWidth(), getHeight() - 30);
-		choice1Comp.setBounds(0, getHeight() - 30, getWidth()/2, 30);
-		choice2Comp.setBounds(getWidth()/2, getHeight() - 30, getWidth()/2, 30);
-		cancelComp.setBounds(getWidth() - 100, 0, 100, 30);
-	}
-	
-	public static int makeChoice(String text, String choice1, String choice2){
+
+	public static int makeChoice(String question, String choice1, String choice2){
 		if(choiceDialog == null)
-			choiceDialog = new ChoiceDialog(Screen.getScreen());
+			choiceDialog = new ChoiceDialog(new JFrame());
 		choiceDialog.choice = CANCEL;
-		choiceDialog.headerComp.setText(text);
+		choiceDialog.textComp.setText(question);
 		choiceDialog.choice1Comp.setText(choice1);
 		choiceDialog.choice2Comp.setText(choice2);
-		
-		Graphics g = Screen.getScreen().getGraphics();
-		g.setFont(PX14);
-		if(text.length() > 100)
-			text = text.substring(0, 95) + "..." + text.charAt(text.length() - 1);
-		int w = g.getFontMetrics().stringWidth(text);
-		if(w < 400)
-			w = 400;
-		choiceDialog.setSize(w + 10, 150);
-		choiceDialog.setLocationRelativeTo(null);
-		choiceDialog.plotComps();
+
+		choiceDialog.choice1Comp.setSize(computeWidth(choice1, UBUNTU_PX14) + 10, 25);
+		choiceDialog.choice2Comp.setSize(computeWidth(choice2, UBUNTU_PX14) + 10, 25);
+
+		choiceDialog.choice1Comp.setLocation(choiceDialog.getWidth()/2 - choiceDialog.choice1Comp.getWidth() - 10, choiceDialog.getHeight() - 40);
+		choiceDialog.choice2Comp.setLocation(choiceDialog.getWidth()/2 + 10, choiceDialog.getHeight() - 40);
+
 		choiceDialog.setVisible(true);
 		return choiceDialog.choice;
 	}
-	
+
 	@Override
-	public void paint(Graphics g){
-		super.paint(g);
-		panel.repaint();
+	public void setSize(int w, int h){
+		super.setSize(w, h);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+		setLocationRelativeTo(null);
+		emojiComp.setBounds(getWidth()/2 - 100/2, 10, 100, 100);
+		textComp.setBounds(0, 150, getWidth(), 30);
+		cancelComp.setBounds(getWidth()/2 - 90/2, 200, 90, 25);
+	}
+
+	public static void main(String[] args){
+		makeChoice("Do you really want to embed this change now?", "Yes, I do want.", "No! Afterwards.");
 	}
 }
-

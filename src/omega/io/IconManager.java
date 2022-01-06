@@ -26,6 +26,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Color;
+import java.awt.Image;
 
 import java.awt.image.BufferedImage;
 
@@ -159,6 +160,8 @@ public class IconManager {
 	public static BufferedImage fluenteditFileImage = getFluentIcon("edit-file-48.png");
 	public static BufferedImage fluentrenameImage = getFluentIcon("rename-48.png");
 	
+	//Gifs
+	public static Image fluentneutralemojiGif = getFluentGif("neutral.gif");
 	
 	//The Default Icon Pack -- mixed
 	public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
@@ -294,6 +297,16 @@ public class IconManager {
 	public static BufferedImage getFluentIcon(String name){
 		try{
 			return ImageIO.read(IconManager.class.getResourceAsStream("/fluent-icons/icons8-" + name));
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Image getFluentGif(String name){
+		try{
+			return new ImageIcon(IconManager.class.getResourceAsStream("/fluent-gifs/icons8-" + name).readAllBytes()).getImage();
 		}
 		catch(Exception e){
 			e.printStackTrace();

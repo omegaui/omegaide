@@ -192,7 +192,7 @@ public class CodeFramework extends AbstractCodeFramework{
                     }
 			}
 			else{
-				//There are no members after class-path's dot, so showing all hints
+				//There are no members after class-path 's dot, so showing all hints
 				gen(dataMembers);
 			}
 		}
