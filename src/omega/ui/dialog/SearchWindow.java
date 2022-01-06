@@ -65,9 +65,10 @@ public class SearchWindow extends JDialog{
 	
 	private LinkedList<File> files;
 	
-	private int blocks = -50;
+	private int blockY;
 	
 	private LinkedList<SearchComp> searchComps;
+	private LinkedList<SearchComp> currentComps;
 	
 	private int pointer;
 	
@@ -78,6 +79,7 @@ public class SearchWindow extends JDialog{
 		
 		files = new LinkedList<>();
 		searchComps = new LinkedList<>();
+		currentComps = new LinkedList<>();
 		
 		setUndecorated(true);
 		setTitle("Search Files across the Project");
@@ -98,19 +100,19 @@ public class SearchWindow extends JDialog{
 		field.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(!searchComps.isEmpty()) {
+				if(!currentComps.isEmpty()) {
 					if(e.getKeyCode() == KeyEvent.VK_UP && pointer > 0) {
-						searchComps.get(pointer).set(false);
-						searchComps.get(--pointer).set(true);
+						currentComps.get(pointer).set(false);
+						currentComps.get(--pointer).set(true);
 						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 50);
 					}
-					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1< searchComps.size()) {
-						searchComps.get(pointer).set(false);
-						searchComps.get(++pointer).set(true);
+					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1 < currentComps.size()) {
+						currentComps.get(pointer).set(false);
+						currentComps.get(++pointer).set(true);
 						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 50);
 					}
 					else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						searchComps.get(pointer).mousePressed(null);
+						currentComps.get(pointer).mousePressed(null);
 					}
 				}
 			}
@@ -132,6 +134,8 @@ public class SearchWindow extends JDialog{
 		scrollPane.setBackground(back2);
 		scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
 		scrollPane.setBorder(null);
+		panel.setBackground(c2);
+		panel.setSize(scrollPane.getWidth() - 5, 100);
 		scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){
 			@Override
 			public void setVisible(boolean value){
@@ -167,34 +171,74 @@ public class SearchWindow extends JDialog{
 		reloadComp.setArc(0, 0);
 		reloadComp.setFont(PX14);
 		add(reloadComp);
-		
-		panel.setBackground(c2);
 	}
-	
-	public void list(String text){
-		searchComps.forEach(panel::remove);
-		searchComps.clear();
-		blocks = -50;
-		files.forEach(file->{
-			if(file.getName().contains(text)){
-				String ext = file.getName();
-				if(ext.contains("."))
-					ext = ext.substring(ext.lastIndexOf('.'));
+
+	public void initView(){
+		try{
+			currentComps.forEach(panel::remove);
+			currentComps.clear();
+			searchComps.clear();
+			
+			blockY = 0;
+			
+			//Creating Files Comps
+			for(File file : files){
 				SearchComp comp = new SearchComp(this, file);
-				comp.setBounds(0, blocks += 50, scrollPane.getWidth() - 5, 50);
+				comp.setBounds(0, blockY, panel.getWidth(), 50);
 				comp.initUI();
 				panel.add(comp);
 				searchComps.add(comp);
+				currentComps.add(comp);
+				
+				blockY += 50;
 			}
-		});
-		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blocks + 50));
+			
+			panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
+			scrollPane.repaint();
+			scrollPane.getVerticalScrollBar().setVisible(true);
+			scrollPane.getVerticalScrollBar().setValue(0);
+			repaint();
+			
+			if(!currentComps.isEmpty()) {
+				currentComps.get(pointer = 0).set(true);
+				infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
+			}
+			else{
+				infoComp.setText("Not at least One File Found!");
+			}
+			doLayout();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void list(String match){
+		currentComps.forEach(panel::remove);
+		currentComps.clear();
+		
+		blockY = 0;
+		
+		for(SearchComp comp : searchComps){
+			if(comp.getName().contains(match)){
+				
+				comp.setLocation(0, blockY);
+				panel.add(comp);
+				currentComps.add(comp);
+				
+				blockY += 50;
+			}
+		}
+		
+		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
 		scrollPane.repaint();
 		scrollPane.getVerticalScrollBar().setVisible(true);
 		scrollPane.getVerticalScrollBar().setValue(0);
 		repaint();
-		if(!searchComps.isEmpty()) {
-			searchComps.get(pointer = 0).set(true);
-			infoComp.setText(searchComps.size() + " File" + (searchComps.size() > 1 ? "s" : "") + " Found!");
+		
+		if(!currentComps.isEmpty()) {
+			currentComps.get(pointer = 0).set(true);
+			infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
 		}
 		else{
 			infoComp.setText("Not at least One File Found!");
@@ -206,6 +250,7 @@ public class SearchWindow extends JDialog{
 		this.files.clear();
 		load(f);
 		FileOperationManager.sort(this.files);
+		initView();
 	}
 	
 	public void load(File f){
@@ -223,6 +268,8 @@ public class SearchWindow extends JDialog{
 	public void setVisible(boolean value){
 		super.setVisible(value);
 		if(value){
+			if(currentComps.isEmpty())
+				initView();
 			field.grabFocus();
 		}
 	}
