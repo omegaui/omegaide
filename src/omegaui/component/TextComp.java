@@ -77,6 +77,8 @@ public class TextComp extends JComponent{
 	public Color colorH;
 	
 	public Runnable runnable;
+	public Runnable onMouseEntered = ()->{};
+	public Runnable onMouseExited = ()->{};
 	
 	public BufferedImage image;
 	public Image gifImage;
@@ -103,6 +105,7 @@ public class TextComp extends JComponent{
 			public void mouseEntered(MouseEvent e){
 				if(!clickable) return;
 				enter = true;
+				onMouseEntered.run();
 				repaint();
 			}
 			
@@ -110,6 +113,7 @@ public class TextComp extends JComponent{
 			public void mouseExited(MouseEvent e){
 				if(!clickable) return;
 				enter = false;
+				onMouseExited.run();
 				repaint();
 			}
 			
@@ -180,6 +184,14 @@ public class TextComp extends JComponent{
 		repaint();
 	}
 
+	public void setOnMouseEntered(Runnable action){
+		onMouseEntered = action;
+	}
+
+	public void setOnMouseExited(Runnable action){
+		onMouseExited = action;
+	}
+
 	public java.awt.Image getGifImage() {
 		return gifImage;
 	}
@@ -188,6 +200,12 @@ public class TextComp extends JComponent{
 		this.gifImage = gifImage;
 		this.w = width;
 		this.h = height;
+		repaint();
+	}
+	
+	public void setGifImage(java.awt.Image gifImage) {
+		this.gifImage = gifImage;
+		repaint();
 	}
 	
 	public void attachDragger(Window window){

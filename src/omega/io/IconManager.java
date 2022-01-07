@@ -102,7 +102,6 @@ public class IconManager {
 	public static BufferedImage fluenttargetImage = getFluentIcon("target-100.png");
 	public static BufferedImage fluenttabsHolderIcon = getFluentIcon("apps-tab-96.png");
 	
-	
 	public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
 	public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");
 	public static BufferedImage fluentdartImage = getFluentIcon("flutter-48.png");
@@ -114,15 +113,9 @@ public class IconManager {
 	public static BufferedImage fluentjuliaImage = getFluentIcon("julia-48.png");
 	public static BufferedImage fluentanylangImage = getFluentIcon("any-lang-48.png");
 	
-	public static BufferedImage fluentrsyntaxtextareaLogo = getFluentIcon("rsyntaxtextarea-logo.png");
-	public static BufferedImage fluentjavaLogo = getFluentIcon("java-logo.png");
-	public static BufferedImage fluentflatlafNonOfficialLogo = getFluentIcon("flatlaf.png");
-	public static BufferedImage fluentapacheLogo = getFluentIcon("apache-logo.png");
 	public static BufferedImage fluentjetbrainsLogo = getFluentIcon("jetbrains-logo.png");
 	public static BufferedImage fluenticons8Logo = getFluentIcon("icons8-240.png");
 	public static BufferedImage fluentgithubLogo = getFluentIcon("github-240.png");
-	public static BufferedImage fluentjavamascotLogo = getFluentIcon("java-mascot-logo.png");
-	public static BufferedImage fluentgoogleguavaLogo = getFluentIcon("google-guava-logo.png");
 	
 	public static BufferedImage fluentvariableImage = getFluentIcon("variable-96.png");
 	public static BufferedImage fluentconstantImage = getFluentIcon("final-state-48.png");
@@ -166,6 +159,7 @@ public class IconManager {
 	public static Image fluentjavaGif = getFluentGif("java.gif");
 	public static Image fluentpythonGif = getFluentGif("python.gif");
 	public static Image fluentdeveloperGif = getFluentGif("developer.gif");
+	public static Image fluentwinkemojiGif = getFluentGif("wink.gif");
 	
 	//The Default Icon Pack -- mixed
 	public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);

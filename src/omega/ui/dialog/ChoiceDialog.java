@@ -83,6 +83,8 @@ public class ChoiceDialog extends JDialog {
 		});
 		choice1Comp.setArc(5, 5);
 		choice1Comp.setFont(UBUNTU_PX14);
+		choice1Comp.setOnMouseEntered(()->emojiComp.setGifImage(IconManager.fluentwinkemojiGif));
+		choice1Comp.setOnMouseExited(()->emojiComp.setGifImage(IconManager.fluentneutralemojiGif));
 		add(choice1Comp);
 
 		choice2Comp = new TextComp("Choice 2", TOOLMENU_COLOR5_SHADE, back1, TOOLMENU_COLOR3, ()->{
@@ -91,11 +93,15 @@ public class ChoiceDialog extends JDialog {
 		});
 		choice2Comp.setArc(5, 5);
 		choice2Comp.setFont(UBUNTU_PX14);
+		choice2Comp.setOnMouseEntered(()->emojiComp.setGifImage(IconManager.fluentwinkemojiGif));
+		choice2Comp.setOnMouseExited(()->emojiComp.setGifImage(IconManager.fluentneutralemojiGif));
 		add(choice2Comp);
 
 		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, this::dispose);
 		cancelComp.setFont(PX14);
 		cancelComp.setArc(5, 5);
+		cancelComp.setOnMouseEntered(()->emojiComp.setGifImage(IconManager.fluentwinkemojiGif));
+		cancelComp.setOnMouseExited(()->emojiComp.setGifImage(IconManager.fluentneutralemojiGif));
 		add(cancelComp);
 	}
 
