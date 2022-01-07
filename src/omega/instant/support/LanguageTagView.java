@@ -30,6 +30,7 @@ import java.awt.image.BufferedImage;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 
 import java.util.LinkedList;
 
@@ -147,6 +148,19 @@ public class LanguageTagView extends JDialog{
 			case LANGUAGE_TAG_RUST -> IconManager.fluentrustImage;
 			case LANGUAGE_TAG_JULIA -> IconManager.fluentjuliaImage;
 			default -> IconManager.fluentanylangImage;
+		};
+	}
+	
+	public static Image getRespectiveTagGifImage(int tag){
+		return switch(tag) {
+			case LANGUAGE_TAG_JAVA:
+			case LANGUAGE_TAG_GROOVY:
+			case LANGUAGE_TAG_KOTLIN:
+			yield IconManager.fluentjavaGif;
+			case LANGUAGE_TAG_PYTHON:
+			yield IconManager.fluentpythonGif;
+			default:
+			yield IconManager.fluentdeveloperGif;
 		};
 	}
 	

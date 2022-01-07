@@ -160,8 +160,12 @@ public class IconManager {
 	public static BufferedImage fluenteditFileImage = getFluentIcon("edit-file-48.png");
 	public static BufferedImage fluentrenameImage = getFluentIcon("rename-48.png");
 	
-	//Gifs
 	public static Image fluentneutralemojiGif = getFluentGif("neutral.gif");
+	public static Image fluentsandtimerGif = getFluentGif("sand-timer.gif");
+	public static Image fluentgithubGif = getFluentGif("github.gif");
+	public static Image fluentjavaGif = getFluentGif("java.gif");
+	public static Image fluentpythonGif = getFluentGif("python.gif");
+	public static Image fluentdeveloperGif = getFluentGif("developer.gif");
 	
 	//The Default Icon Pack -- mixed
 	public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);

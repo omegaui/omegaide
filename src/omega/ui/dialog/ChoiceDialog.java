@@ -17,6 +17,8 @@
 */
 
 package omega.ui.dialog;
+import omega.Screen;
+
 import java.awt.geom.RoundRectangle2D;
 
 import java.awt.Graphics2D;
@@ -99,7 +101,7 @@ public class ChoiceDialog extends JDialog {
 
 	public static int makeChoice(String question, String choice1, String choice2){
 		if(choiceDialog == null)
-			choiceDialog = new ChoiceDialog(new JFrame());
+			choiceDialog = new ChoiceDialog(Screen.getScreen());
 		choiceDialog.choice = CANCEL;
 		choiceDialog.textComp.setText(question);
 		choiceDialog.choice1Comp.setText(choice1);
