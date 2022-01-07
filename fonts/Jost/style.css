@@ -1,0 +1,126 @@
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 100;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/100.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 200;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/200.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 300;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/300.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 500;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/500.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 600;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/600.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 700;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/700.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 800;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/800.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: normal;
+   font-display: swap;
+   font-weight: 900;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/900.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: regular;
+   font-display: swap;
+   font-weight: 400;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/regular.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 100;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/100italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 200;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/200italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 300;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/300italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 400;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 500;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/500italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 600;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/600italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 700;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/700italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 800;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/800italic.ttf') format('truetype');
+}
+@font-face {
+   font-family: 'Jost';
+   font-style: italic;
+   font-display: swap;
+   font-weight: 900;
+   src: url('file:///home/ubuntu/Documents/gh-pages/omegaide/fonts/Jost/900italic.ttf') format('truetype');
+}
