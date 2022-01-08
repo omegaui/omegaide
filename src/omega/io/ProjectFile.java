@@ -207,12 +207,12 @@ public class ProjectFile {
 	
 	public void closeProject() {
 		saveAll();
-		getScreen().saveEssential();
 		getScreen().setVisible(false);
 		projectPath = null;
 		DataManager.setDefaultProjectPath("");
 		if(Screen.launcher == null)
 			Screen.launcher = new Launcher();
+		getScreen().saveEssential();
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CLOSED, this, projectPath));
 		Screen.launcher.setVisible(true);
 	}
@@ -256,9 +256,8 @@ public class ProjectFile {
 	}
 	
 	public static void checkDir(File file) {
-		if(!file.exists()) {
+		if(!file.exists())
 			file.mkdir();
-		}
 	}
 
 	public Screen getScreen(){
