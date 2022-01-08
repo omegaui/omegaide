@@ -38,8 +38,6 @@ public class ProjectDataBase extends DataBase{
 	
 	public int languageTag = -1;
 	
-	public volatile boolean non_java;
-	
 	public LinkedList<String> jars = new LinkedList<>();
 	public LinkedList<String> natives = new LinkedList<>();
 	public LinkedList<String> resourceRoots = new LinkedList<>();
@@ -55,8 +53,11 @@ public class ProjectDataBase extends DataBase{
 	public void load() {
 		jdkPath = getEntryAt("JDK Path", 0) != null ? getEntryAt("JDK Path", 0).getValue() : null;
 		mainClass = getEntryAt("Main Class", 0) != null ? getEntryAt("Main Class", 0).getValue() : "";
-		non_java = getEntryAt("Non-Java Project", 0) != null ? getEntryAt("Non-Java Project", 0).getValueAsBoolean() : false;
-		if(!non_java) {
+		
+		if(getEntryAt("Language Tag", 0) != null)
+			setLanguageTag(getEntryAt("Language Tag", 0).getValueAsInt());
+		
+		if(!isLanguageTagNonJava()) {
 			jdk = new File(jdkPath != null ? jdkPath : "");
 			try {
 				Screen.getProjectRunner().mainClass = mainClass;
@@ -74,9 +75,6 @@ public class ProjectDataBase extends DataBase{
 		LinkedList<DataEntry> modules = getEntries("Project Classpath : Required Modules");
 		LinkedList<DataEntry> compileTimeFlags = getEntries("Flags : Compile Time");
 		LinkedList<DataEntry> runTimeFlags = getEntries("Flags : Run Time");
-		
-		if(getEntryAt("Language Tag", 0) != null)
-			setLanguageTag(getEntryAt("Language Tag", 0).getValueAsInt());
 		
 		if(mainEditors != null){
 			for(DataEntry e : mainEditors) {
@@ -158,7 +156,6 @@ public class ProjectDataBase extends DataBase{
 		clear();
 		addEntry("JDK Path", jdkPath);
 		addEntry("Main Class", Screen.getProjectRunner().mainClass != null ? Screen.getProjectRunner().mainClass : "");
-		addEntry("Non-Java Project", String.valueOf(non_java));
 		addEntry("Language Tag", getLanguageTag() + "");
 		Screen.getProjectFile().getScreen().getTabPanel().getEditors().forEach(editor->{
 			if(editor.currentFile != null) {
@@ -218,8 +215,6 @@ public class ProjectDataBase extends DataBase{
 			if(file.exists()) 
 				return;
 			PrintWriter writer = new PrintWriter(file);
-			writer.println(">Non-Java Project");
-			writer.println("-" + non_java);
 			writer.println(">Language Tag");
 			writer.println("-" + (non_java ? LanguageTagView.LANGUAGE_TAG_ANY : LanguageTagView.LANGUAGE_TAG_JAVA));
 			writer.close();
@@ -232,6 +227,10 @@ public class ProjectDataBase extends DataBase{
 	public void setJDKPath(String path){
 		this.jdkPath = path;
 		Screen.getProjectFile().readJDK();
+	}
+
+	public boolean isLanguageTagNonJava(){
+		return getLanguageTag() != LanguageTagView.LANGUAGE_TAG_JAVA;
 	}
 	
 	public int getLanguageTag() {

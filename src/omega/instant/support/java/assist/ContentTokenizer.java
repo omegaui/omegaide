@@ -129,7 +129,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 
 	@Override
 	public void arrangeTokens(Editor e) {
-		if(!e.currentFile.getName().endsWith(".java") || Screen.getProjectFile().getProjectManager().non_java || !DataManager.isContentModeJava()){
+		if(!e.currentFile.getName().endsWith(".java") || Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || !DataManager.isContentModeJava()){
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
 		}
@@ -148,7 +148,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			return;
 		}
 		
-		if(Screen.getProjectFile().getJDKManager() == null && !Screen.getProjectFile().getProjectManager().non_java)
+		if(Screen.getProjectFile().getJDKManager() == null && !Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
 			return;
 		
 		if(!text.contains(".") || !CodeFrameworks.javaCodeFramework.think(e, e.getText(), e.getCaretPosition())) {

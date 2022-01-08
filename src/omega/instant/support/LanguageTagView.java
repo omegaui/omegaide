@@ -52,7 +52,8 @@ public class LanguageTagView extends JDialog{
 	public static final int LANGUAGE_TAG_DART = 6;
 	public static final int LANGUAGE_TAG_WEB = 7;
 	public static final int LANGUAGE_TAG_RUST = 8;
-	public static final int LANGUAGE_TAG_JULIA = 9;
+	public static final int BUILD_LANGUAGE_TAG_GRADLE = 9;
+	public static final int LANGUAGE_TAG_JULIA = 10;
 	public static final int LANGUAGE_TAG_ANY = -1;
 	
 	private FlexPanel containerPanel;
@@ -120,6 +121,7 @@ public class LanguageTagView extends JDialog{
 		addTag(prepareLangComp(IconManager.fluentdartImage, "Dart", LANGUAGE_TAG_DART));
 		addTag(prepareLangComp(IconManager.fluentwebImage, "Web", LANGUAGE_TAG_WEB));
 		addTag(prepareLangComp(IconManager.fluentrustImage, "Rust", LANGUAGE_TAG_RUST));
+		addTag(prepareLangComp(IconManager.fluentgradleImage, "Gradle", BUILD_LANGUAGE_TAG_GRADLE));
 		addTag(prepareLangComp(IconManager.fluentjuliaImage, "Julia", LANGUAGE_TAG_JULIA));
 		addTag(prepareLangComp(IconManager.fluentanylangImage, "LangX", LANGUAGE_TAG_ANY));
 		
@@ -147,6 +149,7 @@ public class LanguageTagView extends JDialog{
 			case LANGUAGE_TAG_WEB -> IconManager.fluentwebImage;
 			case LANGUAGE_TAG_RUST -> IconManager.fluentrustImage;
 			case LANGUAGE_TAG_JULIA -> IconManager.fluentjuliaImage;
+			case BUILD_LANGUAGE_TAG_GRADLE -> IconManager.fluentgradleImage;
 			default -> IconManager.fluentanylangImage;
 		};
 	}
@@ -156,20 +159,20 @@ public class LanguageTagView extends JDialog{
 			case LANGUAGE_TAG_JAVA:
 			case LANGUAGE_TAG_GROOVY:
 			case LANGUAGE_TAG_KOTLIN:
-			yield IconManager.fluentjavaGif;
+				yield IconManager.fluentjavaGif;
 			case LANGUAGE_TAG_PYTHON:
-			yield IconManager.fluentpythonGif;
+				yield IconManager.fluentpythonGif;
 			default:
-			yield IconManager.fluentdeveloperGif;
+				yield IconManager.fluentdeveloperGif;
 		};
 	}
 	
 	public void setActiveLang(int tag){
 		if(tag == Screen.getProjectFile().getProjectManager().getLanguageTag())
 			return;
-		Screen.getScreen().getToolMenu().setProjectType(tag != LANGUAGE_TAG_JAVA);
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, tag));
 		Screen.getProjectFile().getProjectManager().setLanguageTag(tag);
+		Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, tag));
 		setVisible(false);
 	}
 	

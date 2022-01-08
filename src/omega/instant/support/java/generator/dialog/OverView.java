@@ -124,7 +124,7 @@ public class OverView extends JDialog{
      }
 
      public void genView(RSyntaxTextArea textArea){
-          if(omega.Screen.getProjectFile().getProjectManager().non_java || textArea == null)
+          if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || textArea == null)
           	return;
           new Thread(()->{
                this.textArea = textArea;

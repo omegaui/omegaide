@@ -43,8 +43,8 @@ public class GradleProcessManager {
 				printArea.print("--------------------------------------------------");
 				printArea.start();
 				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
-				if(!Screen.getProjectFile().getProjectManager().non_java){
-					Screen.getProjectFile().getProjectManager().non_java = true;
+				if(!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
+					Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
 					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
 					Screen.getProjectFile().getProjectManager().save();
 				}
@@ -63,8 +63,8 @@ public class GradleProcessManager {
 			try{
                 Screen.getScreen().saveAllEditors();
 				
-				if(!Screen.getProjectFile().getProjectManager().non_java){
-					Screen.getProjectFile().getProjectManager().non_java = true;
+				if(!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
+					Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
 					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
 					Screen.getProjectFile().getProjectManager().save();
 				}
@@ -95,8 +95,8 @@ public class GradleProcessManager {
 		new Thread(()->{
 			try{
                 Screen.getScreen().saveAllEditors();
-				if(!Screen.getProjectFile().getProjectManager().non_java){
-					Screen.getProjectFile().getProjectManager().non_java = true;
+				if(!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
+					Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
 					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
 					Screen.getProjectFile().getProjectManager().save();
 				}

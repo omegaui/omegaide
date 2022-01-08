@@ -193,7 +193,7 @@ public class ProjectBuilder {
 		
 		getScreen().saveAllEditors();
 		
-		if(omega.Screen.getProjectFile().getProjectManager().non_java){
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
 			compile();
 			return;
 		}
@@ -386,7 +386,8 @@ public class ProjectBuilder {
 	}
 	
 	public void createClassList() {
-		if(omega.Screen.getProjectFile().getProjectManager().non_java) return;
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()) 
+			return;
 		classess.clear();
 		try {
 			LinkedList<String> dirs = new LinkedList<>();

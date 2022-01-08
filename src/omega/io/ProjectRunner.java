@@ -300,7 +300,7 @@ public class ProjectRunner {
 	
 	public void justRun(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getProjectFile().getProjectManager().non_java){
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
 			justRunNJ();
 			return;
 		}
@@ -447,7 +447,7 @@ public class ProjectRunner {
 	
 	public void instantBuild(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getProjectFile().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || JavaSyntaxParser.packingCodes){
 			return;
 		}
 		
@@ -524,7 +524,7 @@ public class ProjectRunner {
 	
 	public void instantRun(){
 		getScreen().saveAllEditors();
-		if(omega.Screen.getProjectFile().getProjectManager().non_java || JavaSyntaxParser.packingCodes){
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || JavaSyntaxParser.packingCodes){
 			return;
 		}
 		
@@ -628,7 +628,7 @@ public class ProjectRunner {
 	public void run() {
 		getScreen().saveAllEditors();
 		System.gc();
-		if(omega.Screen.getProjectFile().getProjectManager().non_java){
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
 			runNJ();
 			return;
 		}

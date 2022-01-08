@@ -140,10 +140,10 @@ public class ProjectFile {
 		
 		getScreen().manageTools(projectManager);
 		
-		if(projectManager.non_java)
+		if(projectManager.isLanguageTagNonJava())
 			argumentManager = new ArgumentManager();
 		
-		if(!projectManager.non_java) {
+		if(!projectManager.isLanguageTagNonJava()) {
 			if(projectManager.jdkPath != null && new File(projectManager.jdkPath).exists())
 				readJDK();
 			
@@ -161,7 +161,7 @@ public class ProjectFile {
 				
 			}
 		}
-		getScreen().getToolMenu().reloadItems(projectManager.non_java);
+		getScreen().getToolMenu().reloadItems(projectManager.isLanguageTagNonJava());
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CHANGED, this, projectPath));
 	}
 	
@@ -172,7 +172,7 @@ public class ProjectFile {
 	public void saveAll() {
 		if(projectManager != null) {
 			projectManager.save();
-			if(projectManager.non_java){
+			if(projectManager.isLanguageTagNonJava()){
 				argumentManager.save();
 			}
 		}

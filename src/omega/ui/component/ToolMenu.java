@@ -115,7 +115,6 @@ public class ToolMenu extends JPanel {
 	public static OPopupItem recentsMenu;
 	public static OPopupWindow allProjectsPopup;
 	public static OPopupItem allMenu;
-	public static OPopupItem typeItem;
 	public static OPopupItem allSettingsItem;
 	public static OPopupItem jdkItem;
 	public static OPopupItem jdkRootItem;
@@ -817,7 +816,7 @@ public class ToolMenu extends JPanel {
 	}
 
 	public void setProjectType(boolean non_java){
-		Screen.getProjectFile().getProjectManager().non_java = non_java;
+		Screen.getProjectFile().getProjectManager().setLanguageTag(LanguageTagView.LANGUAGE_TAG_ANY);
 		Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
 		Screen.getProjectFile().getProjectManager().save();
 		projectTypeNotificationPopup.
@@ -846,11 +845,6 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Set Gradle Script", IconManager.fluentgradleImage, ()->{
 			gradleBuildScriptManager.setVisible(true);
-		});
-		
-		typeItem = new OPopupItem(setPopup, "Project Type : Non-Java", IconManager.settingsImage, null);
-		typeItem.setAction(()->{
-			setProjectType(!Screen.getProjectFile().getProjectManager().non_java);
 		});
 		
 		JDKSelectionDialog jdkSelectionDialog = new JDKSelectionDialog(screen);
@@ -902,11 +896,10 @@ public class ToolMenu extends JPanel {
 				Screen.getScreen().loadFile(new File(Screen.getProjectFile().getProjectPath(), "settings.gradle"));
 				return;
 			}
-			if(Screen.getProjectFile().getProjectManager().non_java)
+			if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
 				Screen.getUniversalSettingsView().setVisible(true);
 		});
 		
-		setPopup.addItem(typeItem);
 		setPopup.addItem(jdkItem);
 		setPopup.addItem(jdkRootItem);
 		setPopup.addItem(parsingEnabledItem);

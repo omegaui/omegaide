@@ -169,7 +169,8 @@ public class GSView extends JDialog{
 	}
 	
 	public void genView(RSyntaxTextArea textArea){
-		if(omega.Screen.getProjectFile().getProjectManager().non_java) return;
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()) 
+			return;
 		if(textArea == null) return;
 		new Thread(()->{
 			this.textArea = textArea;

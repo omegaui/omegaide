@@ -374,20 +374,19 @@ public class Screen extends JFrame {
 	public void manageTools(ProjectDataBase manager){
 		toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
 		toolMenu.langComp.repaint();
-		toolMenu.structureViewComp.setVisible(!manager.non_java);
-		toolMenu.sep4.setVisible(!manager.non_java);
-		toolMenu.asteriskComp.setVisible(!manager.non_java);
-		toolMenu.contentModeComp.setVisible(!manager.non_java);
-		toolMenu.instantRunComp.setVisible(!manager.non_java);
-		toolMenu.instantBuildComp.setVisible(!manager.non_java);
-		toolMenu.projectPopup.setEnabled("Manage Build-Path", !manager.non_java);
-		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.non_java);
-		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.non_java);
-		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.non_java);
-		toolMenu.typeItem.setName(projectFile.getProjectManager().non_java ? "Project Type : Other/Gradle" : "Project Type : Java");
-		sideMenu.structureComp.setVisible(!manager.non_java);
-		toolMenu.changeLocations(manager.non_java);
-		sideMenu.changeLocations(manager.non_java);
+		toolMenu.structureViewComp.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.sep4.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.asteriskComp.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.contentModeComp.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.instantRunComp.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.instantBuildComp.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.projectPopup.setEnabled("Manage Build-Path", !manager.isLanguageTagNonJava());
+		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.isLanguageTagNonJava());
+		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.isLanguageTagNonJava());
+		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.isLanguageTagNonJava());
+		sideMenu.structureComp.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.changeLocations(manager.isLanguageTagNonJava());
+		sideMenu.changeLocations(manager.isLanguageTagNonJava());
 	}
 	
 	public static void setStatus(String status, int value, BufferedImage image) {
