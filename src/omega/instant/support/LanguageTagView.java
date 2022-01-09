@@ -172,6 +172,7 @@ public class LanguageTagView extends JDialog{
 			return;
 		Screen.getProjectFile().getProjectManager().setLanguageTag(tag);
 		Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_TAG_CHANGED, (Screen)getOwner(), tag));
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, tag));
 		setVisible(false);
 	}

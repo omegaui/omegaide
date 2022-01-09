@@ -18,12 +18,12 @@
 */
 
 package omega.io;
+import omega.Screen;
+
 import omega.instant.support.LanguageTagView;
 
 import omegaui.dynamic.database.DataBase;
 import omegaui.dynamic.database.DataEntry;
-
-import omega.Screen;
 
 import java.util.LinkedList;
 

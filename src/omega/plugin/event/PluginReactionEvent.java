@@ -18,6 +18,7 @@
 
 package omega.plugin.event;
 public record PluginReactionEvent(int type, Object source, Object data) {
+	public static final int EVENT_TYPE_PROJECT_TAG_CHANGED = 0;
 	public static final int EVENT_TYPE_PROJECT_CHANGED = 0;
 	public static final int EVENT_TYPE_PROJECT_CLOSED = 1;
 	public static final int EVENT_TYPE_PROJECT_DELETED = 2;
@@ -37,7 +38,7 @@ public record PluginReactionEvent(int type, Object source, Object data) {
 	public static final int EVENT_TYPE_EDITOR_CLOSED = 14;
 
 	public static boolean isEventTypeValid(int type){
-		return type >= EVENT_TYPE_PROJECT_CHANGED && type <= EVENT_TYPE_EDITOR_CLOSED;
+		return type >= EVENT_TYPE_PROJECT_TAG_CHANGED && type <= EVENT_TYPE_EDITOR_CLOSED;
 	}
 
 	public static PluginReactionEvent genNewInstance(int type, Object source, Object data){
