@@ -172,28 +172,12 @@ public class IconManager {
 	public static BufferedImage showImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	public static BufferedImage hideImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	public static BufferedImage infoImage = fluenthelpImage;
-	public static BufferedImage classImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage recordImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage enumImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage interImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage annImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage packImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage methImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	public static BufferedImage varImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	public static BufferedImage ideImage64 = getImage("/omega_ide_icon64.png");
 	public static BufferedImage ideImage500 = getImage("/omega_ide_icon500.png");
 	static{
 		paintNewImage(newImage.getGraphics());
 		paintShowImage(showImage.getGraphics());
 		paintHideImage(hideImage.getGraphics());
-		paintCharImage(classImage.getGraphics(), "C");
-		paintCharImage(recordImage.getGraphics(), "R");
-		paintCharImage(enumImage.getGraphics(), "E");
-		paintCharImage(interImage.getGraphics(), "I");
-		paintCharImage(annImage.getGraphics(), "A");
-		paintCharImage(packImage.getGraphics(), "P");
-		paintCharImage(methImage.getGraphics(), "{}");
-		paintCharImage(varImage.getGraphics(), "V");
 	}
 	
 	public static void paintCharImage(Graphics graphics, String ch){

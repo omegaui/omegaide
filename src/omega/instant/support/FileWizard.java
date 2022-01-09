@@ -17,23 +17,12 @@
 */
 
 package omega.instant.support;
-import omega.io.IconManager;
-
-import omega.ui.popup.OPopupWindow;
-
-import omega.ui.dialog.FileSelectionDialog;
-
-import omegaui.component.TextComp;
-import omegaui.component.NoCaretField;
-import omegaui.component.EdgeComp;
-
 import omega.Screen;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import omega.io.IconManager;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -42,9 +31,16 @@ import java.io.FileOutputStream;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import omega.ui.dialog.FileSelectionDialog;
+
+import omegaui.component.TextComp;
+import omegaui.component.NoCaretField;
+import omegaui.component.EdgeComp;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
@@ -61,6 +57,14 @@ public class FileWizard extends JDialog{
 	
 	public TextComp parentRoot;
 	public TextComp typeBtn;
+
+	public TextComp directoryComp;
+	public TextComp classComp;
+	public TextComp recordComp;
+	public TextComp interfaceComp;
+	public TextComp enumComp;
+	public TextComp annotationComp;
+	public TextComp customFileComp;
 	
 	public FileWizard(JFrame f){
 		super(f, true);
@@ -89,7 +93,7 @@ public class FileWizard extends JDialog{
 		final FileSelectionDialog fileC = new FileSelectionDialog(this);
 		fileC.setTitle("Select a directory as source root");
 		
-		parentRoot = new TextComp(IconManager.fluentsourceImage, 20, 20, back2, back2, c2, ()->{
+		parentRoot = new TextComp(IconManager.fluentsourceImage, 20, 20, TOOLMENU_COLOR3_SHADE, back2, c2, ()->{
 			LinkedList<File> selections = fileC.selectDirectories();
 			if(!selections.isEmpty()){
 				parentRoot.setToolTipText(selections.get(0).getAbsolutePath());
@@ -111,7 +115,7 @@ public class FileWizard extends JDialog{
 		typeLabel.setLookLikeLabel(true);
 		add(typeLabel);
 		
-		createComp = new TextComp(IconManager.fluentnewfileImage, 25, 25, "Create", back2, back2, c2, this::create);
+		createComp = new TextComp(IconManager.fluentnewfileImage, 25, 25, "Create", TOOLMENU_COLOR3_SHADE, back2, c2, this::create);
 		createComp.setBounds(getWidth() - 35, getHeight() - 35, 30, 30);
 		createComp.setArc(5, 5);
 		nameField.setOnAction(createComp.runnable);
@@ -122,37 +126,65 @@ public class FileWizard extends JDialog{
 		closeComp.setArc(5, 5);
 		add(closeComp);
 		
-		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -6, true), ACTION_MOUSE_PRESSED);
-		putAnimationLayer(parentRoot, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(createComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(closeComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		
-		final OPopupWindow popup = new OPopupWindow("File-Type Menu", this, 0, false).width(210);
-		typeBtn = new TextComp("class", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{}){
+		typeBtn = new TextComp("class", c2, c2, TOOLMENU_COLOR1, ()->{}){
 			@Override
 			public void draw(Graphics2D g){
 				g.drawImage(IconManager.fluentcategoryImage, 0, 0, 25, 25, null);
 			}
 		};
 		typeBtn.setBounds(150, typeLabel.getY(), 140, 25);
-		popup.createItem("Directory", IconManager.projectImage, ()->typeBtn.setText("directory"))
-		.createItem("Class", IconManager.fluentclassFileImage, ()->typeBtn.setText("class"))
-		.createItem("Record", IconManager.fluentrecordFileImage, ()->typeBtn.setText("record"))
-		.createItem("Interface", IconManager.fluentinterfaceFileImage, ()->typeBtn.setText("interface"))
-		.createItem("Annotation", IconManager.fluentannotationFileImage, ()->typeBtn.setText("@interface"))
-		.createItem("Enum", IconManager.fluentenumFileImage, ()->typeBtn.setText("enum"))
-		.createItem("Custom File", IconManager.fileImage, ()->typeBtn.setText("Custom File"));
-		typeBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				popup.setLocation(e.getXOnScreen(), e.getYOnScreen());
-				popup.setVisible(true);
-			}
-		});
+		typeBtn.setClickable(false);
 		typeBtn.alignX = 30;
 		typeBtn.setFont(PX14);
 		typeBtn.setArc(0, 0);
 		add(typeBtn);
+
+		directoryComp = new TextComp(IconManager.fluentfolderImage, 25, 25, "Directory", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("directory"));
+		directoryComp.setBounds(75, parentRoot.getY(), 30, 30);
+		directoryComp.setArc(5, 5);
+		add(directoryComp);
+
+		classComp = new TextComp(IconManager.fluentclassFileImage, 25, 25, "Class", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("class"));
+		classComp.setBounds(directoryComp.getX() + directoryComp.getWidth() + 5, parentRoot.getY(), 30, 30);
+		classComp.setArc(5, 5);
+		add(classComp);
+
+		recordComp = new TextComp(IconManager.fluentrecordFileImage, 25, 25, "Record", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("record"));
+		recordComp.setBounds(classComp.getX() + classComp.getWidth() + 5, parentRoot.getY(), 30, 30);
+		recordComp.setArc(5, 5);
+		add(recordComp);
+
+		interfaceComp = new TextComp(IconManager.fluentinterfaceFileImage, 25, 25, "Interface", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("interface"));
+		interfaceComp.setBounds(recordComp.getX() + recordComp.getWidth() + 5, parentRoot.getY(), 30, 30);
+		interfaceComp.setArc(5, 5);
+		add(interfaceComp);
+
+		annotationComp = new TextComp(IconManager.fluentannotationFileImage, 25, 25,"Annotation", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("@interface"));
+		annotationComp.setBounds(interfaceComp.getX() + interfaceComp.getWidth() + 5, parentRoot.getY(), 30, 30);
+		annotationComp.setArc(5, 5);
+		add(annotationComp);
+
+		enumComp = new TextComp(IconManager.fluentenumFileImage, 25, 25, "Enum", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("enum"));
+		enumComp.setBounds(annotationComp.getX() + annotationComp.getWidth() + 5, parentRoot.getY(), 30, 30);
+		enumComp.setArc(5, 5);
+		add(enumComp);
+
+		customFileComp = new TextComp(IconManager.fileImage, 25, 25, "Custom File", TOOLMENU_COLOR3_SHADE, back2, c2, ()->typeBtn.setText("Custom File"));
+		customFileComp.setBounds(enumComp.getX() + enumComp.getWidth() + 5, parentRoot.getY(), 30, 30);
+		customFileComp.setArc(5, 5);
+		add(customFileComp);
+		
+		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -6, true), ACTION_MOUSE_PRESSED);
+		putAnimationLayer(parentRoot, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(createComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(closeComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(directoryComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(classComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(recordComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(interfaceComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(annotationComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(enumComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(customFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 	}
 	
 	public void create(){
