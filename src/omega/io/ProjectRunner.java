@@ -243,6 +243,8 @@ public class ProjectRunner {
 				.build()
 				.locateOnBottomLeft()
 				.showIt();
+				getScreen().getToolMenu().runComp.setClickable(true);
+				Screen.setStatus("", 100, null);
 				return;
 			}
 

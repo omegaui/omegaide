@@ -76,23 +76,28 @@ public class ProcessManager extends DataBase{
 				
 				cmd.add(file.getName());
 				
+				String command = "";
+				
 				String[] commandsAsArray = new String[cmd.size()];
 				for(int i = 0; i < cmd.size(); i++){
 					commandsAsArray[i] = cmd.get(i);
+					command += cmd.get(i) + " ";
 				}
 				
 				JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, file.getParentFile().getAbsolutePath());
 				printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
-				printArea.print("# File Launched!");
+				printArea.print("> File Launched!");
+				printArea.print("> Execution Command : " + command);
 				printArea.print("-------------------------Execution Begins Here-------------------------");
+
+				printArea.terminalPanel.setOnProcessExited(()->{
+					printArea.print("-------------------------Execution Ends Here-------------------------");
+					printArea.print("Launch finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+				});
+				
 				printArea.start();
 				
 				Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
-
-				while(printArea.terminalPanel.process.isAlive());
-				
-				printArea.print("-------------------------Execution Ends Here-------------------------");
-				printArea.print("Launch finished with Exit Code " + printArea.terminalPanel.process.exitValue());
 			}
 			catch(Exception e){
 				e.printStackTrace();
