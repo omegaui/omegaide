@@ -88,6 +88,10 @@ public class OperationPane extends JPanel{
 	public void addTab(String name, BufferedImage image, JComponent c, Runnable r, OPopupWindow popup) {
 		tabPane.addTab(name, name, "", image, c, r, popup);
 	}
+
+	public TabData getTabData(JComponent comp){
+		return tabPane.getTabData(comp);
+	}
 	
 	public static int count(String name) {
 		int c = -1;

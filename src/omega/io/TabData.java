@@ -17,6 +17,8 @@
 */
 
 package omega.io;
+import omegaui.component.TextComp;
+
 import omega.ui.panel.TabHolder;
 
 import omega.ui.component.TabComp;
@@ -157,6 +159,10 @@ public class TabData {
 	
 	public void setTabComp(TabComp tabComp) {
 		this.tabComp = tabComp;
+	}
+
+	public TextComp getTabIconComp(){
+		return getTabComp().iconComp;
 	}
 	
 	public TabHolder getTabHolder() {

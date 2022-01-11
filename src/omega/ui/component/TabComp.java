@@ -42,17 +42,17 @@ import java.awt.event.MouseEvent;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class TabComp extends JComponent implements FocusListener{
-	private TabPanel tabPanel;
-	private TabData tabData;
+	public TabPanel tabPanel;
+	public TabData tabData;
 
-	private TextComp iconComp;
-	private TextComp nameComp;
-	private TextComp closeComp;
+	public TextComp iconComp;
+	public TextComp nameComp;
+	public TextComp closeComp;
 
-	private Runnable removeAction;
+	public Runnable removeAction;
 
-	private volatile boolean focussed = false;
-	private volatile boolean inList = false;
+	public volatile boolean focussed = false;
+	public volatile boolean inList = false;
 	
 	public TabComp(TabPanel tabPanel, TabData tabData, Runnable removeAction){
 		this.tabData = tabData;

@@ -18,6 +18,7 @@
 
 package omega.instant.support.universal;
 import omega.io.IconManager;
+import omega.io.TabData;
 
 import omega.ui.panel.JetRunPanel;
 
@@ -86,18 +87,23 @@ public class ProcessManager extends DataBase{
 				
 				JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, file.getParentFile().getAbsolutePath());
 				printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
-				printArea.print("> File Launched!");
-				printArea.print("> Execution Command : " + command);
-				printArea.print("-------------------------Execution Begins Here-------------------------");
+				printArea.print("File Launched!");
+				printArea.print("Execution Command : " + command);
+				printArea.print("..................................................");
+				
+				Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
 
+				TabData currentTabData = Screen.getScreen().getOperationPanel().getTabData(printArea);
+				currentTabData.getTabIconComp().setImage(null);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentservicesGif);
+				
 				printArea.terminalPanel.setOnProcessExited(()->{
-					printArea.print("-------------------------Execution Ends Here-------------------------");
-					printArea.print("Launch finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
+					currentTabData.getTabIconComp().setGifImage(null);
 				});
 				
 				printArea.start();
 				
-				Screen.getScreen().getOperationPanel().addTab("Launch (" + file.getName() + ")", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
 			}
 			catch(Exception e){
 				e.printStackTrace();

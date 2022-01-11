@@ -17,6 +17,7 @@
 */
 
 package omega.io;
+
 import omega.instant.support.java.management.JDKManager;
 
 import omega.ui.component.ToolMenu;
@@ -137,7 +138,7 @@ public class ProjectRunner {
 		mainClass = mainClass.substring(0, mainClass.length() - 6);
 	}
 	
-	public void runNJ(){
+	public synchronized void runNJ(){
 		new Thread(()->{
 			getScreen().getToolMenu().buildComp.setClickable(false);
 			getScreen().getToolMenu().runComp.setClickable(false);
@@ -220,7 +221,7 @@ public class ProjectRunner {
 		}).start();
 	}
 	
-	public void justRunNJ(){
+	public synchronized void justRunNJ(){
 		new Thread(()->{
 			getScreen().getToolMenu().runComp.setClickable(false);
 			getScreen().getOperationPanel().removeTab("Build");
@@ -259,7 +260,18 @@ public class ProjectRunner {
 				terminal.printText("Running Project...\n" + Screen.getProjectFile().getArgumentManager().getRunCommand());
 				terminal.printText("");
 				terminal.printText("---<>--------------------------------------<>---");
-
+				
+				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
+				
+				TabData currentTabData = getScreen().getOperationPanel().getTabData(terminal);
+				currentTabData.getTabIconComp().setImage(null);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentservicesGif);
+				
+				terminal.terminalPanel.setOnProcessExited(()->{
+					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
+					currentTabData.getTabIconComp().setGifImage(null);
+				});
+				
 				terminal.start();
 				
 				terminal.reRunAction(()->{
@@ -267,7 +279,6 @@ public class ProjectRunner {
 					runNJ();
 				});
 				
-				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
 				
 				runningApps.add(terminal.terminalPanel.process);
 				
@@ -281,6 +292,9 @@ public class ProjectRunner {
 						terminal.printText("Program Execution finished with Exit Code " + terminal.terminalPanel.process.exitValue());
 					else
 						terminal.printText("Unable to Run the Specified Command!");
+					
+					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
+					currentTabData.getTabIconComp().setGifImage(null);
 					
 					runningApps.remove(terminal.terminalPanel.process);
 					Screen.getProjectFile().getFileTreePanel().refresh();
@@ -300,7 +314,7 @@ public class ProjectRunner {
 		}).start();
 	}
 	
-	public void justRun(){
+	public synchronized void justRun(){
 		getScreen().saveAllEditors();
 		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
 			justRunNJ();
@@ -416,6 +430,16 @@ public class ProjectRunner {
 				name =  name + ")";
 				
 				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
+
+				TabData currentTabData = getScreen().getOperationPanel().getTabData(terminal);
+				currentTabData.getTabIconComp().setImage(null);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentservicesGif);
+				
+				terminal.terminalPanel.setOnProcessExited(()->{
+					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
+					currentTabData.getTabIconComp().setGifImage(null);
+				});
+				
 				terminal.start();
 				
 				Screen.setStatus("Running Project", 100, null);
@@ -441,13 +465,13 @@ public class ProjectRunner {
 		}).start();
 	}
 	
-	public boolean isRunCapable(File dir){
+	public synchronized boolean isRunCapable(File dir){
 		LinkedList<File> byteCodes = new LinkedList<>();
 		FileTreePanel.loadFilesIncludeSubDirectories(byteCodes, dir, ".class");
 		return !byteCodes.isEmpty();
 	}
 	
-	public void instantBuild(){
+	public synchronized void instantBuild(){
 		getScreen().saveAllEditors();
 		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || JavaSyntaxParser.packingCodes){
 			return;
@@ -524,7 +548,7 @@ public class ProjectRunner {
 		}).start();
 	}
 	
-	public void instantRun(){
+	public synchronized void instantRun(){
 		getScreen().saveAllEditors();
 		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || JavaSyntaxParser.packingCodes){
 			return;
@@ -627,7 +651,7 @@ public class ProjectRunner {
 		}).start();
 	}
 	
-	public void run() {
+	public synchronized void run() {
 		getScreen().saveAllEditors();
 		System.gc();
 		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){

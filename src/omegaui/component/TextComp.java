@@ -207,6 +207,22 @@ public class TextComp extends JComponent{
 		this.gifImage = gifImage;
 		repaint();
 	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+	
+	public void setImage(BufferedImage image, int width, int height) {
+		this.image = image;
+		this.w = width;
+		this.h = height;
+		repaint();
+	}
+	
+	public void setImage(BufferedImage image) {
+		this.image = image;
+		repaint();
+	}
 	
 	public void attachDragger(Window window){
 		this.window = window;
