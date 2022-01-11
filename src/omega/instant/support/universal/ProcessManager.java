@@ -95,7 +95,7 @@ public class ProcessManager extends DataBase{
 
 				TabData currentTabData = Screen.getScreen().getOperationPanel().getTabData(printArea);
 				currentTabData.getTabIconComp().setImage(null);
-				currentTabData.getTabIconComp().setGifImage(IconManager.fluentservicesGif);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
 				
 				printArea.terminalPanel.setOnProcessExited(()->{
 					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);

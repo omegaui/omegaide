@@ -114,6 +114,7 @@ public class ProjectBuilder {
 			printArea.setLogMode(true);
 			
 			try {
+				getScreen().getOperationPanel().removeTab("Build");
 				getScreen().getOperationPanel().addTab("Build", IconManager.fluenttesttubeImage, printArea, printArea::killProcess);
 				
 				printArea.print("Building Project...\n\"" + args + "\"");
@@ -279,10 +280,16 @@ public class ProjectBuilder {
 				
 				buildLog.setHeading("Building Project with JDK v" + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 				
+				getScreen().getOperationPanel().removeTab("Compilation");
+				
 				getScreen().getOperationPanel().addTab("Compilation", IconManager.fluenttesttubeImage, buildLog, ()->{
 					if(compileProcess != null && compileProcess.isAlive())
 						compileProcess.destroyForcibly();
 				});
+
+				TabData currentTabData = getScreen().getOperationPanel().getTabData(buildLog);
+				currentTabData.getTabIconComp().setImage(null);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
 				
 				String errorlog = "";
 				Scanner errorReader = new Scanner(compileProcess.getErrorStream());
@@ -305,6 +312,9 @@ public class ProjectBuilder {
 				else{
 					buildLog.setHeading("Build Completed Successfully");
 				}
+				
+				currentTabData.getTabIconComp().setImage(IconManager.fluenttesttubeImage);
+				currentTabData.getTabIconComp().setGifImage(null);
 				
 				compileProcess = null;
 				getScreen().getToolMenu().buildComp.setClickable(true);

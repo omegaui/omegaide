@@ -265,7 +265,7 @@ public class ProjectRunner {
 				
 				TabData currentTabData = getScreen().getOperationPanel().getTabData(terminal);
 				currentTabData.getTabIconComp().setImage(null);
-				currentTabData.getTabIconComp().setGifImage(IconManager.fluentservicesGif);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
 				
 				terminal.terminalPanel.setOnProcessExited(()->{
 					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
@@ -433,7 +433,7 @@ public class ProjectRunner {
 
 				TabData currentTabData = getScreen().getOperationPanel().getTabData(terminal);
 				currentTabData.getTabIconComp().setImage(null);
-				currentTabData.getTabIconComp().setGifImage(IconManager.fluentservicesGif);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
 				
 				terminal.terminalPanel.setOnProcessExited(()->{
 					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
