@@ -17,6 +17,8 @@
 */
 
 package omega.ui.panel;
+import javax.imageio.ImageIO;
+
 import omega.ui.component.Editor;
 
 import omega.ui.popup.OPopupWindow;
@@ -26,6 +28,8 @@ import omega.ui.listener.TabPanelListener;
 import omega.io.TabHistory;
 import omega.io.TabData;
 import omega.io.UIManager;
+import omega.io.IconManager;
+import omega.io.DataManager;
 
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -45,6 +49,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.FontMetrics;
+import java.awt.Image;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -54,26 +59,6 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
 public class TabPanel extends JPanel{
-	
-	private static final String TITLE = "Open a text file to start editing here";
-	private static final String HINT = "Navigate the File Tree (on left)";
-	private static final String HINT1 = "Open the File tree by clicking the fourth ";
-	private static final String HINT1_2 = "Open the File tree by clicking the second ";
-	
-	private static BufferedImage image = new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB);
-	static{
-		Graphics graphics = image.getGraphics();
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(TOOLMENU_COLOR3);
-		g.fillOval(7, 7, 16, 16);
-		g.setColor(c2);
-		g.fillOval(10, 10, 10, 10);
-		g.setColor(TOOLMENU_COLOR3_SHADE);
-		g.fillOval(10, 10, 10, 10);
-		g.dispose();
-	}
 	
 	private TabsHolderPanel tabsHolder;
 	private TabCompHolderPanel tabCompHolder;
@@ -91,14 +76,43 @@ public class TabPanel extends JPanel{
 	private int tabsPosition;
 	
 	private volatile boolean hideOnEmpty = false;
+
+	private Image illustration;
 	
 	public TabPanel(int tabsPosition){
 		super(new BorderLayout());
 		this.tabsPosition = tabsPosition;
 		
-		setBackground(c2);
+		setBackground(back3);
+		loadIllustration();
 		
 		init();
+	}
+
+	public void loadIllustration(){
+		BufferedImage image = null;
+		
+		try{
+			image = ImageIO.read(getClass().getResourceAsStream(DataManager.getBackgroundIllustrationPath()));
+		}
+		catch(Exception e){
+			try{
+				image = ImageIO.read(new File(DataManager.getBackgroundIllustrationPath()));
+			}
+			catch(Exception e1){
+				System.err.println("Cannot find Image file : " + DataManager.getBackgroundIllustrationPath());
+				e1.printStackTrace();
+				try{
+					image = ImageIO.read(getClass().getResourceAsStream(DataManager.DEFAULT_ILLUSTRATION_PATH));
+				}
+				catch(Exception e2){
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		illustration = image.getScaledInstance(456, 456, BufferedImage.SCALE_SMOOTH);
+		repaint();
 	}
 	
 	public void init(){
@@ -144,7 +158,7 @@ public class TabPanel extends JPanel{
 		if(wasEmpty){
 			//omega.tabPane.TabCompHolder is showing an abnormal behavior(sometimes, don't know the exact condition of why it occurs)
 			//It does not gets visible on its own whenever the initial tab is added
-			//So, it needs to be triggered it manually, like this
+			//So, it needs to be triggered manually, like this
 			//Behaving same as in Blaze' Core
 			Screen.getScreen().splitPane.setDividerLocation(Screen.getScreen().splitPane.getDividerLocation() + 1);
 			Screen.getScreen().splitPane.setDividerLocation(Screen.getScreen().splitPane.getDividerLocation() - 1);
@@ -339,23 +353,10 @@ public class TabPanel extends JPanel{
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		if(isEmpty()){
-			g.setColor(c2);
+			g.setColor(back3);
 			g.fillRect(0, 0, getWidth(), getHeight());
-			g.setColor(omega.io.UIManager.TOOLMENU_COLOR3);
-			
-			g.setFont(omega.io.UIManager.PX28);
-			
-			FontMetrics f = g.getFontMetrics();
-			String hint = HINT;
-			if(Screen.getProjectFile().getProjectManager() != null && !Screen.getProjectFile().getFileTreePanel().isVisible())
-				hint = Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() ? HINT1_2 : HINT1;
-			
-			g.drawString(TITLE, getWidth()/2 - f.stringWidth(TITLE)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 1);
-			g.setColor(omega.io.UIManager.TOOLMENU_COLOR1);
-			g.drawString(hint, getWidth()/2 - f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 + f.getAscent() - f.getDescent() + 10 + f.getHeight());
-			if(hint.equals(HINT1) || hint.equals(HINT1_2)){
-				g.drawImage(image, getWidth()/2 + f.stringWidth(hint)/2, getHeight()/2 - f.getHeight()/2 - 13 + f.getAscent() - f.getDescent() + f.getHeight(), null);
-			}
+			if(illustration != null)
+				g.drawImage(illustration, getWidth()/2 - 456/2, getHeight()/2 - 456/2, 456, 456, this);
 			g.dispose();
 		}
 		else

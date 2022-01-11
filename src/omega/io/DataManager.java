@@ -29,6 +29,7 @@ public class DataManager extends DataBase {
 	
 	public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
 	public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
+	public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/icons8-gummy-coding.png";
 	
 	private static String defaultProjectPath = "No Default Project set yet.";
 	private static String pathToJava = "";
@@ -37,6 +38,7 @@ public class DataManager extends DataBase {
 	private static String consoleCommand = "";
 	private static String gradleCommand = "gradlew";
 	private static String instantMode = "";
+	private static String backgroundIllustrationPath = "";
 	
 	private static Font hintFont = new Font("Ubuntu", Font.BOLD, 12);
 	
@@ -76,6 +78,7 @@ public class DataManager extends DataBase {
 			setHintFont(new Font(fontName, style, size));
 			setParsingEnabled(getEntryAt("Parsing Enabled", 0).getValueAsBoolean());
 			setTabSize(getEntryAt("Tab Size", 0).getValueAsInt());
+			setBackgroundIllustrationPath(getEntryAt("Background Illustration Path", 0).getValue());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -100,6 +103,7 @@ public class DataManager extends DataBase {
 		addEntry("Hint Font", getHintFont().getSize() + "");
 		addEntry("Parsing Enabled", isParsingEnabled() + "");
 		addEntry("Tab Size", getTabSize() + "");
+		addEntry("Background Illustration Path", getBackgroundIllustrationPath());
 		save();
 	}
 	
@@ -217,6 +221,14 @@ public class DataManager extends DataBase {
 	
 	public static void setTabSize(int tabSize) {
 		DataManager.tabSize = tabSize;
+	}
+
+	public static java.lang.String getBackgroundIllustrationPath() {
+		return Screen.isNotNull(backgroundIllustrationPath) ? backgroundIllustrationPath : DEFAULT_ILLUSTRATION_PATH;
+	}
+	
+	public static void setBackgroundIllustrationPath(java.lang.String backgroundIllustrationPath) {
+		DataManager.backgroundIllustrationPath = backgroundIllustrationPath;
 	}
 	
 }

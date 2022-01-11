@@ -846,6 +846,17 @@ public class ToolMenu extends JPanel {
 		.createItem("Set Gradle Script", IconManager.fluentgradleImage, ()->{
 			gradleBuildScriptManager.setVisible(true);
 		});
+		FileSelectionDialog fs = new FileSelectionDialog(screen);
+
+		setPopup.createItem("Set Background Illustration", IconManager.fluenticons8Logo, ()->{
+			fs.setTitle("Select an image(Should be 456x456 px)");
+			fs.setFileExtensions(".png", ".jpg");
+			LinkedList<File> files = fs.selectFiles();
+			if(!files.isEmpty()){
+				DataManager.setBackgroundIllustrationPath(files.get(0).getAbsolutePath());
+				Screen.getScreen().getTabPanel().loadIllustration();
+			}
+		});
 		
 		JDKSelectionDialog jdkSelectionDialog = new JDKSelectionDialog(screen);
 		
@@ -857,10 +868,8 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		
-		FileSelectionDialog fs = new FileSelectionDialog(screen);
-		fs.setTitle("Select JDK Root");
-		
 		jdkRootItem = new OPopupItem(setPopup, "Set JDK Root", IconManager.fluentsourceImage, ()->{
+			fs.setTitle("Select JDK Root");
 			LinkedList<File> files = fs.selectDirectories();
 			if(!files.isEmpty()){
 				DataManager.setPathToJava(files.get(0).getAbsolutePath());

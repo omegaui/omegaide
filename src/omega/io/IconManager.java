@@ -152,7 +152,8 @@ public class IconManager {
 	public static BufferedImage fluentcopyImage = getFluentIcon("copy-to-clipboard-48.png");
 	public static BufferedImage fluenteditFileImage = getFluentIcon("edit-file-48.png");
 	public static BufferedImage fluentrenameImage = getFluentIcon("rename-48.png");
-	
+
+	//Fluent GIFs
 	public static Image fluentneutralemojiGif = getFluentGif("neutral.gif");
 	public static Image fluentsandtimerGif = getFluentGif("sand-timer.gif");
 	public static Image fluentgithubGif = getFluentGif("github.gif");
@@ -292,6 +293,16 @@ public class IconManager {
 	public static Image getFluentGif(String name){
 		try{
 			return new ImageIcon(IconManager.class.getResourceAsStream("/fluent-gifs/icons8-" + name).readAllBytes()).getImage();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static BufferedImage getFluentIllustration(String name){
+		try{
+			return ImageIO.read(IconManager.class.getResourceAsStream("/fluent-illustrations/icons8-" + name));
 		}
 		catch(Exception e){
 			e.printStackTrace();

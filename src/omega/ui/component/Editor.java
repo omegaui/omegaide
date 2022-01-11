@@ -1094,7 +1094,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	
 	@Override
 	public void focusLost(FocusEvent e){
-		
+		ToolMenu.getPathBox().setPath(null);
 	}
 	
 	public FindAndReplace getFAndR() {
