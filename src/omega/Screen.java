@@ -403,10 +403,37 @@ public class Screen extends JFrame {
 		else
 			Screen.getScreen().getBottomPane().setMessage("Status of any running process will appear here!", image, "running process");
 	}
+
+	@Override
+	public void setSize(int width, int height){
+		super.setSize(width, height);
+		try{
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
+		}
+		catch(Exception e){
+			
+		}
+	}
+
+	@Override
+	public void layout(){
+		super.layout();
+		try{
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
+		}
+		catch(Exception e){
+			
+		}
+	}
 	
 	@Override
 	public void paint(Graphics g) {
-		setSize(getWidth(), getHeight());
+		try{
+			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, g, getContentPane()));
+		}
+		catch(Exception e){
+			
+		}
 		super.paint(g);
 		g.dispose();
 	}
@@ -571,17 +598,6 @@ public class Screen extends JFrame {
 		else if(!res.trim().equals(""))
 			res = res.substring(0, res.length() - 1);
 		return res;
-	}
-	
-	@Override
-	public void layout(){
-		super.layout();
-		try{
-			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
-		}
-		catch(Exception e){
-			
-		}
 	}
 	
 	@Override
