@@ -210,7 +210,10 @@ public class PluginStore extends JDialog{
 
 			block += 60;
 		}
+		
 		panel.setPreferredSize(new Dimension(contentScrollPane.getWidth(), block));
+		contentScrollPane.getVerticalScrollBar().setVisible(true);
+		contentScrollPane.getVerticalScrollBar().setValue(0);
 		layout();
 		repaint();
 		
@@ -240,35 +243,38 @@ public class PluginStore extends JDialog{
 	}
 
 	public synchronized void downloadPlugin(RemotePluginInfo info){
-		try{
-			int choice = ChoiceDialog.makeChoice("Do You Want to Download This Plugin?", "Yes", "No");
-			if(choice != ChoiceDialog.CHOICE1)
-				return;
-			setStatus("Downloading " + info.name + " ... ");
-			BufferedInputStream in = new BufferedInputStream(Downloader.openStream(info.pluginFileURL.toString()));
-			File localPluginFile = new File(PluginManager.PLUGINS_DIRECTORY.getAbsolutePath(), info.fileName);
-			FileOutputStream out = new FileOutputStream(localPluginFile);
-			
-			byte dataBuffer[] = new byte[1024];
-			int bytesRead;
-			while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-				out.write(dataBuffer, 0, bytesRead);
-				out.flush();
+		int choice = ChoiceDialog.makeChoice("Do You Want to Download This Plugin?", "Yes", "No");
+		if(choice != ChoiceDialog.CHOICE1)
+			return;
+		
+		new Thread(()->{
+			try{
+				setStatus("Downloading " + info.name + " ... ");
+				BufferedInputStream in = new BufferedInputStream(Downloader.openStream(info.pluginFileURL.toString()));
+				File localPluginFile = new File(PluginManager.PLUGINS_DIRECTORY.getAbsolutePath(), info.fileName);
+				FileOutputStream out = new FileOutputStream(localPluginFile);
 				
-				double currentLength = localPluginFile.length() / 1000;
-				double length = Double.parseDouble(info.size.substring(0, info.size.indexOf("MB")).trim()) * 1000;
-                    int percentage = (int)((currentLength * 100) / length);
-                    setStatus("Downloading " + info.name + " " + percentage + "%");
+				byte dataBuffer[] = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+					out.write(dataBuffer, 0, bytesRead);
+					out.flush();
+					
+					double currentLength = localPluginFile.length() / 1000;
+					double length = Double.parseDouble(info.size.substring(0, info.size.indexOf("MB")).trim()) * 1000;
+	                    int percentage = (int)((currentLength * 100) / length);
+	                    setStatus("Downloading " + info.name + " " + percentage + "%");
+				}
+				in.close();
+				out.close();
+				restartPopup.locateOnBottomLeft().showIt();
+				refresh();
 			}
-			in.close();
-			out.close();
-			restartPopup.locateOnBottomLeft().showIt();
-			refresh();
-		}
-		catch(Exception e){
-			setStatus("Unable to Download " + info.name + "!");
-			e.printStackTrace();
-		}
+			catch(Exception e){
+				setStatus("Unable to Download " + info.name + "!");
+				e.printStackTrace();
+			}
+		}).start();
 	}
 
 	public synchronized void setStatus(String text){
