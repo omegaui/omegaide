@@ -287,6 +287,7 @@ public class Screen extends JFrame {
 		splash.setProgress(83, "plugging in");
 		
 		pluginManager = new PluginManager();
+		pluginManager.load();
 		pluginStore = new PluginStore(this, pluginManager);
 		pluginsView = new PluginsView(this, pluginManager);
 		pluginReactionManager = new PluginReactionManager(pluginManager);

@@ -39,15 +39,13 @@ public class PluginManager extends DataBase{
 	
 	public PluginManager(){
 		super(PLUGINS_DATA_BASE);
-		load();
+		pluginLoader = new PluginLoader(this);
 	}
 
 	public void load(){
-		pluginLoader = new PluginLoader(this);
 		pluginLoader.pluginClassNames.forEach((name)->{
 			Plugin plugin = pluginLoader.loadPlugin(name);
-			if(plugin != null)
-				plugins.add(plugin);
+			add(plugin);
 		});
 		getDataSetNames().forEach((pluginName)->{
 			if(getEntryAt(pluginName, 0).getValueAsBoolean()){
@@ -60,6 +58,16 @@ public class PluginManager extends DataBase{
 				}
 			}
 		});
+	}
+
+	public void add(Plugin plugin){
+		if(plugin == null)
+			return;
+		for(Plugin px : plugins){
+			if(px.getName().equals(plugin.getName()))
+				return;
+		}
+		plugins.add(plugin);
 	}
 
 	public Plugin getPluginObject(String pluginName){
