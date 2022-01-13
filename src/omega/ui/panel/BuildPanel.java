@@ -22,6 +22,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -57,6 +58,10 @@ public class BuildPanel extends JPanel{
 		else{
 			super.paint(graphics);
 		}
+	}
+	public void setPanelPrefSize(Dimension d){
+		panel.setPreferredSize(d);
+		scrollPane.repaint();
 	}
 	@Override
 	public Component add(Component c){

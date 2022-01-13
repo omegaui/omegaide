@@ -69,7 +69,9 @@ public class PluginLoader {
 					continue;
 				}
 				urls[i] = plugins[i].toURL();
-				pluginClassNames.add(plugins[i].getName().substring(0, plugins[i].getName().lastIndexOf(".")));
+				String name = plugins[i].getName().substring(0, plugins[i].getName().lastIndexOf("."));
+				if(name.contains("."))
+					pluginClassNames.add(name);
 				empty = false;
 			}
 			if(!empty)

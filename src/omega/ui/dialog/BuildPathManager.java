@@ -322,10 +322,10 @@ public class BuildPathManager extends JDialog {
 			moduleComps.add(comp);
 			block3 += 30;
 		}
-		jarPanel.setPreferredSize(new Dimension(maxW0, block0));
-		nativePanel.setPreferredSize(new Dimension(maxW1, block1));
-		resourceRootPanel.setPreferredSize(new Dimension(maxW2, block2));
-		modulePanel.setPreferredSize(new Dimension(maxW3, block3));
+		jarPanel.setPanelPrefSize(new Dimension(maxW0, block0));
+		nativePanel.setPanelPrefSize(new Dimension(maxW1, block1));
+		resourceRootPanel.setPanelPrefSize(new Dimension(maxW2, block2));
+		modulePanel.setPanelPrefSize(new Dimension(maxW3, block3));
 		repaint();
 	}
 	public void removePath(){
