@@ -163,7 +163,6 @@ public class AnimationsDialog extends JDialog{
 	public void dispose(){
 		super.dispose();
 		UIManager.setAnimationsActive(toggleComp.isOn());
-		screen.getUIManager().save();
 	}
 	
 }
