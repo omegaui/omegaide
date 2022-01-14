@@ -89,12 +89,12 @@ public class SliderComp extends JComponent{
 			public void mouseReleased(MouseEvent e){
 				press = false;
 				repaint();
-				triggerOnSlidingFinishedEvent(e);
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e){
 				setValue(calculatePrefValue(e.getX()));
+				triggerOnValueChangedEvent();
 				repaint();
 			}
 		});
@@ -104,15 +104,15 @@ public class SliderComp extends JComponent{
 			public void mouseDragged(MouseEvent e){
 				if(press){
 					int difference = pointerX - e.getX();
-					setValue(calculatePrefValue(pointerX - difference));
-					triggerOnSlidingEvent(e);
+					setValue(calculatePrefValue((pointerX + pointerWidth/2) - difference));
+					triggerOnValueChangedEvent();
 				}
 			}
 		});
 	}
 
 	private int calculatePrefValue(int pointerX){
-		int pointerProgress = (pointerX * 100) / getWidth();
+		int pointerProgress = ((pointerX + pointerWidth/2) * 100) / getWidth();
 		int value = (pointerProgress * maxValue) / 100;
 		if(value >= maxValue)
 			return maxValue;
@@ -193,18 +193,6 @@ public class SliderComp extends JComponent{
 		g.drawString(text, getWidth()/2 - g.getFontMetrics().stringWidth(text)/2, ascentDescent);
 	}
 
-	private void triggerOnSlidingEvent(MouseEvent e){
-		if(slideListener == null)
-			return;
-		slideListener.onSliding(e, value);
-	}
-
-	private void triggerOnSlidingFinishedEvent(MouseEvent e){
-		if(slideListener == null)
-			return;
-		slideListener.onSlidingFinished(e, value);
-	}
-
 	private void triggerOnValueChangedEvent(){
 		if(slideListener == null)
 			return;
@@ -234,8 +222,9 @@ public class SliderComp extends JComponent{
 	}
 	
 	public void setValue(int value) {
+		if(value < minValue || value > maxValue)
+			return;
 		this.value = value;
-		triggerOnValueChangedEvent();
 		repaint();
 	}
 

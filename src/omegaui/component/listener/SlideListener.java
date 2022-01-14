@@ -19,7 +19,5 @@
 package omegaui.component.listener;
 import java.awt.event.MouseEvent;
 public interface SlideListener {
-	void onSliding(MouseEvent e, int value);
-	void onSlidingFinished(MouseEvent e, int value);
 	void onValueChanged(int value);
 }
