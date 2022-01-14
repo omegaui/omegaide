@@ -117,6 +117,7 @@ public class RecentsDialog extends JDialog{
 		});
 		add(field);
 		addKeyListener(field);
+		addFocusListener(field);
 		
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(5, 60, getWidth() - 10, getHeight() - 70 - 30);

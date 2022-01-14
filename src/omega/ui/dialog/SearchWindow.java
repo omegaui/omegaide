@@ -124,6 +124,7 @@ public class SearchWindow extends JDialog{
 		});
 		add(field);
 		addKeyListener(field);
+		addFocusListener(field);
 		
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(5, 65, getWidth() - 10, getHeight() - 70 - 30);
