@@ -44,9 +44,9 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class ColorPicker extends JDialog{
 	
-	private Color color;
-	private Color previewColor;
 	private Color initialColor = TOOLMENU_COLOR3;
+	private Color color = initialColor;
+	private Color previewColor = color;
 
 	private TextComp titleComp;
 	
@@ -278,6 +278,8 @@ public class ColorPicker extends JDialog{
 
 	public void genPreview(){
 		previewColor = new Color(redTileComp.pointer, greenTileComp.pointer, blueTileComp.pointer, alphaValue);
+		color = previewColor;
+		
 		redValueField.setText(redTileComp.pointer + "");
 		greenValueField.setText(greenTileComp.pointer + "");
 		blueValueField.setText(blueTileComp.pointer + "");
@@ -291,10 +293,7 @@ public class ColorPicker extends JDialog{
 		titleComp.repaint();
 	}
 
-	public Color pickColor(){
-		this.color = initialColor;
-		this.previewColor = initialColor;
-		
+	public void pickColor(){
 		redTileComp.pointer = color.getRed();
 		greenTileComp.pointer = color.getGreen();
 		blueTileComp.pointer = color.getBlue();
@@ -308,7 +307,6 @@ public class ColorPicker extends JDialog{
 		alphaValueField.repaint();
 		
 		setVisible(true);
-		return previewColor != null ? previewColor : initialColor;
 	}
 
 	private class ColorComp extends JComponent {
