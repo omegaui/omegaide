@@ -162,7 +162,6 @@ public class UIManager extends DataBase {
 	public UIManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".ui");
 		loadData();
-
 		screen.setExtendedState(extendedState);
 	}
 	

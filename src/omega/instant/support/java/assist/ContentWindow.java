@@ -17,6 +17,7 @@
 */
 
 package omega.instant.support.java.assist;
+
 import omega.ui.component.Editor;
 
 import omega.instant.support.java.framework.CodeFramework;
@@ -25,6 +26,7 @@ import omega.io.DataManager;
 import omega.io.IconManager;
 
 import omegaui.component.TextComp;
+import omegaui.component.FlexPanel;
 
 import java.awt.image.BufferedImage;
 
@@ -48,16 +50,23 @@ import javax.swing.JScrollPane;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class ContentWindow extends JPanel implements KeyListener{
+	
 	public LinkedList<HintComp> hints = new LinkedList<>();
-	private final Font PX12 = UBUNTU_PX12;
+	
 	private Editor editor;
-	private JPanel panel;
+
+	private FlexPanel flexPanel;
 	private JScrollPane scrollPane;
+	private JPanel panel;
+	
 	private int block;
 	private int width;
 	private int height;
+	
 	public int index;
+	
 	public static final int MINIMUM_HINT_HEIGHT = 30;
+	
 	public int optimalHintHeight = MINIMUM_HINT_HEIGHT;
 
 	private volatile boolean ignoreGenViewOnce = false;
@@ -143,10 +152,18 @@ public class ContentWindow extends JPanel implements KeyListener{
 	public ContentWindow(Editor editor){
 		this.editor = editor;
 		setVisible(false);
-		setBackground(c2);
+		setBackground(ALPHA);
 		setLayout(null);
-		add(scrollPane = new JScrollPane(panel = new JPanel(null)));
+
+		flexPanel = new FlexPanel(null, back3, null);
+		flexPanel.setArc(10, 10);
+		add(flexPanel);
+		
+		flexPanel.add(scrollPane = new JScrollPane(panel = new JPanel(null)));
+		
 		scrollPane.setBorder(null);
+		scrollPane.setBackground(back1);
+		
 		panel.setBackground(back1);
 	}
 
@@ -178,7 +195,6 @@ public class ContentWindow extends JPanel implements KeyListener{
 		
 		optimalHintHeight = g.getFontMetrics().getHeight() + 6;
 		optimalHintHeight = optimalHintHeight <  20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;
-		
 		
 		dataMembers.forEach(data->{
 			String text = data.getRepresentableValue();
@@ -246,13 +262,14 @@ public class ContentWindow extends JPanel implements KeyListener{
 		doLayout();
 		
 		width += optimalHintHeight;
-		height = (block > 200 ? 200 : block) + 4;
+		height = (block > 200 ? 200 : block) + 8;
 		
 		setVisible(false);
 		setSize((width > 700 ? 700 : width), height);
 		setMinimumSize(getSize());
 		setPreferredSize(getSize());
-		scrollPane.setBounds(0, 0, getWidth(), height);
+		flexPanel.setBounds(0, 0, getWidth(), getHeight());
+		scrollPane.setBounds(5, 5, getWidth() - 10, flexPanel.getHeight() - 10);
 		decideLocation();
 		setVisible(true);
 		repaint();

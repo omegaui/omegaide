@@ -433,7 +433,8 @@ public class TextComp extends JComponent{
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), arcX, arcY);
 		paintArc(g);
 		
-		if(paintEnterFirst && (enter || !clickable)) paintEnter(g);
+		if(paintEnterFirst && (enter || !clickable)) 
+			paintEnter(g);
 		
 		if(press) paintPress(g);
 		
@@ -441,7 +442,8 @@ public class TextComp extends JComponent{
 		draw(g);
 		drawGif(g);
 
-		if(!paintEnterFirst && (enter || !clickable)) paintEnter(g);
+		if(!paintEnterFirst && (enter || !clickable)) 
+			paintEnter(g);
 		
 		super.paint(graphics);
 		
