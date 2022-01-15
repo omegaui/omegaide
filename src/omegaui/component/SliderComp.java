@@ -176,7 +176,7 @@ public class SliderComp extends JComponent{
 	}
 
 	public void paintTextValues(Graphics2D g){
-		if(!isPaintValuesEnabled())
+		if(!isPaintValuesEnabled() || !enter)
 			return;
 		g.setFont(minMaxValueTextFont);
 		g.setColor(minMaxValueTextColor);

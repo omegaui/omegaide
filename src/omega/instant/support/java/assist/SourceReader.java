@@ -681,31 +681,26 @@ public class SourceReader {
 	}
 
 	public static boolean isInnerLine(String line){
-		try{
-			return line.contains("else") 
-			     || (line.contains("if") && !Character.isLetter(line.charAt(line.indexOf("if") + 2))) 
-		          || (line.contains("for") && !Character.isLetter(line.charAt(line.indexOf("for") + 3))) 
-		          || (line.contains("do") && !Character.isLetter(line.charAt(line.indexOf("do") + 2)))
-		          || (line.contains("switch") 
-		          && !Character.isLetter(line.charAt(line.indexOf("switch") + 5))) 
-		          || line.contains("return ") 
-		          || line.contains("case");
-		}
-		catch(Exception e){
-			try{
-				return line.contains("else") 
-				|| (line.contains("if") && !Character.isLetter(line.charAt(line.indexOf("if") - 1))) 
-				|| (line.contains("for") && !Character.isLetter(line.charAt(line.indexOf("for") - 1))) 
-				|| line.contains("do") 
-				|| (line.contains("switch") 
-				&& !Character.isLetter(line.charAt(line.indexOf("switch") - 1))) 
-				|| line.contains("return ") 
-				|| line.contains("case");
+		return checkLineForStatement(line, "else")
+		     || checkLineForStatement(line, "if(")
+	          || checkLineForStatement(line, "for(")
+	          || checkLineForStatement(line, "do")
+	          || checkLineForStatement(line, "switch(")
+	          || checkLineForStatement(line, "return ") 
+	          || checkLineForStatement(line, "case");
+	}
+
+	public static boolean checkLineForStatement(String line, String statement){
+		boolean res = false;
+		if(line.contains(statement)){
+			int index = line.indexOf(statement) - 1;
+			if(index >= 0 && index < line.length()){
+				char ch = line.charAt(index);
+				if(!Character.isLetterOrDigit(ch))
+					res = true;
 			}
-			catch(Exception e1){
-			     return false;
-		     }
 		}
+		return res;
 	}
 
 	public LinkedList<DepthMember> getMembers(DataMember m, String code){
