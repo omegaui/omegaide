@@ -155,14 +155,8 @@ public class IconManager {
 
 	//Fluent GIFs
 	public static Image fluentneutralemojiGif = getFluentGif("neutral.gif");
-	public static Image fluentsandtimerGif = getFluentGif("sand-timer.gif");
-	public static Image fluentgithubGif = getFluentGif("github.gif");
-	public static Image fluentjavaGif = getFluentGif("java.gif");
-	public static Image fluentpythonGif = getFluentGif("python.gif");
 	public static Image fluentdeveloperGif = getFluentGif("developer.gif");
 	public static Image fluentwinkemojiGif = getFluentGif("wink.gif");
-	public static Image fluentservicesGif = getFluentGif("services.gif");
-	public static Image fluentheadstoneGif = getFluentGif("headstone.gif");
 	public static Image fluentloadinginfinityGif = getFluentGif("loading-infinity.gif");
 	
 	//The Default Icon Pack -- mixed

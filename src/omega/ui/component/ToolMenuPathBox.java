@@ -82,7 +82,7 @@ public class ToolMenuPathBox extends JComponent{
 			}
 		});
 		EdgeComp comp = edges.get(0);
-		comp.setColors(c2, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3);
+		comp.setColors(c2, TOOLMENU_COLOR6_SHADE, TOOLMENU_COLOR6);
 		comp.setUseFlatLineAtBack(true);
 		
 		EdgeComp comp1 = edges.getLast();

@@ -639,7 +639,7 @@ public class ToolMenu extends JPanel {
 		sep5.setBounds(521, 50, 2, 40);
 		addComp(sep5);
 		
-		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3,
+		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR6_SHADE, back3, TOOLMENU_COLOR6,
 		()->{
 			Screen.pickTheme(DataManager.getTheme());
 			if(!themeComp.getText().equals(DataManager.getTheme())){
@@ -688,8 +688,7 @@ public class ToolMenu extends JPanel {
 				.showIt();
 			}
 			themeComp.setText(DataManager.getTheme());
-		}
-		);
+		});
 		themeComp.setFont(PX16);
 		themeComp.setBounds(532, 55, 60, 30);
 		themeComp.setArcVisible(true, false, true, false);

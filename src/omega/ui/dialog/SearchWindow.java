@@ -35,6 +35,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import java.io.File;
 
@@ -124,7 +126,13 @@ public class SearchWindow extends JDialog{
 		});
 		add(field);
 		addKeyListener(field);
-		addFocusListener(field);
+		
+		addFocusListener(new FocusAdapter(){
+			@Override
+			public void focusGained(FocusEvent e){
+				field.grabFocus();
+			}
+		});
 		
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(5, 65, getWidth() - 10, getHeight() - 70 - 30);
@@ -252,6 +260,8 @@ public class SearchWindow extends JDialog{
 		load(f);
 		FileOperationManager.sort(this.files);
 		initView();
+		if(!Screen.isNotNull(field.getText()))
+			list(field.getText());
 	}
 	
 	public void load(File f){
@@ -271,7 +281,6 @@ public class SearchWindow extends JDialog{
 		if(value){
 			if(currentComps.isEmpty())
 				initView();
-			field.grabFocus();
 		}
 	}
 }

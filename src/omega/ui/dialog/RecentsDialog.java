@@ -21,6 +21,8 @@ import java.awt.Dimension;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import java.io.File;
 
@@ -117,7 +119,13 @@ public class RecentsDialog extends JDialog{
 		});
 		add(field);
 		addKeyListener(field);
-		addFocusListener(field);
+		
+		addFocusListener(new FocusAdapter(){
+			@Override
+			public void focusGained(FocusEvent e){
+				field.grabFocus();
+			}
+		});
 		
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(5, 60, getWidth() - 10, getHeight() - 70 - 30);
@@ -283,6 +291,8 @@ public class RecentsDialog extends JDialog{
 	public void setVisible(boolean value){
 		if(value){
 			initView();
+		if(!Screen.isNotNull(field.getText()))
+			genView(field.getText());
 		}
 		super.setVisible(value);
 	}

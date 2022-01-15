@@ -37,12 +37,14 @@ import java.awt.Image;
 
 import javax.swing.JComponent;
 public class TextComp extends JComponent{
+	
 	public volatile boolean enter;
 	public volatile boolean press;
 	public volatile boolean topLeftArcVisible = true;
 	public volatile boolean bottomLeftArcVisible = true;
 	public volatile boolean topRightArcVisible = true;
 	public volatile boolean bottomRightArcVisible = true;
+	
 	private volatile boolean clickable = true;
 	private volatile boolean paintGradientEnabled = false;
 	private volatile boolean paintTextGradientEnabled = false;
@@ -130,14 +132,18 @@ public class TextComp extends JComponent{
 				enter = false;
 				press = false;
 				repaint();
-				if(TextComp.this.runnable != null && e.getButton() == 1)
-					TextComp.this.runnable.run();
 			}
 			
 			@Override
 			public void mouseReleased(MouseEvent e){
 				press = false;
 				repaint();
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e){
+				if(TextComp.this.runnable != null && e.getButton() == 1)
+					TextComp.this.runnable.run();
 			}
 		});
 		addMouseMotionListener(new MouseAdapter(){

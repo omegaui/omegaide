@@ -155,8 +155,8 @@ public class Screen extends JFrame {
 			Color y = null;
 			if(UIManager.isDarkMode()) {
 				FlatDarkLaf.install();
-				x = Color.decode("#D34D42");
-				y = Color.decode("#1e1e1e");
+				x = Color.decode("#24d673");
+				y = Color.decode("#2A2A2A");
 				javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
 				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(y));
 				javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.WHITE));
@@ -166,14 +166,14 @@ public class Screen extends JFrame {
 			}
 			else {
 				FlatLightLaf.install();
-				x = UIManager.TOOLMENU_COLOR3;
+				x = UIManager.TOOLMENU_COLOR6;
 				y = Color.WHITE;
 				javax.swing.UIManager.put("ToolTip.foreground", new ColorUIResource(Color.BLACK));
-				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("ToolTip.background", new ColorUIResource(UIManager.back2));
 				javax.swing.UIManager.put("Button.foreground", new ColorUIResource(Color.BLACK));
-				javax.swing.UIManager.put("Button.background", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("Button.background", new ColorUIResource(UIManager.back2));
 				javax.swing.UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
-				javax.swing.UIManager.put("Label.background", new ColorUIResource(Color.WHITE));
+				javax.swing.UIManager.put("Label.background", new ColorUIResource(UIManager.back2));
 			}
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));

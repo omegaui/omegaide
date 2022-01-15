@@ -159,7 +159,7 @@ public class TabComp extends JComponent implements FocusListener{
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		if(focussed)
-			g.setPaint(new GradientPaint(0, 0, TOOLMENU_COLOR1, getWidth(), getHeight(), TOOLMENU_COLOR2));
+			g.setPaint(new GradientPaint(0, 0, isDarkMode() ? TOOLMENU_COLOR6 : TOOLMENU_COLOR1, getWidth(), getHeight(), isDarkMode() ? TOOLMENU_COLOR5 : TOOLMENU_COLOR2));
 		else
 			g.setPaint(new GradientPaint(0, 0, back3, getWidth(), getHeight(), back1));
 		g.fillRect(0, getHeight() - 2, getWidth(), 2);

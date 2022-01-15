@@ -154,19 +154,6 @@ public class LanguageTagView extends JDialog{
 		};
 	}
 	
-	public static Image getRespectiveTagGifImage(int tag){
-		return switch(tag) {
-			case LANGUAGE_TAG_JAVA:
-			case LANGUAGE_TAG_GROOVY:
-			case LANGUAGE_TAG_KOTLIN:
-				yield IconManager.fluentjavaGif;
-			case LANGUAGE_TAG_PYTHON:
-				yield IconManager.fluentpythonGif;
-			default:
-				yield IconManager.fluentdeveloperGif;
-		};
-	}
-	
 	public void setActiveLang(int tag){
 		if(tag == Screen.getProjectFile().getProjectManager().getLanguageTag())
 			return;
