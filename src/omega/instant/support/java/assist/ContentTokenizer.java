@@ -245,11 +245,10 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			}
 			if(!dataMembers.isEmpty()){
 				CodeFramework.gen(dataMembers, e);
-			}
-			else {
-				e.contentWindow.setVisible(false);
+				return;
 			}
 		}
+		arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 	}
 	
 }

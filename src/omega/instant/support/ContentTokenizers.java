@@ -24,13 +24,13 @@ import java.util.LinkedList;
 import omega.instant.support.java.assist.ContentTokenizer;
 public class ContentTokenizers {
 	public static ContentTokenizer javaContentTokenizer = new ContentTokenizer();
-
+	
 	public static LinkedList<AbstractContentTokenizer> contentTokenizers = new LinkedList<>();
-
+	
 	static{
 		add(javaContentTokenizer);
 	}
-
+	
 	public static synchronized void arrangeTokens(Editor editor){
 		for(AbstractContentTokenizer contentTokenizer : contentTokenizers){
 			if(contentTokenizer.canArrangeTokens(editor)){
@@ -42,7 +42,7 @@ public class ContentTokenizers {
 		//Gets called when there is no defined framework for a source file(like in case of a .txt file).
 		javaContentTokenizer.arrangeTokens(editor);
 	}
-
+	
 	public static synchronized void add(AbstractContentTokenizer contentTokenizer){
 		if(!contentTokenizers.contains(contentTokenizer))
 			contentTokenizers.add(contentTokenizer);
