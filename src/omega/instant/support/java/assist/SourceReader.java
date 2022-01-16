@@ -199,8 +199,8 @@ public class SourceReader {
 					type = "enum";
 				else if(line.contains("interface "))
 					type = "interface";
-                    else if(line.contains("record "))
-                         type = "record";
+                else if(line.contains("record "))
+                     type = "record";
 				if(line.contains("@interface "))
 					type = "@interface";
 				if(!type.equals("")){
@@ -270,7 +270,7 @@ public class SourceReader {
 				}
 			}
 		}
-	     addNeighbourImports();
+     	addNeighbourImports();
 	}
 
 	public void read(){
@@ -411,6 +411,9 @@ public class SourceReader {
 					String parameters = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
 					String[] members = parameters.split(",");
 					for(String member : members){
+						member = member.trim();
+						if(member.startsWith("final "))
+							member = member.substring(member.indexOf(' ')).trim();
 						String typeX = member.substring(0, member.indexOf(' ')).trim();
 						String name = member.substring(member.indexOf(' ')).trim();
 						dataMembers.add(new DataMember("private", "final", typeX, name, null, lineN));

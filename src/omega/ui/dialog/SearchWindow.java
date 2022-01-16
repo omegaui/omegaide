@@ -96,7 +96,7 @@ public class SearchWindow extends JDialog{
 		setContentPane(panelX);
 		setLayout(null);
 		
-		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
 		field.setBounds(0, 30, getWidth(), 30);
 		field.setFont(PX16);
 		field.addKeyListener(new KeyAdapter() {

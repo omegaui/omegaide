@@ -46,22 +46,30 @@ public class SplashScreen extends JFrame{
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
 	private static String ENCOURAGE = "lets code";
-	private static final Color ALPHA = new Color(0, 0, 0, 0);
+	
 	private static Color BACK_COLOR;
 	private static Color TITLE_COLOR;
 	private static Color VERSION_COLOR;
 	private static Color EDITION_COLOR;
 	private static Color PROGRESS_COLOR;
 	private static Color SHADE = TOOLMENU_GRADIENT;
+	
 	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, SHADE);
 	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
 	private static GradientPaint gradient2 = new GradientPaint(100, 150, isDarkMode() ? TOOLMENU_COLOR3 : TOOLMENU_COLOR1, 300, 300, TOOLMENU_COLOR4);
+	
 	private static BufferedImage image = (BufferedImage)omega.io.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
+	
 	private volatile int progress = 0;
-	private int x = 40, y = 163;
+	
+	private int x = 40
+	private int y = 163;
+	
 	private volatile boolean ground = false;
+	
 	private int mouseX;
 	private int mouseY;
+	
 	public SplashScreen() {
 		BACK_COLOR = c2;
 		TITLE_COLOR = TOOLMENU_COLOR1;

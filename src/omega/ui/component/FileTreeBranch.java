@@ -59,7 +59,7 @@ public class FileTreeBranch extends JComponent {
 	public static final int EDIT_FILE_NAME_MODE = 1;
 	
 	public static final Color ANY_COLOR = TOOLMENU_COLOR5;
-	public static final Color SOURCE_COLOR = TOOLMENU_COLOR3;
+	public static final Color SOURCE_COLOR = TOOLMENU_COLOR6;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 220);
 	public static final Color IMAGE_COLOR = new Color(50, 100, 50, 220);
 	public static final Color LINUX_COLOR = new Color(175, 50, 50, 220);

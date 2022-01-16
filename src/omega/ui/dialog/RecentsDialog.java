@@ -89,7 +89,7 @@ public class RecentsDialog extends JDialog{
 	}
 	
 	public void init(){
-		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
 		field.setBounds(0, 25, getWidth(), 30);
 		field.setFont(PX16);
 		field.addKeyListener(new KeyAdapter() {
