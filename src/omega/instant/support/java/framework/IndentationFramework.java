@@ -1,21 +1,21 @@
 /**
-* Manages Java Type Explicit Indentation Invocation - Ctrl + I
-*
-* Copyright (C) 2021 Omega UI
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Manages Java Type Explicit Indentation Invocation - Ctrl + I
+ *
+ * Copyright (C) 2021 Omega UI
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.framework;
 import omega.instant.support.AbstractIndentationFramework;
@@ -27,6 +27,7 @@ import omega.instant.support.java.assist.CodeTokenizer;
 import java.util.LinkedList;
 
 public class IndentationFramework extends AbstractIndentationFramework{
+	
 	@Override
 	public boolean canIndent(Editor editor) {
 		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java");
@@ -55,13 +56,20 @@ public class IndentationFramework extends AbstractIndentationFramework{
 			
 			if(!containsEqual)
 				tabs -= count('}', token);
+			if(token.startsWith("*"))
+				token = " " + token;
 			
-			if(!needsExtraTab)
+			if(token.equals("\n") || token.equals("")){
+				textArea.append("\n");
+			}
+			else if(!needsExtraTab){
 				textArea.append(getTabs(tabs) + token + "\n");
+			}
 			else{
 				textArea.append(getTabs(tabs) + getTabs(1) + token + "\n");
 				needsExtraTab = false;
 			}
+			
 			if(!containsEqual)
 				tabs += count('{', token);
 			
@@ -73,8 +81,8 @@ public class IndentationFramework extends AbstractIndentationFramework{
 		textArea.setCaretPosition(caretPos + 1);
 	}
 	/**
-	* Counts the char 'c' in specified line excluding the strings and characters
-	*/
+	 * Counts the char 'c' in specified line excluding the strings and characters
+	 */
 	public static int count(char c, String line){
 		int count = 0;
 		boolean instr = false;

@@ -151,7 +151,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 		if(Screen.getProjectFile().getJDKManager() == null && !Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
 			return;
 		
-		if(!text.contains(".") || !CodeFrameworks.javaCodeFramework.think(e, e.getText(), e.getCaretPosition())) {
+		if(!text.contains(".")) {
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
 			LinkedList<DataMember> staticMembers = new LinkedList<>();
@@ -243,12 +243,13 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 					}
 				}
 			}
-			if(!dataMembers.isEmpty()){
+			if(!dataMembers.isEmpty())
 				CodeFramework.gen(dataMembers, e);
-				return;
-			}
+			else
+				e.contentWindow.setVisible(false);
 		}
-		arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
+		else if(!CodeFrameworks.javaCodeFramework.think(e, e.getText(), e.getCaretPosition()))
+			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 	}
 	
 }

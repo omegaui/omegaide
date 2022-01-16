@@ -62,7 +62,7 @@ public class SplashScreen extends JFrame{
 	
 	private volatile int progress = 0;
 	
-	private int x = 40
+	private int x = 40;
 	private int y = 163;
 	
 	private volatile boolean ground = false;

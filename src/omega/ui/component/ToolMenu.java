@@ -1,20 +1,21 @@
 /**
-* ToolMenu
-* Copyright (C) 2021 Omega UI
+ * ToolMenu
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package omega.ui.component;
 import omega.instant.support.java.misc.JDKSelectionDialog;
 
@@ -100,8 +101,8 @@ import static omega.io.IconManager.*;
 import static omegaui.component.animation.Animations.*;
 
 /**
-* This is not only the tool menu but also the IDE 's custom window decorator
-*/
+ * This is not only the tool menu but also the IDE 's custom window decorator
+ */
 
 public class ToolMenu extends JPanel {
 	private Screen screen;
@@ -162,7 +163,7 @@ public class ToolMenu extends JPanel {
 	public static ColorPicker colorPicker;
 	public static LanguageTagView languageTagView;
 	public static RecentsDialog recentsDialog;
-
+	
 	public static NotificationPopup projectTypeNotificationPopup = null;
 	
 	private int pressX;
@@ -170,8 +171,8 @@ public class ToolMenu extends JPanel {
 	
 	public volatile boolean hidden = false;
 	public volatile boolean oPHidden = true;
-	//The window decoration objects
 	
+	//The window decoration objects
 	public static Color closeWinColor = TOOLMENU_COLOR2;
 	public static Color maximizeWinColor = TOOLMENU_COLOR4;
 	public static Color minimizeWinColor = TOOLMENU_COLOR3;
@@ -207,35 +208,35 @@ public class ToolMenu extends JPanel {
 			colorPicker = new ColorPicker(screen);
 			languageTagView = new LanguageTagView(screen);
 			recentsDialog = new RecentsDialog(screen);
-
+			
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
-												.title("Project Type Management")
-												.dialogIcon(IconManager.fluentfolderImage)
-												.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
-												.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
-												.iconButton(IconManager.fluentcloseImage, ()->{
-													try{
-														for(Process p : Screen.getProjectRunner().runningApps) {
-															if(p.isAlive())
-																p.destroyForcibly();
-														}
-													}
-													catch(Exception e2) {
-														
-													}
-													Screen.getPluginManager().save();
-													Screen.getUIManager().save();
-													Screen.getDataManager().saveData();
-													Screen.getScreen().saveAllEditors();
-													try{
-														Screen.getProjectFile().getProjectManager().save();
-													}
-													catch(Exception e2) {
-														
-													}
-													System.exit(0);
-												}, "You need to manually start the IDE again!")
-												.build();
+			.title("Project Type Management")
+			.dialogIcon(IconManager.fluentfolderImage)
+			.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+			.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
+			.iconButton(IconManager.fluentcloseImage, ()->{
+				try{
+					for(Process p : Screen.getProjectRunner().runningApps) {
+						if(p.isAlive())
+							p.destroyForcibly();
+					}
+				}
+				catch(Exception e2) {
+					
+				}
+				Screen.getPluginManager().save();
+				Screen.getUIManager().save();
+				Screen.getDataManager().saveData();
+				Screen.getScreen().saveAllEditors();
+				try{
+					Screen.getProjectFile().getProjectManager().save();
+				}
+				catch(Exception e2) {
+					
+				}
+				System.exit(0);
+			}, "You need to manually start the IDE again!")
+			.build();
 		}
 		setLayout(null);
 		setSize(screen.getWidth(), 120);
@@ -247,7 +248,6 @@ public class ToolMenu extends JPanel {
 			public void mousePressed(MouseEvent e){
 				pressX = e.getX();
 				pressY = e.getY();
-				grabFocus();
 			}
 		});
 		addMouseMotionListener(new MouseAdapter(){
@@ -711,7 +711,7 @@ public class ToolMenu extends JPanel {
 		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
-
+		
 		ImageSizeTransitionAnimationLayer layer = (ImageSizeTransitionAnimationLayer)getImageSizeAnimationLayer(25, -5, true);
 		languageTagView.prepareLayer(layer, iconComp, -5, true);
 		
@@ -813,14 +813,14 @@ public class ToolMenu extends JPanel {
 		langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getProjectFile().getProjectManager().getLanguageTag());
 		langComp.repaint();
 	}
-
+	
 	public void setProjectType(boolean non_java){
 		Screen.getProjectFile().getProjectManager().setLanguageTag(LanguageTagView.LANGUAGE_TAG_ANY);
 		Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
 		Screen.getProjectFile().getProjectManager().save();
 		projectTypeNotificationPopup.
-			locateOnBottomLeft()
-			.showIt();
+		locateOnBottomLeft()
+		.showIt();
 	}
 	
 	private void initSetMenu() {
@@ -846,7 +846,7 @@ public class ToolMenu extends JPanel {
 			gradleBuildScriptManager.setVisible(true);
 		});
 		FileSelectionDialog fs = new FileSelectionDialog(screen);
-
+		
 		setPopup.createItem("Set Background Illustration", IconManager.fluenticons8Logo, ()->{
 			fs.setTitle("Select an image(Should be 456x456 px)");
 			fs.setFileExtensions(".png", ".jpg");
@@ -924,8 +924,8 @@ public class ToolMenu extends JPanel {
 				System.err.println(e);
 			}
 		})
-		.createItem("Plugin Store", IconManager.ideImage64, ()->Screen.getPluginStore().setVisible(true))
-		.createItem("Plugin Manager", IconManager.ideImage64, ()->Screen.getPluginsView().setVisible(true))
+		.createItem("Plugin Store", IconManager.fluentpluginImage, ()->Screen.getPluginStore().setVisible(true))
+		.createItem("Plugin Manager", IconManager.fluentmanageImage, ()->Screen.getPluginsView().setVisible(true))
 		.createItem("Check for Update", IconManager.ideImage64, ()->{
 			new Thread(IDEUpdater::checkForUpdate).start();
 		})
@@ -976,30 +976,30 @@ public class ToolMenu extends JPanel {
 			allProjectsPopup.setLocationRelativeTo(null);
 			allProjectsPopup.setVisible(true);
 		});
-
+		
 		File home = new File(DataManager.getWorkspace());
-       	if(home.exists()){
-            allProjectsPopup.trash();
-            File[] files = home.listFiles();
-            for(int i = 0; i < files.length; i++){
-                 for(int j = 0; j < files.length - i - 1; j++){
-                 	if(files[j].getName().compareTo(files[j + 1].getName()) > 0){
-                           File f = files[j];
-                           files[j] = files[j + 1];
-                           files[j + 1] = f;
-                 	}
-                 }
-            }
-            
-            for(File fileZ : files){
-                 if(fileZ.isDirectory()){
-                      allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, ()->{
-                           Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
-                           screen.loadProject(fileZ);
-                      });
-                 }
-            }
-       	}
+		if(home.exists()){
+			allProjectsPopup.trash();
+			File[] files = home.listFiles();
+			for(int i = 0; i < files.length; i++){
+				for(int j = 0; j < files.length - i - 1; j++){
+					if(files[j].getName().compareTo(files[j + 1].getName()) > 0){
+						File f = files[j];
+						files[j] = files[j + 1];
+						files[j + 1] = f;
+					}
+				}
+			}
+			
+			for(File fileZ : files){
+				if(fileZ.isDirectory()){
+					allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, ()->{
+						Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
+						screen.loadProject(fileZ);
+					});
+				}
+			}
+		}
 		
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
@@ -1103,52 +1103,33 @@ public class ToolMenu extends JPanel {
 	}
 	
 	public void deleteDir(File file) throws Exception {
-		if (file.isDirectory())
-			{
-			/*
-			* If directory is empty, then delete it
-			*/
-			if (file.list().length == 0)
-				{
+		if (file.isDirectory()) {
+			if (file.list().length == 0){
 				deleteEmptyDir(file);
 			}
-			else
-				{
-				// list all the directory contents
+			else{
 				File files[] = file.listFiles();
 				for (File fileDelete : files)
-					{
-					/*
-					* Recursive delete
-					*/
 					deleteDir(fileDelete);
-				}
-				/*
-				* check the directory again, if empty then
-				* delete it.
-				*/
+				
 				if (file.list().length == 0)
-					{
 					deleteEmptyDir(file);
-				}
 			}
 		}
 		else
-			{
-			/*
-			* if file, then delete it
-			*/
 			deleteEmptyDir(file);
-		}
 	}
+	
 	private void deleteEmptyDir(File file) {
 		file.delete();
 	}
+	
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		reshapeComp();
 	}
+	
 	public class LabelMenu extends JComponent {
 		private String text;
 		private String msg;
@@ -1228,8 +1209,11 @@ public class ToolMenu extends JPanel {
 	}
 	
 	public class Menu extends JComponent {
+		
 		private String text;
+		
 		private volatile boolean enter;
+		
 		public Menu(OPopupWindow popup, String text) {
 			this.text = text;
 			UIManager.setData(this);
@@ -1253,12 +1237,14 @@ public class ToolMenu extends JPanel {
 				}
 			});
 		}
+		
 		@Override
 		public void setFont(Font f) {
 			super.setFont(PX14);
 			setSize(100, ToolMenu.this.getHeight());
 			setPreferredSize(getSize());
 		}
+		
 		@Override
 		public void paint(Graphics g2D) {
 			Graphics2D g = (Graphics2D)g2D;
