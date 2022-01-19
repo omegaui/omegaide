@@ -191,13 +191,13 @@ public class JavaProjectWizard extends JDialog {
 		statusComp.alignX = 5;
 		add(statusComp);
 		
-		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, this::dispose);
+		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, this::dispose);
 		cancelComp.setBounds(getWidth() - 180, getHeight() - 30 - 30, 80, 30);
 		cancelComp.setFont(PX14);
 		cancelComp.setArc(5, 5);
 		add(cancelComp);
 		
-		createComp = new TextComp("Create", TOOLMENU_GRADIENT, TOOLMENU_COLOR5_SHADE, TOOLMENU_COLOR5, this::create);
+		createComp = new TextComp("Create", TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR5_SHADE, TOOLMENU_COLOR5, this::create);
 		createComp.setBounds(getWidth() - 90, getHeight() - 30 - 30, 80, 30);
 		createComp.setFont(PX14);
 		createComp.setArc(5, 5);
