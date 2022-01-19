@@ -388,7 +388,7 @@ public class Screen extends JFrame {
 		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.isLanguageTagNonJava());
 		sideMenu.structureComp.setVisible(!manager.isLanguageTagNonJava());
 		toolMenu.changeLocations(manager.isLanguageTagNonJava());
-		sideMenu.changeLocations(manager.isLanguageTagNonJava());
+		sideMenu.resize(manager.isLanguageTagNonJava());
 	}
 	
 	public static void setStatus(String status, int value, BufferedImage image) {

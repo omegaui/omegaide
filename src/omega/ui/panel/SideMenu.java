@@ -17,6 +17,8 @@
 */
 
 package omega.ui.panel;
+import omega.ui.component.ToolMenu;
+
 import omegaui.component.TextComp;
 
 import omega.Screen;
@@ -29,14 +31,18 @@ import javax.swing.JPanel;
 import static omega.io.UIManager.*;
 import static omega.io.IconManager.*;
 import static omegaui.component.animation.Animations.*;
+
 public class SideMenu extends JPanel {
-	private Screen screen;
+	public Screen screen;
 	
-	private TextComp sep;
+	public TextComp sep;
 	public TextComp projectTabComp;
 	public TextComp shellComp;
 	public TextComp structureComp;
 	public TextComp searchComp;
+	
+	public TextComp buildPathComp;
+	public TextComp settingsComp;
 	
 	public SideMenu(Screen screen){
 		super(null);
@@ -73,26 +79,58 @@ public class SideMenu extends JPanel {
 		searchComp.setArc(2, 2);
 		add(searchComp);
 
+		buildPathComp = new TextComp(fluentbuildpathIcon, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getDependencyView().setVisible(true));
+		buildPathComp.setBounds(0, getHeight() - 50, 30, 25);
+		buildPathComp.setArc(2, 2);
+		add(buildPathComp);
+
+		settingsComp = new TextComp(fluentsettingsImage, 20, 20, back2, back2, TOOLMENU_COLOR1, this::showSettings);
+		settingsComp.setBounds(0, getHeight() - 25, 30, 25);
+		settingsComp.setArc(2, 2);
+		add(settingsComp);
+
 		putAnimationLayer(projectTabComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(structureComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(buildPathComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(settingsComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+	}
+
+	public void showSettings(){
+		if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
+			ToolMenu.showNonJavaSettings();
+		}
+		else{
+			Screen.getScreen().getToolMenu().setPopup.setLocationRelativeTo(Screen.getScreen());
+			Screen.getScreen().getToolMenu().setPopup.setVisible(true);
+		}
 	}
 	
-	public void changeLocations(boolean non_java){
-		if(non_java)
+	public void resize(boolean non_java){
+		if(non_java){
 			searchComp.setBounds(0, 50, 30, 25);
+			
+			structureComp.setVisible(false);
+			buildPathComp.setVisible(false);
+		}
 		else{
 			structureComp.setBounds(0, 75, 30, 25);
 			searchComp.setBounds(0, 50, 30, 25);
+			
+			structureComp.setVisible(true);
+			buildPathComp.setVisible(true);
 		}
+		buildPathComp.setBounds(0, getHeight() - 50, 30, 25);
+		settingsComp.setBounds(0, getHeight() - 25, 30, 25);
+		sep.setBounds(30, 0, 2, getHeight());
 		repaint();
 	}
 	
 	@Override
-	public void paint(Graphics g){
-		sep.setBounds(30, 0, 2, getHeight());
-		super.paint(g);
+	public void layout(){
+		resize(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava());
+		super.layout();
 	}
 }
 

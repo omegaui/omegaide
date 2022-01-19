@@ -822,6 +822,15 @@ public class ToolMenu extends JPanel {
 		locateOnBottomLeft()
 		.showIt();
 	}
+
+	public static void showNonJavaSettings(){
+		if(GradleProcessManager.isGradleProject()) {
+			Screen.getScreen().loadFile(new File(Screen.getProjectFile().getProjectPath(), "settings.gradle"));
+			return;
+		}
+		if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
+			Screen.getUniversalSettingsView().setVisible(true);
+	}
 	
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
@@ -899,14 +908,7 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		
-		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->{
-			if(GradleProcessManager.isGradleProject()) {
-				Screen.getScreen().loadFile(new File(Screen.getProjectFile().getProjectPath(), "settings.gradle"));
-				return;
-			}
-			if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
-				Screen.getUniversalSettingsView().setVisible(true);
-		});
+		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->showNonJavaSettings());
 		
 		setPopup.addItem(jdkItem);
 		setPopup.addItem(jdkRootItem);
@@ -950,8 +952,8 @@ public class ToolMenu extends JPanel {
 	}
 	private void initProjectPopup() {
 		JFileChooser fileC = new JFileChooser();
-		projectPopup.createItem("Manage Build-Path", IconManager.projectImage, ()->Screen.getProjectFile().getDependencyView().setVisible(true))
-		.createItem("Add Additional Flags", IconManager.projectImage, ()->{
+		projectPopup.createItem("Manage Build-Path", IconManager.fluentbuildpathIcon, ()->Screen.getProjectFile().getDependencyView().setVisible(true))
+		.createItem("Add Additional Flags", IconManager.fluentbuildpathIcon, ()->{
 			Screen.getProjectFile().getExtendedDependencyView().setVisible(true);
 		})
 		.createItem("Refresh", IconManager.fluentrefreshIcon, ()->Screen.getProjectFile().getFileTreePanel().refresh())
