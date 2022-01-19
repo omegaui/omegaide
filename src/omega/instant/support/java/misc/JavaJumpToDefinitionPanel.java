@@ -1,20 +1,20 @@
-/**
-  * JavaJumpToDefinitionPanel
-  * Copyright (C) 2021 Omega UI
+/*
+ * JavaJumpToDefinitionPanel
+ * Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.misc;
 import java.io.File;
@@ -53,7 +53,7 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 	public int block;
 
 	public String lastMatch = "";
-	
+
 	public JavaJumpToDefinitionPanel(Editor editor){
 		super(editor);
 
@@ -81,27 +81,27 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 		super.setVisible(value);
 		reload();
 	}
-	
+
 	@Override
 	public boolean canRead(Editor editor) {
 		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java") && editor.currentFile.getAbsolutePath().startsWith(Screen.getProjectFile().getProjectPath() + File.separator + "src" + File.separator);
 	}
-	
+
 	@Override
 	public void reload(String match) {
 		try{
 			//Resetting View
 			dataComps.forEach(panel::remove);
 			dataComps.clear();
-			
+
 			int maxWidth = 100;
 			block = 40;
-			
+
 			lastMatch = match;
-			
+
 			//Reading the source code
 			SourceReader reader = new SourceReader(editor.getText());
-			
+
 			//Installing Variables
 			for(DataMember dx : reader.ownedDataMembers){
 				if(!dx.getRepresentableValue().contains(match))
@@ -120,8 +120,8 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 					block += 30;
 				}
 			}
-			
-			//Installing Methods		
+
+			//Installing Methods
 			for(DataMember dx : reader.ownedDataMembers){
 				if(!dx.getRepresentableValue().contains(match))
 					continue;
@@ -135,11 +135,11 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 
 					if(comp.getWidth() > maxWidth)
 						maxWidth = comp.getWidth();
-					
+
 					block += 30;
 				}
 			}
-			
+
 			//Setting Panel
 			maxWidth = maxWidth + 20;
 			panel.setPreferredSize(new Dimension(maxWidth, block));
@@ -170,5 +170,5 @@ public class JavaJumpToDefinitionPanel extends AbstractJumpToDefinitionPanel{
 		reloadComp.setBounds(getWidth() - 10 - 40, 5, 30, 30);
 		super.layout();
 	}
-	
+
 }

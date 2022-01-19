@@ -218,6 +218,19 @@ public class ProjectDataBase extends DataBase{
 			writer.println(">Language Tag");
 			writer.println("-" + (non_java ? LanguageTagView.LANGUAGE_TAG_ANY : LanguageTagView.LANGUAGE_TAG_JAVA));
 			writer.close();
+			if(non_java){
+				file = new File(projectPath, ".args");
+				writer = new PrintWriter(file);
+				writer.println(">Compile Time Argument");
+				writer.println("-");
+				writer.println(">Run Time Argument");
+				writer.println("-");
+				writer.println(">Compile Time Working Directory");
+				writer.println("-");
+				writer.println(">Run Time Working Directory");
+				writer.println("-");
+				writer.close();
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
