@@ -42,9 +42,12 @@ import javax.swing.JFrame;
 
 import static omega.Screen.VERSION;
 import static omega.io.UIManager.*;
+
 public class SplashScreen extends JFrame{
+	
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
+	
 	private static String ENCOURAGE = "lets code";
 	
 	private static Color BACK_COLOR;

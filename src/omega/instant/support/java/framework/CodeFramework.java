@@ -1,20 +1,20 @@
 /**
-  * Hint Maker
-  * Copyright (C) 2021 Omega UI
+ * Hint Maker
+ * Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.framework;
 import omega.instant.support.AbstractCodeFramework;
@@ -49,9 +49,9 @@ import static omegaui.component.animation.Animations.*;
 public class CodeFramework extends AbstractCodeFramework{
 	public static String text;
 	public static String lCode;
-	
+
 	public static int caret;
-	
+
 	public static Editor editor;
 
 	public static volatile boolean resolving = false;
@@ -65,7 +65,7 @@ public class CodeFramework extends AbstractCodeFramework{
 	public boolean isResolving() {
 		return resolving;
 	}
-	
+
 	@Override
 	public boolean think(Editor e, String text, int caret){
 		boolean value = false;
@@ -80,14 +80,14 @@ public class CodeFramework extends AbstractCodeFramework{
 				value = createHints(code);
 			}
 			catch(Exception ex){
-                    ex.printStackTrace();
-		     }
+				ex.printStackTrace();
+			}
 			finally {
 				resolving = false;
 			}
 		}
-		else 
-		     editor.contentWindow.setVisible(false);
+		else
+			editor.contentWindow.setVisible(false);
 		CodeFramework.editor = null;
 		return value;
 	}
@@ -122,13 +122,13 @@ public class CodeFramework extends AbstractCodeFramework{
 					break;
 				}
 			}
-			if(!isAvailable) 
-			     return false;
+			if(!isAvailable)
+				return false;
 			ByteReader reader = null;
-			if(has(className)) 
-			     reader = getReader(className);
-			else 
-			     reader = Screen.getProjectFile().getJDKManager().prepareReader(className);
+			if(has(className))
+				reader = getReader(className);
+			else
+				reader = Screen.getProjectFile().getJDKManager().prepareReader(className);
 			dataMembers = reader.getDataMembers("static");
 			//Checking whether if there is data after className
 			if(code.indexOf('.', ix + 1) >= 0){
@@ -145,51 +145,51 @@ public class CodeFramework extends AbstractCodeFramework{
 						members.add(x.trim());
 					}
 					else if(ch == '(') blocks++;
-					else if(ch == ')') blocks--;
-				}
+						else if(ch == ')') blocks--;
+					}
 				boolean least = false;
 				int in = 0;
 				for(String member : members){
 					inner:
-						for(DataMember d : dataMembers){
-							//Checking whether <member> is method
-							if(d.name.contains("()") && member.contains("(") && member.contains(")")){
-								int parameterCount = getParameterCount(member);
-								String name = getName(member);
-								if(d.name.equals(name) && d.parameterCount == parameterCount){
-									least = true;
-									if(has(d.type)) reader = getReader(d.type);
-									else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-									dataMembers = reader.dataMembers;
-									in = 1;
-									continue inner;
-								}
-							}
-							else if(d.name.equals(member)){
+					for(DataMember d : dataMembers){
+						//Checking whether <member> is method
+						if(d.name.contains("()") && member.contains("(") && member.contains(")")){
+							int parameterCount = getParameterCount(member);
+							String name = getName(member);
+							if(d.name.equals(name) && d.parameterCount == parameterCount){
 								least = true;
 								if(has(d.type)) reader = getReader(d.type);
 								else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-								dataMembers = reader.dataMembers;
+									dataMembers = reader.dataMembers;
 								in = 1;
 								continue inner;
 							}
 						}
-     				if(in == 0) {
-     					for(ByteReader r : reader.internalReaders) {
-     						if(r.className.equals(member)) {
-     							dataMembers = r.dataMembers;
-     							least = true;
-     						}
-     					}
-     				} 
-     				in = 1;
+						else if(d.name.equals(member)){
+							least = true;
+							if(has(d.type)) reader = getReader(d.type);
+							else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+								dataMembers = reader.dataMembers;
+							in = 1;
+							continue inner;
+						}
+					}
+					if(in == 0) {
+						for(ByteReader r : reader.internalReaders) {
+							if(r.className.equals(member)) {
+								dataMembers = r.dataMembers;
+								least = true;
+							}
+						}
+					}
+					in = 1;
 				}
-				if(least) 
-				     gen(dataMembers);
-                    else {
-                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
-                         editor.contentWindow.setVisible(false);
-                    }
+				if(least)
+					gen(dataMembers);
+				else {
+					Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+					editor.contentWindow.setVisible(false);
+				}
 			}
 			else{
 				//There are no members after class-path 's dot, so showing all hints
@@ -214,52 +214,19 @@ public class CodeFramework extends AbstractCodeFramework{
 						members.add(x.trim());
 					}
 					else if(ch == '(') blocks++;
-					else if(ch == ')') blocks--;
-				}
+						else if(ch == ')') blocks--;
+					}
 				boolean least = false;
 				int in = 0;
 				ByteReader readerB = null;
 				for(String member : members){
 					inner:
-						for(DataMember d : dataMembers){
-							//Checking whether <member> is method
-							if(d.name.contains("()") && member.contains("(") && member.contains(")")){
-								int parameterCount = getParameterCount(member);
-								String name = getName(member);
-								if(d.name.equals(name) && d.parameterCount == parameterCount){
-									least = true;
-									String pack = null;
-									if(reader != null) {
-										pack = reader.getPackage(d.type);
-										if(!isSource(pack)) {
-											if(pack != null) {
-												if(has(pack)) readerB = getReader(pack);
-												else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
-											}
-											else {
-												if(has(d.type)) readerB = getReader(d.type);
-												else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-											}
-											dataMembers = readerB.dataMembers;
-											reader = null;
-										}
-										else {
-											reader = new SourceReader(getContent(pack));
-											dataMembers = reader.dataMembers;
-											readerB = null;
-										}
-									}
-									else if(readerB != null) {
-										if(has(d.type)) readerB = getReader(d.type);
-										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-										reader = null;
-										dataMembers = readerB.dataMembers;
-									}
-									in = 1;
-									continue inner;
-								}
-							}
-							else if(d.name.equals(member)){
+					for(DataMember d : dataMembers){
+						//Checking whether <member> is method
+						if(d.name.contains("()") && member.contains("(") && member.contains(")")){
+							int parameterCount = getParameterCount(member);
+							String name = getName(member);
+							if(d.name.equals(name) && d.parameterCount == parameterCount){
 								least = true;
 								String pack = null;
 								if(reader != null) {
@@ -268,11 +235,11 @@ public class CodeFramework extends AbstractCodeFramework{
 										if(pack != null) {
 											if(has(pack)) readerB = getReader(pack);
 											else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
-										}
+											}
 										else {
 											if(has(d.type)) readerB = getReader(d.type);
 											else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-										}
+											}
 										dataMembers = readerB.dataMembers;
 										reader = null;
 									}
@@ -285,28 +252,61 @@ public class CodeFramework extends AbstractCodeFramework{
 								else if(readerB != null) {
 									if(has(d.type)) readerB = getReader(d.type);
 									else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-									reader = null;
+										reader = null;
 									dataMembers = readerB.dataMembers;
 								}
 								in = 1;
 								continue inner;
 							}
 						}
-     				if(in == 0) {
-     					for(SourceReader r : reader.internalReaders) {
-     						if(r.className.equals(member)) {
-     							dataMembers = r.dataMembers;
-     							least = true;
-     						}
-     					}
-     				} 
-     				in = 1;
+						else if(d.name.equals(member)){
+							least = true;
+							String pack = null;
+							if(reader != null) {
+								pack = reader.getPackage(d.type);
+								if(!isSource(pack)) {
+									if(pack != null) {
+										if(has(pack)) readerB = getReader(pack);
+										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
+										}
+									else {
+										if(has(d.type)) readerB = getReader(d.type);
+										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+										}
+									dataMembers = readerB.dataMembers;
+									reader = null;
+								}
+								else {
+									reader = new SourceReader(getContent(pack));
+									dataMembers = reader.dataMembers;
+									readerB = null;
+								}
+							}
+							else if(readerB != null) {
+								if(has(d.type)) readerB = getReader(d.type);
+								else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+									reader = null;
+								dataMembers = readerB.dataMembers;
+							}
+							in = 1;
+							continue inner;
+						}
+					}
+					if(in == 0) {
+						for(SourceReader r : reader.internalReaders) {
+							if(r.className.equals(member)) {
+								dataMembers = r.dataMembers;
+								least = true;
+							}
+						}
+					}
+					in = 1;
 				}
-				if(least) 
-				     gen(dataMembers);
+				if(least)
+					gen(dataMembers);
 				else {
-				     Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
-                         editor.contentWindow.setVisible(false);
+					Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+					editor.contentWindow.setVisible(false);
 				}
 			}
 			else{
@@ -340,7 +340,7 @@ public class CodeFramework extends AbstractCodeFramework{
 			ByteReader reader = null;
 			if(has(path)) reader = getReader(path);
 			else reader = Screen.getProjectFile().getJDKManager().prepareReader(path);
-			dataMembers = reader.getDataMembers("static");
+				dataMembers = reader.getDataMembers("static");
 			//Checking whether if there is data after className
 			if(code.indexOf('.', code.indexOf('.') + 1) >= 0){
 				//There are some members after class-path's dot
@@ -356,51 +356,51 @@ public class CodeFramework extends AbstractCodeFramework{
 						members.add(x.trim());
 					}
 					else if(ch == '(') blocks++;
-					else if(ch == ')') blocks--;
-				}
+						else if(ch == ')') blocks--;
+					}
 				boolean least = false;
 				int in = 0;
 				for(String member : members){
 					inner:
-						for(DataMember d : dataMembers){
-							//Checking whether <member> is method
-							if(d.name.contains("()") && member.contains("(") && member.contains(")")){
-								int parameterCount = getParameterCount(member);
-								String name = getName(member);
-								if(d.name.equals(name) && d.parameterCount == parameterCount){
-									least = true;
-									if(has(d.type)) reader = getReader(d.type);
-									else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-									dataMembers = reader.dataMembers;
-									in = 1;
-									continue inner;
-								}
-							}
-							else if(d.name.equals(member)){
+					for(DataMember d : dataMembers){
+						//Checking whether <member> is method
+						if(d.name.contains("()") && member.contains("(") && member.contains(")")){
+							int parameterCount = getParameterCount(member);
+							String name = getName(member);
+							if(d.name.equals(name) && d.parameterCount == parameterCount){
 								least = true;
 								if(has(d.type)) reader = getReader(d.type);
 								else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-								dataMembers = reader.dataMembers;
+									dataMembers = reader.dataMembers;
 								in = 1;
 								continue inner;
 							}
 						}
-     				if(in == 0) {
-     					for(ByteReader r : reader.internalReaders) {
-     						if(r.className.equals(member)) {
-     							dataMembers = r.dataMembers;
-     							least = true;
-     						}
-     					}
-     				} 
-     				in = 1;
+						else if(d.name.equals(member)){
+							least = true;
+							if(has(d.type)) reader = getReader(d.type);
+							else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+								dataMembers = reader.dataMembers;
+							in = 1;
+							continue inner;
+						}
+					}
+					if(in == 0) {
+						for(ByteReader r : reader.internalReaders) {
+							if(r.className.equals(member)) {
+								dataMembers = r.dataMembers;
+								least = true;
+							}
+						}
+					}
+					in = 1;
 				}
-				if(least) 
-				     gen(dataMembers);
-                    else {
-                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
-                         editor.contentWindow.setVisible(false);
-                    }
+				if(least)
+					gen(dataMembers);
+				else {
+					Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+					editor.contentWindow.setVisible(false);
+				}
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -425,52 +425,19 @@ public class CodeFramework extends AbstractCodeFramework{
 						members.add(x.trim());
 					}
 					else if(ch == '(') blocks++;
-					else if(ch == ')') blocks--;
-				}
+						else if(ch == ')') blocks--;
+					}
 				boolean least = false;
 				int in = 0;
 				ByteReader readerB = null;
 				for(String member : members){
 					inner:
-						for(DataMember d : dataMembers){
-							//Checking whether <member> is method
-							if(d.name.contains("()") && member.contains("(") && member.contains(")")){
-								int parameterCount = getParameterCount(member);
-								String name = getName(member);
-								if(d.name.equals(name) && d.parameterCount == parameterCount){
-									least = true;
-									String pack = null;
-									if(reader != null) {
-										pack = reader.getPackage(d.type);
-										if(!isSource(pack)) {
-											if(pack != null) {
-												if(has(pack)) readerB = getReader(pack);
-												else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
-											}
-											else {
-												if(has(d.type)) readerB = getReader(d.type);
-												else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-											}
-											dataMembers = readerB.dataMembers;
-											reader = null;
-										}
-										else {
-											reader = new SourceReader(getContent(pack));
-											dataMembers = reader.dataMembers;
-											readerB = null;
-										}
-									}
-									else if(readerB != null) {
-										if(has(d.type)) readerB = getReader(d.type);
-										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-										reader = null;
-										dataMembers = readerB.dataMembers;
-									}
-									in = 1;
-									continue inner;
-								}
-							}
-							else if(d.name.equals(member)){
+					for(DataMember d : dataMembers){
+						//Checking whether <member> is method
+						if(d.name.contains("()") && member.contains("(") && member.contains(")")){
+							int parameterCount = getParameterCount(member);
+							String name = getName(member);
+							if(d.name.equals(name) && d.parameterCount == parameterCount){
 								least = true;
 								String pack = null;
 								if(reader != null) {
@@ -479,11 +446,11 @@ public class CodeFramework extends AbstractCodeFramework{
 										if(pack != null) {
 											if(has(pack)) readerB = getReader(pack);
 											else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
-										}
+											}
 										else {
 											if(has(d.type)) readerB = getReader(d.type);
 											else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-										}
+											}
 										dataMembers = readerB.dataMembers;
 										reader = null;
 									}
@@ -496,29 +463,62 @@ public class CodeFramework extends AbstractCodeFramework{
 								else if(readerB != null) {
 									if(has(d.type)) readerB = getReader(d.type);
 									else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-									reader = null;
+										reader = null;
 									dataMembers = readerB.dataMembers;
 								}
 								in = 1;
 								continue inner;
 							}
 						}
-				if(in == 0) {
-					for(SourceReader r : reader.internalReaders) {
-						if(r.className.equals(member)) {
-							dataMembers = r.dataMembers;
+						else if(d.name.equals(member)){
 							least = true;
+							String pack = null;
+							if(reader != null) {
+								pack = reader.getPackage(d.type);
+								if(!isSource(pack)) {
+									if(pack != null) {
+										if(has(pack)) readerB = getReader(pack);
+										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
+										}
+									else {
+										if(has(d.type)) readerB = getReader(d.type);
+										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+										}
+									dataMembers = readerB.dataMembers;
+									reader = null;
+								}
+								else {
+									reader = new SourceReader(getContent(pack));
+									dataMembers = reader.dataMembers;
+									readerB = null;
+								}
+							}
+							else if(readerB != null) {
+								if(has(d.type)) readerB = getReader(d.type);
+								else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+									reader = null;
+								dataMembers = readerB.dataMembers;
+							}
+							in = 1;
+							continue inner;
 						}
 					}
-				} 
-				in = 1;
+					if(in == 0) {
+						for(SourceReader r : reader.internalReaders) {
+							if(r.className.equals(member)) {
+								dataMembers = r.dataMembers;
+								least = true;
+							}
+						}
+					}
+					in = 1;
 				}
-				if(least) 
-				     gen(dataMembers);
-                    else {
-                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
-                         editor.contentWindow.setVisible(false);
-                    }
+				if(least)
+					gen(dataMembers);
+				else {
+					Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+					editor.contentWindow.setVisible(false);
+				}
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -544,8 +544,8 @@ public class CodeFramework extends AbstractCodeFramework{
 				break;
 			}
 			else if(ch == '(') blocks++;
-			else if(ch == ')') blocks--;
-		}
+				else if(ch == ')') blocks--;
+			}
 		int parameterCount = getParameterCount(methVar);
 		//Equilizing Text
 		String reducedText = text.substring(0, caret);
@@ -705,7 +705,7 @@ public class CodeFramework extends AbstractCodeFramework{
 			ByteReader reader = null;
 			if(has(className)) reader = getReader(className);
 			else reader = Screen.getProjectFile().getJDKManager().prepareReader(className);
-			dataMembers = reader.dataMembers;
+				dataMembers = reader.dataMembers;
 			//Checking whether if there is data after className
 			if(code.indexOf('.', ix + 1) >= 0){
 				//There are some members after class-path 's dot
@@ -721,48 +721,48 @@ public class CodeFramework extends AbstractCodeFramework{
 						members.add(x.trim());
 					}
 					else if(ch == '(') blocks++;
-					else if(ch == ')') blocks--;
-				}
+						else if(ch == ')') blocks--;
+					}
 				boolean least = false;
 				int in = 0;
 				for(String member : members){
 					inner:
-						for(DataMember d : dataMembers){
-							//Checking whether <member> is method
-							if(d.name.contains("()") && member.contains("(") && member.contains(")")){
-								int parameterCount = getParameterCount(member);
-								String name = getName(member);
-								if(d.name.equals(name) && d.parameterCount == parameterCount){
-									least = true;
-									if(has(d.type)) reader = getReader(d.type);
-									else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-									dataMembers = reader.dataMembers;
-									in = 1;
-									continue inner;
-								}
-							}
-							else if(d.name.equals(member)){
+					for(DataMember d : dataMembers){
+						//Checking whether <member> is method
+						if(d.name.contains("()") && member.contains("(") && member.contains(")")){
+							int parameterCount = getParameterCount(member);
+							String name = getName(member);
+							if(d.name.equals(name) && d.parameterCount == parameterCount){
 								least = true;
 								if(has(d.type)) reader = getReader(d.type);
 								else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-								dataMembers = reader.dataMembers;
+									dataMembers = reader.dataMembers;
 								in = 1;
 								continue inner;
 							}
 						}
-     				if(in == 0) {
-     					for(ByteReader r : reader.internalReaders) {
-     						if(r.className.equals(member)) {
-     							dataMembers = r.dataMembers;
-     							least = true;
-     						}
-     					}
-     				} 
-				     in = 1;
+						else if(d.name.equals(member)){
+							least = true;
+							if(has(d.type)) reader = getReader(d.type);
+							else reader = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+								dataMembers = reader.dataMembers;
+							in = 1;
+							continue inner;
+						}
+					}
+					if(in == 0) {
+						for(ByteReader r : reader.internalReaders) {
+							if(r.className.equals(member)) {
+								dataMembers = r.dataMembers;
+								least = true;
+							}
+						}
+					}
+					in = 1;
 				}
 				if(least) gen(dataMembers);
 				else System.out.println("Not at least one match found for " + code);
-			}
+				}
 			else{
 				//There are no members after class-path 's dot, so showing all hints
 				gen(dataMembers);
@@ -786,52 +786,19 @@ public class CodeFramework extends AbstractCodeFramework{
 						members.add(x.trim());
 					}
 					else if(ch == '(') blocks++;
-					else if(ch == ')') blocks--;
-				}
+						else if(ch == ')') blocks--;
+					}
 				boolean least = false;
 				int in = 0;
 				ByteReader readerB = null;
 				for(String member : members){
 					inner:
-						for(DataMember d : dataMembers){
-							//Checking whether <member> is method
-							if(d.name.contains("()") && member.contains("(") && member.contains(")")){
-								int parameterCount = getParameterCount(member);
-								String name = getName(member);
-								if(d.name.equals(name) && d.parameterCount == parameterCount){
-									least = true;
-									String pack = null;
-									if(reader != null) {
-										pack = reader.getPackage(d.type);
-										if(!isSource(pack)) {
-											if(pack != null) {
-												if(has(pack)) readerB = getReader(pack);
-												else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
-											}
-											else {
-												if(has(d.type)) readerB = getReader(d.type);
-												else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-											}
-											dataMembers = readerB.dataMembers;
-											reader = null;
-										}
-										else {
-											reader = new SourceReader(getContent(pack));
-											dataMembers = reader.dataMembers;
-											readerB = null;
-										}
-									}
-									else if(readerB != null) {
-										if(has(d.type)) readerB = getReader(d.type);
-										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-										reader = null;
-										dataMembers = readerB.dataMembers;
-									}
-									in = 1;
-									continue inner;
-								}
-							}
-							else if(d.name.equals(member)){
+					for(DataMember d : dataMembers){
+						//Checking whether <member> is method
+						if(d.name.contains("()") && member.contains("(") && member.contains(")")){
+							int parameterCount = getParameterCount(member);
+							String name = getName(member);
+							if(d.name.equals(name) && d.parameterCount == parameterCount){
 								least = true;
 								String pack = null;
 								if(reader != null) {
@@ -840,11 +807,11 @@ public class CodeFramework extends AbstractCodeFramework{
 										if(pack != null) {
 											if(has(pack)) readerB = getReader(pack);
 											else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
-										}
+											}
 										else {
 											if(has(d.type)) readerB = getReader(d.type);
 											else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-										}
+											}
 										dataMembers = readerB.dataMembers;
 										reader = null;
 									}
@@ -857,29 +824,62 @@ public class CodeFramework extends AbstractCodeFramework{
 								else if(readerB != null) {
 									if(has(d.type)) readerB = getReader(d.type);
 									else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
-									reader = null;
+										reader = null;
 									dataMembers = readerB.dataMembers;
 								}
 								in = 1;
 								continue inner;
 							}
 						}
-     				if(in == 0) {
-     					for(SourceReader r : reader.internalReaders) {
-     						if(r.className.equals(member)) {
-     							dataMembers = r.dataMembers;
-     							least = true;
-     						}
-     					}
-     				} 
-     				in = 1;
+						else if(d.name.equals(member)){
+							least = true;
+							String pack = null;
+							if(reader != null) {
+								pack = reader.getPackage(d.type);
+								if(!isSource(pack)) {
+									if(pack != null) {
+										if(has(pack)) readerB = getReader(pack);
+										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(pack);
+										}
+									else {
+										if(has(d.type)) readerB = getReader(d.type);
+										else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+										}
+									dataMembers = readerB.dataMembers;
+									reader = null;
+								}
+								else {
+									reader = new SourceReader(getContent(pack));
+									dataMembers = reader.dataMembers;
+									readerB = null;
+								}
+							}
+							else if(readerB != null) {
+								if(has(d.type)) readerB = getReader(d.type);
+								else readerB = Screen.getProjectFile().getJDKManager().prepareReader(d.type);
+									reader = null;
+								dataMembers = readerB.dataMembers;
+							}
+							in = 1;
+							continue inner;
+						}
+					}
+					if(in == 0) {
+						for(SourceReader r : reader.internalReaders) {
+							if(r.className.equals(member)) {
+								dataMembers = r.dataMembers;
+								least = true;
+							}
+						}
+					}
+					in = 1;
 				}
-				if(least) 
-				     gen(dataMembers);
-                    else {
-                         Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
-                         editor.contentWindow.setVisible(false);
-                    }
+				if(least)
+					gen(dataMembers);
+				else {
+					Screen.getScreen().getToolMenu().setTask("Not at least one match found for " + code);
+					editor.contentWindow.setVisible(false);
+				}
 			}
 			else{
 				//There are no members after class-path's dot, so showing all hints
@@ -910,8 +910,8 @@ public class CodeFramework extends AbstractCodeFramework{
 			}
 			if(!p.contains(","))
 				parameterCount = 1;
-			else 
-			     parameterCount = p.split(",").length;
+			else
+				parameterCount = p.split(",").length;
 		}
 		return parameterCount;
 	}
@@ -936,11 +936,11 @@ public class CodeFramework extends AbstractCodeFramework{
 
 	public static void gen(LinkedList<DataMember> dataMembers){
 		LinkedList<DataMember> mx = new LinkedList<>();
-      	lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
+		lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
 				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
-				     mx.add(d);
+					mx.add(d);
 			});
 			editor.contentWindow.genView(mx, Screen.getScreen().getGraphics());
 			return;
@@ -950,11 +950,11 @@ public class CodeFramework extends AbstractCodeFramework{
 
 	public static void gen(LinkedList<DataMember> dataMembers, Editor editor){
 		LinkedList<DataMember> mx = new LinkedList<>();
-      	lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
+		lCode = getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 		if(lCode != null){
 			dataMembers.forEach(d->{
 				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
-				     mx.add(d);
+					mx.add(d);
 			});
 			editor.contentWindow.genView(mx, omega.Screen.getScreen().getGraphics());
 			return;
@@ -997,7 +997,7 @@ public class CodeFramework extends AbstractCodeFramework{
 				token = reader.readLine();
 			}
 			reader.close();
-		}catch(Exception e) {System.out.println(e.getMessage());}
+	}catch(Exception e) {System.out.println(e.getMessage());}
 		return code;
 	}
 
@@ -1051,15 +1051,15 @@ public class CodeFramework extends AbstractCodeFramework{
 		return -1;
 	}
 
-     public static String getCode(String text, int caret){
-          text = text.substring(0, caret);
-          if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
-          if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
-          if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
-          text = text.trim();
-          //Checking whether <text> is frame-able or not
-          if(count(text, '(') > count(text, ')')){
-          	int openParenthesisCount = count(text, '(');
+	public static String getCode(String text, int caret){
+		text = text.substring(0, caret);
+		if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
+		if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
+		if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
+		text = text.trim();
+		//Checking whether <text> is frame-able or not
+		if(count(text, '(') > count(text, ')')){
+			int openParenthesisCount = count(text, '(');
 			int closeParenthesisCount = count(text, ')');
 			if(closeParenthesisCount < openParenthesisCount && closeParenthesisCount != 0){
 				int extraParenthesis = openParenthesisCount - closeParenthesisCount;
@@ -1082,14 +1082,14 @@ public class CodeFramework extends AbstractCodeFramework{
 				openParenthesisCount = count(mockText, '(');
 				closeParenthesisCount = count(mockText, ')');
 				if(closeParenthesisCount == openParenthesisCount) {
-		               if(text.contains(","))
-		                    text = text.substring(text.lastIndexOf(',') + 1).trim();
+					if(text.contains(","))
+						text = text.substring(text.lastIndexOf(',') + 1).trim();
 				}
 			}
 			else if(text.contains("(")){
-	          	openParenthesisCount = count(text, '(');
+				openParenthesisCount = count(text, '(');
 				closeParenthesisCount = count(text, ')');
-                    int extraParenthesis = openParenthesisCount - closeParenthesisCount;
+				int extraParenthesis = openParenthesisCount - closeParenthesisCount;
 				int index = -1;
 				if(extraParenthesis >= 1){
 					while(extraParenthesis-- > 0){
@@ -1098,99 +1098,99 @@ public class CodeFramework extends AbstractCodeFramework{
 				}
 				text = text.substring(index + 1);
 			}
-          }
-          if(text.contains("="))
-               text = text.substring(text.lastIndexOf('=') + 1).trim();
-          if(text.contains("+"))
-               text = text.substring(text.lastIndexOf('+') + 1).trim();
-          if(text.contains("-"))
-               text = text.substring(text.lastIndexOf('-') + 1).trim();
-          if(text.contains("*"))
-               text = text.substring(text.lastIndexOf('*') + 1).trim();
-          if(text.contains("/"))
-               text = text.substring(text.lastIndexOf('/') + 1).trim();
-          if(text.contains("^"))
-               text = text.substring(text.lastIndexOf('^') + 1).trim();
-          if(text.contains("<"))
-               text = text.substring(text.lastIndexOf('<') + 1).trim();
-          if(text.contains(">"))
-               text = text.substring(text.lastIndexOf('>') + 1).trim();
-          if(text.contains(";"))
-               text = text.substring(text.lastIndexOf(';') + 1).trim();
-          if(text.startsWith("return "))
-          	text = text.substring("return ".length()).trim();
-          if(text.startsWith("continue "))
-          	text = text.substring("continue ".length()).trim();
-          if(text.startsWith("break "))
-          	text = text.substring("break ".length()).trim();
-          if(text.contains("this."))
-          	text = text.substring(text.lastIndexOf("this.") + "this.".length()).trim();
-          if(text.startsWith("!"))
-          	text = text.substring(text.lastIndexOf('!') + 1).trim();
-          if(text.contains("?"))
-          	text = text.substring(text.lastIndexOf('?') + 1).trim();
-          if(text.contains(":"))
-          	text = text.substring(text.lastIndexOf(':') + 1).trim();
-          if(!text.contains("."))
-               text = null;
-          return text;
-     }
-    	public static String getCodeDoNotEliminateDot(String text, int caret){
-          text = text.substring(0, caret);
-          if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
-          if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
-          if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
-          text = text.trim();
-          //Checking whether <text> is frame-able or not
-          if(count(text, '(') > count(text, ')')){
-               text = text.substring(text.lastIndexOf('(') + 1).trim();
-               if(text.contains(","))
-                    text = text.substring(text.lastIndexOf(',') + 1).trim();
-          }
-          if(text.contains("="))
-               text = text.substring(text.lastIndexOf('=') + 1).trim();
-          if(text.contains("+"))
-               text = text.substring(text.lastIndexOf('+') + 1).trim();
-          if(text.contains("-"))
-               text = text.substring(text.lastIndexOf('-') + 1).trim();
-          if(text.contains("*"))
-               text = text.substring(text.lastIndexOf('*') + 1).trim();
-          if(text.contains("/"))
-               text = text.substring(text.lastIndexOf('/') + 1).trim();
-          if(text.contains("^"))
-               text = text.substring(text.lastIndexOf('^') + 1).trim();
-          if(text.contains("<"))
-               text = text.substring(text.lastIndexOf('<') + 1).trim();
-          if(text.contains(">"))
-               text = text.substring(text.lastIndexOf('>') + 1).trim();
-          if(text.contains(";"))
-               text = text.substring(text.lastIndexOf(';') + 1).trim();
-          if(text.contains("|"))
-               text = text.substring(text.lastIndexOf('|') + 1).trim();
-          if(text.contains("&"))
-               text = text.substring(text.lastIndexOf('&') + 1).trim();
-          if(text.contains("%"))
-               text = text.substring(text.lastIndexOf('%') + 1).trim();
-          if(text.contains("@"))
-               text = text.substring(text.lastIndexOf('@') + 1).trim();
-          if(text.startsWith("new "))
-               text = text.substring(text.lastIndexOf("new ") + 3).trim();
-          if(text.startsWith("return "))
-          	text = text.substring("return ".length()).trim();
-          if(text.startsWith("continue "))
-          	text = text.substring("continue ".length()).trim();
-          if(text.startsWith("break "))
-          	text = text.substring("break ".length()).trim();
-          if(text.contains("this."))
-          	text = text.substring(text.lastIndexOf("this.") + "this.".length()).trim();
-          if(text.startsWith("!"))
-          	text = text.substring(text.lastIndexOf('!') + 1).trim();
-          if(text.contains("?"))
-          	text = text.substring(text.lastIndexOf('?') + 1).trim();
-          if(text.contains(":"))
-          	text = text.substring(text.lastIndexOf(':') + 1).trim();
-          return text;
-     }
+		}
+		if(text.contains("="))
+			text = text.substring(text.lastIndexOf('=') + 1).trim();
+		if(text.contains("+"))
+			text = text.substring(text.lastIndexOf('+') + 1).trim();
+		if(text.contains("-"))
+			text = text.substring(text.lastIndexOf('-') + 1).trim();
+		if(text.contains("*"))
+			text = text.substring(text.lastIndexOf('*') + 1).trim();
+		if(text.contains("/"))
+			text = text.substring(text.lastIndexOf('/') + 1).trim();
+		if(text.contains("^"))
+			text = text.substring(text.lastIndexOf('^') + 1).trim();
+		if(text.contains("<"))
+			text = text.substring(text.lastIndexOf('<') + 1).trim();
+		if(text.contains(">"))
+			text = text.substring(text.lastIndexOf('>') + 1).trim();
+		if(text.contains(";"))
+		text = text.substring(text.lastIndexOf(';') + 1).trim();
+		if(text.startsWith("return "))
+			text = text.substring("return ".length()).trim();
+		if(text.startsWith("continue "))
+			text = text.substring("continue ".length()).trim();
+		if(text.startsWith("break "))
+			text = text.substring("break ".length()).trim();
+		if(text.contains("this."))
+			text = text.substring(text.lastIndexOf("this.") + "this.".length()).trim();
+		if(text.startsWith("!"))
+			text = text.substring(text.lastIndexOf('!') + 1).trim();
+		if(text.contains("?"))
+			text = text.substring(text.lastIndexOf('?') + 1).trim();
+		if(text.contains(":"))
+			text = text.substring(text.lastIndexOf(':') + 1).trim();
+		if(!text.contains("."))
+			text = null;
+		return text;
+	}
+	public static String getCodeDoNotEliminateDot(String text, int caret){
+		text = text.substring(0, caret);
+		if(text.contains("{")) text = text.substring(text.lastIndexOf('{') + 1);
+		if(text.contains("\n")) text = text.substring(text.lastIndexOf('\n') + 1);
+		if(text.endsWith("}")) text = text.substring(0, text.indexOf('}'));
+		text = text.trim();
+		//Checking whether <text> is frame-able or not
+		if(count(text, '(') > count(text, ')')){
+			text = text.substring(text.lastIndexOf('(') + 1).trim();
+			if(text.contains(","))
+				text = text.substring(text.lastIndexOf(',') + 1).trim();
+		}
+		if(text.contains("="))
+			text = text.substring(text.lastIndexOf('=') + 1).trim();
+		if(text.contains("+"))
+			text = text.substring(text.lastIndexOf('+') + 1).trim();
+		if(text.contains("-"))
+			text = text.substring(text.lastIndexOf('-') + 1).trim();
+		if(text.contains("*"))
+			text = text.substring(text.lastIndexOf('*') + 1).trim();
+		if(text.contains("/"))
+			text = text.substring(text.lastIndexOf('/') + 1).trim();
+		if(text.contains("^"))
+			text = text.substring(text.lastIndexOf('^') + 1).trim();
+		if(text.contains("<"))
+			text = text.substring(text.lastIndexOf('<') + 1).trim();
+		if(text.contains(">"))
+			text = text.substring(text.lastIndexOf('>') + 1).trim();
+		if(text.contains(";"))
+		text = text.substring(text.lastIndexOf(';') + 1).trim();
+		if(text.contains("|"))
+			text = text.substring(text.lastIndexOf('|') + 1).trim();
+		if(text.contains("&"))
+			text = text.substring(text.lastIndexOf('&') + 1).trim();
+		if(text.contains("%"))
+			text = text.substring(text.lastIndexOf('%') + 1).trim();
+		if(text.contains("@"))
+			text = text.substring(text.lastIndexOf('@') + 1).trim();
+		if(text.startsWith("new "))
+			text = text.substring(text.lastIndexOf("new ") + 3).trim();
+		if(text.startsWith("return "))
+			text = text.substring("return ".length()).trim();
+		if(text.startsWith("continue "))
+			text = text.substring("continue ".length()).trim();
+		if(text.startsWith("break "))
+			text = text.substring("break ".length()).trim();
+		if(text.contains("this."))
+			text = text.substring(text.lastIndexOf("this.") + "this.".length()).trim();
+		if(text.startsWith("!"))
+			text = text.substring(text.lastIndexOf('!') + 1).trim();
+		if(text.contains("?"))
+			text = text.substring(text.lastIndexOf('?') + 1).trim();
+		if(text.contains(":"))
+			text = text.substring(text.lastIndexOf(':') + 1).trim();
+		return text;
+	}
 
 	public static String getCodeIgnoreDot(String text, int caret){
 		text = text.substring(0, caret);
@@ -1222,9 +1222,9 @@ public class CodeFramework extends AbstractCodeFramework{
 		if(text.contains(">"))
 			text = text.substring(text.lastIndexOf('>') + 1).trim();
 		if(text.contains(";"))
-			text = text.substring(text.lastIndexOf(';') + 1).trim();
-          if(text.contains(" "))
-               text = text.substring(text.lastIndexOf(' ') + 1).trim();
+		text = text.substring(text.lastIndexOf(';') + 1).trim();
+		if(text.contains(" "))
+			text = text.substring(text.lastIndexOf(' ') + 1).trim();
 		if(text.contains("."))
 			text = text.substring(text.lastIndexOf('.') + 1).trim();;
 		return text;
@@ -1243,7 +1243,7 @@ public class CodeFramework extends AbstractCodeFramework{
 				text = text.substring(text.lastIndexOf(',') + 1).trim();
 		}
 		if(text.contains(";"))
-			text = text.substring(text.lastIndexOf(';') + 1).trim();
+		text = text.substring(text.lastIndexOf(';') + 1).trim();
 		if(text.contains("."))
 			text = text.substring(text.lastIndexOf('.') + 1).trim();
 		return text;
@@ -1301,13 +1301,13 @@ public class CodeFramework extends AbstractCodeFramework{
 		}
 		return result;
 	}
-	
+
 	public static int getUnpairedParanthesis(String text){
 		int index = -1;
 		for(int i = 0; i < text.length() - 1; i++){
 			char c1 = text.charAt(i);
 			char c2 = text.charAt(i + 1);
-			
+
 			if(c1 == '(' && Character.isLetterOrDigit(c2))
 				index = i + 1;
 		}

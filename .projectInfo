@@ -2,12 +2,8 @@
 -/usr/lib/jvm/jdk-17
 >Main Class
 -omega.IDE
->Non-Java Project
--false
 >Language Tag
 -0
->Opened Editors on Main Tab Panel
--
 >Project Classpath : Required Jars
 -project-root$/lib/flatlaf-0.46.jar
 -project-root$/lib/annotations.jar
