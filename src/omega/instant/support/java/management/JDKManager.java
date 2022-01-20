@@ -56,6 +56,7 @@ public class JDKManager {
 	public static JarLoader systemJarLoader;
 	public static JarLoader dependencyJarLoader;
 	public static JarLoader resourceCodeLoader;
+	
 	public JDKManager(File jdkDir){
 		imports.clear();
 		modules.clear();
@@ -79,6 +80,7 @@ public class JDKManager {
           	e.printStackTrace();
           }
 	}
+	
 	public void readRTJarFile(){
 		Screen.setStatus("Reading JDK v" + version, 10, IconManager.fluentjavaImage);
 		String rtJarPath = jdkDir.getAbsolutePath() + File.separator + "jre" + File.separator + "lib" + File.separator + "rt.jar";
@@ -104,6 +106,7 @@ public class JDKManager {
 		}
 		Screen.setStatus("", 100, null);
 	}
+	
 	public void readModules(){
 		File[] modulesFiles = new File(jdkDir.getAbsolutePath() + File.separator + "jmods").listFiles();
 		if(modulesFiles == null || modulesFiles.length == 0)
@@ -122,6 +125,7 @@ public class JDKManager {
 		modules.forEach(module->module.classes.clear());
 		modules.clear();
 	}
+	
 	public void addModule(File moduleFile){
 		for(Module module : modules){
 			if(module.moduleFile.getAbsolutePath().equals(moduleFile.getAbsolutePath()))
@@ -131,6 +135,7 @@ public class JDKManager {
 		module.classes.forEach(this::addImport);
 		modules.add(module);
 	}
+	
 	public ByteReader prepareReader(String name){
 		if(systemJarLoader != null) {
 			for(String className : systemJarLoader.classNames){
@@ -155,6 +160,7 @@ public class JDKManager {
 		}
 		return null;
 	}
+	
 	public void loadVersionInfo(){
 		try{
 			Scanner reader = new Scanner(new File(jdkDir.getAbsolutePath() + File.separator + "release"));
@@ -175,10 +181,12 @@ public class JDKManager {
 			e.printStackTrace();
 		}
 	}
+	
 	public boolean isModularJDK(){
 		File jmodsDir = new File(jdkDir.getAbsolutePath() + File.separator + "jmods");
 		return jmodsDir.exists();
 	}
+	
 	public static boolean isJDK(File dir){
 		File[] files = dir.listFiles();
 		if(files == null || files.length == 0)
@@ -314,6 +322,7 @@ public class JDKManager {
 				files.add(f);
 		}
 	}
+	
 	public void addImport(String packagePath, String jarPath, boolean module){
 		imports.add(new Import(packagePath, jarPath, module));
 		Import im = imports.getLast();

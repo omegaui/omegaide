@@ -866,6 +866,7 @@ public class ProjectRunner {
 					commandsAsArray[++k] = command;
 				
 				JetRunPanel terminal = new JetRunPanel(true, commandsAsArray, workingDir.getAbsolutePath());
+				
 				terminal
 				.reRunAction(()->{
 					terminal.killProcess();
@@ -889,6 +890,16 @@ public class ProjectRunner {
 				name =  name + ")";
 				
 				getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, terminal, terminal::killProcess);
+				
+				TabData currentTabData = getScreen().getOperationPanel().getTabData(terminal);
+				currentTabData.getTabIconComp().setImage(null);
+				currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
+				
+				terminal.terminalPanel.setOnProcessExited(()->{
+					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
+					currentTabData.getTabIconComp().setGifImage(null);
+				});
+				
 				terminal.start();
 				
 				Screen.setStatus("Running Project", 100, null);

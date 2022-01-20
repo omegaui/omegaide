@@ -131,6 +131,9 @@ public class IconManager {
 	
 	public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
 	public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");
+	public static BufferedImage fluentaddlinkImage = getFluentIcon("add-link-48.png");
+	public static BufferedImage fluentremovelinkImage = getFluentIcon("delete-link-48.png");
+	public static BufferedImage fluentmanaImage = getFluentIcon("mana-48.png");
 	public static BufferedImage fluentrocketImage = getFluentIcon("rocket-64.png");
 	public static BufferedImage fluentrocketbuildImage = getFluentIcon("rocket-build-64.png");
 	public static BufferedImage fluentlightningboltImage = getFluentIcon("lightning-bolt-48.png");
@@ -180,16 +183,14 @@ public class IconManager {
 		paintShowImage(showImage.getGraphics());
 		paintHideImage(hideImage.getGraphics());
 	}
-	
-	public static void paintCharImage(Graphics graphics, String ch){
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(TOOLMENU_COLOR4);
-		g.fillRoundRect(0, 0, 16, 16, 5, 5);
-		g.setColor(getForeground());
-		g.setFont(PX16);
-		g.drawString(ch, 8 - g.getFontMetrics().stringWidth(ch)/2, (16 - g.getFontMetrics().getHeight())/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+
+	public static BufferedImage getPlatformImage(){
+		String name = System.getProperty("os.name");
+		if(name.contains("indows"))
+			return fluentwindowsImage;
+		else if(name.contains("nix"))
+			return fluentlinuxImage;
+		return fluentmacImage;
 	}
 	
 	public static void paintHideImage(Graphics graphics){

@@ -26,6 +26,7 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
@@ -39,7 +40,14 @@ public class BuildPanel extends JPanel{
 		super(new BorderLayout());
 		this.hint = hint;
 		super.add(scrollPane = new JScrollPane(panel = new JPanel(null)));
+		scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){
+			@Override
+			public void setVisible(boolean value){
+				super.setVisible(false);
+			}
+		});
 		panel.setBackground(c2);
+		scrollPane.setBorder(null);
 		setVisible(false);
 	}
 	@Override
@@ -59,16 +67,19 @@ public class BuildPanel extends JPanel{
 			super.paint(graphics);
 		}
 	}
+	
 	public void setPanelPrefSize(Dimension d){
 		panel.setPreferredSize(d);
 		scrollPane.repaint();
 	}
+	
 	@Override
 	public Component add(Component c){
 		panel.add(c);
 		count++;
 		return c;
 	}
+	
 	@Override
 	public void remove(Component c){
 		panel.remove(c);

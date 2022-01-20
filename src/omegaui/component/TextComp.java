@@ -60,6 +60,8 @@ public class TextComp extends JComponent{
 	public int arcY = 10;
 	public int pressX;
 	public int pressY;
+	public int imageX = -1;
+	public int imageY = -1;
 	public int alignX = -1;
 	public int w;
 	public int h;
@@ -236,7 +238,10 @@ public class TextComp extends JComponent{
 	
 	public void draw(Graphics2D g) {
 		if(canDrawImage()){
-			g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, this);
+			if(isUsingCustomImageCoordinates())
+				g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), imageX, imageY, w, h, this);
+			else
+				g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, this);
 		}
 	}
 	
@@ -244,6 +249,16 @@ public class TextComp extends JComponent{
 		if(canDrawGifImage()){
 			g.drawImage(gifImage, getWidth()/2 - w/2, getHeight()/2 - h/2, w, h, this);
 		}
+	}
+
+	public void setImageCoordinates(int x, int y){
+		this.imageX = x;
+		this.imageY = y;
+		repaint();
+	}
+
+	public boolean isUsingCustomImageCoordinates(){
+		return imageX != -1 && imageY != -1;
 	}
 	
 	public boolean canDrawImage(){

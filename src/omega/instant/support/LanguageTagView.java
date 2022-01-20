@@ -164,13 +164,13 @@ public class LanguageTagView extends JDialog{
 		setVisible(false);
 	}
 	
-	public TextComp prepareLangComp(BufferedImage imageX, String name, int tag){
+	public TextComp prepareLangComp(BufferedImage imaze, String name, int tag){
 		TextComp langComp = new TextComp(name, TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR3, ()->{
 			setActiveLang(tag);
 			}){
 			@Override
 			public void draw(Graphics2D g){
-				g.drawImage(imageX, 2, getHeight()/2 - 25/2, 25, 25, null);
+				g.drawImage(imaze, 2, getHeight()/2 - 25/2, 25, 25, null);
 			}
 		};
 		langComp.setBounds(0, block, 130, 25);
