@@ -1,20 +1,20 @@
 /**
-* The IDE 's Default Editor
-* Copyright (C) 2021 Omega UI
+ * The IDE 's Default Text Editor
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that s.indit will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see http://www.gnu.org/licenses/.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
 
 package omega.ui.component;
 import omega.instant.support.java.generator.Generator;
@@ -107,38 +107,37 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private static Screen screen;
 	private static Theme theme;
 	private static String currentTheme = "light";
-	
+
 	private RTextScrollPane scrollPane;
 	private FindAndReplace fAndR;
-	
+
 	private volatile String savedText = "";
-	
+
 	public KeyListener keyListener;
 	public KeyStrokeListener keyStrokeListener;
-	
+
 	public int keyCache = 0;
 	public int lastKeyCode = -1;
-	
+
 	public volatile File currentFile;
-	
+
 	public volatile boolean call = false;
-	
+
 	private volatile boolean initializedJavaKeyStrokes = false;
-	
+
 	private static boolean launched = false;
 
-	
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
-	
+
 	public JavaErrorPanel javaErrorPanel;
-	
+
 	public AbstractJumpToDefinitionPanel jumpToDefinitionPanel;
 
 	public SearchContext lastSearchContext;
-	
+
 	private static final File ENG_DICTIONARY_FILE = new File(".omega-ide" + File.separator + "dictionary", "english_dic.zip");
-	
+
 	public static SpellingParser englishSpellingParser = null;
 	static {
 		try{
@@ -149,23 +148,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Editor(Screen screen) {
 		Editor.screen = screen;
-		
+
 		englishSpellingParser.setSquiggleUnderlineColor(omega.io.UIManager.TOOLMENU_COLOR4);
 		addParser(englishSpellingParser);
-		
+
 		scrollPane = new RTextScrollPane(this, true, omega.io.UIManager.glow);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
-		
+
 		fAndR = new FindAndReplace();
-		
+
 		initView();
-		
+
 		fileSaveDialog = new FileSaveDialog(screen);
-		
+
 		addCaretListener((e)-> {
 			String text = getSelectedText();
 			if(text == null || text.equals(""))
@@ -173,15 +172,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			else
 				screen.getBottomPane().jumpField.setText(text.length() + "");
 		});
-		
+
 		createNewContent();
-		
+
 		javaErrorPanel = new JavaErrorPanel(this);
 		add(javaErrorPanel);
 	}
-	
+
 	private void initView() {
-		
+
 		setAnimateBracketMatching(true);
 		setAntiAliasingEnabled(true);
 		setAutoIndentEnabled(true);
@@ -203,15 +202,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
 		getAttachment().getGutter().setIconRowHeaderInheritsGutterBackground(true);
 		getAttachment().getGutter().iconArea.setBackground(UIManager.back2);
-		
-		
+
+
 		initKeyStrokes();
-		
+
 		addKeyListener((keyListener = this));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addFocusListener(this);
-		
+
 		addCaretListener((e)->findSelection());
 
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CREATED, this, currentFile));
@@ -221,19 +220,19 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		//Initializing KeyStrokeData
 		keyStrokeListener = new KeyStrokeListener(this);
 		addKeyListener(keyStrokeListener);
-		
+
 		keyStrokeListener.putKeyStroke((e)->saveCurrentFile(), VK_CONTROL, VK_S).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->fAndR.setVisible(!fAndR.isVisible()), VK_CONTROL, VK_SHIFT, VK_F);
 		keyStrokeListener.putKeyStroke((e)->doDuplicate(e), VK_CONTROL, VK_D).setStopKeys(VK_SHIFT);
-		
+
 		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_EQUALS).setStopKeys(VK_T);
 		keyStrokeListener.putKeyStroke((e)->increaseFont(e), VK_CONTROL, VK_SHIFT, VK_PLUS).setStopKeys(VK_T);
 		keyStrokeListener.putKeyStroke((e)->decreaseFont(e), VK_CONTROL, VK_SHIFT, VK_MINUS).setStopKeys(VK_T);
-		
+
 		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_EQUALS);
 		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_PLUS);
 		keyStrokeListener.putKeyStroke((e)->decreaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_MINUS);
-		
+
 		keyStrokeListener.putKeyStroke((e)->triggerBuild(e), VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->triggerRun(e), VK_CONTROL, VK_SHIFT, VK_R);
 		keyStrokeListener.putKeyStroke((e)->triggerInstantRun(e), VK_CONTROL, VK_SHIFT, VK_F1);
@@ -254,7 +253,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			keyStrokeListener.putKeyStroke((e)->showIODialog(e), VK_CONTROL, VK_SHIFT, VK_I).useAutoReset();
 		}
 	}
-	
+
 	private void createNewContent() {
 		contentWindow = new ContentWindow(this);
 		addKeyListener(contentWindow);
@@ -262,7 +261,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setLayout(null);
 		add(contentWindow);
 	}
-	
+
 	public void launchContentAssist() {
 		if(launched)
 			return;
@@ -275,7 +274,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			int frames = 0;
 			long timer = System.currentTimeMillis();
 			long now = 0;
-			
+
 			while(screen.active){
 				now = System.nanoTime();
 				delta += (now - lastTime) / ns;
@@ -292,22 +291,22 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					updates++;
 					delta--;
 				}
-				
+
 				frames++;
-				
+
 				if(System.currentTimeMillis() - timer > 1000){
 					timer += 1000;
 					updates = 0;
 					frames = 0;
 
-					if(DataManager.isParsingEnabled()) {	
+					if(DataManager.isParsingEnabled()) {
 						SyntaxParsers.parse();
 					}
 				}
 			}
 		}).start();
 	}
-	
+
 	public void readCode() {
 		if(call) {
 			call = false;
@@ -315,7 +314,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				ContentTokenizers.arrangeTokens(this);
 		}
 	}
-	
+
 	public static void setStyle(Editor e, File f) {
 		if(!f.getName().contains(".") || f.getName().endsWith(".txt"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_NONE);
@@ -414,7 +413,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else if(f.getName().endsWith(".md"))
 			MarkdownTokenMaker.apply(e);
 	}
-	
+
 	public void loadTheme() {
 		try {
 			String name = omega.io.UIManager.isDarkMode() ? "dark" : "idea";
@@ -422,7 +421,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			theme.apply(this);
 		}
 		catch (Exception e) {
-			
+
 		}
 		try {
 			screen.getUIManager().loadData();
@@ -431,10 +430,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			getAttachment().getGutter().iconArea.width = UIManager.fontSize;
 		}
 		catch(Exception e) {
-			
+
 		}
 	}
-	
+
 	public static Theme getTheme() {
 		if(theme == null){
 			try {
@@ -447,7 +446,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 		return theme;
 	}
-	
+
 	public synchronized void loadFile(File file) {
 		if(file == null)
 			return;
@@ -474,7 +473,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveCurrentFile() {
 		if(savedText.equals(getText()))
 			return;
@@ -490,14 +489,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			PrintWriter writer = new PrintWriter(currentFile, StandardCharsets.UTF_8);
 			writer.print(text);
 			writer.close();
-			
+
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_SAVED, this, currentFile));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveImage() {
 		try {
 			BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -513,7 +512,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveFileAs() {
 		String path = fileSaveDialog.saveFile();
 		if(path != null) {
@@ -528,7 +527,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
-	
+
 	public void closeFile() {
 		if(currentFile == null)
 			return;
@@ -536,10 +535,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		currentFile = null;
 		setText("");
 		savedText = "";
-		
+
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CLOSED, this, currentFile));
 	}
-	
+
 	public void reloadFile() {
 		if(currentFile != null) {
 			try {
@@ -550,7 +549,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				savedText = getText();
 				setStyle(this, currentFile);
 				setCaretPosition(0);
-				
+
 				Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_RELOADED, this, currentFile));
 			}
 			catch(Exception e) {
@@ -563,21 +562,21 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setText(savedText);
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_DISCARD, this, currentFile));
 	}
-	
+
 	public void deleteFile() {
 		try {
 			if(currentFile == null)
 				return;
 			if(!currentFile.exists())
 				return;
-			
+
 			int res0 = ChoiceDialog.makeChoice("Do you want to delete " + currentFile.getName() + "?", "Yes", "No!");
 			if(res0 != ChoiceDialog.CHOICE1)
 				return;
-			
+
 			closeFile();
 			if(!currentFile.delete()) {
-				
+
 			}
 			else {
 				Screen.getProjectFile().getFileTreePanel().refresh();
@@ -590,7 +589,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void deleteDir(File file) throws Exception {
 		if (file.isDirectory()) {
 			if (file.list().length == 0)
@@ -607,7 +606,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else
 			file.delete();
 	}
-	
+
 	public static void deleteFile(File currentFile) {
 		new Thread(()->{
 			try {
@@ -622,7 +621,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 						Screen.getProjectFile().getFileTreePanel().refresh();
 					}
 					catch(Exception e) {
-						
+
 					}
 					return;
 				}
@@ -640,7 +639,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}).start();
 	}
-	
+
 	@Override
 	public void setSize(int width, int height){
 		super.setSize(width, height);
@@ -726,7 +725,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				GradleProcessManager.run();
 			else
 				Screen.getProjectRunner().run();
-			
+
 			e.consume();
 		}
 	}
@@ -734,14 +733,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void triggerInstantRun(KeyEvent e){
 		if(screen.getToolMenu().buildComp.isClickable()){
 			Screen.getProjectRunner().instantRun();
-			
+
 			e.consume();
 		}
 	}
 
 	public void showSearchDialog(KeyEvent e){
 		Screen.getProjectFile().getSearchWindow().setVisible(true);
-		
+
 		e.consume();
 	}
 
@@ -766,25 +765,25 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			index += codeX.lastIndexOf('\t') + 1;
 			codeX = codeX.substring(codeX.lastIndexOf('\t') + 1);
 		}
-		
+
 		codeX = codeX.trim();
-		
+
 		if(SnippetBase.hasSnippet(codeX)){
 			SnippetBase.insertSnippet(this, codeX, index = getCaretPosition() - codeX.length(), cx.substring(0, cx.indexOf(codeX)));
-			
+
 			e.consume();
 		}
 	}
 
 	public void triggerImportFramework(KeyEvent e){
 		new Thread(()->ImportFramework.addImports(ImportFramework.findClasses(getText()), this)).start();
-		
+
 		e.consume();
 	}
 
 	public void showGSDialog(KeyEvent e){
 		Generator.gsView.genView(this);
-		
+
 		e.consume();
 	}
 
@@ -829,27 +828,27 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 		e.consume();
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		synchronized(Editor.class){
 			int code = e.getKeyCode();
-			
+
 			if(lastKeyCode != code && code != VK_SHIFT){
 				keyCache += code;
 				lastKeyCode = code;
 			}
-			
+
 			contentWindow.setIgnoreGenViewOnce(keyCache != 0);
-			
+
 			if(code == KeyEvent.VK_BACK_SPACE)
 				autoSymbolExclusion(e);
 			else
 				autoSymbolCompletion(e);
-			
+
 			if(currentFile != null) {
 				//Managing KeyBoard Shortcuts
-				
+
 				if(contentWindow.isVisible()) {
 					if(e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN || e.getKeyCode() == KeyEvent.VK_HOME || e.getKeyCode() == KeyEvent.VK_END
 					|| ";:|\\`~!".contains(e.getKeyChar() + "")) {
@@ -882,23 +881,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		synchronized(Editor.class){
 			if(e.getKeyCode() != VK_SHIFT)
 				keyCache -= e.getKeyCode();
-			
+
 			if(keyCache < 0)
 				keyCache = 0;
-			
+
 			switch(e.getKeyChar()){
 				case ',':
 				insert(" ", getCaretPosition());
 				return;
 				default:
 			}
-			
+
 			if(currentFile != null) {
 				//Code Assist
 				char c = e.getKeyChar();
@@ -911,12 +910,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			}
 		}
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		
+
 	}
-	
+
 	//Managing Smart type code completion
 	private void autoSymbolExclusion(KeyEvent e) {
 		try {
@@ -948,7 +947,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			//ex.printStackTrace();
 		}
 	}
-	
+
 	private void autoSymbolCompletion(KeyEvent e) {
 		try {
 			switch (e.getKeyChar()) {
@@ -984,7 +983,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			//ex.printStackTrace();
 		}
 	}
-	
+
 	public class FindAndReplace extends JComponent{
 		public ReplaceToolBar replaceToolBar;
 		public FindAndReplace(){
@@ -993,20 +992,20 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			replaceToolBar = new ReplaceToolBar(Editor.this);
 			add(replaceToolBar, BorderLayout.CENTER);
 			setVisible(false);
-			
+
 		}
 		@Override
 		public void setVisible(boolean value){
 			try{
 				replaceToolBar.getSearchContext().setMarkAll(value);
 			}
-			catch(Exception e){ 
+			catch(Exception e){
 				System.err.println(e);
 			}
 			super.setVisible(value);
 		}
 	}
-	
+
 	@Override
 	public void searchEvent(SearchEvent e) {
 		SearchEvent.Type type = e.getType();
@@ -1015,23 +1014,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		switch (type) {
 			default:
 			case MARK_ALL:
-				result = SearchEngine.markAll(this, context);
-				break;
+			result = SearchEngine.markAll(this, context);
+			break;
 			case FIND:
-				result = SearchEngine.find(this, context);
-				if (!result.wasFound() || result.isWrapped()) {
-					javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
-				}
-				break;
+			result = SearchEngine.find(this, context);
+			if (!result.wasFound() || result.isWrapped()) {
+				javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
+			}
+			break;
 			case REPLACE:
-				result = SearchEngine.replace(this, context);
-				if (!result.wasFound() || result.isWrapped()) {
-					javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
-				}
-				break;
+			result = SearchEngine.replace(this, context);
+			if (!result.wasFound() || result.isWrapped()) {
+				javax.swing.UIManager.getLookAndFeel().provideErrorFeedback(this);
+			}
+			break;
 			case REPLACE_ALL:
-				result = SearchEngine.replaceAll(this, context);
-				break;
+			result = SearchEngine.replaceAll(this, context);
+			break;
 		}
 		String text;
 		if (result.wasFound()) {
@@ -1064,7 +1063,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		screen.focussedEditor = Editor.this;
 		contentWindow.setVisible(false);
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 		if(lastSearchContext != null){
@@ -1075,32 +1073,32 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		
+
 	}
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		
+
 	}
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		
+
 	}
-	
+
 	@Override
 	public void focusGained(FocusEvent e){
 		screen.focussedEditor = Editor.this;
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 	}
-	
+
 	@Override
 	public void focusLost(FocusEvent e){
 		ToolMenu.getPathBox().setPath(null);
 	}
-	
+
 	public FindAndReplace getFAndR() {
 		return fAndR;
 	}
-	
+
 	public RTextScrollPane getAttachment() {
 		return scrollPane;
 	}

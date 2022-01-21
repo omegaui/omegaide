@@ -44,7 +44,8 @@ public class IndentationFramework extends AbstractIndentationFramework{
 		boolean needsExtraTab = false;
 		boolean containsEqual = false;
 		for(String token : lines){
-			token = token.trim();
+			if(!token.startsWith("//"))
+				token = token.trim();
 			lineN++;
 			if(lineN <= caretLineNumber)
 				caretPos += (tabs/textArea.getTabSize());
@@ -56,6 +57,7 @@ public class IndentationFramework extends AbstractIndentationFramework{
 			
 			if(!containsEqual)
 				tabs -= count('}', token);
+			
 			if(token.startsWith("*"))
 				token = " " + token;
 			

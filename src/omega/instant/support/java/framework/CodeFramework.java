@@ -80,7 +80,8 @@ public class CodeFramework extends AbstractCodeFramework{
 				value = createHints(code);
 			}
 			catch(Exception ex){
-				ex.printStackTrace();
+				System.err.println("A Parse Exception occurred at JavaCodeFramework, just ignore this message!");
+//				ex.printStackTrace();
 			}
 			finally {
 				resolving = false;

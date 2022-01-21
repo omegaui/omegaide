@@ -1,20 +1,20 @@
 /**
-  * Reads Java Source Files
-  * Copyright (C) 2021 Omega UI
+ * Reads Java Source Files
+ * Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.assist;
 import omega.instant.support.java.management.JDKManager;
@@ -59,7 +59,7 @@ public class SourceReader {
 			return get();
 		}
 	}
-	
+
 	public String code;
 	public String pack;
 	public String access;
@@ -74,17 +74,18 @@ public class SourceReader {
 	public LinkedList<SourceReader> internalReaders = new LinkedList<>();
 	public LinkedList<Import> imports = new LinkedList<>();
 	public LinkedList<DataBlock> dataBlocks = new LinkedList<>();
-	
+
 	public volatile boolean recordingInternal;
-	
+
 	public SourceReader(String code){
 		this.code = code;
 		try {
 			read();
 		}
 		catch(Exception e) {
-		     e.printStackTrace();
-     	}
+			System.err.println("A Parse Exception occurred at JavaSourceReader, just ignore this message!");
+			//e.printStackTrace();
+		}
 	}
 
 	public SourceReader(String code, boolean readOnlyImports) {
@@ -100,14 +101,14 @@ public class SourceReader {
 		recordingInternal = false;
 		boolean commentStarts = false;
 		boolean canReadImports = true;
-          LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
-          int lineN = 0;
+		LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
+		int lineN = 0;
 		for(String line : tokens){
 			lineN++;
-               //Skipping Single Character like }, etc
-               if(line.trim().length() <= 1 && !line.trim().equals("}"))
-                    continue;
-               
+			//Skipping Single Character like '}', etc
+			if(line.trim().length() <= 1 && !line.trim().equals("}"))
+				continue;
+
 			//Skipping Strings and characters
 			String cLine = line;
 			line = "";
@@ -146,14 +147,15 @@ public class SourceReader {
 				commentStarts = false;
 				continue;
 			}
-			else if(commentStarts) continue;
+			else if(commentStarts)
+				continue;
 			if(line.startsWith("import ") && canReadImports){
 				String im = line.substring(line.indexOf(' ') + 1, line.indexOf(';')).trim();
 				String pack = im.substring(0, im.lastIndexOf('.'));
 				String name = im.substring(im.lastIndexOf('.') + 1);
-				if(pack.equals("java.lang")) continue;
+				if(pack.equals("java.lang"))
+					continue;
 				if(name.equals("*") && !JDKManager.reading){
-
 					if(line.contains(" static ")) {
 						if(CodeFramework.isSource(pack)) {
 							SourceReader reader = new SourceReader(pack);
@@ -199,8 +201,8 @@ public class SourceReader {
 					type = "enum";
 				else if(line.contains("interface "))
 					type = "interface";
-                else if(line.contains("record "))
-                     type = "record";
+				else if(line.contains("record "))
+					type = "record";
 				if(line.contains("@interface "))
 					type = "@interface";
 				if(!type.equals("")){
@@ -212,7 +214,8 @@ public class SourceReader {
 							access = part.substring(0, part.indexOf(' ')).trim();
 							modifier = part.substring(part.indexOf(' ') + 1).trim();
 						}
-						else access = part;
+						else
+							access = part;
 					}
 					int index = line.indexOf(type) + type.length();
 					int indexAfter = line.indexOf('\n');
@@ -245,7 +248,7 @@ public class SourceReader {
 						else{
 							if(line.contains("{"))
 								indexAfter = line.indexOf('{');
-							else 
+							else
 								indexAfter = line.indexOf('\n');
 							parent = line.substring(extendsI + 1, indexAfter).trim();
 						}
@@ -270,7 +273,7 @@ public class SourceReader {
 				}
 			}
 		}
-     	addNeighbourImports();
+		addNeighbourImports();
 	}
 
 	public void read(){
@@ -287,17 +290,17 @@ public class SourceReader {
 		String internalCode = "";
 		String blockCode = "";
 		LinkedList<String> tokens = CodeTokenizer.tokenize(code, '\n');
-          int lineN = 0;
-          JDKManager.javaLangPack.forEach(im->{
-               imports.add(new Import(im.getPackage(), im.getClassName()));
-          });
-          for(int i = 0; i < tokens.size(); i++){
-               lineN++;
-               String line = tokens.get(i);
-               //Skipping Single Words
-               if(line.trim().length() <= 1 && !line.trim().equals("}")){
-                    continue;
-               }
+		int lineN = 0;
+		JDKManager.javaLangPack.forEach(im->{
+			imports.add(new Import(im.getPackage(), im.getClassName()));
+		});
+		for(int i = 0; i < tokens.size(); i++){
+			lineN++;
+			String line = tokens.get(i);
+			//Skipping Single Words
+			if(line.trim().length() <= 1 && !line.trim().equals("}")){
+				continue;
+			}
 			//Skipping Strings and characters
 			String cLine = line;
 			line = "";
@@ -327,9 +330,9 @@ public class SourceReader {
 				}
 			}
 			//Skipping Comments
-               
+
 			if(line.startsWith("//")) {
-			     continue;
+				continue;
 			}
 			if(line.startsWith("/*")){
 				commentStarts = true;
@@ -340,7 +343,7 @@ public class SourceReader {
 				continue;
 			}
 			else if(commentStarts) {
-			     continue;
+				continue;
 			}
 			//Reading code
 			//Counting Braces for InternalReaders
@@ -348,8 +351,8 @@ public class SourceReader {
 			if(line.contains("}")) internalCount -= CodeFramework.count(line, '}');
 			//Balancing OpenBraces
 			if(line.contains("{")) openBracesCount += CodeFramework.count(line, '{');
-               //System.out.println(line);
-               //System.out.println(line + " Line " + lineN + " of "+ tokens.size() + "-->\' " + openBracesCount + " \', Comment=" + commentStarts);
+			//System.out.println(line);
+			//System.out.println(line + " Line " + lineN + " of "+ tokens.size() + "-->\' " + openBracesCount + " \', Comment=" + commentStarts);
 			//System.out.println(line+", count "+openBracesCount);
 			//Unpacking Prototype_
 			if(line.startsWith("import ") && line.endsWith(";") && canReadImports){
@@ -403,8 +406,8 @@ public class SourceReader {
 					type = "enum";
 				else if(line.contains("interface "))
 					type = "interface";
-                    else if(line.contains("record "))
-                         type = "record";
+				else if(line.contains("record "))
+					type = "record";
 				if(line.contains("@interface "))
 					type = "@interface";
 				if(type.equals("record")){
@@ -431,7 +434,7 @@ public class SourceReader {
 							modifier = part.substring(part.indexOf(' ') + 1).trim();
 						}
 						else access = part;
-					}
+						}
 					int index = line.indexOf(type) + type.length();
 					int indexAfter = line.indexOf('\n');
 					if(line.contains("{"))
@@ -464,7 +467,7 @@ public class SourceReader {
 							if(line.contains("{"))
 								indexAfter = line.indexOf('{');
 							else indexAfter = line.indexOf('\n');
-							parent = line.substring(extendsI + 1, indexAfter).trim();
+								parent = line.substring(extendsI + 1, indexAfter).trim();
 						}
 					}
 					if(line.contains("implements") && !line.contains("extends")){
@@ -508,7 +511,7 @@ public class SourceReader {
 			if(readBlock && !recordingInternal){
 				blockCode += line + "\n";
 			}
-               line = line.trim();
+			line = line.trim();
 			if(line.contains(" ") && !isInnerLine(line)){
 				String cL = line;
 				if(cL.contains("=")) cL = cL.substring(0, cL.indexOf('=')).trim();
@@ -530,13 +533,13 @@ public class SourceReader {
 										access = type;
 										type = "";
 									}
-                                             if(name.contains(".")) continue;
-                                             type = evaluateType(type);
-                                             name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
-                                             if(type != null){
-									     dataMembers.add(new DataMember(access, mods, type, name + "()", parameters, lineN));
-						     			ownedDataMembers.add(dataMembers.getLast());
-                                             }
+									if(name.contains(".")) continue;
+									type = evaluateType(type);
+									name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
+									if(type != null){
+										dataMembers.add(new DataMember(access, mods, type, name + "()", parameters, lineN));
+										ownedDataMembers.add(dataMembers.getLast());
+									}
 									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -547,13 +550,13 @@ public class SourceReader {
 										access = type;
 										type = "";
 									}
-                                             if(name.contains(".")) continue;
-                                             type = evaluateType(type);
-                                             name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
-                                             if(type != null){
-									     dataMembers.add(new DataMember(access, "", type, name + "()", parameters, lineN));
-						     			ownedDataMembers.add(dataMembers.getLast());
-                                             }
+									if(name.contains(".")) continue;
+									type = evaluateType(type);
+									name = name.contains("(") ? name.substring(0, name.indexOf('(')).trim() : name;
+									if(type != null){
+										dataMembers.add(new DataMember(access, "", type, name + "()", parameters, lineN));
+										ownedDataMembers.add(dataMembers.getLast());
+									}
 									dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 									readBlock = true;
 									blockCode += line + "\n";
@@ -561,10 +564,10 @@ public class SourceReader {
 							}
 							else{
 								String type = cL;
-                                        if(name.contains(".")) 
-                                             continue;
+								if(name.contains("."))
+									continue;
 								dataMembers.add(new DataMember(name.equals(className) ? type : "", "", name.equals(className) ? "" : type, name + "()", parameters, lineN));
-						     	ownedDataMembers.add(dataMembers.getLast());
+								ownedDataMembers.add(dataMembers.getLast());
 								dataBlocks.add(new DataBlock(this, dataMembers.getLast()));
 								readBlock = true;
 								blockCode += line + "\n";
@@ -572,18 +575,18 @@ public class SourceReader {
 						}
 					}
 					catch(Exception e) {
-                              
-				     }
+
+					}
 				}
 				else if(openBracesCount == 0){
-                         if(cL.startsWith("final ")){
-                              cL = cL.substring(cL.indexOf(' ') + 1).trim();
-                         }
+					if(cL.startsWith("final ")){
+						cL = cL.substring(cL.indexOf(' ') + 1).trim();
+					}
 					if(cL.trim().endsWith(";")){
 						cL = cL.substring(0, cL.lastIndexOf(';')).trim();
 					}
 					String name = cL.substring(cL.lastIndexOf(' ') + 1).trim();
-                         if(!cL.contains(" ")) continue;
+					if(!cL.contains(" ")) continue;
 					cL = cL.substring(0, cL.lastIndexOf(' '));
 					if(cL.contains(" ")){
 						String type = cL.substring(cL.lastIndexOf(' ') + 1).trim();
@@ -592,32 +595,32 @@ public class SourceReader {
 							String mods = cL.substring(cL.indexOf(' ') + 1).trim();
 							cL = cL.substring(0, cL.indexOf(' ')).trim();
 							String access = cL;
-                                   if(name.contains(".")) continue;
-                                   type = evaluateType(type);
-                                   if(type != null){
-							     dataMembers.add(new DataMember(access, mods, type, name, null, lineN));
-						     	ownedDataMembers.add(dataMembers.getLast());
-                                   }
+							if(name.contains(".")) continue;
+							type = evaluateType(type);
+							if(type != null){
+								dataMembers.add(new DataMember(access, mods, type, name, null, lineN));
+								ownedDataMembers.add(dataMembers.getLast());
+							}
 						}
 						else{
 							String access = cL;
-                                   if(name.contains(".")) continue;
-                                   type = evaluateType(type);
-                                   if(type != null){
-							     dataMembers.add(new DataMember(access, "", type, name, null, lineN));
-						     	ownedDataMembers.add(dataMembers.getLast());
-                                   }
+							if(name.contains(".")) continue;
+							type = evaluateType(type);
+							if(type != null){
+								dataMembers.add(new DataMember(access, "", type, name, null, lineN));
+								ownedDataMembers.add(dataMembers.getLast());
+							}
 						}
 					}
 					else{
 						String type = cL;
-                              if(name.contains(".")) 
-                                   continue;
-                              type = evaluateType(type);
-                              if(type != null){
-						     dataMembers.add(new DataMember("", "", type, name, null, lineN));
-						     ownedDataMembers.add(dataMembers.getLast());
-                              }
+						if(name.contains("."))
+							continue;
+						type = evaluateType(type);
+						if(type != null){
+							dataMembers.add(new DataMember("", "", type, name, null, lineN));
+							ownedDataMembers.add(dataMembers.getLast());
+						}
 					}
 				}
 			}
@@ -628,9 +631,9 @@ public class SourceReader {
 					if(blockCode.endsWith("}\n")){
 						blockCode = blockCode.substring(0, blockCode.lastIndexOf('}'));
 					}
-                         if(blockCode.trim().length() > 1){
-					     dataBlocks.getLast().read(blockCode);
-                         }
+					if(blockCode.trim().length() > 1){
+						dataBlocks.getLast().read(blockCode);
+					}
 					blockCode = "";
 					readBlock = false;
 				}
@@ -639,14 +642,14 @@ public class SourceReader {
 		String parent = this.parent;
 		if(!parent.contains("."))
 			parent = getPackage(parent);
-          if(parent == null)
-               return;
+		if(parent == null)
+			return;
 		if(!CodeFramework.isSource(parent)) {
 			ByteReader byteReader = null;
 			if(Assembly.has(parent))
-			     byteReader = Assembly.getReader(parent);
-			else 
-			     byteReader = omega.Screen.getProjectFile().getJDKManager().prepareReader(parent);
+				byteReader = Assembly.getReader(parent);
+			else
+				byteReader = omega.Screen.getProjectFile().getJDKManager().prepareReader(parent);
 			byteReader.dataMembers.forEach(this::offer);
 		}
 		else {
@@ -659,10 +662,10 @@ public class SourceReader {
 					f = getPackage(f);
 				if(!CodeFramework.isSource(f)) {
 					ByteReader byteReader = null;
-					if(Assembly.has(f)) 
-					     byteReader = Assembly.getReader(f);
-					else 
-					     byteReader = omega.Screen.getProjectFile().getJDKManager().prepareReader(f);
+					if(Assembly.has(f))
+						byteReader = Assembly.getReader(f);
+					else
+						byteReader = omega.Screen.getProjectFile().getJDKManager().prepareReader(f);
 					byteReader.dataMembers.forEach(this::offer);
 				}
 				else {
@@ -671,7 +674,7 @@ public class SourceReader {
 				}
 			}
 		}
-          addNeighbourImports();
+		addNeighbourImports();
 	}
 
 	public void offer(DataMember d) {
@@ -685,12 +688,12 @@ public class SourceReader {
 
 	public static boolean isInnerLine(String line){
 		return checkLineForStatement(line, "else")
-		     || checkLineForStatement(line, "if(")
-	          || checkLineForStatement(line, "for(")
-	          || checkLineForStatement(line, "do")
-	          || checkLineForStatement(line, "switch(")
-	          || checkLineForStatement(line, "return ") 
-	          || checkLineForStatement(line, "case");
+		|| checkLineForStatement(line, "if(")
+		|| checkLineForStatement(line, "for(")
+		|| checkLineForStatement(line, "do")
+		|| checkLineForStatement(line, "switch(")
+		|| checkLineForStatement(line, "return ")
+		|| checkLineForStatement(line, "case");
 	}
 
 	public static boolean checkLineForStatement(String line, String statement){
@@ -721,8 +724,8 @@ public class SourceReader {
 
 	public String getType(String name){
 		for(DataMember m : dataMembers){
-			if(m.name.equals(name)) 
-			     return m.type;
+			if(m.name.equals(name))
+				return m.type;
 		}
 		return null;
 	}
@@ -735,18 +738,18 @@ public class SourceReader {
 		return false;
 	}
 
-     public String evaluateType(String type){
-	     if(type != null && !type.equals("") && " var byte short int float double boolean long char void ".contains(type))
-               return type;
-          type = getPackage(type);
-          return (type != null && !type.equals("")) ? type : null;
-     }
+	public String evaluateType(String type){
+		if(type != null && !type.equals("") && " var byte short int float double boolean long char void ".contains(type))
+			return type;
+		type = getPackage(type);
+		return (type != null && !type.equals("")) ? type : null;
+	}
 
 	public String getPackage(String className){
-          if(className.contains("."))
-               return className;
+		if(className.contains("."))
+			return className;
 		for(Import im : imports){
-			if(im.name.equals(className)) 
+			if(im.name.equals(className))
 				return im.get();
 		}
 		if(CodeFramework.isSource(pack + "." + className))
@@ -759,35 +762,35 @@ public class SourceReader {
 			className = Screen.getProjectFile().getJDKManager().checkInResourceRoots(pack, className);
 		}
 		catch(Exception e){
-			
+
 		}
 		return className;
 	}
 
-     public void addNeighbourImports(){
-     	String pack = this.pack;
-     	if(pack == null)
-     		return;
-          StringTokenizer tok = new StringTokenizer(pack, ".");
-          String path = Screen.getProjectFile().getProjectPath();
-          if(path == null)
-               return;
-          pack = path + File.separator + "src";
-          while(tok.hasMoreTokens()){
-               pack += File.separator + tok.nextToken();
-          }
-          File file = new File(pack);
-          File[] F = file.listFiles();
-          if(F == null || F.length == 0)
-          	return;
-          for(File f : F){
-               String name = f.getName();
-               if(name.endsWith(".java")){
-                    name = name.substring(0, name.indexOf('.'));
-                    imports.add(new Import(this.pack, name));
-               }
-          }
-     }
+	public void addNeighbourImports(){
+		String pack = this.pack;
+		if(pack == null)
+			return;
+		StringTokenizer tok = new StringTokenizer(pack, ".");
+		String path = Screen.getProjectFile().getProjectPath();
+		if(path == null)
+			return;
+		pack = path + File.separator + "src";
+		while(tok.hasMoreTokens()){
+			pack += File.separator + tok.nextToken();
+		}
+		File file = new File(pack);
+		File[] F = file.listFiles();
+		if(F == null || F.length == 0)
+			return;
+		for(File f : F){
+			String name = f.getName();
+			if(name.endsWith(".java")){
+				name = name.substring(0, name.indexOf('.'));
+				imports.add(new Import(this.pack, name));
+			}
+		}
+	}
 
 	public LinkedList<DataMember> getConstructors(){
 		LinkedList<DataMember> constructors = new LinkedList<>();

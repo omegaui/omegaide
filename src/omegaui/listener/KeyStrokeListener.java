@@ -126,6 +126,9 @@ public class KeyStrokeListener implements KeyListener{
 			for(Key kx : this.keys){
 				huntKey(kx.key).setPressed(false);
 			}
+			for(Key kx : this.stopKeys){
+				huntKey(kx.key).setPressed(false);
+			}
 		}
 
 		public boolean containsStrokeKey(Key key){
