@@ -27,12 +27,12 @@ import omega.instant.support.java.assist.CodeTokenizer;
 import java.util.LinkedList;
 
 public class IndentationFramework extends AbstractIndentationFramework{
-	
+
 	@Override
 	public boolean canIndent(Editor editor) {
 		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java");
 	}
-	
+
 	@Override
 	public void indent(Editor textArea){
 		LinkedList<String> lines = CodeTokenizer.tokenizeWithoutLoss(textArea.getText(), '\n');
@@ -49,18 +49,18 @@ public class IndentationFramework extends AbstractIndentationFramework{
 			lineN++;
 			if(lineN <= caretLineNumber)
 				caretPos += (tabs/textArea.getTabSize());
-			
+
 			if(count('{', token) == count('}', token))
 				containsEqual = true;
 			else
 				containsEqual = false;
-			
+
 			if(!containsEqual)
 				tabs -= count('}', token);
-			
+
 			if(token.startsWith("*"))
 				token = " " + token;
-			
+
 			if(token.equals("\n") || token.equals("")){
 				textArea.append("\n");
 			}
@@ -71,10 +71,10 @@ public class IndentationFramework extends AbstractIndentationFramework{
 				textArea.append(getTabs(tabs) + getTabs(1) + token + "\n");
 				needsExtraTab = false;
 			}
-			
+
 			if(!containsEqual)
 				tabs += count('{', token);
-			
+
 			if((token.startsWith("if") && !token.contains(";")) || token.startsWith("while") || token.startsWith("for") || token.startsWith("else")){
 				if(count('{', token) == 0 && count('(', token) == count(')', token))
 					needsExtraTab = true;
@@ -82,10 +82,11 @@ public class IndentationFramework extends AbstractIndentationFramework{
 		}
 		textArea.setCaretPosition(caretPos + 1);
 	}
-	/**
-	 * Counts the char 'c' in specified line excluding the strings and characters
-	 */
+
 	public static int count(char c, String line){
+		if(line.trim().startsWith("//"))
+			return 0;
+
 		int count = 0;
 		boolean instr = false;
 		for(int i = 0; i < line.length(); i++){
@@ -99,6 +100,7 @@ public class IndentationFramework extends AbstractIndentationFramework{
 		}
 		return count;
 	}
+	
 	public static String getTabs(int n){
 		String res = "";
 		while(n-- > 0)
