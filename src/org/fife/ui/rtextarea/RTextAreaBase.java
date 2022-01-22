@@ -702,6 +702,7 @@ public abstract class RTextAreaBase extends JTextArea {
 			Graphics scratchGraphics = g.create();
 			try {
 				ui.update(scratchGraphics, this);
+			} catch(Exception e){
 			} finally {
 				scratchGraphics.dispose();
 			}
@@ -910,7 +911,7 @@ try {
 	 * @see #getCurrentLineHighlightColor
 	 */
 	public void setCurrentLineHighlightColor(Color color) {
-		color = omega.io.UIManager.isDarkMode() ? new Color(249, 56, 0, 20) : new Color(0, 0, 255, 20);
+		color = omega.io.UIManager.isDarkMode() ? Color.decode("#323232") : new Color(0, 0, 255, 20);
 		if (color==null) {
 			throw new NullPointerException();
 		}

@@ -17,15 +17,60 @@
 */
 
 package omega.instant.support.java.parser;
+import java.util.Locale;
+
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import javax.tools.Diagnostic;
+
+import jdk.jshell.Diag;
+
 import omega.ui.component.Editor;
 
 import org.fife.ui.rtextarea.GutterIconInfo;
 public class JavaSyntaxParserGutterIconInfo {
 	public GutterIconInfo gutterIconInfo;
 	public Editor editor;
+	public Diagnostic d;
+	public volatile boolean applied = false;
 
 	public JavaSyntaxParserGutterIconInfo(GutterIconInfo gutterIconInfo, Editor editor){
 		this.gutterIconInfo = gutterIconInfo;
 		this.editor = editor;
+	}
+	
+	public JavaSyntaxParserGutterIconInfo(Editor editor, Diagnostic d){
+		this.gutterIconInfo = gutterIconInfo;
+		this.editor = editor;
+		this.d = d;
+	}
+
+	public void apply(){
+		if(applied)
+			return;
+		try{
+			ImageIcon icon = new ImageIcon(JavaSyntaxParser.getSuitableIcon(d.getKind()));
+			icon = new ImageIcon(icon.getImage().getScaledInstance(editor.getFont().getSize(), editor.getFont().getSize(), Image.SCALE_SMOOTH));
+			gutterIconInfo = editor.getAttachment().getGutter().addLineTrackingIcon((int)(d.getLineNumber() - 1), icon, d.getMessage(Locale.ROOT));
+			applied = true;
+		}
+		catch(Exception e){
+//			e.printStackTrace();
+		}
+	}
+
+	public void remove(){
+		if(gutterIconInfo != null)
+			editor.getAttachment().getGutter().removeTrackingIcon(gutterIconInfo);
+	}
+
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof JavaSyntaxParserGutterIconInfo info){
+			return info.gutterIconInfo == gutterIconInfo && editor.currentFile.equals(info.editor.currentFile);
+		}
+		return super.equals(obj);
 	}
 }

@@ -73,6 +73,9 @@ public class FileOperationManager {
 	
 	public synchronized static void writeNewTextToFile(String text, File targetFile){
 		try{
+			if(!targetFile.exists())
+				targetFile.getParentFile().mkdirs();
+			
 			PrintWriter writer = new PrintWriter(targetFile);
 			writer.println(text);
 			writer.close();

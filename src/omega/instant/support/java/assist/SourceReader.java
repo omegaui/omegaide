@@ -168,11 +168,13 @@ public class SourceReader {
 						}
 						else {
 							ByteReader reader = omega.Screen.getProjectFile().getJDKManager().prepareReader(pack);
-							for(DataMember m : reader.getDataMembers("static")) {
-								String nameX = m.name;
-								if(nameX.contains("()"))
-									nameX = nameX.substring(0, nameX.indexOf('(')).trim();
-								imports.add(new Import(pack, nameX));
+							if(reader != null){
+								for(DataMember m : reader.getDataMembers("static")) {
+									String nameX = m.name;
+									if(nameX.contains("()"))
+										nameX = nameX.substring(0, nameX.indexOf('(')).trim();
+									imports.add(new Import(pack, nameX));
+								}
 							}
 						}
 					}

@@ -17,6 +17,12 @@
 */
 
 package omega.instant.support.java.highlighter;
+import omega.instant.support.java.framework.ImportFramework;
+
+import java.util.LinkedList;
+
+import omega.instant.support.java.assist.SourceReader;
+
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -32,6 +38,11 @@ public class BasicCodeHighlighter {
 	public static Color valueKeyForeColor = glow;
 	public static Color returnKeyForeColor = glow;
 	public static Color javaConstantForeColor = glow;
+
+	public static LinkedList<String> lastClassList;
+	public static String lastText;
+
+	public static Color classColor;
 	static{
 		valueKeyColor = TOOLMENU_COLOR2_SHADE;
 		valueKeyForeColor = TOOLMENU_COLOR2;
@@ -41,19 +52,13 @@ public class BasicCodeHighlighter {
 		
 		javaConstantColor = TOOLMENU_COLOR1_SHADE;
 		javaConstantForeColor = TOOLMENU_COLOR1;
+
+		if(isDarkMode())
+			classColor = Color.decode("#FFC66D");
 	}
 	
 	public static synchronized boolean canComputeBackground(RSyntaxTextArea textArea, Token t){
-		return textArea.getSyntaxEditingStyle() == textArea.SYNTAX_STYLE_JAVA
-		&& switch(t.getType()){
-			case Token.RESERVED_WORD:
-			case Token.RESERVED_WORD_2:
-			case Token.LITERAL_BOOLEAN:
-			case Token.IDENTIFIER:
-				yield true;
-			default:
-				yield false;
-		};
+		return false;
 	}
 	
 	public static synchronized boolean canComputeForeground(RSyntaxTextArea textArea, Token t){
@@ -69,7 +74,7 @@ public class BasicCodeHighlighter {
 		};
 	}
 	
-	public static synchronized Color computeForegroundColor(Token t){
+	public static synchronized Color computeForegroundColor(RSyntaxTextArea textArea, Token t){
 		String text = t.getLexeme();
 		if(isValueKeyword(text)){
 			return valueKeyForeColor;
@@ -80,10 +85,13 @@ public class BasicCodeHighlighter {
 		else if(isJavaConstant(text)){
 			return javaConstantForeColor;
 		}
+		else if(isDarkMode() && isJavaClass(textArea, text)){
+			return classColor;
+		}
 		return null;
 	}
 	
-	public static synchronized Color computeBackgroundColor(Token t){
+	public static synchronized Color computeBackgroundColor(RSyntaxTextArea textArea, Token t){
 		String text = t.getLexeme();
 		if(isValueKeyword(text)){
 			return valueKeyColor;
@@ -116,5 +124,19 @@ public class BasicCodeHighlighter {
 			}
 		}
 		return containsLetter;
+	}
+
+	public static synchronized boolean isJavaClass(RSyntaxTextArea textArea, String text){
+		LinkedList<String> clazzez = null;
+		if(lastText != null && lastText.equals(textArea.getText()))
+			clazzez = lastClassList;
+		else
+			clazzez = lastClassList = ImportFramework.fastListContainedClasses(lastText = textArea.getText());
+		for(String name : clazzez){
+			if(name.equals(text))
+				return true;
+		}
+		
+		return false;
 	}
 }

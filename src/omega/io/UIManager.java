@@ -128,7 +128,11 @@ public class UIManager extends DataBase {
 	public static Color TOOLMENU_COLOR6 = TOOLMENU_COLOR3;
 	public static Color TOOLMENU_COLOR6_SHADE = TOOLMENU_COLOR3_SHADE;
 	public static Color TOOLMENU_GRADIENT = new Color(200, 200, 200, 100);
+	
 	public static Color ALPHA = new Color(0, 0, 0, 0);
+	
+	public static Color LINE_NUMBER_COLOR = Color.BLACK;
+	public static Color CURRENT_LINE_NUMBER_COLOR = TOOLMENU_COLOR1;
 
 	//Some Extra Colors of RGB shades
 	public static final Color color1 = new Color(255, 0, 0, 20);
@@ -170,7 +174,7 @@ public class UIManager extends DataBase {
 	public static void loadHighlight(){
 		if(isDarkMode()){
 			glow = Color.WHITE;
-			highlight = Color.decode("#88580B");
+			highlight = Color.decode("#FFC66D");
 		}
 		else {
 			glow = Color.BLACK;
@@ -210,6 +214,10 @@ public class UIManager extends DataBase {
 				TOOLMENU_COLOR6 = Color.decode("#24d673");
 				TOOLMENU_COLOR6_SHADE = new Color(TOOLMENU_COLOR6.getRed(), TOOLMENU_COLOR6.getGreen(), TOOLMENU_COLOR6.getBlue(), 40);
 				TOOLMENU_GRADIENT = new Color(51, 51, 51, 140);
+
+				LINE_NUMBER_COLOR = Color.decode("#606364");
+				CURRENT_LINE_NUMBER_COLOR = Color.decode("#A4A3A1");
+				
 				back1 = Color.decode("#252526");
 				back2 = Color.decode("#2A2A2A");
 				back3 = Color.decode("#303030");

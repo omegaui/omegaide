@@ -83,6 +83,11 @@ implements MouseInputListener {
 	private int lineNumberingStartIndex;
 	
 	/**
+	* The color of line number.
+	*/
+	private Color numberColor;
+	
+	/**
 	* The color of current line number.
 	*/
 	private Color currentLineNumberColor;
@@ -130,6 +135,7 @@ implements MouseInputListener {
 		super(textArea);
 		
 		if (numberColor!=null) {
+			this.numberColor = numberColor;
 			setForeground(numberColor);
 		}
 		else {
@@ -383,7 +389,7 @@ implements MouseInputListener {
 					g.setColor(currentLineNumberColor);
 				}
 				else{
-					g.setColor(getForeground());
+					g.setColor(numberColor);
 				}
 				g.drawString(number, rhs-width,y);
 				y += cellHeight;
@@ -413,7 +419,7 @@ implements MouseInputListener {
 					g.setColor(currentLineNumberColor);
 				}
 				else{
-					g.setColor(getForeground());
+					g.setColor(numberColor);
 				}
 				g.drawString(number, rhsBorderWidth, y);
 				y += cellHeight;
@@ -509,7 +515,7 @@ implements MouseInputListener {
 		
 		// Keep painting lines until our y-coordinate is past the visible
 		// end of the text area.
-		g.setColor(getForeground());
+		g.setColor(numberColor);
 		g.setFont(new Font(omega.io.UIManager.fontName, omega.io.UIManager.fontState, omega.io.UIManager.fontSize));
 		
 		int caretLineNumber = textArea.getCaretLineNumber() + 1;
@@ -523,7 +529,7 @@ implements MouseInputListener {
 			if (currentLineHighlighted && topLine==currentLine) {
 				g.setColor(textArea.getCurrentLineHighlightColor());
 				g.fillRect(0,y, width,(r.y+r.height)-y);
-				g.setColor(getForeground());
+				g.setColor(numberColor);
 			}
 			*/
 			
@@ -534,7 +540,7 @@ implements MouseInputListener {
 				g.setColor(currentLineNumberColor);
 			}
 			else{
-				g.setColor(getForeground());
+				g.setColor(numberColor);
 			}
 			if (ltr) {
 				int strWidth = metrics.stringWidth(number);

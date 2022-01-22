@@ -36,9 +36,29 @@ import javax.swing.text.Document;
 
 import java.util.LinkedList;
 public class ImportFramework {
+	
 	//The Object of the Window that lets you choose the imports
 	//when classes in different packages have a same name.
 	private static ImportResolver imR = new ImportResolver();
+	
+	/**
+	 * Prepares an arbitary list of imported classes in the given text
+	 */
+	public static LinkedList<String> fastListContainedClasses(String text){
+		LinkedList<String> imports = new LinkedList<>();
+		text = text.substring(0, text.indexOf("public "));
+		LinkedList<String> lines = CodeTokenizer.tokenize(text, '\n');
+		for(String line : lines){
+			if(!line.startsWith("import "))
+				continue;
+			text = line.substring(line.lastIndexOf('.') + 1, line.indexOf(';'));
+			if(text.isBlank())
+				continue;
+			if(Character.isLetter(text.charAt(0)))
+				imports.add(text);
+		}
+		return imports;
+	}
 	
 	/*
 	* The constant holding the allowed symbols in Identifier naming rules

@@ -1050,7 +1050,7 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 		Color c = null;
 		
 		if(omega.instant.support.java.highlighter.BasicCodeHighlighter.canComputeBackground(this, token)){
-			c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeBackgroundColor(token);
+			c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeBackgroundColor(this, token);
 			if(c != null)
 				return c;
 		}
@@ -1233,7 +1233,7 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 			return hyperlinkFG;
 		}
 		if(omega.instant.support.java.highlighter.BasicCodeHighlighter.canComputeForeground(this, t)){
-			Color c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeForegroundColor(t);
+			Color c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeForegroundColor(this, t);
 			if(c != null)
 				return c;
 		}

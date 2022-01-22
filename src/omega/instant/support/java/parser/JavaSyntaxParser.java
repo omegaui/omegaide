@@ -65,7 +65,6 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 	
 	private static LinkedList<Highlight> highlights = new LinkedList<>();
 	private static LinkedList<JavaErrorData> datas = new LinkedList<>();
-	private static LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos = new LinkedList<>();
 	
 	private int errorCount;
 	private int warningCount;
@@ -99,10 +98,10 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			warningCount = 0;
 			
 			parsing = true;
-			DiagnosticCollector<JavaFileObject> diagnostics = compile();
+			DiagnosticCollector<JavaFileObject> diagnostics = compileSilently();
 			parsing = false;
-			
-			resetHighlights();
+
+			LinkedList<Highlight> highlights = new LinkedList<>();
 			
 			if(diagnostics == null || diagnostics.getDiagnostics() == null)
 				return;
@@ -130,23 +129,35 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 					editor = Screen.getScreen().loadFile(new File(filePath));
 				}
 				
-				try{
-					ImageIcon icon = new ImageIcon(getSuitableIcon(d.getKind()));
-					icon = new ImageIcon(icon.getImage().getScaledInstance(editor.getFont().getSize(), editor.getFont().getSize(), Image.SCALE_SMOOTH));
-					gutterIconInfos.add(new JavaSyntaxParserGutterIconInfo(editor.getAttachment().getGutter().addLineTrackingIcon((int)(d.getLineNumber() - 1), icon, d.getMessage(Locale.ROOT)), editor));
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-				
 				SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(getSuitableColor(d.getKind()));
 				painter.setUseFlatLine(d.getKind() == Kind.WARNING);
 				
 				Highlight h = new Highlight(editor, painter, start, end, d.getKind() != Kind.ERROR);
-				h.apply();
-				highlights.add(h);
+				h.setDiagnosticData(d);
+				h.setGutterIconInfo(new JavaSyntaxParserGutterIconInfo(editor, d));
+				
+				highlights.add(huntHighlight(h));
 			}
-			
+
+			LinkedList<Highlight> removableHighlights = new LinkedList<>();
+			mainx:
+			for(Highlight hx : this.highlights){
+				for(Highlight hy : highlights){
+					if(hx.equals(hy))
+						continue mainx;
+				}
+				removableHighlights.add(hx);
+			}
+
+			resetHighlights(removableHighlights);
+
+			this.highlights = highlights;
+
+			this.highlights.forEach(hx->{
+				hx.applyLineColor((int)hx.getDiagnosticData().getLineNumber() - 1, TOOLMENU_COLOR2_SHADE);
+				hx.apply();
+			});
+
 			datas.forEach(data->data.resetData());
 			datas.clear();
 			
@@ -182,14 +193,42 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 				omega.Screen.getScreen().getToolMenu().setTask(totalErrors + " Error(s), " + totalWarnings + " Warning(s)");
 			else
 				omega.Screen.getScreen().getToolMenu().setTask("Currently Opened Codes are Error Free!");
-			
-			System.gc();
 		}).start();
 	}
 
 	@Override
 	public int getLanguageTag() {
 		return LanguageTagView.LANGUAGE_TAG_JAVA;
+	}
+	
+	public DiagnosticCollector<JavaFileObject> compileSilently(){
+		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+		try{
+			LinkedList<String> files = prepareBuildSystem();
+			
+			if(files.isEmpty()) {
+				return null;
+			}
+			
+			fileManager = compiler.getStandardFileManager(null, null, null);
+			
+			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
+			
+			LinkedList<String> options = new LinkedList<>();
+			options.add("-d");
+			options.add(".omega-ide" + File.separator + "buildspace" + File.separator + "bin");
+			
+			getArgs(true).forEach(options::add);
+			
+			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
+			
+			fileManager.close();
+			System.gc();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return diagnostics;
 	}
 	
 	public DiagnosticCollector<JavaFileObject> compile(){
@@ -201,7 +240,6 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 				return null;
 			}
 			
-		
 			fileManager = compiler.getStandardFileManager(null, null, null);
 			
 			Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(files);
@@ -210,7 +248,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			options.add("-d");
 			options.add(".omega-ide" + File.separator + "buildspace" + File.separator + "bin");
 			
-			getArgs().forEach(options::add);
+			getArgs(false).forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
 			
@@ -265,7 +303,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			options.add("-d");
 			options.add(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 			
-			getArgs().forEach(options::add);
+			getArgs(false).forEach(options::add);
 			
 			compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits).call();
 
@@ -305,7 +343,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			options.add("-d");
 			options.add(Screen.getProjectFile().getProjectPath() + File.separator + "bin");
 			
-			getArgs().forEach(options::add);
+			getArgs(false).forEach(options::add);
 			
 			ProjectBuilder.optimizeProjectOutputs();
 			
@@ -361,7 +399,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 		}
 	}
 	
-	public static LinkedList<String> getArgs(){
+	public static LinkedList<String> getArgs(boolean silentCall){
 		String depenPath = "";
 		
 		if(!Screen.getProjectFile().getProjectManager().jars.isEmpty()) {
@@ -378,7 +416,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 		if(files != null && files.length != 0) {
 			depenPath += Screen.getProjectFile().getProjectPath() + File.separator + "bin" + omega.Screen.PATH_SEPARATOR;
 		}
-		else{
+		else if(!silentCall){
 			dynamicBuildInfoPopup.locateOnBottomLeft().showIt();
 			Screen.setStatus("Your Must Have Build the Whole Project at least Once for carrying out correct JavaSyntaxParsing and Instant Run", 0, IconManager.fluentbriefImage);
 		}
@@ -443,8 +481,21 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			h.remove();
 		});
 		highlights.clear();
-		
-		gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
-		omega.Screen.getScreen().getToolMenu().setTask("Hover to See Memory Statistics");
+	}
+	
+	public static void resetHighlights(LinkedList<Highlight> highlights){
+		highlights.forEach(h->{
+			h.editor.javaErrorPanel.setVisible(false);
+			h.remove();
+		});
+		highlights.clear();
+	}
+
+	public static Highlight huntHighlight(Highlight h){
+		for(Highlight hx : highlights){
+			if(hx.equals(h))
+				return hx;
+		}
+		return h;
 	}
 }
