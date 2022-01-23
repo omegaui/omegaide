@@ -258,6 +258,7 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		init();
+		checkState();
 	}
 	
 	private void init() {
@@ -831,6 +832,20 @@ public class ToolMenu extends JPanel {
 		if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
 			Screen.getUniversalSettingsView().setVisible(true);
 	}
+
+	public void checkState(){
+		sep0.setVisible(!isToolMenuCollapsed());
+		sep1.setVisible(!isToolMenuCollapsed());
+		sep3.setVisible(!isToolMenuCollapsed());
+		sep4.setVisible(!isToolMenuCollapsed());
+		sep5.setVisible(!isToolMenuCollapsed());
+		setPreferredSize(new Dimension(screen.getWidth(), isToolMenuCollapsed() ? 55 : 120));
+		setSize(getPreferredSize());
+		if(screen.isVisible()){
+			screen.setVisible(false);
+			screen.setVisible(true);
+		}
+	}
 	
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
@@ -847,6 +862,10 @@ public class ToolMenu extends JPanel {
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new WorkspaceSelector(screen).setVisible(true))
 		.createItem("Animations", IconManager.settingsImage, ()->{
 			Screen.showAnimationsDialog();
+		})
+		.createItem("Toggle ToolMenu", IconManager.fluentsettingsImage, ()->{
+			setToolMenuCollapsed(!isToolMenuCollapsed());
+			checkState();
 		})
 		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
 			consoleSelector.setVisible(true);

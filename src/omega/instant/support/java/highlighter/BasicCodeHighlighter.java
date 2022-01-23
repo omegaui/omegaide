@@ -75,6 +75,7 @@ public class BasicCodeHighlighter {
 			case Token.RESERVED_WORD_2:
 			case Token.LITERAL_BOOLEAN:
 			case Token.IDENTIFIER:
+			case Token.FUNCTION:
 				yield true;
 			default:
 				yield false;
