@@ -129,7 +129,8 @@ public class SideMenu extends JPanel {
 	
 	@Override
 	public void layout(){
-		resize(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava());
+		if(Screen.getProjectFile().getProjectManager() != null)
+			resize(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava());
 		super.layout();
 	}
 }
