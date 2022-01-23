@@ -46,16 +46,21 @@ public class ImportFramework {
 	 */
 	public static LinkedList<String> fastListContainedClasses(String text){
 		LinkedList<String> imports = new LinkedList<>();
-		text = text.substring(0, text.indexOf("public "));
-		LinkedList<String> lines = CodeTokenizer.tokenize(text, '\n');
-		for(String line : lines){
-			if(!line.startsWith("import "))
-				continue;
-			text = line.substring(line.lastIndexOf('.') + 1, line.indexOf(';'));
-			if(text.isBlank())
-				continue;
-			if(Character.isLetter(text.charAt(0)))
-				imports.add(text);
+		try{
+			text = text.substring(0, text.indexOf("public "));
+			LinkedList<String> lines = CodeTokenizer.tokenize(text, '\n');
+			for(String line : lines){
+				if(!line.startsWith("import "))
+					continue;
+				text = line.substring(line.lastIndexOf('.') + 1, line.indexOf(';'));
+				if(text.isBlank())
+					continue;
+				if(Character.isLetter(text.charAt(0)))
+					imports.add(text);
+			}
+		}
+		catch(Exception e){
+			//e.printStackTrace();
 		}
 		return imports;
 	}

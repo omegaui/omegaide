@@ -1049,8 +1049,8 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 	public Color getBackgroundForToken(Token token) {
 		Color c = null;
 		
-		if(omega.instant.support.java.highlighter.BasicCodeHighlighter.canComputeBackground(this, token)){
-			c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeBackgroundColor(this, token);
+		if(omega.instant.support.CodeHighlighters.canComputeBackground(this, token)){
+			c = omega.instant.support.CodeHighlighters.computeBackgroundColor(this, token);
 			if(c != null)
 				return c;
 		}
@@ -1214,7 +1214,7 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 
 	/**
 	 * Returns the foreground color to use when painting a token.
-	 *
+	 * 
 	 * @param t The token.
 	 * @return The foreground color to use for that token.  This
 	 *         value is never <code>null</code>.
@@ -1225,8 +1225,8 @@ public class RSyntaxTextArea extends RTextArea implements SyntaxConstants {
 				(t.isHyperlink() || linkGeneratorResult!=null)) {
 			return hyperlinkFG;
 		}
-		if(omega.instant.support.java.highlighter.BasicCodeHighlighter.canComputeForeground(this, t)){
-			Color c = omega.instant.support.java.highlighter.BasicCodeHighlighter.computeForegroundColor(this, t);
+		if(omega.instant.support.CodeHighlighters.canComputeForeground(this, t)){
+			Color c = omega.instant.support.CodeHighlighters.computeForegroundColor(this, t);
 			if(c != null)
 				return c;
 		}

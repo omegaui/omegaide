@@ -142,6 +142,7 @@ public class Screen extends JFrame {
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
 	private static AnimationsDialog animationsDialog;
+	
 	public Screen() {
 		setUndecorated(true);
 		try {
