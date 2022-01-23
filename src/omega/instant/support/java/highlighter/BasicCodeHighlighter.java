@@ -39,10 +39,12 @@ public class BasicCodeHighlighter {
 	public static Color returnKeyForeColor = glow;
 	public static Color javaConstantForeColor = glow;
 
+	public static Color classColor;
+	public static Color methColor;
+	
 	public static LinkedList<String> lastClassList;
 	public static String lastText;
-
-	public static Color classColor;
+	
 	static{
 		valueKeyColor = TOOLMENU_COLOR2_SHADE;
 		valueKeyForeColor = TOOLMENU_COLOR2;
@@ -53,8 +55,14 @@ public class BasicCodeHighlighter {
 		javaConstantColor = TOOLMENU_COLOR1_SHADE;
 		javaConstantForeColor = TOOLMENU_COLOR1;
 
-		if(isDarkMode())
-			classColor = Color.decode("#FFC66D");
+		if(isDarkMode()){
+			classColor = Color.WHITE;
+			methColor = Color.decode("#FFC66D");
+		}
+		else{
+			classColor = Color.BLACK;
+			methColor = Color.decode("#00425A");
+		}
 	}
 	
 	public static synchronized boolean canComputeBackground(RSyntaxTextArea textArea, Token t){
@@ -64,7 +72,6 @@ public class BasicCodeHighlighter {
 	public static synchronized boolean canComputeForeground(RSyntaxTextArea textArea, Token t){
 		return textArea.getSyntaxEditingStyle() == textArea.SYNTAX_STYLE_JAVA
 		&& switch(t.getType()){
-			case Token.RESERVED_WORD:
 			case Token.RESERVED_WORD_2:
 			case Token.LITERAL_BOOLEAN:
 			case Token.IDENTIFIER:
@@ -85,7 +92,10 @@ public class BasicCodeHighlighter {
 		else if(isJavaConstant(text)){
 			return javaConstantForeColor;
 		}
-		else if(isDarkMode() && isJavaClass(textArea, text)){
+		else if(isJavaMethodDeclaration(textArea, t)){
+			return methColor;
+		}
+		else if(isJavaClass(textArea, text)){
 			return classColor;
 		}
 		return null;
@@ -93,14 +103,19 @@ public class BasicCodeHighlighter {
 	
 	public static synchronized Color computeBackgroundColor(RSyntaxTextArea textArea, Token t){
 		String text = t.getLexeme();
-		if(isValueKeyword(text)){
-			return valueKeyColor;
+		try{
+			if(isValueKeyword(text)){
+				return valueKeyColor;
+			}
+			else if(isReturnKeyword(text)){
+				return returnKeyColor;
+			}
+			else if(isJavaConstant(text)){
+				return javaConstantColor;
+			}
 		}
-		else if(isReturnKeyword(text)){
-			return returnKeyColor;
-		}
-		else if(isJavaConstant(text)){
-			return javaConstantColor;
+		catch(Exception e){
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -136,7 +151,20 @@ public class BasicCodeHighlighter {
 			if(name.equals(text))
 				return true;
 		}
-		
 		return false;
+	}
+
+	public static synchronized boolean isJavaMethodDeclaration(RSyntaxTextArea textArea, Token t){
+		if(!t.isIdentifier())
+			return false;
+		String text = t.getLexeme();
+		if(!Character.isLowerCase(text.charAt(0)))
+			return false;
+		String code = textArea.getText();
+		int endOffset = t.getEndOffset();
+		int startOffset = t.getOffset();
+		if(code.length() - 1 <= endOffset)
+			return false;
+		return code.charAt(startOffset - 1) == ' ' && code.charAt(endOffset) == '(' && code.charAt(code.indexOf('\n', endOffset) - 1) != ';';
 	}
 }

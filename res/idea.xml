@@ -35,8 +35,8 @@
    <!-- Syntax tokens. -->
    <tokenStyles>
       <style token="IDENTIFIER" fg="22252B" />
-      <style token="RESERVED_WORD" fg="000080" bold="true" />
-      <style token="RESERVED_WORD_2" fg="000080" bold="true" />
+      <style token="RESERVED_WORD" fg="0033B5" bold="true" />
+      <style token="RESERVED_WORD_2" fg="0033B5" bold="true" />
       <style token="ANNOTATION" fg="808000" />
       <style token="COMMENT_DOCUMENTATION" fg="8400FF" italic="true" />
       <style token="COMMENT_EOL" fg="8400FF" italic="true" />

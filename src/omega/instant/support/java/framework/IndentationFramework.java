@@ -80,7 +80,12 @@ public class IndentationFramework extends AbstractIndentationFramework{
 					needsExtraTab = true;
 			}
 		}
-		textArea.setCaretPosition(caretPos + 1);
+		try{
+			textArea.setCaretPosition(caretPos + 1);
+		}
+		catch(Exception e){
+			
+		}
 	}
 
 	public static int count(char c, String line){
