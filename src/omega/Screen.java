@@ -377,7 +377,7 @@ public class Screen extends JFrame {
 		toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
 		toolMenu.langComp.repaint();
 		toolMenu.structureViewComp.setVisible(!manager.isLanguageTagNonJava());
-		toolMenu.sep4.setVisible(!manager.isLanguageTagNonJava());
+		toolMenu.sep4.setVisible(!manager.isLanguageTagNonJava() && !UIManager.isToolMenuCollapsed());
 		toolMenu.asteriskComp.setVisible(!manager.isLanguageTagNonJava());
 		toolMenu.contentModeComp.setVisible(!manager.isLanguageTagNonJava());
 		toolMenu.instantRunComp.setVisible(!manager.isLanguageTagNonJava());
