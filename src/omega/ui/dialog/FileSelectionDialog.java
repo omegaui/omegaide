@@ -17,6 +17,8 @@
 */
 
 package omega.ui.dialog;
+import omegaui.listener.KeyStrokeListener;
+
 import omega.io.IconManager;
 import omega.io.UIManager;
 
@@ -54,6 +56,8 @@ import javax.swing.JFrame;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
+import static java.awt.event.KeyEvent.*;
+
 public class FileSelectionDialog extends JDialog{
 	
 	private TextComp titleComp;
@@ -227,6 +231,8 @@ public class FileSelectionDialog extends JDialog{
 		selectionField.setFont(PX14);
 		add(selectionField);
 		addKeyListener(selectionField);
+
+		initKeyStrokeListener();
 		
 		selectComp = new TextComp("Done", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR3, this::dispose);
 		selectComp.setBounds(getWidth() - 50, getHeight() - 30, 50, 30);
@@ -264,6 +270,59 @@ public class FileSelectionDialog extends JDialog{
 		
 		putAnimationLayer(levelComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(homeComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
+	}
+
+	private void initKeyStrokeListener(){
+		KeyStrokeListener listener = new KeyStrokeListener(this);
+		listener.putKeyStroke((e)->{
+			if(state == 0){
+				//Only Selecting Files
+				items.forEach(item->{
+					File file = (File)item.getExtras().get(0);
+					if(file.isFile()){
+						boolean selected = (boolean)item.getExtras().get(1);
+						item.getExtras().removeLast();
+						item.getExtras().add(!selected);
+						item.setColors(item.color1, item.color3, item.color2);
+						if(selected)
+							selections.remove(file);
+						else
+							selections.add(file);
+					}
+				});
+			}
+			else if(state == 1){
+				//Only Selecting Directories
+				items.forEach(item->{
+					File file = (File)item.getExtras().get(0);
+					if(file.isDirectory()){
+						boolean selected = (boolean)item.getExtras().get(1);
+						item.getExtras().removeLast();
+						item.getExtras().add(!selected);
+						item.setColors(item.color1, item.color3, item.color2);
+						if(selected)
+							selections.remove(file);
+						else
+							selections.add(file);
+					}
+				});
+			}
+			else {
+				//Selecting Files and Directories
+				items.forEach(item->{
+					File file = (File)item.getExtras().get(0);
+					boolean selected = (boolean)item.getExtras().get(1);
+					item.getExtras().removeLast();
+					item.getExtras().add(!selected);
+					item.setColors(item.color1, item.color3, item.color2);
+					if(selected)
+						selections.remove(file);
+					else
+						selections.add(file);
+				});
+			}
+		}, VK_CONTROL, VK_A);
+		addKeyListener(listener);
 	}
 	
 	@Override
@@ -364,6 +423,8 @@ public class FileSelectionDialog extends JDialog{
 				}
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
+				comp.getExtras().add(file);
+				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -439,6 +500,8 @@ public class FileSelectionDialog extends JDialog{
 				}
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
+				comp.getExtras().add(file);
+				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -515,6 +578,8 @@ public class FileSelectionDialog extends JDialog{
 				}
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
+				comp.getExtras().add(file);
+				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -586,6 +651,8 @@ public class FileSelectionDialog extends JDialog{
 				}
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
+				comp.getExtras().add(file);
+				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
