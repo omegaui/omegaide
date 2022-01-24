@@ -110,11 +110,12 @@ public class ProjectBuilder {
 					commandsAsArray[i] = args.get(i);
 			}
 			
+			getScreen().getOperationPanel().removeTab("Build");
+			
 			JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, compileDir);
 			printArea.setLogMode(true);
 			
 			try {
-				getScreen().getOperationPanel().removeTab("Build");
 				getScreen().getOperationPanel().addTab("Build", IconManager.fluenttesttubeImage, printArea, printArea::killProcess);
 				
 				printArea.print("Building Project...\n\"" + args + "\"");
@@ -133,7 +134,6 @@ public class ProjectBuilder {
 				
 				if(printArea.terminalPanel.process.exitValue() != 0){
 					ErrorHighlighters.showErrors(errorlog);
-					getScreen().getOperationPanel().addTab("Build",IconManager.fluenttesttubeImage,  printArea, ()->printArea.killProcess());
 					getScreen().getToolMenu().buildComp.setClickable(true);
 					getScreen().getToolMenu().runComp.setClickable(true);
 					return;
@@ -160,9 +160,7 @@ public class ProjectBuilder {
 		boolean strRec = false;
 		for(int i = 0; i < args.length(); i++){
 			char ch = args.charAt(i);
-			if(!canRecord && (Character.isLetterOrDigit(ch) ||
-			"-@\"".
-			contains(ch + ""))){
+			if(!canRecord && (Character.isLetterOrDigit(ch) || "-@\"".contains(ch + ""))){
 				token = "";
 				canRecord = true;
 			}
