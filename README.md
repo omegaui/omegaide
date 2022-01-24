@@ -39,7 +39,7 @@ The credit of having meaningful and beautiful icons goes to [icons8.com](https:/
 
 Want to have a look before giving a try?
 
-See a what's new in the latest release on the official channel!
+See what's new in the latest release on the official channel!
 
 [![](/images/youtube-icon.png)](https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg)
 
