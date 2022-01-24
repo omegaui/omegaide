@@ -49,7 +49,7 @@ public class GradleBuildScriptManager extends JDialog{
 	}
 
 	public void init(){
-		titleComp = new TextComp("Specify Gradle Build Script Name", TOOLMENU_COLOR3, c2, c2, null);
+		titleComp = new TextComp("Specify Gradle Build Script Name", c2, TOOLMENU_GRADIENT, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 120, 30);
 		titleComp.setClickable(false);
 		titleComp.setFont(PX14);

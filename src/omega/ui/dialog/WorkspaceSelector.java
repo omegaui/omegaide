@@ -63,7 +63,7 @@ public class WorkspaceSelector extends JDialog{
           closeComp.setArc(0, 0);
           add(closeComp);
 
-          TextComp titleComp = new TextComp("Select Workspace Directory", TOOLMENU_COLOR4_SHADE, c2, TOOLMENU_COLOR3, ()->setVisible(false));
+          TextComp titleComp = new TextComp("Select Workspace Directory", c2, TOOLMENU_GRADIENT, glow, ()->setVisible(false));
           titleComp.setBounds(30, 0, getWidth() - 30, 30);
           titleComp.setClickable(false);
           titleComp.setFont(PX14);
@@ -89,6 +89,7 @@ public class WorkspaceSelector extends JDialog{
 	                    DataManager.setWorkspace(files.get(0).getAbsolutePath());
 	                    textField.setText(DataManager.getWorkspace());
 	                    setTitle("Lets Proceed Forward");
+	                    titleComp.color1 = TOOLMENU_COLOR1_SHADE;
 	                    titleComp.setClickable(true);
 	                    titleComp.setText(getTitle());
 	               }
