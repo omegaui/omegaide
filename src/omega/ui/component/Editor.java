@@ -352,7 +352,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_FORTRAN);
 		else if(f.getName().endsWith(".go"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GO);
-		else if(f.getName().endsWith(".groovy") || f.getName().endsWith(".gradle") || f.getName().endsWith(".gradle.kts"))
+		else if(f.getName().endsWith(".groovy") || f.getName().endsWith(".gradle"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_GROOVY);
 		else if(f.getName().endsWith(".html") || f.getName().endsWith(".svg"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_HTML);

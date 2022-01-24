@@ -94,6 +94,7 @@ public class TabComp extends JComponent implements FocusListener{
 		iconComp = new TextComp(tabData.getImage(), 20, 20, getBackground(), getBackground(), getBackground(), null);
 		iconComp.setBounds(2, getHeight()/2 - 25/2, 25, 25);
 		iconComp.setArc(0, 0);
+		iconComp.setShowHandCursorOnMouseHover(true);
 		add(iconComp);
 		
 		if(tabData.getPopup() != null){
@@ -111,6 +112,7 @@ public class TabComp extends JComponent implements FocusListener{
 		closeComp.setBounds(getWidth() - 17, getHeight()/2 - 15/2, 15, 15);
 		closeComp.setFont(PX12);
 		closeComp.setArc(4, 4);
+		closeComp.setShowHandCursorOnMouseHover(true);
 		add(closeComp);
 
 		setSize(iconComp.getWidth() + nameComp.getWidth() + 2 + iconComp.getWidth(), tabHeight);

@@ -179,6 +179,7 @@ public class SearchWindow extends JDialog{
 		reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
 		reloadComp.setArc(0, 0);
 		reloadComp.setFont(PX14);
+		reloadComp.setShowHandCursorOnMouseHover(true);
 		add(reloadComp);
 	}
 

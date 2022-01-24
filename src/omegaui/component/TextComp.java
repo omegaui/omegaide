@@ -34,6 +34,7 @@ import java.awt.RenderingHints;
 import java.awt.GradientPaint;
 import java.awt.LinearGradientPaint;
 import java.awt.Image;
+import java.awt.Cursor;
 
 import javax.swing.JComponent;
 public class TextComp extends JComponent{
@@ -94,6 +95,9 @@ public class TextComp extends JComponent{
 	public LinkedList<Object> extras = new LinkedList<>();
 	public HashMap<Object, Object> map = new HashMap<>();
 
+	public Cursor defaultCursor;
+	public Cursor handCursor;
+
 	public float[] fractions = {0.0f, 0.5f, 1f};
 
 	public Color[] gradientColors;
@@ -108,6 +112,8 @@ public class TextComp extends JComponent{
 			@Override
 			public void mouseEntered(MouseEvent e){
 				if(!clickable) return;
+				if(handCursor != null)
+					setCursor(handCursor);
 				enter = true;
 				onMouseEntered.run();
 				repaint();
@@ -116,6 +122,8 @@ public class TextComp extends JComponent{
 			@Override
 			public void mouseExited(MouseEvent e){
 				if(!clickable) return;
+				if(defaultCursor != null)
+					setCursor(defaultCursor);
 				enter = false;
 				onMouseExited.run();
 				repaint();
@@ -182,6 +190,18 @@ public class TextComp extends JComponent{
 		if(w == 0){
 			w = image.getWidth();
 			h = image.getHeight();
+		}
+	}
+
+	public void setShowHandCursorOnMouseHover(boolean value){
+		if(value){
+			if(handCursor == null){
+				defaultCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+				handCursor = new Cursor(Cursor.HAND_CURSOR);
+			}
+		}
+		else {
+			handCursor = defaultCursor = null;
 		}
 	}
 

@@ -65,6 +65,7 @@ public class NotificationPopup extends JDialog{
 		closeComp = new TextComp("x", TOOLMENU_COLOR4_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setFont(PX12);
 		closeComp.setArc(6, 6);
+		closeComp.setShowHandCursorOnMouseHover(true);
 		add(closeComp);
 
 		dialogImageComp = new TextComp(null, 25, 25, ALPHA, ALPHA, ALPHA, null);
