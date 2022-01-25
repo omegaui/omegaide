@@ -69,7 +69,7 @@ public class FileSelectionDialog extends JDialog{
 	private TextComp levelComp;
 	private TextComp homeComp;
 	
-	private LinkedList<TextComp> items = new LinkedList<>();
+	private LinkedList<ToggleComp> items = new LinkedList<>();
 	private LinkedList<File> selections = new LinkedList<>();
 	
 	public static final String ALL_EXTENSIONS = ".*";
@@ -279,15 +279,8 @@ public class FileSelectionDialog extends JDialog{
 				//Only Selecting Files
 				items.forEach(item->{
 					File file = (File)item.getExtras().get(0);
-					if(file.isFile()){
-						boolean selected = (boolean)item.getExtras().get(1);
-						item.getExtras().removeLast();
-						item.getExtras().add(!selected);
-						item.setColors(item.color1, item.color3, item.color2);
-						if(selected)
-							selections.remove(file);
-						else
-							selections.add(file);
+					if(!file.isDirectory()){
+						item.toggleListener.toggle(!item.isOn());
 					}
 				});
 			}
@@ -296,14 +289,7 @@ public class FileSelectionDialog extends JDialog{
 				items.forEach(item->{
 					File file = (File)item.getExtras().get(0);
 					if(file.isDirectory()){
-						boolean selected = (boolean)item.getExtras().get(1);
-						item.getExtras().removeLast();
-						item.getExtras().add(!selected);
-						item.setColors(item.color1, item.color3, item.color2);
-						if(selected)
-							selections.remove(file);
-						else
-							selections.add(file);
+						item.toggleListener.toggle(!item.isOn());
 					}
 				});
 			}
@@ -311,14 +297,7 @@ public class FileSelectionDialog extends JDialog{
 				//Selecting Files and Directories
 				items.forEach(item->{
 					File file = (File)item.getExtras().get(0);
-					boolean selected = (boolean)item.getExtras().get(1);
-					item.getExtras().removeLast();
-					item.getExtras().add(!selected);
-					item.setColors(item.color1, item.color3, item.color2);
-					if(selected)
-						selections.remove(file);
-					else
-						selections.add(file);
+					item.toggleListener.toggle(!item.isOn());
 				});
 			}
 		}, VK_CONTROL, VK_A);
@@ -400,6 +379,7 @@ public class FileSelectionDialog extends JDialog{
 				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.toString() + meta, c1, c2, c3, false);
 				if(!file.isDirectory()){
 					comp.setOnToggle((value)->{
+						comp.state = value;
 						comp.setColors(comp.color1, comp.color3, comp.color2);
 						if(value)
 							selections.add(file);
@@ -424,7 +404,6 @@ public class FileSelectionDialog extends JDialog{
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
 				comp.getExtras().add(file);
-				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -477,6 +456,7 @@ public class FileSelectionDialog extends JDialog{
 				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
 				if(!file.isDirectory()){
 					comp.setOnToggle((value)->{
+						comp.state = value;
 						comp.setColors(comp.color1, comp.color3, comp.color2);
 						if(value)
 							selections.add(file);
@@ -501,7 +481,6 @@ public class FileSelectionDialog extends JDialog{
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
 				comp.getExtras().add(file);
-				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -555,6 +534,7 @@ public class FileSelectionDialog extends JDialog{
 				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
 				if(file.isDirectory()){
 					comp.setOnToggle((value)->{
+						comp.state = value;
 						comp.setColors(comp.color1, comp.color3, comp.color2);
 						if(value)
 							selections.add(file);
@@ -579,7 +559,6 @@ public class FileSelectionDialog extends JDialog{
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
 				comp.getExtras().add(file);
-				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -631,6 +610,7 @@ public class FileSelectionDialog extends JDialog{
 					meta = "";
 				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.getName() + meta, c1, c2, c3, false);
 				comp.setOnToggle((value)->{
+					comp.state = value;
 					comp.setColors(comp.color1, comp.color3, comp.color2);
 					if(value)
 						selections.add(file);
@@ -652,7 +632,6 @@ public class FileSelectionDialog extends JDialog{
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
 				comp.getExtras().add(file);
-				comp.getExtras().add(false);
 				panel.add(comp);
 				items.add(comp);
 				block += 25;
@@ -680,7 +659,7 @@ public class FileSelectionDialog extends JDialog{
 			files.forEach(f->{
 				if(f.isDirectory()) tempDirs.add(f);
 				else tempFiles.add(f);
-				});
+			});
 			files.clear();
 			File[] F = new File[tempFiles.size()];
 			int k = -1;
@@ -696,7 +675,7 @@ public class FileSelectionDialog extends JDialog{
 			for(File f : D){
 				if(f.getName().startsWith(".")) dots.add(f);
 				else files.add(f);
-				}
+			}
 			for(File f : dots){
 				files.add(f);
 			}
@@ -704,7 +683,7 @@ public class FileSelectionDialog extends JDialog{
 			for(File f : F){
 				if(f.getName().startsWith(".")) dots.add(f);
 				else files.add(f);
-				}
+			}
 			for(File f : dots){
 				files.add(f);
 			}

@@ -596,6 +596,10 @@ public class TextComp extends JComponent{
 		return extras;
 	}
 
+	public Object put(Object key, Object value){
+		return map.put(key, value);
+	}
+
 	public Object getValue(Object key){
 		return map.get(key);
 	}
