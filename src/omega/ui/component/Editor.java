@@ -243,6 +243,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->triggerSnippets(e), VK_TAB).setStopKeys(VK_CONTROL, VK_ALT, VK_WINDOWS);
 		keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->triggerJumpToDefinition(e), VK_CONTROL, VK_J).setStopKeys(VK_ALT, VK_SHIFT);
+		keyStrokeListener.putKeyStroke((e)->ToolMenu.recentsDialog.setVisible(true), VK_CONTROL, VK_SHIFT, VK_M).setStopKeys(VK_ALT);
 	}
 
 	public void initJavaFileKeyStrokes(){
