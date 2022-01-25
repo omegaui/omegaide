@@ -35,6 +35,7 @@ public class GradleProcessManager {
 		File settings = new File(Screen.getProjectFile().getProjectPath(), "settings.gradle");
 		return settings.exists() || new File(Screen.getProjectFile().getProjectPath(), "settings.gradle.kts").exists();
 	}
+	
 	public static void init(){
 		new Thread(()->{
 			try{
@@ -58,6 +59,7 @@ public class GradleProcessManager {
 			Screen.getProjectFile().getFileTreePanel().refresh();
 		}).start();
 	}
+	
 	public static void run(){
 		new Thread(()->{
 			try{
@@ -91,6 +93,7 @@ public class GradleProcessManager {
 			Screen.getProjectFile().getFileTreePanel().refresh();
 		}).start();
 	}
+	
 	public static void build(){
 		new Thread(()->{
 			try{
@@ -121,5 +124,6 @@ public class GradleProcessManager {
 			Screen.getProjectFile().getFileTreePanel().refresh();
 		}).start();
 	}
+	
 }
 
