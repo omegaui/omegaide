@@ -43,11 +43,15 @@ import javax.swing.JPanel;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class JetTerminal extends JPanel{
-	public FlexPanel panel;
+	
 	public JediTermWidget widget;
+	
 	public PtyProcess process;
+	
 	public String[] command;
+	
 	public String directory;
+	
 	private Runnable onProcessExited;
 	
 	public JetTerminal(){
@@ -64,11 +68,7 @@ public class JetTerminal extends JPanel{
 	}
 	
 	public void init(){
-		setBackground(back2);
-		
-		panel = new FlexPanel(null, back1, null);
-		panel.setArc(10, 10);
-		add(panel);
+		setBackground(JetTermSettingsProvider.colors[15]);
 
 		JetTermSettingsProvider jtsp = new JetTermSettingsProvider();
 		widget = new JediTermWidget(jtsp);
@@ -78,7 +78,7 @@ public class JetTerminal extends JPanel{
 		else
 			widget.setTtyConnector(getConnector(command));
 		
-		panel.add(widget);
+		add(widget);
 	}
 	
 	public TtyConnector getConnector(String... command){
@@ -119,8 +119,7 @@ public class JetTerminal extends JPanel{
 	}
 	
 	public void relocate(){
-		panel.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
-		widget.setBounds(5, 5, panel.getWidth() - 10, panel.getHeight() - 10);
+		widget.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
 	}
 
 	@Override
