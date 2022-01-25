@@ -29,9 +29,12 @@ import java.util.LinkedList;
 
 import java.io.File;
 import java.io.PrintWriter;
+
 public class ProjectDataBase extends DataBase{
+	
 	public String jdkPath;
 	public String mainClass;
+	
 	public static final String PROJECT_ROOT = "project-root$";
 	
 	public File jdk;
@@ -66,9 +69,13 @@ public class ProjectDataBase extends DataBase{
 				
 			}
 		}
+		
+		BookmarksManager.readBookmarks(this);
+		
 		LinkedList<DataEntry> mainEditors = getEntries("Opened Editors on Main Tab Panel");
 		LinkedList<DataEntry> rightEditors = getEntries("Opened Editors on Right Tab Panel");
 		LinkedList<DataEntry> bottomEditors = getEntries("Opened Editors on Bottom Tab Panel");
+		
 		LinkedList<DataEntry> jars = getEntries("Project Classpath : Required Jars");
 		LinkedList<DataEntry> natives = getEntries("Project Classpath : Required Native Libraries");
 		LinkedList<DataEntry> resourceRoots = getEntries("Project Classpath : Required Resource Roots");
@@ -149,6 +156,7 @@ public class ProjectDataBase extends DataBase{
 				this.runTimeFlags.add(entry.getValue());
 			});
 		}
+
 	}
 	
 	@Override
@@ -190,6 +198,7 @@ public class ProjectDataBase extends DataBase{
 		Screen.getProjectFile().getExtendedDependencyView().getRunTimeFlags().forEach(flag->{
 			addEntry("Flags : Run Time", flag);
 		});
+		BookmarksManager.saveBookmarks(this);
 		super.save();
 	}
 	

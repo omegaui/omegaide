@@ -460,6 +460,7 @@ public class ProjectRunner {
 				getScreen().getToolMenu().runComp.setClickable(true);
 			}
 			catch(Exception e) {
+				Screen.setStatus("", 100, null);
 				e.printStackTrace();
 			}
 		}).start();

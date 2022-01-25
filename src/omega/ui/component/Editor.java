@@ -35,6 +35,7 @@ import omega.io.DataManager;
 import omega.io.RustTokenMaker;
 import omega.io.SnippetBase;
 import omega.io.UIManager;
+import omega.io.BookmarksManager;
 
 import omega.instant.support.java.misc.JavaJumpToDefinitionPanel;
 import omega.instant.support.java.misc.JavaCodeNavigator;
@@ -151,7 +152,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public Editor(Screen screen) {
 		Editor.screen = screen;
-
+		
 		englishSpellingParser.setSquiggleUnderlineColor(omega.io.UIManager.TOOLMENU_COLOR4);
 		addParser(englishSpellingParser);
 
@@ -180,7 +181,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	private void initView() {
-
+		
 		setAnimateBracketMatching(true);
 		setAntiAliasingEnabled(true);
 		setAutoIndentEnabled(true);
@@ -469,6 +470,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			setCaretPosition(0);
 			JavaCodeNavigator.install(this);
 			initJavaFileKeyStrokes();
+			BookmarksManager.markAll(this);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -533,10 +535,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		if(currentFile == null)
 			return;
 		saveCurrentFile();
+		BookmarksManager.saveBookmarks(this);
 		currentFile = null;
 		setText("");
 		savedText = "";
-
 		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_EDITOR_CLOSED, this, currentFile));
 	}
 

@@ -68,6 +68,7 @@ import omega.io.IconManager;
 import omega.io.ProjectFile;
 import omega.io.ProjectRunner;
 import omega.io.ProjectBuilder;
+import omega.io.BookmarksManager;
 
 import java.awt.Robot;
 import java.awt.Color;
@@ -614,19 +615,20 @@ public class Screen extends JFrame {
 		catch(Exception e) {
 			
 		}
-		pluginManager.save();
-		uiManager.save();
-		dataManager.saveData();
-		SnippetBase.save();
-		saveAllEditors();
+		saveAllBookmarks();
 		try{
 			projectFile.getProjectManager().save();
 		}
 		catch(Exception e2) {
-			
+			e2.printStackTrace();
 		}
-		super.dispose();
+		saveAllEditors();
+		pluginManager.save();
+		uiManager.save();
+		dataManager.saveData();
+		SnippetBase.save();
 		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
+		super.dispose();
 		System.exit(0);
 	}
 	
@@ -717,6 +719,12 @@ public class Screen extends JFrame {
 	
 	public static DataManager getDataManager(){
 		return dataManager;
+	}
+	
+	public void saveAllBookmarks() {
+		tabPanel.getEditors().forEach(BookmarksManager::saveBookmarks);
+		rightTabPanel.getEditors().forEach(BookmarksManager::saveBookmarks);
+		bottomTabPanel.getEditors().forEach(BookmarksManager::saveBookmarks);
 	}
 	
 	public void saveAllEditors() {
