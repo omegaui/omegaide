@@ -33,7 +33,7 @@ public class GradleProcessManager {
 	
 	public static boolean isGradleProject(){
 		File settings = new File(Screen.getProjectFile().getProjectPath(), "settings.gradle");
-		return settings.exists();
+		return settings.exists() || new File(Screen.getProjectFile().getProjectPath(), "settings.gradle.kts").exists();
 	}
 	public static void init(){
 		new Thread(()->{
