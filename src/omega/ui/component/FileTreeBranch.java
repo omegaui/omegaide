@@ -161,11 +161,14 @@ public class FileTreeBranch extends JComponent {
 		if(!file.isDirectory()){
 			listener.putKeyStroke((e)->{
 				renameView();
-			}, VK_F2).setStopKeys(VK_CONTROL, VK_ALT);
+			}, VK_F2).setStopKeys(VK_CONTROL, VK_ALT, VK_SHIFT);
 		}
 		listener.putKeyStroke((e)->{
 			clickAction.run();
-		}, VK_ENTER).setStopKeys(VK_CONTROL, VK_ALT);
+		}, VK_ENTER).setStopKeys(VK_CONTROL, VK_ALT, VK_SHIFT);
+		listener.putKeyStroke((e)->{
+			Screen.openInDesktop(file);
+		}, VK_F1).setStopKeys(VK_CONTROL, VK_ALT, VK_SHIFT).useAutoReset();
 		
 		addKeyListener(listener);
 	}
