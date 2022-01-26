@@ -196,22 +196,15 @@ public class SearchWindow extends JDialog{
 				SearchComp comp = new SearchComp(this, file);
 				comp.setBounds(0, blockY, panel.getWidth(), 50);
 				comp.initUI();
-				panel.add(comp);
 				searchComps.add(comp);
 				currentComps.add(comp);
 				
 				blockY += 50;
 			}
 			
-			panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
-			scrollPane.repaint();
-			scrollPane.getVerticalScrollBar().setVisible(true);
-			scrollPane.getVerticalScrollBar().setValue(0);
-			repaint();
-			
 			if(!currentComps.isEmpty()) {
 				currentComps.get(pointer = 0).set(true);
-				infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
+				infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " are Present in the Current Project!");
 			}
 			else{
 				infoComp.setText("Not at least One File Found!");
@@ -229,6 +222,15 @@ public class SearchWindow extends JDialog{
 		
 		blockY = 0;
 		
+		if(match.isBlank()){
+			panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
+			scrollPane.repaint();
+			scrollPane.getVerticalScrollBar().setVisible(false);
+			repaint();
+			infoComp.setText(searchComps.size() + " File" + (searchComps.size() > 1 ? "s" : "") + " are Present in the Current Project!");
+			return;
+		}
+		
 		for(SearchComp comp : searchComps){
 			if(comp.getName().contains(match)){
 				
@@ -242,8 +244,13 @@ public class SearchWindow extends JDialog{
 		
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
 		scrollPane.repaint();
-		scrollPane.getVerticalScrollBar().setVisible(true);
-		scrollPane.getVerticalScrollBar().setValue(0);
+		if(blockY > scrollPane.getHeight()){
+			scrollPane.getVerticalScrollBar().setVisible(true);
+			scrollPane.getVerticalScrollBar().setValue(0);
+		}
+		else{
+			scrollPane.getVerticalScrollBar().setVisible(false);
+		}
 		repaint();
 		
 		if(!currentComps.isEmpty()) {
@@ -279,10 +286,12 @@ public class SearchWindow extends JDialog{
 	@Override
 	public void setVisible(boolean value){
 		super.setVisible(value);
-		if(value){
-			if(currentComps.isEmpty())
-				initView();
-		}
+		new Thread(()->{
+			if(value){
+				if(currentComps.isEmpty())
+					initView();
+			}
+		}).start();
 	}
 }
 

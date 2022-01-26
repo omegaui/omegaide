@@ -841,7 +841,7 @@ public class Screen extends JFrame {
 	}
 	
 	public synchronized static boolean isNotNull(String text){
-		return text != null && !text.equals("");
+		return text != null && !text.isBlank();
 	}
 	
 	public static void main(String[] args){
