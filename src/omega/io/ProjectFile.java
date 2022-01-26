@@ -18,6 +18,7 @@
 
 package omega.io;
 import omega.ui.component.Editor;
+import omega.ui.component.ToolMenu;
 
 import omega.Screen;
 
@@ -80,20 +81,26 @@ public class ProjectFile {
 		if(projectManager.jdkPath == null)
 			return;
 		
-		int version = 0;
-		if(jdkManager != null)
-			version = jdkManager.getVersionAsInt();
-		
-		int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
-		if(version != versionThis)
-			Assembly.deassemble();
-		
-		if(jdkManager != null)
-			jdkManager.clear();
-		
-		jdkManager = new JDKManager(new File(projectManager.jdkPath));
-		jdkManager.readSources(projectPath);
-		readDependencies();
+		new Thread(()->{
+			int version = 0;
+			if(jdkManager != null)
+				version = jdkManager.getVersionAsInt();
+			
+			int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
+			if(version != versionThis)
+				Assembly.deassemble();
+			
+			if(jdkManager != null)
+				jdkManager.clear();
+			
+			Screen.setStatus("Indexing Sources and Resources ... Don't Just Wait For Me to Finish!", 10, IconManager.fluentjavaImage, "Indexing Sources and Resources");
+			
+			jdkManager = new JDKManager(new File(projectManager.jdkPath));
+			jdkManager.readSources(projectPath);
+			readDependencies();
+			
+			ToolMenu.jdkItem.setName("Project JDK : Java " + jdkManager.getVersionAsInt());
+		}).start();
 	}
 	
 	public void readDependencies(){
@@ -146,6 +153,8 @@ public class ProjectFile {
 		if(!projectManager.isLanguageTagNonJava()) {
 			if(projectManager.jdkPath != null && new File(projectManager.jdkPath).exists())
 				readJDK();
+			else
+				Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage, "JDK");
 			
 			try {
 				new Thread(()->{

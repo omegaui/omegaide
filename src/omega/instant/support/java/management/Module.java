@@ -41,8 +41,8 @@ public class Module {
 		this.moduleName = name.substring(0, name.lastIndexOf('.'));
 		readModule();
 	}
+	
 	public void readModule(){
-		Screen.setStatus("Reading Module : " + name, 10, IconManager.fluentjavaImage);
 		try{
 			ZipFile zipFile = new ZipFile(moduleFile);
 			Enumeration enums = zipFile.entries();
@@ -53,13 +53,14 @@ public class Module {
 					continue;
 				classes.add(new Import(classPath, moduleFile.getAbsolutePath(), true));
 			}
+			zipFile.close();
 		}
 		catch(Exception e){
 			Screen.setStatus("Exception while Reading Module : " + name, 10, IconManager.fluentbrokenbotImage);
 			e.printStackTrace();
 		}
-		Screen.setStatus("", 100, null);
 	}
+	
 	public static String convertModulePathToPackagePath(String zipPath){
 		if(zipPath == null || !zipPath.startsWith("classes/") || zipPath.contains("$") || !zipPath.endsWith(".class") || zipPath.startsWith("META-INF"))
 			return null;
@@ -71,6 +72,7 @@ public class Module {
 		zipPath = zipPath.substring(0, zipPath.length() - 1);
 		return zipPath.equals("module-info") ? null : zipPath;
 	}
+	
 	public static String convertJarPathToPackagePath(String zipPath){
 		if(zipPath == null || zipPath.contains("$") || !zipPath.endsWith(".class") || zipPath.startsWith("META-INF"))
 			return null;
@@ -82,6 +84,7 @@ public class Module {
 		zipPath = zipPath.substring(0, zipPath.length() - 1);
 		return zipPath.equals("module-info") ? null : zipPath;
 	}
+	
 	public static String convertSourcePathToPackagePath(String sourcePath){
 		if(sourcePath.endsWith(".java"))
 			sourcePath = sourcePath.substring(0, sourcePath.lastIndexOf('.'));
@@ -92,6 +95,7 @@ public class Module {
 		sourcePath = sourcePath.substring(0, sourcePath.length() - 1);
 		return (sourcePath.equals("") || !sourcePath.contains(".")) ? null : sourcePath;
 	}
+	
 	@Override
 	public String toString(){
 		return moduleFile.getName();

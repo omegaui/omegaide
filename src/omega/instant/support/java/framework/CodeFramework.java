@@ -998,7 +998,10 @@ public class CodeFramework extends AbstractCodeFramework{
 				token = reader.readLine();
 			}
 			reader.close();
-	}catch(Exception e) {System.out.println(e.getMessage());}
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		return code;
 	}
 

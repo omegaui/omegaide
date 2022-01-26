@@ -117,7 +117,8 @@ public class RecentsManager {
 			if(file.isDirectory())
 				break;
 		}
-		if(file == null) return;
+		if(file == null) 
+			return;
 		RECENTS.remove(file.getAbsolutePath());
 	}
 	
@@ -128,7 +129,8 @@ public class RecentsManager {
 			if(file.isFile())
 				break;
 		}
-		if(file == null) return;
+		if(file == null) 
+			return;
 		RECENTS.remove(file.getAbsolutePath());
 	}
 	

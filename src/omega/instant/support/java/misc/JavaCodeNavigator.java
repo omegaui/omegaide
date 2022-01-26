@@ -73,6 +73,7 @@ public class JavaCodeNavigator implements KeyListener, MouseListener{
 	public void mousePressed(MouseEvent e) {
 		//Invoking Code Navigation
 		if(ctrl){
+			ctrl = false;
 			Token token = editor.viewToToken(e.getPoint());
 			if(isExaminable(token) && editor.currentFile.getName().endsWith(".java")) {
 				new Thread(()->{

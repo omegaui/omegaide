@@ -17,6 +17,8 @@
 */
 
 package omega.instant.support.java.assist;
+import omega.instant.support.java.highlighter.BasicCodeHighlighter;
+
 import omega.instant.support.AbstractContentTokenizer;
 import omega.instant.support.CodeFrameworks;
 
@@ -152,6 +154,11 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			return;
 		
 		if(!text.contains(".")) {
+//			if(couldBeSomeClass(text)){
+//				if(BasicCodeHighlighter.isJavaConstant(text)){
+//					
+//				}
+//			}
 			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
 			LinkedList<DataMember> staticMembers = new LinkedList<>();
@@ -250,6 +257,10 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 		}
 		else if(!CodeFrameworks.javaCodeFramework.think(e, e.getText(), e.getCaretPosition()))
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
+	}
+
+	public static boolean couldBeSomeClass(String text){
+		return Screen.isNotNull(text) && Character.isLetter(text.charAt(0)) && text.length() > 4;
 	}
 	
 }

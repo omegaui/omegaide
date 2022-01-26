@@ -891,7 +891,6 @@ public class ToolMenu extends JPanel {
 			String sel = jdkSelectionDialog.makeChoice();
 			if(Screen.isNotNull(sel)) {
 				Screen.getProjectFile().getProjectManager().setJDKPath(sel);
-				jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 			}
 		});
 		

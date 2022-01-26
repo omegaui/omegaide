@@ -306,10 +306,6 @@ public class Screen extends JFrame {
 		
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
-			new Thread(()->{
-				while(!isVisible());
-				Animations.animateAll(500);
-			}).start();
 		}
 		else {
 			launcher = new Launcher();
@@ -554,9 +550,10 @@ public class Screen extends JFrame {
 	}
 	
 	public void loadProject(File file) {
+		setVisible(true);
+		
 		projectFile.saveAll();
 		projectFile.setProjectPath(file.getAbsolutePath());
-		setVisible(true);
 	}
 	
 	public boolean isFileOpened(File file) {
