@@ -1,20 +1,20 @@
 /**
-* The Main Window
-* Copyright (C) 2021 Omega UI
+ * The Main Window
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega;
 import javax.swing.filechooser.FileView;
@@ -105,19 +105,19 @@ public class Screen extends JFrame {
 	public SplitPanel compilancePane;
 	public SplitPanel rightTabPanelSplitPane;
 	public SplitPanel bottomTabPanelSplitPane;
-	
+
 	public Editor focussedEditor;
-	
+
 	public static Launcher launcher;
-	
+
 	public static SnippetView snippetView;
-	
+
 	public static final String VERSION = "v2.2";
 	public static String PATH_SEPARATOR = ":";
-	
+
 	public volatile boolean active = true;
 	public volatile boolean focusMode = false;
-	
+
 	private SplashScreen splash;
 	private OperationPane operationPane;
 	private TabPanel tabPanel;
@@ -126,7 +126,7 @@ public class Screen extends JFrame {
 	private ToolMenu toolMenu;
 	private SideMenu sideMenu;
 	private BottomPane bottomPane;
-	
+
 	private static Robot robot;
 	private static UIManager uiManager;
 	private static DataManager dataManager;
@@ -143,12 +143,12 @@ public class Screen extends JFrame {
 	private static TerminalComp terminal;
 	private static ThemePicker picker;
 	private static AnimationsDialog animationsDialog;
-	
+
 	public Screen() {
 		setUndecorated(true);
 		try {
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
-			
+
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
 				PATH_SEPARATOR = ";";
@@ -177,10 +177,11 @@ public class Screen extends JFrame {
 				javax.swing.UIManager.put("Label.foreground", new ColorUIResource(Color.BLACK));
 				javax.swing.UIManager.put("Label.background", new ColorUIResource(UIManager.back2));
 			}
+			
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
-			
+
 			javax.swing.UIManager.put("ToolTip.font", omega.io.UIManager.PX14);
 			javax.swing.UIManager.put("Button.font", omega.io.UIManager.PX14);
 			javax.swing.UIManager.put("Label.font", omega.io.UIManager.PX14);
@@ -191,119 +192,119 @@ public class Screen extends JFrame {
 		catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
+
 		picker = new ThemePicker(this);
 		uiManager = new UIManager(this);
 		Startup.checkStartup(this);
 		UIManager.loadHighlight();
 		UIManager.setData(this);
-		
+
 		animationsDialog = new AnimationsDialog(this);
-		
+
 		splash = new SplashScreen();
 		splash.setProgress(10, "welcome");
 		Generator.init(this);
 		splash.setProgress(37, "welcome");
-		
+
 		setLayout(new BorderLayout());
 		setSize(1000, 650);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				dispose();
 			}
 		});
-		
+
 		splash.setProgress(60, "initializing");
 		init();
 	}
-	
+
 	private void init() {
 		SnippetBase.load();
 		snippetView = new SnippetView(this);
 		errorHighlighter = new ErrorHighlighter();
 		operationPane = new OperationPane(this);
 		terminal = new TerminalComp();
-		
+
 		rightTabPanelSplitPane = new SplitPanel(JSplitPane.HORIZONTAL_SPLIT);
 		bottomTabPanelSplitPane = new SplitPanel(JSplitPane.VERTICAL_SPLIT);
 		splitPane = new SplitPanel(JSplitPane.HORIZONTAL_SPLIT);
-		
+
 		rightTabPanelSplitPane.setBorder(null);
 		bottomTabPanelSplitPane.setBorder(null);
 		splitPane.setBorder(null);
-		
+
 		UIManager.setData(splitPane);
 		UIManager.setData(rightTabPanelSplitPane);
 		UIManager.setData(bottomTabPanelSplitPane);
-		
+
 		compilancePane = new SplitPanel(JSplitPane.VERTICAL_SPLIT);
 		compilancePane.setTopComponent(splitPane);
 		compilancePane.setBottomComponent(operationPane);
 		compilancePane.setDividerLocation(Screen.this.getHeight() - 400);
 		add(compilancePane, BorderLayout.CENTER);
 		UIManager.setData(compilancePane);
-		
+
 		tabPanel = new TabPanel(TabPanel.TAB_LOCATION_TOP);
 		rightTabPanel = new TabPanel(TabPanel.TAB_LOCATION_TOP);
 		bottomTabPanel = new TabPanel(TabPanel.TAB_LOCATION_TOP);
 
 		rightTabPanel.setHideOnEmpty(true);
 		bottomTabPanel.setHideOnEmpty(true);
-		
+
 		splitPane.setRightComponent(bottomTabPanelSplitPane);
-		
+
 		rightTabPanelSplitPane.setLeftComponent(tabPanel);
 		rightTabPanelSplitPane.setRightComponent(rightTabPanel);
-		
+
 		bottomTabPanelSplitPane.setTopComponent(rightTabPanelSplitPane);
 		bottomTabPanelSplitPane.setBottomComponent(bottomTabPanel);
-		
+
 		toolMenu = new ToolMenu(this);
 		add(toolMenu, BorderLayout.NORTH);
-		
+
 		sideMenu = new SideMenu(this);
 		add(sideMenu, BorderLayout.WEST);
-		
+
 		bottomPane = new BottomPane(this);
 		add(bottomPane, BorderLayout.SOUTH);
-		
+
 		recentsManager = new RecentsManager(this);
-		
+
 		splash.setProgress(77, "initializing");
-		
+
 		projectFile = new ProjectFile(this);
-		
+
 		universalSettings = new UniversalSettingsWizard(this);
-		
+
 		projectBuilder = new ProjectBuilder(this);
-		
+
 		projectRunner = new ProjectRunner(this);
 
 		splitPane.setDividerLocation(300);
 		splitPane.setLeftComponent(projectFile.getFileTreePanel());
-		
+
 		splash.setProgress(83, "plugging in");
-		
+
 		pluginManager = new PluginManager();
 		pluginManager.load();
 		pluginStore = new PluginStore(this, pluginManager);
 		pluginsView = new PluginsView(this, pluginManager);
 		pluginReactionManager = new PluginReactionManager(pluginManager);
 		pluginManager.doPluginReactionRegistration();
-		
+
 		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_INITIALIZED, this, splash));
-		
+
 		splash.setProgress(100, "");
-		
+
 		File file = new File(DataManager.getDefaultProjectPath());
-		
+
 		if(DataManager.getWorkspace().equals("") || !new File(DataManager.getWorkspace()).exists())
 			new WorkspaceSelector(this).setVisible(true);
-		
+
 		if(file.exists() && file.isDirectory()) {
 			loadProject(file);
 		}
@@ -312,16 +313,16 @@ public class Screen extends JFrame {
 			launcher.setVisible(true);
 		}
 	}
-	
+
 	public void setLeftComponent(Component c){
 		if(splitPane.getLeftComponent() != null){
 			splitPane.getLeftComponent().setVisible(false);
 		}
-		
+
 		splitPane.setLeftComponent(c);
 		c.setVisible(true);
 	}
-	
+
 	public void triggerBuild(KeyEvent e){
 		if(toolMenu.buildComp.isClickable()){
 			if(GradleProcessManager.isGradleProject())
@@ -339,7 +340,7 @@ public class Screen extends JFrame {
 				GradleProcessManager.run();
 			else
 				projectRunner.run();
-			
+
 			e.consume();
 		}
 	}
@@ -347,14 +348,14 @@ public class Screen extends JFrame {
 	public void triggerInstantRun(KeyEvent e){
 		if(toolMenu.buildComp.isClickable()){
 			projectRunner.instantRun();
-			
+
 			e.consume();
 		}
 	}
 
 	public void showSearchDialog(KeyEvent e){
 		projectFile.getSearchWindow().setVisible(true);
-		
+
 		e.consume();
 	}
 
@@ -366,11 +367,11 @@ public class Screen extends JFrame {
 			c.setVisible(!c.isVisible());
 		}
 	}
-	
+
 	public void toggleFileTree(){
 		toggleLeftComponent(projectFile.getFileTreePanel());
 	}
-	
+
 	public void manageTools(ProjectDataBase manager){
 		toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
 		toolMenu.langComp.repaint();
@@ -388,14 +389,14 @@ public class Screen extends JFrame {
 		toolMenu.changeLocations(manager.isLanguageTagNonJava());
 		sideMenu.resize(manager.isLanguageTagNonJava());
 	}
-	
+
 	public static void setStatus(String status, int value, BufferedImage image) {
 		if(value != 100)
 			Screen.getScreen().getBottomPane().setMessage(status, image);
 		else
 			Screen.getScreen().getBottomPane().setMessage("Status of any running process will appear here!", image, "running process");
 	}
-	
+
 	public static void setStatus(String status, int value, BufferedImage image, String... highlightTexts) {
 		if(value != 100)
 			Screen.getScreen().getBottomPane().setMessage(status, image, highlightTexts);
@@ -410,7 +411,7 @@ public class Screen extends JFrame {
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
 		}
 		catch(Exception e){
-			
+
 		}
 	}
 
@@ -421,37 +422,37 @@ public class Screen extends JFrame {
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
 		}
 		catch(Exception e){
-			
+
 		}
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		try{
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, g, getContentPane()));
 		}
 		catch(Exception e){
-			
+
 		}
 		super.paint(g);
 		g.dispose();
 	}
-	
+
 	public static void reverseColors(Component c) {
 		Color l = c.getBackground();
 		c.setBackground(c.getForeground());
 		c.setForeground(l);
 	}
-	
+
 	public void loadTitle(String projectName) {
 		setTitle(projectName+" -Omega IDE "+VERSION);
 		toolMenu.titleComp.setText(getTitle());
 	}
-	
+
 	public void setProject(String projectName) {
 		loadTitle(projectName);
 	}
-	
+
 	public static void openInDesktop(File file) {
 		try {
 			new Thread(()->{
@@ -467,7 +468,7 @@ public class Screen extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Editor loadFile(File file) {
 		String fn = file.getName();
 		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
@@ -488,10 +489,10 @@ public class Screen extends JFrame {
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
 		tabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor))
-			.add(editor.getFAndR(), BorderLayout.NORTH);
+		.add(editor.getFAndR(), BorderLayout.NORTH);
 		return editor;
 	}
-	
+
 	public Editor loadFileOnRightTabPanel(File file) {
 		String fn = file.getName();
 		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
@@ -509,13 +510,13 @@ public class Screen extends JFrame {
 			return e;
 		}
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
-		Editor editor = new Editor(this);		
+		Editor editor = new Editor(this);
 		editor.loadFile(file);
 		rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor))
-			.add(editor.getFAndR(), BorderLayout.NORTH);
+		.add(editor.getFAndR(), BorderLayout.NORTH);
 		return editor;
 	}
-	
+
 	public Editor loadFileOnBottomTabPanel(File file) {
 		String fn = file.getName();
 		if(fn.endsWith(".pdf") || fn.endsWith(".deb")){
@@ -536,26 +537,26 @@ public class Screen extends JFrame {
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
 		bottomTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor))
-			.add(editor.getFAndR(), BorderLayout.NORTH);
+		.add(editor.getFAndR(), BorderLayout.NORTH);
 		return editor;
 	}
-	
+
 	public static void addAndSaveRecents(String path) {
 		RecentsManager.add(path);
 		recentsManager.saveData();
 	}
-	
+
 	public static void launchNewWindow(String projectPath){
 		IDE.main(null);
 	}
-	
+
 	public void loadProject(File file) {
 		setVisible(true);
-		
+
 		projectFile.saveAll();
 		projectFile.setProjectPath(file.getAbsolutePath());
 	}
-	
+
 	public boolean isFileOpened(File file) {
 		LinkedList<Editor> allEditors = getAllEditors();
 		for(Editor e : allEditors) {
@@ -568,7 +569,7 @@ public class Screen extends JFrame {
 		}
 		return false;
 	}
-	
+
 	public Editor getEditor(File file) {
 		LinkedList<Editor> allEditors = getAllEditors();
 		for(Editor e : allEditors) {
@@ -581,7 +582,7 @@ public class Screen extends JFrame {
 		}
 		return null;
 	}
-	
+
 	public static String getPackName(File file) {
 		String res = "";
 		boolean canRecord = false;
@@ -599,7 +600,7 @@ public class Screen extends JFrame {
 			res = res.substring(0, res.length() - 1);
 		return res;
 	}
-	
+
 	@Override
 	public void dispose(){
 		active = false;
@@ -610,7 +611,7 @@ public class Screen extends JFrame {
 			}
 		}
 		catch(Exception e) {
-			
+
 		}
 		saveAllBookmarks();
 		try{
@@ -628,39 +629,39 @@ public class Screen extends JFrame {
 		super.dispose();
 		System.exit(0);
 	}
-	
+
 	public static final Screen getScreen() {
 		return Screen.getProjectFile().getScreen();
 	}
-	
+
 	public static RecentsManager getRecentsManager() {
 		return recentsManager;
 	}
-	
+
 	public static ProjectFile getProjectFile() {
 		return projectFile;
 	}
-	
+
 	public static ProjectRunner getProjectRunner() {
 		return projectRunner;
 	}
-	
+
 	public static ProjectBuilder getProjectBuilder() {
 		return projectBuilder;
 	}
-	
+
 	public static ErrorHighlighter getErrorHighlighter() {
 		return errorHighlighter;
 	}
-	
+
 	public static UniversalSettingsWizard getUniversalSettingsView() {
 		return universalSettings;
 	}
-	
+
 	public static TerminalComp getTerminalComp(){
 		return terminal;
 	}
-	
+
 	public static void pickTheme(String defaultTheme){
 		picker.lightMode = defaultTheme.equals("light");
 		picker.loadImage(defaultTheme + ".png");
@@ -671,23 +672,23 @@ public class Screen extends JFrame {
 	public static void showAnimationsDialog(){
 		animationsDialog.setVisible(true);
 	}
-	
+
 	public ToolMenu getToolMenu() {
 		return toolMenu;
 	}
-	
+
 	public SideMenu getSideMenu() {
 		return sideMenu;
 	}
-	
+
 	public BottomPane getBottomPane() {
 		return bottomPane;
 	}
-	
+
 	public OperationPane getOperationPanel() {
 		return operationPane;
 	}
-	
+
 	public void pressKey(int code){
 		try {
 			if(robot == null)
@@ -695,10 +696,10 @@ public class Screen extends JFrame {
 			robot.keyPress(code);
 		}
 		catch(Exception e) {
-			
+
 		}
 	}
-	
+
 	public void moveTo(int x, int y) {
 		try {
 			if(robot == null)
@@ -706,24 +707,24 @@ public class Screen extends JFrame {
 			robot.mouseMove(x, y);
 		}
 		catch(Exception e) {
-			
+
 		}
 	}
-	
+
 	public static UIManager getUIManager() {
 		return uiManager;
 	}
-	
+
 	public static DataManager getDataManager(){
 		return dataManager;
 	}
-	
+
 	public void saveAllBookmarks() {
 		tabPanel.getEditors().forEach(BookmarksManager::saveBookmarks);
 		rightTabPanel.getEditors().forEach(BookmarksManager::saveBookmarks);
 		bottomTabPanel.getEditors().forEach(BookmarksManager::saveBookmarks);
 	}
-	
+
 	public void saveAllEditors() {
 		if(DataManager.isSourceDefenderEnabled())
 			ToolMenu.sourceDefender.backupData();
@@ -731,13 +732,13 @@ public class Screen extends JFrame {
 		rightTabPanel.getEditors().forEach(w->w.saveCurrentFile());
 		bottomTabPanel.getEditors().forEach(w->w.saveCurrentFile());
 	}
-	
+
 	public void loadThemes(){
 		tabPanel.getEditors().forEach(w->w.loadTheme());
 		rightTabPanel.getEditors().forEach(w->w.loadTheme());
 		bottomTabPanel.getEditors().forEach(w->w.loadTheme());
 	}
-	
+
 	public LinkedList<Editor> getAllEditors(){
 		LinkedList<Editor> editors = new LinkedList<>();
 		tabPanel.getEditors().forEach(editors::add);
@@ -745,53 +746,53 @@ public class Screen extends JFrame {
 		bottomTabPanel.getEditors().forEach(editors::add);
 		return editors;
 	}
-	
+
 	public Editor getCurrentEditor() {
 		return focussedEditor;
 	}
-	
+
 	public void closeCurrentProject() {
 		closeAllTabs();
 	}
-	
+
 	public void closeAllTabs(){
 		tabPanel.closeAllTabs();
 		rightTabPanel.closeAllTabs();
 		bottomTabPanel.closeAllTabs();
 	}
-	
+
 	public TabPanel getTabPanel() {
 		return tabPanel;
 	}
-	
+
 	public TabPanel getRightTabPanel() {
 		return rightTabPanel;
 	}
-	
+
 	public TabPanel getBottomTabPanel() {
 		return bottomTabPanel;
 	}
-	
+
 	public static PluginManager getPluginManager() {
 		return pluginManager;
 	}
-	
+
 	public static PluginStore getPluginStore(){
 		return pluginStore;
 	}
-	
+
 	public static PluginsView getPluginsView(){
 		return pluginsView;
 	}
-	
+
 	public static PluginReactionManager getPluginReactionManager(){
 		return pluginReactionManager;
 	}
-	
+
 	public synchronized boolean isFocusMode() {
 		return focusMode;
 	}
-	
+
 	public synchronized void setFocusMode(boolean focusMode) {
 		this.focusMode = focusMode;
 		final int state = getExtendedState();
@@ -812,12 +813,12 @@ public class Screen extends JFrame {
 				setVisible(true);
 			}
 			doLayout();
-			
+
 			setStatus(null, 100, null);
 		});
-		
+
 		tx.start();
-		
+
 		try{
 			tx.join();
 		}
@@ -826,21 +827,21 @@ public class Screen extends JFrame {
 		}
 		setExtendedState(state);
 	}
-	
+
 	public void saveEssential() {
 		uiManager.save();
 		dataManager.saveData();
 		saveAllEditors();
 	}
-	
+
 	public static boolean onWindows(){
 		return File.pathSeparator.equals(";");
 	}
-	
+
 	public synchronized static boolean isNotNull(String text){
 		return text != null && !text.isBlank();
 	}
-	
+
 	public static void main(String[] args){
 		new Screen();
 	}

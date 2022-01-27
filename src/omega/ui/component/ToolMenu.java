@@ -560,7 +560,7 @@ public class ToolMenu extends JPanel {
 			public void draw(Graphics2D g) {
 				g.setColor(color3);
 				g.fillOval(7, 7, 16, 16);
-				if(hidden) {
+				if(!Screen.getProjectFile().getFileTreePanel().isVisible()) {
 					g.setColor(color2);
 					g.fillOval(10, 10, 10, 10);
 					g.setColor(color1);
