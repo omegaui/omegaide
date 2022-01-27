@@ -55,7 +55,7 @@ public class TabsHolderPanel extends JPanel{
 		super(null);
 		this.tabPanel = tabPanel;
 		
-		setBackground(c2);
+		setBackground(back2);
 
 		setSize(100, tabHeight);
 		setPreferredSize(getSize());
