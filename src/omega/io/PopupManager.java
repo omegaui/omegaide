@@ -106,7 +106,7 @@ public class PopupManager {
 			.createItem("New Enum", IconManager.fluentenumFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("enum", file.getAbsolutePath()))
 			.createItem("New Annotation", IconManager.fluentannotationFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
 		}
-		popup.createItem("Open in Desktop", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(file));
+		popup.createItem("Open in Desktop (F1)", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(file));
 		if(!file.isDirectory()) {
 			popup
 			.createItem("Open On Right Tab Panel", IconManager.fluenteditFileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))

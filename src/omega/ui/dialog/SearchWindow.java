@@ -18,6 +18,7 @@
 
 package omega.ui.dialog;
 import omega.io.FileOperationManager;
+import omega.io.IconManager;
 
 import omega.ui.component.SearchComp;
 
@@ -30,6 +31,9 @@ import omega.Screen;
 import java.awt.image.BufferedImage;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.KeyAdapter;
@@ -139,7 +143,22 @@ public class SearchWindow extends JDialog{
 		containerPanel.setArc(10, 10);
 		add(containerPanel);
 		
-		scrollPane = new JScrollPane(panel = new JPanel(null));
+		scrollPane = new JScrollPane(panel = new JPanel(null)){
+			@Override
+			public void paint(Graphics graphics){
+				if(currentComps.isEmpty()){
+					Graphics2D g = (Graphics2D)graphics;
+					g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+					g.setColor(back2);
+					g.fillRect(0, 0, getWidth(), getHeight());
+					g.drawImage(IconManager.fluentsearchFolderGif, getWidth()/2 - 86/2, getHeight()/2 - 86/2, 86, 86, this);
+				}
+				else
+					super.paint(graphics);
+			}
+		};
 		scrollPane.setBackground(back2);
 		scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
 		scrollPane.setBorder(null);
@@ -197,14 +216,12 @@ public class SearchWindow extends JDialog{
 				comp.setBounds(0, blockY, panel.getWidth(), 50);
 				comp.initUI();
 				searchComps.add(comp);
-				currentComps.add(comp);
 				
 				blockY += 50;
 			}
 			
-			if(!currentComps.isEmpty()) {
-				currentComps.get(pointer = 0).set(true);
-				infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " are Present in the Current Project!");
+			if(!searchComps.isEmpty()) {
+				infoComp.setText(searchComps.size() + " File" + (searchComps.size() > 1 ? "s" : "") + " are Present in the Current Project!");
 			}
 			else{
 				infoComp.setText("Not at least One File Found!");

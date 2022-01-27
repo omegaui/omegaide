@@ -164,6 +164,7 @@ public class IconManager {
 	public static Image fluentdeveloperGif = getFluentGif("developer.gif");
 	public static Image fluentwinkemojiGif = getFluentGif("wink.gif");
 	public static Image fluentloadinginfinityGif = getFluentGif("loading-infinity.gif");
+	public static Image fluentsearchFolderGif = getFluentGif("search-folder.gif");
 	
 	//The Default Icon Pack -- mixed
 	public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
