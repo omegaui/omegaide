@@ -175,7 +175,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		this.ignoreGenViewOnce = ignoreGenViewOnce;
 	}
 	
-	public synchronized void genView(LinkedList<DataMember> dataMembers, Graphics g){
+	public synchronized void genView(LinkedList<DataMember> dataMembers){
 		if(dataMembers.isEmpty()){
 			setVisible(false);
 			return;
@@ -191,15 +191,13 @@ public class ContentWindow extends JPanel implements KeyListener{
 		
 		Font hintFont = DataManager.getHintFont();
 		
-		g.setFont(hintFont);
-		
-		optimalHintHeight = g.getFontMetrics().getHeight() + 6;
+		optimalHintHeight = computeHeight(hintFont) + 6;
 		optimalHintHeight = optimalHintHeight <  20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;
 		
 		dataMembers.forEach(data->{
 			String text = data.getRepresentableValue();
 			if(text != null){
-				int w = g.getFontMetrics().stringWidth(text);
+				int w = computeWidth(text, hintFont);
 				if(w > width)
 					width = w;
 			}
@@ -221,13 +219,14 @@ public class ContentWindow extends JPanel implements KeyListener{
 					ContentWindow.this.setVisible(false);
 					String lCode = CodeFramework.getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
 					try {
-					
 						e.getDocument().remove(e.getCaretPosition() - match.length(), match.length());
 						
 						e.insert(d.name, e.getCaretPosition());
 						
 						if(d.parameterCount > 0) 
 							e.setCaretPosition(e.getCaretPosition() - 1);
+
+						d.getExtendedInsertion().run();
 					}
 					catch(Exception es) {
 						es.printStackTrace();

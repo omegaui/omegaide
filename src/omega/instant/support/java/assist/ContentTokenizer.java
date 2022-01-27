@@ -23,12 +23,14 @@ import omega.instant.support.AbstractContentTokenizer;
 import omega.instant.support.CodeFrameworks;
 
 import omega.instant.support.java.management.Import;
+import omega.instant.support.java.management.JDKManager;
 
 import omega.Screen;
 
 import omega.ui.component.Editor;
 
 import omega.instant.support.java.framework.CodeFramework;
+import omega.instant.support.java.framework.ImportFramework;
 
 import omega.io.SnippetBase;
 import omega.io.DataManager;
@@ -76,7 +78,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 						dataMembers.add(dataMember);
 				}
 			});
-			e.contentWindow.genView(dataMembers, Screen.getScreen().getGraphics());
+			e.contentWindow.genView(dataMembers);
 			return true;
 		}
 		return false;
@@ -154,13 +156,26 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			return;
 		
 		if(!text.contains(".")) {
-//			if(couldBeSomeClass(text)){
-//				if(BasicCodeHighlighter.isJavaConstant(text)){
-//					
-//				}
-//			}
-			SourceReader reader = new SourceReader(e.getText());
+			if(text.contains(" "))
+				text = text.substring(text.lastIndexOf(' ') + 1).trim();
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
+			if(couldBeSomeClass(text)){
+				for(Import im : JDKManager.imports){
+					if(CodeFramework.isUpperCaseHintType(im.className, text)){
+						DataMember dx = new DataMember("", "", im.packageName, im.className, null);
+						dx.setExtendedInsertion(()->{
+							if(!ImportFramework.contains(e, im.packageName, im.className))
+								ImportFramework.insertImport(e, im.packageName, im.className);
+						});
+						dataMembers.add(dx);
+					}
+				}
+			}
+			if(!dataMembers.isEmpty()){
+				e.contentWindow.genView(dataMembers);
+				return;
+			}
+			SourceReader reader = new SourceReader(e.getText());
 			LinkedList<DataMember> staticMembers = new LinkedList<>();
 			if(!text.contains(".")){
 				LinkedList<String> decompiledStaticDataFromClasses = new LinkedList<>();
@@ -260,7 +275,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 	}
 
 	public static boolean couldBeSomeClass(String text){
-		return Screen.isNotNull(text) && Character.isLetter(text.charAt(0)) && text.length() > 4;
+		return Screen.isNotNull(text) && Character.isLetter(text.charAt(0)) && text.length() > 1;
 	}
 	
 }

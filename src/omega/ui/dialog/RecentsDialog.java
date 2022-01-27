@@ -1,22 +1,24 @@
 /**
-* RecentsDialog
-* Copyright (C) 2021 Omega UI
+ * RecentsDialog
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.dialog;
+import omega.instant.support.java.framework.CodeFramework;
+
 import java.awt.Dimension;
 
 import java.awt.event.KeyAdapter;
@@ -51,29 +53,29 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
 public class RecentsDialog extends JDialog{
-	
+
 	private TextComp titleComp;
 	private TextComp filesComp;
 	private TextComp projectsComp;
 	private TextComp closeComp;
-	
+
 	private LinkedList<SearchComp> searchComps = new LinkedList<>();
 	private LinkedList<SearchComp> currentComps = new LinkedList<>();
-	
+
 	private FlexPanel containerPanel;
-	
+
 	private JPanel panel;
-	
+
 	private JScrollPane scrollPane;
-	
+
 	private NoCaretField field;
-	
+
 	private TextComp infoComp;
-	
+
 	private int blockY;
-	
+
 	private int pointer;
-	
+
 	public RecentsDialog(Screen screen){
 		super(screen, true);
 		setTitle("Recents Dialog");
@@ -87,7 +89,7 @@ public class RecentsDialog extends JDialog{
 		setContentPane(panel);
 		init();
 	}
-	
+
 	public void init(){
 		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
 		field.setBounds(0, 25, getWidth(), 30);
@@ -119,19 +121,19 @@ public class RecentsDialog extends JDialog{
 		});
 		add(field);
 		addKeyListener(field);
-		
+
 		addFocusListener(new FocusAdapter(){
 			@Override
 			public void focusGained(FocusEvent e){
 				field.grabFocus();
 			}
 		});
-		
+
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(5, 60, getWidth() - 10, getHeight() - 70 - 30);
 		containerPanel.setArc(10, 10);
 		add(containerPanel);
-		
+
 		scrollPane = new JScrollPane(panel = new JPanel(null));
 		scrollPane.setBackground(back2);
 		scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
@@ -145,7 +147,7 @@ public class RecentsDialog extends JDialog{
 			}
 		});
 		containerPanel.add(scrollPane);
-		
+
 		infoComp = new TextComp("", c2, c2, glow, null);
 		infoComp.setBounds(0, getHeight() - 25, getWidth(), 25);
 		infoComp.setFont(PX14);
@@ -153,7 +155,7 @@ public class RecentsDialog extends JDialog{
 		infoComp.setClickable(false);
 		infoComp.alignX = 10;
 		add(infoComp);
-		
+
 		titleComp = new TextComp("Quick Open Recents Files / Projects", c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 90, 30);
 		titleComp.setFont(PX14);
@@ -161,7 +163,7 @@ public class RecentsDialog extends JDialog{
 		titleComp.setClickable(false);
 		titleComp.attachDragger(this);
 		add(titleComp);
-		
+
 		filesComp = new TextComp(IconManager.fluentfileImage, 20, 20, "Clear File List!",TOOLMENU_COLOR3_SHADE, c2, c2, ()->{
 			RecentsManager.removeAllFiles();
 			initView();
@@ -169,7 +171,7 @@ public class RecentsDialog extends JDialog{
 		filesComp.setBounds(getWidth() - 90, 0, 30, 30);
 		filesComp.setArc(0, 0);
 		add(filesComp);
-		
+
 		projectsComp = new TextComp(IconManager.fluentfolderImage, 20, 20, "Clear Project List!", TOOLMENU_COLOR1_SHADE, c2, c2, ()->{
 			RecentsManager.removeAllProjects();
 			initView();
@@ -177,23 +179,23 @@ public class RecentsDialog extends JDialog{
 		projectsComp.setBounds(getWidth() - 60, 0, 30, 30);
 		projectsComp.setArc(0, 0);
 		add(projectsComp);
-		
+
 		closeComp = new TextComp(IconManager.fluentcloseImage, 20, 20, TOOLMENU_COLOR2_SHADE, c2, c2, this::dispose);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		closeComp.setArc(0, 0);
 		add(closeComp);
-		
+
 		putAnimationLayer(filesComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(projectsComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(closeComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
 	}
-	
+
 	public void initView(){
 		try{
 			currentComps.forEach(panel::remove);
 			currentComps.clear();
 			searchComps.clear();
-			
+
 			blockY = 0;
 			File file;
 			//Creating Directory Comps
@@ -201,7 +203,7 @@ public class RecentsDialog extends JDialog{
 				file = new File(path);
 				if(!file.exists() || !file.isDirectory())
 					continue;
-				
+
 				SearchComp comp = new SearchComp(this, file){
 					@Override
 					public String getExtension(){
@@ -214,32 +216,32 @@ public class RecentsDialog extends JDialog{
 				panel.add(comp);
 				searchComps.add(comp);
 				currentComps.add(comp);
-				
+
 				blockY += 50;
 			}
-			
+
 			//Creating Files Comps
 			for(String path : RecentsManager.RECENTS){
 				file = new File(path);
 				if(!file.exists() || file.isDirectory())
 					continue;
-				
+
 				SearchComp comp = new SearchComp(this, file);
 				comp.setBounds(0, blockY, panel.getWidth(), 50);
 				comp.initUI();
 				panel.add(comp);
 				searchComps.add(comp);
 				currentComps.add(comp);
-				
+
 				blockY += 50;
 			}
-			
+
 			panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
 			scrollPane.repaint();
 			scrollPane.getVerticalScrollBar().setVisible(true);
 			scrollPane.getVerticalScrollBar().setValue(0);
 			repaint();
-			
+
 			if(!currentComps.isEmpty()) {
 				currentComps.get(pointer = 0).set(true);
 				infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
@@ -253,30 +255,30 @@ public class RecentsDialog extends JDialog{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void genView(String match){
 		currentComps.forEach(panel::remove);
 		currentComps.clear();
-		
+
 		blockY = 0;
-		
+
 		for(SearchComp comp : searchComps){
-			if(comp.getName().contains(match)){
-				
+			if(comp.getName().contains(match) || CodeFramework.isUpperCaseHintType(comp.getName(), match)){
+
 				comp.setLocation(0, blockY);
 				panel.add(comp);
 				currentComps.add(comp);
-				
+
 				blockY += 50;
 			}
 		}
-		
+
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
 		scrollPane.repaint();
 		scrollPane.getVerticalScrollBar().setVisible(true);
 		scrollPane.getVerticalScrollBar().setValue(0);
 		repaint();
-		
+
 		if(!currentComps.isEmpty()) {
 			currentComps.get(pointer = 0).set(true);
 			infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
@@ -286,17 +288,17 @@ public class RecentsDialog extends JDialog{
 		}
 		doLayout();
 	}
-	
+
 	@Override
 	public void setVisible(boolean value){
 		if(value){
 			initView();
-		if(!Screen.isNotNull(field.getText()))
-			genView(field.getText());
+			if(!Screen.isNotNull(field.getText()))
+				genView(field.getText());
 		}
 		super.setVisible(value);
 	}
-	
+
 	@Override
 	public void setSize(int width, int height){
 		super.setSize(width, height);

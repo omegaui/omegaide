@@ -17,6 +17,8 @@
 */
 
 package omega.ui.dialog;
+import omega.instant.support.java.framework.CodeFramework;
+
 import omega.io.FileOperationManager;
 import omega.io.IconManager;
 
@@ -249,7 +251,7 @@ public class SearchWindow extends JDialog{
 		}
 		
 		for(SearchComp comp : searchComps){
-			if(comp.getName().contains(match)){
+			if(comp.getName().contains(match) || CodeFramework.isUpperCaseHintType(comp.getName(), match)){
 				
 				comp.setLocation(0, blockY);
 				panel.add(comp);

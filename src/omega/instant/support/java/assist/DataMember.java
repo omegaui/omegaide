@@ -29,6 +29,8 @@ public class DataMember {
 	public int parameterCount = 0;
 	public int lineNumber;
 	public LinkedList<String> modifiers = new LinkedList<>();
+
+	public Runnable extendedInsertion = ()->{};
 	
 	public DataMember(String access, String modifier, String type, String name, String parameters){
 		this.access = access;
@@ -117,5 +119,14 @@ public class DataMember {
 	public void setLineNumber(int lineN){
 		lineNumber = lineN;
 	}
+
+	public java.lang.Runnable getExtendedInsertion() {
+		return extendedInsertion;
+	}
+	
+	public void setExtendedInsertion(java.lang.Runnable extendedInsertion) {
+		this.extendedInsertion = extendedInsertion;
+	}
+	
 }
 

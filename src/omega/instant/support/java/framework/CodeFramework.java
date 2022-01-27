@@ -918,21 +918,46 @@ public class CodeFramework extends AbstractCodeFramework{
 	}
 
 	public static boolean isUpperCaseHintType(DataMember d, String lCode){
-		String upperCode = "";
-		for(char ch : d.name.toCharArray()){
-			if(Character.isUpperCase(ch))
-				upperCode += ch;
-		}
-		return upperCode.startsWith(lCode);
+		return isUpperCaseHintType(d.name, lCode);
 	}
 
 	public static boolean isUpperCaseHintType(String text, String lCode){
-		String upperCode = "";
-		for(char ch : text.toCharArray()){
-			if(Character.isUpperCase(ch))
-				upperCode += ch;
+		LinkedList<String> parts = new LinkedList<>();
+		
+		String part = "";
+
+		for(int i = 0; i < lCode.length(); i++){
+			char ch = lCode.charAt(i);
+			if(Character.isUpperCase(ch)){
+				if(!part.isBlank())
+					parts.add(part);
+				part = "" + ch;
+			}
+			else
+				part += ch;
 		}
-		return upperCode.startsWith(lCode);
+		
+		if(!part.equals(""))
+			parts.add(part);
+		
+		if(parts.isEmpty())
+			return false;
+		
+		int index = -1;
+		if(parts.size() > 1){
+			int nextIndex = 0;
+			for(int i = 0; i < parts.size() - 1; i++){
+				index = text.indexOf(parts.get(i));
+				if(index < 0 || index >= text.length())
+					return false;
+				nextIndex = text.indexOf(parts.get(i + 1), index + 1);
+				if(nextIndex < 0 || nextIndex <= index)
+					return false;
+			}
+		}
+		else
+			index = text.indexOf(part);
+		return index >= 0;
 	}
 
 	public static void gen(LinkedList<DataMember> dataMembers){
@@ -943,10 +968,10 @@ public class CodeFramework extends AbstractCodeFramework{
 				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
 					mx.add(d);
 			});
-			editor.contentWindow.genView(mx, Screen.getScreen().getGraphics());
+			editor.contentWindow.genView(mx);
 			return;
 		}
-		editor.contentWindow.genView(dataMembers, Screen.getScreen().getGraphics());
+		editor.contentWindow.genView(dataMembers);
 	}
 
 	public static void gen(LinkedList<DataMember> dataMembers, Editor editor){
@@ -957,10 +982,10 @@ public class CodeFramework extends AbstractCodeFramework{
 				if(d.name.contains(lCode) || isUpperCaseHintType(d, lCode))
 					mx.add(d);
 			});
-			editor.contentWindow.genView(mx, omega.Screen.getScreen().getGraphics());
+			editor.contentWindow.genView(mx);
 			return;
 		}
-		editor.contentWindow.genView(dataMembers, omega.Screen.getScreen().getGraphics());
+		editor.contentWindow.genView(dataMembers);
 	}
 
 	public static String getName(String line){
