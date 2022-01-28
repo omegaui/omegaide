@@ -40,19 +40,25 @@ public class DataBase {
 		this.file = file;
 		triggerLoad();
 	}
-	
-	private void triggerLoad(){
-		if(file != null && file.exists())
-			load();
-		else{
-			try{
-				throw new Exception(file + " doesn't exists!");
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		}
-	}
+
+    public void triggerLoad(){
+        if(file != null && !file.exists()){
+            System.err.println(file.getName() + " does n't exists.");
+            System.out.println("Attempting to create a new file.");
+            try {
+                boolean result = file.createNewFile();
+                if(result)
+                    System.out.println("Successfully Created the new file");
+                else
+                    System.err.println("Unable to Create a new file");
+            }
+            catch (Exception e){
+                System.err.println("An exception occurred when creating an non-existing data base file!");
+                e.printStackTrace();
+            }
+        }
+        load();
+    }
 	
 	private void load(){
 		try(Scanner reader = new Scanner(file)){
@@ -60,7 +66,6 @@ public class DataBase {
 			String dataSetName = "";
 			String value = "";
 			boolean canRecord = false;
-			boolean gotLinePrefix = true;
 			while(reader.hasNextLine()){
 				text = reader.nextLine();
 				if(text.trim().equals(""))
@@ -81,7 +86,6 @@ public class DataBase {
 					}
 					else if(text.charAt(0) == LINE_PREFIX){
 						value += '\n' + (text.length() == 1 ? "" : text.substring(1));
-						gotLinePrefix = true;
 						if(!reader.hasNextLine()){
 							addEntry(dataSetName, value);
 							break;
@@ -90,7 +94,6 @@ public class DataBase {
 					}
 					else if(text.charAt(0) == SET_PREFIX){
 						canRecord = false;
-						gotLinePrefix = false;
 						addEntry(dataSetName, value);
 						dataSetName = "";
 						value = "";

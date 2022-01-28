@@ -159,6 +159,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			if(text.contains(" "))
 				text = text.substring(text.lastIndexOf(' ') + 1).trim();
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
+			
 			if(couldBeSomeClass(text)){
 				for(Import im : JDKManager.imports){
 					if(CodeFramework.isUpperCaseHintType(im.className, text)){
@@ -166,13 +167,17 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 						dx.setExtendedInsertion(()->{
 							String PACK = "";
 							int index = ImportFramework.getPackageInformationIndex(e);
+							String textX = e.getText();
 							if(index != 0) {
-								String textX = e.getText();
 								textX = textX.substring(0, index + 1);
 								PACK = textX.substring(textX.lastIndexOf(" ") + 1, textX.lastIndexOf(';'));
+
+								textX = e.getText().substring(index);
+								textX = textX.substring(0, textX.indexOf("public "));
 							}
-							if(!PACK.equals(im.packageName) && !ImportFramework.contains(e, im.packageName, im.className))
+							if(!PACK.equals(im.packageName) && !textX.contains("." + im.className + ";") && !ImportFramework.contains(e, im.packageName, im.className)){
 								ImportFramework.insertImport(e, im.packageName, im.className);
+							}
 						});
 						dataMembers.add(dx);
 					}

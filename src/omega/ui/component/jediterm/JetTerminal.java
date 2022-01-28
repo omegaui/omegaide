@@ -17,6 +17,8 @@
 */
 
 package omega.ui.component.jediterm;
+import com.jediterm.terminal.ui.settings.SettingsProvider;
+
 import omegaui.component.FlexPanel;
 
 import java.awt.event.FocusListener;
@@ -60,6 +62,19 @@ public class JetTerminal extends JPanel{
 		init();
 	}
 	
+	public JetTerminal(SettingsProvider settingsProvider){
+		super(null);
+		this.directory = Screen.getProjectFile().getProjectPath();
+		init(settingsProvider);
+	}
+	
+	public JetTerminal(String[] command, String directory, SettingsProvider settingsProvider){
+		super(null);
+		this.command = command;
+		this.directory = directory;
+		init(settingsProvider);
+	}
+	
 	public JetTerminal(String[] command, String directory){
 		super(null);
 		this.command = command;
@@ -71,6 +86,17 @@ public class JetTerminal extends JPanel{
 		setBackground(JetTermSettingsProvider.colors[15]);
 
 		JetTermSettingsProvider jtsp = new JetTermSettingsProvider();
+		widget = new JediTermWidget(jtsp);
+
+		if(command == null)
+			widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
+		else
+			widget.setTtyConnector(getConnector(command));
+		
+		add(widget);
+	}
+	
+	public void init(SettingsProvider jtsp){
 		widget = new JediTermWidget(jtsp);
 
 		if(command == null)
