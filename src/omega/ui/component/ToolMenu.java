@@ -63,6 +63,7 @@ import omega.ui.popup.NotificationPopup;
 
 import omega.plugin.event.PluginReactionEvent;
 
+import omega.IDE;
 import omega.Screen;
 import omega.IDEUpdater;
 
@@ -650,40 +651,7 @@ public class ToolMenu extends JPanel {
 				.dialogIcon(IconManager.fluentupdateImage)
 				.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
 				.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
-				.iconButton(IconManager.fluentcloseImage, ()->{
-					try{
-						for(Process p : Screen.getProjectRunner().runningApps) {
-							if(p.isAlive())
-								p.destroyForcibly();
-						}
-					}
-					catch(Exception e2) {
-						
-					}
-					screen.getUIManager().save();
-					screen.getDataManager().saveData();
-					screen.saveAllEditors();
-					try{
-						Screen.getProjectFile().getProjectManager().save();
-					}
-					catch(Exception e2) {
-						
-					}
-					
-					new Thread(()->{
-						try{
-							if(Screen.onWindows())
-								new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
-							else
-								new ProcessBuilder("omega-ide").start();
-						}
-						catch(Exception e){
-							e.printStackTrace();
-						}
-					}).start();
-					
-					screen.dispose();
-				}, "")
+				.iconButton(IconManager.fluentcloseImage, IDE::restart, "")
 				.build()
 				.locateOnBottomLeft()
 				.showIt();
@@ -1024,98 +992,8 @@ public class ToolMenu extends JPanel {
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
 		.createItem("Save All Editors", IconManager.fluentsaveImage, ()->screen.saveAllEditors())
-		.createItem("Restart", IconManager.fluentcloseImage, ()->{
-			try{
-				for(Process p : Screen.getProjectRunner().runningApps) {
-					if(p.isAlive())
-						p.destroyForcibly();
-				}
-			}
-			catch(Exception e2) {
-				
-			}
-			Screen.getPluginManager().save();
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			screen.saveAllEditors();
-			try{
-				Screen.getProjectFile().getProjectManager().save();
-			}
-			catch(Exception e2) {
-				
-			}
-			
-			new Thread(()->{
-				try{
-					if(Screen.onWindows())
-						new ProcessBuilder("java", "-jar", "Omega IDE.jar").start();
-					else
-						new ProcessBuilder("omega-ide").start();
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-			}).start();
-			
-			screen.dispose();
-		})
-		.createItem("Save Everything and Exit -Without terminating running apps", IconManager.closeImage,
-		()->{
-			Screen.getPluginManager().save();
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			screen.saveAllEditors();
-			try{
-				Screen.getProjectFile().getProjectManager().save();
-			}
-			catch(Exception e2) {
-			}
-			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
-			System.exit(0);
-		})
-		.createItem("Terminate Running Apps and Exit -Without saving opened editors", IconManager.closeImage,
-		()->{
-			try{
-				for(Process p : Screen.getProjectRunner().runningApps) {
-					if(p.isAlive())
-						p.destroyForcibly();
-				}
-			}
-			catch(Exception e2) {}
-			Screen.getPluginManager().save();
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			try{
-				Screen.getProjectFile().getProjectManager().save();
-			}
-			catch(Exception e2) {
-			}
-			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
-			System.exit(0);
-		})
-		.createItem("Exit", IconManager.closeImage,
-		()->{
-			try{
-				for(Process p : Screen.getProjectRunner().runningApps) {
-					if(p.isAlive())
-						p.destroyForcibly();
-				}
-			}
-			catch(Exception e2) {
-				
-			}
-			Screen.getPluginManager().save();
-			screen.getUIManager().save();
-			screen.getDataManager().saveData();
-			screen.saveAllEditors();
-			try{
-				Screen.getProjectFile().getProjectManager().save();
-			}
-			catch(Exception e2) {
-			}
-			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
-			System.exit(0);
-		});
+		.createItem("Restart", IconManager.fluentcloseImage, IDE::restart)
+		.createItem("Exit", IconManager.closeImage, IDE::exit);
 	}
 	
 	private void addComp(Component c) {

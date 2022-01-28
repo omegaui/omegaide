@@ -601,6 +601,10 @@ public class Screen extends JFrame {
 		return res;
 	}
 
+	public void justDispose(){
+		super.dispose();
+	}
+
 	@Override
 	public void dispose(){
 		active = false;
