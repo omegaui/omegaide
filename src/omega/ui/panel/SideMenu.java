@@ -17,6 +17,10 @@
 */
 
 package omega.ui.panel;
+import java.util.LinkedList;
+
+import omega.instant.support.BoundsListener;
+
 import omega.ui.component.ToolMenu;
 
 import omegaui.component.TextComp;
@@ -43,6 +47,8 @@ public class SideMenu extends JPanel {
 	
 	public TextComp buildPathComp;
 	public TextComp settingsComp;
+
+	public LinkedList<BoundsListener> boundListeners = new LinkedList<>();
 	
 	public SideMenu(Screen screen){
 		super(null);
@@ -131,7 +137,16 @@ public class SideMenu extends JPanel {
 	public void layout(){
 		if(Screen.getProjectFile().getProjectManager() != null)
 			resize(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava());
+		boundListeners.forEach(bL->bL.onLayout(this));
 		super.layout();
+	}
+
+	public void addBoundsListener(BoundsListener listener){
+		boundListeners.add(listener);
+	}
+
+	public boolean removeBoundsListener(BoundsListener listener){
+		return boundListeners.remove(listener);
 	}
 }
 

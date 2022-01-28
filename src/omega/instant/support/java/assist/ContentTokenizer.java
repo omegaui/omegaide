@@ -164,7 +164,14 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 					if(CodeFramework.isUpperCaseHintType(im.className, text)){
 						DataMember dx = new DataMember("", "", im.packageName, im.className, null);
 						dx.setExtendedInsertion(()->{
-							if(!ImportFramework.contains(e, im.packageName, im.className))
+							String PACK = "";
+							int index = ImportFramework.getPackageInformationIndex(e);
+							if(index != 0) {
+								String textX = e.getText();
+								textX = textX.substring(0, index + 1);
+								PACK = textX.substring(textX.lastIndexOf(" ") + 1, textX.lastIndexOf(';'));
+							}
+							if(!PACK.equals(im.packageName) && !ImportFramework.contains(e, im.packageName, im.className))
 								ImportFramework.insertImport(e, im.packageName, im.className);
 						});
 						dataMembers.add(dx);
@@ -275,7 +282,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 	}
 
 	public static boolean couldBeSomeClass(String text){
-		return Screen.isNotNull(text) && Character.isLetter(text.charAt(0)) && text.length() > 1;
+		return Screen.isNotNull(text) && Character.isLetter(text.charAt(0)) && Character.isUpperCase(text.charAt(0)) && text.length() > 1;
 	}
 	
 }
