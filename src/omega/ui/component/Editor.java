@@ -1066,6 +1066,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		keyCache = 0;
 		contentWindow.setVisible(false);
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 		if(lastSearchContext != null){
@@ -1089,12 +1090,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	@Override
 	public void focusGained(FocusEvent e){
+		keyCache = 0;
 		screen.focussedEditor = Editor.this;
 		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 	}
 
 	@Override
 	public void focusLost(FocusEvent e){
+		keyCache = 0;
 		ToolMenu.getPathBox().setPath(null);
 	}
 
