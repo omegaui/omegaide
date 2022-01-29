@@ -21,12 +21,12 @@
 >Instant Mode
 -instant-mode-speed
 >Hint Font
--Ubuntu
+-JetBrains Mono
 -1
 -12
 >Parsing Enabled
 -false
 >Tab Size
--5
+-4
 >Background Illustration Path
 -/fluent-illustrations/icons8-gummy-coding.png

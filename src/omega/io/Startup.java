@@ -17,6 +17,9 @@
 */
 
 package omega.io;
+import java.awt.Font;
+import java.awt.Color;
+
 import omega.plugin.management.PluginManager;
 
 import omegaui.component.TextComp;
@@ -43,6 +46,8 @@ import java.awt.geom.RoundRectangle2D;
 import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.Token;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
@@ -87,16 +92,40 @@ public class Startup extends JDialog {
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
 		
-		JScrollPane scrollPane = new JScrollPane(textArea = new RSyntaxTextArea(LICENSE_TEXT));
+		JScrollPane scrollPane = new JScrollPane(textArea = new RSyntaxTextArea(LICENSE_TEXT){
+			@Override
+			public Color getForegroundForToken(Token token){
+				if(token.isIdentifier())
+					return TOOLMENU_COLOR3;
+				return super.getForegroundForToken(token);
+			}
+			@Override
+			public Font getFontForTokenType(int type){
+				if(type == Token.IDENTIFIER)
+					return PX14;
+				return super.getFontForTokenType(type);
+			}
+		});
 		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
 		scrollPane.setBackground(c2);
 		
-		textArea.setBackground(c2);
-		textArea.setForeground(TOOLMENU_COLOR3);
+		try{
+			if(isDarkMode())
+				Theme.load(getClass().getResourceAsStream("/dark.xml")).apply(textArea);
+			else
+				Theme.load(getClass().getResourceAsStream("/idea.xml")).apply(textArea);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		textArea.setFont(PX14);
 		textArea.setCaretPosition(0);
-		textArea.setEditable(false);
+		textArea.setAntiAliasingEnabled(true);
+		
 		MarkdownTokenMaker.apply(textArea);
+		
+		textArea.setEditable(false);
 		add(scrollPane);
 		
 		acceptComp = new TextComp("I Accept", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
@@ -143,7 +172,7 @@ public class Startup extends JDialog {
 					FlatLightLaf.install();
 			}
 			catch(Exception e) {
-				System.err.println(e);
+				e.printStackTrace();
 			}
 			new Startup(screen).repaint();
 		}

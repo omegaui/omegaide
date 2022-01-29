@@ -101,6 +101,7 @@ import javax.swing.JSplitPane;
 
 import static java.awt.event.KeyEvent.*;
 public class Screen extends JFrame {
+	
 	public SplitPanel splitPane;
 	public SplitPanel compilancePane;
 	public SplitPanel rightTabPanelSplitPane;
@@ -181,6 +182,8 @@ public class Screen extends JFrame {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/JetBrainsMono-Regular.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/JetBrainsMono-Bold.ttf")));
 
 			javax.swing.UIManager.put("ToolTip.font", omega.io.UIManager.PX14);
 			javax.swing.UIManager.put("Button.font", omega.io.UIManager.PX14);
