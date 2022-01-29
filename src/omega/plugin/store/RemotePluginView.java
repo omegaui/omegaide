@@ -1,20 +1,20 @@
 /**
-  * RemotePluginView
-  * Copyright (C) 2021 Omega UI
+ * RemotePluginView
+ * Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.plugin.store;
 import omega.io.IconManager;
@@ -42,7 +42,7 @@ public class RemotePluginView extends JDialog{
 	public PluginStore pluginStore;
 	public RemotePluginInfo remotePluginInfo;
 	public RemotePluginComp remotePluginComp;
-	
+
 	public TextComp titleComp;
 	public TextComp closeComp;
 	public TextComp iconComp;
@@ -57,7 +57,7 @@ public class RemotePluginView extends JDialog{
 
 	public int pointer;
 	public LinkedList<BufferedImage> screenshots;
-	
+
 	public RemotePluginView(RemotePluginComp remotePluginComp){
 		super(remotePluginComp.pluginStore, false);
 		this.remotePluginComp = remotePluginComp;
@@ -69,7 +69,6 @@ public class RemotePluginView extends JDialog{
 		setContentPane(panel);
 		setLayout(null);
 		setSize(550, 500);
-		setLocationRelativeTo(null);
 		setResizable(false);
 		init();
 	}
@@ -80,7 +79,7 @@ public class RemotePluginView extends JDialog{
 		iconComp.setArc(0, 0);
 		iconComp.setClickable(false);
 		add(iconComp);
-		
+
 		titleComp = new TextComp(remotePluginInfo.name, back2, back2, glow, null);
 		titleComp.setBounds(30, 0, getWidth() - 60, 30);
 		titleComp.setFont(PX14);
@@ -194,9 +193,12 @@ public class RemotePluginView extends JDialog{
 
 	@Override
 	public void setVisible(boolean value){
-	     super.setVisible(value);
+		super.setVisible(value);
+		if(remotePluginInfo.screenshotsURLs.isEmpty()){
+			setSize(550, 160);
+		}
 		if(value){
-	          doPostInit();
+			doPostInit();
 		}
 	}
 
@@ -204,5 +206,6 @@ public class RemotePluginView extends JDialog{
 	public void setSize(int width, int height){
 		super.setSize(width, height);
 		setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
+		setLocationRelativeTo(null);
 	}
 }
