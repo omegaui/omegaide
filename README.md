@@ -1,4 +1,32 @@
-# **Omega IDE**
+<p align="center">
+  <img width="140" src="https://raw.githubusercontent.com/omegaui/omegaide/main/res/omega_ide_icon128.png" />  
+  <h2 align="center">Omega IDE</h2>
+  <p align="center">The Blazing Fast Java IDE and an Instant IDE for any programming language</p>
+</p>
+<p align="center">
+  <a href="https://github.com/omegaui/omegaide/issues">
+    <img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
+  </a>
+  <a href="https://github.com/omegaui/omegaide/network/members">
+    <img src="https://img.shields.io/github/forks/omegaui/omegaide"/> 
+  </a>  
+  <a href="https://github.com/omegaui/omegaide/stargazers">
+    <img src="https://img.shields.io/github/stars/omegaui/omegaide"/> 
+    <a href="https://github.com/omegaui/omegaide/LICENSE">
+  </a>
+    <img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
+  </a>
+</p>
+<p align="center">
+  </a>
+    <a href="https://instagram.com/i_am_arham_92">
+    <img src="https://instagram.fdel1-4.fna.fbcdn.net/v/t51.2885-19/s150x150/240866652_1034091963994553_6501518522533409578_n.jpg?_nc_ht=instagram.fdel1-4.fna.fbcdn.net&_nc_cat=105&_nc_ohc=I95VnGmI9dUAX9zCQEm&edm=ABfd0MgBAAAA&ccb=7-4&oh=00_AT-CcO6awg0buE3xK_K5BqYjo8ZG6ZFoVd1maLpLLfA2GQ&oe=61FAEA1D&_nc_sid=7bff83"/> 
+  </a>
+</p>
+
+
+Remember, A [wiki](https://github.com/omegaui/omegaide/wiki/Omega-IDE-Wiki-Home-Page) is useful stuff.
+
 
 **Omega IDE v2.2 - The Awesome Beta**
 
