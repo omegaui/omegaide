@@ -74,6 +74,8 @@ public class PluginStore extends JDialog{
 	public NoCaretField searchField;
 	public TextComp categoryComp;
 
+	public volatile boolean loaded = false;
+
 	public String currentCategory = PluginCategory.ANY_CATEGORY;
 
 	public LinkedList<RemotePluginComp> remotePluginComps = new LinkedList<>();
@@ -142,19 +144,26 @@ public class PluginStore extends JDialog{
 			String hint = "No Plugins Found!";
 			@Override
 			public void paint(Graphics graphics){
-				if(remotePluginComps.isEmpty()){
-					Graphics2D g = (Graphics2D)graphics;
-					g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-					g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				if(!remotePluginComps.isEmpty()){
+					super.paint(graphics);
+					return;
+				}
+				Graphics2D g = (Graphics2D)graphics;
+				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				if(!loaded){
+					g.setColor(getBackground());
+					g.fillRect(0, 0, getWidth(), getHeight());
+					g.drawImage(IconManager.fluentloadinginfinityGif, getWidth()/2 - 43/2, getHeight()/2 - 43/2, 43, 43, this);
+				}
+				else if(remotePluginComps.isEmpty()){
 					g.setColor(getBackground());
 					g.fillRect(0, 0, getWidth(), getHeight());
 					g.setFont(PX14);
 					g.setColor(TOOLMENU_COLOR1);
 					g.drawString(hint, getWidth()/2 - g.getFontMetrics().stringWidth(hint)/2, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 				}
-				else
-					super.paint(graphics);
 			}
 		});
 		contentScrollPane.setBounds(5, 5, contentPanel.getWidth() - 10, contentPanel.getHeight() - 10);
@@ -227,11 +236,15 @@ public class PluginStore extends JDialog{
 	}
 
 	public void doPostInit(){
-		if(remotePluginInfoLoader != null)
+		if(remotePluginInfoLoader != null){
+			loaded = true;
 			return;
+		}
+		loaded = false;
 		remotePluginInfoLoader = new RemotePluginInfoLoader(this);
 		new Thread(()->{
 			remotePluginInfoLoader.loadRemotePluginInfos();
+			loaded = true;
 			if(!remotePluginInfoLoader.remotePluginInfos.isEmpty()){
 				genView(PluginCategory.ANY_CATEGORY, "");
 			}
