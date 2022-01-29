@@ -17,16 +17,9 @@
     <img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
   </a>
 </p>
-<p align="center">
-  </a>
-    <a href="https://instagram.com/i_am_arham_92">
-    <img src="https://instagram.fdel1-4.fna.fbcdn.net/v/t51.2885-19/s150x150/240866652_1034091963994553_6501518522533409578_n.jpg?_nc_ht=instagram.fdel1-4.fna.fbcdn.net&_nc_cat=105&_nc_ohc=I95VnGmI9dUAX9zCQEm&edm=ABfd0MgBAAAA&ccb=7-4&oh=00_AT-CcO6awg0buE3xK_K5BqYjo8ZG6ZFoVd1maLpLLfA2GQ&oe=61FAEA1D&_nc_sid=7bff83"/> 
-  </a>
-</p>
 
 
-Remember, A [wiki](https://github.com/omegaui/omegaide/wiki/Omega-IDE-Wiki-Home-Page) is useful stuff.
-
+Remember, A [wiki](https://github.com/omegaui/omegaide/wiki/Omega-IDE-Wiki-Home-Page) is a useful stuff.
 
 **Omega IDE v2.2 - The Awesome Beta**
 
@@ -239,7 +232,14 @@ Omega IDE is not yet totally evolved which means it has no integrated support fo
 
 # Hope You Like It
 
-instagram @i_am_arham_92
+
+<p align="center">
+  </a>
+    <a href="https://instagram.com/i_am_arham_92">
+    <img src="https://instagram.fdel1-4.fna.fbcdn.net/v/t51.2885-19/s150x150/240866652_1034091963994553_6501518522533409578_n.jpg?_nc_ht=instagram.fdel1-4.fna.fbcdn.net&_nc_cat=105&_nc_ohc=I95VnGmI9dUAX9zCQEm&edm=ABfd0MgBAAAA&ccb=7-4&oh=00_AT-CcO6awg0buE3xK_K5BqYjo8ZG6ZFoVd1maLpLLfA2GQ&oe=61FAEA1D&_nc_sid=7bff83"/> 
+  </a>
+</p>
+
 
 Want to Donate for the Project?
 
