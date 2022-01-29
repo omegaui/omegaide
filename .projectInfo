@@ -14,5 +14,6 @@
 -project-root$/lib/log4j-1.2.14.jar
 -project-root$/lib/purejavacomm-0.0.17.jar
 -project-root$/lib/pty4j-0.7.2.jar
+-project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar
 >Project Classpath : Required Resource Roots
 -project-root$/res
