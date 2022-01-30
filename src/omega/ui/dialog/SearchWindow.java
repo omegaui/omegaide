@@ -1,20 +1,20 @@
 /**
-* SearchWindow
-* Copyright (C) 2021 Omega UI
+ * SearchWindow
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.dialog;
 import omega.instant.support.java.framework.CodeFramework;
@@ -60,35 +60,37 @@ import static omegaui.component.animation.Animations.*;
 
 public class SearchWindow extends JDialog{
 	private Screen screen;
-	
+
 	private FlexPanel containerPanel;
-	
+
 	private JPanel panel;
-	
+
 	private JScrollPane scrollPane;
-	
+
 	private NoCaretField field;
-	
+
 	private TextComp infoComp;
-	
+
 	private LinkedList<File> files;
-	
+
 	private int blockY;
-	
+
 	private LinkedList<SearchComp> searchComps;
 	private LinkedList<SearchComp> currentComps;
-	
+
+	private static LinkedList<String> ignoredDirectories = new LinkedList<>();
+
 	private int pointer;
-	
+
 	public SearchWindow(Screen f){
 		super(f, false);
-		
+
 		this.screen = f;
-		
+
 		files = new LinkedList<>();
 		searchComps = new LinkedList<>();
 		currentComps = new LinkedList<>();
-		
+
 		setUndecorated(true);
 		setTitle("Search Files across the Project");
 		setIconImage(f.getIconImage());
@@ -96,12 +98,15 @@ public class SearchWindow extends JDialog{
 		setLocationRelativeTo(null);
 		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
 		setResizable(false);
-		
+
 		JPanel panelX = new JPanel(null);
 		panelX.setBackground(c2);
 		setContentPane(panelX);
 		setLayout(null);
-		
+
+		//Ignoring node_modules for Web Projects
+		ignoredDirectories.add("node_modules");
+
 		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
 		field.setBounds(0, 30, getWidth(), 30);
 		field.setFont(PX16);
@@ -132,19 +137,19 @@ public class SearchWindow extends JDialog{
 		});
 		add(field);
 		addKeyListener(field);
-		
+
 		addFocusListener(new FocusAdapter(){
 			@Override
 			public void focusGained(FocusEvent e){
 				field.grabFocus();
 			}
 		});
-		
+
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(5, 65, getWidth() - 10, getHeight() - 70 - 30);
 		containerPanel.setArc(10, 10);
 		add(containerPanel);
-		
+
 		scrollPane = new JScrollPane(panel = new JPanel(null)){
 			@Override
 			public void paint(Graphics graphics){
@@ -173,7 +178,7 @@ public class SearchWindow extends JDialog{
 			}
 		});
 		containerPanel.add(scrollPane);
-		
+
 		infoComp = new TextComp("", c2, c2, glow, null);
 		infoComp.setBounds(0, getHeight() - 25, getWidth(), 25);
 		infoComp.setFont(PX14);
@@ -181,7 +186,7 @@ public class SearchWindow extends JDialog{
 		infoComp.setClickable(false);
 		infoComp.alignX = 10;
 		add(infoComp);
-		
+
 		TextComp titleComp = new TextComp(getTitle(), back2, back2, glow, field::grabFocus);
 		titleComp.setBounds(0, 0, getWidth() - 60, 30);
 		titleComp.setClickable(false);
@@ -189,13 +194,13 @@ public class SearchWindow extends JDialog{
 		titleComp.setArc(0, 0);
 		titleComp.attachDragger(this);
 		add(titleComp);
-		
+
 		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
-		
+
 		TextComp reloadComp = new TextComp("#", "Click to Reload File Tree", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->cleanAndLoad(new File(Screen.getProjectFile().getProjectPath())));
 		reloadComp.setBounds(getWidth() - 60, 0, 30, 30);
 		reloadComp.setArc(0, 0);
@@ -209,19 +214,19 @@ public class SearchWindow extends JDialog{
 			currentComps.forEach(panel::remove);
 			currentComps.clear();
 			searchComps.clear();
-			
+
 			blockY = 0;
-			
+
 			//Creating Files Comps
 			for(File file : files){
 				SearchComp comp = new SearchComp(this, file);
 				comp.setBounds(0, blockY, panel.getWidth(), 50);
 				comp.initUI();
 				searchComps.add(comp);
-				
+
 				blockY += 50;
 			}
-			
+
 			if(!searchComps.isEmpty()) {
 				infoComp.setText(searchComps.size() + " File" + (searchComps.size() > 1 ? "s" : "") + " are Present in the Current Project!");
 			}
@@ -234,13 +239,13 @@ public class SearchWindow extends JDialog{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void list(String match){
 		currentComps.forEach(panel::remove);
 		currentComps.clear();
-		
+
 		blockY = 0;
-		
+
 		if(match.isBlank()){
 			panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
 			scrollPane.repaint();
@@ -249,18 +254,18 @@ public class SearchWindow extends JDialog{
 			infoComp.setText(searchComps.size() + " File" + (searchComps.size() > 1 ? "s" : "") + " are Present in the Current Project!");
 			return;
 		}
-		
+
 		for(SearchComp comp : searchComps){
 			if(comp.getName().contains(match) || CodeFramework.isUpperCaseHintType(comp.getName(), match)){
-				
+
 				comp.setLocation(0, blockY);
 				panel.add(comp);
 				currentComps.add(comp);
-				
+
 				blockY += 50;
 			}
 		}
-		
+
 		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
 		scrollPane.repaint();
 		if(blockY > scrollPane.getHeight()){
@@ -271,7 +276,7 @@ public class SearchWindow extends JDialog{
 			scrollPane.getVerticalScrollBar().setVisible(false);
 		}
 		repaint();
-		
+
 		if(!currentComps.isEmpty()) {
 			currentComps.get(pointer = 0).set(true);
 			infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
@@ -281,7 +286,7 @@ public class SearchWindow extends JDialog{
 		}
 		doLayout();
 	}
-	
+
 	public void cleanAndLoad(File f){
 		this.files.clear();
 		load(f);
@@ -290,18 +295,25 @@ public class SearchWindow extends JDialog{
 		if(!Screen.isNotNull(field.getText()))
 			list(field.getText());
 	}
-	
+
 	public void load(File f){
+		if(ignoredDirectories.contains(f.getName()))
+			return;
 		File[] files = f.listFiles();
-		if(files == null || files.length == 0) return;
+		if(files == null || files.length == 0)
+			return;
 		for(File file : files){
-			if(file.isDirectory()) 
+			if(file.isDirectory())
 				load(file);
 			else if(!file.getName().endsWith(".class"))
 				this.files.add(file);
 		}
 	}
-	
+
+	public static synchronized LinkedList<String> getIgnoredDirecotories(){
+		return ignoredDirectories;
+	}
+
 	@Override
 	public void setVisible(boolean value){
 		super.setVisible(value);

@@ -68,7 +68,6 @@ public class ProjectFile {
 	}
 	
 	private void init() {
-
 		fileTreePanel = new FileTreePanel();
 		
 		dependencyView = new BuildPathManager(getScreen());
@@ -78,7 +77,7 @@ public class ProjectFile {
 	}
 	
 	public void readJDK(){
-		if(projectManager.jdkPath == null)
+		if(projectManager.isLanguageTagNonJava() && !Screen.isNotNull(projectManager.jdkPath))
 			return;
 		
 		new Thread(()->{
