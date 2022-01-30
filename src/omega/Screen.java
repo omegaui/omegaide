@@ -491,8 +491,7 @@ public class Screen extends JFrame {
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		tabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor))
-		.add(editor.getFAndR(), BorderLayout.NORTH);
+		editor.setTabHolderPanel(tabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor)));
 		return editor;
 	}
 
@@ -515,8 +514,7 @@ public class Screen extends JFrame {
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor))
-		.add(editor.getFAndR(), BorderLayout.NORTH);
+		editor.setTabHolderPanel(rightTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor)));
 		return editor;
 	}
 
@@ -539,8 +537,7 @@ public class Screen extends JFrame {
 		new Thread(()->Screen.addAndSaveRecents(file.getAbsolutePath())).start();
 		Editor editor = new Editor(this);
 		editor.loadFile(file);
-		bottomTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor))
-		.add(editor.getFAndR(), BorderLayout.NORTH);
+		editor.setTabHolderPanel(bottomTabPanel.addTab(file.getName(), file.getAbsolutePath(), getPackName(file), FileTreeBranch.getPreferredImageForFile(file), editor.getAttachment(), FileTreeBranch.getPreferredColorForFile(file), editor::closeFile, PopupManager.createMenu(editor)));
 		return editor;
 	}
 

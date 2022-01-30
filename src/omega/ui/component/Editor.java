@@ -17,6 +17,11 @@
  */
 
 package omega.ui.component;
+import omega.ui.window.EditorPreviewWindow;
+
+import omega.ui.panel.AbstractPreviewPanel;
+import omega.ui.panel.PreviewPanels;
+
 import omega.instant.support.java.generator.Generator;
 
 import omega.instant.support.java.framework.CodeFramework;
@@ -36,6 +41,7 @@ import omega.io.RustTokenMaker;
 import omega.io.SnippetBase;
 import omega.io.UIManager;
 import omega.io.BookmarksManager;
+import omega.io.IconManager;
 
 import omega.instant.support.java.misc.JavaJumpToDefinitionPanel;
 import omega.instant.support.java.misc.JavaCodeNavigator;
@@ -66,6 +72,7 @@ import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JPanel;
 
 import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 
@@ -127,6 +134,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	private volatile boolean initializedJavaKeyStrokes = false;
 
 	private static boolean launched = false;
+
+	public JPanel tabHolderPanel;
+	
+	public AbstractPreviewPanel previewPanel;
+	public EditorPreviewWindow previewWindow;
 
 	public ContentWindow contentWindow;
 	public FileSaveDialog fileSaveDialog;
@@ -245,6 +257,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->triggerJumpToDefinition(e), VK_CONTROL, VK_J).setStopKeys(VK_ALT, VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->ToolMenu.recentsDialog.setVisible(true), VK_CONTROL, VK_SHIFT, VK_M).setStopKeys(VK_ALT);
+		keyStrokeListener.putKeyStroke((e)->triggerPreview(e), VK_CONTROL, VK_P).setStopKeys(VK_SHIFT);
 	}
 
 	public void initJavaFileKeyStrokes(){
@@ -834,6 +847,25 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		e.consume();
 	}
 
+	public void triggerPreview(KeyEvent e){
+		new Thread(()->{
+			if(tabHolderPanel != null){
+				previewPanel = PreviewPanels.getPreviewPanel(this);
+				if(previewPanel != null){
+					if(previewWindow == null){
+						previewWindow = new EditorPreviewWindow();
+					}
+					previewPanel.genPreview(this, previewWindow);
+					previewWindow.showPreview(previewPanel);
+				}
+				else
+					Screen.setStatus("No Preview Generator available for file " + currentFile.getName(), 10, IconManager.fluentinfoImage);
+			}
+		}).start();
+
+		e.consume();
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		synchronized(Editor.class){
@@ -1109,6 +1141,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public RTextScrollPane getAttachment() {
 		return scrollPane;
+	}
+
+	public JPanel getTabHolderPanel(){
+		return tabHolderPanel;
+	}
+
+	public void setTabHolderPanel(JPanel panel){
+		tabHolderPanel = panel;
+		tabHolderPanel.add(getFAndR(), BorderLayout.NORTH);
 	}
 }
 

@@ -292,8 +292,9 @@ public class InstructionWindow extends JDialog{
 			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 90);
 			g.drawString("Ctrl + D - Duplicate Current Line(Till Caret) or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 110);
 			g.drawString("Ctrl + J - Show Definitions", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 130);
-			g.drawString("Ctrl + SHIFT + M - Show Recents Dialog", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
-			g.drawString("TAB - Triggers Snippets", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 170);
+			g.drawString("Ctrl + P - Show Editor Preview", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
+			g.drawString("Ctrl + SHIFT + M - Show Recents Dialog", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 170);
+			g.drawString("TAB - Triggers Snippets", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 190);
 		});
 
 		paintBoards.add((g, width, height)->{
