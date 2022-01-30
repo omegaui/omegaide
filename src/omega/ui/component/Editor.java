@@ -364,8 +364,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVA);
 		else if(f.getName().endsWith(".kt") || f.getName().endsWith(".kts") || f.getName().endsWith(".ktm"))
 			KotlinTokenMaker.apply(e);
-		else if(f.getName().endsWith(".js"))
+		else if(f.getName().endsWith(".js") || f.getName().endsWith(".jsx"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JAVASCRIPT);
+		else if(f.getName().endsWith(".ts") || f.getName().endsWith(".tsx"))
+			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_TYPESCRIPT);
 		else if(f.getName().endsWith(".json"))
 			e.setSyntaxEditingStyle(Editor.SYNTAX_STYLE_JSON_WITH_COMMENTS);
 		else if(f.getName().endsWith(".hjson"))

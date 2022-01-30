@@ -340,7 +340,7 @@ public class FileTreeBranch extends JComponent {
 				return IconManager.fluentgroovyImage;
 			if(ext.equals(".dart"))
 				return IconManager.fluentdartImage;
-			if(ext.equals(".js") || ext.equals(".css") || ext.equals(".html") || ext.equals(".jsx") || ext.equals(".ts"))
+			if(ext.equals(".js") || ext.equals(".css") || ext.equals(".html") || ext.equals(".jsx") || ext.equals(".ts") || ext.equals(".tsx"))
 				return IconManager.fluentwebImage;
 			if(ext.equals(".c"))
 				return IconManager.fluentcImage;
