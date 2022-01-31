@@ -84,6 +84,21 @@ public class UIManager extends DataBase {
 	public static int fontState = Font.BOLD;
 
 	/**
+	 * The field carrying the default font name which was registered in omega.Screen
+	 */
+	public static String terminalFontName = "Ubuntu Mono";
+
+	/**
+	 * The field carrying the default font size
+	 */
+	public static int terminalFontSize = 14;
+
+	/**
+	 * The field carrying the default font state
+	 */
+	public static int terminalFontState = Font.BOLD;
+
+	/**
 	 * The Foreground Color of any text area
 	 */
 	public static Color glow;
@@ -195,6 +210,9 @@ public class UIManager extends DataBase {
 			setFontName(e.getValue());
 			setFontSize(getEntryAt("Font", 1).getValueAsInt());
 			setFontState(getEntryAt("Font", 2).getValueAsInt());
+			setTerminalFontName(getEntryAt("Terminal Font", 0).getValue());
+			setTerminalFontSize(getEntryAt("Terminal Font", 1).getValueAsInt());
+			setTerminalFontState(getEntryAt("Terminal Font", 2).getValueAsInt());
 			setAnimationsActive(getEntryAt("Animations On", 0).getValueAsBoolean());
 			setExtendedState(getEntryAt("Main Window Extended State", 0).getValueAsInt());
 			setToolMenuCollapsed(getEntryAt("ToolMenu Collapsed", 0).getValueAsBoolean());
@@ -275,10 +293,16 @@ public class UIManager extends DataBase {
 		editor.setFont(new Font(fontName, fontState, fontSize));
 	}
 
-	public static void setData(int fontSize, String fontName, int fontState) {
+	public static void setEditorFontData(int fontSize, String fontName, int fontState) {
 		UIManager.fontSize = fontSize;
 		UIManager.fontName = fontName;
 		UIManager.fontState = fontState;
+	}
+
+	public static void setTerminalFontData(int fontSize, String fontName, int fontState) {
+		terminalFontName = fontName;
+		terminalFontSize = fontSize;
+		terminalFontState = fontState;
 	}
 
 	public static void setData(Component c) {
@@ -294,6 +318,9 @@ public class UIManager extends DataBase {
 		addEntry("Font", fontName);
 		addEntry("Font", fontSize + "");
 		addEntry("Font", fontState + "");
+		addEntry("Terminal Font", terminalFontName);
+		addEntry("Terminal Font", terminalFontSize + "");
+		addEntry("Terminal Font", terminalFontState + "");
 		addEntry("Main Window Extended State", Screen.getScreen().getExtendedState() + "");
 		addEntry("ToolMenu Collapsed", toolMenuCollapsed + "");
 		super.save();
@@ -333,6 +360,18 @@ public class UIManager extends DataBase {
 		UIManager.fontState = fontState;
 	}
 
+	public static void setTerminalFontName(java.lang.String terminalFontName) {
+		UIManager.terminalFontName = terminalFontName;
+	}
+	
+	public static void setTerminalFontSize(int terminalFontSize) {
+		UIManager.terminalFontSize = terminalFontSize;
+	}
+	
+	public static void setTerminalFontState(int terminalFontState) {
+		UIManager.terminalFontState = terminalFontState;
+	}
+	
 	public static boolean isAnimationsActive() {
 		return animationsActive;
 	}

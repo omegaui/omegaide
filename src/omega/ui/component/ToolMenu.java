@@ -817,11 +817,16 @@ public class ToolMenu extends JPanel {
 	
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
-		setPopup.createItem("Change Font", IconManager.settingsImage, ()->{
+		setPopup.createItem("Change Editor Font", IconManager.settingsImage, ()->{
 			Font font = fontC.chooseFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
-			UIManager.setData(font.getSize(), font.getName(), font.getStyle());
+			UIManager.setEditorFontData(font.getSize(), font.getName(), font.getStyle());
 			screen.getUIManager().save();
 			screen.loadThemes();
+		})
+		.createItem("Change Terminal Font", IconManager.settingsImage, ()->{
+			Font font = fontC.chooseFont(new Font(UIManager.terminalFontName, UIManager.terminalFontState, UIManager.terminalFontSize));
+			UIManager.setTerminalFontData(font.getSize(), font.getName(), font.getStyle());
+			screen.getUIManager().save();
 		})
 		.createItem("Change Content Assist Font", IconManager.settingsImage, ()->{
 			Font font = fontC.chooseFont(DataManager.getHintFont());

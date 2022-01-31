@@ -1,20 +1,20 @@
 /**
-  * JetTermSettingsProvider
-  * Copyright (C) 2021 Omega UI
+ * JetTermSettingsProvider
+ * Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.component.jediterm;
 import omega.io.UIManager;
@@ -54,17 +54,17 @@ public class JetTermSettingsProvider extends DefaultSettingsProvider{
 		colors[14] = Color.decode("#4C2719");
 		colors[15] = isDarkMode() ? Color.decode("#242424") : c2;
 	}
-	
+
 	@Override
 	public Font getTerminalFont() {
-		return new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize);
+		return new Font(UIManager.terminalFontName, UIManager.terminalFontState, UIManager.terminalFontSize);
 	}
-	
+
 	@Override
 	public float getTerminalFontSize() {
-		return UIManager.fontSize;
+		return UIManager.terminalFontSize;
 	}
-	
+
 	@Override
 	public boolean useInverseSelectionColor() {
 		return true;
@@ -79,20 +79,21 @@ public class JetTermSettingsProvider extends DefaultSettingsProvider{
 			}
 		};
 	}
-	
+
 	@Override
 	public boolean useAntialiasing() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean audibleBell() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean scrollToBottomOnTyping() {
 		return true;
 	}
-	
+
 }
+
