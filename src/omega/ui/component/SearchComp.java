@@ -1,20 +1,20 @@
 /**
-  * SearchComp
-  * Copyright (C) 2021 Omega UI
+ * SearchComp
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.component;
 
@@ -42,9 +42,9 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class SearchComp extends FlexPanel implements MouseListener{
 	private JDialog searchWindow;
-	
+
 	private File file;
-	
+
 	private TextComp iconComp;
 	private TextComp nameComp;
 	private TextComp parentComp;
@@ -54,7 +54,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	private TextComp bottomComp;
 
 	private Runnable clickAction;
-	
+
 	public SearchComp(JDialog window, File file){
 		super(null, back1, c2);
 		setArc(0, 0);
@@ -66,7 +66,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 
 		addMouseListener(this);
 	}
-	
+
 	public void initUI(){
 		iconComp = new TextComp(getPreferredImageForFile(file), getHeight(), getHeight(), ALPHA, ALPHA, ALPHA, null);
 		iconComp.setBounds(0, 0, getHeight(), getHeight());
@@ -74,7 +74,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		iconComp.setArc(0, 0);
 		iconComp.addMouseListener(this);
 		add(iconComp);
-		
+
 		nameComp = new TextComp(file.getName(), file.getAbsolutePath(), ALPHA, ALPHA, getPreferredColorForFile(file), null);
 		nameComp.setLocation(iconComp.getX() + iconComp.getWidth() + 4, 2);
 		nameComp.setSize(getWidth() - nameComp.getX() - 80, getHeight()/2);
@@ -88,7 +88,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		String parentName = Screen.getPackName(file.getParentFile());
 		if(parentName.trim().equals(""))
 			parentName = Screen.getProjectFile().getProjectName();
-		
+
 		parentComp = new TextComp(parentName, ALPHA, ALPHA, TOOLMENU_COLOR4, null);
 		parentComp.setBounds(nameComp.getX(), nameComp.getY() + nameComp.getHeight() + 2, nameComp.getWidth(), nameComp.getHeight());
 		parentComp.setFont(UBUNTU_PX12);
@@ -96,7 +96,7 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		parentComp.alignX = 5;
 		parentComp.addMouseListener(this);
 		add(parentComp);
-		
+
 		tagComp = new TextComp(getExtension(), back2, ALPHA, nameComp.color3, null);
 		tagComp.setBounds(getWidth() - 75, getHeight() - parentComp.getHeight(), 70, parentComp.getHeight());
 		tagComp.setFont(UBUNTU_PX12);
@@ -131,13 +131,13 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		else
 			mouseExited(null);
 	}
-	
+
 	@Override
 	public void mouseEntered(MouseEvent e){
 		setBackground(back2);
 		setAccentColor(back3);
 	}
-	
+
 	@Override
 	public void mouseExited(MouseEvent e){
 		setBackground(back1);
@@ -149,21 +149,21 @@ public class SearchComp extends FlexPanel implements MouseListener{
 		searchWindow.dispose();
 		clickAction.run();
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent) {
-		
+
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
-		
+
 	}
 
 	public java.lang.Runnable getClickAction() {
 		return clickAction;
 	}
-	
+
 	public void setClickAction(java.lang.Runnable clickAction) {
 		this.clickAction = clickAction;
 	}
@@ -171,20 +171,21 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	public java.io.File getFile() {
 		return file;
 	}
-	
+
 	@Override
 	public String getName(){
 		return file.getName();
 	}
-	
+
 	public String getExtension(){
 		String name = file.getName();
 		name = name.contains(".") ? name.substring(name.lastIndexOf('.') + 1) : name;
 		name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
-		
+
 		if(name.equalsIgnoreCase("sh") || name.equalsIgnoreCase("run") || name.equalsIgnoreCase("bat") || name.equalsIgnoreCase("cmd"))
 			name = "Shell";
-		
+
 		return name;
 	}
 }
+
