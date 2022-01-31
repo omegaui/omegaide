@@ -133,7 +133,7 @@ public class Animations {
 				
 				int length = 1;
 				
-				while(comp.canDrawImage() ? (length < comp.w) : (length < comp.textWidth)){
+				while((comp.canDrawImage() ? (length < comp.w) : (length < comp.textWidth)) && comp.isMouseEntered()){
 					g.setColor(comp.color3);
 					
 					if(comp.canDrawImage())
@@ -182,7 +182,7 @@ public class Animations {
 				
 				g.setColor(comp.color3);
 				
-				while(canPaint){
+				while(canPaint && comp.isMouseEntered()){
 					if(comp.canDrawImage()){
 						//Drawing Horizontal Layer
 						if(lengthW <= width){
@@ -243,6 +243,10 @@ public class Animations {
 					comp.map.put(ANIMATION_STATE, true);
 					
 					for(BufferedImage image : images){
+						
+						if(!comp.isMouseEntered())
+							break;
+						
 						g.drawImage(image, 0, 0, null);
 						
 						try{
@@ -282,6 +286,10 @@ public class Animations {
 				comp.map.put(ANIMATION_STATE, true);
 				
 				for(BufferedImage image : images){
+						
+					if(!comp.isMouseEntered())
+						break;
+				
 					g.drawImage(image, 0, 0, null);
 					
 					try{

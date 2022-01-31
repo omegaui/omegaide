@@ -48,6 +48,15 @@ import java.awt.Graphics;
 
 public class UIManager extends DataBase {
 
+	//Some Extra Colors of RGB shades
+	public static final Color color1 = new Color(255, 0, 0, 20);
+	public static final Color color2 = new Color(255, 0, 0, 130);
+	public static final Color color3 = new Color(255, 255, 200, 220);
+	public static final Color color4 = new Color(0, 0, 255, 130);
+	public static final Color color5 = new Color(0, 0, 255, 220);
+	public static final Color color6 = new Color(0, 255, 0, 20);
+	public static final Color color7 = new Color(0, 255, 0, 130);
+
 	/**
 	 * The field carrying the maximized window state
 	 */
@@ -111,17 +120,17 @@ public class UIManager extends DataBase {
 	/**
 	 * The Base Shade of UI Elements
 	 */
-	public static Color c1;
+	public static Color c1 = new Color(0, 0, 255, 40);
 
 	/**
 	 * The Background of UI Elements
 	 */
-	public static Color c2;
+	public static Color c2 = Color.WHITE;
 
 	/**
 	 * The Base Solid Color of UI Elements
 	 */
-	public static Color c3;
+	public static Color c3 = color4;
 
 	//Image Object to be used for computing text dimension.
 	public static BufferedImage testImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
@@ -153,15 +162,6 @@ public class UIManager extends DataBase {
 	
 	public static Color LINE_NUMBER_COLOR = Color.BLACK;
 	public static Color CURRENT_LINE_NUMBER_COLOR = TOOLMENU_COLOR1;
-
-	//Some Extra Colors of RGB shades
-	public static final Color color1 = new Color(255, 0, 0, 20);
-	public static final Color color2 = new Color(255, 0, 0, 130);
-	public static final Color color3 = new Color(255, 255, 200, 220);
-	public static final Color color4 = new Color(0, 0, 255, 130);
-	public static final Color color5 = new Color(0, 0, 255, 220);
-	public static final Color color6 = new Color(0, 255, 0, 20);
-	public static final Color color7 = new Color(0, 255, 0, 130);
 
 	//Some Backgrounds
 	public static Color back1 = Color.decode("#f3f3f3");
@@ -204,10 +204,7 @@ public class UIManager extends DataBase {
 
 	public void loadData() {
 		try {
-			DataEntry e = getEntryAt("Font", 0);
-			if(e == null)
-				return;
-			setFontName(e.getValue());
+			setFontName(getEntryAt("Font", 0).getValue());
 			setFontSize(getEntryAt("Font", 1).getValueAsInt());
 			setFontState(getEntryAt("Font", 2).getValueAsInt());
 			setTerminalFontName(getEntryAt("Terminal Font", 0).getValue());
@@ -248,12 +245,16 @@ public class UIManager extends DataBase {
 			}
 		}
 		catch(Exception e) {
-			System.err.println("An Error Occured while loading the UI Data");
+			System.err.println("An Error Occured while loading the UI Data.");
+			System.err.println("This usually happens when upgrading to a new version of omegaide, or");
+			System.err.println("If something has modified the .ui file incorrectly.");
+			System.err.println("Now, Your UI settings like Terminal Font, Editor Font, etc will get resetted.");
 			System.out.println("Rewriting UI Data ...");
 			loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
 			System.out.println("Rewriting UI Data ... Done!");
 			System.out.println("Restart the IDE!");
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 

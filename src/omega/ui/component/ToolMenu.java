@@ -813,6 +813,7 @@ public class ToolMenu extends JPanel {
 			screen.setVisible(false);
 			screen.setVisible(true);
 		}
+		
 	}
 	
 	private void initSetMenu() {
