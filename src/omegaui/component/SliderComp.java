@@ -1,20 +1,20 @@
 /**
-* SliderComp
-* Copyright (C) 2021 Omega UI
+ * SliderComp
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omegaui.component;
 import omegaui.component.listener.SlideListener;
@@ -46,6 +46,8 @@ public class SliderComp extends JComponent{
 	public Color color3;
 	public Color color4;
 
+	public Color stopPointColor;
+
 	public SlideListener slideListener;
 
 	private Font minMaxValueTextFont;
@@ -59,7 +61,7 @@ public class SliderComp extends JComponent{
 	private volatile boolean enter = false;
 	private volatile boolean press = false;
 	private volatile boolean paintValuesEnabled = false;
-	
+
 	public SliderComp(Color c1, Color c2, Color c3, Color c4){
 		this.color1 = c1;
 		this.color2 = c2;
@@ -72,19 +74,19 @@ public class SliderComp extends JComponent{
 				enter = true;
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e){
 				enter = false;
 				repaint();
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e){
 				press = true;
 				repaint();
 			}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e){
 				press = false;
@@ -131,6 +133,16 @@ public class SliderComp extends JComponent{
 		return pointerX;
 	}
 
+	private int calculatePointerX(int value){
+		int valueProgress = (value * 100) / maxValue;
+		int pointerX = (valueProgress * getWidth()) / 100;
+		if(pointerX >= getWidth())
+			return pointerX - pointerWidth/2;
+		else if(pointerX <= 0)
+			return pointerWidth/2;
+		return pointerX;
+	}
+
 	private int calculateBoneY(){
 		return getHeight()/2 - boneHeight/2;
 	}
@@ -155,6 +167,8 @@ public class SliderComp extends JComponent{
 		paintSliderPointer(g);
 		//Painting Text Values
 		paintTextValues(g);
+		//Painting StopPoint -- Minimum Allowed Value
+		paintStopPoint(g);
 	}
 
 	public void paintCoveredDistance(Graphics2D g){
@@ -193,6 +207,13 @@ public class SliderComp extends JComponent{
 		g.drawString(text, getWidth()/2 - g.getFontMetrics().stringWidth(text)/2, ascentDescent);
 	}
 
+	public void paintStopPoint(Graphics2D g){
+		if(minValue != 0){
+			g.setColor(getStopPointColor());
+			g.fillRoundRect(calculatePointerX(minValue) - pointerWidth/2, boneY, pointerWidth, boneHeight, pointerArc, pointerArc);
+		}
+	}
+
 	private void triggerOnValueChangedEvent(){
 		if(slideListener == null)
 			return;
@@ -202,25 +223,25 @@ public class SliderComp extends JComponent{
 	public int getMinValue() {
 		return minValue;
 	}
-	
+
 	public void setMinValue(int minValue) {
 		this.minValue = minValue;
 		repaint();
 	}
-	
+
 	public int getMaxValue() {
 		return maxValue;
 	}
-	
+
 	public void setMaxValue(int maxValue) {
 		this.maxValue = maxValue;
 		repaint();
 	}
-	
+
 	public int getValue() {
 		return value;
 	}
-	
+
 	public void setValue(int value) {
 		if(value < minValue || value > maxValue)
 			return;
@@ -231,7 +252,7 @@ public class SliderComp extends JComponent{
 	public int getBoneHeight() {
 		return boneHeight;
 	}
-	
+
 	public void setBoneHeight(int boneHeight) {
 		this.boneHeight = boneHeight;
 		repaint();
@@ -240,70 +261,70 @@ public class SliderComp extends JComponent{
 	public int getPointerWidth() {
 		return pointerWidth;
 	}
-	
+
 	public void setPointerWidth(int pointerWidth) {
 		this.pointerWidth = pointerWidth;
 		repaint();
 	}
-	
+
 	public int getPointerArc() {
 		return pointerArc;
 	}
-	
+
 	public void setPointerArc(int pointerArc) {
 		this.pointerArc = pointerArc;
 		repaint();
 	}
-	
+
 	public java.awt.Font getMinMaxValueTextFont() {
 		return minMaxValueTextFont;
 	}
-	
+
 	public void setMinMaxValueTextFont(java.awt.Font minMaxValueTextFont) {
 		this.minMaxValueTextFont = minMaxValueTextFont;
 		repaint();
 	}
-	
+
 	public java.awt.Font getValueTextFont() {
 		return valueTextFont;
 	}
-	
+
 	public void setValueTextFont(java.awt.Font valueTextFont) {
 		this.valueTextFont = valueTextFont;
 		repaint();
 	}
-	
+
 	public java.awt.Color getMinMaxValueTextColor() {
 		return minMaxValueTextColor;
 	}
-	
+
 	public void setMinMaxValueTextColor(java.awt.Color minMaxValueTextColor) {
 		this.minMaxValueTextColor = minMaxValueTextColor;
 		repaint();
 	}
-	
+
 	public java.awt.Color getValueTextColor() {
 		return valueTextColor;
 	}
-	
+
 	public void setValueTextColor(java.awt.Color valueTextColor) {
 		this.valueTextColor = valueTextColor;
 		repaint();
 	}
-	
+
 	public java.lang.String getValueUnit() {
 		return valueUnit == null ? "" : valueUnit;
 	}
-	
+
 	public void setValueUnit(java.lang.String valueUnit) {
 		this.valueUnit = valueUnit;
 		repaint();
 	}
-	
+
 	public boolean isPaintValuesEnabled() {
 		return paintValuesEnabled && minMaxValueTextFont != null && valueTextFont != null && minMaxValueTextColor != null && valueTextColor != null;
 	}
-	
+
 	public void setPaintValuesEnabled(boolean paintValuesEnabled) {
 		this.paintValuesEnabled = paintValuesEnabled;
 		repaint();
@@ -312,9 +333,18 @@ public class SliderComp extends JComponent{
 	public omegaui.component.listener.SlideListener getSlideListener() {
 		return slideListener;
 	}
-	
+
 	public void setSlideListener(omegaui.component.listener.SlideListener slideListener) {
 		this.slideListener = slideListener;
 	}
-	
+
+	public java.awt.Color getStopPointColor() {
+		return stopPointColor == null ? color4 : stopPointColor;
+	}
+
+	public void setStopPointColor(java.awt.Color stopPointColor) {
+		this.stopPointColor = stopPointColor;
+		repaint();
+	}
+
 }

@@ -293,7 +293,7 @@ public class RecentsDialog extends JDialog{
 	public void setVisible(boolean value){
 		if(value){
 			initView();
-			if(!Screen.isNotNull(field.getText()))
+			if(Screen.isNotNull(field.getText()))
 				genView(field.getText());
 		}
 		super.setVisible(value);

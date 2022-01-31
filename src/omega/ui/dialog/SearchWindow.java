@@ -321,6 +321,8 @@ public class SearchWindow extends JDialog{
 			if(value){
 				if(currentComps.isEmpty())
 					initView();
+				else
+					list(field.getText());
 			}
 		}).start();
 	}
