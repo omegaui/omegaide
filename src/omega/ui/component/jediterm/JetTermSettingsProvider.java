@@ -43,7 +43,7 @@ public class JetTermSettingsProvider extends DefaultSettingsProvider{
 		colors[3] = TOOLMENU_COLOR5;
 		colors[4] = TOOLMENU_COLOR3;
 		colors[5] = Color.decode("#FF8C42");
-		colors[6] = Color.decode("#FBB13C");
+		colors[6] = Color.decode("#118736");
 		colors[7] = Color.decode("#D81159");
 		colors[8] = Color.decode("#E0777D");
 		colors[9] = Color.decode("#8E3B46");
