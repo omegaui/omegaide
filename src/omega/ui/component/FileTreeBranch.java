@@ -341,15 +341,13 @@ public class FileTreeBranch extends JComponent {
 			if(ext.equals(".dart"))
 				return IconManager.fluentdartImage;
 			if(ext.equals(".js") || ext.equals(".css") || ext.equals(".html") || ext.equals(".jsx") || ext.equals(".ts") || ext.equals(".tsx"))
-				return IconManager.fluentwebImage;
+				return IconManager.fluentwebappImage;
 			if(ext.equals(".c"))
 				return IconManager.fluentcImage;
 			if(ext.equals(".cpp"))
 				return IconManager.fluentcplusplusImage;
 			if(ext.equals(".rs"))
 				return IconManager.fluentfileImage;
-			if(ext.equals(".js") || ext.equals(".html") || ext.equals(".php") || ext.equals(".css"))
-				return IconManager.fluentwebImage;
 			if(ext.equals(".sh") || ext.equals(".run"))
 				return IconManager.fluentshellImage;
 			if(ext.equalsIgnoreCase(".appimage") || ext.equals(".deb") || ext.equals(".so"))

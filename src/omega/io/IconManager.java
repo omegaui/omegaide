@@ -1,20 +1,20 @@
 /**
-* IconManager
-* Copyright (C) 2021 Omega UI
+ * IconManager
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.io;
 import javax.imageio.ImageIO;
@@ -34,7 +34,7 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
 public class IconManager {
-	
+
 	//Fluent Icon Pack
 	public static BufferedImage fluentfolderImage = getFluentIcon("program-50.png");
 	public static BufferedImage fluentfileImage = getFluentIcon("code-file-50.png");
@@ -75,6 +75,7 @@ public class IconManager {
 	public static BufferedImage fluentplainfolderImage = getFluentIcon("folder-50.png");
 	public static BufferedImage fluenthomeImage = getFluentIcon("home-folder-48.png");
 	public static BufferedImage fluentwebImage = getFluentIcon("web-shield-50.png");
+	public static BufferedImage fluentwebappImage = getFluentIcon("web-app-64.png");
 	public static BufferedImage fluentwindowsImage = getFluentIcon("windows-10-50.png");
 	public static BufferedImage fluentlinuxImage = getFluentIcon("penguin-50.png");
 	public static BufferedImage fluentshellImage = getFluentIcon("run-command-96.png");
@@ -94,7 +95,7 @@ public class IconManager {
 	public static BufferedImage fluentbrowsefolderImage = getFluentIcon("browse-folder-96.png");
 	public static BufferedImage fluentbuildresultImage = getFluentIcon("build-result-96.png");
 	public static BufferedImage fluentrefreshIcon = getFluentIcon("refresh-96.png");
-	
+
 	public static BufferedImage fluentenergyImage = getFluentIcon("energy-64.png");
 	public static BufferedImage fluentatomicImage = getFluentIcon("atomic-60.png");
 	public static BufferedImage fluentmanageImage = getFluentIcon("manage-60.png");
@@ -103,7 +104,7 @@ public class IconManager {
 	public static BufferedImage fluentthunderboltImage = getFluentIcon("thuder-bolt-96.png");
 	public static BufferedImage fluenttargetImage = getFluentIcon("target-100.png");
 	public static BufferedImage fluenttabsHolderIcon = getFluentIcon("apps-tab-96.png");
-	
+
 	public static BufferedImage fluentcImage = getFluentIcon("c-programming-48.png");
 	public static BufferedImage fluentcplusplusImage = getFluentIcon("c++-48.png");
 	public static BufferedImage fluentdartImage = getFluentIcon("flutter-48.png");
@@ -114,21 +115,21 @@ public class IconManager {
 	public static BufferedImage fluentrustImage = getFluentIcon("rust-48.png");
 	public static BufferedImage fluentjuliaImage = getFluentIcon("julia-48.png");
 	public static BufferedImage fluentanylangImage = getFluentIcon("any-lang-48.png");
-	
+
 	public static BufferedImage fluentjetbrainsLogo = getFluentIcon("jetbrains-logo.png");
 	public static BufferedImage fluenticons8Logo = getFluentIcon("icons8-240.png");
 	public static BufferedImage fluentgithubLogo = getFluentIcon("github-240.png");
-	
+
 	public static BufferedImage fluentvariableImage = getFluentIcon("variable-96.png");
 	public static BufferedImage fluentconstantImage = getFluentIcon("final-state-48.png");
 	public static BufferedImage fluentvolatileImage = getFluentIcon("volatile-48.png");
 	public static BufferedImage fluentsyncImage = getFluentIcon("sync-48.png");
 	public static BufferedImage fluentmethodImage = getFluentIcon("method-48.png");
 	public static BufferedImage fluentnewItemImage = getFluentIcon("new-item-48.png");
-	
+
 	public static BufferedImage fluentbuildpathIcon = getFluentIcon("transit-on-map-48.png");
 	public static BufferedImage fluentanimationImage = getFluentIcon("physics-96.png");
-	
+
 	public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
 	public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");
 	public static BufferedImage fluentaddlinkImage = getFluentIcon("add-link-48.png");
@@ -147,7 +148,7 @@ public class IconManager {
 	public static BufferedImage fluentcolorwheelImage = getFluentIcon("color-wheel-2-48.png");
 	public static BufferedImage fluentfocusImage = getFluentIcon("goal-48.png");
 	public static BufferedImage fluentnormalScreenImage = getFluentIcon("normal-screen-48.png");
-	
+
 	public static BufferedImage fluentclassFileImage = getFluentIcon("class-48.png");
 	public static BufferedImage fluentinterfaceFileImage = getFluentIcon("signal-48.png");
 	public static BufferedImage fluentannotationFileImage = getFluentIcon("note-48.png");
@@ -165,7 +166,7 @@ public class IconManager {
 	public static Image fluentwinkemojiGif = getFluentGif("wink.gif");
 	public static Image fluentloadinginfinityGif = getFluentGif("loading-infinity.gif");
 	public static Image fluentsearchFolderGif = getFluentGif("search-folder.gif");
-	
+
 	//The Default Icon Pack -- mixed
 	public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	public static BufferedImage projectImage = fluentfolderImage;
@@ -193,7 +194,7 @@ public class IconManager {
 			return fluentlinuxImage;
 		return fluentmacImage;
 	}
-	
+
 	public static void paintHideImage(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -205,7 +206,7 @@ public class IconManager {
 		g.setColor(TOOLMENU_COLOR4);
 		g.fillOval(6, 6, 6, 6);
 	}
-	
+
 	public static void paintShowImage(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -215,7 +216,7 @@ public class IconManager {
 		g.setColor(getForeground());
 		g.fillOval(2, 2, 12, 12);
 	}
-	
+
 	public static void paintNewImage(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -226,18 +227,18 @@ public class IconManager {
 		g.fillRect(8, 2, 1, 11);
 		g.fillRect(3, 7, 11, 1);
 	}
-	
+
 	public static Color getBackground(){
 		return c3;
 	}
-	
+
 	public static Color getForeground(){
 		return c2;
 	}
-	
+
 	public static final Icon show = new ImageIcon(showImage);
 	public static final Icon hide = new ImageIcon(hideImage);
-	
+
 	private static final Icon getIcon(String path) {
 		if(isDarkMode()) {
 			path = path.substring(0, path.lastIndexOf('.'));
@@ -249,7 +250,7 @@ public class IconManager {
 	}catch(Exception e) {e.printStackTrace();}
 		return null;
 	}
-	
+
 	private static final BufferedImage getImage(String path) {
 		if(isDarkMode()) {
 			path = path.substring(0, path.lastIndexOf('.'));
@@ -263,7 +264,7 @@ public class IconManager {
 		}
 		return null;
 	}
-	
+
 	public static final ImageIcon getImageIcon(String path) {
 		if(isDarkMode() && !path.contains("Theme")) {
 			path = path.substring(0, path.lastIndexOf('.'));
@@ -278,7 +279,7 @@ public class IconManager {
 		}
 		return null;
 	}
-	
+
 	public static BufferedImage getFluentIcon(String name){
 		try{
 			return ImageIO.read(IconManager.class.getResourceAsStream("/fluent-icons/icons8-" + name));
@@ -288,7 +289,7 @@ public class IconManager {
 		}
 		return null;
 	}
-	
+
 	public static Image getFluentGif(String name){
 		try{
 			return new ImageIcon(IconManager.class.getResourceAsStream("/fluent-gifs/icons8-" + name).readAllBytes()).getImage();
@@ -298,7 +299,7 @@ public class IconManager {
 		}
 		return null;
 	}
-	
+
 	public static BufferedImage getFluentIllustration(String name){
 		try{
 			return ImageIO.read(IconManager.class.getResourceAsStream("/fluent-illustrations/icons8-" + name));
