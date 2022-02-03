@@ -279,7 +279,6 @@ public class ProjectRunner {
 					runNJ();
 				});
 				
-				
 				runningApps.add(terminal.terminalPanel.process);
 				
 				Screen.setStatus("Running Project", 100, null);

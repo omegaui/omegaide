@@ -35,9 +35,11 @@ import java.util.Scanner;
 
 import java.io.File;
 public class JDKManager {
+	
 	public interface Condition{
 		boolean accept(File file);
 	}
+	
 	public File jdkDir;
 
 	public String version;
@@ -355,6 +357,8 @@ public class JDKManager {
 
 	public int getVersionAsInt(){
 		String version = this.version;
+		if(version == null)
+			return 0;
 		version = version.substring(version.indexOf('\"') + 1, version.lastIndexOf('\"'));
 		if(version.startsWith("1."))
 			return Integer.parseInt(version.charAt(2) + "");

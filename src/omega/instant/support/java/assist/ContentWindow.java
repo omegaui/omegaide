@@ -156,7 +156,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		setLayout(null);
 
 		flexPanel = new FlexPanel(null, back3, null);
-		flexPanel.setArc(10, 10);
+		flexPanel.setArc(10, 0);
 		add(flexPanel);
 		
 		flexPanel.add(scrollPane = new JScrollPane(panel = new JPanel(null)));
