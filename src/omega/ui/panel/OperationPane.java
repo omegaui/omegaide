@@ -110,16 +110,12 @@ public class OperationPane extends JPanel{
 		
 		super.setVisible(value);
 		
-		try{
-			screen.getToolMenu().oPHidden = value;
-			
+		try{			
 			if(value) {
 				setPreferredSize(new Dimension(screen.getWidth(), getHeight() > 450 ? getHeight() : 450));
 				int y = screen.getHeight() - 400;
 				screen.compilancePane.setDividerLocation(y);
 			}
-			
-			omega.Screen.getScreen().getToolMenu().operateComp.repaint();
 		}
 		catch(Exception e) {
 			

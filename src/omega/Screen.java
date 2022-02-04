@@ -376,14 +376,9 @@ public class Screen extends JFrame {
 	}
 
 	public void manageTools(ProjectDataBase manager){
+		ToolMenu.pathBox.prepareEdges();
 		toolMenu.langComp.image = LanguageTagView.getRespectiveTagImage(manager.getLanguageTag());
 		toolMenu.langComp.repaint();
-		toolMenu.structureViewComp.setVisible(!manager.isLanguageTagNonJava());
-		toolMenu.sep4.setVisible(!manager.isLanguageTagNonJava() && !UIManager.isToolMenuCollapsed());
-		toolMenu.asteriskComp.setVisible(!manager.isLanguageTagNonJava());
-		toolMenu.contentModeComp.setVisible(!manager.isLanguageTagNonJava());
-		toolMenu.instantRunComp.setVisible(!manager.isLanguageTagNonJava());
-		toolMenu.instantBuildComp.setVisible(!manager.isLanguageTagNonJava());
 		toolMenu.projectPopup.setEnabled("Manage Build-Path", !manager.isLanguageTagNonJava());
 		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.isLanguageTagNonJava());
 		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.isLanguageTagNonJava());
@@ -448,8 +443,7 @@ public class Screen extends JFrame {
 	}
 
 	public void loadTitle(String projectName) {
-		setTitle(projectName+" -Omega IDE "+VERSION);
-		toolMenu.titleComp.setText(getTitle());
+		setTitle(projectName + " -Omega IDE "+VERSION);
 	}
 
 	public void setProject(String projectName) {

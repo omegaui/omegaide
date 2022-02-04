@@ -107,6 +107,10 @@ public class SearchWindow extends JDialog{
 		//Ignoring node_modules for Web Projects
 		ignoredDirectories.add("node_modules");
 
+		//Ignoring VCS files
+		ignoredDirectories.add(".git");
+		ignoredDirectories.add(".github");
+
 		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
 		field.setBounds(0, 30, getWidth(), 30);
 		field.setFont(PX16);

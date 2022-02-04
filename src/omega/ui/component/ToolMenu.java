@@ -110,12 +110,16 @@ public class ToolMenu extends JPanel {
 	
 	public OPopupWindow filePopup;
 	public OPopupWindow projectPopup;
+	public OPopupWindow codePopup;
 	public OPopupWindow toolsPopup;
 	public OPopupWindow setPopup;
 	public OPopupWindow helpPopup;
 	
 	public static OPopupItem recentsMenu;
 	public static OPopupWindow allProjectsPopup;
+	public static OPopupItem contentAssistOnItem;
+	public static OPopupItem contentAssistModeItem;
+	public static OPopupItem autoImportModeItem;
 	public static OPopupItem allMenu;
 	public static OPopupItem allSettingsItem;
 	public static OPopupItem jdkItem;
@@ -126,28 +130,29 @@ public class ToolMenu extends JPanel {
 	public TextComp openProjectComp;
 	public TextComp openFileComp;
 	public TextComp newProjectComp;
-	public TextComp sep0;
-	public TextComp instantRunComp;
-	public TextComp runComp;
-	public TextComp instantBuildComp;
-	public TextComp buildComp;
-	public TextComp sep1;
 	public TextComp newFileComp;
-	public TextComp contentComp;
-	public TextComp contentModeComp;
-	public TextComp asteriskComp;
-	public TextComp structureComp;
-	public TextComp operateComp;
-	public TextComp sep3;
+	
+	public TextComp sep0;
+	
 	public TextComp shellComp;
-	public TextComp searchComp;
-	public TextComp sep4;
-	public TextComp structureViewComp;
-	public TextComp sep5;
 	public TextComp themeComp;
+	public TextComp searchComp;
 	
-	public LabelMenu taskMenu;
+	public TextComp sep1;
 	
+	public TextComp runComp;
+	public TextComp buildComp;
+	
+	public TextComp sep2;
+	
+	public TextComp instantRunComp;
+	public TextComp instantBuildComp;
+	
+	public TextComp sep3;
+	
+	public TextComp structureViewComp;
+
+	//IDE Dialogs
 	public static InfoScreen infoScreen;
 	public static ToolMenuPathBox pathBox;
 	public static SourceDefender sourceDefender;
@@ -170,9 +175,6 @@ public class ToolMenu extends JPanel {
 	private int pressX;
 	private int pressY;
 	
-	public volatile boolean hidden = false;
-	public volatile boolean oPHidden = true;
-	
 	//The window decoration objects
 	public static Color closeWinColor = TOOLMENU_COLOR2;
 	public static Color maximizeWinColor = TOOLMENU_COLOR4;
@@ -180,7 +182,6 @@ public class ToolMenu extends JPanel {
 	
 	public TextComp iconComp;
 	public TextComp langComp;
-	public TextComp titleComp;
 	public TextComp minimizeComp;
 	public TextComp maximizeComp;
 	public TextComp closeComp;
@@ -240,13 +241,17 @@ public class ToolMenu extends JPanel {
 			.build();
 		}
 		setLayout(null);
-		setSize(screen.getWidth(), 120);
+		setSize(screen.getWidth(), 90);
 		setPreferredSize(getSize());
 		UIManager.setData(this);
 		setBackground(back2);
 		addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
+				if(e.getButton() == 1 && e.getClickCount() == 2){
+					maximize();
+					return;
+				}
 				pressX = e.getX();
 				pressY = e.getY();
 			}
@@ -279,30 +284,6 @@ public class ToolMenu extends JPanel {
 		langComp.setBounds(30, 0, 30, 30);
 		langComp.setArc(0, 0);
 		add(langComp);
-		
-		titleComp = new TextComp("Omega IDE", back2, back2, glow, null);
-		titleComp.setClickable(false);
-		titleComp.setFont(PX16);
-		titleComp.setArc(0, 0);
-		titleComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(e.getButton() == 1 && e.getClickCount() == 2){
-					maximize();
-					return;
-				}
-				pressX = e.getX();
-				pressY = e.getY();
-			}
-		});
-		titleComp.addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e){
-				if(screen.getExtendedState() == Screen.NORMAL)
-					screen.setLocation(e.getXOnScreen() - pressX - 60, e.getYOnScreen() - pressY);
-			}
-		});
-		add(titleComp);
 		
 		closeComp = new TextComp("", c1, back2, c3, this::disposeAll){
 			@Override
@@ -362,261 +343,66 @@ public class ToolMenu extends JPanel {
 		filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(510);
 		initFilePopup();
 		Menu fileMenu = new Menu(filePopup, "File");
-		fileMenu.setBounds(0, 30, 60, 20);
+		fileMenu.setBounds(60, 5, 40, 20);
 		addComp(fileMenu);
 		
 		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
 		initProjectPopup();
 		Menu recentsMenu = new Menu(projectPopup, "Project");
-		recentsMenu.setBounds(60, 30, 60, 20);
+		recentsMenu.setBounds(100, 5, 60, 20);
 		addComp(recentsMenu);
-		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
 		
-		initToolMenu();
+		codePopup = OPopupWindow.gen("Code Menu", screen, 0, false).width(300);
+		initCodePopup();
+		Menu codeMenu = new Menu(codePopup, "Code");
+		codeMenu.setBounds(165, 5, 35, 20);
+		addComp(codeMenu);
+		
+		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
+		initToolsPopup();
 		Menu toolsMenu = new Menu(toolsPopup, "Tools");
-		toolsMenu.setBounds(120, 30, 60, 20);
+		toolsMenu.setBounds(200, 5, 50, 20);
 		addComp(toolsMenu);
 		
 		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(250);
 		initSetMenu();
 		Menu setMenu = new Menu(setPopup, "Settings");
-		setMenu.setBounds(180, 30, 60, 20);
+		setMenu.setBounds(252, 5, 60, 20);
 		addComp(setMenu);
 		
 		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
 		initHelpMenu();
 		Menu helpMenu = new Menu(helpPopup, "Help");
-		helpMenu.setBounds(240, 30, 60, 20);
+		helpMenu.setBounds(314, 5, 40, 20);
 		addComp(helpMenu);
 		
-		taskMenu = new LabelMenu("Click to Run Garbage Collector", ()->{
-			if(CodeFramework.resolving) return;
-			setTask("Running Java Garbage Collector");
-			taskMenu.repaint();
-			System.gc();
-			if(!CodeFramework.resolving) {
-				long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-				ram = (long)(ram / 1000000);
-				setTask("Using " + (ram) + " MB of Physical Memory Excluding JVM");
-			}
-			}, ()->{
-			if(!CodeFramework.resolving) {
-				long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-				ram = (long)(ram / 1000000);
-				setTask("Using " + (ram) + " MB of Physical Memory Excluding JVM");
-			}
-		});
-		taskMenu.setFont(PX14);
-		setTask("Hover to see Memory Statistics");
-		
 		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().open("Project"));
-		openProjectComp.setBounds(0, 55, 30, 30);
+		openProjectComp.setBounds(2, 33, 24, 24);
 		openProjectComp.setFont(PX14);
 		openProjectComp.setArcVisible(true, false, true, false);
 		addComp(openProjectComp);
 		
 		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().open("File"));
-		openFileComp.setBounds(32, 55, 30, 30);
+		openFileComp.setBounds(28, 33, 24, 24);
 		openFileComp.setFont(PX14);
 		openFileComp.setArcVisible(true, false, true, false);
 		addComp(openFileComp);
 		
-		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create Java New Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->javaProjectWizard.setVisible(true));
-		newProjectComp.setBounds(64, 55, 30, 30);
+		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Java Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->javaProjectWizard.setVisible(true));
+		newProjectComp.setBounds(54, 33, 24, 24);
 		newProjectComp.setFont(PX14);
 		newProjectComp.setArcVisible(true, false, true, false);
 		addComp(newProjectComp);
 		
 		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getFileCreator().show("Custom File"));
-		newFileComp.setBounds(96, 55, 30, 30);
+		newFileComp.setBounds(80, 33, 24, 24);
 		newFileComp.setFont(PX14);
 		newFileComp.setArcVisible(true, false, true, false);
 		addComp(newFileComp);
 		
 		sep0 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep0.setBounds(130, 50, 2, 40);
+		sep0.setBounds(108, 31, 2, 28);
 		addComp(sep0);
-		
-		runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			if(runComp.isClickable() && buildComp.isClickable()){
-				if(GradleProcessManager.isGradleProject())
-					GradleProcessManager.run();
-				else
-					Screen.getProjectRunner().run();
-			}
-		});
-		runComp.setBounds(140, 55, 30, 30);
-		runComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(e.getButton() == 3){
-					if(GradleProcessManager.isGradleProject())
-						return;
-					if(runComp.isClickable() && buildComp.isClickable())
-						Screen.getProjectRunner().justRun();
-				}
-			}
-		});
-		runComp.setArcVisible(true, false, true, false);
-		add(runComp);
-		
-		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			Screen.getProjectRunner().instantRun();
-		});
-		instantRunComp.setBounds(172, 55, 30, 30);
-		instantRunComp.setArcVisible(true, false, true, false);
-		add(instantRunComp);
-		
-		buildComp = new TextComp(fluentbuildImage, 20, 20, "Build Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			if(runComp.isClickable() && buildComp.isClickable()){
-				if(GradleProcessManager.isGradleProject())
-					GradleProcessManager.build();
-				else
-					Screen.getProjectBuilder().compileProject();
-			}
-		});
-		buildComp.setBounds(204, 55, 30, 30);
-		buildComp.setFont(PX18);
-		buildComp.setArcVisible(false, true, false, true);
-		add(buildComp);
-		
-		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			Screen.getProjectRunner().instantBuild();
-		});
-		instantBuildComp.setBounds(236, 55, 30, 30);
-		instantBuildComp.setArcVisible(false, true, false, true);
-		add(instantBuildComp);
-		
-		sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep1.setBounds(272, 50, 2, 40);
-		addComp(sep1);
-		
-		contentComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
-			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
-			contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
-			contentComp.repaint();
-			}){
-			@Override
-			public void draw(Graphics2D g) {
-				g.setColor(color3);
-				g.fillOval(7, 7, 16, 16);
-				if(DataManager.isContentAssistRealTime()) {
-					g.setColor(color2);
-					g.fillOval(10, 10, 10, 10);
-					g.setColor(color1);
-					g.fillOval(10, 10, 10, 10);
-				}
-			}
-		};
-		contentComp.setBounds(282, 55, 30, 30);
-		contentComp.setToolTipText(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
-		contentComp.setArcVisible(false, true, false, true);
-		addComp(contentComp);
-		
-		contentModeComp = new TextComp("", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
-			DataManager.setContentModeJava(!DataManager.isContentModeJava());
-			contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
-			contentModeComp.repaint();
-			}){
-			@Override
-			public void draw(Graphics2D g) {
-				g.setColor(color3);
-				g.fillOval(7, 7, 16, 16);
-				if(DataManager.isContentModeJava()) {
-					g.setColor(color2);
-					g.fillOval(10, 10, 10, 10);
-					g.setColor(color1);
-					g.fillOval(10, 10, 10, 10);
-				}
-			}
-		};
-		contentModeComp.setBounds(314, 55, 30, 30);
-		contentModeComp.setToolTipText(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
-		contentModeComp.setArcVisible(false, true, false, true);
-		addComp(contentModeComp);
-		
-		asteriskComp = new TextComp("", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, ()->{
-			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
-			asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
-			asteriskComp.repaint();
-			}){
-			@Override
-			public void draw(Graphics2D g) {
-				g.setColor(color3);
-				g.fillOval(7, 7, 16, 16);
-				if(!DataManager.isUsingStarImports()) {
-					g.setColor(color2);
-					g.fillOval(10, 10, 10, 10);
-					g.setColor(color1);
-					g.fillOval(10, 10, 10, 10);
-				}
-			}
-		};
-		asteriskComp.setBounds(346, 55, 30, 30);
-		asteriskComp.setToolTipText(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
-		addComp(asteriskComp);
-		
-		structureComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3, screen::toggleFileTree){
-			@Override
-			public void draw(Graphics2D g) {
-				g.setColor(color3);
-				g.fillOval(7, 7, 16, 16);
-				if(!Screen.getProjectFile().getFileTreePanel().isVisible()) {
-					g.setColor(color2);
-					g.fillOval(10, 10, 10, 10);
-					g.setColor(color1);
-					g.fillOval(10, 10, 10, 10);
-				}
-			}
-		};
-		structureComp.setBounds(378, 55, 30, 30);
-		structureComp.setToolTipText(hidden ? "Project Structure Hidden" : "Project Structure Visible");
-		structureComp.setArcVisible(true, false, true, false);
-		addComp(structureComp);
-		
-		operateComp = new TextComp("", TOOLMENU_COLOR3_SHADE, back3, TOOLMENU_COLOR3, ()->{
-			if(!oPHidden) {
-				screen.getOperationPanel().setVisible(false);
-				oPHidden = true;
-			}
-			else {
-				screen.getOperationPanel().setVisible(true);
-				oPHidden = false;
-			}
-			operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
-			operateComp.repaint();
-			}){
-			@Override
-			public void draw(Graphics2D g) {
-				g.setColor(color3);
-				g.fillOval(7, 7, 16, 16);
-				if(oPHidden) {
-					g.setColor(color2);
-					g.fillOval(10, 10, 10, 10);
-					g.setColor(color1);
-					g.fillOval(10, 10, 10, 10);
-				}
-			}
-		};
-		operateComp.setBounds(410, 55, 30, 30);
-		operateComp.setToolTipText(oPHidden ? "Operation Panel Hidden" : "Operation Panel Visible");
-		operateComp.setArcVisible(true, false, true, false);
-		addComp(operateComp);
-		
-		searchComp = new TextComp(fluentsearchImage, 25, 25, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
-		addComp(searchComp);
-		
-		sep4 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		addComp(sep4);
-		
-		structureViewComp = new TextComp(fluentstructureImage, 25, 25, TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
-		structureViewComp.setFont(PX18);
-		structureViewComp.setToolTipText("Lets see that class");
-		addComp(structureViewComp);
-		
-		sep3 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep3.setBounds(444, 50, 2, 40);
-		addComp(sep3);
 		
 		OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(270);
 		consoleItemWindow
@@ -624,7 +410,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Faster Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal)
 		.createItem("Full-Fledge Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showJetTerminal);
 		
-		shellComp = new TextComp(fluentconsoleImage, 25, 25, TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, null);
+		shellComp = new TextComp(fluentconsoleImage, 20, 20, "Launch a terminal", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, null);
 		shellComp.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
@@ -632,19 +418,16 @@ public class ToolMenu extends JPanel {
 				consoleItemWindow.setVisible(true);
 			}
 		});
+		shellComp.put("Popup", consoleItemWindow);
 		shellComp.setFont(PX16);
-		shellComp.setBounds(454, 55, 60, 30);
+		shellComp.setBounds(114, 33, 24, 24);
 		shellComp.setArcVisible(false, true, false, true);
 		add(shellComp);
 		
-		sep5 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep5.setBounds(521, 50, 2, 40);
-		addComp(sep5);
-		
-		themeComp = new TextComp(DataManager.getTheme(), TOOLMENU_COLOR6_SHADE, back3, TOOLMENU_COLOR6,
+		themeComp = new TextComp(IconManager.fluentchangethemeImage, 20, 20, "Change Theme", TOOLMENU_COLOR6_SHADE, back3, TOOLMENU_COLOR6,
 		()->{
 			Screen.pickTheme(DataManager.getTheme());
-			if(!themeComp.getText().equals(DataManager.getTheme())){
+			if(!themeComp.getName().equals(DataManager.getTheme())){
 				NotificationPopup.create(screen)
 				.size(300, 120)
 				.title("Theme Manager")
@@ -656,29 +439,104 @@ public class ToolMenu extends JPanel {
 				.locateOnBottomLeft()
 				.showIt();
 			}
-			themeComp.setText(DataManager.getTheme());
+			themeComp.setName(DataManager.getTheme());
 		});
-		themeComp.setFont(PX16);
-		themeComp.setBounds(532, 55, 60, 30);
-		themeComp.setArcVisible(true, false, true, false);
+		themeComp.setName(DataManager.getTheme());
+		themeComp.setBounds(140, 33, 24, 24);
 		add(themeComp);
+
+		searchComp = new TextComp(fluentsearchImage, 20, 20, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
+		searchComp.setBounds(166, 33, 24, 24);
+		searchComp.setArcVisible(true, false, true, false);
+		addComp(searchComp);
+
+		sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
+		sep1.setBounds(194, 31, 2, 28);
+		addComp(sep1);
+		
+		runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
+			if(runComp.isClickable() && buildComp.isClickable()){
+				if(GradleProcessManager.isGradleProject())
+					GradleProcessManager.run();
+				else
+					Screen.getProjectRunner().run();
+			}
+		});
+		runComp.setBounds(200, 33, 24, 24);
+		runComp.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(e.getButton() == 3){
+					if(GradleProcessManager.isGradleProject())
+						return;
+					if(runComp.isClickable() && buildComp.isClickable())
+						Screen.getProjectRunner().justRun();
+				}
+			}
+		});
+		runComp.setArcVisible(false, true, false, true);
+		add(runComp);
+		
+		buildComp = new TextComp(fluentbuildImage, 20, 20, "Build Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
+			if(runComp.isClickable() && buildComp.isClickable()){
+				if(GradleProcessManager.isGradleProject())
+					GradleProcessManager.build();
+				else
+					Screen.getProjectBuilder().compileProject();
+			}
+		});
+		buildComp.setBounds(226, 33, 24, 24);
+		buildComp.setArcVisible(true, false, true, false);
+		add(buildComp);
+		
+		sep2 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
+		sep2.setBounds(254, 31, 2, 28);
+		addComp(sep2);
+		
+		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
+			Screen.getProjectRunner().instantRun();
+		});
+		instantRunComp.setBounds(260, 33, 24, 24);
+		instantRunComp.setArcVisible(false, true, false, true);
+		add(instantRunComp);
+		
+		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
+			Screen.getProjectRunner().instantBuild();
+		});
+		instantBuildComp.setBounds(286, 33, 24, 24);
+		instantBuildComp.setArcVisible(true, false, true, false);
+		add(instantBuildComp);
+
+		sep3 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
+		sep3.setBounds(314, 31, 2, 28);
+		addComp(sep3);
+		
+		structureViewComp = new TextComp(fluentstructureImage, 20, 20, "Class Disassembler(integrated)", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
+		structureViewComp.setBounds(318, 33, 24, 24);
+		addComp(structureViewComp);
 		
 		pathBox = new ToolMenuPathBox();
 		add(pathBox);
 		
 		reshapeComp();
 		
-		putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, -8, false), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		
+		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(themeComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		
+		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		
+		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		
+		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+		
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		
 		ImageSizeTransitionAnimationLayer layer = (ImageSizeTransitionAnimationLayer)getImageSizeAnimationLayer(25, -5, true);
@@ -704,8 +562,7 @@ public class ToolMenu extends JPanel {
 	}
 	
 	public void setTask(String task) {
-		taskMenu.setText(task);
-		taskMenu.repaint();
+		
 	}
 	
 	public static ToolMenuPathBox getPathBox() {
@@ -713,47 +570,20 @@ public class ToolMenu extends JPanel {
 	}
 	
 	public void setMsg(String msg) {
-		taskMenu.setMsg(msg);
-		taskMenu.repaint();
+		
 	}
 	
 	public void reshapeComp() {
-		searchComp.setBounds(getWidth() - 30, 55, 30, 30);
-		sep4.setBounds(getWidth() - 40, 50, 2, 40);
-		structureViewComp.setBounds(getWidth() - 110, 55, 60, 30);
-		taskMenu.setLocation(getWidth() - taskMenu.getWidth(), 30);
-		pathBox.setBounds(0, 90, getWidth(), 25);
+		//Resizing PathBox
+		pathBox.setBounds(0, 60, getWidth(), 25);
 		
 		//Window Decorations
-		titleComp.setBounds(60, 0, getWidth() - (30 * 5), 30);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
 		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
 		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
 	}
 	
 	public void changeLocations(boolean non_java){
-		if(non_java){
-			buildComp.setBounds(204 - 30, 55, 30, 30);
-			contentComp.setBounds(282 - 62, 55, 30, 30);
-			structureComp.setBounds(316 - 4 - 60, 55, 30, 30);
-			operateComp.setBounds(348 - 4 - 60, 55, 30, 30);
-			sep1.setBounds(272 - 60, 50, 2, 40);
-			sep3.setBounds(382 - 4 - 60, 50, 2, 40);
-			shellComp.setBounds(392 - 4 - 60, 55, 60, 30);
-			sep5.setBounds(457 - 4 - 60, 50, 2, 40);
-			themeComp.setBounds(472 - 4 - 60, 55, 60, 30);
-		}
-		else {
-			buildComp.setBounds(204, 55, 30, 30);
-			contentComp.setBounds(282, 55, 30, 30);
-			structureComp.setBounds(378, 55, 30, 30);
-			operateComp.setBounds(410, 55, 30, 30);
-			sep1.setBounds(272, 50, 2, 40);
-			sep3.setBounds(444, 50, 2, 40);
-			shellComp.setBounds(454, 55, 60, 30);
-			sep5.setBounds(521, 50, 2, 40);
-			themeComp.setBounds(532, 55, 60, 30);
-		}
 		reloadItems(non_java);
 		repaint();
 	}
@@ -764,6 +594,13 @@ public class ToolMenu extends JPanel {
 		allSettingsItem.setEnabled(non_java);
 		instantModeItem.setEnabled(!non_java);
 		parsingEnabledItem.setEnabled(!non_java);
+		contentAssistModeItem.setEnabled(!non_java);
+		sep2.setVisible(!non_java);
+		instantRunComp.setVisible(!non_java);
+		instantBuildComp.setVisible(!non_java);
+		sep3.setVisible(!non_java);
+		structureViewComp.setVisible(!non_java);
+		
 		if(Screen.getProjectFile().getJDKManager() != null)
 			jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 		else
@@ -802,12 +639,7 @@ public class ToolMenu extends JPanel {
 	}
 
 	public void checkState(){
-		sep0.setVisible(!isToolMenuCollapsed());
-		sep1.setVisible(!isToolMenuCollapsed());
-		sep3.setVisible(!isToolMenuCollapsed());
-		sep4.setVisible(!isToolMenuCollapsed());
-		sep5.setVisible(!isToolMenuCollapsed());
-		setPreferredSize(new Dimension(screen.getWidth(), isToolMenuCollapsed() ? 55 : 120));
+		setPreferredSize(new Dimension(screen.getWidth(), isToolMenuCollapsed() ? 55 : 90));
 		setSize(getPreferredSize());
 		if(screen.isVisible()){
 			screen.setVisible(false);
@@ -933,15 +765,40 @@ public class ToolMenu extends JPanel {
 			infoScreen.setVisible(true);
 		});
 	}
-	private void initToolMenu() {
+	
+	private void initToolsPopup() {
 		toolsPopup
 		.createItem("Source Defender", IconManager.fluentsourceImage, ()->sourceDefender.setVisible(true))
 		.createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
 		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
-		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->Generator.gsView.genView(screen.getCurrentEditor()))
-		.createItem("Override/Implement Methods", IconManager.buildImage, ()->Generator.overView.genView(screen.getCurrentEditor()))
 		.createItem("Color Picker", IconManager.fluentcolorwheelImage, ()->colorPicker.pickColor());
 	}
+
+	private void initCodePopup(){
+		contentAssistOnItem = new OPopupItem(codePopup, DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped", IconManager.fluentsourceImage, ()->{
+			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
+			contentAssistOnItem.setName(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
+		});
+		
+		contentAssistModeItem = new OPopupItem(codePopup, DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer", IconManager.fluentsourceImage, ()->{
+			DataManager.setContentModeJava(!DataManager.isContentModeJava());
+			contentAssistModeItem.setName(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
+		});
+		
+		autoImportModeItem = new OPopupItem(codePopup, DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports", IconManager.fluentsourceImage, ()->{
+			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
+			autoImportModeItem.setName(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
+		});
+
+		codePopup.addItem(contentAssistOnItem);
+		codePopup.addItem(contentAssistModeItem);
+		codePopup.addItem(autoImportModeItem);
+		
+		codePopup
+		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->Generator.gsView.genView(screen.getCurrentEditor()))
+		.createItem("Override/Implement Methods", IconManager.buildImage, ()->Generator.overView.genView(screen.getCurrentEditor()));
+	}
+	
 	private void initProjectPopup() {
 		JFileChooser fileC = new JFileChooser();
 		projectPopup.createItem("Manage Build-Path", IconManager.fluentbuildpathIcon, ()->Screen.getProjectFile().getDependencyView().setVisible(true))
@@ -953,6 +810,7 @@ public class ToolMenu extends JPanel {
 		.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
 		.createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));
 	}
+	
 	private void initFilePopup() {
 		//New Menu Items
 		filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getProjectFile().open("File"))
@@ -1034,84 +892,6 @@ public class ToolMenu extends JPanel {
 		reshapeComp();
 	}
 	
-	public class LabelMenu extends JComponent {
-		private String text;
-		private String msg;
-		private volatile boolean enter;
-		
-		public LabelMenu(String text, Runnable r, Runnable x) {
-			this.text = "";
-			setToolTipText(text);
-			UIManager.setData(this);
-			setForeground(TOOLMENU_COLOR3);
-			setBackground(back2);
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					enter = true;
-					x.run();
-					repaint();
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					enter = false;
-					if(!CodeFramework.resolving)
-						setTask("Hover to see Memory Statistics");
-					repaint();
-				}
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					r.run();
-					repaint();
-				}
-			});
-			addComp(this);
-		}
-		public void setText(String text) {
-			if(this.msg == null)
-				this.text = text;
-			repaint();
-		}
-		public void setMsg(String msg) {
-			this.msg = msg;
-			if(msg != null)
-				this.text = msg;
-			else
-				this.text = "Hover to see Memory Statistics";
-			repaint();
-		}
-		@Override
-		public void setFont(Font f) {
-			super.setFont(f);
-			setSize(100, ToolMenu.this.getHeight());
-			setPreferredSize(getSize());
-		}
-		@Override
-		public void paint(Graphics g2D) {
-			Graphics2D g = (Graphics2D)g2D;
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(), getHeight());
-			g.setPaint(new GradientPaint(0, 0, TOOLMENU_COLOR2, getWidth(), getHeight(), TOOLMENU_COLOR4));
-			g.setFont(getFont());
-			int x = g.getFontMetrics().stringWidth(text);
-			int cx = x;
-			if(getWidth() + 3 != x + 3) {
-				setSize(x + 3, 20);
-				setPreferredSize(getSize());
-				reshapeComp();
-			}
-			x = getWidth()/2 - x/2;
-			g.drawString(text, x, getFont().getSize());
-			if(enter) {
-				g.setFont(getFont());
-				g.drawString(text, x, getFont().getSize());
-			}
-		}
-	}
-	
 	public class Menu extends JComponent {
 		
 		private String text;
@@ -1121,8 +901,6 @@ public class ToolMenu extends JPanel {
 		public Menu(OPopupWindow popup, String text) {
 			this.text = text;
 			UIManager.setData(this);
-			setBackground(back2);
-			setForeground(TOOLMENU_COLOR2);
 			addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(MouseEvent e) {
@@ -1155,20 +933,19 @@ public class ToolMenu extends JPanel {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g.setColor(getBackground());
+			g.setColor(back2);
 			g.fillRect(0, 0, getWidth(), getHeight());
-			g.setColor(getForeground());
+			g.setColor(TOOLMENU_COLOR2);
 			g.setFont(getFont());
 			int x = g.getFontMetrics().stringWidth(text);
 			int cx = x;
 			x = getWidth()/2 - x/2;
-			g.drawString(text, x, getFont().getSize());
 			if(enter) {
-				g.setColor(getForeground());
+				g.setColor(TOOLMENU_COLOR6);
 				g.fillRect(x, getHeight() - 3, cx, 2);
-				g.setFont(getFont());
-				g.drawString(text, x, getFont().getSize());
 			}
+			g.setFont(getFont());
+			g.drawString(text, x, getFont().getSize());
 		}
 	}
 }
