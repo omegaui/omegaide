@@ -66,11 +66,6 @@ public class UIManager extends DataBase {
 	 * The field carrying the default font name which was registered in omega.Screen
 	 */
 	public static volatile boolean animationsActive = true;
-	
-	/**
-	 * The field carrying the expanded/collapsed state of ToolMenu
-	 */
-	public static volatile boolean toolMenuCollapsed = false;
 
 	/**
 	 * The field carrying the default tab Height
@@ -212,7 +207,6 @@ public class UIManager extends DataBase {
 			setTerminalFontState(getEntryAt("Terminal Font", 2).getValueAsInt());
 			setAnimationsActive(getEntryAt("Animations On", 0).getValueAsBoolean());
 			setExtendedState(getEntryAt("Main Window Extended State", 0).getValueAsInt());
-			setToolMenuCollapsed(getEntryAt("ToolMenu Collapsed", 0).getValueAsBoolean());
 			if(!isDarkMode()) {
 				c3 = color4;
 				c1 = new Color(0, 0, 255, 40);
@@ -323,7 +317,6 @@ public class UIManager extends DataBase {
 		addEntry("Terminal Font", terminalFontSize + "");
 		addEntry("Terminal Font", terminalFontState + "");
 		addEntry("Main Window Extended State", Screen.getScreen().getExtendedState() + "");
-		addEntry("ToolMenu Collapsed", toolMenuCollapsed + "");
 		super.save();
 	}
 
@@ -388,14 +381,6 @@ public class UIManager extends DataBase {
 
 	public static void setExtendedState(int extendedState) {
 		UIManager.extendedState = extendedState;
-	}
-
-	public static boolean isToolMenuCollapsed() {
-		return toolMenuCollapsed;
-	}
-	
-	public static void setToolMenuCollapsed(boolean toolMenuCollapsed) {
-		UIManager.toolMenuCollapsed = toolMenuCollapsed;
 	}
 	
 }

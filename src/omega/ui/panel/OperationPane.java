@@ -17,6 +17,9 @@
 */
 
 package omega.ui.panel;
+import omegaui.component.EdgeComp;
+import omegaui.component.TextComp;
+
 import omega.ui.popup.OPopupWindow;
 
 import omega.io.TabData;
@@ -41,8 +44,70 @@ import javax.swing.JComponent;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class OperationPane extends JPanel{
+
+	private class ActionBar extends JComponent{
+		
+		private EdgeComp labelComp;
+		
+		private TextComp collapseComp;
+		
+		private TextComp hideComp;
+
+		private volatile boolean collapseMode = false;
+		
+		public ActionBar(){
+			setLayout(null);
+			setSize(100, 25);
+			setPreferredSize(getSize());
+			setBackground(c2);
+			init();
+		}
+
+		public void init(){
+			labelComp = new EdgeComp("Process Panel", TOOLMENU_GRADIENT, TOOLMENU_GRADIENT, TOOLMENU_COLOR3, ()->{});
+			labelComp.setBounds(1, 25/2 - 20/2, computeWidth(labelComp.getText(), PX14) + 20, 20);
+			labelComp.setFont(PX14);
+			labelComp.setUseFlatLineAtBack(true);
+			labelComp.setEnabled(false);
+			add(labelComp);
+
+			collapseComp = new TextComp("Collapse", TOOLMENU_GRADIENT, c2, c3, ()->{
+				collapseMode = !collapseMode;
+				collapseComp.setText(collapseMode ? "Expand" : "Collapse");
+				resizeDivider();
+			});
+			collapseComp.setFont(PX14);
+			collapseComp.setArc(5, 5);
+			add(collapseComp);
+
+			hideComp = new TextComp("Hide", TOOLMENU_GRADIENT, c2, c3, this::hide);
+			hideComp.setFont(PX14);
+			hideComp.setArc(5, 5);
+			add(hideComp);
+		}
+
+		public void resizeDivider(){
+			if(collapseMode)
+				screen.compilancePane.setDividerLocation(screen.compilancePane.getHeight() - getHeight() - UIManager.tabHeight - screen.compilancePane.getDividerSize());
+			else
+				OperationPane.this.setVisible(true);
+		}
+
+		public void hide(){
+			OperationPane.this.setVisible(false);
+		}
+
+		public void computeBounds(){
+			collapseComp.setBounds(getWidth() - 160, 25/2 - 20/2, 80, 20);
+			hideComp.setBounds(getWidth() - 80, 25/2 - 20/2, 80, 20);
+			resizeDivider();
+		}
+	}
 	
 	private Screen screen;
+	
+	private ActionBar actionBar;
+	
 	private static TabPanel tabPane;
 	
 	private static final String TITLE = "Process Panel";
@@ -51,6 +116,10 @@ public class OperationPane extends JPanel{
 	public OperationPane(Screen screen) {
 		this.screen = screen;
 		setLayout(new BorderLayout());
+
+		actionBar = new ActionBar();
+		add(actionBar, BorderLayout.NORTH);
+		
 		tabPane = new TabPanel(TabPanel.TAB_LOCATION_TOP);
 		
 		setVisible(false);
@@ -76,7 +145,7 @@ public class OperationPane extends JPanel{
 
 			@Override
 			public void tabActivated(TabData tabData){
-				
+					
 			}
 		});
 	}
@@ -102,11 +171,20 @@ public class OperationPane extends JPanel{
 		}
 		return c;
 	}
+
+	@Override
+	public void layout(){
+		super.layout();
+		if(isVisible())
+			actionBar.computeBounds();
+	}
 	
 	@Override
 	public void setVisible(boolean value) {
-		if(tabPane.isEmpty())
+		if(tabPane.isEmpty() || !value){
 			super.setVisible(false);
+			return;
+		}
 		
 		super.setVisible(value);
 		

@@ -47,19 +47,19 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
 public class RunPanel extends JPanel {
-	private FlexPanel actionPanel;
-	private TextComp runComp;
-	private TextComp clearComp;
-	private TextComp killComp;
+	public FlexPanel actionPanel;
+	public TextComp runComp;
+	public TextComp clearComp;
+	public TextComp killComp;
 
-	private FlexPanel runTextAreaPanel;
-	private JScrollPane scrollPane;
-	private RunTextArea runTextArea;
+	public FlexPanel runTextAreaPanel;
+	public JScrollPane scrollPane;
+	public RunTextArea runTextArea;
 
-	private boolean logMode = false;
+	public boolean logMode = false;
 
-	private Process process;
-	private PrintWriter writer;
+	public Process process;
+	public PrintWriter writer;
 
 	public RunPanel(){
 		super(null);
@@ -158,8 +158,8 @@ public class RunPanel extends JPanel {
 	}
 
 	public class RunTextArea extends RSyntaxTextArea {
-		private static volatile boolean ctrl;
-		private static volatile boolean l;
+		public static volatile boolean ctrl;
+		public static volatile boolean l;
 		public RunTextArea(){
 			Editor.getTheme().apply(this);
 			ShellTokenMaker.apply(this);

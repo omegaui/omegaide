@@ -1,4 +1,4 @@
-/**
+/*
  * ToolMenu
  * Copyright (C) 2021 Omega UI
 
@@ -101,7 +101,7 @@ import static omega.io.UIManager.*;
 import static omega.io.IconManager.*;
 import static omegaui.component.animation.Animations.*;
 
-/**
+/*
  * This is not only the tool menu but also the IDE 's custom window decorator
  */
 
@@ -151,6 +151,10 @@ public class ToolMenu extends JPanel {
 	public TextComp sep3;
 	
 	public TextComp structureViewComp;
+
+	public TextComp memoryComp;
+	
+	public TextComp taskComp;
 
 	//IDE Dialogs
 	public static InfoScreen infoScreen;
@@ -264,7 +268,6 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		init();
-		checkState();
 	}
 	
 	private void init() {
@@ -339,6 +342,24 @@ public class ToolMenu extends JPanel {
 		};
 		minimizeComp.setArc(0, 0);
 		add(minimizeComp);
+
+		memoryComp = new TextComp("", "Memory Usage (Excluding JVM). Click to Run GC.", TOOLMENU_COLOR6_SHADE, TOOLMENU_GRADIENT, glow, ()->{
+			System.gc();
+			computeMemoryUsage();
+		});
+		memoryComp.setOnMouseEntered(this::computeMemoryUsage);
+		memoryComp.setArc(0, 0);
+		memoryComp.setFont(PX14);
+		add(memoryComp);
+		
+		taskComp = new TextComp("", back2, back2, TOOLMENU_COLOR1, null);
+		taskComp.setOnMouseEntered(this::computeMemoryUsage);
+		taskComp.setArc(0, 0);
+		taskComp.setFont(PX14);
+		taskComp.setTextAlignment(TextComp.TEXT_ALIGNMENT_RIGHT);
+		add(taskComp);
+
+		computeMemoryUsage();
 		
 		filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(510);
 		initFilePopup();
@@ -414,7 +435,7 @@ public class ToolMenu extends JPanel {
 		shellComp.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
-				consoleItemWindow.setLocation(e.getLocationOnScreen());
+				consoleItemWindow.setLocation(e.getXOnScreen(), e.getYOnScreen() + 10 + OPopupWindow.HEIGHT);
 				consoleItemWindow.setVisible(true);
 			}
 		});
@@ -512,7 +533,7 @@ public class ToolMenu extends JPanel {
 		addComp(sep3);
 		
 		structureViewComp = new TextComp(fluentstructureImage, 20, 20, "Class Disassembler(integrated)", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
-		structureViewComp.setBounds(318, 33, 24, 24);
+		structureViewComp.setBounds(320, 33, 24, 24);
 		addComp(structureViewComp);
 		
 		pathBox = new ToolMenuPathBox();
@@ -560,9 +581,15 @@ public class ToolMenu extends JPanel {
 	public void disposeAll(){
 		screen.dispose();
 	}
+	 
+	public void computeMemoryUsage(){
+		long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+		ram = (long)(ram / 1000000);
+		memoryComp.setText(ram + " MB");
+	}
 	
 	public void setTask(String task) {
-		
+		setMsg(task);
 	}
 	
 	public static ToolMenuPathBox getPathBox() {
@@ -570,12 +597,21 @@ public class ToolMenu extends JPanel {
 	}
 	
 	public void setMsg(String msg) {
-		
+		if(Screen.isNotNull(msg))
+			taskComp.setText(msg);
+		else
+			taskComp.setText("");
 	}
 	
 	public void reshapeComp() {
 		//Resizing PathBox
 		pathBox.setBounds(0, 60, getWidth(), 25);
+
+		//Resizing Memory Comp
+		memoryComp.setBounds(getWidth() - (30 * 3) - 65, 0, 60, 30);
+		
+		//Resizing Task Comp
+		taskComp.setBounds(getWidth() - 200, 33, 200, 24);
 		
 		//Window Decorations
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
@@ -638,16 +674,6 @@ public class ToolMenu extends JPanel {
 			Screen.getUniversalSettingsView().setVisible(true);
 	}
 
-	public void checkState(){
-		setPreferredSize(new Dimension(screen.getWidth(), isToolMenuCollapsed() ? 55 : 90));
-		setSize(getPreferredSize());
-		if(screen.isVisible()){
-			screen.setVisible(false);
-			screen.setVisible(true);
-		}
-		
-	}
-	
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
 		setPopup.createItem("Change Editor Font", IconManager.settingsImage, ()->{
@@ -668,10 +694,6 @@ public class ToolMenu extends JPanel {
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new WorkspaceSelector(screen).setVisible(true))
 		.createItem("Animations", IconManager.settingsImage, ()->{
 			Screen.showAnimationsDialog();
-		})
-		.createItem("Toggle ToolMenu", IconManager.fluentsettingsImage, ()->{
-			setToolMenuCollapsed(!isToolMenuCollapsed());
-			checkState();
 		})
 		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
 			consoleSelector.setVisible(true);

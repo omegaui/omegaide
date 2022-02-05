@@ -1083,7 +1083,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else {
 			text = "Text not found";
 		}
-		screen.getToolMenu().setTask(!text.equals("") ? text : "Hover to see Memory Statistics");
+		screen.getToolMenu().setTask(text);
 	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
@@ -1101,7 +1101,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		keyCache = 0;
 		contentWindow.setVisible(false);
-		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 		if(lastSearchContext != null){
 			lastSearchContext.setMarkAll(false);
 			fAndR.replaceToolBar.fireSearchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
@@ -1125,13 +1124,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void focusGained(FocusEvent e){
 		keyCache = 0;
 		screen.focussedEditor = Editor.this;
-		ToolMenu.getPathBox().setPath(currentFile != null ? currentFile.getAbsolutePath() : null);
 	}
 
 	@Override
 	public void focusLost(FocusEvent e){
 		keyCache = 0;
-		ToolMenu.getPathBox().setPath(null);
 	}
 
 	public FindAndReplace getFAndR() {

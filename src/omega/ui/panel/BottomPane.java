@@ -54,6 +54,7 @@ public class BottomPane extends JPanel {
 	public LinkedList<BoundsListener> boundListeners = new LinkedList<>();
 
 	private Runnable r = ()->{};
+	private Runnable logAction = null;
 
 	public BottomPane(Screen screen) {
 		super(null);
@@ -96,7 +97,12 @@ public class BottomPane extends JPanel {
 		focusComp.setArc(0, 0);
 		add(focusComp);
 
-		logComp = new TextComp("No Logs", TOOLMENU_COLOR4_SHADE, back1, glow, null){
+		logComp = new TextComp("Processes", TOOLMENU_COLOR4_SHADE, back1, glow, ()->{
+			if(logAction == null)
+				screen.getOperationPanel().setVisible(!screen.getOperationPanel().isVisible());
+			else
+				logAction.run();
+		}){
 			@Override
 			public void draw(Graphics2D g){
 				if(image != null){
@@ -170,8 +176,8 @@ public class BottomPane extends JPanel {
 	}
 
 	public void setShowLogAction(Runnable action){
-		logComp.setRunnable(action);
-		logComp.setText(action == null ? "No Logs" : "Show Logs");
+		this.logAction = action;
+		logComp.setText(action == null ? "Processes" : "Show Logs");
 	}
 
 	public void setMessage(String text, BufferedImage image){

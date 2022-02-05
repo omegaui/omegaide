@@ -72,6 +72,15 @@ public class TextComp extends JComponent{
 	public int textHeight;
 
 	private String dir;
+	
+	public static final int TEXT_ALIGNMENT_CENTER = 0;
+	public static final int TEXT_ALIGNMENT_RIGHT = 1;
+	public static final int TEXT_ALIGNMENT_LEFT = 2;
+
+	public int textAlignment = TEXT_ALIGNMENT_CENTER;
+	
+	public int textLeftAlignmentMargin = 5;
+	public int textRightAlignmentMargin = 5;
 
 	public AnimationLayer animationLayer;
 
@@ -460,7 +469,13 @@ public class TextComp extends JComponent{
 
 		textX = x;
 		textY = y;
+		textWidth = g.getFontMetrics().stringWidth(getText());
 		textHeight = g.getFontMetrics().getHeight();
+
+		if(textAlignment == TEXT_ALIGNMENT_RIGHT)
+			textX = getWidth() - textWidth - textRightAlignmentMargin;
+		else if(textAlignment == TEXT_ALIGNMENT_LEFT)
+			textX = textLeftAlignmentMargin;
 
 		if(isPaintGradientEnabled()){
 			if(gradientMode == GRADIENT_MODE_DEFAULT)
@@ -495,8 +510,8 @@ public class TextComp extends JComponent{
 	public void draw(Graphics2D g, int x, int y){
 		g.setFont(getFont());
 
-		textX = alignX < 0 ? x : alignX;
-		textWidth = g.getFontMetrics().stringWidth(getText());
+		if(textAlignment == TEXT_ALIGNMENT_CENTER)
+			textX = alignX < 0 ? x : alignX;
 
 		if(isPaintTextGradientEnabled()){
 			if(gradientMode == GRADIENT_MODE_DEFAULT)
@@ -603,5 +618,33 @@ public class TextComp extends JComponent{
 	public Object getValue(Object key){
 		return map.get(key);
 	}
+
+	public int getTextAlignment() {
+		return textAlignment;
+	}
+	
+	public void setTextAlignment(int textAlignment) {
+		this.textAlignment = textAlignment;
+		repaint();
+	}
+	
+	public int getTextLeftAlignmentMargin() {
+		return textLeftAlignmentMargin;
+	}
+	
+	public void setTextLeftAlignmentMargin(int textLeftAlignmentMargin) {
+		this.textLeftAlignmentMargin = textLeftAlignmentMargin;
+		repaint();
+	}
+	
+	public int getTextRightAlignmentMargin() {
+		return textRightAlignmentMargin;
+	}
+	
+	public void setTextRightAlignmentMargin(int textRightAlignmentMargin) {
+		this.textRightAlignmentMargin = textRightAlignmentMargin;
+		repaint();
+	}
+	
 }
 

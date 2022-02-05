@@ -17,12 +17,17 @@
 */
 
 package omega.ui.component;
+import java.io.File;
+
+import omega.Screen;
+
 import omegaui.component.TextComp;
 
 import omega.io.TabData;
 
 import omega.ui.panel.TabPanel;
 import omega.ui.panel.JetRunPanel;
+import omega.ui.panel.RunPanel;
 
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -80,6 +85,10 @@ public class TabComp extends JComponent implements FocusListener{
 		
 		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
 			runPanel.terminalPanel.addFocusListener(this);
+		}
+		
+		else if(tabData.getComponent() instanceof RunPanel runPanel){
+			runPanel.runTextArea.addFocusListener(this);
 		}
 
 		addMouseListener(new MouseAdapter(){
@@ -144,6 +153,10 @@ public class TabComp extends JComponent implements FocusListener{
 		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
 			runPanel.terminalPanel.grabFocus();
 		}
+		
+		else if(tabData.getComponent() instanceof RunPanel runPanel){
+			runPanel.runTextArea.grabFocus();
+		}
 	}
 
 	public void closeTab(){
@@ -174,12 +187,27 @@ public class TabComp extends JComponent implements FocusListener{
 	@Override
 	public void focusLost(FocusEvent e){
 		focussed = false;
+		ToolMenu.pathBox.setPath(null);
 		repaint();
 	}
 
 	@Override
 	public void focusGained(FocusEvent e){
 		focussed = true;
+
+		String path = Screen.getProjectFile().getProjectPath() + File.separator;
+		
+		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
+			if(scrollPane.getViewport().getView() instanceof Editor){
+				path = ((Editor)scrollPane.getViewport().getView()).currentFile.getPath();
+			}
+		}
+
+		else {
+			path += tabData.getName();
+		}
+		
+		ToolMenu.pathBox.setPath(path);
 		repaint();
 	}
 
