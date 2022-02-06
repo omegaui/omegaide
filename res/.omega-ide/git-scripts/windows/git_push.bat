@@ -1,12 +1,12 @@
 @echo off
 
-cd %1
+cd %1%
 
 echo You can customize this script to change, 
 echo the branch name, output your token to copy it fast, 
 echo or anything you like.
 
-for /F "tokens=* USEBACKQ" %%F in (`command`) do (
+for /F "tokens=* USEBACKQ" %%F in (`git rev-parse --abbrev-ref HEAD`) do (
 set branchName=%%F
 )
 

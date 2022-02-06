@@ -1,6 +1,6 @@
 @echo off
 
-cd %1
+cd %1%
 
 echo Enter a new branch name (Click close to Cancel this Process)
 

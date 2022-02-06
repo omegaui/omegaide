@@ -1,6 +1,6 @@
 @echo off
 
-cd %1
+cd %1%
 
 echo Enter the commit message, (Click Close to kill this process)
 

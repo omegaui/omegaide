@@ -1,6 +1,6 @@
 @echo off
 
-cd %1
+cd %1%
 
 echo GitHub Remote Setup ...
 echo This has the following rule

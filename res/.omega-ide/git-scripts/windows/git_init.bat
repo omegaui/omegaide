@@ -1,10 +1,9 @@
 @echo off
 
-cd %1
+cd %1%
 
-echo Adding Files ...
+echo Initializing Git ...
 
-git add .
+git init
 
 if %ERRORLEVEL% GEQ 1 (echo Operation Failed. & exit 1) else (echo Operation Completed Successfully.)
-

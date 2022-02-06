@@ -62,7 +62,7 @@ public class GitHubClientWindow extends JDialog{
 
 	public static final String GIT_SCRIPT_PATH = new File(".omega-ide").getAbsolutePath() + File.separator + "git-scripts" + File.separator + (Screen.onWindows() ? "windows" : "unix");
 	public static final String EXT = Screen.onWindows() ? ".bat" : ".sh";
-	
+
 	public static final String GIT_INIT_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_init" + EXT).getAbsolutePath();
 	public static final String GIT_ADD_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_add" + EXT).getAbsolutePath();
 	public static final String GIT_COMMIT_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_commit" + EXT).getAbsolutePath();
@@ -94,7 +94,7 @@ public class GitHubClientWindow extends JDialog{
 
 	public void init(){
 		gitTermSettingsProvider = new GitTermSettingsProvider();
-		
+
 		githubIconComp = new TextComp(IconManager.fluentgithubLogo, 120, 120, c2, c2, c2, null);
 		githubIconComp.setBounds(10, 10, 120, 120);
 		githubIconComp.setArc(5, 5);
@@ -190,10 +190,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Executing git init ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_INIT_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_INIT_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -213,10 +213,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Setting up GitHub Connection ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_SETUP_REMOTE_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_SETUP_REMOTE_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -236,10 +236,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Adding All NEW Files ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_ADD_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_ADD_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -259,10 +259,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Executing git commit ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_COMMIT_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_COMMIT_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -282,10 +282,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Executing git push ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_PUSH_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_PUSH_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -305,10 +305,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Executing git checkout ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_GEN_BRANCH_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_GEN_BRANCH_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -328,10 +328,10 @@ public class GitHubClientWindow extends JDialog{
 				hideTerminal();
 				setStatus("Executing git branch ...");
 				jetTerminal = new JetTerminal(
-					new String[]{
-						GIT_SWITCH_BRANCH_SCRIPT_PATH, dir.getAbsolutePath()
-					},
-					dir.getAbsolutePath(), gitTermSettingsProvider
+				new String[]{
+					GIT_SWITCH_BRANCH_SCRIPT_PATH, dir.getAbsolutePath()
+				},
+				dir.getAbsolutePath(), gitTermSettingsProvider
 				);
 				jetTerminal.setOnProcessExited(()->{
 					setStatus("");
@@ -410,6 +410,7 @@ public class GitHubClientWindow extends JDialog{
 		public static final Font font = new Font("JetBrains Mono", Font.BOLD, 13);
 
 		public static Color[] colors = new Color[16];
+		public static ColorPalette colorPalatte;
 		static{
 			colors[0] = glow;
 			colors[1] = TOOLMENU_COLOR2;
@@ -427,6 +428,13 @@ public class GitHubClientWindow extends JDialog{
 			colors[13] = Color.decode("#5C6B73");
 			colors[14] = Color.decode("#4C2719");
 			colors[15] = isDarkMode() ? Color.decode("#242424") : c2;
+
+			colorPalatte = new ColorPalette(){
+				@Override
+				public Color[] getIndexColors(){
+					return colors;
+				}
+			};
 		}
 
 		@Override
@@ -446,12 +454,7 @@ public class GitHubClientWindow extends JDialog{
 
 		@Override
 		public ColorPalette getTerminalColorPalette() {
-			return new ColorPalette(){
-				@Override
-				public Color[] getIndexColors(){
-					return colors;
-				}
-			};
+			return colorPalatte;
 		}
 
 		@Override

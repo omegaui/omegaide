@@ -1,6 +1,6 @@
 @echo off
 
-cd %1
+cd %1%
 
 echo You have the following branches available :
 git branch
