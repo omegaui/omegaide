@@ -60,6 +60,17 @@ public class GitHubClientWindow extends JDialog{
 
 	public GitTermSettingsProvider gitTermSettingsProvider;
 
+	public static final String GIT_SCRIPT_PATH = new File(".omega-ide").getAbsolutePath() + File.separator + "git-scripts" + File.separator + (Screen.onWindows() ? "windows" : "unix");
+	public static final String EXT = Screen.onWindows() ? ".bat" : ".sh";
+	
+	public static final String GIT_INIT_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_init" + EXT).getAbsolutePath();
+	public static final String GIT_ADD_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_add" + EXT).getAbsolutePath();
+	public static final String GIT_COMMIT_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_commit" + EXT).getAbsolutePath();
+	public static final String GIT_PUSH_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_push" + EXT).getAbsolutePath();
+	public static final String GIT_SETUP_REMOTE_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_setup_remote" + EXT).getAbsolutePath();
+	public static final String GIT_GEN_BRANCH_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_gen_branch" + EXT).getAbsolutePath();
+	public static final String GIT_SWITCH_BRANCH_SCRIPT_PATH = new File(GIT_SCRIPT_PATH, "git_switch_branch" + EXT).getAbsolutePath();
+
 	public static final String[] CHECK_GIT_VERSION_COMMAND = new String[]{
 		"git", "--version"
 	};
@@ -180,7 +191,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Executing git init ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_init.sh", dir.getAbsolutePath()
+						GIT_INIT_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);
@@ -203,7 +214,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Setting up GitHub Connection ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_setup_remote.sh", dir.getAbsolutePath()
+						GIT_SETUP_REMOTE_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);
@@ -226,7 +237,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Adding All NEW Files ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_add.sh", dir.getAbsolutePath()
+						GIT_ADD_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);
@@ -249,7 +260,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Executing git commit ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_commit.sh", dir.getAbsolutePath()
+						GIT_COMMIT_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);
@@ -272,7 +283,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Executing git push ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_push.sh", dir.getAbsolutePath()
+						GIT_PUSH_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);
@@ -295,7 +306,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Executing git checkout ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_gen_branch.sh", dir.getAbsolutePath()
+						GIT_GEN_BRANCH_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);
@@ -318,7 +329,7 @@ public class GitHubClientWindow extends JDialog{
 				setStatus("Executing git branch ...");
 				jetTerminal = new JetTerminal(
 					new String[]{
-						"/home/ubuntu/Documents/Omega IDE/out/git_switch_branch.sh", dir.getAbsolutePath()
+						GIT_SWITCH_BRANCH_SCRIPT_PATH, dir.getAbsolutePath()
 					},
 					dir.getAbsolutePath(), gitTermSettingsProvider
 				);

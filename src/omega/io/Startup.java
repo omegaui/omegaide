@@ -1,22 +1,24 @@
 /**
-* Checks for license agreement and Writes IDE resources.
-* Copyright (C) 2021 Omega UI
+ * Checks for license agreement and Writes IDE resources.
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.io;
+import omega.ui.github.GitHubClientWindow;
+
 import java.awt.Font;
 import java.awt.Color;
 
@@ -84,14 +86,14 @@ public class Startup extends JDialog {
 		init();
 		setVisible(true);
 	}
-	
+
 	public void init(){
 		closeBtn = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, ()->System.exit(0));
 		closeBtn.setBounds(getWidth() - 30, 0, 30, 30);
 		closeBtn.setFont(PX18);
 		closeBtn.setArc(0, 0);
 		add(closeBtn);
-		
+
 		JScrollPane scrollPane = new JScrollPane(textArea = new RSyntaxTextArea(LICENSE_TEXT){
 			@Override
 			public Color getForegroundForToken(Token token){
@@ -108,7 +110,7 @@ public class Startup extends JDialog {
 		});
 		scrollPane.setBounds(50, 100, getWidth() - 100, getHeight() - 200);
 		scrollPane.setBackground(c2);
-		
+
 		try{
 			if(isDarkMode())
 				Theme.load(getClass().getResourceAsStream("/dark.xml")).apply(textArea);
@@ -118,16 +120,16 @@ public class Startup extends JDialog {
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		textArea.setFont(PX14);
 		textArea.setCaretPosition(0);
 		textArea.setAntiAliasingEnabled(true);
-		
+
 		MarkdownTokenMaker.apply(textArea);
-		
+
 		textArea.setEditable(false);
 		add(scrollPane);
-		
+
 		acceptComp = new TextComp("I Accept", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->{
 			try{
 				new File(".omega-ide" + File.separator + ".firststartup").createNewFile();
@@ -140,19 +142,19 @@ public class Startup extends JDialog {
 		acceptComp.setBounds(getWidth()/2 - 50, getHeight() - 40, 100, 40);
 		acceptComp.setFont(PX16);
 		add(acceptComp);
-		
+
 		TextComp imageComp = new TextComp(image, 64, 64, c2, c2, c2, null);
 		imageComp.setBounds(0, 0, 66, 66);
 		imageComp.setClickable(false);
 		add(imageComp);
-		
+
 		TextComp textComp = new TextComp("Omega IDE", c2, TOOLMENU_COLOR1, TOOLMENU_COLOR1, null);
 		textComp.setBounds(getWidth()/2 - 165, 0, 330, 50);
 		textComp.setClickable(false);
 		textComp.setFont(PX28);
 		textComp.setArc(0, 0);
 		add(textComp);
-		
+
 		TextComp licComp = new TextComp("license agreement", c2, TOOLMENU_COLOR2, TOOLMENU_COLOR2, ()->{});
 		licComp.setBounds(getWidth()/2 - 150, 50, 300, 30);
 		licComp.setClickable(false);
@@ -160,7 +162,7 @@ public class Startup extends JDialog {
 		licComp.setArc(0, 0);
 		add(licComp);
 	}
-	
+
 	public static void checkStartup(Screen screen) {
 		if(!new File(".omega-ide" + File.separator + ".firststartup").exists()){
 			Screen.pickTheme(DataManager.getTheme());
@@ -177,7 +179,7 @@ public class Startup extends JDialog {
 			new Startup(screen).repaint();
 		}
 	}
-	
+
 	public static void writeUIFiles(){
 		File f = new File(".omega-ide");
 		if(!f.exists()){
@@ -215,7 +217,7 @@ public class Startup extends JDialog {
 		if(!f.exists()){
 			System.out.println("Writing Native Files for Terminal Emulation ...");
 			System.out.println("It's a one time process!");
-			
+
 			loadDefaultFile("linux" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86/libpty.so");
 			loadDefaultFile("linux" + File.separator + "x86_64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86_64/libpty.so");
 			loadDefaultFile("macosx" + File.separator + "x86" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/macosx/x86/libpty.dylib");
@@ -225,7 +227,7 @@ public class Startup extends JDialog {
 			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty.dll", ".omega-ide/pty4j-libs/win/x86_64/winpty.dll");
 			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-agent.exe");
 			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-debugserver.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-debugserver.exe");
-			
+
 			System.out.println("Writing Native Files for Terminal Emulation ... Done!");
 
 			try{
@@ -248,9 +250,36 @@ public class Startup extends JDialog {
 			catch(Exception e){
 				e.printStackTrace();
 			}
-			
-			System.out.println("Launching Omega IDE ...");
 		}
+		f = new File(".omega-ide", "git-scripts");
+		if(!f.exists()){
+			System.out.println("Writing Shell Scripts ...");
+			f.mkdir();
+			System.out.println("> For Windows");
+			writeGitShellScript("windows", "git_add.bat");
+			writeGitShellScript("windows", "git_commit.bat");
+			writeGitShellScript("windows", "git_gen_branch.bat");
+			writeGitShellScript("windows", "git_init.bat");
+			writeGitShellScript("windows", "git_push.bat");
+			writeGitShellScript("windows", "git_setup_remote.bat");
+			writeGitShellScript("windows", "git_switch_branch.bat");
+			System.out.println("> For Unix");
+			writeGitShellScript("unix", "git_add.sh");
+			writeGitShellScript("unix", "git_commit.sh");
+			writeGitShellScript("unix", "git_gen_branch.sh");
+			writeGitShellScript("unix", "git_init.sh");
+			writeGitShellScript("unix", "git_push.sh");
+			writeGitShellScript("unix", "git_setup_remote.sh");
+			writeGitShellScript("unix", "git_switch_branch.sh");
+			System.out.println("Writing Shell Scripts ... Done!");
+			if(!Screen.onWindows())
+				System.out.println("Note: You must make the scripts located in .omega-ide/git-scripts/unix executable before using GitHubClientWindow.");
+		}
+		System.out.println("Launching Omega IDE ...");
+	}
+
+	public static void writeGitShellScript(String platform, String script){
+		loadDefaultFile(".omega-ide" + File.separator + "git-scripts" + File.separator + platform + File.separator + script, ".omega-ide/git-scripts/" + platform + "/" + script);
 	}
 
 	public static void checkDirectory(String path){
