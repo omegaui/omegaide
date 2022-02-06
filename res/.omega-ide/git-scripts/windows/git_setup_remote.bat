@@ -6,9 +6,9 @@ echo GitHub Remote Setup ...
 echo This has the following rule
 echo https://github.com/yourusername/thisreponame 
 
-echo 
+echo:
 echo Note: Your local repo must already exist on GitHub!
-echo
+echo:
 
 echo -------------------------------------------- 
 
