@@ -17,6 +17,8 @@
  */
 
 package omega.ui.component;
+import omega.ui.github.GitHubClientWindow;
+
 import omega.instant.support.java.misc.JDKSelectionDialog;
 
 import omega.instant.support.java.generator.Generator;
@@ -173,7 +175,8 @@ public class ToolMenu extends JPanel {
 	public static ColorPicker colorPicker;
 	public static LanguageTagView languageTagView;
 	public static RecentsDialog recentsDialog;
-	
+	public static GitHubClientWindow githubClientWindow;
+
 	public static NotificationPopup projectTypeNotificationPopup = null;
 	
 	private int pressX;
@@ -214,6 +217,7 @@ public class ToolMenu extends JPanel {
 			colorPicker = new ColorPicker(screen);
 			languageTagView = new LanguageTagView(screen);
 			recentsDialog = new RecentsDialog(screen);
+			githubClientWindow = new GitHubClientWindow(screen);
 			
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
 			.title("Project Type Management")
@@ -790,6 +794,7 @@ public class ToolMenu extends JPanel {
 	
 	private void initToolsPopup() {
 		toolsPopup
+		.createItem("GitHub Client", IconManager.fluentgithubIcon, ()->githubClientWindow.setDirectory(new File(Screen.getProjectFile().getProjectPath())))
 		.createItem("Source Defender", IconManager.fluentsourceImage, ()->sourceDefender.setVisible(true))
 		.createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
 		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))

@@ -129,6 +129,7 @@ public class IconManager {
 
 	public static BufferedImage fluentchangethemeImage = getFluentIcon("change-theme-48.png");
 	public static BufferedImage fluentbuildpathIcon = getFluentIcon("transit-on-map-48.png");
+	public static BufferedImage fluentgithubIcon = getFluentIcon("github-48.png");
 	public static BufferedImage fluentanimationImage = getFluentIcon("physics-96.png");
 
 	public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");

@@ -89,8 +89,9 @@ public class OperationPane extends JPanel{
 		public void resizeDivider(){
 			if(collapseMode)
 				screen.compilancePane.setDividerLocation(screen.compilancePane.getHeight() - getHeight() - UIManager.tabHeight - screen.compilancePane.getDividerSize());
-			else
+			else if(!tabPane.isEmpty() && !OperationPane.this.isVisible()){
 				OperationPane.this.setVisible(true);
+			}
 		}
 
 		public void hide(){
@@ -186,10 +187,10 @@ public class OperationPane extends JPanel{
 			return;
 		}
 		
-		super.setVisible(value);
+		super.setVisible(true);
 		
 		try{			
-			if(value) {
+			if(true) {
 				setPreferredSize(new Dimension(screen.getWidth(), getHeight() > 450 ? getHeight() : 450));
 				int y = screen.getHeight() - 400;
 				screen.compilancePane.setDividerLocation(y);
