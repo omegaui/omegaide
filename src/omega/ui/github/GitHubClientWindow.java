@@ -102,7 +102,7 @@ public class GitHubClientWindow extends JDialog{
 		githubIconComp.attachDragger(this);
 		add(githubIconComp);
 
-		titleComp = new TextComp("Minimal GitHub Client (fatal : incomplete)", c2, c2, TOOLMENU_COLOR2, null);
+		titleComp = new TextComp("Minimal GitHub Client", c2, c2, TOOLMENU_COLOR2, null);
 		titleComp.setBounds(130, 50, getWidth() - 20 - 130, 30);
 		titleComp.setFont(PX20);
 		titleComp.setArc(0, 0);
