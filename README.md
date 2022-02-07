@@ -19,8 +19,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/omegaui/omegaide/Donate.md">
-    <h1>do{nate}</h1>
+  <a href="https://github.com/omegaui/omegaide/blob/main/Donate.md">
+    <h1>do { nate }</h1>
   </a>
 </p>
 
