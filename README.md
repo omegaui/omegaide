@@ -31,14 +31,6 @@
 
 ![](/res/dark.png)
 
-
-**Omega IDE v2.1 - Latest Stable**
-
-![](/images/light.png)
-
-![](/images/dark.png)
-
-
 # Written from Scratch
 Omega IDE has integrated support for the **java** programming language at its heart.
 
@@ -86,7 +78,7 @@ and can
 - Just Build your project by pressing the shortcut.
 
 # How it is different from VS Code, Atom, etc?
-- omegaide provides in-editor key bindings to build and run projects.
+- omegaide provides in-editor key bindings to build and run projects that utilize custom build and run scripts.
 
 - Not only this, whenever you run your build script it highlights any error in the editor itself which comes so that
 you don't even need not to look at your `build` script's output to search for any error that comes, 
