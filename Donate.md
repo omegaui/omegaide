@@ -1,7 +1,7 @@
 
 # Using Blockchain
 
-![Meta Mask Wallet](https://raw.githubusercontent.com/omegaui/omegaide/main/res/metamask_wallet.jpg)
+![Meta Mask Wallet](https://raw.githubusercontent.com/omegaui/omegaide/main/res/meta_wallet.jpg)
 
 # Using UPI
 
