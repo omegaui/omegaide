@@ -249,7 +249,10 @@ public class IconManager {
 		try {
 			BufferedImage image = ImageIO.read(IconManager.class.getResource(path));
 			return new ImageIcon(image);
-	}catch(Exception e) {e.printStackTrace();}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

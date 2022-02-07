@@ -17,6 +17,8 @@
  */
 
 package omega.ui.component;
+import omega.ui.window.donation.DonationWindow;
+
 import omega.ui.github.GitHubClientWindow;
 
 import omega.instant.support.java.misc.JDKSelectionDialog;
@@ -176,6 +178,7 @@ public class ToolMenu extends JPanel {
 	public static LanguageTagView languageTagView;
 	public static RecentsDialog recentsDialog;
 	public static GitHubClientWindow githubClientWindow;
+	public static DonationWindow donationWindow;
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
 	
@@ -218,6 +221,7 @@ public class ToolMenu extends JPanel {
 			languageTagView = new LanguageTagView(screen);
 			recentsDialog = new RecentsDialog(screen);
 			githubClientWindow = new GitHubClientWindow(screen);
+			donationWindow = new DonationWindow(screen);
 			
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
 			.title("Project Type Management")
@@ -780,6 +784,9 @@ public class ToolMenu extends JPanel {
 		.createItem("Plugin Manager", IconManager.fluentmanageImage, ()->Screen.getPluginsView().setVisible(true))
 		.createItem("Check for Update", IconManager.ideImage64, ()->{
 			new Thread(IDEUpdater::checkForUpdate).start();
+		})
+		.createItem("Donate", IconManager.ideImage64, ()->{
+			donationWindow.setVisible(true);
 		})
 		.createItem("Instructions", IconManager.fluentinfoImage, ()->{
 			instructionWindow.setVisible(true);
