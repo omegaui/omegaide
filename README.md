@@ -18,6 +18,12 @@
   </a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/omegaui/omegaide/Donate.md">
+    <h1>do{nate}</h1>
+  </a>
+</p>
+
 
 Remember, A [wiki](https://github.com/omegaui/omegaide/wiki/Omega-IDE-Wiki-Home-Page) is a useful stuff.
 
