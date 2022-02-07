@@ -1,20 +1,21 @@
-/**
-  * ColorPicker
-  * Copyright (C) 2021 Omega UI
+/*
+ * ColorPicker
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package omega.ui.dialog;
 import omegaui.component.TextComp;
 import omegaui.component.NoCaretField;
@@ -43,19 +44,19 @@ import javax.swing.JDialog;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class ColorPicker extends JDialog{
-	
+
 	private Color initialColor = TOOLMENU_COLOR3;
 	private Color color = initialColor;
 	private Color previewColor = color;
 
 	private TextComp titleComp;
-	
+
 	private ColorComp redTileComp;
 	private ColorComp greenTileComp;
 	private ColorComp blueTileComp;
 
 	private TextComp bigPreviewComp;
-	
+
 	private TextComp redValueLabel;
 	private TextComp greenValueLabel;
 	private TextComp blueValueLabel;
@@ -65,7 +66,7 @@ public class ColorPicker extends JDialog{
 	private NoCaretField greenValueField;
 	private NoCaretField blueValueField;
 	private NoCaretField alphaValueField;
-	
+
 	private NoCaretField colorCodeField;
 
 	private TextComp copyHexComp;
@@ -73,7 +74,7 @@ public class ColorPicker extends JDialog{
 	private TextComp closeComp;
 
 	private int alphaValue = 255;
-	
+
 	public ColorPicker(Screen screen){
 		super(screen, false);
 		setTitle("Color Picker");
@@ -99,20 +100,20 @@ public class ColorPicker extends JDialog{
 		titleComp.setClickable(false);
 		titleComp.attachDragger(this);
 		add(titleComp);
-		
+
 		//Creating Color Tiles
 		redTileComp = new ColorComp(Color.RED, 255, this::genPreview);
 		redTileComp.setBounds(10, 40, 20, 256);
 		add(redTileComp);
-		
+
 		greenTileComp = new ColorComp(Color.GREEN, 255, this::genPreview);
 		greenTileComp.setBounds(35, 40, 20, 256);
 		add(greenTileComp);
-		
+
 		blueTileComp = new ColorComp(Color.BLUE, 255, this::genPreview);
 		blueTileComp.setBounds(60, 40, 20, 256);
 		add(blueTileComp);
-		
+
 		bigPreviewComp = new TextComp("", c2, c2, c2, null){
 			@Override
 			public void draw(Graphics2D g){
@@ -242,7 +243,7 @@ public class ColorPicker extends JDialog{
 		colorCodeField.setFont(PX14);
 		colorCodeField.setOnAction(()->{
 			try{
-				initialColor = Color.decode(colorCodeField.getText());
+				color = Color.decode(colorCodeField.getText());
 				pickColor();
 			}
 			catch(Exception e){
@@ -266,7 +267,7 @@ public class ColorPicker extends JDialog{
 		copyRgbComp.setFont(PX14);
 		copyRgbComp.setArc(5, 5);
 		add(copyRgbComp);
-		
+
 		closeComp = new TextComp("Close", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			dispose();
 		});
@@ -279,14 +280,14 @@ public class ColorPicker extends JDialog{
 	public void genPreview(){
 		previewColor = new Color(redTileComp.pointer, greenTileComp.pointer, blueTileComp.pointer, alphaValue);
 		color = previewColor;
-		
+
 		redValueField.setText(redTileComp.pointer + "");
 		greenValueField.setText(greenTileComp.pointer + "");
 		blueValueField.setText(blueTileComp.pointer + "");
 
 		colorCodeField.setText("#" + Integer.toHexString(previewColor.getRGB()).substring(2));
 		colorCodeField.repaint();
-		
+
 		bigPreviewComp.setColors(previewColor, previewColor, previewColor);
 		bigPreviewComp.repaint();
 		titleComp.setColors(c2, c2, previewColor);
@@ -298,14 +299,14 @@ public class ColorPicker extends JDialog{
 		greenTileComp.pointer = color.getGreen();
 		blueTileComp.pointer = color.getBlue();
 		alphaValue = color.getAlpha();
-		
+
 		genPreview();
-		
+
 		redTileComp.repaint();
 		greenTileComp.repaint();
 		blueTileComp.repaint();
 		alphaValueField.repaint();
-		
+
 		setVisible(true);
 	}
 

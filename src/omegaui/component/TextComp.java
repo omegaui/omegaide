@@ -1,6 +1,6 @@
 /**
  * The Base Component for Rendering Text and Images as a button
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2021 - 22 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -175,6 +175,11 @@ public class TextComp extends JComponent{
 		});
 	}
 
+	public TextComp(String text, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
+		this(text, color1, color2, color3, runnable);
+		setToolTipText(toolTip);
+	}
+	
 	public TextComp(BufferedImage image, int width, int height, Color color1, Color color2, Color color3, Runnable runnable){
 		this("", color1, color2, color3, runnable);
 		this.image = image;
@@ -185,10 +190,16 @@ public class TextComp extends JComponent{
 			h = image.getHeight();
 		}
 	}
-
-	public TextComp(String text, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
-		this(text, color1, color2, color3, runnable);
-		setToolTipText(toolTip);
+	
+	public TextComp(BufferedImage image, Color color1, Color color2, Color color3, Runnable runnable){
+		this("", color1, color2, color3, runnable);
+		this.image = image;
+		w = image.getWidth();
+		h = image.getHeight();
+		if(w == 0){
+			w = image.getWidth();
+			h = image.getHeight();
+		}
 	}
 
 	public TextComp(BufferedImage image, int width, int height, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
@@ -196,6 +207,17 @@ public class TextComp extends JComponent{
 		this.image = image;
 		w = width;
 		h = height;
+		if(w == 0){
+			w = image.getWidth();
+			h = image.getHeight();
+		}
+	}
+
+	public TextComp(BufferedImage image, String toolTip, Color color1, Color color2, Color color3, Runnable runnable) {
+		this("", toolTip, color1, color2, color3, runnable);
+		this.image = image;
+		w = image.getWidth();
+		h = image.getHeight();
 		if(w == 0){
 			w = image.getWidth();
 			h = image.getHeight();

@@ -68,7 +68,7 @@ public class Startup extends JDialog {
 				LICENSE_TEXT += reader.nextLine() + "\n";
 			}
 			reader.close();
-			LICENSE_TEXT += "\n**Copyright 2021 Omega UI. All Right Reserved.**\n";
+			LICENSE_TEXT += "\n**Copyright 2022 Omega UI. All Right Reserved.**\n";
 		}
 		catch(Exception e){
 			e.printStackTrace();
