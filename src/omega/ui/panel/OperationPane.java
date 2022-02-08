@@ -1,20 +1,20 @@
 /**
-* OperationPane
-* Copyright (C) 2021 Omega UI
+ * OperationPane
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.panel;
 import omegaui.component.EdgeComp;
@@ -46,15 +46,17 @@ import static omegaui.component.animation.Animations.*;
 public class OperationPane extends JPanel{
 
 	private class ActionBar extends JComponent{
-		
+
 		private EdgeComp labelComp;
+
+		private TextComp closeAllComp;
 		
 		private TextComp collapseComp;
-		
+
 		private TextComp hideComp;
 
 		private volatile boolean collapseMode = false;
-		
+
 		public ActionBar(){
 			setLayout(null);
 			setSize(100, 25);
@@ -70,8 +72,16 @@ public class OperationPane extends JPanel{
 			labelComp.setUseFlatLineAtBack(true);
 			labelComp.setEnabled(false);
 			add(labelComp);
+			
+			closeAllComp = new TextComp("Close All", TOOLMENU_COLOR2_SHADE, TOOLMENU_GRADIENT, glow, ()->{
+				tabPane.closeAllTabs();
+			});
+			closeAllComp.setFont(PX14);
+			closeAllComp.setArc(5, 5);
+			add(closeAllComp);
 
-			collapseComp = new TextComp("Collapse", TOOLMENU_GRADIENT, c2, c3, ()->{
+
+			collapseComp = new TextComp("Collapse", TOOLMENU_COLOR1_SHADE, TOOLMENU_GRADIENT, glow, ()->{
 				collapseMode = !collapseMode;
 				collapseComp.setText(collapseMode ? "Expand" : "Collapse");
 				resizeDivider();
@@ -80,7 +90,7 @@ public class OperationPane extends JPanel{
 			collapseComp.setArc(5, 5);
 			add(collapseComp);
 
-			hideComp = new TextComp("Hide", TOOLMENU_GRADIENT, c2, c3, this::hide);
+			hideComp = new TextComp("Hide", TOOLMENU_COLOR4_SHADE, TOOLMENU_GRADIENT, glow, this::hide);
 			hideComp.setFont(PX14);
 			hideComp.setArc(5, 5);
 			add(hideComp);
@@ -100,30 +110,31 @@ public class OperationPane extends JPanel{
 		}
 
 		public void computeBounds(){
-			collapseComp.setBounds(getWidth() - 160, 25/2 - 20/2, 80, 20);
+			closeAllComp.setBounds(getWidth() - 240 - 4, 25/2 - 20/2, 80, 20);
+			collapseComp.setBounds(getWidth() - 160 - 2, 25/2 - 20/2, 80, 20);
 			hideComp.setBounds(getWidth() - 80, 25/2 - 20/2, 80, 20);
 			resizeDivider();
 		}
 	}
-	
+
 	private Screen screen;
-	
+
 	private ActionBar actionBar;
-	
+
 	private static TabPanel tabPane;
-	
+
 	private static final String TITLE = "Process Panel";
 	private static final String HINT = "There is no process running";
-	
+
 	public OperationPane(Screen screen) {
 		this.screen = screen;
 		setLayout(new BorderLayout());
 
 		actionBar = new ActionBar();
 		add(actionBar, BorderLayout.NORTH);
-		
+
 		tabPane = new TabPanel(TabPanel.TAB_LOCATION_TOP);
-		
+
 		setVisible(false);
 		UIManager.setData(this);
 
@@ -133,12 +144,12 @@ public class OperationPane extends JPanel{
 				add(tabPane, BorderLayout.CENTER);
 				setVisible(true);
 			}
-			
+
 			@Override
 			public void tabRemoved(TabData tabData){
-				
+
 			}
-			
+
 			@Override
 			public void goneEmpty(TabPanel panel){
 				remove(tabPane);
@@ -147,15 +158,15 @@ public class OperationPane extends JPanel{
 
 			@Override
 			public void tabActivated(TabData tabData){
-					
+
 			}
 		});
 	}
-	
+
 	public void addTab(String name, BufferedImage image, JComponent c, Runnable r) {
 		tabPane.addTab(name, name, "", image, c, r);
 	}
-	
+
 	public void addTab(String name, BufferedImage image, JComponent c, Runnable r, OPopupWindow popup) {
 		tabPane.addTab(name, name, "", image, c, r, popup);
 	}
@@ -163,7 +174,7 @@ public class OperationPane extends JPanel{
 	public TabData getTabData(JComponent comp){
 		return tabPane.getTabData(comp);
 	}
-	
+
 	public static int count(String name) {
 		int c = -1;
 		for(TabData tx : tabPane.getTabs()){
@@ -180,17 +191,17 @@ public class OperationPane extends JPanel{
 		if(isVisible())
 			actionBar.computeBounds();
 	}
-	
+
 	@Override
 	public void setVisible(boolean value) {
 		if(tabPane.isEmpty() || !value){
 			super.setVisible(false);
 			return;
 		}
-		
+
 		super.setVisible(true);
-		
-		try{			
+
+		try{
 			if(true) {
 				setPreferredSize(new Dimension(screen.getWidth(), getHeight() > 450 ? getHeight() : 450));
 				int y = screen.getHeight() - 400;
@@ -198,14 +209,14 @@ public class OperationPane extends JPanel{
 			}
 		}
 		catch(Exception e) {
-			
+
 		}
 	}
-	
+
 	public void removeTab(String name) {
 		tabPane.removeTab(tabPane.getTab(name));
 	}
-	
+
 	@Override
 	public void paint(Graphics graphics){
 		if(tabPane.isEmpty()){
@@ -225,6 +236,6 @@ public class OperationPane extends JPanel{
 		else
 			super.paint(graphics);
 	}
-	
+
 }
 
