@@ -60,7 +60,7 @@ public class Animations {
 	}
 	
 	public static void putAnimationLayer(TextComp comp, AnimationLayer layer, int action){
-		if(!isActionApplicable(action))
+		if(!isActionApplicable(action) || !isAnimationsOn())
 			return;
 		prepareTextComp(comp);
 		if(action == ACTION_MOUSE_ENTERED){
@@ -154,8 +154,6 @@ public class Animations {
 
 				if(!comp.enter)
 					comp.repaint();
-				
-				System.gc();
 			}).start();
 		};
 	}
@@ -217,8 +215,6 @@ public class Animations {
 				
 				if(!comp.enter)
 					comp.repaint();
-
-				System.gc();
 			}).start();
 		};
 	}
@@ -263,8 +259,6 @@ public class Animations {
 					
 					if(!comp.enter)
 						comp.repaint();
-					
-					System.gc();
 				}).start();
 			}
 		};
@@ -306,8 +300,6 @@ public class Animations {
 				
 				if(!comp.enter)
 					comp.repaint();
-				
-				System.gc();
 			}).start();
 		};
 	}

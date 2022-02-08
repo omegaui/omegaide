@@ -23,6 +23,8 @@ public abstract class ImageSizeTransitionAnimationLayer implements AnimationLaye
 	}
 
 	public synchronized void prepareImages(TextComp comp, int distance, boolean useClear){
+		if(!Animations.isAnimationsOn())
+			return;
 		Color tempColor = comp.color2;
 		if(tempColor == color && image == comp.image)
 			return;
@@ -60,6 +62,8 @@ public abstract class ImageSizeTransitionAnimationLayer implements AnimationLaye
 	
 	@Override
 	public void animate(TextComp comp){
+		if(!Animations.isAnimationsOn())
+			return;
 	}
 	
 }
