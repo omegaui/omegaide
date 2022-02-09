@@ -310,6 +310,22 @@ public class ColorPicker extends JDialog{
 		setVisible(true);
 	}
 
+	public void pickColor(Color color){
+		redTileComp.pointer = color.getRed();
+		greenTileComp.pointer = color.getGreen();
+		blueTileComp.pointer = color.getBlue();
+		alphaValue = color.getAlpha();
+
+		genPreview();
+
+		redTileComp.repaint();
+		greenTileComp.repaint();
+		blueTileComp.repaint();
+		alphaValueField.repaint();
+
+		setVisible(true);
+	}
+
 	private class ColorComp extends JComponent {
 		int pointer;
 		Color color;

@@ -1,20 +1,20 @@
 /**
-* The IDE 's Key Input Listener
-* Copyright (C) 2021 Omega UI
+ * The IDE 's Key Input Listener
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see http://www.gnu.org/licenses/.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
 
 package omegaui.listener;
 import java.awt.Component;
@@ -44,7 +44,7 @@ public class KeyStrokeListener implements KeyListener{
 	}
 
 	public KeyStrokeData putKeyStroke(KeyStrokeDataListener listener, int... key){
-		var stroke = new KeyStrokeData(listener, key);
+		KeyStrokeData stroke = new KeyStrokeData(listener, key);
 		keyStrokes.add(stroke);
 		return stroke;
 	}
@@ -65,12 +65,12 @@ public class KeyStrokeListener implements KeyListener{
 		}
 		return new Key(key);
 	}
-	
+
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		synchronized(c){
@@ -78,7 +78,7 @@ public class KeyStrokeListener implements KeyListener{
 			keyStrokes.forEach(keyStrokeData->keyStrokeData.stroke(e));
 		}
 	}
-	
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		synchronized(c){
@@ -161,26 +161,26 @@ public class KeyStrokeListener implements KeyListener{
 			return (strokeKeysLength == this.keys.size()) && stopKeysLength == 0;
 		}
 	}
-	
+
 	public class Key {
 		public int key;
 		public volatile boolean pressed = false;
-		
+
 		public Key(int key){
 			this.key = key;
 			offerKey(this);
 		}
-		
+
 		public void checkPressed(int key, boolean pressed){
 			if(this.key == key){
 				setPressed(pressed);
 			}
 		}
-		
+
 		public void setPressed(boolean pressed){
 			this.pressed = pressed;
 		}
-		
+
 		public boolean isPressed(){
 			return pressed;
 		}

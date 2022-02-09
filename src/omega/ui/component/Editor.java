@@ -1,6 +1,6 @@
-/**
+/*
  * The IDE 's Default Text Editor
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,13 @@
  */
 
 package omega.ui.component;
+import java.util.LinkedList;
+
 import omega.ui.window.EditorPreviewWindow;
 
 import omega.ui.panel.AbstractPreviewPanel;
 import omega.ui.panel.PreviewPanels;
+import omega.ui.panel.ColorPreview;
 
 import omega.instant.support.java.generator.Generator;
 
@@ -42,6 +45,7 @@ import omega.io.SnippetBase;
 import omega.io.UIManager;
 import omega.io.BookmarksManager;
 import omega.io.IconManager;
+import omega.io.EditorAddon;
 
 import omega.instant.support.java.misc.JavaJumpToDefinitionPanel;
 import omega.instant.support.java.misc.JavaCodeNavigator;
@@ -162,6 +166,23 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 	}
 
+	public static LinkedList<EditorAddon> editorAddons = new LinkedList<>();
+	static{
+		addAddon(new ColorPreview());
+	}
+
+	public static void addAddon(EditorAddon addon){
+		editorAddons.add(addon);
+	}
+	
+	public static void removeAddon(EditorAddon addon){
+		editorAddons.remove(addon);
+	}
+
+	public static void installAllAddons(Editor editor){
+		editorAddons.forEach(addon->addon.install(editor));
+	}
+
 	public Editor(Screen screen) {
 		Editor.screen = screen;
 		
@@ -190,6 +211,8 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 		javaErrorPanel = new JavaErrorPanel(this);
 		add(javaErrorPanel);
+
+		installAllAddons(this);
 	}
 
 	private void initView() {
