@@ -1,22 +1,24 @@
-/**
-* TabComp
-* Copyright (C) 2021 Omega UI
+/*
+ * TabComp
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.component;
+import omegaui.listener.KeyStrokeListener;
+
 import java.io.File;
 
 import omega.Screen;
@@ -44,6 +46,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static java.awt.event.KeyEvent.*;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class TabComp extends JComponent implements FocusListener{
@@ -58,37 +61,54 @@ public class TabComp extends JComponent implements FocusListener{
 
 	public volatile boolean focussed = false;
 	public volatile boolean inList = false;
-	
+
 	public TabComp(TabPanel tabPanel, TabData tabData, Runnable removeAction){
 		this.tabData = tabData;
 		this.tabPanel = tabPanel;
 		this.removeAction = removeAction;
-		
+
 		setSize(27 + computeWidth(tabData.getName(), UBUNTU_PX14) + 4 + 18, tabHeight);
 		setBackground(back1);
 
 		registerListeners();
-		
+
 		init();
 	}
 
 	public void registerListeners(){
+		KeyStrokeListener keyStrokelistener = new KeyStrokeListener(this);
+		keyStrokelistener.putKeyStroke((e)->showTab(0), VK_ALT, VK_1).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(1), VK_ALT, VK_2).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(2), VK_ALT, VK_3).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(3), VK_ALT, VK_4).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(4), VK_ALT, VK_5).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(5), VK_ALT, VK_6).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(6), VK_ALT, VK_7).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(7), VK_ALT, VK_8).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showTab(8), VK_ALT, VK_9).useAutoReset();
+		addKeyListener(keyStrokelistener);
+		
 		tabData.getComponent().addFocusListener(this);
+		tabData.getComponent().addKeyListener(keyStrokelistener);
 
 		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
 			scrollPane.getViewport().getView().addFocusListener(this);
+			scrollPane.getViewport().getView().addKeyListener(keyStrokelistener);
 		}
 
 		else if(tabData.getComponent() instanceof JScrollPane scrollPane){
 			scrollPane.getViewport().getView().addFocusListener(this);
+			scrollPane.getViewport().getView().addKeyListener(keyStrokelistener);
 		}
-		
+
 		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
 			runPanel.terminalPanel.addFocusListener(this);
+			runPanel.terminalPanel.addKeyListener(keyStrokelistener);
 		}
-		
+
 		else if(tabData.getComponent() instanceof RunPanel runPanel){
 			runPanel.runTextArea.addFocusListener(this);
+			runPanel.runTextArea.addKeyListener(keyStrokelistener);
 		}
 
 		addMouseListener(new MouseAdapter(){
@@ -105,7 +125,7 @@ public class TabComp extends JComponent implements FocusListener{
 		iconComp.setArc(0, 0);
 		iconComp.setShowHandCursorOnMouseHover(true);
 		add(iconComp);
-		
+
 		if(tabData.getPopup() != null){
 			tabData.getPopup().invokeOnMouseLeftPress(iconComp, ()->{});
 			putAnimationLayer(iconComp, getImageSizeAnimationLayer(20, 5, true), ACTION_MOUSE_ENTERED);
@@ -128,16 +148,23 @@ public class TabComp extends JComponent implements FocusListener{
 		setPreferredSize(getSize());
 	}
 
+	public void showTab(int index){
+		TabData tabData = tabPanel.getTabDataAt(index);
+		if(tabData == null)
+			return;
+		tabData.getTabComp().showTab();
+	}
+
 	public void showTab(){
 		tabPanel.setActiveTab(tabData);
 		tabData.getComponent().grabFocus();
-		
+
 		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
 			try{
 				((JComponent)scrollPane.getViewport().getView()).grabFocus();
 			}
 			catch(Exception e){
-				
+
 			}
 		}
 
@@ -146,14 +173,14 @@ public class TabComp extends JComponent implements FocusListener{
 				((JComponent)scrollPane.getViewport().getView()).grabFocus();
 			}
 			catch(Exception e){
-				
+
 			}
 		}
-		
+
 		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
 			runPanel.terminalPanel.grabFocus();
 		}
-		
+
 		else if(tabData.getComponent() instanceof RunPanel runPanel){
 			runPanel.runTextArea.grabFocus();
 		}
@@ -196,7 +223,7 @@ public class TabComp extends JComponent implements FocusListener{
 		focussed = true;
 
 		String path = Screen.getProjectFile().getProjectPath() + File.separator;
-		
+
 		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
 			if(scrollPane.getViewport().getView() instanceof Editor){
 				path = ((Editor)scrollPane.getViewport().getView()).currentFile.getPath();
@@ -206,7 +233,7 @@ public class TabComp extends JComponent implements FocusListener{
 		else {
 			path += tabData.getName();
 		}
-		
+
 		ToolMenu.pathBox.setPath(path);
 		repaint();
 	}
@@ -214,7 +241,7 @@ public class TabComp extends JComponent implements FocusListener{
 	public boolean isInList() {
 		return inList;
 	}
-	
+
 	public void setInList(boolean inList) {
 		this.inList = inList;
 	}
@@ -222,6 +249,6 @@ public class TabComp extends JComponent implements FocusListener{
 	public TabData getTabData() {
 		return tabData;
 	}
-	
-	
+
+
 }
