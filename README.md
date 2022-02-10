@@ -34,7 +34,9 @@
 # Written from Scratch
 Omega IDE has integrated support for the **java** programming language at its heart.
 
-What makes Omega IDE a unique Java IDE is that it can build huge java projects **instantly**.
+## What makes Omega IDE a unique Java IDE among others?
+
+omegaide can build huge java projects **instantly** 😎, provided that the project doesn't uses any build system like gradle, etc.
 
 Don't believe me? Try it yourself 
 
@@ -70,14 +72,18 @@ By Using Omega IDE you can avoid
 
 - Installing Different IDEs that **cannot** perform well on your PC.
 
+- Filling up your System with huge number of IDEs.
+
 - Switching through different terminal windows and the text editor to compile, spot the error, correct it and again go back, 
-recompile and .... to be continued.
+recompile and .... to be continued 😑.
 
 and can
 
 - Just Build your project by pressing the shortcut.
 
 # How it is different from VS Code, Atom, etc?
+- omegaide is totally a **portable application** with a **tiny core**.
+
 - omegaide provides in-editor key bindings to build and run projects that utilize custom build and run scripts.
 
 - Not only this, whenever you run your build script it highlights any error in the editor itself which comes so that
