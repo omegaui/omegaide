@@ -17,6 +17,8 @@
  */
 
 package omega;
+import omegaui.listener.KeyStrokeListener;
+
 import javax.swing.filechooser.FileView;
 
 import java.util.LinkedList;
@@ -78,6 +80,8 @@ import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 
 import omega.ui.component.ToolMenu;
 import omega.ui.component.TerminalComp;
@@ -101,6 +105,8 @@ import javax.swing.JSplitPane;
 
 import static java.awt.event.KeyEvent.*;
 public class Screen extends JFrame {
+
+	public KeyStrokeListener ideWideKeyListener;
 	
 	public SplitPanel splitPane;
 	public SplitPanel compilancePane;
@@ -222,7 +228,129 @@ public class Screen extends JFrame {
 		});
 
 		splash.setProgress(60, "initializing");
+
+		ideWideKeyListener = new KeyStrokeListener(this);
+		
+		KeyEventDispatcher dispatcher = new KeyEventDispatcher(){
+			@Override
+	        public boolean dispatchKeyEvent(KeyEvent e) {
+	        	if (e.getID() == KeyEvent.KEY_PRESSED) {
+                	ideWideKeyListener.keyPressed(e);
+	            } 
+	            else if (e.getID() == KeyEvent.KEY_RELEASED) {
+	                ideWideKeyListener.keyReleased(e);
+	            }
+	            else if (e.getID() == KeyEvent.KEY_TYPED) {
+	                ideWideKeyListener.keyTyped(e);
+	            }
+	            return false;
+	        }
+		};
+		
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(dispatcher);
+		
+		initKeyStrokes();
 		init();
+	}
+
+	public void initKeyStrokes(){
+		ideWideKeyListener.putKeyStroke((e)->showFileWizard(e), VK_CONTROL, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->triggerBuild(e), VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
+		ideWideKeyListener.putKeyStroke((e)->triggerRun(e), VK_CONTROL, VK_SHIFT, VK_R);
+		ideWideKeyListener.putKeyStroke((e)->triggerInstantRun(e), VK_CONTROL, VK_SHIFT, VK_F1);
+		ideWideKeyListener.putKeyStroke((e)->showSearchDialog(e), VK_CONTROL, VK_SHIFT, VK_P).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->ToolMenu.recentsDialog.setVisible(true), VK_CONTROL, VK_SHIFT, VK_M).setStopKeys(VK_ALT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showOpenProjectDialog(e), VK_CONTROL, VK_O).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showOpenFileDialog(e), VK_CONTROL, VK_SHIFT, VK_O).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showNewProjectDialog(e), VK_CONTROL, VK_N).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showNewUniversalProjectDialog(e), VK_CONTROL, VK_SHIFT, VK_N).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showNewTerminal(e), VK_ALT, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->toggleProcessPanel(e), VK_ALT, VK_P).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->refreshFileTree(e), VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
+	}
+
+	public void showFileWizard(KeyEvent e){
+		projectFile.getFileCreator().show("Custom File");
+		e.consume();
+	}
+	
+	public void triggerBuild(KeyEvent e){
+		if(toolMenu.buildComp.isClickable()){
+			if(GradleProcessManager.isGradleProject())
+				GradleProcessManager.build();
+			else
+				projectBuilder.compileProject();
+
+			e.consume();
+		}
+	}
+
+	public void triggerRun(KeyEvent e){
+		if(toolMenu.buildComp.isClickable()){
+			if(GradleProcessManager.isGradleProject())
+				GradleProcessManager.run();
+			else
+				projectRunner.run();
+
+			e.consume();
+		}
+	}
+
+	public void triggerInstantRun(KeyEvent e){
+		if(toolMenu.buildComp.isClickable()){
+			projectRunner.instantRun();
+
+			e.consume();
+		}
+	}
+
+	public void showSearchDialog(KeyEvent e){
+		projectFile.getSearchWindow().setVisible(true);
+
+		e.consume();
+	}
+
+	public void showOpenProjectDialog(KeyEvent e){
+		projectFile.open("Project");
+
+		e.consume();
+	}
+
+	public void showOpenFileDialog(KeyEvent e){
+		projectFile.open("File");
+
+		e.consume();
+	}
+
+	public void showNewProjectDialog(KeyEvent e){
+		ToolMenu.javaProjectWizard.setVisible(true);
+
+		e.consume();
+	}
+
+	public void showNewUniversalProjectDialog(KeyEvent e){
+		ToolMenu.universalProjectWizard.setVisible(true);
+
+		e.consume();
+	}
+	
+	public void showNewTerminal(KeyEvent e){
+		terminal.showJetTerminal();
+
+		e.consume();
+	}
+
+	public void toggleProcessPanel(KeyEvent e){
+		operationPane.setVisible(!operationPane.isVisible());
+
+		e.consume();
+	}
+	
+	public void refreshFileTree(KeyEvent e){
+		projectFile.getFileTreePanel().refresh();
+
+		e.consume();
 	}
 
 	private void init() {
@@ -324,42 +452,6 @@ public class Screen extends JFrame {
 
 		splitPane.setLeftComponent(c);
 		c.setVisible(true);
-	}
-
-	public void triggerBuild(KeyEvent e){
-		if(toolMenu.buildComp.isClickable()){
-			if(GradleProcessManager.isGradleProject())
-				GradleProcessManager.build();
-			else
-				projectBuilder.compileProject();
-
-			e.consume();
-		}
-	}
-
-	public void triggerRun(KeyEvent e){
-		if(toolMenu.buildComp.isClickable()){
-			if(GradleProcessManager.isGradleProject())
-				GradleProcessManager.run();
-			else
-				projectRunner.run();
-
-			e.consume();
-		}
-	}
-
-	public void triggerInstantRun(KeyEvent e){
-		if(toolMenu.buildComp.isClickable()){
-			projectRunner.instantRun();
-
-			e.consume();
-		}
-	}
-
-	public void showSearchDialog(KeyEvent e){
-		projectFile.getSearchWindow().setVisible(true);
-
-		e.consume();
 	}
 
 	public void toggleLeftComponent(Component c){
@@ -840,7 +932,8 @@ public class Screen extends JFrame {
 		return text != null && !text.isBlank();
 	}
 
-	public static void main(String[] args){
-		new Screen();
+	public KeyStrokeListener getIdeWideKeyListener() {
+		return ideWideKeyListener;
 	}
+	
 }

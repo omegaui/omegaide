@@ -80,7 +80,6 @@ public class OperationPane extends JPanel{
 			closeAllComp.setArc(5, 5);
 			add(closeAllComp);
 
-
 			collapseComp = new TextComp("Collapse", TOOLMENU_COLOR1_SHADE, TOOLMENU_GRADIENT, glow, ()->{
 				collapseMode = !collapseMode;
 				collapseComp.setText(collapseMode ? "Expand" : "Collapse");

@@ -89,8 +89,8 @@ public class TabComp extends JComponent implements FocusListener{
 		keyStrokelistener.putKeyStroke((e)->showTab(6), VK_ALT, VK_7).useAutoReset();
 		keyStrokelistener.putKeyStroke((e)->showTab(7), VK_ALT, VK_8).useAutoReset();
 		keyStrokelistener.putKeyStroke((e)->showTab(8), VK_ALT, VK_9).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showNextTab(e), VK_F2).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showPreviousTab(e), VK_F1).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showNextTab(e), VK_F10).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showPreviousTab(e), VK_F9).useAutoReset();
 		addKeyListener(keyStrokelistener);
 		
 		tabData.getComponent().addFocusListener(this);

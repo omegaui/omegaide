@@ -270,18 +270,12 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_PLUS);
 		keyStrokeListener.putKeyStroke((e)->decreaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_MINUS);
 
-		keyStrokeListener.putKeyStroke((e)->showFileWizard(e), VK_CONTROL, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
-		keyStrokeListener.putKeyStroke((e)->triggerBuild(e), VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
-		keyStrokeListener.putKeyStroke((e)->triggerRun(e), VK_CONTROL, VK_SHIFT, VK_R);
-		keyStrokeListener.putKeyStroke((e)->triggerInstantRun(e), VK_CONTROL, VK_SHIFT, VK_F1);
 		keyStrokeListener.putKeyStroke((e)->launchCurrentFile(e), VK_CONTROL, VK_SHIFT, VK_L);
 		keyStrokeListener.putKeyStroke((e)->triggerJavaCommentMarker(e), VK_CONTROL, VK_SHIFT, VK_SLASH);
 		keyStrokeListener.putKeyStroke((e)->saveImage(), VK_CONTROL, VK_SHIFT, VK_C);
-		keyStrokeListener.putKeyStroke((e)->showSearchDialog(e), VK_CONTROL, VK_SHIFT, VK_P);
 		keyStrokeListener.putKeyStroke((e)->triggerSnippets(e), VK_TAB).setStopKeys(VK_CONTROL, VK_ALT, VK_WINDOWS);
 		keyStrokeListener.putKeyStroke((e)->autoIndent(e), VK_CONTROL, VK_I).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->triggerJumpToDefinition(e), VK_CONTROL, VK_J).setStopKeys(VK_ALT, VK_SHIFT);
-		keyStrokeListener.putKeyStroke((e)->ToolMenu.recentsDialog.setVisible(true), VK_CONTROL, VK_SHIFT, VK_M).setStopKeys(VK_ALT);
 		keyStrokeListener.putKeyStroke((e)->triggerPreview(e), VK_CONTROL, VK_P).setStopKeys(VK_SHIFT);
 	}
 
@@ -749,47 +743,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 			e.consume();
 		}
-	}
-
-	public void showFileWizard(KeyEvent e){
-		Screen.getProjectFile().getFileCreator().show("Custom File");
-		e.consume();
-	}
-
-	public void triggerBuild(KeyEvent e){
-		if(screen.getToolMenu().buildComp.isClickable()){
-			if(GradleProcessManager.isGradleProject())
-				GradleProcessManager.build();
-			else
-				Screen.getProjectBuilder().compileProject();
-
-			e.consume();
-		}
-	}
-
-	public void triggerRun(KeyEvent e){
-		if(screen.getToolMenu().buildComp.isClickable()){
-			if(GradleProcessManager.isGradleProject())
-				GradleProcessManager.run();
-			else
-				Screen.getProjectRunner().run();
-
-			e.consume();
-		}
-	}
-
-	public void triggerInstantRun(KeyEvent e){
-		if(screen.getToolMenu().buildComp.isClickable()){
-			Screen.getProjectRunner().instantRun();
-
-			e.consume();
-		}
-	}
-
-	public void showSearchDialog(KeyEvent e){
-		Screen.getProjectFile().getSearchWindow().setVisible(true);
-
-		e.consume();
 	}
 
 	public void triggerSnippets(KeyEvent e){
