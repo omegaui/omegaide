@@ -117,10 +117,13 @@ public class JetTerminal extends JPanel{
 				envs.put(x, envsX.get(x));
 			}
 			
-			if(!Screen.onWindows())
+			if(!Screen.onWindows()){
 				envs.put("TERM", "xterm");
-			
-			process = PtyProcess.exec(command, envs, directory);
+				process = PtyProcess.exec(command, envs, directory);
+			}
+			else{
+				process = PtyProcess.exec(command, envs, directory, true);
+			}
 			return new PtyProcessTtyConnector(process, Charset.forName("UTF-8"));
 		}
 		catch(Exception e){
