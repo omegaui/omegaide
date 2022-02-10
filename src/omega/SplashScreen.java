@@ -1,20 +1,20 @@
-/**
-* SplashScreen
-* Copyright (C) 2021 Omega UI
+/*
+ * SplashScreen
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package omega;
 import omega.io.IconManager;
 
@@ -44,60 +44,60 @@ import static omega.Screen.VERSION;
 import static omega.io.UIManager.*;
 
 public class SplashScreen extends JFrame{
-	
+
 	private static final String NAME = "Omega IDE";
 	private static final String EDITION = "community";
-	
+
 	private static String ENCOURAGE = "lets code";
-	
+
 	private static Color BACK_COLOR;
 	private static Color TITLE_COLOR;
 	private static Color VERSION_COLOR;
 	private static Color EDITION_COLOR;
 	private static Color PROGRESS_COLOR;
 	private static Color SHADE = TOOLMENU_GRADIENT;
-	
+
 	private static GradientPaint gradient = new GradientPaint(0, 0, c2, 300, 300, SHADE);
 	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
 	private static GradientPaint gradient2 = new GradientPaint(100, 150, isDarkMode() ? TOOLMENU_COLOR3 : TOOLMENU_COLOR1, 300, 300, TOOLMENU_COLOR4);
-	
+
 	private static BufferedImage image = (BufferedImage)omega.io.IconManager.getImageIcon("/omega_ide_icon128.png").getImage();
-	
+
 	private volatile int progress = 0;
-	
+
 	private int x = 40;
 	private int y = 163;
-	
+
 	private volatile boolean ground = false;
-	
+
 	private int mouseX;
 	private int mouseY;
-	
+
 	public SplashScreen() {
 		BACK_COLOR = c2;
 		TITLE_COLOR = TOOLMENU_COLOR1;
 		VERSION_COLOR = TOOLMENU_COLOR3;
 		EDITION_COLOR = TOOLMENU_COLOR3;
 		PROGRESS_COLOR = TOOLMENU_COLOR2;
-		
+
 		setUndecorated(true);
 		pack();
-		
+
 		createBufferStrategy(3);
-		
+
 		setSize(300, 300);
 		setLocationRelativeTo(null);
 		setBackground(BACK_COLOR);
 		setResizable(false);
 		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 100, 100));
-		
+
 		try{
 			setIconImage(ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent e){
@@ -118,7 +118,7 @@ public class SplashScreen extends JFrame{
 				System.exit(0);
 			}
 		});
-		
+
 		setVisible(true);
 		new Thread(()->{
 			long lastTime = System.nanoTime();
@@ -132,10 +132,10 @@ public class SplashScreen extends JFrame{
 				lastTime = now;
 				if(delta >= 1){
 					render();
-					
+
 					delta--;
 				}
-	
+
 				if(System.currentTimeMillis() - timer > 1000){
 					timer += 1000;
 				}
@@ -149,7 +149,7 @@ public class SplashScreen extends JFrame{
 			createBufferStrategy(3);
 			return;
 		}
-		
+
 		Graphics graphics = null;
 		try{
 			graphics = bs.getDrawGraphics();
@@ -157,7 +157,7 @@ public class SplashScreen extends JFrame{
 		catch(Exception e){
 			return;
 		}
-		
+
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -182,35 +182,35 @@ public class SplashScreen extends JFrame{
 		g.setColor(PROGRESS_COLOR);
 
 		if(Animations.isAnimationsOn()){
-			if(x == 30) 
+			if(x == 30)
 				ground = false;
-			else if(x == 68) 
+			else if(x == 68)
 				ground = true;
-			
-			if(ground) 
+
+			if(ground)
 				x--;
 			else
 				x++;
 		}
-		
+
 		int[] X = {x, x - 15, x, x - 5, x};
 		int[] Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(X, Y, X.length);
 		int[] _X = {getWidth() - x - 1, getWidth() - x - 15 - 1 + 20, getWidth() - x - 1, getWidth() - x + 15 - 1, getWidth() - x - 1};
 		int[] _Y = {y, y + 15, y + 30, y + 15, y};
 		g.fillPolygon(_X, _Y, X.length);
-			
+
 		g.setColor(BACK_COLOR);
 		g.drawImage(image, getWidth()/2 - 64, 20, 128, 128, null);
 		bs.show();
 		g.dispose();
 	}
-	
+
 	@Override
 	public void paint(Graphics graphics){
-		
+
 	}
-	
+
 	public void setProgress(int progress, String status){
 		this.progress = progress;
 		if(progress < 85)

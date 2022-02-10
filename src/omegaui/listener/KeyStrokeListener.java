@@ -86,6 +86,13 @@ public class KeyStrokeListener implements KeyListener{
 		}
 	}
 
+	public synchronized final KeyStrokeListener clone(){
+		KeyStrokeListener listener = new KeyStrokeListener(c);
+		listener.keys.addAll(keys);
+		listener.keyStrokes.addAll(keyStrokes);
+		return listener;
+	}
+
 	public interface KeyStrokeDataListener {
 		void listen(KeyEvent e);
 	}

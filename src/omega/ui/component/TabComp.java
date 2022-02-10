@@ -45,6 +45,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 
 import static java.awt.event.KeyEvent.*;
 import static omega.io.UIManager.*;
@@ -61,6 +62,8 @@ public class TabComp extends JComponent implements FocusListener{
 
 	public volatile boolean focussed = false;
 	public volatile boolean inList = false;
+
+	public static int tabIndex = 0;
 
 	public TabComp(TabPanel tabPanel, TabData tabData, Runnable removeAction){
 		this.tabData = tabData;
@@ -86,6 +89,8 @@ public class TabComp extends JComponent implements FocusListener{
 		keyStrokelistener.putKeyStroke((e)->showTab(6), VK_ALT, VK_7).useAutoReset();
 		keyStrokelistener.putKeyStroke((e)->showTab(7), VK_ALT, VK_8).useAutoReset();
 		keyStrokelistener.putKeyStroke((e)->showTab(8), VK_ALT, VK_9).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showNextTab(e), VK_F2).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showPreviousTab(e), VK_F1).useAutoReset();
 		addKeyListener(keyStrokelistener);
 		
 		tabData.getComponent().addFocusListener(this);
@@ -146,6 +151,24 @@ public class TabComp extends JComponent implements FocusListener{
 
 		setSize(iconComp.getWidth() + nameComp.getWidth() + 2 + iconComp.getWidth(), tabHeight);
 		setPreferredSize(getSize());
+	}
+
+	public void showNextTab(KeyEvent e){
+		tabIndex++;
+		if(tabIndex >= tabPanel.getTabs().size()){
+			tabIndex = 0;
+		}
+		showTab(tabIndex);
+		e.consume();
+	}
+
+	public void showPreviousTab(KeyEvent e){
+		tabIndex--;
+		if(tabIndex < 0){
+			tabIndex = tabPanel.getTabs().size() - 1;
+		}
+		showTab(tabIndex);
+		e.consume();
 	}
 
 	public void showTab(int index){
