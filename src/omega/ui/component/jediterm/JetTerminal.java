@@ -92,7 +92,7 @@ public class JetTerminal extends JPanel{
 			widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
 		else
 			widget.setTtyConnector(getConnector(command));
-
+		
 		add(widget);
 	}
 

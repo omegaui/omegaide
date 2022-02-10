@@ -57,8 +57,12 @@ public class JetTermSettingsProvider extends DefaultSettingsProvider{
 
 		colorPalatte = new ColorPalette(){
 			@Override
-			public Color[] getIndexColors(){
-				return colors;
+			public Color getBackgroundByColorIndex(int index){
+				return colors[index];
+			}
+			@Override
+			public Color getForegroundByColorIndex(int index){
+				return colors[index];
 			}
 		};
 	}
