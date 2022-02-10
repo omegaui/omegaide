@@ -115,9 +115,11 @@ import java.nio.charset.StandardCharsets;
 
 import static omega.instant.support.java.assist.Assembly.*;
 import static java.awt.event.KeyEvent.*;
+
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, MouseMotionListener, SearchListener, FocusListener {
 	private static Screen screen;
 	private static Theme theme;
+	
 	private static String currentTheme = "light";
 
 	private RTextScrollPane scrollPane;
@@ -268,6 +270,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		keyStrokeListener.putKeyStroke((e)->increaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_PLUS);
 		keyStrokeListener.putKeyStroke((e)->decreaseTabSize(e), VK_CONTROL, VK_SHIFT, VK_T, VK_MINUS);
 
+		keyStrokeListener.putKeyStroke((e)->showFileWizard(e), VK_CONTROL, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
 		keyStrokeListener.putKeyStroke((e)->triggerBuild(e), VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
 		keyStrokeListener.putKeyStroke((e)->triggerRun(e), VK_CONTROL, VK_SHIFT, VK_R);
 		keyStrokeListener.putKeyStroke((e)->triggerInstantRun(e), VK_CONTROL, VK_SHIFT, VK_F1);
@@ -746,6 +749,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 			e.consume();
 		}
+	}
+
+	public void showFileWizard(KeyEvent e){
+		Screen.getProjectFile().getFileCreator().show("Custom File");
+		e.consume();
 	}
 
 	public void triggerBuild(KeyEvent e){
