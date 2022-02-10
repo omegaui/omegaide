@@ -118,7 +118,7 @@ public class JetTerminal extends JPanel{
 			}
 
 			if(!Screen.onWindows()){
-				envs.put("TERM", "xterm");
+				envs.put("TERM", "xterm-256color");
 				process = PtyProcess.exec(command, envs, directory);
 			}
 			else{
