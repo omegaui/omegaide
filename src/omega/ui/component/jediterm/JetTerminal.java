@@ -30,6 +30,7 @@ import java.nio.charset.Charset;
 import com.jediterm.pty.PtyProcessTtyConnector;
 
 import com.pty4j.PtyProcess;
+import com.pty4j.PtyProcessBuilder;
 
 import com.jediterm.terminal.TtyConnector;
 
@@ -113,17 +114,19 @@ public class JetTerminal extends JPanel{
 
 			Map<String, String> envsX = System.getenv();
 			HashMap<String, String> envs = new HashMap<>();
-			for(String x : envsX.keySet()){
+			for(String x : envsX.keySet())
 				envs.put(x, envsX.get(x));
-			}
 
-			if(!Screen.onWindows()){
+			if(!Screen.onWindows())
 				envs.put("TERM", "xterm-256color");
-				process = PtyProcess.exec(command, envs, directory);
-			}
-			else{
-				process = PtyProcess.exec(command, envs, directory, true);
-			}
+			
+			process = new PtyProcessBuilder()
+	            .setCommand(command)
+	            .setEnvironment(envs)
+	            .setDirectory(directory)
+	            .setConsole(false)
+	            .setUseWinConPty(true)
+	            .start();
 			return new PtyProcessTtyConnector(process, Charset.forName("UTF-8"));
 		}
 		catch(Exception e){

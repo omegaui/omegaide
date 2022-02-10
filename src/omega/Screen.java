@@ -262,7 +262,7 @@ public class Screen extends JFrame {
 		ideWideKeyListener.putKeyStroke((e)->showSearchDialog(e), VK_CONTROL, VK_SHIFT, VK_P).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->ToolMenu.recentsDialog.setVisible(true), VK_CONTROL, VK_SHIFT, VK_M).setStopKeys(VK_ALT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showOpenProjectDialog(e), VK_CONTROL, VK_O).setStopKeys(VK_SHIFT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showOpenFileDialog(e), VK_CONTROL, VK_SHIFT, VK_O).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showOpenFileDialog(e), VK_CONTROL, VK_ALT, VK_O).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showNewProjectDialog(e), VK_CONTROL, VK_N).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showNewUniversalProjectDialog(e), VK_CONTROL, VK_SHIFT, VK_N).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showNewTerminal(e), VK_ALT, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
