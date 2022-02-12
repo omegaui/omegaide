@@ -1,6 +1,6 @@
 /**
  * OperationPane
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.FontMetrics;
+import java.awt.Color;
 
 import javax.swing.JPanel;
 import javax.swing.JComponent;
@@ -49,13 +50,18 @@ public class OperationPane extends JPanel{
 
 		private EdgeComp labelComp;
 
+		private TextComp lockedComp;
+		
 		private TextComp closeAllComp;
 		
 		private TextComp collapseComp;
 
 		private TextComp hideComp;
 
+		private int dividerY;
+
 		private volatile boolean collapseMode = false;
+		private volatile boolean locked = true;
 
 		public ActionBar(){
 			setLayout(null);
@@ -73,6 +79,24 @@ public class OperationPane extends JPanel{
 			labelComp.setEnabled(false);
 			add(labelComp);
 			
+			lockedComp = new TextComp("", TOOLMENU_COLOR2_SHADE, TOOLMENU_GRADIENT, glow, ()->{
+				locked = !locked;
+				lockedComp.setText(!locked ? "Unlocked" : "Locked");
+				lockedComp.setToolTipText(!locked ? "Panel can be resized!" : "Panel cannot be resized!");
+				lockedComp.setColors(locked ? TOOLMENU_COLOR2_SHADE : TOOLMENU_COLOR1_SHADE, 
+									locked ? TOOLMENU_COLOR2 : TOOLMENU_COLOR1, 
+									Color.WHITE);
+			});
+			lockedComp.setFont(PX14);
+			lockedComp.setArc(5, 5);
+			add(lockedComp);
+		
+			lockedComp.setText(!locked ? "Unlocked" : "Locked");
+			lockedComp.setToolTipText(!locked ? "Panel can be resized!" : "Panel cannot be resized!");
+			lockedComp.setColors(locked ? TOOLMENU_COLOR2_SHADE : TOOLMENU_COLOR1_SHADE, 
+								locked ? TOOLMENU_COLOR2 : TOOLMENU_COLOR1, 
+								Color.WHITE);
+		
 			closeAllComp = new TextComp("Close All", TOOLMENU_COLOR2_SHADE, TOOLMENU_GRADIENT, glow, ()->{
 				tabPane.closeAllTabs();
 			});
@@ -84,6 +108,8 @@ public class OperationPane extends JPanel{
 				collapseMode = !collapseMode;
 				collapseComp.setText(collapseMode ? "Expand" : "Collapse");
 				resizeDivider();
+				if(!collapseMode)
+					screen.compilancePane.setDividerLocation(dividerY);
 			});
 			collapseComp.setFont(PX14);
 			collapseComp.setArc(5, 5);
@@ -96,12 +122,15 @@ public class OperationPane extends JPanel{
 		}
 
 		public void resizeDivider(){
-			int y = screen.getHeight() - 400;
 			if(collapseMode)
 				screen.compilancePane.setDividerLocation(screen.compilancePane.getHeight() - getHeight() - UIManager.tabHeight - screen.compilancePane.getDividerSize());
-			else if((!tabPane.isEmpty() && !OperationPane.this.isVisible()) || screen.compilancePane.getDividerLocation() != y){
-				screen.compilancePane.setDividerLocation(y);
+			else if(locked){
+				screen.compilancePane.setDividerLocation(dividerY);
 			}
+		}
+
+		public void computeDividerY(){
+			dividerY = screen.getHeight() - 400;
 		}
 
 		public void hide(){
@@ -109,9 +138,11 @@ public class OperationPane extends JPanel{
 		}
 
 		public void computeBounds(){
+			lockedComp.setBounds(getWidth() - 320 - 6, 25/2 - 20/2, 80, 20);
 			closeAllComp.setBounds(getWidth() - 240 - 4, 25/2 - 20/2, 80, 20);
 			collapseComp.setBounds(getWidth() - 160 - 2, 25/2 - 20/2, 80, 20);
 			hideComp.setBounds(getWidth() - 80, 25/2 - 20/2, 80, 20);
+			computeDividerY();
 			resizeDivider();
 		}
 	}
@@ -201,11 +232,8 @@ public class OperationPane extends JPanel{
 		super.setVisible(true);
 
 		try{
-			if(true) {
-				setPreferredSize(new Dimension(screen.getWidth(), getHeight() > 450 ? getHeight() : 450));
-				int y = screen.getHeight() - 400;
-				screen.compilancePane.setDividerLocation(y);
-			}
+			setPreferredSize(new Dimension(screen.getWidth(), getHeight() > 450 ? getHeight() : 450));
+			screen.compilancePane.setDividerLocation(screen.getHeight() - 400);
 		}
 		catch(Exception e) {
 
