@@ -1097,11 +1097,11 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-
+		
 	}
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-
+		
 	}
 
 	@Override
@@ -1117,6 +1117,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public FindAndReplace getFAndR() {
 		return fAndR;
+		
 	}
 
 	public RTextScrollPane getAttachment() {

@@ -37,7 +37,8 @@ Omega IDE has
 - Modern UI Components written from [scratch](https://github.com/omegaui/omegaui-library) with some prebuilt animations, 
 - Less (*Really a lot less*) memory consumption in comparision with other IDEs, 
 - Been written keeping Low End Systems in mind, 
-- A Tiny Core
+- A Tiny Core, 
+- Unique Features // how about vibing and coding together without? 😉
 
 and is
 
