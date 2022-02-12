@@ -1,7 +1,7 @@
 <p align="center">
   <img width="140" src="https://raw.githubusercontent.com/omegaui/omegaide/main/res/omega_ide_icon128.png" />  
   <h2 align="center">Omega IDE</h2>
-  <p align="center">The Blazing Fast Java IDE and an Instant IDE for any programming language</p>
+  <p align="center">The <strong>Blazing Fast</strong> Java IDE and an <strong>Instant IDE</strong> for <strong>any</strong> programming language</p>
   <p align="center">For the Low End Computers</p>
 </p>
 <p align="center">
@@ -32,7 +32,25 @@
 ![](/res/dark.png)
 
 # Written from Scratch
-Omega IDE has integrated support for the **java** programming language at its heart.
+Omega IDE has 
+- Integrated support for the **java** programming language at its heart, 
+- Modern UI Components written from [scratch](https://github.com/omegaui/omegaui-library) with some prebuilt animations, 
+- Less (*Really a lot less*) memory consumption in comparision with other IDEs, 
+- Been written keeping Low End Systems in mind, 
+- A Tiny Core
+
+and is
+
+- Based around utilizing shell scripts instead of bloating predefined build rules.
+
+### Warning
+Omega IDE is not fully fledged yet, but, it can be utilized for production.
+
+**I develop omegaide on itself**.
+
+### With contributions from the open source community of awesome developers we can take omegaide to the next level.
+
+### \#OpenSourceRules
 
 ## What makes Omega IDE a unique Java IDE among others?
 
