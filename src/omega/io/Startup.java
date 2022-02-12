@@ -1,6 +1,6 @@
 /**
  * Checks for license agreement and Writes IDE resources.
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -222,15 +222,26 @@ public class Startup extends JDialog {
 			System.out.println("Writing Native Files for Terminal Emulation ...");
 			System.out.println("It's a one time process!");
 
+			System.out.println("> For Linux");
 			loadDefaultFile("linux" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86/libpty.so");
-			loadDefaultFile("linux" + File.separator + "x86_64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86_64/libpty.so");
-			loadDefaultFile("macosx" + File.separator + "x86" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/macosx/x86/libpty.dylib");
-			loadDefaultFile("macosx" + File.separator + "x86_64" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/macosx/x86_64/libpty.dylib");
-			loadDefaultFile("x86" + File.separator + "libwinpty.dll", ".omega-ide/pty4j-libs/x86/libwinpty.dll");
-			loadDefaultFile("x86" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/x86/winpty-agent.exe");
-			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty.dll", ".omega-ide/pty4j-libs/win/x86_64/winpty.dll");
-			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-agent.exe");
-			loadDefaultFile("win" + File.separator + "x86_64" + File.separator + "winpty-debugserver.exe", ".omega-ide/pty4j-libs/win/x86_64/winpty-debugserver.exe");
+			loadDefaultFile("linux" + File.separator + "x86-64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86-64/libpty.so");
+			
+			System.out.println("> For FreeBSD");
+			loadDefaultFile("freebsd" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/freebsd/x86/libpty.so");
+			loadDefaultFile("freebsd" + File.separator + "x86-64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/freebsd/x86-64/libpty.so");
+			
+			System.out.println("> For MacOS");
+			loadDefaultFile("darwin" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/darwin/libpty.dylib");
+			
+			System.out.println("> For Windows(32-bit)");
+			loadDefaultFile("win" + File.separator + "x86" + File.separator + "winpty.dll", ".omega-ide/pty4j-libs/win/x86/winpty.dll");
+			loadDefaultFile("win" + File.separator + "x86" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86/winpty-agent.exe");
+			
+			System.out.println("> For Windows(64-bit)");
+			loadDefaultFile("win" + File.separator + "x86-64" + File.separator + "cyglaunch.exe", ".omega-ide/pty4j-libs/win/x86-64/cyglaunch.exe");
+			loadDefaultFile("win" + File.separator + "x86-64" + File.separator + "win-helper.dll", ".omega-ide/pty4j-libs/win/x86-64/win-helper.dll");
+			loadDefaultFile("win" + File.separator + "x86-64" + File.separator + "winpty.dll", ".omega-ide/pty4j-libs/win/x86-64/winpty.dll");
+			loadDefaultFile("win" + File.separator + "x86-64" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86-64/winpty-agent.exe");
 
 			System.out.println("Writing Native Files for Terminal Emulation ... Done!");
 
