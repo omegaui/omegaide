@@ -128,18 +128,16 @@ public class ProjectFile {
 
 		projectPath = path;
 		
-		new Thread(()->{
-			fileTreePanel.init(new File(path));
-			Screen.addAndSaveRecents(path);
-			searchWindow.cleanAndLoad(new File(projectPath));
-		}).start();
+		fileTreePanel.init(new File(path));
+		Screen.addAndSaveRecents(path);
+		searchWindow.cleanAndLoad(new File(projectPath));
 		
 		if(Screen.launcher != null)
 			Screen.launcher.dispose();
 		
 		DataManager.setDefaultProjectPath(projectPath);
 		getScreen().setProject(getProjectName());
-		
+
 		getScreen().getTabPanel().closeAllTabs();
 		
 		projectManager = new ProjectDataBase();

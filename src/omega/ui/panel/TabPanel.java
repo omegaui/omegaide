@@ -180,6 +180,7 @@ public class TabPanel extends JPanel{
 	public void removeTab(TabData tabData){
 		if(tabData == null)
 			return;
+		
 		tabsHolder.removeTabHolder(tabData);
 		tabCompHolder.putOffTab(tabData);
 

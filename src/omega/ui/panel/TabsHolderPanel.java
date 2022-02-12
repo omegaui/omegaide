@@ -247,9 +247,10 @@ public class TabsHolderPanel extends JPanel{
 		LinkedList<TabComp> tabs = new LinkedList<>();
 		tabComps.forEach(tabs::add);
 		
-		for(TabComp tx : tabs)
+		for(TabComp tx : tabs){
 			tx.closeTab();
-		
+		}
+
 		tabComps.clear();
 		tabs.clear();
 	}

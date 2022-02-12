@@ -79,7 +79,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		
 		branches.forEach(panel::remove);
 		branches.clear();
-
+		
 		blockX = blockY = 0;
 		
 		FileTreeBranch branch = new FileTreeBranch(this, parentDirectory);
@@ -88,7 +88,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		branch.lockMode();
 		panel.add(branch);
 		branches.add(branch);
-		
+
 		genBranch(parentDirectory);
 		
 		this.root = parentDirectory;

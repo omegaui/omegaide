@@ -535,7 +535,7 @@ public class Screen extends JFrame {
 	}
 
 	public void loadTitle(String projectName) {
-		setTitle(projectName + " -Omega IDE "+VERSION);
+		setTitle(projectName + " -Omega IDE " + VERSION);
 	}
 
 	public void setProject(String projectName) {
@@ -638,8 +638,9 @@ public class Screen extends JFrame {
 
 	public void loadProject(File file) {
 		setVisible(true);
-
+		
 		projectFile.saveAll();
+		
 		projectFile.setProjectPath(file.getAbsolutePath());
 	}
 
