@@ -38,7 +38,7 @@ Omega IDE has
 - Less (*Really a lot less*) memory consumption in comparision with other IDEs, 
 - Been written keeping Low End Systems in mind, 
 - A Tiny Core, 
-- Unique Features // how about vibing and coding together without? 😉
+- Unique Features // how about vibing and coding from inside the IDE? 😉
 
 and is
 
