@@ -1058,7 +1058,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 		else if (type == SearchEvent.Type.MARK_ALL) {
 			if (result.getMarkedCount() > 0) {
-				text = "Occurrences marked: " + result.getMarkedCount();
+				text = "Occurrences marked : " + result.getMarkedCount();
 			}
 			else {
 				text = "";
@@ -1067,7 +1067,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		else {
 			text = "Text not found";
 		}
-		screen.getToolMenu().setTask(text);
+		screen.getToolMenu().setTask(text, "found", "Occurrences marked", "not");
 	}
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
@@ -1108,11 +1108,13 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void focusGained(FocusEvent e){
 		keyCache = 0;
 		screen.focussedEditor = Editor.this;
+		screen.getIdeWideKeyListener().resetAll();
 	}
 
 	@Override
 	public void focusLost(FocusEvent e){
 		keyCache = 0;
+		screen.getIdeWideKeyListener().resetAll();
 	}
 
 	public FindAndReplace getFAndR() {

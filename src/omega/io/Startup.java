@@ -180,6 +180,15 @@ public class Startup extends JDialog {
 		}
 	}
 
+	public static void createBuildSpace(){
+		File f = new File(".omega-ide", "buildspace");
+		f.mkdir();
+		f = new File(".omega-ide" + File.separator + "buildspace", "src");
+		f.mkdir();
+		f = new File(".omega-ide" + File.separator + "buildspace", "bin");
+		f.mkdir();
+	}
+
 	public static void writeUIFiles(){
 		File f = new File(".omega-ide");
 		if(!f.exists()){
@@ -205,12 +214,7 @@ public class Startup extends JDialog {
 			f.getParentFile().mkdirs();
 			omega.io.UIManager.loadDefaultFile(".omega-ide" + File.separator + "dictionary" + File.separator + "english_dic.zip", ".omega-ide/dictionary/english_dic.zip");
 		}
-		f = new File(".omega-ide", "buildspace");
-		f.mkdir();
-		f = new File(".omega-ide" + File.separator + "buildspace", "src");
-		f.mkdir();
-		f = new File(".omega-ide" + File.separator + "buildspace", "bin");
-		f.mkdir();
+		createBuildSpace();
 		if(!PluginManager.PLUGINS_DIRECTORY.exists())
 			PluginManager.PLUGINS_DIRECTORY.mkdirs();
 		f = new File(".omega-ide" + File.separator + ".generated-pty-native-libs");

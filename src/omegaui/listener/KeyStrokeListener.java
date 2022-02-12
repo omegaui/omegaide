@@ -38,9 +38,13 @@ public class KeyStrokeListener implements KeyListener{
 		c.addFocusListener(new FocusAdapter(){
 			@Override
 			public void focusLost(FocusEvent e){
-				keyStrokes.forEach(keyStrokeData->keyStrokeData.autoReset());
+				resetAll();
 			}
 		});
+	}
+
+	public void resetAll(){
+		keyStrokes.forEach(keyStrokeData->keyStrokeData.autoReset());
 	}
 
 	public KeyStrokeData putKeyStroke(KeyStrokeDataListener listener, int... key){

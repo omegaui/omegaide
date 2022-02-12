@@ -190,9 +190,9 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 			}
 
 			if(totalErrors > 0 || totalWarnings > 0)
-				omega.Screen.getScreen().getToolMenu().setTask(totalErrors + " Error(s), " + totalWarnings + " Warning(s)");
+				omega.Screen.getScreen().getToolMenu().setTask(totalErrors + " Error(s), " + totalWarnings + " Warning(s)", totalErrors + "", totalWarnings + "");
 			else
-				omega.Screen.getScreen().getToolMenu().setTask("Currently Opened Codes are Error Free!");
+				omega.Screen.getScreen().getToolMenu().setTask("Currently Opened Codes are Error Free!", "Currently Opened Codes are Error Free!");
 		}).start();
 	}
 
@@ -375,7 +375,7 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 	public static void prepareBuildSpace(LinkedList<String> compilationUnitFiles){
 		try{
 			//Cleaning BuildSpace
-			Startup.writeUIFiles();
+			Startup.createBuildSpace();
 
 			//Generating BuildSpace
 			LinkedList<Editor> editors = Screen.getScreen().getAllEditors();

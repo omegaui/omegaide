@@ -364,7 +364,9 @@ public class ToolMenu extends JPanel {
 		taskComp.setOnMouseEntered(this::computeMemoryUsage);
 		taskComp.setArc(0, 0);
 		taskComp.setFont(PX14);
+		taskComp.setHighlightColor(TOOLMENU_COLOR5);
 		taskComp.setTextAlignment(TextComp.TEXT_ALIGNMENT_RIGHT);
+		taskComp.setClickable(false);
 		add(taskComp);
 
 		computeMemoryUsage();
@@ -600,6 +602,11 @@ public class ToolMenu extends JPanel {
 		setMsg(task);
 	}
 	
+	public void setTask(String task, String... highlights) {
+		taskComp.addHighlightText(highlights);
+		setMsg(task);
+	}
+	
 	public static ToolMenuPathBox getPathBox() {
 		return pathBox;
 	}
@@ -619,7 +626,7 @@ public class ToolMenu extends JPanel {
 		memoryComp.setBounds(getWidth() - (30 * 3) - 65, 0, 60, 30);
 		
 		//Resizing Task Comp
-		taskComp.setBounds(getWidth() - 200, 33, 200, 24);
+		taskComp.setBounds(getWidth() - 400, 33, 400, 24);
 		
 		//Window Decorations
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
