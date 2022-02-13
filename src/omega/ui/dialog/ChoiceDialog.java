@@ -1,20 +1,20 @@
-/**
-* ChoiceDialog
-* Copyright (C) 2021 Omega UI
+/*
+ * ChoiceDialog
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.dialog;
 import omega.Screen;
@@ -35,9 +35,9 @@ import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
 public class ChoiceDialog extends JDialog {
-	
+
 	private TextComp emojiComp;
-	
+
 	private TextComp textComp;
 	private TextComp choice1Comp;
 	private TextComp choice2Comp;
@@ -49,7 +49,7 @@ public class ChoiceDialog extends JDialog {
 	public int choice = CANCEL;
 
 	public static ChoiceDialog choiceDialog;
-	
+
 	public ChoiceDialog(JFrame frame){
 		super(frame, true);
 		setTitle("Choice Dialog");
@@ -83,8 +83,6 @@ public class ChoiceDialog extends JDialog {
 		});
 		choice1Comp.setArc(5, 5);
 		choice1Comp.setFont(UBUNTU_PX14);
-		choice1Comp.setOnMouseEntered(()->emojiComp.setGifImage(IconManager.fluentwinkemojiGif));
-		choice1Comp.setOnMouseExited(()->emojiComp.setGifImage(IconManager.fluentneutralemojiGif));
 		add(choice1Comp);
 
 		choice2Comp = new TextComp("Choice 2", TOOLMENU_COLOR5_SHADE, back1, TOOLMENU_COLOR3, ()->{
@@ -93,15 +91,11 @@ public class ChoiceDialog extends JDialog {
 		});
 		choice2Comp.setArc(5, 5);
 		choice2Comp.setFont(UBUNTU_PX14);
-		choice2Comp.setOnMouseEntered(()->emojiComp.setGifImage(IconManager.fluentwinkemojiGif));
-		choice2Comp.setOnMouseExited(()->emojiComp.setGifImage(IconManager.fluentneutralemojiGif));
 		add(choice2Comp);
 
 		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, this::dispose);
 		cancelComp.setFont(PX14);
 		cancelComp.setArc(5, 5);
-		cancelComp.setOnMouseEntered(()->emojiComp.setGifImage(IconManager.fluentwinkemojiGif));
-		cancelComp.setOnMouseExited(()->emojiComp.setGifImage(IconManager.fluentneutralemojiGif));
 		add(cancelComp);
 	}
 
