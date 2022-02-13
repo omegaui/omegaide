@@ -1,20 +1,20 @@
-/**
-* Highlights Errors
-* Copyright (C) 2021 Omega UI
+/*
+ * Highlights Errors
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package omega.instant.support.python;
 import omega.io.IconManager;
 
@@ -44,21 +44,21 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Locale;
 public class PythonErrorHighlighter implements AbstractErrorHighlighter {
-	
+
 	private LinkedList<Highlight> highlights;
 	private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
-	
+
 	public PythonErrorHighlighter() {
 		highlights = new LinkedList<>();
 		gutterIconInfos = new LinkedList<>();
 	}
-	
+
 	/*
 	File "entry.py", line 43
 	hbox.pack_start(self.icon, True, True, 0).
 	^
 	SyntaxError: invalid syntax
-	*/
+	 */
 	@Override
 	public void loadErrors(String errorLog) {
 		removeAllHighlights();
@@ -87,11 +87,11 @@ public class PythonErrorHighlighter implements AbstractErrorHighlighter {
 					message = token = tokenizer.nextToken().trim();
 					if(token.equals("^"))
 						message = token = tokenizer.nextToken().trim();
-					
+
 					if(!path.contains(File.separator)){
 						path = Screen.getProjectFile().getArgumentManager().compileDir + File.separator + path;
 					}
-					
+
 					File file = new File(path);
 					if(file.exists()){
 						Editor e = Screen.getProjectFile().getScreen().loadFile(file);
@@ -137,7 +137,7 @@ public class PythonErrorHighlighter implements AbstractErrorHighlighter {
 			h.editor.javaErrorPanel.setDiagnosticData(count, 0);
 		}
 	}
-	
+
 	@Override
 	public void removeAllHighlights() {
 		highlights.forEach(h->{
@@ -148,13 +148,13 @@ public class PythonErrorHighlighter implements AbstractErrorHighlighter {
 		gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
 		gutterIconInfos.clear();
 	}
-	
+
 	public void remove(Editor e) {
 		highlights.forEach(h->{
 			if(h.editor == e) h.remove();
 		});
 	}
-	
+
 	public void remove(Editor e, int caretPosition) {
 		highlights.forEach(h->{
 			if(h.editor == e && caretPosition >= h.start && caretPosition <= h.end) h.remove();

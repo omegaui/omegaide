@@ -1,6 +1,6 @@
-/**
+/*
  * The Resize Listener
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package omega.instant.support;
+package omegaui.listener;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
 public interface BoundsListener {
-	default void onLayout(JComponent c){
-	}
+	void onLayout(JComponent c);
 }

@@ -1,20 +1,20 @@
-/**
-  * ArgumentWindow
-  * Copyright (C) 2021 Omega UI
+/*
+ * ArgumentWindow
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support;
 import omega.io.IconManager;
@@ -59,7 +59,7 @@ public class ArgumentWindow extends JDialog{
 	private int blockY = 5;
 
 	private volatile boolean canceled = false;
-	
+
 	public ArgumentWindow(Screen screen){
 		super(screen, true);
 		setTitle("Argument Window");
@@ -134,18 +134,18 @@ public class ArgumentWindow extends JDialog{
 		if(commands.isEmpty())
 			return;
 		resetView();
-		
+
 		RTextField mfield = new RTextField("Command Name", "", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR1);
 		mfield.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
 		mfield.setFont(PX14);
 		mfield.setArc(0, 0);
 		mainPanel.add(mfield);
 		fields.add(mfield);
-		
+
 		fields.get(0).setText(commands.get(0));
 		for(int i = 1; i < commands.size(); i++){
 			blockY += 25;
-		
+
 			RTextField field = new RTextField("Option/Argument", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR2);
 			field.setText(commands.get(i));
 			field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
@@ -156,9 +156,9 @@ public class ArgumentWindow extends JDialog{
 		}
 
 		mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), blockY + 25));
-		
+
 		repaint();
-		
+
 		scrollPane.getVerticalScrollBar().setVisible(true);
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}
@@ -176,7 +176,7 @@ public class ArgumentWindow extends JDialog{
 
 	public void addField(){
 		blockY += 25;
-		
+
 		RTextField field = new RTextField("Option/Argument", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR1);
 		field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
 		field.setFont(PX14);
@@ -185,9 +185,9 @@ public class ArgumentWindow extends JDialog{
 		fields.add(field);
 
 		mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), blockY + 25));
-		
+
 		repaint();
-		
+
 		scrollPane.getVerticalScrollBar().setVisible(true);
 		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
 	}

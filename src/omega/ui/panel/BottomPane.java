@@ -17,7 +17,8 @@
  */
 
 package omega.ui.panel;
-import omega.instant.support.BoundsListener;
+import omegaui.listener.BoundsListener;
+
 
 import java.util.LinkedList;
 

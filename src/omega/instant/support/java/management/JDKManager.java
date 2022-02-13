@@ -1,6 +1,6 @@
-/**
+/*
  * IDE 's JDK Manager
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,11 @@ import java.util.Scanner;
 
 import java.io.File;
 public class JDKManager {
-	
+
 	public interface Condition{
 		boolean accept(File file);
 	}
-	
+
 	public File jdkDir;
 
 	public String version;

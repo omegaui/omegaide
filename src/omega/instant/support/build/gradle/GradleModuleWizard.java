@@ -1,20 +1,20 @@
-/**
-* The Default Gradle Module Wizard
-* Copyright (C) 2021 Omega UI
+/*
+ * The Default Gradle Module Wizard
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.build.gradle;
 import omegaui.component.TextComp;
@@ -40,14 +40,14 @@ public class GradleModuleWizard extends JDialog{
 	private TextComp titleComp;
 	private TextComp nameLabel;
 	private NoCaretField nameField;
-	
+
 	private FlexPanel projectTypePanel;
 	private TextComp basicComp;
 	private TextComp applicationComp;
 	private TextComp libraryComp;
 	private TextComp pluginComp;
 	private TextComp result1;
-	
+
 	private FlexPanel languagePanel;
 	private TextComp cppComp;
 	private TextComp groovyComp;
@@ -56,14 +56,14 @@ public class GradleModuleWizard extends JDialog{
 	private TextComp kotlinComp;
 	private TextComp swiftComp;
 	private TextComp result2;
-	
+
 	private FlexPanel scriptPanel;
 	private TextComp groovyDSLComp;
 	private TextComp kotlinDSLComp;
 	private TextComp result3;
 	private TextComp closeComp;
 	private TextComp createComp;
-	
+
 	public GradleModuleWizard(JFrame f){
 		super(f, false);
 		setTitle("Gradle Module Wizard");
@@ -102,26 +102,26 @@ public class GradleModuleWizard extends JDialog{
 		nameLabel.setClickable(false);
 		nameLabel.setFont(PX14);
 		add(nameLabel);
-		
+
 		nameField = new NoCaretField("", "Start Typing", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		nameField.setBounds(210, 50, getWidth() - 220, 25);
 		nameField.setFont(PX14);
 		nameField.setIgnorableCharacters(' ', File.separatorChar);
 		add(nameField);
 		addKeyListener(nameField);
-		
+
 		//Project Type Panel
 		projectTypePanel = new FlexPanel(null, c2, c1);
 		projectTypePanel.setBounds(50, 100, (getWidth() - 110)/3, 220);
 		projectTypePanel.setPaintGradientEnabled(true);
 		add(projectTypePanel);
-		
+
 		TextComp label1 = new TextComp("Project Type", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, c2, null);
 		label1.setBounds(10, 10, projectTypePanel.getWidth() - 20, 25);
 		label1.setFont(PX14);
 		label1.setClickable(false);
 		projectTypePanel.add(label1);
-		
+
 		basicComp = new TextComp("Basic", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->result1.setText("Basic"));
 		basicComp.setBounds(10, 40, projectTypePanel.getWidth() - 20, 25);
 		basicComp.setFont(PX14);
@@ -192,17 +192,17 @@ public class GradleModuleWizard extends JDialog{
 		label3.setFont(PX14);
 		label3.setClickable(false);
 		scriptPanel.add(label3);
-		
+
 		groovyDSLComp = new TextComp("Groovy", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->result3.setText("Groovy"));
 		groovyDSLComp.setBounds(10, 40, scriptPanel.getWidth() - 20, 25);
 		groovyDSLComp.setFont(PX14);
 		scriptPanel.add(groovyDSLComp);
-		
+
 		kotlinDSLComp = new TextComp("Kotlin", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, ()->result3.setText("Kotlin"));
 		kotlinDSLComp.setBounds(10, 70, scriptPanel.getWidth() - 20, 25);
 		kotlinDSLComp.setFont(PX14);
 		scriptPanel.add(kotlinDSLComp);
-		
+
 		result3 = new TextComp("", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, null);
 		result3.setBounds(scriptPanel.getX() + 10, 330, scriptPanel.getWidth() - 20, 25);
 		result3.setFont(PX14);

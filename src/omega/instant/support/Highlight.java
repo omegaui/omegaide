@@ -1,20 +1,20 @@
-/**
-  * Highlight
-  * Copyright (C) 2021 Omega UI
+/*
+ * Highlight
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support;
 import omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo;
@@ -29,7 +29,7 @@ import omega.ui.component.Editor;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 public class Highlight {
-	
+
 	public Editor editor;
 	public HighlightPainter highlightPainter;
 	public int start;
@@ -41,7 +41,7 @@ public class Highlight {
 
 	public volatile boolean applied = false;
 	public volatile boolean appliedLineColor = false;
-	
+
 	public Highlight(Editor e, HighlightPainter h, int start, int end, boolean warning) {
 		this.editor = e;
 		this.highlightPainter = h;
@@ -79,7 +79,7 @@ public class Highlight {
 	public javax.tools.Diagnostic getDiagnosticData() {
 		return diagnosticData;
 	}
-	
+
 	public void setDiagnosticData(javax.tools.Diagnostic diagnosticData) {
 		this.diagnosticData = diagnosticData;
 	}
@@ -87,12 +87,12 @@ public class Highlight {
 	public omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo getGutterIconInfo() {
 		return gutterIconInfo;
 	}
-	
+
 	public void setGutterIconInfo(omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo gutterIconInfo) {
 		this.gutterIconInfo = gutterIconInfo;
 	}
-	
-	
+
+
 	public void remove() {
 		if(tag != null)
 			editor.removeLineHighlight(tag);

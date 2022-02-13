@@ -1,20 +1,20 @@
-/**
-* DataManager
-* Copyright (C) 2021 Omega UI
+/*
+ * DataManager
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.io;
 import omegaui.dynamic.database.DataBase;
@@ -26,11 +26,11 @@ import java.io.File;
 
 import omega.Screen;
 public class DataManager extends DataBase {
-	
+
 	public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
 	public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
 	public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/icons8-gummy-coding.png";
-	
+
 	private static String defaultProjectPath = "No Default Project set yet.";
 	private static String pathToJava = "";
 	private static String projectsHome = "";
@@ -39,23 +39,23 @@ public class DataManager extends DataBase {
 	private static String gradleCommand = "gradlew";
 	private static String instantMode = "";
 	private static String backgroundIllustrationPath = "";
-	
+
 	private static Font hintFont = new Font("Ubuntu", Font.BOLD, 12);
-	
+
 	private volatile static boolean realTimeContentAssist = false;
 	private volatile static boolean contentModeJava = true;
 	private volatile static boolean useStarImports = false;
 	private volatile static boolean sourceDefenderEnabled;
 	private volatile static boolean parsingEnabled = true;
-	
+
 	private static int languageTag = -1;
 	private static int tabSize = 5;
-	
+
 	public DataManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".preferences");
 		loadData();
 	}
-	
+
 	private void loadData() {
 		try {
 			DataEntry e = getEntryAt("Default Project", 0);
@@ -84,7 +84,7 @@ public class DataManager extends DataBase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveData() {
 		clear();
 		addEntry("Default Project", defaultProjectPath);
@@ -106,99 +106,99 @@ public class DataManager extends DataBase {
 		addEntry("Background Illustration Path", getBackgroundIllustrationPath());
 		save();
 	}
-	
+
 	public static String getPathToJava() {
 		return pathToJava;
 	}
-	
+
 	public static void setPathToJava(String path) {
 		pathToJava = path;
 	}
-	
+
 	public static String getDefaultProjectPath() {
 		return defaultProjectPath;
 	}
-	
+
 	public static void setDefaultProjectPath(String defaultProjectPath) {
 		DataManager.defaultProjectPath = defaultProjectPath;
 	}
-	
+
 	public static void setContentAssistRealTime(boolean value) {
 		realTimeContentAssist = value;
 	}
-	
+
 	public static boolean isContentAssistRealTime() {
 		return realTimeContentAssist;
 	}
-	
+
 	public static void setUseStarImports(boolean value) {
 		useStarImports = value;
 	}
-	
+
 	public static boolean isUsingStarImports() {
 		return useStarImports;
 	}
-	
+
 	public static void setWorkspace(String home){
 		projectsHome = home;
 	}
-	
+
 	public static String getWorkspace(){
 		return projectsHome;
 	}
-	
+
 	public static void setTheme(String t){
 		theme = t;
 	}
-	
+
 	public static String getTheme(){
 		return theme;
 	}
-	
+
 	public static boolean isContentModeJava() {
 		return contentModeJava;
 	}
-	
+
 	public static void setContentModeJava(boolean contentModeJava) {
 		DataManager.contentModeJava = contentModeJava;
 	}
-	
+
 	public static boolean isSourceDefenderEnabled() {
 		return sourceDefenderEnabled;
 	}
-	
+
 	public static void setSourceDefenderEnabled(boolean sourceDefenderEnabled) {
 		DataManager.sourceDefenderEnabled = sourceDefenderEnabled;
 	}
-	
+
 	public static java.lang.String getConsoleCommand() {
 		return consoleCommand;
 	}
-	
+
 	public static void setConsoleCommand(java.lang.String consoleCommand) {
 		DataManager.consoleCommand = consoleCommand;
 	}
-	
+
 	public static java.lang.String getGradleCommand() {
 		return gradleCommand;
 	}
-	
+
 	public static void setGradleCommand(java.lang.String gradleCommand) {
 		DataManager.gradleCommand = gradleCommand;
 	}
-	
+
 	public static java.lang.String getInstantMode() {
 		return instantMode;
 	}
-	
+
 	public static void setInstantMode(java.lang.String instantMode) {
 		DataManager.instantMode = instantMode;
 	}
-	
+
 	public static java.awt.Font getHintFont() {
 		return hintFont;
 	}
-	
+
 	public static void setHintFont(java.awt.Font hintFont) {
 		if(hintFont == null){
 			System.err.println("Hint Font cannot be null!");
@@ -206,19 +206,19 @@ public class DataManager extends DataBase {
 		}
 		DataManager.hintFont = hintFont;
 	}
-	
+
 	public static synchronized boolean isParsingEnabled() {
 		return parsingEnabled;
 	}
-	
+
 	public static void setParsingEnabled(boolean parsingEnabled) {
 		DataManager.parsingEnabled = parsingEnabled;
 	}
-	
+
 	public static int getTabSize() {
 		return tabSize;
 	}
-	
+
 	public static void setTabSize(int tabSize) {
 		DataManager.tabSize = tabSize;
 	}
@@ -226,10 +226,10 @@ public class DataManager extends DataBase {
 	public static java.lang.String getBackgroundIllustrationPath() {
 		return Screen.isNotNull(backgroundIllustrationPath) ? backgroundIllustrationPath : DEFAULT_ILLUSTRATION_PATH;
 	}
-	
+
 	public static void setBackgroundIllustrationPath(java.lang.String backgroundIllustrationPath) {
 		DataManager.backgroundIllustrationPath = backgroundIllustrationPath;
 	}
-	
+
 }
 

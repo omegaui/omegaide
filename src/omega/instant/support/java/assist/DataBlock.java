@@ -1,20 +1,20 @@
-/**
-  * It reads variables from a provided method block.
-  * Copyright (C) 2021 Omega UI
+/*
+ * Reads variables from a provided method block.
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.assist;
 import java.util.LinkedList;
@@ -24,15 +24,15 @@ public class DataBlock {
 	public DataMember block;
 	public String code;
 	public SourceReader reader;
-	
+
 	public DataBlock(SourceReader reader, DataMember block){
 		this.reader = reader;
 		this.block = block;
 		depthMembers.clear();
 	}
-	
+
 	public void read(String code){
-		if(this.code != null && this.code.equals(code)) 
+		if(this.code != null && this.code.equals(code))
 			return;
 		this.code = code;
 		//Unpacking DataMembers from _prototype
@@ -164,7 +164,7 @@ public class DataBlock {
 			}
 		}
 	}
-	
+
 	public LinkedList<DepthMember> get(String name){
 		LinkedList<DepthMember> depthMembers = new LinkedList<>();
 		for(DepthMember m : this.depthMembers){
@@ -172,7 +172,7 @@ public class DataBlock {
 		}
 		return depthMembers;
 	}
-	
+
 	public DepthMember getMatch(String var) {
 		for(DepthMember m : depthMembers) {
 			if(m.name.equals(var))
@@ -180,7 +180,7 @@ public class DataBlock {
 		}
 		return null;
 	}
-	
+
 	public DepthMember getLast(){
 		if(depthMembers.isEmpty()) {
 			System.out.println(block.name + " has no variables");
@@ -188,13 +188,13 @@ public class DataBlock {
 		}
 		return depthMembers.getLast();
 	}
-	
+
 	public static int calculateDepth(String var, String code){
 		int depth = 1;
-		
+
 		return depth;
 	}
-	
+
 	public int count(String line, char ch){
 		int c = 0;
 		for(char cx : line.toCharArray()){

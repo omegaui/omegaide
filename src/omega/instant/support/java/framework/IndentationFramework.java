@@ -1,7 +1,6 @@
-/**
+/*
  * Manages Java Type Explicit Indentation Invocation - Ctrl + I
- *
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,7 +83,7 @@ public class IndentationFramework extends AbstractIndentationFramework{
 			textArea.setCaretPosition(caretPos + 1);
 		}
 		catch(Exception e){
-			
+
 		}
 	}
 
@@ -105,7 +104,7 @@ public class IndentationFramework extends AbstractIndentationFramework{
 		}
 		return count;
 	}
-	
+
 	public static String getTabs(int n){
 		String res = "";
 		while(n-- > 0)

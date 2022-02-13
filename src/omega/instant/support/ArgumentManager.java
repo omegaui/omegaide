@@ -1,20 +1,20 @@
-/**
-* The Universal Project Manager
-* Copyright (C) 2021 Omega UI
+/*
+ * The Universal Project Manager
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support;
 import omega.instant.support.universal.ListMaker;
@@ -29,20 +29,20 @@ import java.io.PrintWriter;
 
 import java.util.LinkedList;
 public class ArgumentManager extends DataBase{
-	
+
 	public LinkedList<String> run_time_args = new LinkedList<>();
 	public LinkedList<String> compile_time_args = new LinkedList<>();
 	public String runDir;
 	public String compileDir;
 	public LinkedList<ListMaker> units = new LinkedList<>();
-	
+
 	public ArgumentManager(){
 		super(Screen.getProjectFile().getProjectPath() + File.separator + ".args");
 		compile_time_args.clear();
 		run_time_args.clear();
 		load();
 	}
-	
+
 	public void load(){
 		if(getEntries("Compile Time Argument") != null)
 			getEntries("Compile Time Argument").forEach(entry->compile_time_args.add(entry.getValue()));
@@ -50,12 +50,12 @@ public class ArgumentManager extends DataBase{
 			getEntries("Run Time Argument").forEach(entry->run_time_args.add(entry.getValue()));
 		compileDir = getEntryAt("Compile Time Working Directory", 0) != null ? getEntryAt("Compile Time Working Directory", 0).getValue() : "";
 		runDir = getEntryAt("Run Time Working Directory", 0) != null ? getEntryAt("Run Time Working Directory", 0).getValue() : "";
-		
+
 		if(!new File(compileDir).exists())
 			compileDir = "";
 		if(!new File(runDir).exists())
 			runDir = "";
-		
+
 		LinkedList<DataEntry> extensions = getEntries("Extensions");
 		LinkedList<DataEntry> containers = getEntries("Containers");
 		LinkedList<DataEntry> sources = getEntries("Sources");
@@ -68,7 +68,7 @@ public class ArgumentManager extends DataBase{
 			bounds.get(i).getValueAsBoolean()));
 		}
 	}
-	
+
 	public void genLists(){
 		units.forEach(unit->{
 			LinkedList<File> files = new LinkedList<>();
@@ -77,7 +77,7 @@ public class ArgumentManager extends DataBase{
 				writeList(unit.getContainerName(), files, unit.isQuoted());
 		});
 	}
-	
+
 	public void writeList(String name, LinkedList<File> files, boolean sur){
 		try{
 			PrintWriter writer = new PrintWriter(new File(Screen.getProjectFile().getProjectPath() + File.separator + name));
@@ -93,7 +93,7 @@ public class ArgumentManager extends DataBase{
 			System.err.println(e);
 		}
 	}
-	
+
 	public void loadFiles(String ext, LinkedList<File> files, File dir){
 		File[] F = dir.listFiles();
 		if(F == null || F.length == 0) return;
@@ -104,7 +104,7 @@ public class ArgumentManager extends DataBase{
 				loadFiles(ext, files, fx);
 		}
 	}
-	
+
 	public String getCompileCommand(){
 		String command = "";
 		for(String cx : compile_time_args){
@@ -112,7 +112,7 @@ public class ArgumentManager extends DataBase{
 		}
 		return command.trim();
 	}
-	
+
 	public String getRunCommand(){
 		String command = "";
 		for(String cx : run_time_args){
@@ -120,7 +120,7 @@ public class ArgumentManager extends DataBase{
 		}
 		return command.trim();
 	}
-	
+
 	@Override
 	public void save(){
 		clear();

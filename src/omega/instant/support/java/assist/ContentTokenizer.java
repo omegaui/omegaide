@@ -1,20 +1,20 @@
-/**
-* ContentAssist Invoker.
-* Copyright (C) 2021 Omega UI
+/*
+ * ContentAssist Invoker.
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see http://www.gnu.org/licenses.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses.
+ */
 
 package omega.instant.support.java.assist;
 import omega.instant.support.java.highlighter.BasicCodeHighlighter;
@@ -43,11 +43,11 @@ import org.fife.ui.rsyntaxtextarea.TokenTypes;
 
 import static omega.io.UIManager.*;
 public class ContentTokenizer extends AbstractContentTokenizer{
-	
+
 	public static boolean isConditionalCode(String code){
 		return isObjectInstantiationCode(code);
 	}
-	
+
 	public static boolean isObjectInstantiationCode(String code){
 		boolean hasSpace = code.contains(" ");
 		boolean hasEqual = code.contains("=");
@@ -59,7 +59,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			hasEqualAtLast = code.charAt(code.length() - 1) == '=';
 		return hasSpace && hasEqual && hasEqualsAfterSpace && hasEqualAtLast;
 	}
-	
+
 	public static boolean genConditionalHints(Editor e, String code){
 		if(isObjectInstantiationCode(code)){
 			String className = code.substring(0, code.indexOf(' ')).trim();
@@ -88,14 +88,14 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 	public boolean canArrangeTokens(Editor editor) {
 		return editor.currentFile != null && editor.currentFile.getName().endsWith(".java");
 	}
-	
+
 	public static void arrangeTokens(Editor e, String text){
 		if(text.equals("")) {
 			e.contentWindow.setVisible(false);
 			return;
 		}
 		StringTokenizer tok = new StringTokenizer(e.getText(), "`-=[\\;,.\"\'/]~!@#%^&*()+{}|:<>?)\n ");
-		
+
 		LinkedList<DataMember> dataMembers = new LinkedList<>();
 		LinkedList<DataMember> tokens = new LinkedList<>();
 		while(tok.hasMoreTokens()){
@@ -109,7 +109,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			};
 			tokens.add(d);
 		}
-		
+
 		ContentWindow.sort(tokens);
 		main:
 		for(DataMember token : tokens){
@@ -120,11 +120,11 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			dataMembers.add(token);
 		}
 		tokens.clear();
-		
+
 		SnippetBase.getAll().forEach((snippet)->{
 			dataMembers.add(new DataMember("", "", "Snippet", snippet.toString(), null));
 		});
-		
+
 		if(!dataMembers.isEmpty())
 			CodeFramework.gen(dataMembers, e);
 		else
@@ -137,29 +137,29 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
 		}
-		
+
 		String code = e.getText();
 		code = code.substring(0, e.getCaretPosition());
 		code = code.substring(code.lastIndexOf('\n') + 1).trim();
-		
+
 		if(genConditionalHints(e, code)) {
 			return;
 		}
-		
+
 		String text = CodeFramework.getCodeDoNotEliminateDot(e.getText(), e.getCaretPosition());
 		if(text == null || text.equals("")) {
 			e.contentWindow.setVisible(false);
 			return;
 		}
-		
+
 		if(Screen.getProjectFile().getJDKManager() == null && !Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
 			return;
-		
+
 		if(!text.contains(".")) {
 			if(text.contains(" "))
 				text = text.substring(text.lastIndexOf(' ') + 1).trim();
 			LinkedList<DataMember> dataMembers = new LinkedList<>();
-			
+
 			if(couldBeSomeClass(text)){
 				for(Import im : JDKManager.imports){
 					if(CodeFramework.isUpperCaseHintType(im.className, text)){
@@ -196,17 +196,17 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 					if(im.isStatic){
 						if(decompiledStaticDataFromClasses.contains(im.pack))
 							continue;
-						
+
 						if(CodeFramework.isSource(im.pack))
 							staticMembers = new SourceReader(CodeFramework.getContent(im.pack)).getDataMembers("static");
 						else
 							staticMembers = Screen.getProjectFile().getJDKManager().prepareReader(im.pack).getDataMembers("static");
 						decompiledStaticDataFromClasses.add(im.pack);
-						
+
 						for(DataMember dx : staticMembers){
 							dataMembers.add(dx);
 						}
-						
+
 						staticMembers.clear();
 					}
 				}
@@ -223,7 +223,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 					imports.add(im);
 				}
 			}
-			
+
 			SourceReader.Import[] I = new SourceReader.Import[imports.size()];
 			int k = 0;
 			for(SourceReader.Import im : imports)
@@ -242,25 +242,25 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			}
 			for(SourceReader.Import im : I)
 				imports.add(im);
-			
+
 			I = null;
 			for(SourceReader.Import im : imports){
 				dataMembers.add(new DataMember("", "class", im.get(), im.name, null));
 			}
-			
+
 			for(DataMember m : reader.dataMembers) {
 				if(m.name.contains(text) || CodeFramework.isUpperCaseHintType(m, text)) {
 					dataMembers.add(m);
 				}
 			}
-			
+
 			String reducedText = e.getText().substring(0, e.getCaretPosition());
 			reducedText = CodeFramework.completeCode(reducedText);
 			reader = new SourceReader(reducedText);
 			DataBlock block = null;
 			if(!reader.dataBlocks.isEmpty())
 				block = reader.dataBlocks.getLast();
-			
+
 			if(!reader.recordingInternal) {
 				if(block != null) {
 					for(DataMember m : block.depthMembers) {
@@ -289,5 +289,5 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 	public static boolean couldBeSomeClass(String text){
 		return Screen.isNotNull(text) && Character.isLetter(text.charAt(0)) && Character.isUpperCase(text.charAt(0)) && text.length() > 1;
 	}
-	
+
 }

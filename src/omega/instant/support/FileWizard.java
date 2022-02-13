@@ -1,20 +1,20 @@
-/**
-* The FileWizard
-* Copyright (C) 2021 Omega UI
+/*
+ * The FileWizard
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support;
 import omega.Screen;
@@ -45,16 +45,16 @@ import javax.swing.JPanel;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class FileWizard extends JDialog{
-	
+
 	private TextComp iconComp;
-	
+
 	private NoCaretField nameField;
 	private TextComp typeComp;
 	private EdgeComp typeLabel;
-	
+
 	private TextComp createComp;
 	private TextComp closeComp;
-	
+
 	public TextComp parentRoot;
 	public TextComp typeBtn;
 
@@ -65,7 +65,7 @@ public class FileWizard extends JDialog{
 	public TextComp enumComp;
 	public TextComp annotationComp;
 	public TextComp customFileComp;
-	
+
 	public FileWizard(JFrame f){
 		super(f, true);
 		setLayout(null);
@@ -80,7 +80,7 @@ public class FileWizard extends JDialog{
 		setResizable(false);
 		init();
 	}
-	
+
 	private void init(){
 		iconComp = new TextComp(IconManager.fluentnewItemImage, 48, 48, back2, c2, c2, null);
 		iconComp.setBounds(5, 5, 50, 50);
@@ -89,10 +89,10 @@ public class FileWizard extends JDialog{
 		iconComp.attachDragger(this);
 		iconComp.setEnter(true);
 		add(iconComp);
-		
+
 		final FileSelectionDialog fileC = new FileSelectionDialog(this);
 		fileC.setTitle("Select a directory as source root");
-		
+
 		parentRoot = new TextComp(IconManager.fluentsourceImage, 20, 20, TOOLMENU_COLOR3_SHADE, back2, c2, ()->{
 			LinkedList<File> selections = fileC.selectDirectories();
 			if(!selections.isEmpty()){
@@ -102,31 +102,31 @@ public class FileWizard extends JDialog{
 		parentRoot.setBounds(5, getHeight() - 35, 30, 30);
 		parentRoot.setArc(5, 5);
 		add(parentRoot);
-		
+
 		nameField = new NoCaretField("", "Start Typing", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		nameField.setBounds(65, 5, getWidth() - 100, 30);
 		nameField.setFont(PX14);
 		add(nameField);
 		addKeyListener(nameField);
-		
+
 		typeLabel = new EdgeComp("Type", back2, TOOLMENU_GRADIENT, glow, null);
 		typeLabel.setBounds(65, 45, 80, 25);
 		typeLabel.setFont(UBUNTU_PX14);
 		typeLabel.setLookLikeLabel(true);
 		add(typeLabel);
-		
+
 		createComp = new TextComp(IconManager.fluentnewfileImage, 25, 25, "Create", TOOLMENU_COLOR3_SHADE, back2, c2, this::create);
 		createComp.setBounds(getWidth() - 35, getHeight() - 35, 30, 30);
 		createComp.setArc(5, 5);
 		nameField.setOnAction(createComp.runnable);
 		add(createComp);
-		
+
 		closeComp = new TextComp(IconManager.fluentcloseImage, 20, 20, back2, back2, c2, this::dispose);
 		closeComp.setBounds(getWidth() - 35, 5, 30, 30);
 		closeComp.setArc(5, 5);
 		add(closeComp);
-		
-		typeBtn = new TextComp("class", c2, c2, TOOLMENU_COLOR1, ()->{}){
+
+	typeBtn = new TextComp("class", c2, c2, TOOLMENU_COLOR1, ()->{}){
 			@Override
 			public void draw(Graphics2D g){
 				g.drawImage(IconManager.fluentcategoryImage, 0, 0, 25, 25, null);
@@ -173,7 +173,7 @@ public class FileWizard extends JDialog{
 		customFileComp.setBounds(enumComp.getX() + enumComp.getWidth() + 5, parentRoot.getY(), 30, 30);
 		customFileComp.setArc(5, 5);
 		add(customFileComp);
-		
+
 		putAnimationLayer(iconComp, getImageSizeAnimationLayer(25, -6, true), ACTION_MOUSE_PRESSED);
 		putAnimationLayer(parentRoot, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(createComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
@@ -186,7 +186,7 @@ public class FileWizard extends JDialog{
 		putAnimationLayer(enumComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(customFileComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 	}
-	
+
 	public void create(){
 		if(parentRoot.getToolTipText() == null) return;
 		if(!new File(parentRoot.getToolTipText()).exists()) {
@@ -240,14 +240,14 @@ public class FileWizard extends JDialog{
 				nameField.setText("File Already Exists");
 		}
 	}
-	
+
 	public void show(String type){
 		typeBtn.setText(type);
 		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
 			parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
 		setVisible(true);
 	}
-	
+
 	public static void createSRCFile(File file, String type, String pack, String name){
 		try{
 			PrintWriter writer = new PrintWriter(new FileOutputStream(file));
@@ -264,7 +264,7 @@ public class FileWizard extends JDialog{
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void paint(Graphics g){
 		super.paint(g);

@@ -1,20 +1,20 @@
-/**
-  * The Getter/Setter Window
-  * Copyright (C) 2021 Omega UI
+/*
+ * The Getter/Setter Window
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.generator.dialog;
 import omega.instant.support.java.generator.Generator;
@@ -42,20 +42,20 @@ import javax.swing.JPanel;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 public class GSView extends JDialog{
-	
+
 	private LinkedList<TextComp> comps = new LinkedList<>();
 	private LinkedList<DataMember> members = new LinkedList<>();
-	
+
 	private RSyntaxTextArea textArea;
-	
+
 	private String className;
-	
+
 	private JScrollPane scrollPane;
 	private JPanel panel;
-	
+
 	private TextComp accessComp;
 	private TextComp gsComp;
-	
+
 	public GSView(Screen screen){
 		super(screen);
 		setModal(false);
@@ -67,20 +67,20 @@ public class GSView extends JDialog{
 		setResizable(false);
 		init();
 	}
-	
+
 	public void init(){
 		scrollPane = new JScrollPane(panel = new JPanel(null));
 		scrollPane.setBounds(0, 30, getWidth(), getHeight() - 90);
 		scrollPane.setBorder(null);
 		panel.setBackground(c2);
 		add(scrollPane);
-		
+
 		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(0, 0, 30, 30);
 		closeComp.setFont(PX16);
 		closeComp.setArc(0, 0);
 		add(closeComp);
-          
+
 		TextComp titleComp = new TextComp("Generate Getters/Setters", c2, c2, glow, ()->{});
 		titleComp.setBounds(30, 0, getWidth() - 30, 30);
 		titleComp.setFont(PX16);
@@ -88,7 +88,7 @@ public class GSView extends JDialog{
 		titleComp.attachDragger(this);
 		titleComp.setArc(0, 0);
 		add(titleComp);
-		
+
 		accessComp = new TextComp("Use Access : public", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 		accessComp.setBounds(0, getHeight() - 60, 300, 30);
 		accessComp.setRunnable(()->{
@@ -102,7 +102,7 @@ public class GSView extends JDialog{
 		accessComp.setFont(PX16);
 		accessComp.setArc(0, 0);
 		add(accessComp);
-		
+
 		gsComp = new TextComp("Getter&Setter", TOOLMENU_COLOR3_SHADE, c2, TOOLMENU_COLOR3, ()->{});
 		gsComp.setBounds(300, getHeight() - 60, 200, 30);
 		gsComp.setRunnable(()->{
@@ -115,19 +115,19 @@ public class GSView extends JDialog{
 		gsComp.setFont(PX16);
 		gsComp.setArc(0, 0);
 		add(gsComp);
-		
+
 		TextComp genComp = new TextComp("Generate", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::generate);
 		genComp.setBounds(500, getHeight() - 60, getWidth() - 500, 30);
 		genComp.setFont(PX16);
 		genComp.setArc(0, 0);
 		add(genComp);
-		
+
 		NoCaretField searchField = new NoCaretField("", "search any field here", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
 		searchField.setBounds(0, getHeight() - 30, getWidth(), 30);
 		searchField.setFont(PX14);
-          searchField.setOnAction(()->search(searchField.getText()));
+		searchField.setOnAction(()->search(searchField.getText()));
 		add(searchField);
-          addKeyListener(searchField);
+		addKeyListener(searchField);
 	}
 	public synchronized void search(String text){
 		comps.forEach(panel::remove);
@@ -167,9 +167,9 @@ public class GSView extends JDialog{
 		}
 		selections.clear();
 	}
-	
+
 	public void genView(RSyntaxTextArea textArea){
-		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()) 
+		if(omega.Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
 			return;
 		if(textArea == null) return;
 		new Thread(()->{
@@ -177,11 +177,11 @@ public class GSView extends JDialog{
 			comps.forEach(panel::remove);
 			comps.clear();
 			members.clear();
-			
+
 			SourceReader reader = new SourceReader(textArea.getText());
 			this.className = reader.className;
 			int y = 0;
-			
+
 			for(DataMember d : reader.ownedDataMembers) {
 				if(d.modifier != null && !d.modifier.contains("final")){
 					if(d.parameters == null){
@@ -193,7 +193,7 @@ public class GSView extends JDialog{
 						textComp.setArc(0, 0);
 						textComp.setFont(PX14);
 						textComp.alignX = 5;
-                              textComp.setName(d.name);
+						textComp.setName(d.name);
 						panel.add(textComp);
 						comps.add(textComp);
 						members.add(d);

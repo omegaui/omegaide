@@ -1,20 +1,20 @@
-/**
-  * Highlights Errors
-  * Copyright (C) 2021 Omega UI
+/*
+ * Highlights Errors
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.java.highlighter;
 import omega.ui.component.Editor;
@@ -40,20 +40,20 @@ import java.awt.Color;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 public class ErrorHighlighter {
-	
+
 	private LinkedList<Highlight> highlights;
 	public static final Color color = omega.io.UIManager.isDarkMode() ? Color.decode("#800707") : new Color(255, 0, 0, 30);
-	
+
 	public ErrorHighlighter() {
 		highlights = new LinkedList<>();
 	}
 
-     public String getSimplifiedErrorLog(String errorLog){
-          String log = "";
-          LinkedList<String> lines = CodeTokenizer.tokenize(errorLog, '\n');
-          return log;
-     }
-     
+	public String getSimplifiedErrorLog(String errorLog){
+		String log = "";
+		LinkedList<String> lines = CodeTokenizer.tokenize(errorLog, '\n');
+		return log;
+	}
+
 	public void loadErrors(String errorLog) {
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
@@ -71,8 +71,8 @@ public class ErrorHighlighter {
 					path = token.substring(0, e);
 					path = JavaSyntaxParser.convertToProjectPath(path);
 					line = Integer.parseInt(token.substring(e + 1, token.indexOf(':', e + 1)));
-                         if(new File(path).exists())
-                              canRecord = true;
+					if(new File(path).exists())
+						canRecord = true;
 				}
 				else if(canRecord) {
 					code = token.trim();
@@ -94,8 +94,8 @@ public class ErrorHighlighter {
 					}
 					int start = text.indexOf(code, line == 1 ? 0 : index+1);
 					int end = start + code.length();
-				     h.addHighlight(start, end, hp);
-				     highlights.add(new Highlight(e, hp, start, end, false));
+					h.addHighlight(start, end, hp);
+					highlights.add(new Highlight(e, hp, start, end, false));
 					canRecord = false;
 				}
 			}
@@ -111,13 +111,13 @@ public class ErrorHighlighter {
 		});
 		highlights.clear();
 	}
-	
+
 	public void remove(Editor e) {
 		highlights.forEach(h->{
 			if(h.editor == e) h.remove();
 		});
 	}
-	
+
 	public void remove(Editor e, int caretPosition) {
 		highlights.forEach(h->{
 			if(h.editor == e && caretPosition >= h.start && caretPosition <= h.end) h.remove();

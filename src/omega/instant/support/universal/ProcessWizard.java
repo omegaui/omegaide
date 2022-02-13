@@ -1,20 +1,20 @@
-/**
-  * Handles Foreign Language Execution
-  * Copyright (C) 2021 Omega UI
+/*
+ * Handles Foreign Script Execution
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.instant.support.universal;
 import omega.io.IconManager;
@@ -46,19 +46,19 @@ import static omegaui.component.animation.Animations.*;
 public class ProcessWizard extends JDialog{
 	private ProcessManager processManager;
 	private ArgumentWindow commandWindow;
-	
+
 	private TextComp titleComp;
 	private NoCaretField extField;
 	private TextComp cmdField;
-	
+
 	private LinkedList<TextComp> items = new LinkedList<>();
 	private LinkedList<String> cmd;
-	
+
 	private FlexPanel containerPanel;
 	private JScrollPane scrollPane;
 	private JPanel contentPanel;
 	private int block;
-	
+
 	public ProcessWizard(Screen screen){
 		super(screen, true);
 		setTitle("Process Wizard");
@@ -76,7 +76,7 @@ public class ProcessWizard extends JDialog{
 	}
 	public void init(){
 		processManager = new ProcessManager();
-		
+
 		titleComp = new TextComp("Process Wizard", c2, c2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 25, 30);
 		titleComp.setFont(PX14);
@@ -84,30 +84,30 @@ public class ProcessWizard extends JDialog{
 		titleComp.setClickable(false);
 		titleComp.attachDragger(this);
 		add(titleComp);
-		
+
 		TextComp closeComp = new TextComp("x", "Close", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(getWidth() - 25, 0, 25, 30);
 		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
-		
+
 		TextComp label1 = new TextComp("File Extension", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
 		label1.setBounds(10, 50, 150, 25);
 		label1.setFont(PX14);
 		label1.setClickable(false);
 		add(label1);
-		
+
 		extField = new NoCaretField("Enter File Extension", ".", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
 		extField.setBounds(170, 50, getWidth() - 190, 25);
 		extField.setFont(PX14);
 		add(extField);
-		
+
 		TextComp label2 = new TextComp("Execution Command", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
 		label2.setBounds(10, 100, 150, 25);
 		label2.setFont(PX14);
 		label2.setClickable(false);
 		add(label2);
-		
+
 		cmdField = new TextComp("Click to Set Command", TOOLMENU_GRADIENT, back1, TOOLMENU_COLOR2, ()->{
 			if(!Screen.isNotNull(extField.getText()))
 				return;
@@ -120,17 +120,17 @@ public class ProcessWizard extends JDialog{
 		cmdField.setBounds(170, 100, getWidth() - 190, 25);
 		cmdField.setFont(PX14);
 		add(cmdField);
-		
+
 		TextComp addComp = new TextComp("Add/Update", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::addCurrent);
 		addComp.setBounds(getWidth()/2 - 75, 150, 150, 25);
 		addComp.setFont(PX14);
 		add(addComp);
-		
+
 		containerPanel = new FlexPanel(null, back1, null);
 		containerPanel.setBounds(10, 200, getWidth() - 20, 300);
 		containerPanel.setArc(10, 10);
 		add(containerPanel);
-		
+
 		scrollPane = new JScrollPane(contentPanel = new JPanel(null));
 		scrollPane.setBounds(10, 10, containerPanel.getWidth() - 20, containerPanel.getHeight() - 20);
 		scrollPane.setBackground(c2);

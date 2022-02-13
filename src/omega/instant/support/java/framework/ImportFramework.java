@@ -1,19 +1,20 @@
-/**
-* Prepares Auto-Imports
-* Copyright (C) 2021 Omega UI
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*
+ * Prepares Auto-Imports
+ * Copyright (C) 2022 Omega UI
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package omega.instant.support.java.framework;
 import omega.ui.component.Editor;
 
@@ -36,11 +37,11 @@ import javax.swing.text.Document;
 
 import java.util.LinkedList;
 public class ImportFramework {
-	
+
 	//The Object of the Window that lets you choose the imports
 	//when classes in different packages have a same name.
 	private static ImportResolver imR = new ImportResolver();
-	
+
 	/**
 	 * Prepares an arbitary list of imported classes in the given text
 	 */
@@ -64,24 +65,24 @@ public class ImportFramework {
 		}
 		return imports;
 	}
-	
+
 	/*
-	* The constant holding the allowed symbols in Identifier naming rules
-	*/
+	 * The constant holding the allowed symbols in Identifier naming rules
+	 */
 	public static final String ALLOWED_IDENTIFIER_SYMBOLS = "$_";
-	
+
 	/*
-	* Method to check whether the specified symbol is allowed in Identifier name or not.
-	* @param ch = the symbol
-	*/
+	 * Method to check whether the specified symbol is allowed in Identifier name or not.
+	 * @param ch = the symbol
+	 */
 	public static boolean isAllowed(char ch){
 		return ALLOWED_IDENTIFIER_SYMBOLS.contains(ch + "");
 	}
-	
+
 	/*
-	* The method that search for classes in the passed code (String text)
-	* @param text = The Code
-	*/
+	 * The method that search for classes in the passed code (String text)
+	 * @param text = The Code
+	 */
 	public static LinkedList<String> findClasses(String text){
 		text = removeUsuals(text);
 		LinkedList<String> cls = new LinkedList<>();
@@ -122,11 +123,11 @@ public class ImportFramework {
 		tokens.clear();
 		return cls;
 	}
-	
+
 	/*
-	* The method removes all the comments, chars & String from the code
-	* @param text = The code
-	*/
+	 * The method removes all the comments, chars & String from the code
+	 * @param text = The code
+	 */
 	public static synchronized String removeUsuals(String text) {
 		boolean commentStarts = false;
 		LinkedList<String> tokens = CodeTokenizer.tokenize(text, '\n');
@@ -172,14 +173,14 @@ public class ImportFramework {
 		}
 		return text;
 	}
-	
+
 	/**
-	* The method adds the imports in the editor after rectifying the classes
-	* @param classes = The list of classes to be imported
-	* @param editor = The Editor in which the imports are to be inserted
-	*/
+	 * The method adds the imports in the editor after rectifying the classes
+	 * @param classes = The list of classes to be imported
+	 * @param editor = The Editor in which the imports are to be inserted
+	 */
 	public static synchronized void addImports(LinkedList<String> classes, Editor editor){
-		if(JDKManager.reading) 
+		if(JDKManager.reading)
 			return;
 		Screen.setStatus("Resolving Imports ... Keep Editing meanwhile!", 0, IconManager.fluentinfoImage);
 		String PACK = "";
@@ -191,18 +192,18 @@ public class ImportFramework {
 		}
 		LinkedList<String> unimported = new LinkedList<>();
 		SourceReader reader = new SourceReader(editor.getText());
-		
+
 		//Removing Java Lang Classess & SubClasses
 		main:
-			for(String classX : classes) {
-				for(Import xm : JDKManager.javaLangPack) {
-					if(xm.getClassName().equals(classX))
-						continue main;
-				}
-				if(reader.isSubClass(classX))
+		for(String classX : classes) {
+			for(Import xm : JDKManager.javaLangPack) {
+				if(xm.getClassName().equals(classX))
 					continue main;
-				unimported.add(classX);
 			}
+			if(reader.isSubClass(classX))
+				continue main;
+			unimported.add(classX);
+		}
 		classes.clear();
 		//Managing Classess with Same Name but different Package
 		LinkedList<LinkedList<String>> coexistingClassess = new LinkedList<>();
@@ -221,7 +222,7 @@ public class ImportFramework {
 						bases.add(im.getImport());
 					}
 					catch(Exception e) {
-						
+
 					}
 				}
 			}
@@ -281,32 +282,32 @@ public class ImportFramework {
 		Screen.setStatus(null, 100, null);
 	}
 	/**
-	* The method checks whether a specified import is already present in the editor or not
-	* @param editor = The Editor in which the searching is to be made
-	* @param packName = The package of the class
-	* @param className = The name of the Class
-	*/
+	 * The method checks whether a specified import is already present in the editor or not
+	 * @param editor = The Editor in which the searching is to be made
+	 * @param packName = The package of the class
+	 * @param className = The name of the Class
+	 */
 	public static boolean contains(Editor editor, String packName, String className) {
-		return 
-		editor.getText().contains("import " + packName + ".*;") 
+		return
+		editor.getText().contains("import " + packName + ".*;")
 		||
 		editor.getText().contains("import " + packName + "." + className + ";");
 	}
-	
+
 	/**
-	* The method checks whether the source contains documentation or not.
-	* @param editor = The Editor, the contents of which is to be examined.
-	*/
+	 * The method checks whether the source contains documentation or not.
+	 * @param editor = The Editor, the contents of which is to be examined.
+	 */
 	public static boolean isPackageInformationPresent(Editor e){
 		int index = getPackageInformationIndex(e);
 		return index != 0;
 	}
-	
+
 	/**
-	* The method finds the index of package information end
-	* Like for The Current Class the index is : 719
-	* @param editor = The Editor, the contents of which is to be examined.
-	*/
+	 * The method finds the index of package information end
+	 * Like for The Current Class the index is : 719
+	 * @param editor = The Editor, the contents of which is to be examined.
+	 */
 	public static synchronized int getPackageInformationIndex(Editor e){
 		int index = 0;
 		LinkedList<String> lines = CodeTokenizer.tokenizeWithoutLoss(e.getText(), '\n', "package ");
@@ -315,13 +316,13 @@ public class ImportFramework {
 		}
 		return index;
 	}
-	
+
 	/**
-	* The method inserts the imports in the specified editor
-	* @param editor = The Editor in which the import to be inserted
-	* @param pack = The package of the class
-	* @param className = The name of the class
-	*/
+	 * The method inserts the imports in the specified editor
+	 * @param editor = The Editor in which the import to be inserted
+	 * @param pack = The package of the class
+	 * @param className = The name of the class
+	 */
 	public static void insertImport(Editor editor, String pack, String className) {
 		try {
 			if(isPackageInformationPresent(editor)) {
@@ -350,41 +351,41 @@ public class ImportFramework {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	* The Method which sorts Imports
-	* 
-	* Suppose If a file has these many imports already present
-	* 
-	* import java.awt.Event;
-	* import javax.swing.JFrame;
-	* import java.nio.Files;
-	* import java.nio.Path;
-	* 
-	* And the new class to be imported is java.lang.Ant
-	* The New Sequence will be
-	* 
-	* import java.awt.Event;
-	* 
-	* import javax.swing.JFrame;
-	* 
-	* import java.nio.Files;
-	* import java.nio.Path;
-	* 
-	* import java.lang.Ant;
-	* 
-	* Or If the new class to be imported is java.awt.Button
-	* Then, New Sequence will be
-	* 
-	* import java.awt.Button;
-	* import java.awt.Event;
-	* 
-	* import javax.swing.JFrame;
-	* 
-	* import java.nio.Files;
-	* import java.nio.Path;
-	* 
-	*/
+	 * The Method which sorts Imports
+	 *
+	 * Suppose If a file has these many imports already present
+	 *
+	 * import java.awt.Event;
+	 * import javax.swing.JFrame;
+	 * import java.nio.Files;
+	 * import java.nio.Path;
+	 *
+	 * And the new class to be imported is java.lang.Ant
+	 * The New Sequence will be
+	 *
+	 * import java.awt.Event;
+	 *
+	 * import javax.swing.JFrame;
+	 *
+	 * import java.nio.Files;
+	 * import java.nio.Path;
+	 *
+	 * import java.lang.Ant;
+	 *
+	 * Or If the new class to be imported is java.awt.Button
+	 * Then, New Sequence will be
+	 *
+	 * import java.awt.Button;
+	 * import java.awt.Event;
+	 *
+	 * import javax.swing.JFrame;
+	 *
+	 * import java.nio.Files;
+	 * import java.nio.Path;
+	 *
+	 */
 	public static IndexInfo getInsertIndex(Editor editor, String pack, String className){
 		//@link getPackageInformationIndex(omega.utils.Editor)
 		String startChar = "";
@@ -407,12 +408,12 @@ public class ImportFramework {
 				sourceStartReached = line.contains("public ");
 				if(sourceStartReached)
 					break;
-				
+
 				if(line.trim().equals("")){
 					line = text.substring(lineIndex + 1, text.indexOf(';', lineIndex) + 1).trim();
 					continue;
 				}
-				
+
 				line = line.substring(line.indexOf(' '), line.indexOf(';')).trim();
 				if(line.startsWith("static "))
 					line = line.substring(line.indexOf(' ')).trim();
@@ -465,7 +466,7 @@ public class ImportFramework {
 		}
 		//Releasing Memory
 		infos.clear();
-		
+
 		return new IndexInfo(index, startChar, endChar);
 	}
 
@@ -491,7 +492,7 @@ public class ImportFramework {
 			this.name = name;
 			this.offset = offset;
 		}
-		
+
 		@Override
 		public String toString(){
 			return pack + "." + name;
