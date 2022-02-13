@@ -1,20 +1,20 @@
-/**
-  * AnimationsDialog
-  * Copyright (C) 2021 Omega UI
+/*
+ * AnimationsDialog
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.dialog;
 import omega.io.IconManager;
@@ -36,16 +36,16 @@ import static omegaui.component.animation.Animations.*;
 public class AnimationsDialog extends JDialog{
 
 	private Screen screen;
-	
+
 	private TextComp iconComp;
 	private TextComp labelComp;
-	
+
 	private TextComp winIconComp;
 	private TextComp winLabelComp;
-	
+
 	private TextComp linuxIconComp;
 	private TextComp linuxLabelComp;
-	
+
 	private TextComp coreLabelComp;
 
 	private TextComp onLabelComp;
@@ -53,11 +53,11 @@ public class AnimationsDialog extends JDialog{
 	private SwitchComp toggleComp;
 
 	private TextComp closeComp;
-	
+
 	public AnimationsDialog(Screen screen){
 		super(screen, true);
 		this.screen = screen;
-		
+
 		setLayout(null);
 		setIconImage(screen.getIconImage());
 		setUndecorated(true);
@@ -68,7 +68,7 @@ public class AnimationsDialog extends JDialog{
 		panel.setBackground(c2);
 		setContentPane(panel);
 		init();
-		
+
 		File firstInstallFile = new File(".omega-ide" + File.separator + ".shownAnimationsMenu");
 		if(!firstInstallFile.exists()){
 			setVisible(true);
@@ -164,5 +164,5 @@ public class AnimationsDialog extends JDialog{
 		super.dispose();
 		UIManager.setAnimationsActive(toggleComp.isOn());
 	}
-	
+
 }
