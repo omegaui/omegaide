@@ -169,6 +169,9 @@ public class FileTreeBranch extends JComponent {
 		listener.putKeyStroke((e)->{
 			Screen.openInDesktop(file);
 		}, VK_F1).setStopKeys(VK_CONTROL, VK_ALT, VK_SHIFT).useAutoReset();
+		listener.putKeyStroke((e)->{
+			Screen.openInTerminal(file);
+		}, VK_F3).setStopKeys(VK_CONTROL, VK_ALT, VK_SHIFT).useAutoReset();
 		
 		addKeyListener(listener);
 	}

@@ -17,6 +17,8 @@
  */
 
 package omega;
+import omega.ui.component.jediterm.JetTerminal;
+
 import omegaui.listener.KeyStrokeListener;
 
 import javax.swing.filechooser.FileView;
@@ -547,6 +549,25 @@ public class Screen extends JFrame {
 			new Thread(()->{
 				try {
 					java.awt.Desktop.getDesktop().open(file);
+				}
+				catch(Exception ex){
+					ex.printStackTrace();
+				}
+			}).start();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void openInTerminal(File file) {
+		try {
+			new Thread(()->{
+				try {
+					if(file.isDirectory())
+						terminal.showJetTerminal(file);
+					else
+						ToolMenu.processWizard.launch(file);
 				}
 				catch(Exception ex){
 					ex.printStackTrace();

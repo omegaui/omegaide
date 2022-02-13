@@ -1,20 +1,20 @@
-/**
-* PopupManager
-* Copyright (C) 2021 Omega UI
+/*
+ * PopupManager
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.io;
 import omega.ui.dialog.ChoiceDialog;
@@ -36,7 +36,7 @@ import java.io.File;
 public class PopupManager {
 	public static final byte SOURCE_FILE = 0;
 	public static final byte NON_SOURCE_FILE = 1;
-	
+
 	public static OPopupWindow createMenu(Editor editor) {
 		if(editor.currentFile != null) {
 			if(editor.currentFile.getName().endsWith(".java"))
@@ -46,10 +46,10 @@ public class PopupManager {
 		}
 		return null;
 	}
-	
+
 	public static OPopupWindow createPopup(byte type, Editor editor, Screen screen) {
 		OPopupWindow popup = new OPopupWindow("Tab Menu", screen, 0, false);
-		
+
 		if(type == SOURCE_FILE) {
 			popup.createItem("Run as Main Class", IconManager.runImage, ()->{
 				Screen.getProjectRunner().setMainClassPath(editor.currentFile.getAbsolutePath());
@@ -91,7 +91,7 @@ public class PopupManager {
 		popup.createItem("Close All Tabs", IconManager.closeImage, Screen.getScreen()::closeAllTabs);
 		return popup;
 	}
-	
+
 	public static void createTreePopup(OPopupWindow popup, File file) {
 		if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath())){
 			popup.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init);
@@ -107,6 +107,7 @@ public class PopupManager {
 			.createItem("New Annotation", IconManager.fluentannotationFileImage, ()->Screen.getProjectFile().getFileCreator().showFileView("@interface", file.getAbsolutePath()));
 		}
 		popup.createItem("Open in Desktop (F1)", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(file));
+		popup.createItem("Open in Terminal (F3)", IconManager.fluentconsoleImage, ()->Screen.openInTerminal(file));
 		if(!file.isDirectory()) {
 			popup
 			.createItem("Open On Right Tab Panel", IconManager.fluenteditFileImage, ()->Screen.getScreen().loadFileOnRightTabPanel(file))
@@ -136,7 +137,7 @@ public class PopupManager {
 				Screen.getProjectFile().getFileTreePanel().findBranch(file).renameView();
 			});
 		}
-		
+
 		popup.createItem("Copy Path (\"path\")", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\"" + file.getAbsolutePath() + "\""), null));
 		popup.createItem("Copy Path", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(file.getAbsolutePath()), null));
 	}
