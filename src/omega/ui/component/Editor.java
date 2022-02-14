@@ -821,6 +821,14 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		}
 	}
 
+	public void resetSelectionHighlights(){
+		if(lastSearchContext != null){
+			lastSearchContext.setMarkAll(false);
+			fAndR.replaceToolBar.fireSearchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
+			lastSearchContext = null;
+		}
+	}
+	
 	public void triggerJumpToDefinition(KeyEvent e){
 		if(jumpToDefinitionPanel == null)
 			jumpToDefinitionPanel = JumpToDefinitionPanels.get(this);
@@ -858,6 +866,9 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				keyCache += code;
 				lastKeyCode = code;
 			}
+
+			if(code == VK_END || code == VK_HOME)
+				resetSelectionHighlights();
 
 			contentWindow.setIgnoreGenViewOnce(keyCache != 0);
 
@@ -1085,11 +1096,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void mousePressed(MouseEvent arg0) {
 		keyCache = 0;
 		contentWindow.setVisible(false);
-		if(lastSearchContext != null){
-			lastSearchContext.setMarkAll(false);
-			fAndR.replaceToolBar.fireSearchEvent(new SearchEvent(this, SearchEvent.Type.MARK_ALL, lastSearchContext));
-			lastSearchContext = null;
-		}
+		resetSelectionHighlights();
 	}
 	@Override
 	public void mouseReleased(MouseEvent arg0) {

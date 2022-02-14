@@ -228,7 +228,7 @@ public class Screen extends JFrame {
 				dispose();
 			}
 		});
-
+		
 		splash.setProgress(60, "initializing");
 
 		ideWideKeyListener = new KeyStrokeListener(this);
