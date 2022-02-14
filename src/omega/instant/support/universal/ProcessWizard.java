@@ -181,7 +181,7 @@ public class ProcessWizard extends JDialog{
 		}
 		titleComp.setColors(c2, c2, glow);
 		titleComp.setText("Process Wizard");
-		//Atempting to add the current data
+		//Attempting to add the current data
 		boolean done = false;
 		for(ProcessData data : ProcessManager.dataSet){
 			if(data.fileExt.equals(ext)) {

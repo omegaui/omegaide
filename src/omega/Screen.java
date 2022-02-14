@@ -270,6 +270,7 @@ public class Screen extends JFrame {
 		ideWideKeyListener.putKeyStroke((e)->showNewTerminal(e), VK_ALT, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->toggleProcessPanel(e), VK_ALT, VK_P).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->refreshFileTree(e), VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showSettings(e), VK_CONTROL, VK_ALT, VK_S).setStopKeys(VK_SHIFT).useAutoReset();
 	}
 
 	public void showFileWizard(KeyEvent e){
@@ -346,6 +347,12 @@ public class Screen extends JFrame {
 	public void toggleProcessPanel(KeyEvent e){
 		operationPane.setVisible(!operationPane.isVisible());
 
+		e.consume();
+	}
+
+	public void showSettings(KeyEvent e){
+		sideMenu.showSettings();
+		
 		e.consume();
 	}
 	
