@@ -1,6 +1,6 @@
-/**
+/*
  * SearchWindow
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,6 +110,9 @@ public class SearchWindow extends JDialog{
 		//Ignoring VCS files
 		ignoredDirectories.add(".git");
 		ignoredDirectories.add(".github");
+		
+		//Ignoring Gradle files
+		ignoredDirectories.add("gradle");
 
 		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
 		field.setBounds(0, 30, getWidth(), 30);
@@ -244,7 +247,7 @@ public class SearchWindow extends JDialog{
 		}
 	}
 
-	public void list(String match){
+	public synchronized void list(String match){
 		currentComps.forEach(panel::remove);
 		currentComps.clear();
 
