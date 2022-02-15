@@ -27,9 +27,9 @@
 
 **Omega IDE v2.2 - The Awesome Beta**
 
-![](/res/light.png)
+![](/res/light.png#gh-light-mode-only)
 
-![](/res/dark.png)
+![](/res/dark.png#gh-dark-mode-only)
 
 # Written from Scratch
 Omega IDE has 
