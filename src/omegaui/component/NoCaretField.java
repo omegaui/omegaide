@@ -1,20 +1,20 @@
-/**
-* A TextField with no caret navigation
-* Copyright (C) 2021 Omega UI
+/*
+ * A TextField with no caret navigation
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omegaui.component;
 import java.io.InputStream;
@@ -45,7 +45,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	public Color color1;
 	public Color color2;
 	public Color color3;
-	
+
 	private String text;
 	private String lastText;
 	private LinkedList<String> lines;
@@ -59,7 +59,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	private volatile boolean c;
 	private volatile boolean v;
 	private volatile boolean editable = true;
-	
+
 	public NoCaretField(String text, Color c1, Color c2, Color c3){
 		this.text = text;
 		this.lines = new LinkedList<>();
@@ -132,7 +132,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -220,7 +220,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 	public void setOnAction(Runnable action) {
 		this.action = action;
 	}
-	
+
 	public String getMessage() {
 		return message;
 	}

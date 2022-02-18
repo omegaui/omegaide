@@ -1,20 +1,20 @@
-/**
-* The Edge Component
-* Copyright (C) 2021 Omega UI
+/*
+ * The Edge Component
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package omegaui.component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -26,22 +26,22 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 public class EdgeComp extends JComponent {
-	
+
 	private String text = "";
-	
+
 	public Color color1;
 	public Color color2;
 	public Color color3;
-	
+
 	public Runnable action;
-	
+
 	public int offset;
-	
+
 	public volatile boolean enter = false;
 	public volatile boolean hoverEnabled = false;
 	public volatile boolean useFlatLineAtBack = false;
 	public volatile boolean lookLikeLabel = false;
-	
+
 	public EdgeComp(String text, Color color1, Color color2, Color color3, Runnable r){
 		setText(text);
 		setColors(color1, color2, color3);
@@ -69,7 +69,7 @@ public class EdgeComp extends JComponent {
 			}
 		});
 	}
-	
+
 	@Override
 	public void paint(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;
@@ -90,44 +90,44 @@ public class EdgeComp extends JComponent {
 			g.drawPolygon(ex, ey, ex.length);
 		}
 	}
-	
+
 	public void setColors(Color c1, Color c2, Color c3){
 		color1 = c1;
 		color2 = c2;
 		color3 = c3;
 		repaint();
 	}
-	
+
 	public java.lang.String getText() {
 		return text;
 	}
-	
+
 	public void setText(java.lang.String text) {
 		this.text = text;
 		repaint();
 	}
-	
+
 	public void setUseFlatLineAtBack(boolean useFlatLineAtBack) {
 		this.useFlatLineAtBack = useFlatLineAtBack;
 		repaint();
 	}
-	
+
 	public boolean isUseFlatLineAtBack() {
 		return useFlatLineAtBack;
 	}
-	
+
 	public boolean isLookLikeLabel() {
 		return lookLikeLabel;
 	}
-	
+
 	public void setLookLikeLabel(boolean lookLikeLabel) {
 		this.lookLikeLabel = lookLikeLabel;
 	}
-	
+
 	public java.lang.Runnable getOnAction() {
 		return action;
 	}
-	
+
 	public void setOnAction(java.lang.Runnable action) {
 		this.action = action;
 	}

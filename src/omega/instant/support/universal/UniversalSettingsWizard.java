@@ -48,13 +48,13 @@ public class UniversalSettingsWizard extends JDialog{
 	private TextComp compileWorkDirComp;
 
 	private TextComp listMakerComp;
-	public LinkedList<ListMaker> lists = new LinkedList<>();
 
 	private JScrollPane scrollPane;
 	private FlexPanel panel;
 	private int block = 0;
 
 	private ArgumentWindow commandWindow;
+	private DynamicListMaker listMaker;
 
 	public UniversalSettingsWizard(Window window){
 		super(window, "Universal Settings Wizard");
@@ -65,7 +65,7 @@ public class UniversalSettingsWizard extends JDialog{
 		panel.setBackground(c2);
 		setContentPane(panel);
 		setResizable(false);
-		setSize(600, 500);
+		setSize(600, 180);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		init();
@@ -169,50 +169,25 @@ public class UniversalSettingsWizard extends JDialog{
 		panel.setArc(0, 0);
 		scrollPane.setBorder(null);
 		add(scrollPane);
+
+		listMaker = new DynamicListMaker();
 	}
 
 	public void addList(){
-		ListMaker listMaker = new ListMaker();
-		listMaker.setLocation(0, block);
-		panel.add(listMaker);
-		lists.add(listMaker);
-		block += 30;
-		panel.setPreferredSize(new Dimension(600, block));
-
-		setSize(600, lists.isEmpty() ? 180 : (200 + (lists.size() > 6 ? 300 : (lists.size() * 30))));
-		setLocationRelativeTo(null);
-		if(getHeight() >= 500){
-			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-			scrollPane.getVerticalScrollBar().setVisible(true);
-			panel.repaint();
-		}
+		dispose();
+		listMaker.setVisible(true);
 	}
+
 	public void apply(){
-		boolean checkPassed = true;
-		for(ListMaker list : lists){
-			if(list.isEnabled()){
-				if(!list.validateListMaker())
-					checkPassed = false;
-			}
-		}
-		if(!checkPassed)
-			return;
 		Screen.getProjectFile().getArgumentManager().compileDir = compileWorkDirComp.getToolTipText();
 		Screen.getProjectFile().getArgumentManager().runDir = runWorkDirComp.getToolTipText();
 		Screen.getProjectFile().getArgumentManager().units.clear();
-		lists.forEach(list->{
-			if(list.validateListMaker() && list.isEnabled()){
-				Screen.getProjectFile().getArgumentManager().units.add(list);
-			}
-		});
-		Screen.getProjectFile().getArgumentManager().save();
+		listMaker.loadAllToArgsManager();
 	}
 	@Override
 	public void setVisible(boolean value){
 		if(value){
 			block = 0;
-			lists.forEach(panel::remove);
-			lists.clear();
 			compileField.setText(!Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getCompileCommand()) ? "Click to Enter Compile Command" : Screen.getProjectFile().getArgumentManager().getCompileCommand());
 			runField.setText(!Screen.isNotNull(Screen.getProjectFile().getArgumentManager().getRunCommand()) ? "Click to Enter Run Command" : Screen.getProjectFile().getArgumentManager().getRunCommand());
 			compileWorkDirComp.setToolTipText(Screen.getProjectFile().getArgumentManager().compileDir.equals("") ? "Working Directory" : Screen.getProjectFile().getArgumentManager().compileDir);
@@ -224,13 +199,6 @@ public class UniversalSettingsWizard extends JDialog{
 			catch(Exception e){
 
 			}
-			Screen.getProjectFile().getArgumentManager().units.forEach(unit->{
-				unit.setLocation(0, block);
-				panel.add(unit);
-				lists.add(unit);
-				block += 30;
-			});
-			setSize(600, lists.isEmpty() ? 180 : (200 + (lists.size() > 6 ? 500 : (lists.size() * 30))));
 			setLocationRelativeTo(null);
 		}
 		super.setVisible(value);

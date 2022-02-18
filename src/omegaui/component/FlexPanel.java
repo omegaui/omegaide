@@ -1,20 +1,20 @@
-/**
-* Flexible Panel
-* Copyright (C) 2021 Omega UI
+/*
+ * Flexible Panel
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package omegaui.component;
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -25,7 +25,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 public class FlexPanel extends JComponent{
-	
+
 	public int arcX = 40;
 	public int arcY = 40;
 	private Color accentColor;
@@ -33,7 +33,7 @@ public class FlexPanel extends JComponent{
 	private GradientPaint paint;
 	private boolean paintGradientEnabled = false;
 	private boolean paintBorder = false;
-	
+
 	public FlexPanel(LayoutManager layout, Color background, Color accentColor){
 		setLayout(layout);
 		setBackground(background);
@@ -46,11 +46,11 @@ public class FlexPanel extends JComponent{
 		this.paintGradientEnabled = paintGradientEnabled;
 		repaint();
 	}
-	
+
 	public Color getAccentColor() {
 		return accentColor;
 	}
-	
+
 	public void setAccentColor(Color accentColor) {
 		this.accentColor = accentColor;
 	}
@@ -70,12 +70,12 @@ public class FlexPanel extends JComponent{
 	public void setBorderColor(java.awt.Color borderColor) {
 		this.borderColor = borderColor;
 	}
-	
+
 	public void setArc(int x, int y){
 		arcX = x;
 		arcY = y;
 	}
-	
+
 	@Override
 	public void paint(Graphics graphics){
 		if(paintGradientEnabled)

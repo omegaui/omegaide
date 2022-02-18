@@ -1,20 +1,20 @@
-/**
-* The Switch Component
-* Copyright (C) 2021 Omega UI
+/*
+ * The Switch Component
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package omegaui.component;
 import omegaui.component.listener.ToggleListener;
 
@@ -61,7 +61,7 @@ public class SwitchComp extends JComponent {
 			}
 		});
 	}
-	
+
 	public SwitchComp(boolean on, Color c1, Color c2, Color c3, ToggleListener toggleListener){
 		this(c1, c2, c3, toggleListener);
 		setOn(on);
@@ -100,23 +100,23 @@ public class SwitchComp extends JComponent {
 			g.fillOval(x + 3, y + 3, w - 6, h - 6);
 		}
 	}
-	
+
 	public boolean isOn() {
 		return on;
 	}
-	
+
 	public void setOn(boolean on) {
 		this.on = on;
 		repaint();
 	}
-	
+
 	public void setColors(Color c1, Color c2, Color c3){
 		color1 = c1;
 		color2 = c2;
 		color3 = c3;
 		repaint();
 	}
-	
+
 	public java.awt.Color getInBallColor() {
 		return inBallColor;
 	}
@@ -124,23 +124,23 @@ public class SwitchComp extends JComponent {
 		this.inBallColor = inBallColor;
 		repaint();
 	}
-	
+
 	public int getBallOffset() {
 		return offset;
 	}
-	
+
 	public void setBallOffset(int offset) {
 		this.offset = offset;
 	}
-	
+
 	public ToggleListener getToggleListener() {
 		return toggleListener;
 	}
-	
+
 	public void setToggleListener(ToggleListener toggleListener) {
 		this.toggleListener = toggleListener;
 	}
-	
+
 	public void setArc(int x, int y){
 		arcX = x;
 		arcY = y;

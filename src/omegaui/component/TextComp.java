@@ -1,4 +1,4 @@
-/**
+/*
  * The Base Component for Rendering Text and Images as a button
  * Copyright (C) 2021 - 22 Omega UI
 

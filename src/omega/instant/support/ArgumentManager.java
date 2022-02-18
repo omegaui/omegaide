@@ -17,7 +17,7 @@
  */
 
 package omega.instant.support;
-import omega.instant.support.universal.ListMaker;
+import omega.instant.support.universal.DynamicListPanel;
 
 import omegaui.dynamic.database.DataBase;
 import omegaui.dynamic.database.DataEntry;
@@ -32,9 +32,9 @@ public class ArgumentManager extends DataBase{
 
 	public LinkedList<String> run_time_args = new LinkedList<>();
 	public LinkedList<String> compile_time_args = new LinkedList<>();
+	public LinkedList<DynamicListPanel> units = new LinkedList<>();
 	public String runDir;
 	public String compileDir;
-	public LinkedList<ListMaker> units = new LinkedList<>();
 
 	public ArgumentManager(){
 		super(Screen.getProjectFile().getProjectPath() + File.separator + ".args");
@@ -60,19 +60,32 @@ public class ArgumentManager extends DataBase{
 		LinkedList<DataEntry> containers = getEntries("Containers");
 		LinkedList<DataEntry> sources = getEntries("Sources");
 		LinkedList<DataEntry> bounds = getEntries("Bounds Surrounded");
-		if(extensions == null) return;
+		LinkedList<DataEntry> dynamicModes = getEntries("Dynamic Modes");
+		if(extensions == null) 
+			return;
 		for(int i = 0; i < extensions.size(); i++){
-			units.add(new ListMaker(extensions.get(i).getValue(),
-			containers.get(i).getValue(),
-			sources.get(i).getValue(),
-			bounds.get(i).getValueAsBoolean()));
+			units.add(new DynamicListPanel(
+				extensions.get(i).getValue(),
+				containers.get(i).getValue(),
+				sources.get(i).getValue(),
+				bounds.get(i).getValueAsBoolean(),
+				dynamicModes.get(i).getValueAsBoolean()
+			));
 		}
 	}
 
 	public void genLists(){
 		units.forEach(unit->{
 			LinkedList<File> files = new LinkedList<>();
-			loadFiles(unit.getFileExtension(), files, new File(unit.getWorkingDirectory()));
+			if(unit.isDynamic()){
+				Screen.getScreen().getAllEditors().forEach(editor->{
+					if(editor.currentFile.getName().endsWith(unit.getFileExtension()))
+						files.add(editor.currentFile);
+				});
+			}
+			else{
+				loadFiles(unit.getFileExtension(), files, new File(unit.getWorkingDirectory()));
+			}
 			if(!files.isEmpty())
 				writeList(unit.getContainerName(), files, unit.isQuoted());
 		});
@@ -129,11 +142,12 @@ public class ArgumentManager extends DataBase{
 		updateEntry("Compile Time Working Directory", compileDir, 0);
 		updateEntry("Run Time Working Directory", runDir, 0);
 		for(int i = 0; i < units.size(); i++){
-			ListMaker u = units.get(i);
+			DynamicListPanel u = units.get(i);
 			updateEntry("Extensions", u.getFileExtension(), i);
 			updateEntry("Containers", u.getContainerName(), i);
 			updateEntry("Sources", u.getWorkingDirectory(), i);
 			updateEntry("Bounds Surrounded", String.valueOf(u.isQuoted()), i);
+			updateEntry("Dynamic Modes", String.valueOf(u.isDynamic()), i);
 		}
 		super.save();
 	}
