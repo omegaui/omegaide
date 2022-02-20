@@ -125,6 +125,8 @@ public class DynamicListMaker extends JDialog{
 	}
 
 	public void loadAllToArgsManager(){
+		if(Screen.getProjectFile().getArgumentManager() == null)
+			return;
 		Screen.getProjectFile().getArgumentManager().units.clear();
 		listPanels.forEach(list->{
 			if(list.validateListPanel())
