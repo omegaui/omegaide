@@ -743,6 +743,9 @@ public class Screen extends JFrame {
 		pluginManager.save();
 		uiManager.save();
 		dataManager.saveData();
+		if(projectFile.getProjectManager().isLanguageTagNonJava()){
+			projectFile.getArgumentManager().save();
+		}
 		SnippetBase.save();
 		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));
 		super.dispose();

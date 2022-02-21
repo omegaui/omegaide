@@ -48,9 +48,15 @@ public class ArgumentManager extends DataBase{
 			getEntries("Compile Time Argument").forEach(entry->compile_time_args.add(entry.getValue()));
 		if(getEntries("Run Time Argument") != null)
 			getEntries("Run Time Argument").forEach(entry->run_time_args.add(entry.getValue()));
+		
 		compileDir = getEntryAt("Compile Time Working Directory", 0) != null ? getEntryAt("Compile Time Working Directory", 0).getValue() : "";
 		runDir = getEntryAt("Run Time Working Directory", 0) != null ? getEntryAt("Run Time Working Directory", 0).getValue() : "";
 
+		if(!Screen.isNotNull(runDir))
+			runDir = Screen.getProjectFile().getProjectPath();
+		if(!Screen.isNotNull(compileDir))
+			compileDir = Screen.getProjectFile().getProjectPath();
+		
 		if(!new File(compileDir).exists())
 			compileDir = "";
 		if(!new File(runDir).exists())
@@ -139,15 +145,15 @@ public class ArgumentManager extends DataBase{
 		clear();
 		compile_time_args.forEach(entry->addEntry("Compile Time Argument", entry));
 		run_time_args.forEach(entry->addEntry("Run Time Argument", entry));
-		updateEntry("Compile Time Working Directory", compileDir, 0);
-		updateEntry("Run Time Working Directory", runDir, 0);
+		addEntry("Compile Time Working Directory", compileDir);
+		addEntry("Run Time Working Directory", runDir);
 		for(int i = 0; i < units.size(); i++){
 			DynamicListPanel u = units.get(i);
-			updateEntry("Extensions", u.getFileExtension(), i);
-			updateEntry("Containers", u.getContainerName(), i);
-			updateEntry("Sources", u.getWorkingDirectory(), i);
-			updateEntry("Bounds Surrounded", String.valueOf(u.isQuoted()), i);
-			updateEntry("Dynamic Modes", String.valueOf(u.isDynamic()), i);
+			addEntry("Extensions", u.getFileExtension());
+			addEntry("Containers", u.getContainerName());
+			addEntry("Sources", u.getWorkingDirectory());
+			addEntry("Bounds Surrounded", String.valueOf(u.isQuoted()));
+			addEntry("Dynamic Modes", String.valueOf(u.isDynamic()));
 		}
 		super.save();
 	}

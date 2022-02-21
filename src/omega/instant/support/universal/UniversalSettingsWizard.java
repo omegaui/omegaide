@@ -103,7 +103,7 @@ public class UniversalSettingsWizard extends JDialog{
 		runField.setFont(PX14);
 		add(runField);
 
-		runWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Building", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
+		runWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Running, Default : Project", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
 			fc.setCurrentDirectory(new File(omega.Screen.getProjectFile().getProjectPath()));
 			LinkedList<File> selections = fc.selectDirectories();
 			if(!selections.isEmpty()){
@@ -135,7 +135,7 @@ public class UniversalSettingsWizard extends JDialog{
 		compileField.setFont(PX14);
 		add(compileField);
 
-		compileWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Running", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
+		compileWorkDirComp = new TextComp("Working Directory", "Choose Working Directory When Compiling, Default : Project", TOOLMENU_COLOR1_SHADE, back1, TOOLMENU_COLOR2, ()->{
 			fc.setCurrentDirectory(new File(Screen.getProjectFile().getProjectPath()));
 			LinkedList<File> selections = fc.selectDirectories();
 			if(!selections.isEmpty()){
@@ -181,7 +181,6 @@ public class UniversalSettingsWizard extends JDialog{
 	public void apply(){
 		Screen.getProjectFile().getArgumentManager().compileDir = compileWorkDirComp.getToolTipText();
 		Screen.getProjectFile().getArgumentManager().runDir = runWorkDirComp.getToolTipText();
-		Screen.getProjectFile().getArgumentManager().units.clear();
 		listMaker.loadAllToArgsManager();
 	}
 	@Override

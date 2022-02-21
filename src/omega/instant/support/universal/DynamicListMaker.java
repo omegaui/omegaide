@@ -125,8 +125,11 @@ public class DynamicListMaker extends JDialog{
 	}
 
 	public void loadAllToArgsManager(){
-		if(Screen.getProjectFile().getArgumentManager() == null)
+		if(Screen.getProjectFile().getArgumentManager() == null){
+			if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
+				System.err.println("This is practically impossible but the Current Project has a language tag non-java but its argument manager is null somehow????!");
 			return;
+		}
 		Screen.getProjectFile().getArgumentManager().units.clear();
 		listPanels.forEach(list->{
 			if(list.validateListPanel())
