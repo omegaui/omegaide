@@ -154,7 +154,6 @@ public class Screen extends JFrame {
 	private static AnimationsDialog animationsDialog;
 
 	public Screen() {
-		setUndecorated(true);
 		try {
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
 
@@ -210,6 +209,8 @@ public class Screen extends JFrame {
 		UIManager.loadHighlight();
 		UIManager.setData(this);
 
+		setUndecorated(true);
+
 		animationsDialog = new AnimationsDialog(this);
 
 		splash = new SplashScreen();
@@ -218,13 +219,14 @@ public class Screen extends JFrame {
 		splash.setProgress(37, "welcome");
 
 		setLayout(new BorderLayout());
-		setSize(1000, 650);
+		setSize(UIManager.getMainWindowWidth(), UIManager.getMainWindowHeight());
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				System.out.println(getBounds());
 				dispose();
 			}
 		});
@@ -343,7 +345,7 @@ public class Screen extends JFrame {
 
 		e.consume();
 	}
-
+	
 	public void toggleProcessPanel(KeyEvent e){
 		operationPane.setVisible(!operationPane.isVisible());
 

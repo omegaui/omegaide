@@ -58,6 +58,7 @@ import omega.ui.dialog.FontChooser;
 import omega.ui.dialog.WorkspaceSelector;
 import omega.ui.dialog.FileSelectionDialog;
 import omega.ui.dialog.RecentsDialog;
+import omega.ui.dialog.MainWindowSizeController;
 
 import omegaui.component.TextComp;
 
@@ -179,6 +180,7 @@ public class ToolMenu extends JPanel {
 	public static RecentsDialog recentsDialog;
 	public static GitHubClientWindow githubClientWindow;
 	public static DonationWindow donationWindow;
+	public static MainWindowSizeController mainWindowSizeController;
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
 	
@@ -222,6 +224,7 @@ public class ToolMenu extends JPanel {
 			recentsDialog = new RecentsDialog(screen);
 			githubClientWindow = new GitHubClientWindow(screen);
 			donationWindow = new DonationWindow(screen);
+			mainWindowSizeController = new MainWindowSizeController(screen);
 			
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
 			.title("Project Type Management")
@@ -715,6 +718,9 @@ public class ToolMenu extends JPanel {
 		})
 		.createItem("Set Gradle Script", IconManager.fluentgradleImage, ()->{
 			gradleBuildScriptManager.setVisible(true);
+		})
+		.createItem("Set Main Window Size", IconManager.fluenttesttubeImage, ()->{
+			mainWindowSizeController.setVisible(true);
 		});
 		FileSelectionDialog fs = new FileSelectionDialog(screen);
 		

@@ -63,9 +63,19 @@ public class UIManager extends DataBase {
 	public static volatile int extendedState = Screen.NORMAL;
 
 	/**
-	 * The field carrying the default font name which was registered in omega.Screen
+	 * The field carrying the default value for animations state
 	 */
 	public static volatile boolean animationsActive = true;
+
+	/**
+	 * The field carrying the default value for window width
+	 */
+	public static volatile int mainWindowWidth = 1000;
+
+	/**
+	 * The field carrying the default value for window height
+	 */
+	public static volatile int mainWindowHeight = 650;
 
 	/**
 	 * The field carrying the default tab Height
@@ -207,6 +217,8 @@ public class UIManager extends DataBase {
 			setTerminalFontState(getEntryAt("Terminal Font", 2).getValueAsInt());
 			setAnimationsActive(getEntryAt("Animations On", 0).getValueAsBoolean());
 			setExtendedState(getEntryAt("Main Window Extended State", 0).getValueAsInt());
+			setMainWindowWidth(getEntryAt("Main Window Width", 0).getValueAsInt());
+			setMainWindowHeight(getEntryAt("Main Window Height", 0).getValueAsInt());
 			if(!isDarkMode()) {
 				c3 = color4;
 				c1 = new Color(0, 0, 255, 40);
@@ -317,6 +329,8 @@ public class UIManager extends DataBase {
 		addEntry("Terminal Font", terminalFontSize + "");
 		addEntry("Terminal Font", terminalFontState + "");
 		addEntry("Main Window Extended State", Screen.getScreen().getExtendedState() + "");
+		addEntry("Main Window Width", mainWindowWidth + "");
+		addEntry("Main Window Height", mainWindowHeight + "");
 		super.save();
 	}
 
@@ -373,6 +387,24 @@ public class UIManager extends DataBase {
 	public static void setAnimationsActive(boolean animationsActive) {
 		UIManager.animationsActive = animationsActive;
 		Animations.setAnimationsOn(animationsActive);
+	}
+
+	public static int getMainWindowWidth() {
+		return mainWindowWidth;
+	}
+	
+	public static void setMainWindowWidth(int mainWindowWidth) {
+		if(mainWindowWidth >= 765)
+			UIManager.mainWindowWidth = mainWindowWidth;
+	}
+	
+	public static int getMainWindowHeight() {
+		return mainWindowHeight;
+	}
+	
+	public static void setMainWindowHeight(int mainWindowHeight) {
+		if(mainWindowHeight >= 430)
+			UIManager.mainWindowHeight = mainWindowHeight;
 	}
 
 	public static int getExtendedState() {
