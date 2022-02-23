@@ -1,6 +1,6 @@
-/**
+/*
   * FileTreePanel
-  * Copyright (C) 2021 Omega UI
+  * Copyright (C) 2022 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -262,6 +262,32 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		super.paint(g);
 		g.dispose();
+	}
+
+	public void transferFocusToPreviousBranch(FileTreeBranch currentBranch){
+		int currentBranchIndex = branches.indexOf(currentBranch);
+		if(currentBranchIndex == 0)
+			return;
+		
+		FileTreeBranch bx = branches.get(currentBranchIndex - 1);
+		bx.grabFocus();
+		bx.repaint();
+
+		if(!scrollPane.getViewport().getViewRect().contains(bx.getBounds()))
+			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - optimumBranchSize - gap);
+	}
+
+	public void transferFocusToNextBranch(FileTreeBranch currentBranch){
+		int currentBranchIndex = branches.indexOf(currentBranch);
+		if(currentBranchIndex == branches.size() - 1)
+			return;
+		
+		FileTreeBranch bx = branches.get(currentBranchIndex + 1);
+		bx.grabFocus();
+		bx.repaint();
+		
+		if(!scrollPane.getViewport().getViewRect().contains(bx.getBounds()))
+			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + optimumBranchSize + gap);
 	}
 	
 	public java.io.File getRoot() {

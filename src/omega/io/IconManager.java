@@ -1,6 +1,6 @@
-/**
+/*
  * IconManager
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -161,6 +161,10 @@ public class IconManager {
 	public static BufferedImage fluentcopyImage = getFluentIcon("copy-to-clipboard-48.png");
 	public static BufferedImage fluenteditFileImage = getFluentIcon("edit-file-48.png");
 	public static BufferedImage fluentrenameImage = getFluentIcon("rename-48.png");
+	
+	public static BufferedImage fluentrightArrowImage = getFluentIcon("chevron-right-48.png");
+	public static BufferedImage fluentdownArrowImage = getFluentIcon("chevron-down-48.png");
+	public static BufferedImage fluentupArrowImage = getFluentIcon("chevron-up-48.png");
 
 	//Fluent GIFs
 	public static Image fluentneutralemojiGif = getFluentGif("neutral.gif");

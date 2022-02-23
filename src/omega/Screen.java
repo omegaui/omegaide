@@ -746,7 +746,11 @@ public class Screen extends JFrame {
 		uiManager.save();
 		dataManager.saveData();
 		if(projectFile.getProjectManager().isLanguageTagNonJava()){
-			projectFile.getArgumentManager().save();
+			if(projectFile.getArgumentManager() != null)
+				projectFile.getArgumentManager().save();
+			else{
+				System.out.println("This project doesn't contains any arguments to be saved! ... skipping ArgumentManager.save()");
+			}
 		}
 		SnippetBase.save();
 		getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_CLOSING, this, 0));

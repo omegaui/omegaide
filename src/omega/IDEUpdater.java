@@ -1,4 +1,4 @@
-/**
+/*
  * IDEUpdater
  * Copyright (C) 2021 Omega UI
 

@@ -1,6 +1,6 @@
-/**
+/*
   * FileTreeBranch
-  * Copyright (C) 2021 Omega UI
+  * Copyright (C) 2022 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -86,6 +86,8 @@ public class FileTreeBranch extends JComponent {
 	private volatile boolean expanded = false;
 	private volatile boolean modeLocked = false;
 	private volatile boolean rootMode = false;
+
+	private volatile BufferedImage arrowImage;
 	
 	public FileTreeBranch(FileTreePanel fileTreePanel, File file){
 		this.file = file;
@@ -172,6 +174,12 @@ public class FileTreeBranch extends JComponent {
 		listener.putKeyStroke((e)->{
 			Screen.openInTerminal(file);
 		}, VK_F3).setStopKeys(VK_CONTROL, VK_ALT, VK_SHIFT).useAutoReset();
+		listener.putKeyStroke((e)->{
+			fileTreePanel.transferFocusToNextBranch(FileTreeBranch.this);
+		}, VK_DOWN);
+		listener.putKeyStroke((e)->{
+			fileTreePanel.transferFocusToPreviousBranch(FileTreeBranch.this);
+		}, VK_UP);
 		
 		addKeyListener(listener);
 	}
@@ -188,8 +196,8 @@ public class FileTreeBranch extends JComponent {
 		g.setColor(c2);
 		g.setFont(PX14);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(image, (enter || rootMode) ? 3 : 0, getHeight()/2 - 20/2, null);
-		g.setColor(fileColor);
+		g.drawImage(image, (enter || rootMode || isFocusOwner()) ? 3 : 0, getHeight()/2 - 20/2, null);
+		g.setColor((!rootMode && expanded) ? TOOLMENU_COLOR3 : fileColor);
 		g.drawString(displayName, 30, getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 		if(isFocusOwner()){
 			g.fillRect(30, getHeight() - 3, g.getFontMetrics().stringWidth(displayName), 2);
