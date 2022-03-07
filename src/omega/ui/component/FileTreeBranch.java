@@ -1,26 +1,32 @@
 /*
-  * FileTreeBranch
-  * Copyright (C) 2022 Omega UI
+ * FileTreeBranch
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.component;
+import omega.instant.support.LanguageTagView;
+
+import omegaui.dynamic.database.DataBase;
+import omegaui.dynamic.database.DataEntry;
+
 import omega.io.FileOperationManager;
 import omega.io.IconManager;
 import omega.io.UIManager;
 import omega.io.PopupManager;
+import omega.io.ProjectDataBase;
 
 import omegaui.listener.KeyStrokeListener;
 
@@ -57,7 +63,7 @@ import static omegaui.component.animation.Animations.*;
 public class FileTreeBranch extends JComponent {
 	public static final int VIEW_FILE_MODE = 0;
 	public static final int EDIT_FILE_NAME_MODE = 1;
-	
+
 	public static final Color ANY_COLOR = TOOLMENU_COLOR5;
 	public static final Color SOURCE_COLOR = TOOLMENU_COLOR6;
 	public static final Color BYTE_COLOR = new Color(150, 150, 50, 220);
@@ -67,32 +73,32 @@ public class FileTreeBranch extends JComponent {
 	public static final Color WEB_COLOR = TOOLMENU_COLOR3;
 	public static final Color XML_COLOR = LINUX_COLOR;
 	public static final Color ARCHIVE_COLOR = ANY_COLOR;
-	
+
 	private File file;
 	private FileTreePanel fileTreePanel;
 	private Runnable clickAction;
-	
+
 	private int mode = VIEW_FILE_MODE;
-	
+
 	private String displayName;
 	private BufferedImage image;
 	private Color fileColor;
-	
+
 	private RTextField nameField;
 
 	private OPopupWindow popupMenu;
-	
+
 	private volatile boolean enter = false;
 	private volatile boolean expanded = false;
 	private volatile boolean modeLocked = false;
 	private volatile boolean rootMode = false;
 
 	private volatile BufferedImage arrowImage;
-	
+
 	public FileTreeBranch(FileTreePanel fileTreePanel, File file){
 		this.file = file;
 		this.fileTreePanel = fileTreePanel;
-		
+
 		if(file.isDirectory()){
 			lockMode();
 			this.clickAction = ()->{
@@ -104,18 +110,18 @@ public class FileTreeBranch extends JComponent {
 				fileTreePanel.onFileBranchClicked(FileTreeBranch.this);
 			};
 		}
-		
+
 		displayName = file.getName();
-		
+
 		image = new BufferedImage(20, 20, BufferedImage.TYPE_INT_ARGB);
 		image.getGraphics().drawImage(getPreferredImageForFile(file).getScaledInstance(20, 20, BufferedImage.SCALE_SMOOTH), 0, 0, null);
 		image.getGraphics().dispose();
-		
+
 		fileColor = getPreferredColorForFile(file);
-		
+
 		setSize(25 + 5 + computeWidth(displayName, PX14) + 5, 25);
 		setPreferredSize(getSize());
-		
+
 		addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseEntered(MouseEvent e){
@@ -157,7 +163,7 @@ public class FileTreeBranch extends JComponent {
 		});
 		initKeyStrokes();
 	}
-	
+
 	public void initKeyStrokes(){
 		KeyStrokeListener listener = new KeyStrokeListener(this);
 		if(!file.isDirectory()){
@@ -180,10 +186,10 @@ public class FileTreeBranch extends JComponent {
 		listener.putKeyStroke((e)->{
 			fileTreePanel.transferFocusToPreviousBranch(FileTreeBranch.this);
 		}, VK_UP);
-		
+
 		addKeyListener(listener);
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics graphics){
 		if(mode != VIEW_FILE_MODE){
@@ -211,39 +217,39 @@ public class FileTreeBranch extends JComponent {
 	public boolean isRootMode() {
 		return rootMode;
 	}
-	
+
 	public void setRootMode(boolean rootMode) {
 		this.rootMode = rootMode;
 		repaint();
 	}
-	
+
 	public boolean setMode(int mode){
 		if(modeLocked)
 			return false;
 		this.mode = mode;
 		return true;
 	}
-	
+
 	public int getMode(){
 		return mode;
 	}
-	
+
 	public void lockMode(){
 		modeLocked = true;
 		repaint();
 	}
-	
+
 	public void unlockMode(){
 		modeLocked = false;
 		repaint();
 	}
-	
+
 	public void performRename(ActionEvent e){
 		if(setMode(VIEW_FILE_MODE)){
 			FileTreeBranch.this.remove(nameField);
 			FileTreeBranch.this.repaint();
 		}
-		
+
 		FileOperationManager.silentMoveFile(file, new File(file.getParentFile().getAbsolutePath(), e.getActionCommand()));
 		fileTreePanel.refresh();
 	}
@@ -252,7 +258,7 @@ public class FileTreeBranch extends JComponent {
 		if(setMode(EDIT_FILE_NAME_MODE))
 			showRenameField();
 	}
-	
+
 	public void showRenameField(){
 		if(mode != EDIT_FILE_NAME_MODE)
 			return;
@@ -274,38 +280,69 @@ public class FileTreeBranch extends JComponent {
 			});
 		}
 		add(nameField);
-		
+
 		nameField.grabFocus();
 	}
-	
+
 	public java.io.File getFile() {
 		return file;
 	}
-	
+
 	public void setFile(java.io.File file) {
 		this.file = file;
 	}
-	
+
 	public java.awt.image.BufferedImage getImage() {
 		return image;
 	}
-	
+
 	public void setImage(java.awt.image.BufferedImage image) {
 		this.image = image;
 		repaint();
 	}
-	
+
 	public boolean isExpanded() {
 		return expanded;
 	}
-	
+
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
 	}
-	
+
 	public boolean isParentOf(FileTreeBranch branch){
-		return branch.getFile().getAbsolutePath().startsWith(getFile().getAbsolutePath()) && 
-				branch.getFile().getAbsolutePath().charAt(getFile().getAbsolutePath().length()) == File.separatorChar;
+		return branch.getFile().getAbsolutePath().startsWith(getFile().getAbsolutePath()) &&
+		branch.getFile().getAbsolutePath().charAt(getFile().getAbsolutePath().length()) == File.separatorChar;
+	}
+
+	public static BufferedImage getPreferredProjectImage(File projectInfoFile){
+		DataBase projectDataBase = new DataBase(projectInfoFile);
+		DataEntry languageTagEntry = projectDataBase.getEntryAt("Language Tag");
+		if(languageTagEntry != null){
+			int languageTag = languageTagEntry.getValueAsInt();
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_JAVA)
+				return IconManager.fluentjavaprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_PYTHON)
+				return IconManager.fluentpythonprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_KOTLIN)
+				return IconManager.fluentkotlinprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_GROOVY)
+				return IconManager.fluentgroovyprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_C)
+				return IconManager.fluentcprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
+				return IconManager.fluentcplusplusprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_DART)
+				return IconManager.fluentflutterprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_WEB)
+				return IconManager.fluentwebprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_RUST)
+				return IconManager.fluentrustprojectImage;
+			if(languageTag == LanguageTagView.BUILD_LANGUAGE_TAG_GRADLE)
+				return IconManager.fluentgradleprojectImage;
+			if(languageTag == LanguageTagView.LANGUAGE_TAG_JULIA)
+				return IconManager.fluentjuliaprojectImage;
+		}
+		return IconManager.fluentfolderImage;
 	}
 
 	public static BufferedImage getPreferredImageForFile(File file){
@@ -314,7 +351,7 @@ public class FileTreeBranch extends JComponent {
 			if(files != null && files.length != 0){
 				for(File fx : files){
 					if(fx.getName().equals(".projectInfo"))
-						return IconManager.fluentfolderImage;
+						return getPreferredProjectImage(fx);
 					if(fx.getName().startsWith("build.gradle"))
 						return IconManager.fluentmoduleImage;
 				}

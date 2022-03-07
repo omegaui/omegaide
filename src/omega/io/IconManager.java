@@ -115,6 +115,18 @@ public class IconManager {
 	public static BufferedImage fluentrustImage = getFluentIcon("rust-48.png");
 	public static BufferedImage fluentjuliaImage = getFluentIcon("julia-48.png");
 	public static BufferedImage fluentanylangImage = getFluentIcon("any-lang-48.png");
+	
+	public static BufferedImage fluentjavaprojectImage = getFluentIcon("java-project-50.png");
+	public static BufferedImage fluentpythonprojectImage = getFluentIcon("python-project-50.png");
+	public static BufferedImage fluentkotlinprojectImage = getFluentIcon("kotlin-project-50.png");
+	public static BufferedImage fluentgroovyprojectImage = getFluentIcon("groovy-project-50.png");
+	public static BufferedImage fluentcprojectImage = getFluentIcon("c-project-50.png");
+	public static BufferedImage fluentcplusplusprojectImage = getFluentIcon("c++-project-50.png");
+	public static BufferedImage fluentflutterprojectImage = getFluentIcon("flutter-project-50.png");
+	public static BufferedImage fluentwebprojectImage = getFluentIcon("web-project-50.png");
+	public static BufferedImage fluentrustprojectImage = getFluentIcon("rust-project-50.png");
+	public static BufferedImage fluentjuliaprojectImage = getFluentIcon("julia-project-50.png");
+	public static BufferedImage fluentgradleprojectImage = getFluentIcon("gradle-project-50.png");
 
 	public static BufferedImage fluentjetbrainsLogo = getFluentIcon("jetbrains-logo.png");
 	public static BufferedImage fluenticons8Logo = getFluentIcon("icons8-240.png");

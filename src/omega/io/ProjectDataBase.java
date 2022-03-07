@@ -1,22 +1,22 @@
 /*
-* Stores Project Settings
-* Uses Portable Project Info Format
+ * Stores Project Settings
+ * Uses Portable Project Info Format
 
-* Copyright (C) 2022 Omega UI
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.io;
 import omega.Screen;
@@ -32,58 +32,58 @@ import java.io.File;
 import java.io.PrintWriter;
 
 public class ProjectDataBase extends DataBase{
-	
+
 	public String jdkPath;
 	public String mainClass;
-	
+
 	public static final String PROJECT_ROOT = "project-root$";
-	
+
 	public File jdk;
-	
+
 	public int languageTag = -1;
-	
+
 	public LinkedList<String> jars = new LinkedList<>();
 	public LinkedList<String> natives = new LinkedList<>();
 	public LinkedList<String> resourceRoots = new LinkedList<>();
 	public LinkedList<String> modules = new LinkedList<>();
 	public LinkedList<String> compileTimeFlags = new LinkedList<>();
 	public LinkedList<String> runTimeFlags = new LinkedList<>();
-	
+
 	public ProjectDataBase() {
 		super(Screen.getProjectFile().getProjectPath() + File.separator + ".projectInfo");
 		load();
 	}
-	
+
 	public void load() {
 		jdkPath = getEntryAt("JDK Path", 0) != null ? getEntryAt("JDK Path", 0).getValue() : null;
 		mainClass = getEntryAt("Main Class", 0) != null ? getEntryAt("Main Class", 0).getValue() : "";
-		
+
 		if(getEntryAt("Language Tag", 0) != null)
 			setLanguageTag(getEntryAt("Language Tag", 0).getValueAsInt());
-		
+
 		if(!isLanguageTagNonJava()) {
 			jdk = new File(jdkPath != null ? jdkPath : "");
 			try {
 				Screen.getProjectRunner().mainClass = mainClass;
 			}
 			catch(Exception e) {
-				
+
 			}
 		}
 
 		BookmarksManager.readBookmarks(this);
-		
+
 		LinkedList<DataEntry> mainEditors = getEntries("Opened Editors on Main Tab Panel");
 		LinkedList<DataEntry> rightEditors = getEntries("Opened Editors on Right Tab Panel");
 		LinkedList<DataEntry> bottomEditors = getEntries("Opened Editors on Bottom Tab Panel");
-		
+
 		LinkedList<DataEntry> jars = getEntries("Project Classpath : Required Jars");
 		LinkedList<DataEntry> natives = getEntries("Project Classpath : Required Native Libraries");
 		LinkedList<DataEntry> resourceRoots = getEntries("Project Classpath : Required Resource Roots");
 		LinkedList<DataEntry> modules = getEntries("Project Classpath : Required Modules");
 		LinkedList<DataEntry> compileTimeFlags = getEntries("Flags : Compile Time");
 		LinkedList<DataEntry> runTimeFlags = getEntries("Flags : Run Time");
-		
+
 		if(mainEditors != null){
 			for(DataEntry e : mainEditors) {
 				String value = e.getValue();
@@ -159,7 +159,7 @@ public class ProjectDataBase extends DataBase{
 		}
 
 	}
-	
+
 	@Override
 	public void save() {
 		clear();
@@ -202,27 +202,27 @@ public class ProjectDataBase extends DataBase{
 		BookmarksManager.saveBookmarks(this);
 		super.save();
 	}
-	
+
 	public String modifyProjectPath(String value){
 		if(!value.startsWith(PROJECT_ROOT))
 			return value;
 		return getProjectPath() + value.substring(value.indexOf(PROJECT_ROOT) + PROJECT_ROOT.length());
 	}
-	
+
 	public String genProjectRootPath(String value){
 		if(!value.startsWith(getProjectPath()))
 			return value;
 		return PROJECT_ROOT + value.substring(value.indexOf(getProjectPath()) + getProjectPath().length());
 	}
-	
+
 	public String getProjectPath(){
 		return getDataBaseFile().getParentFile().getAbsolutePath();
 	}
-	
+
 	public static void genInfo(String projectPath, boolean non_java){
 		try{
 			File file = new File(projectPath, ".projectInfo");
-			if(file.exists()) 
+			if(file.exists())
 				return;
 			PrintWriter writer = new PrintWriter(file);
 			writer.println(">Language Tag");
@@ -246,7 +246,7 @@ public class ProjectDataBase extends DataBase{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setJDKPath(String path){
 		this.jdkPath = path;
 		Screen.getProjectFile().readJDK();
@@ -255,14 +255,14 @@ public class ProjectDataBase extends DataBase{
 	public boolean isLanguageTagNonJava(){
 		return getLanguageTag() != LanguageTagView.LANGUAGE_TAG_JAVA;
 	}
-	
+
 	public int getLanguageTag() {
 		return languageTag;
 	}
-	
+
 	public void setLanguageTag(int languageTag) {
 		this.languageTag = languageTag;
 	}
-	
+
 }
 
