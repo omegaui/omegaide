@@ -1,5 +1,5 @@
 >JDK Path
--/usr/lib/jvm/jdk-17
+-C:\Program Files\Java\jdk-17.0.2
 >Main Class
 -omega.IDE
 >Language Tag
@@ -19,29 +19,3 @@
 -project-root$/lib/terminal-2.67.jar
 >Project Classpath : Required Resource Roots
 -project-root$/res
->Editor Bookmarks
--/home/ubuntu/Documents/Omega IDE/src/omega/io/BookmarksManager.java
-|259
-|513
--/home/ubuntu/Documents/Omega IDE/src/omega/instant/support/java/assist/JarLoader.java
-|3532
-|3707
--/home/ubuntu/Documents/Omega IDE/src/org/fife/ui/rsyntaxtextarea/RSyntaxTextArea.java
-|29673
-|33629
-|34659
--/home/ubuntu/Documents/Omega IDE/src/omega/ui/component/Editor.java
-|9159
-|25813
--/home/ubuntu/Documents/Omega IDE/src/omega/Screen.java
-|17795
--/home/ubuntu/Documents/Omega IDE/src/omega/ui/component/ToolMenu.java
-|3394
-|3838
-|11961
-|12923
-|16483
-|18910
-|19093
-|22060
-|29826

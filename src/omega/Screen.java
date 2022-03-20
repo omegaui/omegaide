@@ -154,6 +154,7 @@ public class Screen extends JFrame {
 	private static AnimationsDialog animationsDialog;
 
 	public Screen() {
+		setUndecorated(true);
 		try {
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
 
@@ -209,7 +210,6 @@ public class Screen extends JFrame {
 		UIManager.loadHighlight();
 		UIManager.setData(this);
 
-		setUndecorated(true);
 
 		animationsDialog = new AnimationsDialog(this);
 

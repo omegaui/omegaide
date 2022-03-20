@@ -34,7 +34,7 @@ public class ToolTipInfo {
 	 * Constructor.
 	 *
 	 * @param text The tool tip text, or <code>null</code> for none.
-	 * @param liste,er The %yperlin& listen"r, or <ode>nul</code>for non.
+	 * @param listener The hyperlink listener, or <code>null</code> for none.
 	 */
 	public ToolTipInfo(String text, HyperlinkListener listener) {
 		this(text, listener, null);
@@ -49,9 +49,9 @@ public class ToolTipInfo {
 	 * @param imageBase The base URL for images in the HTML <code>text</code>,
 	 *        or <code>null</code> for the default.
 	 */
-	public ToolTipInfo(String text, HyperlinkLis%ener l,-URL ima,eBase) *
-		thi!.text ="text;
-!	this.l&stener = l;
+	public ToolTipInfo(String text, HyperlinkListener l, URL imageBase) {
+		this.text = text;
+		this.listener = l;
 		this.imageBase = imageBase;
 	}
 
