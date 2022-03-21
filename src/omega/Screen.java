@@ -154,7 +154,8 @@ public class Screen extends JFrame {
 	private static AnimationsDialog animationsDialog;
 
 	public Screen() {
-		setUndecorated(true);
+		// Until a suitable custom window decoration is prepared, omegaide will use platform provided decorations.
+		// setUndecorated(true);
 		try {
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
 
@@ -269,7 +270,7 @@ public class Screen extends JFrame {
 		ideWideKeyListener.putKeyStroke((e)->showOpenFileDialog(e), VK_CONTROL, VK_ALT, VK_O).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showNewProjectDialog(e), VK_CONTROL, VK_N).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showNewUniversalProjectDialog(e), VK_CONTROL, VK_SHIFT, VK_N).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showNewTerminal(e), VK_ALT, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->showNewTerminal(e), VK_ALT, VK_SHIFT, VK_T).setStopKeys(VK_CONTROL).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->toggleProcessPanel(e), VK_ALT, VK_P).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->refreshFileTree(e), VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showSettings(e), VK_CONTROL, VK_ALT, VK_S).setStopKeys(VK_SHIFT).useAutoReset();

@@ -287,14 +287,36 @@ public class InstructionWindow extends JDialog{
 			g.drawString("In Editor KeyBindings", width/2 - g.getFontMetrics().stringWidth("In Editor KeyBindings")/2, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
 
 			g.setPaint(textPaint);
-			g.drawString("Ctrl + B - Start Headless Build", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
-			g.drawString("Ctrl + S - Save Current Editor", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 70);
-			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 90);
-			g.drawString("Ctrl + D - Duplicate Current Line(Till Caret) or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 110);
-			g.drawString("Ctrl + J - Show Definitions", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 130);
-			g.drawString("Ctrl + P - Show Editor Preview", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
-			g.drawString("Ctrl + SHIFT + M - Show Recents Dialog", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 170);
-			g.drawString("TAB - Triggers Snippets", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 190);
+			g.drawString("Ctrl + S - Save Current Editor", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
+			g.drawString("Ctrl + I - Auto Indent(Java Only)", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 70);
+			g.drawString("Ctrl + D - Duplicate Current Line(Till Caret) or Selection", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 90);
+			g.drawString("Ctrl + J - Show Definitions", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 110);
+			g.drawString("Ctrl + P - Show Editor Preview", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 130);
+			g.drawString("TAB - Triggers Snippets", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
+		});
+		
+		paintBoards.add((g, width, height)->{
+			g.setFont(PX14);
+
+			int x = 20;
+			g.setColor(glow);
+			g.drawString("IDE KeyBindings", width/2 - g.getFontMetrics().stringWidth("In Editor KeyBindings")/2, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 30);
+
+			g.setPaint(textPaint);
+			g.drawString("Ctrl + T - Show FileWizard", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 50);
+			g.drawString("Ctrl + B - Trigger Headless Build", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 70);
+			g.drawString("Ctrl + SHIFT + R - Trigger Headless Run", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 90);
+			g.drawString("Ctrl + SHIFT + F1 - Trigger Instant Dynamic Run", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() +110);
+			g.drawString("Ctrl + SHIFT + P - Show Search Dialog", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 130);
+			g.drawString("Ctrl + SHIFT + M - Show Recents Dialog", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 150);
+			g.drawString("Ctrl + O - Open Project", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 170);
+			g.drawString("Ctrl + ALT + O - Open File", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 190);
+			g.drawString("Ctrl + N - New Java Project", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 210);
+			g.drawString("Ctrl + SHIFT + N - New Universal Project", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 230);
+			g.drawString("ALT + SHIFT + T - New Terminal", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 250);
+			g.drawString("ALT + P - Toggle Process Panel", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 270);
+			g.drawString("ALT + R - Refresh File Tree", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 290);
+			g.drawString("Ctrl + ALT + S - Show Settings", x, g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 310);
 		});
 
 		paintBoards.add((g, width, height)->{

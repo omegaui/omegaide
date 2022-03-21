@@ -184,8 +184,8 @@ public class ToolMenu extends JPanel {
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
 	
-	private int pressX;
-	private int pressY;
+//	private int pressX;
+//	private int pressY;
 	
 	//The window decoration objects
 	public static Color closeWinColor = TOOLMENU_COLOR2;
@@ -194,9 +194,9 @@ public class ToolMenu extends JPanel {
 	
 	public TextComp iconComp;
 	public TextComp langComp;
-	public TextComp minimizeComp;
-	public TextComp maximizeComp;
-	public TextComp closeComp;
+//	public TextComp minimizeComp;
+//	public TextComp maximizeComp;
+//	public TextComp closeComp;
 	
 	private BufferedImage image;
 	
@@ -267,17 +267,17 @@ public class ToolMenu extends JPanel {
 					maximize();
 					return;
 				}
-				pressX = e.getX();
-				pressY = e.getY();
+//				pressX = e.getX();
+//				pressY = e.getY();
 			}
 		});
-		addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e){
-				if(screen.getExtendedState() == Screen.NORMAL)
-					screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
-			}
-		});
+//		addMouseMotionListener(new MouseAdapter(){
+//			@Override
+//			public void mouseDragged(MouseEvent e){
+//				if(screen.getExtendedState() == Screen.NORMAL)
+//					screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
+//			}
+//		});
 		init();
 	}
 	
@@ -299,60 +299,60 @@ public class ToolMenu extends JPanel {
 		langComp.setArc(0, 0);
 		add(langComp);
 		
-		closeComp = new TextComp("", c1, back2, c3, this::disposeAll){
-			@Override
-			public void draw(Graphics2D g){
-				g.setColor(back2);
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.setColor(closeWinColor);
-				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
-				if(isMouseEntered()){
-					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
-					g.setFont(PX14);
-					g.setColor(back2);
-					g.drawString("x", getWidth()/2 - g.getFontMetrics().stringWidth("x")/2,
-					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
-				}
-			}
-		};
-		add(closeComp);
-		
-		maximizeComp = new TextComp("", c1, back2, c3, this::maximize){
-			@Override
-			public void draw(Graphics2D g){
-				g.setColor(back2);
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.setColor(maximizeWinColor);
-				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
-				if(isMouseEntered()){
-					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
-					g.setFont(PX14);
-					g.setColor(back2);
-					g.drawString((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? "><" : "<>", getWidth()/2 - g.getFontMetrics().stringWidth("<>")/2,
-					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
-				}
-			}
-		};
-		add(maximizeComp);
-		
-		minimizeComp = new TextComp("", c1, back2, c3, this::minimize){
-			@Override
-			public void draw(Graphics2D g){
-				g.setColor(back2);
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.setColor(minimizeWinColor);
-				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
-				if(isMouseEntered()){
-					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
-					g.setFont(PX14);
-					g.setColor(back2);
-					g.drawString("-", getWidth()/2 - g.getFontMetrics().stringWidth("-")/2,
-					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
-				}
-			}
-		};
-		minimizeComp.setArc(0, 0);
-		add(minimizeComp);
+//		closeComp = new TextComp("", c1, back2, c3, this::disposeAll){
+//			@Override
+//			public void draw(Graphics2D g){
+//				g.setColor(back2);
+//				g.fillRect(0, 0, getWidth(), getHeight());
+//				g.setColor(closeWinColor);
+//				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
+//				if(isMouseEntered()){
+//					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
+//					g.setFont(PX14);
+//					g.setColor(back2);
+//					g.drawString("x", getWidth()/2 - g.getFontMetrics().stringWidth("x")/2,
+//					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+//				}
+//			}
+//		};
+//		add(closeComp);
+//		
+//		maximizeComp = new TextComp("", c1, back2, c3, this::maximize){
+//			@Override
+//			public void draw(Graphics2D g){
+//				g.setColor(back2);
+//				g.fillRect(0, 0, getWidth(), getHeight());
+//				g.setColor(maximizeWinColor);
+//				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
+//				if(isMouseEntered()){
+//					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
+//					g.setFont(PX14);
+//					g.setColor(back2);
+//					g.drawString((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? "><" : "<>", getWidth()/2 - g.getFontMetrics().stringWidth("<>")/2,
+//					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+//				}
+//			}
+//		};
+//		add(maximizeComp);
+//		
+//		minimizeComp = new TextComp("", c1, back2, c3, this::minimize){
+//			@Override
+//			public void draw(Graphics2D g){
+//				g.setColor(back2);
+//				g.fillRect(0, 0, getWidth(), getHeight());
+//				g.setColor(minimizeWinColor);
+//				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
+//				if(isMouseEntered()){
+//					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
+//					g.setFont(PX14);
+//					g.setColor(back2);
+//					g.drawString("-", getWidth()/2 - g.getFontMetrics().stringWidth("-")/2,
+//					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+//				}
+//			}
+//		};
+//		minimizeComp.setArc(0, 0);
+//		add(minimizeComp);
 
 		memoryComp = new TextComp("", "Memory Usage (Excluding JVM). Click to Run GC.", TOOLMENU_COLOR6_SHADE, TOOLMENU_GRADIENT, glow, ()->{
 			System.gc();
@@ -626,15 +626,15 @@ public class ToolMenu extends JPanel {
 		pathBox.setBounds(0, 60, getWidth(), 25);
 
 		//Resizing Memory Comp
-		memoryComp.setBounds(getWidth() - (30 * 3) - 65, 0, 60, 30);
+		memoryComp.setBounds(getWidth() - 60, 0, 60, 30);
 		
 		//Resizing Task Comp
 		taskComp.setBounds(getWidth() - 400, 33, 400, 24);
 		
 		//Window Decorations
-		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
-		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
-		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
+//		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+//		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
+//		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
 	}
 	
 	public void changeLocations(boolean non_java){
