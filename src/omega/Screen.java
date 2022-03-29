@@ -517,28 +517,29 @@ public class Screen extends JFrame {
 		}
 	}
 
-	@Override
-	public void layout(){
-		super.layout();
-		try{
-			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
-		}
-		catch(Exception e){
+//This was required to overcome high CPU usage
+//	@Override
+//	public void layout(){
+//		super.layout();
+//		try{
+//			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
+//		}
+//		catch(Exception e){
+//
+//		}
+//	}
 
-		}
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		try{
-			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, g, getContentPane()));
-		}
-		catch(Exception e){
-
-		}
-		super.paint(g);
-		g.dispose();
-	}
+//	@Override
+//	public void paint(Graphics g) {
+//		try{
+//			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, g, getContentPane()));
+//		}
+//		catch(Exception e){
+//
+//		}
+//		super.paint(g);
+//		g.dispose();
+//	}
 
 	public static void reverseColors(Component c) {
 		Color l = c.getBackground();
