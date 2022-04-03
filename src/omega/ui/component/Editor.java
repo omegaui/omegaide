@@ -116,7 +116,7 @@ import java.nio.charset.StandardCharsets;
 import static omega.instant.support.java.assist.Assembly.*;
 import static java.awt.event.KeyEvent.*;
 
-public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, MouseMotionListener, SearchListener, FocusListener {
+public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, SearchListener, FocusListener {
 	private static Screen screen;
 	private static Theme theme;
 	
@@ -245,7 +245,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 		addKeyListener((keyListener = this));
 		addMouseListener(this);
-		addMouseMotionListener(this);
 		addFocusListener(this);
 
 		addCaretListener((e)->findSelection());
@@ -314,14 +313,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				delta += (now - lastTime) / ns;
 				lastTime = now;
 				if(delta >= 1){
-					try {
-						if(screen.getCurrentEditor() != null){
-							screen.getCurrentEditor().readCode();
-						}
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
 					updates++;
 					delta--;
 				}
@@ -332,6 +323,15 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					timer += 1000;
 					updates = 0;
 					frames = 0;
+					
+					try {
+						if(screen.getCurrentEditor() != null){
+							screen.getCurrentEditor().readCode();
+						}
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
 
 					if(DataManager.isParsingEnabled()) {
 						SyntaxParsers.parse();
@@ -1101,14 +1101,6 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 
-	}
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		
-	}
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		
 	}
 
 	@Override
