@@ -1,9 +1,11 @@
 >JDK Path
--C:\Program Files\Java\jdk-17.0.2
+-/usr/lib/jvm/jdk-17
 >Main Class
 -omega.IDE
 >Language Tag
 -0
+>Opened Editors on Main Tab Panel
+-project-root$/src/omega/io/Startup.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar

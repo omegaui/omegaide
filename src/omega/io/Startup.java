@@ -197,6 +197,9 @@ public class Startup extends JDialog {
 		f = new File(".omega-ide", "out");
 		if(!f.exists())
 			f.mkdir();
+		f = new File(".omega-ide", ".launch-scripts");
+		if(!f.exists())
+			f.mkdir();
 		if(!new File(".omega-ide", ".ui").exists()){
 			omega.io.UIManager.loadDefaultFile(".omega-ide" + File.separator + ".ui", ".omega-ide/.ui");
 		}
