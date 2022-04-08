@@ -300,29 +300,32 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			return;
 		launched = true;
 		new Thread(()->{
-			long lastTime = System.nanoTime();
-			double ns = 1000000000 / 30;
-			double delta = 0;
-			int updates = 0;
-			int frames = 0;
-			long timer = System.currentTimeMillis();
-			long now = 0;
+
+			//Hope, Removing these continuous calculation can help reducing CPU Usage
+			
+//			long lastTime = System.nanoTime();
+//			double ns = 1000000000 / 30;
+//			double delta = 0;
+//			int updates = 0;
+//			int frames = 0;
+//			long timer = System.currentTimeMillis();
+//			long now = 0;
 
 			while(screen.active){
-				now = System.nanoTime();
-				delta += (now - lastTime) / ns;
-				lastTime = now;
-				if(delta >= 1){
-					updates++;
-					delta--;
-				}
-
-				frames++;
-
-				if(System.currentTimeMillis() - timer > 1000){
-					timer += 1000;
-					updates = 0;
-					frames = 0;
+//				now = System.nanoTime();
+//				delta += (now - lastTime) / ns;
+//				lastTime = now;
+//				if(delta >= 1){
+//					updates++;
+//					delta--;
+//				}
+//
+//				frames++;
+//
+//				if(System.currentTimeMillis() - timer > 1000){
+//					timer += 1000;
+//					updates = 0;
+//					frames = 0;
 					
 					try {
 						if(screen.getCurrentEditor() != null){
@@ -336,7 +339,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 					if(DataManager.isParsingEnabled()) {
 						SyntaxParsers.parse();
 					}
-				}
+//				}
 			}
 		}).start();
 	}

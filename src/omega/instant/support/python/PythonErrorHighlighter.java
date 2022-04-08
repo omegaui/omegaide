@@ -60,7 +60,7 @@ public class PythonErrorHighlighter implements AbstractErrorHighlighter {
 	SyntaxError: invalid syntax
 	 */
 	@Override
-	public void loadErrors(String errorLog) {
+	public void loadErrors(String errorLog, String workingDir) {
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
 		boolean canRecord = false;
@@ -89,7 +89,7 @@ public class PythonErrorHighlighter implements AbstractErrorHighlighter {
 						message = token = tokenizer.nextToken().trim();
 
 					if(!path.contains(File.separator)){
-						path = Screen.getProjectFile().getArgumentManager().compileDir + File.separator + path;
+						path = workingDir + File.separator + path;
 					}
 
 					File file = new File(path);

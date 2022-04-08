@@ -48,15 +48,28 @@ public final class ErrorHighlighters {
 	}
 
 	public static void showErrors(String errorLog){
+		String workingDir = Screen.getProjectFile().getArgumentManager().compileDir;
 		int tag = Screen.getProjectFile().getProjectManager().getLanguageTag();
 		if(tag == LanguageTagView.LANGUAGE_TAG_C || tag == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
-			cErrorHighlighter.loadErrors(errorLog);
+			cErrorHighlighter.loadErrors(errorLog, workingDir);
 		else if(tag == LanguageTagView.LANGUAGE_TAG_KOTLIN)
-			kotlinErrorHighlighter.loadErrors(errorLog);
+			kotlinErrorHighlighter.loadErrors(errorLog, workingDir);
 		else if(tag == LanguageTagView.LANGUAGE_TAG_PYTHON)
-			pythonErrorHighlighter.loadErrors(errorLog);
+			pythonErrorHighlighter.loadErrors(errorLog, workingDir);
 		else if(externalErrorHighlighters.get(tag) != null)
-			externalErrorHighlighters.get(tag).loadErrors(errorLog);
+			externalErrorHighlighters.get(tag).loadErrors(errorLog, workingDir);
+	}
+	
+	public static void showErrors(String errorLog, String workingDir){
+		int tag = Screen.getProjectFile().getProjectManager().getLanguageTag();
+		if(tag == LanguageTagView.LANGUAGE_TAG_C || tag == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
+			cErrorHighlighter.loadErrors(errorLog, workingDir);
+		else if(tag == LanguageTagView.LANGUAGE_TAG_KOTLIN)
+			kotlinErrorHighlighter.loadErrors(errorLog, workingDir);
+		else if(tag == LanguageTagView.LANGUAGE_TAG_PYTHON)
+			pythonErrorHighlighter.loadErrors(errorLog, workingDir);
+		else if(externalErrorHighlighters.get(tag) != null)
+			externalErrorHighlighters.get(tag).loadErrors(errorLog, workingDir);
 	}
 
 	public static boolean isLoggerPresentForCurrentLang(){

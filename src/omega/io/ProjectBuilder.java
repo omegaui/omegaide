@@ -131,7 +131,6 @@ public class ProjectBuilder {
 				Screen.setStatus("Building Project", 100, null);
 				
 				ErrorHighlighters.resetAllErrors();
-				
 				if(printArea.terminalPanel.process.exitValue() != 0){
 					ErrorHighlighters.showErrors(errorlog);
 					getScreen().getToolMenu().buildComp.setClickable(true);

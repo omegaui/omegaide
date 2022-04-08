@@ -63,7 +63,7 @@ public class KotlinErrorHighlighter implements AbstractErrorHighlighter {
 	^
 	 */
 	@Override
-	public void loadErrors(String errorLog) {
+	public void loadErrors(String errorLog, String workingDir) {
 		removeAllHighlights();
 		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
 		boolean canRecord = false;
@@ -87,7 +87,7 @@ public class KotlinErrorHighlighter implements AbstractErrorHighlighter {
 					code = token.trim();
 
 					if(!path.contains(File.separator)){
-						path = Screen.getProjectFile().getArgumentManager().compileDir + File.separator + path;
+						path = workingDir + File.separator + path;
 					}
 
 					File file = new File(path);

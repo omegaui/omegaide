@@ -228,18 +228,18 @@ public class Startup extends JDialog {
 			System.out.println("> For Linux");
 			loadDefaultFile("linux" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86/libpty.so");
 			loadDefaultFile("linux" + File.separator + "x86-64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/linux/x86-64/libpty.so");
-			
+
 			System.out.println("> For FreeBSD");
 			loadDefaultFile("freebsd" + File.separator + "x86" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/freebsd/x86/libpty.so");
 			loadDefaultFile("freebsd" + File.separator + "x86-64" + File.separator + "libpty.so", ".omega-ide/pty4j-libs/freebsd/x86-64/libpty.so");
-			
+
 			System.out.println("> For MacOS");
 			loadDefaultFile("darwin" + File.separator + "libpty.dylib", ".omega-ide/pty4j-libs/darwin/libpty.dylib");
-			
+
 			System.out.println("> For Windows(32-bit)");
 			loadDefaultFile("win" + File.separator + "x86" + File.separator + "winpty.dll", ".omega-ide/pty4j-libs/win/x86/winpty.dll");
 			loadDefaultFile("win" + File.separator + "x86" + File.separator + "winpty-agent.exe", ".omega-ide/pty4j-libs/win/x86/winpty-agent.exe");
-			
+
 			System.out.println("> For Windows(64-bit)");
 			loadDefaultFile("win" + File.separator + "x86-64" + File.separator + "cyglaunch.exe", ".omega-ide/pty4j-libs/win/x86-64/cyglaunch.exe");
 			loadDefaultFile("win" + File.separator + "x86-64" + File.separator + "win-helper.dll", ".omega-ide/pty4j-libs/win/x86-64/win-helper.dll");

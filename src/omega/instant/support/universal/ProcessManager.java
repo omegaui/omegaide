@@ -17,6 +17,8 @@
  */
 
 package omega.instant.support.universal;
+import omega.instant.support.ErrorHighlighters;
+
 import omega.io.IconManager;
 import omega.io.TabData;
 
@@ -107,6 +109,8 @@ public class ProcessManager extends DataBase{
 				printArea.terminalPanel.setOnProcessExited(()->{
 					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
 					currentTabData.getTabIconComp().setGifImage(null);
+
+					ErrorHighlighters.showErrors(printArea.getText(), file.getParentFile().getAbsolutePath());
 				});
 
 				printArea.start();
