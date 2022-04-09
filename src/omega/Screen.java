@@ -274,6 +274,7 @@ public class Screen extends JFrame {
 		ideWideKeyListener.putKeyStroke((e)->toggleProcessPanel(e), VK_ALT, VK_P).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->refreshFileTree(e), VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showSettings(e), VK_CONTROL, VK_ALT, VK_S).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->saveAllEditors(), VK_CONTROL, VK_SHIFT, VK_S).setStopKeys(VK_ALT).useAutoReset();
 	}
 
 	public void showFileWizard(KeyEvent e){
