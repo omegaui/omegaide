@@ -19,12 +19,6 @@
   </a>
 </p>
 
-<p align="center">
-  <a href="https://github.com/omegaui/omegaide/blob/main/Donate.md">
-    <h1>do { nate }</h1>
-  </a>
-</p>
-
 **Omega IDE v2.2 - The Awesome Beta**
 
 ![](/res/light.png#gh-light-mode-only)
