@@ -124,7 +124,7 @@ public class OperationPane extends JPanel{
 		public void resizeDivider(){
 			if(collapseMode)
 				screen.compilancePane.setDividerLocation(screen.compilancePane.getHeight() - getHeight() - UIManager.tabHeight - screen.compilancePane.getDividerSize());
-			else if(locked){
+			else if(locked && screen.compilancePane.getDividerLocation() != dividerY){
 				screen.compilancePane.setDividerLocation(dividerY);
 			}
 		}
