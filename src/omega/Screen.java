@@ -17,6 +17,8 @@
  */
 
 package omega;
+import omegaui.component.UBRFrame;
+
 import omega.ui.component.jediterm.JetTerminal;
 
 import omegaui.listener.KeyStrokeListener;
@@ -106,7 +108,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import static java.awt.event.KeyEvent.*;
-public class Screen extends JFrame {
+public class Screen extends UBRFrame {
 
 	public KeyStrokeListener ideWideKeyListener;
 	
@@ -154,8 +156,6 @@ public class Screen extends JFrame {
 	private static AnimationsDialog animationsDialog;
 
 	public Screen() {
-		// Until a suitable custom window decoration is prepared, omegaide will use platform provided decorations.
-		// setUndecorated(true);
 		try {
 			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
 
@@ -211,6 +211,7 @@ public class Screen extends JFrame {
 		UIManager.loadHighlight();
 		UIManager.setData(this);
 
+		setBorderColor(UIManager.back3);
 
 		animationsDialog = new AnimationsDialog(this);
 
