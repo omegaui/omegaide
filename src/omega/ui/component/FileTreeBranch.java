@@ -362,6 +362,8 @@ public class FileTreeBranch extends JComponent {
 				return IconManager.fluentsourceImage;
 			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "bin"))
 				return IconManager.fluentbinaryImage;
+			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "images"))
+				return IconManager.fluentphotosImage;
 			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "res"))
 				return IconManager.fluentresourceImage;
 			else if(file.getAbsolutePath().equals(Screen.getProjectFile().getProjectPath() + File.separator + "out"))

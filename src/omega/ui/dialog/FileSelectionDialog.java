@@ -1,20 +1,20 @@
 /**
-* The Default File Selection Dialog of Omega IDE
-* Copyright (C) 2021 Omega UI
+ * The Default File Selection Dialog of Omega IDE
+ * Copyright (C) 2021 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.dialog;
 import omegaui.listener.KeyStrokeListener;
@@ -59,7 +59,7 @@ import static omegaui.component.animation.Animations.*;
 import static java.awt.event.KeyEvent.*;
 
 public class FileSelectionDialog extends JDialog{
-	
+
 	private TextComp titleComp;
 	private TextComp selectComp;
 	private TextComp cancelComp;
@@ -68,25 +68,25 @@ public class FileSelectionDialog extends JDialog{
 	private NoCaretField selectionField;
 	private TextComp levelComp;
 	private TextComp homeComp;
-	
+
 	private LinkedList<ToggleComp> items = new LinkedList<>();
 	private LinkedList<File> selections = new LinkedList<>();
-	
+
 	public static final String ALL_EXTENSIONS = ".*";
-	
+
 	private int state = 0;
-	
+
 	public volatile boolean allowDirectories = true;
-	
-	
+
+
 	private File currentDir = new File(System.getProperty("user.home"));
 	private String[] extensions;
-	
+
 	private int pressX;
 	private int pressY;
-	
+
 	private int block = 0;
-	
+
 	public FileSelectionDialog(JFrame f){
 		super(f, true);
 		setUndecorated(true);
@@ -99,7 +99,7 @@ public class FileSelectionDialog extends JDialog{
 		setLayout(null);
 		init();
 	}
-	
+
 	public FileSelectionDialog(JDialog d){
 		super(d, true);
 		setUndecorated(true);
@@ -112,7 +112,7 @@ public class FileSelectionDialog extends JDialog{
 		setLayout(null);
 		init();
 	}
-	
+
 	public void init(){
 		titleComp = new TextComp("", back2, back2, glow, null);
 		titleComp.setBounds(0, 0, getWidth() - 50 - 60, 30);
@@ -133,7 +133,7 @@ public class FileSelectionDialog extends JDialog{
 			}
 		});
 		add(titleComp);
-		
+
 		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			selections.clear();
 			dispose();
@@ -142,7 +142,7 @@ public class FileSelectionDialog extends JDialog{
 		cancelComp.setFont(PX14);
 		cancelComp.setArc(0, 0);
 		add(cancelComp);
-		
+
 		levelComp = new TextComp(IconManager.fluentlevelupImage, 20, 20, "Move One Level Up", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			if(currentDir == null)
 				return;
@@ -178,7 +178,7 @@ public class FileSelectionDialog extends JDialog{
 		levelComp.setFont(PX14);
 		levelComp.setArc(0, 0);
 		add(levelComp);
-		
+
 		homeComp = new TextComp(IconManager.fluenthomeImage, 20, 20, "Go Home", TOOLMENU_COLOR1_SHADE, back2, TOOLMENU_COLOR1, ()->{
 			currentDir = new File(System.getProperty("user.home"));
 			if(state == 0)
@@ -192,7 +192,7 @@ public class FileSelectionDialog extends JDialog{
 		homeComp.setFont(PX14);
 		homeComp.setArc(0, 0);
 		add(homeComp);
-		
+
 		selectionField = new NoCaretField("", "or Enter the path manually and hit enter", TOOLMENU_COLOR2, back2, TOOLMENU_COLOR3);
 		selectionField.setBounds(0, getHeight() - 30, getWidth() - 50, 30);
 		selectionField.setOnAction(()->{
@@ -233,13 +233,13 @@ public class FileSelectionDialog extends JDialog{
 		addKeyListener(selectionField);
 
 		initKeyStrokeListener();
-		
+
 		selectComp = new TextComp("Done", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR3, this::dispose);
 		selectComp.setBounds(getWidth() - 50, getHeight() - 30, 50, 30);
 		selectComp.setFont(PX14);
 		selectComp.setArc(0, 0);
 		add(selectComp);
-		
+
 		scrollPane = new JScrollPane(panel = new JPanel(null){
 			GradientPaint paint = new GradientPaint(0, 0, TOOLMENU_COLOR2, 500, 310, TOOLMENU_COLOR3);
 			String hint = "No Content to Display";
@@ -267,7 +267,7 @@ public class FileSelectionDialog extends JDialog{
 		panel.setBackground(c2);
 		panel.setPreferredSize(new Dimension(490, 290));
 		panel.setBorder(null);
-		
+
 		putAnimationLayer(levelComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(homeComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 	}
@@ -303,31 +303,31 @@ public class FileSelectionDialog extends JDialog{
 		}, VK_CONTROL, VK_A);
 		addKeyListener(listener);
 	}
-	
+
 	@Override
 	public void setTitle(String title){
 		super.setTitle(title);
 		titleComp.setText(title);
 	}
-	
+
 	public void setFileExtensions(String... extensions){
 		this.extensions = extensions;
 	}
-	
+
 	public boolean isDirectoriesAllowed() {
 		return allowDirectories;
 	}
-	
+
 	public void setAllowDirectories(boolean allowDirectories) {
 		this.allowDirectories = allowDirectories;
 	}
-	
+
 	public void setCurrentDirectory(File dir){
 		if(!dir.exists())
 			return;
 		currentDir = dir;
 	}
-	
+
 	public boolean isExtentionAllowed(File file){
 		if(extensions == null || extensions.length == 0 || extensions[0].equals(ALL_EXTENSIONS))
 			return true;
@@ -339,27 +339,27 @@ public class FileSelectionDialog extends JDialog{
 		}
 		return false;
 	}
-	
+
 	public LinkedList<File> showWindowsRoots(){
 		selections.clear();
 		items.forEach(panel::remove);
 		items.clear();
 		block = 0;
-		
+
 		currentDir = new File("\\");
-		
+
 		File[] F = File.listRoots();
 		if(F == null || F.length == 0)
 			return selections;
-		
+
 		LinkedList<File> files = new LinkedList<>();
 		for(File f : F){
 			files.add(f);
 		}
-		
+
 		F = null;
 		sort(files);
-		
+
 		Color c1 = null;
 		Color c2 = UIManager.c2;
 		Color c3 = null;
@@ -415,28 +415,28 @@ public class FileSelectionDialog extends JDialog{
 		setVisible(true);
 		return selections;
 	}
-	
+
 	public LinkedList<File> selectFiles(){
 		state = 0;
 		selections.clear();
 		items.forEach(panel::remove);
 		items.clear();
 		block = 0;
-		
+
 		if(currentDir == null)
 			currentDir = new File(System.getProperty("user.home"));
-		
+
 		File[] F = currentDir.listFiles();
 		if(F == null || F.length == 0)
 			return selections;
-		
+
 		LinkedList<File> files = new LinkedList<>();
 		for(File f : F)
 			files.add(f);
-		
+
 		F = null;
 		sort(files);
-		
+
 		Color c1 = null;
 		Color c2 = UIManager.c2;
 		Color c3 = null;
@@ -492,7 +492,7 @@ public class FileSelectionDialog extends JDialog{
 		setVisible(true);
 		return selections;
 	}
-	
+
 	public LinkedList<File> selectDirectories(){
 		state = 1;
 		setFileExtensions(ALL_EXTENSIONS);
@@ -500,21 +500,21 @@ public class FileSelectionDialog extends JDialog{
 		items.forEach(panel::remove);
 		items.clear();
 		block = 0;
-		
+
 		if(currentDir == null)
 			currentDir = new File(System.getProperty("user.home"));
-		
+
 		File[] F = currentDir.listFiles();
 		if(F == null || F.length == 0)
 			return selections;
-		
+
 		LinkedList<File> files = new LinkedList<>();
 		for(File f : F)
 			files.add(f);
-		
+
 		F = null;
 		sort(files);
-		
+
 		Color c1 = null;
 		Color c2 = UIManager.c2;
 		Color c3 = null;
@@ -570,28 +570,28 @@ public class FileSelectionDialog extends JDialog{
 		setVisible(true);
 		return selections;
 	}
-	
+
 	public LinkedList<File> selectFilesAndDirectories(){
 		state = 2;
 		selections.clear();
 		items.forEach(panel::remove);
 		items.clear();
 		block = 0;
-		
+
 		if(currentDir == null)
 			currentDir = new File(System.getProperty("user.home"));
-		
+
 		File[] F = currentDir.listFiles();
 		if(F == null || F.length == 0)
 			return selections;
-		
+
 		LinkedList<File> files = new LinkedList<>();
 		for(File f : F)
 			files.add(f);
-		
+
 		F = null;
 		sort(files);
-		
+
 		Color c1 = null;
 		Color c2 = UIManager.c2;
 		Color c3 = null;
@@ -643,7 +643,7 @@ public class FileSelectionDialog extends JDialog{
 		setVisible(true);
 		return selections;
 	}
-	
+
 	@Override
 	public void paint(Graphics g){
 		super.paint(g);
@@ -651,7 +651,7 @@ public class FileSelectionDialog extends JDialog{
 		panel.repaint();
 		items.forEach(item->item.repaint());
 	}
-	
+
 	public static synchronized void sort(LinkedList<File> files){
 		try{
 			final LinkedList<File> tempFiles = new LinkedList<>();
@@ -659,7 +659,7 @@ public class FileSelectionDialog extends JDialog{
 			files.forEach(f->{
 				if(f.isDirectory()) tempDirs.add(f);
 				else tempFiles.add(f);
-			});
+				});
 			files.clear();
 			File[] F = new File[tempFiles.size()];
 			int k = -1;
@@ -675,7 +675,7 @@ public class FileSelectionDialog extends JDialog{
 			for(File f : D){
 				if(f.getName().startsWith(".")) dots.add(f);
 				else files.add(f);
-			}
+				}
 			for(File f : dots){
 				files.add(f);
 			}
@@ -683,7 +683,7 @@ public class FileSelectionDialog extends JDialog{
 			for(File f : F){
 				if(f.getName().startsWith(".")) dots.add(f);
 				else files.add(f);
-			}
+				}
 			for(File f : dots){
 				files.add(f);
 			}
@@ -692,10 +692,10 @@ public class FileSelectionDialog extends JDialog{
 			dots.clear();
 		}
 		catch(Exception exception){
-			
+
 		}
 	}
-	
+
 	private static void sort(File[] files){
 		for(int i = 0; i < files.length; i++){
 			for(int j = 0; j < files.length - 1 - i; j++){
@@ -708,7 +708,7 @@ public class FileSelectionDialog extends JDialog{
 			}
 		}
 	}
-	
+
 	private static int count(char ch, String line){
 		int c = 0;
 		for(char cx : line.toCharArray()){
@@ -717,7 +717,7 @@ public class FileSelectionDialog extends JDialog{
 		}
 		return c;
 	}
-	
+
 	public synchronized void triggerRepaint(){
 		new Thread(()->{
 			try{
@@ -727,11 +727,11 @@ public class FileSelectionDialog extends JDialog{
 				items.forEach(item->item.repaint());
 			}
 			catch(Exception e){
-				
+
 			}
 		}).start();
 	}
-	
+
 	@Override
 	public void setSize(int width, int height){
 		super.setSize(width, height);
