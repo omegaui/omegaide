@@ -1,6 +1,6 @@
 /**
   * MadeWithScreen
-  * Copyright (C) 2021 Omega UI
+  * Copyright (C) 2022 Omega UI
 
   * This program is free software: you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -77,8 +77,9 @@ public class MadeWithScreen extends JDialog{
           });
           init();
      }
+     
      public void init(){
-          TextComp mes = new TextComp("Written Using", getBackground(), getBackground(), glow, null);
+          TextComp mes = new TextComp("#OpenSourceRULES", getBackground(), getBackground(), glow, null);
           mes.setBounds(0, 0, getWidth(), 30);
           mes.setFont(PX20);
           add(mes);
@@ -163,18 +164,46 @@ public class MadeWithScreen extends JDialog{
           omegauiImageComp.setClickable(false);
           add(omegauiImageComp);
           
-          omegauiLinkComp = new TextComp("Omega UI", "https://github.com/omegaui", c2, c2, TOOLMENU_COLOR3, ()->{
+          omegauiLinkComp = new TextComp("omegaui", "https://github.com/omegaui", c2, c2, TOOLMENU_COLOR3, ()->{
                openURl(omegauiLinkComp.getToolTipText());
           });
           omegauiLinkComp.setBounds(120, 330, getWidth() - 190, 70);
           omegauiLinkComp.setFont(PX26);
           add(omegauiLinkComp);
           
-          TextComp omegaMessage = new TextComp("super flexible ui elements", c2, c2, TOOLMENU_COLOR4, null);
+          TextComp omegaMessage = new TextComp("AddingFeathersToDevelopment", c2, c2, TOOLMENU_COLOR4, null);
           omegaMessage.setBounds(0, omegauiLinkComp.getHeight() - 25, omegauiLinkComp.getWidth(), 25);
           omegaMessage.setArc(0, 0);
           omegaMessage.setFont(PX14);
           omegauiLinkComp.add(omegaMessage);
+
+          TextComp instaComp = new TextComp(IconManager.fluentinstagramImage, 24, 24, c2, c2, c2, ()->{
+               openURl("https://www.instagram.com/the_open_source_guy");
+          });
+          instaComp.setBounds(getWidth()/2 - 30/2 - 30, getHeight() - 50, 30, 30);
+          instaComp.setArc(0, 0);
+          instaComp.setToolTipText("https://www.instagram.com/the_open_source_guy");
+          add(instaComp);
+
+          TextComp githubComp = new TextComp(IconManager.fluentgithubIcon, 24, 24, c2, c2, c2, ()->{
+               openURl("https://github.com/omegaui");
+          });
+          githubComp.setBounds(getWidth()/2 - 30/2, getHeight() - 50, 30, 30);
+          githubComp.setArc(0, 0);
+          githubComp.setToolTipText("https://github.com/omegaui");
+          add(githubComp);
+
+          TextComp youtubeComp = new TextComp(IconManager.fluentyoutubeiconImage, 24, 24, c2, c2, c2, ()->{
+               openURl("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg");
+          });
+          youtubeComp.setBounds(getWidth()/2 - 30/2 + 30, getHeight() - 50, 30, 30);
+          youtubeComp.setArc(0, 0);
+          youtubeComp.setToolTipText("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg");
+          add(youtubeComp);
+
+          putAnimationLayer(instaComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
+          putAnimationLayer(githubComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
+          putAnimationLayer(youtubeComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
      }
      
      public void openURl(String url){

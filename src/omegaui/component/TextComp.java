@@ -514,7 +514,8 @@ public class TextComp extends JComponent{
 		if(paintEnterFirst && (enter || !clickable))
 			paintEnter(g);
 
-		if(press) paintPress(g);
+		if(press) 
+			paintPress(g);
 
 		draw(g, x, y);
 		draw(g);

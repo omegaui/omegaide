@@ -144,6 +144,8 @@ public class IconManager {
 	public static BufferedImage fluentgithubIcon = getFluentIcon("github-48.png");
 	public static BufferedImage fluentanimationImage = getFluentIcon("physics-96.png");
 
+	public static BufferedImage fluentyoutubeiconImage = getFluentIcon("youtube-48.png");
+	public static BufferedImage fluentinstagramImage = getFluentIcon("instagram-48.png");
 	public static BufferedImage fluentphotosImage = getFluentIcon("photo-64.png");
 	public static BufferedImage fluentcommaImage = getFluentIcon("comma-50.png");
 	public static BufferedImage fluentgasImage = getFluentIcon("gas-48.png");
