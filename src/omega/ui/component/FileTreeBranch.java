@@ -76,6 +76,7 @@ public class FileTreeBranch extends JComponent {
 
 	private File file;
 	private FileTreePanel fileTreePanel;
+	
 	private Runnable clickAction;
 
 	private int mode = VIEW_FILE_MODE;

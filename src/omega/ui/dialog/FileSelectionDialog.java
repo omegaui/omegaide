@@ -1,4 +1,4 @@
-/**
+/*
  * The Default File Selection Dialog of Omega IDE
  * Copyright (C) 2022 Omega UI
 
@@ -78,8 +78,8 @@ public class FileSelectionDialog extends JDialog{
 
 	public volatile boolean allowDirectories = true;
 
-
 	private File currentDir = new File(System.getProperty("user.home"));
+
 	private String[] extensions;
 
 	private int pressX;

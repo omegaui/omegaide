@@ -191,7 +191,7 @@ public class ProjectFile {
 	public boolean open(String type) {
 		FileSelectionDialog fs = new FileSelectionDialog(getScreen());
 		if(type.equals("Project")) {
-			fs.setTitle("Select a project directory");
+			fs.setTitle("Select a project directory and click Done");
 			LinkedList<File> files = fs.selectDirectories();
 			if(!files.isEmpty()) {
 				if(Screen.launcher != null)
