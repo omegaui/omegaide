@@ -1,9 +1,6 @@
-<p align="center">
-  <img width="140" src="https://raw.githubusercontent.com/omegaui/omegaide/main/res/omega_ide_icon128.png" />  
-  <h2 align="center">Omega IDE</h2>
-  <p align="center">The <strong>Blazing Fast</strong> Java IDE and an <strong>Instant IDE</strong> for <strong>any</strong> programming language</p>
-  <p align="center">For the Low End Computers</p>
-</p>
+
+![omegaide-github-banner](/images/omegaide-github-banner.png)
+
 <p align="center">
   <a href="https://github.com/omegaui/omegaide/issues">
     <img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
