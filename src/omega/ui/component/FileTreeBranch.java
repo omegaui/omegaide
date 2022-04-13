@@ -315,44 +315,13 @@ public class FileTreeBranch extends JComponent {
 		branch.getFile().getAbsolutePath().charAt(getFile().getAbsolutePath().length()) == File.separatorChar;
 	}
 
-	public static BufferedImage getPreferredProjectImage(File projectInfoFile){
-		DataBase projectDataBase = new DataBase(projectInfoFile);
-		DataEntry languageTagEntry = projectDataBase.getEntryAt("Language Tag");
-		if(languageTagEntry != null){
-			int languageTag = languageTagEntry.getValueAsInt();
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_JAVA)
-				return IconManager.fluentjavaprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_PYTHON)
-				return IconManager.fluentpythonprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_KOTLIN)
-				return IconManager.fluentkotlinprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_GROOVY)
-				return IconManager.fluentgroovyprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_C)
-				return IconManager.fluentcprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_CPLUSPLUS)
-				return IconManager.fluentcplusplusprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_DART)
-				return IconManager.fluentflutterprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_WEB)
-				return IconManager.fluentwebprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_RUST)
-				return IconManager.fluentrustprojectImage;
-			if(languageTag == LanguageTagView.BUILD_LANGUAGE_TAG_GRADLE)
-				return IconManager.fluentgradleprojectImage;
-			if(languageTag == LanguageTagView.LANGUAGE_TAG_JULIA)
-				return IconManager.fluentjuliaprojectImage;
-		}
-		return IconManager.fluentfolderImage;
-	}
-
 	public static BufferedImage getPreferredImageForFile(File file){
 		if(file.isDirectory()){
 			File[] files = file.listFiles();
 			if(files != null && files.length != 0){
 				for(File fx : files){
 					if(fx.getName().equals(".projectInfo"))
-						return getPreferredProjectImage(fx);
+						return IconManager.fluentomegaideprojectdarkImage;
 					if(fx.getName().startsWith("build.gradle"))
 						return IconManager.fluentmoduleImage;
 				}
