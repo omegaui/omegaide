@@ -34,6 +34,7 @@ import java.awt.RenderingHints;
 import java.awt.BorderLayout;
 
 import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 import java.io.File;
 
@@ -112,6 +113,40 @@ public class FileTreePanel extends AbstractFileTreePanel{
 			collapseBranch(rootBranch);
 			return;
 		}
+		rootBranch.setExpanded(true);
+		
+		blockX = rootBranch.getX() + optimumBranchSize;
+		blockY = rootBranch.getY() + optimumBranchSize + gap;
+		
+		jumpBranchesAfter(rootBranch, files.size() * (optimumBranchSize + gap));
+		
+		for(File file : files){
+			FileTreeBranch branch = new FileTreeBranch(this, file);
+			branch.setLocation(blockX, blockY);
+			panel.add(branch);
+			branches.add(rootIndex++, branch);
+			
+			blockY += optimumBranchSize + gap;
+		}
+		
+		computePreferredSize();
+	}
+	
+	public void genBranchNoCollapse(File root){
+		if(this.root != null && this.root.getAbsolutePath().equals(root.getAbsolutePath()))
+			return;
+		
+		LinkedList<File> files = getFiles(root);
+		if(files.isEmpty()){
+			return;
+		}
+		
+		FileTreeBranch rootBranch = findBranch(root);
+		int rootIndex = branches.indexOf(rootBranch) + 1;
+		
+		if(rootBranch.isExpanded())
+			return;
+		
 		rootBranch.setExpanded(true);
 		
 		blockX = rootBranch.getX() + optimumBranchSize;
@@ -214,6 +249,64 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		panel.setPreferredSize(panel.getSize());
 		
 		Screen.getScreen().splitPane.setDividerLocation((w >= 300) ? (w + 25) : 300);
+	}
+
+	public void navigateTo(File file){
+		FileTreeBranch bx = findBranch(file);
+		if(bx != null){
+			makeActive(bx);
+			return;
+		}
+		String path = file.getAbsolutePath();
+		String relativePath = path.substring(root.getAbsolutePath().length());
+		StringTokenizer pathTokenizer = new StringTokenizer(relativePath, File.separator);
+
+		path = root.getAbsolutePath();
+		
+		while(pathTokenizer.hasMoreTokens()){
+			path += File.separator + pathTokenizer.nextToken();
+			genBranchNoCollapse(new File(path));
+		}
+
+		bx = findBranch(file);
+		if(bx != null){
+			makeActive(bx);
+		}
+	}
+
+	public void navigateTo(FileTreeBranch bx){
+		navigateForward(bx);
+		navigateBackward(bx);
+	}
+
+	public void navigateForward(FileTreeBranch bx){
+		int value = scrollPane.getVerticalScrollBar().getValue();
+		while(!scrollPane.getViewport().getViewRect().contains(bx.getBounds()) && value != scrollPane.getVerticalScrollBar().getMaximum()){
+			value += optimumBranchSize + gap;
+			scrollPane.getVerticalScrollBar().setValue(value);
+		}
+	}
+
+	public void navigateBackward(FileTreeBranch bx){
+		int value = scrollPane.getVerticalScrollBar().getValue();
+		while(!scrollPane.getViewport().getViewRect().contains(bx.getBounds()) && value > 0){
+			value -= (optimumBranchSize + gap);
+			scrollPane.getVerticalScrollBar().setValue(value);
+		}
+	}
+
+	public void makeActive(FileTreeBranch bx){
+		bx.grabFocus();
+		navigateTo(bx);
+		new Thread(()->{
+			try{
+				Thread.sleep(250);
+			}
+			catch(Exception e){
+			}
+			bx.repaint();
+			repaint();
+		}).start();
 	}
 	
 	@Override

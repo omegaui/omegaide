@@ -85,6 +85,11 @@ public class PopupManager {
 			})
 			.createItem("Reload", IconManager.fluentrefreshIcon, ()->editor.reloadFile()).width(200);
 		}
+		popup.createItem("Show in Tree", IconManager.fluentomegaideprojectImage, ()->{
+			new Thread(()->{
+				Screen.getProjectFile().getFileTreePanel().navigateTo(editor.currentFile);
+			}).start();
+		});
 		popup.createItem("Copy Path (\"path\")", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection("\""+editor.currentFile.getAbsolutePath()+"\""), null));
 		popup.createItem("Copy Path", IconManager.fluentcopyImage, ()->Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(editor.currentFile.getAbsolutePath()), null));
 		popup.createItem("Open in Desktop", IconManager.fluentdesktopImage, ()->Screen.openInDesktop(editor.currentFile));
