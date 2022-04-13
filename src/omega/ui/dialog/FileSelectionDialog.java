@@ -1,6 +1,6 @@
 /**
  * The Default File Selection Dialog of Omega IDE
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -467,17 +467,20 @@ public class FileSelectionDialog extends JDialog{
 				else
 					comp.toggleEnabled = false;
 				comp.setBounds(0, block, 490, 25);
-				if(file.isDirectory()){
-					comp.addMouseListener(new MouseAdapter(){
-						@Override
-						public void mousePressed(MouseEvent e){
-							if(file.isDirectory() && file.listFiles() != null && file.listFiles().length != 0){
-								currentDir = file;
-								selectFiles();
-							}
+				comp.addMouseListener(new MouseAdapter(){
+					@Override
+					public void mousePressed(MouseEvent e){
+						if(!file.isDirectory() && e.getClickCount() == 2){
+							selections.clear();
+							selections.add(file);
+							dispose();
 						}
-					});
-				}
+						if(file.isDirectory() && file.listFiles() != null && file.listFiles().length != 0){
+							currentDir = file;
+							selectFiles();
+						}
+					}
+				});
 				comp.setFont(PX14);
 				comp.setArc(0, 0);
 				comp.getExtras().add(file);

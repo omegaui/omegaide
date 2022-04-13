@@ -312,6 +312,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 //			long now = 0;
 
 			while(screen.active){
+		    	
 //				now = System.nanoTime();
 //				delta += (now - lastTime) / ns;
 //				lastTime = now;
