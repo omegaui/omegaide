@@ -208,7 +208,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			else
 				screen.getBottomPane().jumpField.setText(text.length() + "");
 		});
-
+		
 		createNewContent();
 
 		javaErrorPanel = new JavaErrorPanel(this);
@@ -296,7 +296,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	public void launchContentAssist() {
-		if(launched)
+		if(launched || !DataManager.isContentAssistRealTime())
 			return;
 		launched = true;
 		new Thread(()->{
