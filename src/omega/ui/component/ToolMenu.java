@@ -183,7 +183,9 @@ public class ToolMenu extends JPanel {
 	public static MainWindowSizeController mainWindowSizeController;
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
-	
+
+	private volatile boolean dragStarted = false;
+	private volatile boolean mousePressed = false;
 	private int pressX;
 	private int pressY;
 	
@@ -269,11 +271,27 @@ public class ToolMenu extends JPanel {
 				}
 				pressX = e.getX();
 				pressY = e.getY();
+				dragStarted = true;
+				mousePressed = true;
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e){
+				mousePressed = false;
+				dragStarted = false;
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e){
+				if(!mousePressed)
+					dragStarted = false;
 			}
 		});
 		addMouseMotionListener(new MouseAdapter(){
 			@Override
 			public void mouseDragged(MouseEvent e){
+				if(!dragStarted)
+					return;
 				if(screen.getExtendedState() == Screen.NORMAL)
 					screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
 			}

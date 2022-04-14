@@ -51,6 +51,9 @@ public class TextComp extends JComponent{
 	private volatile boolean paintTextGradientEnabled = false;
 	private volatile boolean useSpeedMode = false;
 	private volatile boolean paintEnterFirst = true;
+	
+	private volatile boolean dragStarted = false;
+	private volatile boolean mousePressed = false;
 
 	public static final int GRADIENT_MODE_DEFAULT = 0;
 	public static final int GRADIENT_MODE_LINEAR = 1;
@@ -134,6 +137,10 @@ public class TextComp extends JComponent{
 				if(defaultCursor != null)
 					setCursor(defaultCursor);
 				enter = false;
+				if(window != null){
+					if(!mousePressed)
+						dragStarted = false;
+				}
 				onMouseExited.run();
 				repaint();
 			}
@@ -143,6 +150,8 @@ public class TextComp extends JComponent{
 				if(window != null){
 					pressX = e.getX();
 					pressY = e.getY();
+					dragStarted = true;
+					mousePressed = true;
 				}
 				if(!clickable)
 					return;
@@ -156,6 +165,10 @@ public class TextComp extends JComponent{
 			@Override
 			public void mouseReleased(MouseEvent e){
 				press = false;
+				if(window != null){
+					mousePressed = false;
+					dragStarted = false;
+				}
 				repaint();
 			}
 
@@ -168,7 +181,7 @@ public class TextComp extends JComponent{
 		addMouseMotionListener(new MouseAdapter(){
 			@Override
 			public void mouseDragged(MouseEvent e){
-				if(window != null){
+				if(window != null && dragStarted){
 					window.setLocation(e.getXOnScreen() - pressX - getX(), e.getYOnScreen() - pressY - getY());
 				}
 			}
