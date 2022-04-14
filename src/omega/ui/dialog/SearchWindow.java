@@ -132,7 +132,7 @@ public class SearchWindow extends JDialog{
 						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 50);
 					}
 					else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						currentComps.get(pointer).mousePressed(null);
+						currentComps.get(pointer).getClickAction().run();
 					}
 				}
 			}

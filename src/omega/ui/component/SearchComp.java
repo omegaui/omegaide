@@ -147,7 +147,12 @@ public class SearchComp extends FlexPanel implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent mouseEvent) {
 		searchWindow.dispose();
-		clickAction.run();
+		if(mouseEvent.getButton() == 3){
+			Screen.getProjectFile().getFileTreePanel().navigateTo(file);
+		}
+		else{
+			clickAction.run();
+		}
 	}
 
 	@Override
@@ -187,5 +192,6 @@ public class SearchComp extends FlexPanel implements MouseListener{
 
 		return name;
 	}
+
 }
 
