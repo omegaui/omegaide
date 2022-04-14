@@ -1,6 +1,6 @@
-/**
+/*
  * Popup Element
- * Copyright (C) 2021 Omega UI
+ * Copyright (C) 2022 Omega UI
 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  */
 
 package omega.ui.popup;
+import omega.Screen;
+
 import omegaui.component.animation.Animations;
 
 import java.util.LinkedList;
@@ -39,6 +41,7 @@ import static omegaui.component.animation.Animations.*;
 
 public class OPopupItem extends JComponent{
 	private String name;
+	private String hotkey = "";
 	private Runnable run;
 	private Runnable enterRun;
 	private Runnable exitRun;
@@ -93,6 +96,11 @@ public class OPopupItem extends JComponent{
 					OPopupItem.this.run.run();
 			}
 		});
+	}
+
+	public OPopupItem(OPopupWindow popup, String name, String hotkey, BufferedImage image, Runnable run){
+		this(popup, name, image, run);
+		this.hotkey = hotkey;
 	}
 
 	public void playEnterAnimation(){
@@ -215,6 +223,11 @@ public class OPopupItem extends JComponent{
 		g.setColor(glow);
 		int y = (getHeight() - g.getFontMetrics().getHeight())/2 + g.getFontMetrics().getAscent() + g.getFontMetrics().getDescent();
 		g.drawString(name, 42, y);
+		if(Screen.isNotNull(hotkey)){
+			g.setFont(UBUNTU_PX12);
+			g.setColor(glow);
+			g.drawString(hotkey, getWidth() - g.getFontMetrics().stringWidth(hotkey) - 5, y + 5);
+		}
 	}
 }
 

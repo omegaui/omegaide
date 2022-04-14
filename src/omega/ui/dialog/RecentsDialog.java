@@ -1,4 +1,4 @@
-/**
+/*
  * RecentsDialog
  * Copyright (C) 2022 Omega UI
 
@@ -109,7 +109,8 @@ public class RecentsDialog extends JDialog{
 						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 50);
 					}
 					else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						currentComps.get(pointer).mousePressed(null);
+						dispose();
+						currentComps.get(pointer).getClickAction().run();
 					}
 				}
 			}

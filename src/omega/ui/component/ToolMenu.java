@@ -386,7 +386,7 @@ public class ToolMenu extends JPanel {
 		recentsMenu.setBounds(100, 5, 60, 20);
 		addComp(recentsMenu);
 		
-		codePopup = OPopupWindow.gen("Code Menu", screen, 0, false).width(300);
+		codePopup = OPopupWindow.gen("Code Menu", screen, 0, false).width(350);
 		initCodePopup();
 		Menu codeMenu = new Menu(codePopup, "Code");
 		codeMenu.setBounds(165, 5, 35, 20);
@@ -398,7 +398,7 @@ public class ToolMenu extends JPanel {
 		toolsMenu.setBounds(200, 5, 50, 20);
 		addComp(toolsMenu);
 		
-		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(250);
+		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(270);
 		initSetMenu();
 		Menu setMenu = new Menu(setPopup, "Settings");
 		setMenu.setBounds(252, 5, 60, 20);
@@ -775,7 +775,7 @@ public class ToolMenu extends JPanel {
 			}
 		});
 		
-		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", IconManager.settingsImage, ()->showNonJavaSettings());
+		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", "Ctrl + ALT + S", IconManager.settingsImage, ()->showNonJavaSettings());
 		
 		setPopup.addItem(jdkItem);
 		setPopup.addItem(jdkRootItem);
@@ -842,8 +842,8 @@ public class ToolMenu extends JPanel {
 		codePopup.addItem(autoImportModeItem);
 		
 		codePopup
-		.createItem("Generate Getter/Setter", IconManager.buildImage, ()->Generator.gsView.genView(screen.getCurrentEditor()))
-		.createItem("Override/Implement Methods", IconManager.buildImage, ()->Generator.overView.genView(screen.getCurrentEditor()));
+		.createItem("Generate Getter/Setter", "Ctrl + SHIFT + G", IconManager.buildImage, ()->Generator.gsView.genView(screen.getCurrentEditor()))
+		.createItem("Override/Implement Methods", "Ctrl + SHIFT + I", IconManager.buildImage, ()->Generator.overView.genView(screen.getCurrentEditor()));
 	}
 	
 	private void initProjectPopup() {
@@ -860,12 +860,12 @@ public class ToolMenu extends JPanel {
 	
 	private void initFilePopup() {
 		//New Menu Items
-		filePopup.createItem("Open File", IconManager.fileImage, ()->Screen.getProjectFile().open("File"))
-		.createItem("Open Project", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
-		.createItem("New Project (Java)", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
-		.createItem("New Project (non-java project)", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
+		filePopup.createItem("Open File", "Ctrl + ALT + O", IconManager.fileImage, ()->Screen.getProjectFile().open("File"))
+		.createItem("Open Project", "Ctrl + O", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
+		.createItem("New Project (Java)", "Ctrl + N", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
+		.createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
 		
-		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", IconManager.fluentsearchImage, ()->{
+		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", "Ctrl + SHIFT + M", IconManager.fluentsearchImage, ()->{
 			recentsDialog.setVisible(true);
 		});
 		filePopup.addItem(recentsMenu);
@@ -902,7 +902,7 @@ public class ToolMenu extends JPanel {
 		
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
-		.createItem("Save All Editors", IconManager.fluentsaveImage, ()->screen.saveAllEditors())
+		.createItem("Save All Editors", "Ctrl + SHIFT + S", IconManager.fluentsaveImage, ()->screen.saveAllEditors())
 		.createItem("Restart", IconManager.fluentcloseImage, IDE::restart)
 		.createItem("Exit", IconManager.closeImage, IDE::exit);
 	}
