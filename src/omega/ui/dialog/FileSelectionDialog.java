@@ -736,9 +736,49 @@ public class FileSelectionDialog extends JDialog{
 	}
 
 	@Override
+	public void setVisible(boolean value){
+		Screen.getScreen().getIdeWideKeyListener().resetAll();
+		super.setVisible(value);
+	}
+
+	@Override
 	public void setSize(int width, int height){
 		super.setSize(width, height);
 		setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
+	}
+
+	@Override
+	public void dispose(){
+		if(selections.isEmpty()){
+			String text = selectionField.getText();
+			File file = new File(text);
+			if(file.exists()){
+				switch(state){
+					case 0:
+						if(!file.isDirectory())
+							selections.add(file);
+						break;
+					default:
+						selections.add(file);
+				}
+			}
+			else if(currentDir != null && currentDir.exists()){
+				file = new File(currentDir.getAbsolutePath() + File.separator + text);
+				if(file.exists()){
+					switch(state){
+						case 0:
+							if(!file.isDirectory())
+								selections.add(file);
+							break;
+						default:
+							selections.add(file);
+					}
+				}
+				else if(state != 0)
+					selections.add(currentDir);
+			}
+		}
+		super.dispose();
 	}
 }
 

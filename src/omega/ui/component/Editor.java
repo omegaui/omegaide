@@ -460,7 +460,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	public synchronized void loadFile(File file) {
-		if(file == null)
+		if(file == null || !file.exists() || file.isDirectory())
 			return;
 		try {
 			if(currentFile != null) {

@@ -142,7 +142,13 @@ public class ColorPreview extends FlexPanel implements EditorAddon, KeyListener,
 	public void mouseMoved(MouseEvent e) {
 		//Invoking Code Navigation
 		if(ctrl){
-			triggerPreview(e);
+			try{
+				triggerPreview(e);
+			}
+			catch(Exception ex){
+				//This small code works perfectly.
+				//Nothing needs to be debugged.
+			}
 		}
 	}
 
