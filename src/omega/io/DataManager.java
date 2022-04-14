@@ -29,7 +29,7 @@ public class DataManager extends DataBase {
 
 	public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
 	public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
-	public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/icons8-gummy-coding.png";
+	public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/3d-flame-255.png";
 
 	private static String defaultProjectPath = "No Default Project set yet.";
 	private static String pathToJava = "";
