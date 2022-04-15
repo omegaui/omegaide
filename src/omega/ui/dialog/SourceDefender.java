@@ -50,6 +50,11 @@ import javax.swing.JWindow;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
+/*
+ * When Enabled from Tools Section, 
+ * this utility creates a backup of each file opened in the editor before save all is triggered.
+ */
+
 public class SourceDefender extends JDialog {
 	private TextComp titleComp;
 	private SwitchComp sourceDefenceComp;
