@@ -60,6 +60,7 @@ public class ColorPreview extends FlexPanel implements EditorAddon, KeyListener,
 	public void init(){
 		colorComp = new TextComp("", c2, c2, c2, this::triggerColorPicker);
 		colorComp.setArc(10, 10);
+		colorComp.setShowHandCursorOnMouseHover(true);
 		add(colorComp);
 	}
 
