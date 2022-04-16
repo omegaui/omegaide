@@ -136,6 +136,7 @@ public class FileSelectionDialog extends JDialog{
 
 		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
 			selections.clear();
+			state = -1;
 			dispose();
 		});
 		cancelComp.setBounds(getWidth() - 50, 0, 50, 30);
@@ -749,7 +750,7 @@ public class FileSelectionDialog extends JDialog{
 
 	@Override
 	public void dispose(){
-		if(selections.isEmpty()){
+		if(state != -1 && selections.isEmpty()){
 			String text = selectionField.getText();
 			File file = new File(text);
 			if(file.exists()){
