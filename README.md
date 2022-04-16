@@ -19,7 +19,7 @@
 
 [![View it in action](/images/click-to-dive-into-action.png)](https://omegaui.github.io/omegaide)
 
-**Omega IDE v2.2 - The Awesome Beta**
+**Omega IDE v2.3 - The Awesome Beta**
 
 ![](/res/light.png#gh-light-mode-only)
 
@@ -66,11 +66,6 @@ It tries to reassemble a material look so that it is easy to adapt the highly cu
 
 The credit of having meaningful and beautiful icons goes to [icons8.com](https://icons8.com)
 
-*It has a elegant UI filled with custom components(have a look at sources at src/omega/comp for current stable or at src/omegaui for current beta).*
-
-*The component library of Omega IDE is independent of any other IDE component.*
-
-*As a result You can use this component library under the terms of GNU GPL v3.*
 
 # When We Need It?
 Development on a low end PC is slow and annoying if your *great* IDE doesn't performs well on it or it just can't run on it.

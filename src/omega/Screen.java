@@ -123,7 +123,7 @@ public class Screen extends UBRFrame {
 
 	public static SnippetView snippetView;
 
-	public static final String VERSION = "v2.2";
+	public static final String VERSION = "v2.3";
 	public static String PATH_SEPARATOR = ":";
 
 	public volatile boolean active = true;

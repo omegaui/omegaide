@@ -71,7 +71,7 @@ public class Launcher extends JFrame{
 		iconComp.setLinearGradientFractions(0f, 0.5f, 1f);
 		add(iconComp);
 		
-		titleComp = new TextComp("Omega IDE v2.2", c2, c2, TOOLMENU_COLOR2, null);
+		titleComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, TOOLMENU_COLOR2, null);
 		titleComp.setFont(PX16);
 		titleComp.setSize(computeWidth(titleComp.getText(), titleComp.getFont()) + 20, 30);
 		titleComp.setLocation(getWidth()/2 - titleComp.getWidth()/2, 90);
