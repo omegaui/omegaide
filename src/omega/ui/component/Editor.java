@@ -301,20 +301,42 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		launched = true;
 		new Thread(()->{
 			while(screen.active){
-				try {
-					if(screen.getCurrentEditor() != null){
-						screen.getCurrentEditor().readCode();
-					}
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-
-				if(DataManager.isParsingEnabled()) {
-					SyntaxParsers.parse();
-				}
+				long lastTime = System.nanoTime();
+		        final double amountOfTicks = 60.0;
+		        double ns = 1000000000 / amountOfTicks;
+		        double delta = 0;
+		        long timer = System.currentTimeMillis();
+		
+		        while(screen.active){
+		            long now = System.nanoTime();
+		            delta += (now - lastTime) / ns;
+		            lastTime = now;
+		            if(delta >= 1){
+		                delta--;
+		            }
+		
+		            if(System.currentTimeMillis() - timer > 1000){
+		                timer += 1000;
+		                callEditorContentManagement();
+		            }
+		        }	
 			}
 		}).start();
+	}
+
+	public void callEditorContentManagement(){
+		try {
+			if(screen.getCurrentEditor() != null){
+				screen.getCurrentEditor().readCode();
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		if(DataManager.isParsingEnabled()) {
+			SyntaxParsers.parse();
+		}
 	}
 
 	public void readCode() {
