@@ -19,7 +19,7 @@
 
 [![View it in action](/images/click-to-dive-into-action.png)](https://omegaui.github.io/omegaide)
 
-**Omega IDE v2.2 - The Awesome Beta**
+**Omega IDE v2.3 - The Awesome Beta**
 
 ![](/res/light.png#gh-light-mode-only)
 
