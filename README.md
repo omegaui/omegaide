@@ -1,6 +1,4 @@
 
-![omegaide-github-banner](/images/omegaide-github-banner.png)
-
 <p align="center">
   <a href="https://github.com/omegaui/omegaide/issues">
     <img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
@@ -15,6 +13,11 @@
     <img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
   </a>
 </p>
+
+
+![omegaide-github-banner](/images/omegaide-github-banner.png)
+
+[![View it in action](/images/click-to-dive-into-action.png)](https://omegaui.github.io/omegaide)
 
 **Omega IDE v2.2 - The Awesome Beta**
 
@@ -115,7 +118,6 @@ If you want to get early access to optimizations and new features you can freely
 
 **.jar** Portable Java Archive (for both stable and beta versions)
 
-**.deb** Debian Setup (available only for the current stable version)
 
 # Build From Source
 `JDK >= 17`
