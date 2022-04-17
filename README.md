@@ -12,6 +12,18 @@
   </a>
     <img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
   </a>
+  </a>
+    <img src="https://img.shields.io/github/commit-activity/m/omegaui/omegaide?style=social"/> 
+  </a>
+  </a>
+    <img src="https://img.shields.io/github/last-commit/omegaui/omegaide"/> 
+  </a>
+  </a>
+    <img src="https://img.shields.io/github/contributors/omegaui/omegaide"/> 
+  </a>
+  </a>
+    <img src="https://img.shields.io/github/downloads/omegaui/omegaide/total?style=social"/> 
+  </a>
 </p>
 
 
