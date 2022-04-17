@@ -120,6 +120,9 @@ public class JavaSyntaxParser extends AbstractSyntaxParser{
 				}
 
 				JavaFileObject fileObject = (JavaFileObject)d.getSource();
+				if(fileObject == null)
+					continue;
+				
 				String filePath = fileObject.toUri().getPath();
 				String srcDir = BUILDSPACE_DIR.getAbsolutePath();
 				filePath = Screen.getProjectFile().getProjectPath() + filePath.substring(srcDir.length() + (Screen.onWindows() ? 1 : 0));
