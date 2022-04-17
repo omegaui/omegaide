@@ -197,6 +197,10 @@ public class FileSelectionDialog extends JDialog{
 		selectionField = new NoCaretField("", "or Enter the path manually and hit enter", TOOLMENU_COLOR2, back2, TOOLMENU_COLOR3);
 		selectionField.setBounds(0, getHeight() - 30, getWidth() - 50, 30);
 		selectionField.setOnAction(()->{
+			if(selectionField.getText().equals("") && !selections.isEmpty()){
+				dispose();
+				return;
+			}
 			File file = new File(selectionField.getText());
 			if(!file.exists()){
 				file = new File(currentDir.getAbsolutePath(), selectionField.getText());
