@@ -202,7 +202,7 @@ public class IconManager {
 		String name = System.getProperty("os.name");
 		if(name.contains("indows"))
 			return fluentwindowsImage;
-		else if(name.contains("nix"))
+		else if(name.contains("nux"))
 			return fluentlinuxImage;
 		return fluentmacImage;
 	}

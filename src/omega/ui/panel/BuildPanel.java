@@ -1,20 +1,20 @@
 /**
-* BuildPanel
-* Copyright (C) 2021 Omega UI
+ * BuildPanel
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.panel;
 import java.awt.BorderLayout;
@@ -35,7 +35,7 @@ public class BuildPanel extends JPanel{
 	private JPanel panel;
 	private String hint;
 	private int count = 0;
-	
+
 	public BuildPanel(String hint){
 		super(new BorderLayout());
 		this.hint = hint;
@@ -50,6 +50,7 @@ public class BuildPanel extends JPanel{
 		scrollPane.setBorder(null);
 		setVisible(false);
 	}
+	
 	@Override
 	public void paint(Graphics graphics){
 		if(count == 0){
@@ -67,19 +68,19 @@ public class BuildPanel extends JPanel{
 			super.paint(graphics);
 		}
 	}
-	
+
 	public void setPanelPrefSize(Dimension d){
 		panel.setPreferredSize(d);
 		scrollPane.repaint();
 	}
-	
+
 	@Override
 	public Component add(Component c){
 		panel.add(c);
 		count++;
 		return c;
 	}
-	
+
 	@Override
 	public void remove(Component c){
 		panel.remove(c);
