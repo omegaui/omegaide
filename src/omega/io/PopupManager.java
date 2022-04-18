@@ -59,32 +59,20 @@ public class PopupManager {
 			.createItem("Build Project", IconManager.buildImage, ()->Screen.getProjectBuilder().compileProject())
 			.createItem("Mark As Main", IconManager.fluentrocketImage, ()->{
 				Screen.getProjectRunner().setMainClassPath(editor.currentFile.getAbsolutePath());
-			})
-			.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
-			.createItem("Save As", IconManager.fluentsaveImage, ()->{
-				editor.saveFileAs();
-				Screen.getProjectFile().getFileTreePanel().refresh();
-			})
-			.createItem("Discard", IconManager.closeImage, ()->{
-				editor.reloadFile();
-				screen.getTabPanel().remove(editor);
-			})
-			.createItem("Reload", IconManager.fluentrefreshIcon, ()->editor.reloadFile()).width(200);
+			});
 		}
-		else {
-			if(editor.currentFile != null && editor.currentFile.getName().contains("."))
-				popup.createItem("Launch", IconManager.fluentlaunchImage, ()->ToolMenu.processWizard.launch(editor.currentFile));
-			popup.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
-			.createItem("Save As", IconManager.fluentsaveImage, ()->{
-				editor.saveFileAs();
-				Screen.getProjectFile().getFileTreePanel().refresh();
-			})
-			.createItem("Discard", IconManager.closeImage, ()->{
-				editor.discardData();
-				screen.getTabPanel().remove(editor);
-			})
-			.createItem("Reload", IconManager.fluentrefreshIcon, ()->editor.reloadFile()).width(200);
-		}
+		if(editor.currentFile != null && editor.currentFile.getName().contains("."))
+			popup.createItem("Launch", IconManager.fluentlaunchImage, ()->ToolMenu.processWizard.launch(editor.currentFile));
+		popup.createItem("Save", IconManager.fluentsaveImage, ()->editor.saveCurrentFile())
+		.createItem("Save As", IconManager.fluentsaveImage, ()->{
+			editor.saveFileAs();
+			Screen.getProjectFile().getFileTreePanel().refresh();
+		})
+		.createItem("Discard", IconManager.closeImage, ()->{
+			editor.discardData();
+			screen.getTabPanel().removeTab(screen.getTabPanel().getTabData(editor.getAttachment()));
+		})
+		.createItem("Reload", IconManager.fluentrefreshIcon, ()->editor.reloadFile()).width(200);
 		popup.createItem("Show in Tree", IconManager.fluentomegaideprojectImage, ()->{
 			new Thread(()->{
 				Screen.getProjectFile().getFileTreePanel().navigateTo(editor.currentFile);
