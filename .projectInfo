@@ -4,6 +4,8 @@
 -omega.IDE
 >Language Tag
 -0
+>Opened Editors on Main Tab Panel
+-project-root$/src/omega/io/UIManager.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar

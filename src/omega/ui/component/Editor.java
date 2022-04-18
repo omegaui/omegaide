@@ -300,26 +300,37 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			return;
 		launched = true;
 		new Thread(()->{
+			long lastTime = System.nanoTime();
+			double ns = 1000000000 / 30;
+			double delta = 0;
+			int updates = 0;
+			int frames = 0;
+			long timer = System.currentTimeMillis();
+			long now = 0;
+
 			while(screen.active){
-				long lastTime = System.nanoTime();
-		        final double amountOfTicks = 60.0;
-		        double ns = 1000000000 / amountOfTicks;
-		        double delta = 0;
-		        long timer = System.currentTimeMillis();
-		
-		        while(screen.active){
-		            long now = System.nanoTime();
-		            delta += (now - lastTime) / ns;
-		            lastTime = now;
-		            if(delta >= 1){
-		                delta--;
-		            }
-		
-		            if(System.currentTimeMillis() - timer > 1000){
-		                timer += 1000;
-		                callEditorContentManagement();
-		            }
-		        }	
+				now = System.nanoTime();
+				delta += (now - lastTime) / ns;
+				lastTime = now;
+				if(delta >= 1){
+					try {
+						if(screen.getCurrentEditor() != null && DataManager.isContentAssistRealTime()){
+							screen.getCurrentEditor().readCode();
+						}
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+					delta--;
+				}
+
+				if(System.currentTimeMillis() - timer > 1000){
+					timer += 1000;
+
+					if(DataManager.isParsingEnabled()) {
+						SyntaxParsers.parse();
+					}
+				}
 			}
 		}).start();
 	}
