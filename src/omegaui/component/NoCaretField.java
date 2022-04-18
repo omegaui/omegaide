@@ -73,10 +73,12 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 		});
 		setColors(c1, c2, c3);
 	}
+	
 	public NoCaretField(String text, String message, Color c1, Color c2, Color c3){
 		this(text, c1, c2, c3);
 		this.message = message == null ? "" : message;
 	}
+	
 	@Override
 	public void paint(Graphics graphics){
 		Graphics2D g = (Graphics2D)graphics;

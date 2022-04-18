@@ -59,6 +59,7 @@ import omega.ui.dialog.WorkspaceSelector;
 import omega.ui.dialog.FileSelectionDialog;
 import omega.ui.dialog.RecentsDialog;
 import omega.ui.dialog.MainWindowSizeController;
+import omega.ui.dialog.GitProjectWizard;
 
 import omegaui.component.TextComp;
 
@@ -181,6 +182,7 @@ public class ToolMenu extends JPanel {
 	public static GitHubClientWindow githubClientWindow;
 	public static DonationWindow donationWindow;
 	public static MainWindowSizeController mainWindowSizeController;
+	public static GitProjectWizard gitProjectWizard;
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
 
@@ -227,6 +229,7 @@ public class ToolMenu extends JPanel {
 			githubClientWindow = new GitHubClientWindow(screen);
 			donationWindow = new DonationWindow(screen);
 			mainWindowSizeController = new MainWindowSizeController(screen);
+			gitProjectWizard = new GitProjectWizard(screen);
 			
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
 			.title("Project Type Management")
@@ -880,6 +883,7 @@ public class ToolMenu extends JPanel {
 		//New Menu Items
 		filePopup.createItem("Open File", "Ctrl + ALT + O", IconManager.fileImage, ()->Screen.getProjectFile().open("File"))
 		.createItem("Open Project", "Ctrl + O", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
+		.createItem("New Project (Git)", "Ctrl + G", IconManager.fluentgithubIcon, ()->gitProjectWizard.setVisible(true))
 		.createItem("New Project (Java)", "Ctrl + N", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
 		.createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
 		

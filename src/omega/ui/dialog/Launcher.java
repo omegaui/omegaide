@@ -1,20 +1,20 @@
 /**
-* Launcher
-* Copyright (C) 2021 Omega UI
+ * Launcher
+ * Copyright (C) 2022 Omega UI
 
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.dialog;
 import omega.Screen;
@@ -37,6 +37,8 @@ public class Launcher extends JFrame{
 	private TextComp titleComp;
 	private TextComp iconComp;
 	private TextComp gifComp;
+	
+	private TextComp cloneComp;
 
 	private TextComp openProjectComp;
 	private TextComp createNewJavaProjectComp;
@@ -45,7 +47,7 @@ public class Launcher extends JFrame{
 	private TextComp allProjectsComp;
 	private TextComp aboutComp;
 	private TextComp closeComp;
-	
+
 	public Launcher(){
 		super("Omega IDE " + Screen.VERSION);
 		setUndecorated(true);
@@ -70,7 +72,7 @@ public class Launcher extends JFrame{
 		iconComp.setLinearGradientColors(back2, TOOLMENU_GRADIENT, back2);
 		iconComp.setLinearGradientFractions(0f, 0.5f, 1f);
 		add(iconComp);
-		
+
 		titleComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, TOOLMENU_COLOR2, null);
 		titleComp.setFont(PX16);
 		titleComp.setSize(computeWidth(titleComp.getText(), titleComp.getFont()) + 20, 30);
@@ -89,10 +91,10 @@ public class Launcher extends JFrame{
 		gifComp.setArc(10, 10);
 		gifComp.attachDragger(this);
 		add(gifComp);
-		
+
 		int x = getWidth()/2 + 10;
 		int y = gifComp.getY() - 10;
-		
+
 		openProjectComp = new TextComp("Open a Project", TOOLMENU_GRADIENT, TOOLMENU_COLOR1_SHADE, TOOLMENU_COLOR1, ()->{
 			Screen.getProjectFile().open("Project");
 		});
@@ -100,7 +102,7 @@ public class Launcher extends JFrame{
 		openProjectComp.setFont(PX14);
 		openProjectComp.setArc(5, 5);
 		add(openProjectComp);
-		
+
 		createNewJavaProjectComp = new TextComp("Create New Java Project", TOOLMENU_GRADIENT, TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, ()->{
 			ToolMenu.javaProjectWizard.setVisible(true);
 		});
@@ -108,7 +110,7 @@ public class Launcher extends JFrame{
 		createNewJavaProjectComp.setFont(PX14);
 		createNewJavaProjectComp.setArc(5, 5);
 		add(createNewJavaProjectComp);
-		
+
 		createNewProjectComp = new TextComp("Create New Project", TOOLMENU_GRADIENT, TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR2, ()->{
 			ToolMenu.universalProjectWizard.setVisible(true);
 		});
@@ -116,7 +118,7 @@ public class Launcher extends JFrame{
 		createNewProjectComp.setFont(PX14);
 		createNewProjectComp.setArc(5, 5);
 		add(createNewProjectComp);
-		
+
 		openRecentProjectComp = new TextComp("See Recent Projects", TOOLMENU_GRADIENT, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, ()->{
 			ToolMenu.recentsDialog.setVisible(true);
 		});
@@ -124,7 +126,7 @@ public class Launcher extends JFrame{
 		openRecentProjectComp.setFont(PX14);
 		openRecentProjectComp.setArc(5, 5);
 		add(openRecentProjectComp);
-		
+
 		allProjectsComp = new TextComp("See All Projects", TOOLMENU_GRADIENT, TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, ()->{
 			ToolMenu.allProjectsPopup.setLocationRelativeTo(null);
 			ToolMenu.allProjectsPopup.setVisible(true);
@@ -133,7 +135,7 @@ public class Launcher extends JFrame{
 		allProjectsComp.setFont(PX14);
 		allProjectsComp.setArc(5, 5);
 		add(allProjectsComp);
-		
+
 		aboutComp = new TextComp("About", TOOLMENU_GRADIENT, TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR4, ()->{
 			ToolMenu.infoScreen.setVisible(true);
 		});
@@ -147,6 +149,15 @@ public class Launcher extends JFrame{
 		closeComp.setFont(PX14);
 		closeComp.setArc(5, 5);
 		add(closeComp);
+
+		cloneComp = new TextComp(IconManager.fluentcloneImage, 32, 32, "Clone a project using git", c2, c2, c2, ()->{
+			ToolMenu.gitProjectWizard.setVisible(true);
+		});
+		cloneComp.setBounds(closeComp.getX() + closeComp.getWidth()/2 - 32/2, closeComp.getY() + closeComp.getHeight() + 10, 32, 32);
+		cloneComp.setArc(5, 5);
+		add(cloneComp);
+
+		putAnimationLayer(cloneComp, getImageSizeAnimationLayer(20, 5, true), ACTION_MOUSE_ENTERED);
 	}
 
 	@Override

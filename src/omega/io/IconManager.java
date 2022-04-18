@@ -156,6 +156,7 @@ public class IconManager {
 	public static BufferedImage fluentcolorwheelImage = getFluentIcon("color-wheel-2-48.png");
 	public static BufferedImage fluentfocusImage = getFluentIcon("goal-48.png");
 	public static BufferedImage fluentnormalScreenImage = getFluentIcon("normal-screen-48.png");
+	public static BufferedImage fluentcloneImage = getFluentIcon("clone-64.png");
 
 	public static BufferedImage fluentclassFileImage = getFluentIcon("class-48.png");
 	public static BufferedImage fluentinterfaceFileImage = getFluentIcon("signal-48.png");
