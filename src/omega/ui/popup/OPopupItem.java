@@ -17,6 +17,8 @@
  */
 
 package omega.ui.popup;
+import omegaui.listener.KeyStrokeListener;
+
 import omega.Screen;
 
 import omegaui.component.animation.Animations;
@@ -38,6 +40,7 @@ import javax.swing.JComponent;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
+
 
 public class OPopupItem extends JComponent{
 	private String name;
@@ -67,12 +70,7 @@ public class OPopupItem extends JComponent{
 				if(!isEnabled())
 					return;
 
-				enter = true;
-				repaint();
-				if(OPopupItem.this.enterRun != null)
-					OPopupItem.this.enterRun.run();
-
-				playEnterAnimation();
+				markFocussed();
 			}
 
 			@Override
@@ -80,10 +78,7 @@ public class OPopupItem extends JComponent{
 				if(!isEnabled())
 					return;
 
-				enter = false;
-				repaint();
-				if(OPopupItem.this.exitRun != null)
-					OPopupItem.this.exitRun.run();
+				markNonFocussed();
 			}
 
 			@Override
@@ -91,9 +86,7 @@ public class OPopupItem extends JComponent{
 				if(!isEnabled() || e.getButton() == 3)
 					return;
 
-				popup.dispose();
-				if(OPopupItem.this.run != null)
-					OPopupItem.this.run.run();
+				triggerClick();
 			}
 		});
 	}
@@ -202,6 +195,29 @@ public class OPopupItem extends JComponent{
 		super.setEnabled(value);
 		enter = !value;
 		repaint();
+	}
+
+	public void markFocussed(){
+		enter = true;
+		repaint();
+		if(OPopupItem.this.enterRun != null)
+			OPopupItem.this.enterRun.run();
+
+		playEnterAnimation();
+	}
+
+	public void markNonFocussed(){
+		enter = false;
+		repaint();
+		if(OPopupItem.this.exitRun != null)
+			OPopupItem.this.exitRun.run();
+	}
+
+	public void triggerClick(){
+
+		popup.dispose();
+		if(OPopupItem.this.run != null)
+			OPopupItem.this.run.run();
 	}
 
 	@Override

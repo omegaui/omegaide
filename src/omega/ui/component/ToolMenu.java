@@ -113,6 +113,13 @@ import static omegaui.component.animation.Animations.*;
 
 public class ToolMenu extends JPanel {
 	private Screen screen;
+
+	public Menu fileMenu;
+	public Menu projectMenu;
+	public Menu codeMenu;
+	public Menu toolsMenu;
+	public Menu setMenu;
+	public Menu helpMenu;
 	
 	public OPopupWindow filePopup;
 	public OPopupWindow projectPopup;
@@ -397,37 +404,37 @@ public class ToolMenu extends JPanel {
 		
 		filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(510);
 		initFilePopup();
-		Menu fileMenu = new Menu(filePopup, "File");
+		fileMenu = new Menu(filePopup, "File");
 		fileMenu.setBounds(60, 5, 40, 20);
 		addComp(fileMenu);
 		
 		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
 		initProjectPopup();
-		Menu recentsMenu = new Menu(projectPopup, "Project");
-		recentsMenu.setBounds(100, 5, 60, 20);
-		addComp(recentsMenu);
+		projectMenu = new Menu(projectPopup, "Project");
+		projectMenu.setBounds(100, 5, 60, 20);
+		addComp(projectMenu);
 		
 		codePopup = OPopupWindow.gen("Code Menu", screen, 0, false).width(350);
 		initCodePopup();
-		Menu codeMenu = new Menu(codePopup, "Code");
+		codeMenu = new Menu(codePopup, "Code");
 		codeMenu.setBounds(165, 5, 35, 20);
 		addComp(codeMenu);
 		
 		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
 		initToolsPopup();
-		Menu toolsMenu = new Menu(toolsPopup, "Tools");
+		toolsMenu = new Menu(toolsPopup, "Tools");
 		toolsMenu.setBounds(200, 5, 50, 20);
 		addComp(toolsMenu);
 		
 		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(270);
 		initSetMenu();
-		Menu setMenu = new Menu(setPopup, "Settings");
+		setMenu = new Menu(setPopup, "Settings");
 		setMenu.setBounds(252, 5, 60, 20);
 		addComp(setMenu);
 		
 		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
 		initHelpMenu();
-		Menu helpMenu = new Menu(helpPopup, "Help");
+		helpMenu = new Menu(helpPopup, "Help");
 		helpMenu.setBounds(314, 5, 40, 20);
 		addComp(helpMenu);
 		
@@ -713,6 +720,30 @@ public class ToolMenu extends JPanel {
 			Screen.getUniversalSettingsView().setVisible(true);
 	}
 
+	public void showFilePopup(){
+		fileMenu.showPopup();
+	}
+
+	public void showProjectPopup(){
+		projectMenu.showPopup();
+	}
+
+	public void showCodePopup(){
+		codeMenu.showPopup();
+	}
+
+	public void showToolsPopup(){
+		toolsMenu.showPopup();
+	}
+
+	public void showSettingsPopup(){
+		setMenu.showPopup();
+	}
+
+	public void showHelpPopup(){
+		helpMenu.showPopup();
+	}
+
 	private void initSetMenu() {
 		FontChooser fontC = new FontChooser(screen);
 		setPopup.createItem("Change Editor Font", IconManager.settingsImage, ()->{
@@ -964,11 +995,14 @@ public class ToolMenu extends JPanel {
 	public class Menu extends JComponent {
 		
 		private String text;
+
+		private OPopupWindow popup;
 		
 		private volatile boolean enter;
 		
 		public Menu(OPopupWindow popup, String text) {
 			this.text = text;
+			this.popup = popup;
 			UIManager.setData(this);
 			addMouseListener(new MouseAdapter() {
 				@Override
@@ -983,10 +1017,14 @@ public class ToolMenu extends JPanel {
 				}
 				@Override
 				public void mousePressed(MouseEvent e) {
-					popup.setLocation(getX() + screen.getX(), getY() + getHeight() + 15 + getHeight() + screen.getY());
-					popup.setVisible(true);
+					showPopup();
 				}
 			});
+		}
+
+		public void showPopup(){
+			popup.setLocation(getX() + screen.getX(), getY() + getHeight() + 15 + getHeight() + screen.getY());
+			popup.setVisible(true);
 		}
 		
 		@Override

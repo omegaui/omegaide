@@ -277,6 +277,14 @@ public class Screen extends UBRFrame {
 		ideWideKeyListener.putKeyStroke((e)->refreshFileTree(e), VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->showSettings(e), VK_CONTROL, VK_ALT, VK_S).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->saveAllEditors(), VK_CONTROL, VK_SHIFT, VK_S).setStopKeys(VK_ALT).useAutoReset();
+
+		// Binding Alt + <Context Menu Character>
+		ideWideKeyListener.putKeyStroke((e)->toolMenu.showFilePopup(), VK_ALT, VK_F).setStopKeys(VK_SHIFT, VK_CONTROL).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->toolMenu.showProjectPopup(), VK_ALT, VK_SHIFT, VK_P).setStopKeys(VK_CONTROL).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->toolMenu.showCodePopup(), VK_ALT, VK_C).setStopKeys(VK_SHIFT, VK_CONTROL).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->toolMenu.showToolsPopup(), VK_ALT, VK_T).setStopKeys(VK_SHIFT, VK_CONTROL).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->toolMenu.showSettingsPopup(), VK_ALT, VK_S).setStopKeys(VK_SHIFT, VK_CONTROL).useAutoReset();
+		ideWideKeyListener.putKeyStroke((e)->toolMenu.showHelpPopup(), VK_ALT, VK_H).setStopKeys(VK_SHIFT, VK_CONTROL).useAutoReset();
 	}
 
 	public void showFileWizard(KeyEvent e){

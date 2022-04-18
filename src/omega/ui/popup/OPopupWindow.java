@@ -17,6 +17,8 @@
  */
 
 package omega.ui.popup;
+import omegaui.listener.KeyStrokeListener;
+
 import omega.io.UIManager;
 
 import java.awt.geom.RoundRectangle2D;
@@ -45,6 +47,8 @@ import omega.Screen;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
+import static java.awt.event.KeyEvent.*;
+
 public class OPopupWindow extends JDialog{
 	private int y;
 	private String name;
@@ -55,8 +59,13 @@ public class OPopupWindow extends JDialog{
 	private int animaTime;
 
 	public static int HEIGHT = 32;
+
 	private boolean scrollable;
 	private Runnable closeOperations;
+
+	private KeyStrokeListener keyStrokeListener;
+	private int pointer;
+
 	public OPopupWindow(String name, Window f, int animaTime, boolean scrollable){
 		super(f);
 		this.name = name;
@@ -81,6 +90,18 @@ public class OPopupWindow extends JDialog{
 			super.add(scrollPane = new JScrollPane(panel), BorderLayout.CENTER);
 			scrollPane.setBorder(null);
 		}
+
+		keyStrokeListener = new KeyStrokeListener(this);
+		keyStrokeListener.putKeyStroke((e)->{
+			transferFocusToPreviousPopupItem();
+		}, VK_UP);
+		keyStrokeListener.putKeyStroke((e)->{
+			transferFocusToNextPopupItem();
+		}, VK_DOWN);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick();
+		}, VK_ENTER);
+		addKeyListener(keyStrokeListener);
 	}
 
 	public void trash(){
@@ -139,6 +160,16 @@ public class OPopupWindow extends JDialog{
 		return null;
 	}
 
+	public int getItemIndex(String name){
+		OPopupItem item;
+		for(int i = 0; i < items.size(); i++){
+			item = items.get(i);
+			if(item.getName().equals(name))
+				return i;
+		}
+		return -1;
+	}
+
 	public OPopupWindow width(int width){
 		setSize(width, getHeight());
 		return this;
@@ -174,6 +205,8 @@ public class OPopupWindow extends JDialog{
 			int dy = getY() + getHeight() - (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 			int dx = getX() + getWidth() - (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 			setLocation(dx > 0 ? (getX() - dx) : getX(), dy > 0 ? (getY() - dy) : (getY() - 30));
+			pointer = 0;
+			items.get(pointer).markFocussed();
 		}
 		super.setVisible(value);
 		if(scrollable){
@@ -259,6 +292,30 @@ public class OPopupWindow extends JDialog{
 				}
 			}
 		});
+	}
+
+	public void transferFocusToNextPopupItem(){
+		if(pointer + 1 != items.size()){
+			items.get(pointer).markNonFocussed();
+			OPopupItem ix = items.get(++pointer);
+			while(!ix.isEnabled() && pointer + 1 != items.size())
+				ix = items.get(++pointer);
+			ix.markFocussed();
+		}
+	}
+	
+	public void transferFocusToPreviousPopupItem(){
+		if(pointer - 1 >= 0){
+			items.get(pointer).markNonFocussed();
+			OPopupItem ix = items.get(--pointer);
+			while(!ix.isEnabled() && pointer - 1 >= 0)
+				ix = items.get(--pointer);
+			ix.markFocussed();
+		}
+	}
+
+	public void triggerClick(){
+		items.get(pointer).triggerClick();
 	}
 }
 
