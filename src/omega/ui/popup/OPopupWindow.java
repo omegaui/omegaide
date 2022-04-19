@@ -68,10 +68,12 @@ public class OPopupWindow extends JDialog{
 
 	public OPopupWindow(String name, Window f, int animaTime, boolean scrollable){
 		super(f);
+		
 		this.name = name;
 		this.owner = f;
 		this.animaTime = animaTime;
 		this.scrollable = scrollable;
+		
 		setUndecorated(true);
 		setLayout(scrollable ? new BorderLayout() : null);
 		setBackground(back1);
