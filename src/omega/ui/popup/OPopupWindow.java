@@ -103,6 +103,33 @@ public class OPopupWindow extends JDialog{
 		keyStrokeListener.putKeyStroke((e)->{
 			triggerClick();
 		}, VK_ENTER);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(1);
+		}, VK_1);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(2);
+		}, VK_2);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(3);
+		}, VK_3);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(4);
+		}, VK_4);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(5);
+		}, VK_5);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(6);
+		}, VK_6);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(7);
+		}, VK_7);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(8);
+		}, VK_8);
+		keyStrokeListener.putKeyStroke((e)->{
+			triggerClick(9);
+		}, VK_9);
 		addKeyListener(keyStrokeListener);
 	}
 
@@ -318,6 +345,20 @@ public class OPopupWindow extends JDialog{
 
 	public void triggerClick(){
 		items.get(pointer).triggerClick();
+	}
+
+	public void triggerClick(int itemIndex){
+		int blockY = HEIGHT;
+		int index = 0;
+		while(blockY <= getHeight()){
+			if(itemIndex * HEIGHT == blockY){
+				pointer = index;
+				triggerClick();
+				break;
+			}
+			index++;
+			blockY += HEIGHT;
+		}
 	}
 }
 

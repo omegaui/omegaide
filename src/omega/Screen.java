@@ -858,6 +858,17 @@ public class Screen extends UBRFrame {
 		}
 	}
 
+	public Robot getRobot(){
+		try{
+			if(robot == null)
+				robot = new Robot();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return robot;
+	}
+
 	public static UIManager getUIManager() {
 		return uiManager;
 	}
