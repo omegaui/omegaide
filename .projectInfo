@@ -4,6 +4,8 @@
 -omega.IDE
 >Language Tag
 -0
+>Opened Editors on Main Tab Panel
+-project-root$/src/omega/ui/component/ToolMenu.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar
@@ -22,5 +24,3 @@
 >Editor Bookmarks
 -/home/omegaui/Documents/omegaide/src/omegaui/component/TextComp.java
 |11834
--/home/omegaui/Documents/omegaide/src/omega/ui/component/ToolMenu.java
-|3351

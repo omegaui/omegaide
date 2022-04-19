@@ -1023,6 +1023,10 @@ public class ToolMenu extends JPanel {
 		}
 
 		public void showPopup(){
+			if(popup.isVisible()){
+				popup.setVisible(false);
+				return;
+			}
 			popup.setLocation(getX() + screen.getX(), getY() + getHeight() + 15 + getHeight() + screen.getY());
 			popup.setVisible(true);
 		}
