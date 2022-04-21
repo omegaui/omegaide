@@ -1,7 +1,7 @@
 <p align="center">
 	<h1 align="center"><strong>omegaide</strong></h1>
 	<p align="center"><strong>Minimal</strong> yet <strong>Amazing</strong></p>
-
+</p>
 <a href="https://github.com/omegaui/omegaide/issues">
     <img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
   </a>
@@ -26,7 +26,6 @@
   </a>
     <img src="https://img.shields.io/github/downloads/omegaui/omegaide/total?style=social"/> 
   </a>
-</p>
 
 
 ## ![](https://img.icons8.com/fluency/48/000000/inconsistency.png) Just another IDE? No
