@@ -1,6 +1,8 @@
-
 <p align="center">
-  <a href="https://github.com/omegaui/omegaide/issues">
+	<h1 align="center"><strong>omegaide</strong></h1>
+	<p align="center"><strong>Minimal</strong> yet <strong>Amazing</strong></p>
+
+<a href="https://github.com/omegaui/omegaide/issues">
     <img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
   </a>
   <a href="https://github.com/omegaui/omegaide/network/members">
@@ -27,117 +29,110 @@
 </p>
 
 
-![omegaide-github-banner](/images/omegaide-github-banner.png)
+## ![](https://img.icons8.com/fluency/48/000000/inconsistency.png) Just another IDE? No
 
-[![View it in action](/images/click-to-dive-into-action.png)](https://omegaui.github.io/omegaide)
+omegaide is much more than that ... 🔥️
 
-**Omega IDE v2.3 - The Awesome Beta**
+[**view it in action on the official github page**](https://omegaui.github.io/omegaide) 😎️
 
-![](/res/light.png#gh-light-mode-only)
+Let us cover **major** things it offers
 
-![](/res/dark.png#gh-dark-mode-only)
+- [x] Integrated Support for Java at its ❤️
+- [x] Instant Dynamic Compilation for Java Projects (Build that Project in a blink of eye without gradle running in the background 😉️)
+- [x] Ultra Fast Project Indexing ![](https://img.icons8.com/fluency/20/000000/thruster.png)
+- [x] Instantly Switch Between Projects
+- [x] [**Compile Any Number of Changes**](#built-different) in a matter of seconds (Java)
+- [x] Instantly manage [**class-path and module-path**](#built-different) for Java
+- [x] Instant Universal Mode, [**Use omegaide for any programming language**](#built-different)
+- [x] [**Launch any file**](#built-different) right from the Editor
+- [x] Create [**Automatic Backups**](#built-different) before every save operation without triggering git
+- [x] Highly Customized [**UI Library**](#built-different) with Super Smooth Animations
+- [x] [**Projects made with omegaide are entirely portable**](#built-different)
+- [x] [**Tiny Plugin API**](#built-different)
+- [x] Snippet Injections
+- [x] Tiniest Tiny Core
+- [x] Blazing Fast Performance
+- [x] Least Memory Usage
+- [x] Advanced Content Assist for Java
+- [x] Basic Content Assist for Other Programming Languages, content assist can be extended by creating a plugin
+- [x] Entirely [**Portable**](#built-different)
+- [x] Beauty and [**Accessiblity**](#built-different) on its peak
 
-# Written from Scratch
-Omega IDE has 
-- Integrated support for the **java** programming language at its heart, 
-- Modern UI Components written from [scratch](https://github.com/omegaui/omegaui-library) with some prebuilt animations, 
-- Less (*Really a lot less*) memory consumption in comparision with other IDEs, 
-- Been written keeping Low End Systems in mind, 
-- A Tiny Core, 
-- Unique Features // how about vibing and coding from inside the IDE? 😉
+## ![](https://img.icons8.com/fluency/48/000000/lost-and-found.png) Why omegaide?
+```python
+while(have_descent_experience_in_coding)
+	getReadyForDIY() 					# Do It Yourself
+	exerciseTotalControlOverProject()   # Compile and Run your way
+	learnSomethingNew() 				# How about some shell scripting? 😶‍🌫️️
+	getMoreAvailableRAM() 				# Now thats some real speed 🚅️
+	doThingsOnYourOwn() 				# Learn What building a project is
+```
 
-and is
+## ![](https://img.icons8.com/fluency/48/000000/class-dojo.png) Built Different
 
-- Based around utilizing shell scripts instead of bloating predefined build rules.
+ #### Compile Any Number of Changes in a matter of seconds (Java)
+- Keep your changed editors opened
+- Hit the ![](https://img.icons8.com/cute-clipart/24/000000/rocket.png) Button or press `Ctrl + SHIFT + F1` to trigger dynamic launch
+- 🤯️ What just happened? Thats omegaide's **instant dynamic compilation algorithm**
+- It has two modes **ACCURACY** and **SPEED** where **DEFAULT_MODE = SPEED**
+- Modes can be changed from **Settings Menu**
 
-### Warning
-Omega IDE is not fully fledged yet, but, it can be utilized for production.
+#### Instantly manage class-path and module-path for Java
+- Settings up class-path isn't difficult any more
+- Click the ![](https://img.icons8.com/fluency/24/000000/treasure-map.png) icon at the bottom left on the side menu or Click project and click **Manage Build-Path**
+- Add your files and close the dialog
+- What? Nothing happened?, Ultra Fast Indexing already finished when you close the dialog 😉️.
 
-**I develop omegaide on itself**.
+#### Instant Universal Mode, Use omegaide for any programming language
+- Create a Universal Project
+- Write a Shell Script to Manage run / build process
+- Specify it in Settings
+- Now, Every time triggering run / build will execute that script
 
-### With contributions from the open source community of awesome developers we can take omegaide to the next level.
+#### Launch any file right from the Editor
+- Press `Ctrl + SHIFT + L` in the Editor and Write your own magic spell
 
-### \#OpenSourceRules
+#### Create Automatic Backups before every save operation without triggering git
+- Activate **Source Defender** to create backups of your each save operation
+- Activate it from **Tools Menu**
 
-## What makes Omega IDE a unique Java IDE among others?
+#### Highly Customized UI Library with Super Smooth Animations
+- [**Java Swing was never so beautiful**](https://github.com/omegaui/omegaui-library)
 
-omegaide can build huge java projects **instantly** 😎, provided that the project doesn't uses any build system like gradle, etc.
+#### Projects made with omegaide are entirely portable
+- That `.projectInfo` file in your project's root is the key to portability
 
-Don't believe me? Try it yourself 
+#### Tiny Plugin API
+- Plugins are super easy to write
+- See the [**samples**](https://github.com/omegaui/omegaide-plugins)
 
-- Open your pure java project(should not be governed by any build systems like gradle, maven, etc) in omegaide or create one
-- Build your project
-- Edit some code
-- Hit the rocket button to see instant results.
+#### Entirely Portable
+- the `.omegaide` folder generated next to the jar file is all you need to change your workspace
 
-It has a beautiful text editor with code folding, thanks to [rsyntaxtextarea](https://github.com/bobbylight/RSyntaxTextArea).
+#### Beauty and Accessiblity on its peak
+- See the **Instructions** window from the **Help Menu**
 
-The Default Swing Components use the [FlatLaf Layer](https://www.formdev.com/flatlaf)
+##### Create an [**issue**](https://github.com/omegaui/omegaide/issues/new/choose) if you have any question
 
-It tries to reassemble a material look so that it is easy to adapt the highly customized UI.
+## ![](https://img.icons8.com/fluency/48/000000/greentech.png) Dependency
+JDK 17 or above is required to build / run omegaide
 
-The credit of having meaningful and beautiful icons goes to [icons8.com](https://icons8.com)
+## ![](https://img.icons8.com/fluency/48/000000/crane.png) Build from Source
+omegaide can be developed on itself.
 
+To Build from source
+- clone this repo
+```
+git clone https://github.com/omegaui/omegaide
+```
 
-# When We Need It?
-Development on a low end PC is slow and annoying if your *great* IDE doesn't performs well on it or it just can't run on it.
-But what if you can utilize your own OS for blazing fast and smooth workflow.
+- open the cloned folder **omegaide** in omegaide (v2.0 or above)
+- Hit Run
 
-Shell Scripts are the fastest readable codes that run in the Operating System's shell, thus, omegaide can utilize shell scripts 
-(instead of using pre-defined build codes) to
-build your projects and make that low end PC fit for development purpose thus,
-making omegaide an instant IDE for any programming language.
-
-By Using Omega IDE you can avoid
-
-- Installing Different IDEs that **cannot** perform well on your PC.
-
-- Filling up your System with huge number of IDEs.
-
-- Switching through different terminal windows and the text editor to compile, spot the error, correct it and again go back, 
-recompile and .... to be continued 😑.
-
-and can
-
-- Just Build your project by pressing the shortcut.
-
-# How it is different from VS Code, Atom, etc?
-- omegaide is totally a **portable application** with a **tiny core**.
-
-- omegaide provides in-editor key bindings to build and run projects that utilize custom build and run scripts.
-
-- Not only this, whenever you run your build script it highlights any error in the editor itself which comes so that
-you don't even need not to look at your `build` script's output to search for any error that comes, 
-(currently supports highlights for Kotlin, C, C#, C++, Python).
-
-- You just need to click on the `run` button and the IDE auto executes your `run` script if the `build` script executes successfully.
-
-- Uses a lot less RAM than any other equivalent text editor when used as an instant IDE.
-
-- In-Editor minimal code completion (can be taken to next level by creating a plugin).
-
-# Run
-If you want to get early access to optimizations and new features you can freely use latest beta available.
-
-[Check out the dailybuild(.jar) now](https://raw.githubusercontent.com/omegaui/omegaide/main/out/Omega%20IDE-dailybuild.jar).
-
-**Available installation formats**
-
-**.jar** Portable Java Archive (for both stable and beta versions)
-
-
-# Build From Source
-`JDK >= 17`
-the `lib` directory already contains classpath dependencies.
-
-just clone this repo, open the folder `omegaide` in Omega IDE and hit `Run`.
-
-# See It in Action!
-
-[Here at the official Github Page](https://omegaui.github.io/omegaide)
-
-# Remember
-A [wiki](https://github.com/omegaui/omegaide/wiki/Omega-IDE-Wiki-Home-Page) is always useful.
-
-# Show your support
-[Donate](https://github.com/omegaui/omegaide/blob/main/Donate.md)
+## ![](https://img.icons8.com/fluency/48/000000/exercise.png) Run / Install
+- Download the .jar from the [**release**](https://github.com/omegaui/omegaide/releases) section
+- Integrate into your system (optional, omegaide looks the best on gnome)
+- Execute 
+```
+java -jar "Omega IDE.jar"
+```
