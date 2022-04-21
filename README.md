@@ -61,8 +61,8 @@ Let us cover **major** things it offers
 ## ![](https://img.icons8.com/fluency/48/000000/lost-and-found.png) Why omegaide?
 ```python
 while(have_descent_experience_in_coding)
-	getReadyForDIY() 					# Do It Yourself
-	exerciseTotalControlOverProject()   # Compile and Run your way
+	getReadyForDIY() 				# Do It Yourself
+	exerciseTotalControlOverProject()  		# Compile and Run your way
 	learnSomethingNew() 				# How about some shell scripting? 😶‍🌫️️
 	getMoreAvailableRAM() 				# Now thats some real speed 🚅️
 	doThingsOnYourOwn() 				# Learn What building a project is
