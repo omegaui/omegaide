@@ -32,8 +32,6 @@
 
 omegaide is much more than that ... 🔥️
 
-[Built Different](#built-different)
-
 [**view it in action on the official github page**](https://omegaui.github.io/omegaide) 😎️
 
 Let us cover **major** things it offers
@@ -42,22 +40,22 @@ Let us cover **major** things it offers
 - [x] Instant Dynamic Compilation for Java Projects (Build that Project in a blink of eye without gradle running in the background 😉️)
 - [x] Ultra Fast Project Indexing ![](https://img.icons8.com/fluency/20/000000/thruster.png)
 - [x] Instantly Switch Between Projects
-- [x] [**Compile Any Number of Changes**]() in a matter of seconds (Java)
-- [x] Instantly manage [**class-path and module-path**]() for Java
-- [x] Instant Universal Mode, [**Use omegaide for any programming language**]()
-- [x] [**Launch any file**]() right from the Editor
-- [x] Create [**Automatic Backups**]() before every save operation without triggering git
-- [x] Highly Customized [**UI Library**]() with Super Smooth Animations
-- [x] [**Projects made with omegaide are entirely portable**]()
-- [x] [**Tiny Plugin API**]()
+- [x] **Compile Any Number of Changes** in a matter of seconds (Java)
+- [x] Instantly manage **class-path and module-path** for Java
+- [x] Instant Universal Mode, **Use omegaide for any programming language**
+- [x] **Launch any file** right from the Editor
+- [x] Create **Automatic Backups** before every save operation without triggering git
+- [x] Highly Customized **UI Library** with Super Smooth Animations
+- [x] **Projects made with omegaide are entirely portable**
+- [x] **Tiny Plugin API**
 - [x] Snippet Injections
 - [x] Tiniest Tiny Core
 - [x] Blazing Fast Performance
 - [x] Least Memory Usage
 - [x] Advanced Content Assist for Java
 - [x] Basic Content Assist for Other Programming Languages, content assist can be extended by creating a plugin
-- [x] Entirely [**Portable**]()
-- [x] Beauty and [**Accessiblity**]() on its peak
+- [x] Entirely **Portable**
+- [x] Beauty and **Accessiblity** on its peak
 
 ## ![](https://img.icons8.com/fluency/48/000000/lost-and-found.png) Why omegaide?
 ```python
