@@ -32,6 +32,8 @@
 
 omegaide is much more than that ... 🔥️
 
+[Built Different](#built-different)
+
 [**view it in action on the official github page**](https://omegaui.github.io/omegaide) 😎️
 
 Let us cover **major** things it offers
@@ -40,22 +42,22 @@ Let us cover **major** things it offers
 - [x] Instant Dynamic Compilation for Java Projects (Build that Project in a blink of eye without gradle running in the background 😉️)
 - [x] Ultra Fast Project Indexing ![](https://img.icons8.com/fluency/20/000000/thruster.png)
 - [x] Instantly Switch Between Projects
-- [x] [**Compile Any Number of Changes**](#built-different) in a matter of seconds (Java)
-- [x] Instantly manage [**class-path and module-path**](#built-different) for Java
-- [x] Instant Universal Mode, [**Use omegaide for any programming language**](#built-different)
-- [x] [**Launch any file**](#built-different) right from the Editor
-- [x] Create [**Automatic Backups**](#built-different) before every save operation without triggering git
-- [x] Highly Customized [**UI Library**](#built-different) with Super Smooth Animations
-- [x] [**Projects made with omegaide are entirely portable**](#built-different)
-- [x] [**Tiny Plugin API**](#built-different)
+- [x] [**Compile Any Number of Changes**]() in a matter of seconds (Java)
+- [x] Instantly manage [**class-path and module-path**]() for Java
+- [x] Instant Universal Mode, [**Use omegaide for any programming language**]()
+- [x] [**Launch any file**]() right from the Editor
+- [x] Create [**Automatic Backups**]() before every save operation without triggering git
+- [x] Highly Customized [**UI Library**]() with Super Smooth Animations
+- [x] [**Projects made with omegaide are entirely portable**]()
+- [x] [**Tiny Plugin API**]()
 - [x] Snippet Injections
 - [x] Tiniest Tiny Core
 - [x] Blazing Fast Performance
 - [x] Least Memory Usage
 - [x] Advanced Content Assist for Java
 - [x] Basic Content Assist for Other Programming Languages, content assist can be extended by creating a plugin
-- [x] Entirely [**Portable**](#built-different)
-- [x] Beauty and [**Accessiblity**](#built-different) on its peak
+- [x] Entirely [**Portable**]()
+- [x] Beauty and [**Accessiblity**]() on its peak
 
 ## ![](https://img.icons8.com/fluency/48/000000/lost-and-found.png) Why omegaide?
 ```python
@@ -112,6 +114,17 @@ while(have_descent_experience_in_coding)
 - See the **Instructions** window from the **Help Menu**
 
 ##### Create an [**issue**](https://github.com/omegaui/omegaide/issues/new/choose) if you have any question
+
+## ![](https://img.icons8.com/fluency/48/000000/two-hearts.png) What users say
+> This is exactly what I needed for so long, an ide written in Java for java which doesn't consumes half of system ram! Will definitely use it for my small java projects. Since ... But anyways thanks for an awesome project 👍
+
+
+## ![](https://img.icons8.com/external-flaticons-flat-flat-icons/48/000000/external-open-source-ux-and-ui-flaticons-flat-flat-icons.png) #opensourcerules
+- IDE's Beautiful Text Editor is [**rsyntaxtextarea**](https://github.com/bobbylight/RSyntaxTextArea)
+- The Native Terminal Emulation is provided by [**jediterm**](https://github.com/JetBrains/jediterm)
+- Those Amazing Icons are from [**icons8.com**](https://icons8.com)
+- The Default Java Swing use [**FlatLAF**](https://www.formdev.com/flatlaf/)
+- The UI library and DataBase Management is written by [**me**](https://github.com/omegaui)
 
 ## ![](https://img.icons8.com/fluency/48/000000/greentech.png) Dependency
 JDK 17 or above is required to build / run omegaide
