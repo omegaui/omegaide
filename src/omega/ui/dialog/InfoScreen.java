@@ -46,7 +46,7 @@ public class InfoScreen extends JDialog {
 	private String version = Screen.VERSION;
 	private String h1 = "omegaui";
 	private String h2 = "github.com/omegaui/omegaide";
-	private String p1 = "the blazing fast java IDE";
+	private String p1 = "an instant IDE from the future";
 
 	private static GradientPaint gradient = new GradientPaint(0, 0, back1, 300, 300, back3);
 	private static GradientPaint gradient1 = new GradientPaint(100, 150, TOOLMENU_COLOR2, 300, 300, TOOLMENU_COLOR3);
