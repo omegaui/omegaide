@@ -110,8 +110,8 @@ public class ChoiceDialog extends JDialog {
 		choiceDialog.choice1Comp.setSize(computeWidth(choice1, UBUNTU_PX14) + 10, 25);
 		choiceDialog.choice2Comp.setSize(computeWidth(choice2, UBUNTU_PX14) + 10, 25);
 
-		choiceDialog.choice1Comp.setLocation(choiceDialog.getWidth()/2 - choiceDialog.choice1Comp.getWidth() - 10, choiceDialog.getHeight() - 40);
-		choiceDialog.choice2Comp.setLocation(choiceDialog.getWidth()/2 + 10, choiceDialog.getHeight() - 40);
+		choiceDialog.choice1Comp.setLocation(choiceDialog.getWidth() - 10 - choiceDialog.choice1Comp.getWidth() - 10 - choiceDialog.choice2Comp.getWidth(), choiceDialog.getHeight() - 40);
+		choiceDialog.choice2Comp.setLocation(choiceDialog.getWidth() - 10 - choiceDialog.choice2Comp.getWidth(), choiceDialog.getHeight() - 40);
 
 		choiceDialog.setVisible(true);
 		return choiceDialog.choice;
