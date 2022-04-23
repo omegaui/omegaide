@@ -126,8 +126,8 @@ while(have_descent_experience_in_coding)
 - IDE's Beautiful Text Editor is [**rsyntaxtextarea**](https://github.com/bobbylight/RSyntaxTextArea)
 - The Native Terminal Emulation is provided by [**jediterm**](https://github.com/JetBrains/jediterm)
 - Those Amazing Icons are from [**icons8.com**](https://icons8.com)
-- The Default Java Swing use [**FlatLAF**](https://www.formdev.com/flatlaf/)
-- The UI library and DataBase Management is written by [**me**](https://github.com/omegaui)
+- The Default Java Swing Components use [**FlatLAF**](https://www.formdev.com/flatlaf/)
+- The [**UI Library, DataBase Management**](https://github.com/omegaui/omegaui-library) and the entire IDE is  written by [**me**](https://github.com/omegaui)
 
 ## ![](https://img.icons8.com/fluency/48/000000/greentech.png) Dependency
 JDK 17 or above is required to build / run omegaide
