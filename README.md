@@ -1,6 +1,6 @@
 ![light-mode-poster](/images/light-mode-poster.png#gh-light-mode-only)
 
-![light-mode-poster](/images/light-mode-poster.png#gh-dark-mode-only)
+![light-mode-poster](/images/dark-mode-poster.png#gh-dark-mode-only)
 
 <a href="https://github.com/omegaui/omegaide/issues">
    	<img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
