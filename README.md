@@ -1,31 +1,35 @@
-<p align="center">
-	<h1 align="center"><strong>omegaide</strong></h1>
-	<p align="center"><strong>Minimal</strong> yet <strong>Amazing</strong></p>
-</p>
+![light-mode-poster](/images/light-mode-poster.png#gh-light-mode-only)
+
+![light-mode-poster](/images/light-mode-poster.png#gh-dark-mode-only)
+
 <a href="https://github.com/omegaui/omegaide/issues">
-    <img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
-  </a>
-  <a href="https://github.com/omegaui/omegaide/network/members">
-    <img src="https://img.shields.io/github/forks/omegaui/omegaide"/> 
-  </a>  
-  <a href="https://github.com/omegaui/omegaide/stargazers">
-    <img src="https://img.shields.io/github/stars/omegaui/omegaide"/> 
-    <a href="https://github.com/omegaui/omegaide/LICENSE">
-  </a>
-    <img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
-  </a>
-  </a>
-    <img src="https://img.shields.io/github/commit-activity/m/omegaui/omegaide?style=social"/> 
-  </a>
-  </a>
-    <img src="https://img.shields.io/github/last-commit/omegaui/omegaide"/> 
-  </a>
-  </a>
-    <img src="https://img.shields.io/github/contributors/omegaui/omegaide"/> 
-  </a>
-  </a>
-    <img src="https://img.shields.io/github/downloads/omegaui/omegaide/total?style=social"/> 
-  </a>
+   	<img src="https://img.shields.io/github/issues/omegaui/omegaide"/> 
+</a>
+
+<a href="https://github.com/omegaui/omegaide/forks">
+   	<img src="https://img.shields.io/github/forks/omegaui/omegaide"/> 
+</a>
+
+<a href="https://img.shields.io/github/license/omegaui/omegaide">
+   	<img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
+</a>
+
+<a href="https://img.shields.io/github/license/omegaui/omegaid">
+   	<img src="https://img.shields.io/github/commit-activity/m/omegaui/omegaide?style=social"/> 
+</a>
+
+<a href="https://img.shields.io/github/license/omegaui/omegaid">
+   	<img src="https://img.shields.io/github/last-commit/omegaui/omegaide"/> 
+</a>
+
+<a href="https://img.shields.io/github/license/omegaui/omegaid">
+   	<img src="https://img.shields.io/github/contributors/omegaui/omegaide"/> 
+</a>
+
+
+<a href="https://img.shields.io/github/license/omegaui/omegaid">
+   	<img src="https://img.shields.io/github/downloads/omegaui/omegaide/total?style=social"/> 
+</a>
 
 
 ## ![](https://img.icons8.com/fluency/48/000000/inconsistency.png) Just another IDE? No
