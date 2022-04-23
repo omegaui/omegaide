@@ -10,24 +10,24 @@
    	<img src="https://img.shields.io/github/forks/omegaui/omegaide"/> 
 </a>
 
-<a href="https://img.shields.io/github/license/omegaui/omegaide">
+<a href="https://github.com/omegaui/omegaide/blob/main/LICENSE">
    	<img src="https://img.shields.io/github/license/omegaui/omegaide"/> 
 </a>
 
-<a href="https://img.shields.io/github/license/omegaui/omegaid">
+<a href="https://github.com/omegaui/omegaide/commits/main">
    	<img src="https://img.shields.io/github/commit-activity/m/omegaui/omegaide?style=social"/> 
 </a>
 
-<a href="https://img.shields.io/github/license/omegaui/omegaid">
+<a href="https://github.com/omegaui/omegaide/commits/main">
    	<img src="https://img.shields.io/github/last-commit/omegaui/omegaide"/> 
 </a>
 
-<a href="https://img.shields.io/github/license/omegaui/omegaid">
+<a href="https://github.com/omegaui/omegaide/graphs/contributors">
    	<img src="https://img.shields.io/github/contributors/omegaui/omegaide"/> 
 </a>
 
 
-<a href="https://img.shields.io/github/license/omegaui/omegaid">
+<a href="https://github.com/omegaui/omegaide/releases">
    	<img src="https://img.shields.io/github/downloads/omegaui/omegaide/total?style=social"/> 
 </a>
 
@@ -60,6 +60,7 @@ Let us cover **major** things it offers
 - [x] Basic Content Assist for Other Programming Languages, content assist can be extended by creating a plugin
 - [x] Entirely **Portable**
 - [x] Beauty and **Accessiblity** on its peak
+- [ ] See what's [**coming**](https://github.com/omegaui/omegaide/milestones)
 
 ## ![](https://img.icons8.com/fluency/48/000000/lost-and-found.png) Why omegaide?
 ```python
