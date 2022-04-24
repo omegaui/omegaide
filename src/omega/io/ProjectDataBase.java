@@ -19,6 +19,10 @@
  */
 
 package omega.io;
+import omega.ui.component.Editor;
+
+import javax.swing.text.Caret;
+
 import omega.Screen;
 
 import omega.instant.support.LanguageTagView;
@@ -93,6 +97,7 @@ public class ProjectDataBase extends DataBase{
 					Screen.getProjectFile().getScreen().loadFile(f);
 			}
 		}
+		
 		if(rightEditors != null){
 			for(DataEntry e : rightEditors) {
 				String value = e.getValue();
@@ -102,6 +107,7 @@ public class ProjectDataBase extends DataBase{
 					Screen.getProjectFile().getScreen().loadFileOnRightTabPanel(f);
 			}
 		}
+		
 		if(bottomEditors != null){
 			for(DataEntry e : bottomEditors) {
 				String value = e.getValue();
@@ -111,6 +117,7 @@ public class ProjectDataBase extends DataBase{
 					Screen.getProjectFile().getScreen().loadFileOnBottomTabPanel(f);
 			}
 		}
+		
 		if(jars != null){
 			for(DataEntry e : jars){
 				String value = e.getValue();
@@ -120,6 +127,7 @@ public class ProjectDataBase extends DataBase{
 					this.jars.add(value);
 			}
 		}
+		
 		if(natives != null){
 			for(DataEntry e : natives){
 				String value = e.getValue();
@@ -129,6 +137,7 @@ public class ProjectDataBase extends DataBase{
 					this.natives.add(value);
 			}
 		}
+		
 		if(resourceRoots != null){
 			for(DataEntry e : resourceRoots){
 				String value = e.getValue();
@@ -138,6 +147,7 @@ public class ProjectDataBase extends DataBase{
 					this.resourceRoots.add(value);
 			}
 		}
+		
 		if(modules != null){
 			for(DataEntry e : modules){
 				String value = e.getValue();
@@ -147,17 +157,30 @@ public class ProjectDataBase extends DataBase{
 					this.modules.add(value);
 			}
 		}
+		
 		if(compileTimeFlags != null){
 			compileTimeFlags.forEach(entry->{
 				this.compileTimeFlags.add(entry.getValue());
 			});
 		}
+
 		if(runTimeFlags != null){
 			runTimeFlags.forEach(entry->{
 				this.runTimeFlags.add(entry.getValue());
 			});
 		}
 
+		LinkedList<DataEntry> caretPositionList = getEntries("Caret Positions");
+		if(caretPositionList != null){
+			for(DataEntry entry : caretPositionList){
+				File file = new File(modifyProjectPath(entry.lines().get(0)));
+				if(file.exists()){
+					Editor editor = Screen.getScreen().getEditor(file);
+					editor.setCaretPosition(Integer.parseInt(entry.lines().get(2)));
+					editor.getAttachment().getVerticalScrollBar().setValue(Integer.parseInt(entry.lines().get(1)));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -179,6 +202,16 @@ public class ProjectDataBase extends DataBase{
 		Screen.getProjectFile().getScreen().getBottomTabPanel().getEditors().forEach(editor->{
 			if(editor.currentFile != null) {
 				addEntry("Opened Editors on Bottom Tab Panel", genProjectRootPath(editor.currentFile.getAbsolutePath()));
+			}
+		});
+		Screen.getScreen().getAllEditors().forEach((editor)->{
+			if(editor.currentFile != null){
+				addEntry(
+					"Caret Positions", 
+					genProjectRootPath(editor.currentFile.getAbsolutePath()) + 
+					"\n" + editor.getAttachment().getVerticalScrollBar().getValue() + 
+					"\n" + editor.getCaretPosition()
+				);
 			}
 		});
 		jars.forEach(path->{
