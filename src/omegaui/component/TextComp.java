@@ -51,6 +51,7 @@ public class TextComp extends JComponent{
 	private volatile boolean paintTextGradientEnabled = false;
 	private volatile boolean useSpeedMode = false;
 	private volatile boolean paintEnterFirst = true;
+	private volatile boolean shouldRepaintForegroundOnHighlights = true;
 	
 	private volatile boolean dragStarted = false;
 	private volatile boolean mousePressed = false;
@@ -414,6 +415,15 @@ public class TextComp extends JComponent{
 		repaint();
 	}
 
+	public boolean isShouldRepaintForegroundOnHighlights() {
+		return shouldRepaintForegroundOnHighlights;
+	}
+	
+	public void setShouldRepaintForegroundOnHighlights(boolean shouldRepaintForegroundOnHighlights) {
+		this.shouldRepaintForegroundOnHighlights = shouldRepaintForegroundOnHighlights;
+		repaint();
+	}
+	
 	public boolean isPaintTextGradientEnabled() {
 		if(!paintTextGradientEnabled)
 			return false;
@@ -580,7 +590,7 @@ public class TextComp extends JComponent{
 	}
 
 	public synchronized void highlight(Graphics2D g, String text){
-		//Creating a clone to prevent concurrent modification!
+		//Creating a clone to prevent concurrent modification if the list collides while in the paint highlights loop!
 		LinkedList<String> highlightTexts = (LinkedList<String>)this.highlightTexts.clone();
 		for(String match : highlightTexts){
 			if(text.contains(match)){
@@ -593,7 +603,7 @@ public class TextComp extends JComponent{
 					g.fillRect(textX + width, 0, g.getFontMetrics().stringWidth(match), getHeight());
 					g.setColor(colorH);
 					g.drawString(match, textX + width, textY);
-					if(enter){
+					if(shouldRepaintForegroundOnHighlights && enter){
 						g.setColor(color1);
 						g.fillRect(textX + width, 0, g.getFontMetrics().stringWidth(match), getHeight());
 					}

@@ -91,7 +91,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		}
 
 		public void init(){
-			setBackground(back1);
+			setBackground(c2);
 			setBorder(null);
 
 			iconComp = new TextComp(getIcon(), optimalHintHeight - 5, optimalHintHeight - 5, getBackground(), getBackground(), getBackground(), null);
@@ -100,27 +100,17 @@ public class ContentWindow extends JPanel implements KeyListener{
 			iconComp.setClickable(false);
 			add(iconComp);
 
-			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_GRADIENT, getBackground(), glow, null);
+			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_COLOR5_SHADE, getBackground(), glow, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
 			nameComp.alignX = 2;
 			nameComp.setUseSpeedMode(true);
-			nameComp.addHighlightText(getHighlights());
+			nameComp.addHighlightText(new String[]{ match });
 			nameComp.setHighlightColor(highlight);
 			nameComp.setPaintEnterFirst(isDarkMode());
+			nameComp.setShouldRepaintForegroundOnHighlights(isDarkMode());
 			add(nameComp);
-		}
-
-		public String[] getHighlights(){
-			if(CodeFramework.isUpperCaseHintType(match, match)){
-				String[] S = new String[match.length()];
-				int k = 0;
-				while(k < S.length)
-					S[k] = match.charAt(k++) + "";
-				return S;
-			}
-			return new String[]{ match };
 		}
 
 		public void setEnter(boolean value){
@@ -155,16 +145,16 @@ public class ContentWindow extends JPanel implements KeyListener{
 		setBackground(ALPHA);
 		setLayout(null);
 
-		flexPanel = new FlexPanel(null, back3, null);
+		flexPanel = new FlexPanel(null, back2, null);
 		flexPanel.setArc(10, 0);
 		add(flexPanel);
 
 		flexPanel.add(scrollPane = new JScrollPane(panel = new JPanel(null)));
 
 		scrollPane.setBorder(null);
-		scrollPane.setBackground(back1);
+		scrollPane.setBackground(c2);
 
-		panel.setBackground(back1);
+		panel.setBackground(c2);
 	}
 
 	public boolean isIgnoreGenViewOnce() {
@@ -303,27 +293,34 @@ public class ContentWindow extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(!isVisible()) return;
-		if(e.getKeyCode() == KeyEvent.VK_DOWN){
-			if(index < hints.size() - 1){
-				hints.get(index).setEnter(false);
-				hints.get(index).setColor3(glow);
-				hints.get(++index).setEnter(true);
-				hints.get(index).setColor3(highlightColor);
-				scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
+		if(!isVisible()) 
+			return;
+		try{
+			if(e.getKeyCode() == KeyEvent.VK_DOWN){
+				if(index < hints.size() - 1){
+					hints.get(index).setEnter(false);
+					hints.get(index).setColor3(glow);
+					hints.get(++index).setEnter(true);
+					hints.get(index).setColor3(highlightColor);
+					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
+				}
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_UP){
+				if(index > 0){
+					hints.get(index).setEnter(false);
+					hints.get(index).setColor3(glow);
+					hints.get(--index).setEnter(true);
+					hints.get(index).setColor3(highlightColor);
+					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
+				}
+			}
+			else if(e.getKeyCode() == KeyEvent.VK_ENTER){
+				hints.get(index).run();
 			}
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_UP){
-			if(index > 0){
-				hints.get(index).setEnter(false);
-				hints.get(index).setColor3(glow);
-				hints.get(--index).setEnter(true);
-				hints.get(index).setColor3(highlightColor);
-				scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
-			}
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_ENTER){
-			hints.get(index).run();
+		catch(Exception ex){
+			setVisible(false);
+			ex.printStackTrace();
 		}
 	}
 
