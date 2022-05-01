@@ -181,6 +181,18 @@ public class ProjectDataBase extends DataBase{
 				}
 			}
 		}
+
+		DataEntry lastActiveEditorEntry = getEntryAt("Last Active Editor");
+		if(lastActiveEditorEntry != null){
+			String path = modifyProjectPath(lastActiveEditorEntry.getValue());
+			File file = new File(path);
+			if(file.exists()){
+				Editor editor = Screen.getScreen().getTabPanel().findEditor(file);
+				if(editor != null){ // Probably, this never turns False
+					Screen.getScreen().getTabPanel().setActiveTab(Screen.getScreen().getTabPanel().getTabData(editor.getAttachment()));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -214,6 +226,9 @@ public class ProjectDataBase extends DataBase{
 				);
 			}
 		});
+		if(Screen.getScreen().getCurrentEditor() != null){
+			addEntry("Last Active Editor", genProjectRootPath(Screen.getScreen().getCurrentEditor().currentFile.getAbsolutePath()));
+		}
 		jars.forEach(path->{
 			addEntry("Project Classpath : Required Jars", genProjectRootPath(path));
 		});
