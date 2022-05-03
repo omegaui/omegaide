@@ -348,6 +348,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 
 		newFileTreePanel.scrollPane.getVerticalScrollBar().setValue(scrollPosition);
 
+		newFileTreePanel.setVisible(isVisible());
 		Screen.getProjectFile().setFileTreePanel(newFileTreePanel);
 	}
 	
