@@ -910,7 +910,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 							contentWindow.setVisible(false);
 						return;
 					}
-					if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_UP || code == KeyEvent.VK_ENTER) {
+					if(code == KeyEvent.VK_ALT || code == KeyEvent.VK_CONTROL){
+						contentWindow.setVisible(false);
+					}
+					else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_UP || code == KeyEvent.VK_ENTER) {
 						if((contentWindow.index == 0 && code == KeyEvent.VK_UP) || ((contentWindow.index == contentWindow.hints.size() - 1) && code == KeyEvent.VK_DOWN)) {
 							contentWindow.setVisible(false);
 							return;

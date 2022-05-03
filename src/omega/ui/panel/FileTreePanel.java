@@ -336,16 +336,19 @@ public class FileTreePanel extends AbstractFileTreePanel{
 
 		int scrollPosition = scrollPane.getVerticalScrollBar().getValue();
 
-		init(root);
+		FileTreePanel newFileTreePanel = new FileTreePanel();
+		
+		newFileTreePanel.init(root);
 
 		for(File dir : expandedDirectories){
-			genBranch(dir);
+			newFileTreePanel.genBranch(dir);
 		}
 
 		expandedDirectories.clear();
 
-		scrollPane.getVerticalScrollBar().setValue(scrollPosition);
-		
+		newFileTreePanel.scrollPane.getVerticalScrollBar().setValue(scrollPosition);
+
+		Screen.getProjectFile().setFileTreePanel(newFileTreePanel);
 	}
 	
 	@Override
