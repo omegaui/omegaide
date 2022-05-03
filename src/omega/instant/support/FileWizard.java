@@ -216,7 +216,10 @@ public class FileWizard extends JDialog{
 				if(!file.exists())
 					file.mkdir();
 			}
-			File src = new File(path+text.substring(text.lastIndexOf('.') + 1)+".java");
+
+			dispose();
+			
+			File src = new File(path+text.substring(text.lastIndexOf('.') + 1) + ".java");
 			createSRCFile(src, type, PATH, text.substring(text.lastIndexOf('.') + 1));
 		}
 		else{
@@ -227,13 +230,14 @@ public class FileWizard extends JDialog{
 				}
 				catch(Exception ex){
 					nameField.setText("Access Denied");
+					ex.printStackTrace();
 				}
 				try{
 					Screen.getProjectFile().getFileTreePanel().refresh();
 					Screen.getScreen().loadFile(file);
 				}
 				catch(Exception e){
-					System.err.println(e);
+					e.printStackTrace();
 				}
 			}
 			else

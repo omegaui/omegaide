@@ -226,7 +226,7 @@ public class ProjectDataBase extends DataBase{
 				);
 			}
 		});
-		if(Screen.getScreen().getCurrentEditor() != null){
+		if(Screen.getScreen().getCurrentEditor() != null && Screen.getScreen().getCurrentEditor().currentFile != null){
 			addEntry("Last Active Editor", genProjectRootPath(Screen.getScreen().getCurrentEditor().currentFile.getAbsolutePath()));
 		}
 		jars.forEach(path->{

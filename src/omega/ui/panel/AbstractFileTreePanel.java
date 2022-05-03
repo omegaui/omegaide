@@ -26,6 +26,6 @@ public abstract class AbstractFileTreePanel extends JPanel{
 	public AbstractFileTreePanel(LayoutManager layoutManager){
 		super(layoutManager);
 	}
-	public abstract AbstractFileTreePanel init(File parentDirectory);
+	public abstract void init(File parentDirectory);
 	public abstract void refresh();
 }

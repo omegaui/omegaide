@@ -75,10 +75,10 @@ public class FileTreePanel extends AbstractFileTreePanel{
 	}
 	
 	@Override
-	public AbstractFileTreePanel init(File parentDirectory){
+	public void init(File parentDirectory){
 		this.root = null;
-		
-		branches.forEach(panel::remove);
+
+		panel.removeAll();
 		branches.clear();
 		
 		blockX = blockY = 0;
@@ -93,8 +93,6 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		genBranch(parentDirectory);
 		
 		this.root = parentDirectory;
-		
-		return this;
 	}
 	
 	public void genBranch(File root){
@@ -324,27 +322,30 @@ public class FileTreePanel extends AbstractFileTreePanel{
 	
 	@Override
 	public void refresh(){
-		LinkedList<FileTreeBranch> expandedBranches = new LinkedList<>();
+	
+		if(Screen.getProjectFile().getJDKManager() != null)
+			Screen.getProjectFile().getJDKManager().readSources(root.getAbsolutePath());
+		Screen.getProjectFile().getSearchWindow().cleanAndLoad(new File(Screen.getProjectFile().getProjectPath()));
+
+		LinkedList<File> expandedDirectories = new LinkedList<>();
 		for(int i = 1; i < branches.size(); i++){
 			FileTreeBranch bx = branches.get(i);
 			if(bx.isExpanded())
-				expandedBranches.add(bx);
+				expandedDirectories.add(bx.getFile());
 		}
 
 		int scrollPosition = scrollPane.getVerticalScrollBar().getValue();
-		
+
 		init(root);
-		
-		expandedBranches.forEach(this::expandBranch);
-		expandedBranches.clear();
-		
+
+		for(File dir : expandedDirectories){
+			genBranch(dir);
+		}
+
+		expandedDirectories.clear();
+
 		scrollPane.getVerticalScrollBar().setValue(scrollPosition);
 		
-		new Thread(()->{
-			if(Screen.getProjectFile().getJDKManager() != null)
-				Screen.getProjectFile().getJDKManager().readSources(getRoot().getAbsolutePath());
-			Screen.getProjectFile().getSearchWindow().cleanAndLoad(new File(Screen.getProjectFile().getProjectPath()));
-		}).start();
 	}
 	
 	@Override
