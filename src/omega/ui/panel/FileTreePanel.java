@@ -350,6 +350,9 @@ public class FileTreePanel extends AbstractFileTreePanel{
 
 		newFileTreePanel.setVisible(isVisible());
 		Screen.getProjectFile().setFileTreePanel(newFileTreePanel);
+		if(newFileTreePanel.isVisible()){
+			newFileTreePanel.computePreferredSize();
+		}
 	}
 	
 	@Override

@@ -229,7 +229,7 @@ public class ProjectFile {
 
 	public void setFileTreePanel(omega.ui.panel.FileTreePanel fileTreePanel) {
 		this.fileTreePanel = fileTreePanel;
-		screen.splitPane.setLeftComponent(this.fileTreePanel);
+		screen.setLeftComponentDoNotTouchVisibility(this.fileTreePanel);
 	}
 	
 	public FileTreePanel getFileTreePanel() {

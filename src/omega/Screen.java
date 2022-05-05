@@ -483,6 +483,14 @@ public class Screen extends UBRFrame {
 		c.setVisible(true);
 	}
 
+	public void setLeftComponentDoNotTouchVisibility(Component c){
+		if(splitPane.getLeftComponent() != null){
+			splitPane.getLeftComponent().setVisible(false);
+		}
+
+		splitPane.setLeftComponent(c);
+	}
+
 	public void toggleLeftComponent(Component c){
 		if(splitPane.getLeftComponent() != c){
 			setLeftComponent(c);
