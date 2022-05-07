@@ -60,6 +60,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 	private JPanel panel;
 
 	private int block;
+	private int gap = 3;
 	private int width;
 	private int height;
 
@@ -176,14 +177,14 @@ public class ContentWindow extends JPanel implements KeyListener{
 
 		sort(dataMembers);
 
-		block = 0;
+		block = gap;
 		width = 0;
 
 		Font hintFont = DataManager.getHintFont();
 
 		optimalHintHeight = computeHeight(hintFont) + 6;
 		optimalHintHeight = optimalHintHeight <  20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;
-
+	
 		dataMembers.forEach(data->{
 			String text = data.getRepresentableValue();
 			if(text != null){
@@ -227,7 +228,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 				panel.add(hintComp);
 				hints.add(hintComp);
 
-				block += optimalHintHeight;
+				block += gap + optimalHintHeight;
 			}
 		});
 
@@ -280,9 +281,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 			if(x < vRect.x)
 				x = vRect.x;
 		}
-		if(ySep > 0){
+		if(ySep > 0)
 			y = e.getCaret().getMagicCaretPosition().y - getHeight();
-		}
 		setLocation(x, y);
 	}
 
@@ -302,7 +302,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 					hints.get(index).setColor3(glow);
 					hints.get(++index).setEnter(true);
 					hints.get(index).setColor3(highlightColor);
-					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
+					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
 				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_UP){
@@ -311,7 +311,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 					hints.get(index).setColor3(glow);
 					hints.get(--index).setEnter(true);
 					hints.get(index).setColor3(highlightColor);
-					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight);
+					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
 				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_ENTER){
