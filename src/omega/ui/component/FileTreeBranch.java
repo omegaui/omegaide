@@ -348,6 +348,8 @@ public class FileTreeBranch extends JComponent {
 		}
 		if(file.getName().contains(".")){
 			String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+			if(ext.equals(".pdf"))
+				return IconManager.fluentpdfImage;
 			if(ext.equals(".png") || ext.equals(".jpg") || ext.equals(".jpeg") || ext.equals(".bmp") || ext.equals(".gif") || ext.equals(".svg") || ext.equals(".ico") || ext.equals(".jp2"))
 				return IconManager.fluentimagefileImage;
 			if(ext.equals(".java") || ext.equals(".class"))
