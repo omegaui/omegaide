@@ -495,6 +495,7 @@ public class TextComp extends JComponent{
 	}
 
 	public synchronized void addHighlightText(String... texts){
+		highlightTexts.clear();
 		for(String text : texts)
 			highlightTexts.add(text);
 		texts = null;
