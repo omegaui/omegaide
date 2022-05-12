@@ -17,6 +17,8 @@
  */
 
 package omega.io;
+import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 import javax.swing.Icon;
@@ -300,7 +302,10 @@ public class IconManager {
 
 	public static BufferedImage getFluentIcon(String name){
 		try{
-			return ImageIO.read(IconManager.class.getResourceAsStream("/fluent-icons/icons8-" + name));
+			InputStream in = IconManager.class.getResourceAsStream("/fluent-icons/icons8-" + name);
+			BufferedImage image = ImageIO.read(in);
+			in.close();
+			return image;
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -310,7 +315,10 @@ public class IconManager {
 
 	public static Image getFluentGif(String name){
 		try{
-			return new ImageIcon(IconManager.class.getResourceAsStream("/fluent-gifs/icons8-" + name).readAllBytes()).getImage();
+			InputStream in = IconManager.class.getResourceAsStream("/fluent-gifs/icons8-" + name);
+			Image image = new ImageIcon(in.readAllBytes()).getImage();
+			in.close();
+			return image;
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -320,7 +328,10 @@ public class IconManager {
 
 	public static BufferedImage getFluentIllustration(String name){
 		try{
-			return ImageIO.read(IconManager.class.getResourceAsStream("/fluent-illustrations/icons8-" + name));
+			InputStream in = IconManager.class.getResourceAsStream("/fluent-illustrations/icons8-" + name);
+			BufferedImage image = ImageIO.read(in);
+			in.close();
+			return image;
 		}
 		catch(Exception e){
 			e.printStackTrace();
