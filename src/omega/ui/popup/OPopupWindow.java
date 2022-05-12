@@ -29,6 +29,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowEvent;
 
 import java.util.LinkedList;
 
@@ -79,10 +81,14 @@ public class OPopupWindow extends JDialog{
 		setBackground(back1);
 		setForeground(TOOLMENU_COLOR1);
 		setType(JWindow.Type.POPUP);
-		addFocusListener(new FocusAdapter(){
+		addWindowFocusListener(new WindowFocusListener(){
 			@Override
-			public void focusLost(FocusEvent e){
+			public void windowLostFocus(WindowEvent e){
 				dispose();
+			}
+			@Override
+			public void windowGainedFocus(WindowEvent e){
+				
 			}
 		});
 		if(scrollable) {
