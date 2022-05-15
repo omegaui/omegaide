@@ -140,7 +140,13 @@ public class JetTerminal extends JPanel{
 		if(onProcessExited != null){
 			new Thread(()->{
 				while(process.isAlive());
-					onProcessExited.run();
+				try{
+					Thread.sleep(100);
+				}
+				catch(Exception e){
+					
+				}
+				onProcessExited.run();
 			}).start();
 		}
 	}

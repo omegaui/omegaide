@@ -1,20 +1,20 @@
-/**
-  * JetRunPanel
-  * Copyright (C) 2021 Omega UI
+/*
+ * JetRunPanel
+ * Copyright (C) 2022 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.ui.panel;
 import omega.io.IconManager;
@@ -40,10 +40,10 @@ public class JetRunPanel extends JPanel {
 	private TextComp instantRunComp;
 	private TextComp clearComp;
 	private TextComp killComp;
-	
+
 	private FlexPanel runTextAreaPanel;
 	public JetTerminal terminalPanel;
-	
+
 	private boolean logMode = false;
 	private boolean processTerminal = false;
 
@@ -52,7 +52,7 @@ public class JetRunPanel extends JPanel {
 
 	private String[] command;
 	private String directory;
-	
+
 	public JetRunPanel(boolean processTerminal, String[] command, String directory){
 		super(null);
 		this.processTerminal = processTerminal;
@@ -61,31 +61,31 @@ public class JetRunPanel extends JPanel {
 		setBackground(c2);
 		init();
 	}
-	
+
 	public void init(){
 		actionPanel = new FlexPanel(null, c2, null);
 		actionPanel.setArc(10, 10);
 		add(actionPanel);
-		
+
 		runComp = new TextComp(IconManager.fluentrunImage, 20, 20, "Re-Run", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::reRun);
 		actionPanel.add(runComp);
-		
+
 		instantRunComp = new TextComp(IconManager.fluentrocketImage, 20, 20, "Re-Run(Dynamic)", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::reRunDynamically);
 		instantRunComp.setVisible(processTerminal);
 		actionPanel.add(instantRunComp);
-		
+
 		clearComp = new TextComp(IconManager.fluentclearImage, 20, 20, "Clear Terminal", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::clearTerminal);
 		actionPanel.add(clearComp);
-		
+
 		killComp = new TextComp(IconManager.fluentcloseImage, 15, 15, "Kill Process", TOOLMENU_COLOR3_SHADE, back2, TOOLMENU_COLOR3, this::killProcess);
 		actionPanel.add(killComp);
-		
+
 		runTextAreaPanel = new FlexPanel(null, back1, null);
 		runTextAreaPanel.setArc(10, 10);
 		terminalPanel = new JetTerminal(command, directory);
 		runTextAreaPanel.add(terminalPanel);
 		add(runTextAreaPanel);
-		
+
 		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(clearComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
@@ -102,7 +102,7 @@ public class JetRunPanel extends JPanel {
 	public void reRun(){
 		reRunAction.run();
 	}
-	
+
 	public void reRunDynamically(){
 		reRunDynamicallyAction.run();
 	}
@@ -116,7 +116,7 @@ public class JetRunPanel extends JPanel {
 		this.reRunDynamicallyAction = action;
 		return this;
 	}
-	
+
 	public void clearTerminal(){
 		terminalPanel.widget.getTerminal().clearScreen();
 		terminalPanel.widget.getTerminal().cursorPosition(0, 0);
@@ -129,34 +129,34 @@ public class JetRunPanel extends JPanel {
 	public void start(){
 		terminalPanel.start();
 	}
-	
+
 	public void killProcess(){
 		if(terminalPanel.process != null && terminalPanel.process.isAlive()){
 			try{
 				terminalPanel.process.destroyForcibly();
 			}
 			catch(Exception e){
-				
+
 			}
 		}
 	}
-	
+
 	public void setLogMode(boolean logMode){
 		this.logMode = logMode;
 		actionPanel.setVisible(true);
 	}
-	
+
 	public void print(String text){
 		terminalPanel.widget.getTerminal().writeCharacters(text);
 		terminalPanel.widget.getTerminal().nextLine();
-		
+
 		//layout();
 	}
-	
+
 	public void printText(String text){
 		print(text);
 	}
-	
+
 	public void relocate(){
 		if(!logMode){
 			actionPanel.setBounds(5, 5, 30, getHeight() - 10);
@@ -171,7 +171,7 @@ public class JetRunPanel extends JPanel {
 			runTextAreaPanel.setBounds(40, 5, getWidth() - 50, getHeight() - 10);
 		terminalPanel.setBounds(5, 5, runTextAreaPanel.getWidth() - 10, runTextAreaPanel.getHeight() - 10);
 	}
-	
+
 	@Override
 	public void layout(){
 		relocate();
