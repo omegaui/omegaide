@@ -288,7 +288,7 @@ public class Screen extends UBRFrame {
 	}
 
 	public void showFileWizard(KeyEvent e){
-		projectFile.getFileCreator().show("Custom File");
+		projectFile.getFileCreator().show();
 		e.consume();
 	}
 	

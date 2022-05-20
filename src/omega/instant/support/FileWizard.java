@@ -126,7 +126,7 @@ public class FileWizard extends JDialog{
 		closeComp.setArc(5, 5);
 		add(closeComp);
 
-	typeBtn = new TextComp("class", c2, c2, TOOLMENU_COLOR1, ()->{}){
+		typeBtn = new TextComp("class", c2, c2, TOOLMENU_COLOR1, null){
 			@Override
 			public void draw(Graphics2D g){
 				g.drawImage(IconManager.fluentcategoryImage, 0, 0, 25, 25, null);
@@ -218,7 +218,7 @@ public class FileWizard extends JDialog{
 			}
 
 			dispose();
-			
+
 			File src = new File(path+text.substring(text.lastIndexOf('.') + 1) + ".java");
 			createSRCFile(src, type, PATH, text.substring(text.lastIndexOf('.') + 1));
 		}

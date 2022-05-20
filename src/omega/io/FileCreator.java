@@ -26,16 +26,25 @@ public class FileCreator {
 
 	private Screen screen;
 	private FileWizard fileWizard;
+	private String lastType = "Custom File";
 
 	public FileCreator(Screen screen) {
 		this.screen = screen;
 		fileWizard = new FileWizard(screen);
 	}
 
+	public void show() {
+		fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
+		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
+			fileWizard.show(lastType);
+		this.lastType = fileWizard.typeBtn.getText();
+	}
+
 	public void show(String type) {
 		fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
 		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
 			fileWizard.show(type);
+		this.lastType = fileWizard.typeBtn.getText();
 	}
 
 	public void showDirView(String path){

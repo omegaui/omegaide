@@ -27,6 +27,7 @@ import omega.Screen;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -72,6 +73,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		flexPanel.add(scrollPane = new JScrollPane(panel));
 		
 		scrollPane.setBackground(c2);
+		scrollPane.setBorder(BorderFactory.createLineBorder(c2, 2));
 	}
 	
 	@Override
