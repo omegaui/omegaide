@@ -194,6 +194,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		scrollPane = new RTextScrollPane(this, true, omega.io.UIManager.glow);
 		scrollPane.setFoldIndicatorEnabled(true);
 		scrollPane.setBackground(UIManager.c2);
+		scrollPane.setBorder(null);
 
 		fAndR = new FindAndReplace();
 
