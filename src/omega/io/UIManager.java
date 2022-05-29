@@ -246,7 +246,7 @@ public class UIManager extends DataBase {
 				CURRENT_LINE_NUMBER_COLOR = Color.decode("#A4A3A1");
 				
 				back1 = Color.decode("#252526");
-				back2 = Color.decode("#2A2A2A");
+				back2 = Color.decode("#262626");
 				back3 = Color.decode("#303030");
 			}
 		}

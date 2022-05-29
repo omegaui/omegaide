@@ -384,6 +384,9 @@ implements MouseInputListener {
 		// Paint line numbers
 		int caretLineNumber = textArea.getCaretLineNumber() + 1;
 		boolean ltr = getComponentOrientation().isLeftToRight();
+		Font oldFont = g.getFont();
+		Font currentLineFont = g.getFont();
+		currentLineFont = new Font(currentLineFont.getName(), Font.BOLD, currentLineFont.getSize() + 1);
 		if (ltr) {
 			FontMetrics metrics = g.getFontMetrics();
 			int rhs = getWidth() - rhsBorderWidth;
@@ -392,12 +395,15 @@ implements MouseInputListener {
 				String number = Integer.toString(line + getLineNumberingStartIndex() - 1);
 				int width = metrics.stringWidth(number);
 				if(caretLineNumber == line + getLineNumberingStartIndex() - 1){
+					g.setFont(currentLineFont);
 					g.setColor(currentLineNumberColor);
+					g.drawString(number, rhs - width - (g.getFontMetrics().stringWidth(number) - g.getFontMetrics(oldFont).stringWidth(number)), y);
 				}
 				else{
+					g.setFont(oldFont);
 					g.setColor(numberColor);
+					g.drawString(number, rhs-width ,y);
 				}
-				g.drawString(number, rhs-width,y);
 				y += cellHeight;
 				if (fm!=null) {
 					Fold fold = fm.getFoldForLine(line-1);
@@ -422,12 +428,15 @@ implements MouseInputListener {
 			while (y<visibleRect.y+visibleRect.height && line<textArea.getLineCount()) {
 				String number = Integer.toString(line + getLineNumberingStartIndex() - 1);
 				if(caretLineNumber == line + getLineNumberingStartIndex() - 1){
+					g.setFont(currentLineFont);
 					g.setColor(currentLineNumberColor);
+					g.drawString(number, rhsBorderWidth - (g.getFontMetrics().stringWidth(number) - g.getFontMetrics(oldFont).stringWidth(number)), y);
 				}
 				else{
+					g.setFont(oldFont);
 					g.setColor(numberColor);
+					g.drawString(number, rhsBorderWidth, y);
 				}
-				g.drawString(number, rhsBorderWidth, y);
 				y += cellHeight;
 				if (fm!=null) {
 					Fold fold = fm.getFoldForLine(line-1);
@@ -523,7 +532,7 @@ implements MouseInputListener {
 		// end of the text area.
 		g.setColor(numberColor);
 		g.setFont(new Font(omega.io.UIManager.fontName, omega.io.UIManager.fontState, omega.io.UIManager.fontSize));
-
+		
 		int caretLineNumber = textArea.getCaretLineNumber() + 1;
 
 		while (y < visibleBottom) {
@@ -550,7 +559,7 @@ implements MouseInputListener {
 			}
 			if (ltr) {
 				int strWidth = metrics.stringWidth(number);
-				g.drawString(number, rhs-strWidth,y+ascent);
+				g.drawString(number, rhs-strWidth, y+ascent);
 			}
 			else {
 				int x = rhsBorderWidth;

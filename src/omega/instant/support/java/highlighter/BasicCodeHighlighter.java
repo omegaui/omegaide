@@ -33,13 +33,11 @@ import java.awt.Color;
 import static omega.io.UIManager.*;
 public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 
-	public static Color valueKeyColor;
-	public static Color returnKeyColor;
-	public static Color javaConstantColor;
-
 	public static Color valueKeyForeColor = glow;
 	public static Color returnKeyForeColor = glow;
 	public static Color javaConstantForeColor = glow;
+	public static Color objectKeywordForeColor = glow;
+	public static Color packageColor = glow;
 
 	public static Color classColor;
 	public static Color methColor;
@@ -48,18 +46,17 @@ public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 	public static String lastText;
 
 	static{
-		valueKeyColor = TOOLMENU_COLOR2_SHADE;
 		valueKeyForeColor = TOOLMENU_COLOR2;
 
-		returnKeyColor = TOOLMENU_COLOR3_SHADE;
 		returnKeyForeColor = TOOLMENU_COLOR3;
 
-		javaConstantColor = TOOLMENU_COLOR1_SHADE;
 		javaConstantForeColor = TOOLMENU_COLOR1;
 
 		if(isDarkMode()){
-			classColor = Color.WHITE;
+			classColor = Color.decode("#B9B9B6");
 			methColor = Color.decode("#FFC66D");
+			objectKeywordForeColor = Color.decode("#FEA248");
+			packageColor = Color.decode("#ca5805");
 		}
 		else{
 			classColor = Color.BLACK;
@@ -71,6 +68,7 @@ public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 	public synchronized boolean canComputeForeground(RSyntaxTextArea textArea, Token t){
 		return textArea.getSyntaxEditingStyle() == textArea.SYNTAX_STYLE_JAVA
 		&& switch(t.getType()){
+			case Token.RESERVED_WORD:
 			case Token.RESERVED_WORD_2:
 			case Token.LITERAL_BOOLEAN:
 			case Token.IDENTIFIER:
@@ -87,6 +85,12 @@ public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 		try{
 			if(isValueKeyword(text)){
 				return valueKeyForeColor;
+			}
+			else if(isObjectKeyword(text)){
+				return objectKeywordForeColor;
+			}
+			else if(isPackageKeyword(text)){
+				return packageColor;
 			}
 			else if(isReturnKeyword(text)){
 				return returnKeyForeColor;
@@ -107,6 +111,14 @@ public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 
 	public static synchronized boolean isValueKeyword(String text){
 		return text.equals("null") || text.equals("true") || text.equals("false");
+	}
+
+	public static synchronized boolean isObjectKeyword(String text){
+		return text.equals("super") || text.equals("this");
+	}
+
+	public static synchronized boolean isPackageKeyword(String text){
+		return text.equals("package") || text.equals("import");
 	}
 
 	public static synchronized boolean isReturnKeyword(String text){
