@@ -163,6 +163,9 @@ public class UIManager extends DataBase {
 	public static Color TOOLMENU_COLOR6_SHADE = TOOLMENU_COLOR3_SHADE;
 	public static Color TOOLMENU_GRADIENT = new Color(200, 200, 200, 100);
 	
+	public static Color materialTabHolderColor1 = new Color(240, 240, 240);
+	public static Color materialTabHolderColor2 = new Color(250, 250, 250);
+	
 	public static Color ALPHA = new Color(0, 0, 0, 0);
 	
 	public static Color LINE_NUMBER_COLOR = Color.BLACK;
@@ -248,6 +251,9 @@ public class UIManager extends DataBase {
 				back1 = Color.decode("#252526");
 				back2 = Color.decode("#262626");
 				back3 = Color.decode("#303030");
+				
+				materialTabHolderColor1 = back3;
+				materialTabHolderColor2 = c2;
 			}
 		}
 		catch(Exception e) {

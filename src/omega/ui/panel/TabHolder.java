@@ -43,7 +43,7 @@ public class TabHolder extends JPanel{
 	}
 
 	public void init(){
-		flexPanel = new FlexPanel(null, TOOLMENU_COLOR6_SHADE, null);
+		flexPanel = new FlexPanel(null, materialTabHolderColor1, null);
 		flexPanel.setArc(5, 5);
 		add(flexPanel);
 		

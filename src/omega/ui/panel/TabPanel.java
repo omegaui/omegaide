@@ -140,6 +140,7 @@ public class TabPanel extends JPanel{
 	public JPanel addTab(TabData tabData){
 		if(isTabDataAlreadyPresent(tabData))
 			return null;
+		
 		boolean wasEmpty = tabs.isEmpty();
 
 		tabs.add(tabData);
@@ -372,14 +373,15 @@ public class TabPanel extends JPanel{
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		if(isEmpty()){
-			g.setColor(back3);
+			g.setColor(materialTabHolderColor1);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			if(illustration != null)
 				g.drawImage(illustration, getWidth()/2 - 456/2, getHeight()/2 - 456/2, 456, 456, this);
 			g.dispose();
 		}
-		else
+		else{
 			super.paint(g);
+		}
 	}
 
 }

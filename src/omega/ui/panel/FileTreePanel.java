@@ -63,7 +63,7 @@ public class FileTreePanel extends AbstractFileTreePanel{
 		setSize(300, 100);
 		setPreferredSize(getSize());
 		
-		flexPanel = new FlexPanel(null, TOOLMENU_COLOR3_SHADE, null);
+		flexPanel = new FlexPanel(null, materialTabHolderColor2, null);
 		flexPanel.setArc(0, 0);
 		add(flexPanel, BorderLayout.CENTER);
 		
