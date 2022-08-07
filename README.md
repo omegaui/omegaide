@@ -31,6 +31,8 @@
    	<img src="https://img.shields.io/github/downloads/omegaui/omegaide/total?style=social"/> 
 </a>
 
+![light-mode-ui](/res/light.png)
+![dark-mode-ui](/res/dark.png)
 
 ## ![](https://img.icons8.com/fluency/48/000000/inconsistency.png) Just another IDE? No
 

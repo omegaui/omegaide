@@ -542,7 +542,7 @@ public class Screen extends UBRFrame {
 		}
 	}
 
-//This was required to overcome high CPU usage
+// This was required to overcome high CPU usage
 //	@Override
 //	public void layout(){
 //		super.layout();
