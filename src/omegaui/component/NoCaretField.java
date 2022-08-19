@@ -48,16 +48,23 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 
 	private String text;
 	private String lastText;
+	
 	private LinkedList<String> lines;
+	
 	private final int LINE_GAP = 2;
 	private final int BORDER_GAP = 5;
+	
 	private String message = "Start Typing";
+	
 	private char[] ignorableCharacters;
+	
 	private Runnable action;
+	
 	private volatile boolean ctrl;
-	private volatile boolean x;
+	private volatile boolean u;
 	private volatile boolean c;
 	private volatile boolean v;
+	
 	private volatile boolean editable = true;
 
 	public NoCaretField(String text, Color c1, Color c2, Color c3){
@@ -152,11 +159,11 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			c = true;
 		if(code == VK_V)
 			v = true;
-		if(code == VK_X)
-			x = true;
-		if(ctrl && x){
+		if(code == VK_U)
+			u = true;
+		if(ctrl && u){
 			setText("");
-			x = false;
+			u = false;
 			return;
 		}
 		if(ctrl && c){
@@ -203,8 +210,8 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			c = false;
 		if(code == VK_V)
 			v = false;
-		if(code == VK_X)
-			x = false;
+		if(code == VK_U)
+			u = false;
 	}
 	@Override
 	public void focusGained(FocusEvent focusEvent) {
