@@ -33,6 +33,7 @@ import omegaui.listener.KeyStrokeListener;
 import omega.ui.popup.OPopupWindow;
 
 import omegaui.component.RTextField;
+import omegaui.component.TextComp;
 
 import omega.ui.panel.FileTreePanel;
 
@@ -93,8 +94,9 @@ public class FileTreeBranch extends JComponent {
 	private volatile boolean expanded = false;
 	private volatile boolean modeLocked = false;
 	private volatile boolean rootMode = false;
+	private volatile boolean panelOn = false;
 
-	private volatile BufferedImage arrowImage;
+	private TextComp createComp;
 
 	public FileTreeBranch(FileTreePanel fileTreePanel, File file){
 		this.file = file;
@@ -121,6 +123,19 @@ public class FileTreeBranch extends JComponent {
 		fileColor = getPreferredColorForFile(file);
 
 		setSize(25 + 5 + computeWidth(displayName, PX14) + 5, 25);
+
+		if(file.isDirectory()){
+			createComp = new TextComp(IconManager.fluentnewfileImage, 15, 15, TOOLMENU_COLOR1_SHADE, back3, back3, ()->{
+				Screen.getScreen().getProjectFile().getFileCreator().showFileView(file.getAbsolutePath());
+			});
+			createComp.setBounds(getWidth(), 0, 20, 20);
+			createComp.setVisible(false);
+			createComp.setShowHandCursorOnMouseHover(true);
+			add(createComp);
+			
+			setSize(getWidth() + 20, 25);
+		}
+		
 		setPreferredSize(getSize());
 
 		addMouseListener(new MouseAdapter(){
@@ -129,6 +144,9 @@ public class FileTreeBranch extends JComponent {
 				if(mode == EDIT_FILE_NAME_MODE)
 					return;
 				enter = true;
+				if(file.isDirectory()){
+					createComp.setVisible(true);
+				}
 				repaint();
 			}
 			@Override
@@ -136,6 +154,17 @@ public class FileTreeBranch extends JComponent {
 				if(mode == EDIT_FILE_NAME_MODE)
 					return;
 				enter = false;
+				if(file.isDirectory()){
+					new Thread(()->{
+						try{
+							Thread.sleep(1000);
+							createComp.setVisible(false);
+						}
+						catch(Exception ex){
+							ex.printStackTrace();
+						}
+					}).start();
+				}
 				repaint();
 			}
 			@Override
