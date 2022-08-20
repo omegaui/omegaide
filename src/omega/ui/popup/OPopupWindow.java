@@ -80,7 +80,7 @@ public class OPopupWindow extends JDialog{
 		setLayout(scrollable ? new BorderLayout() : null);
 		setBackground(back1);
 		setForeground(TOOLMENU_COLOR1);
-		setType(JWindow.Type.POPUP);
+		setType(JWindow.Type.UTILITY);
 		addWindowFocusListener(new WindowFocusListener(){
 			@Override
 			public void windowLostFocus(WindowEvent e){
