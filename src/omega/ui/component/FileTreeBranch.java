@@ -97,6 +97,8 @@ public class FileTreeBranch extends JComponent {
 	private volatile boolean panelOn = false;
 
 	private TextComp createComp;
+	private TextComp runComp;
+	private TextComp renameComp;
 
 	public FileTreeBranch(FileTreePanel fileTreePanel, File file){
 		this.file = file;
@@ -135,6 +137,25 @@ public class FileTreeBranch extends JComponent {
 			
 			setSize(getWidth() + 20, 25);
 		}
+		else{
+			runComp = new TextComp(IconManager.fluentlaunchImage, 15, 15, TOOLMENU_COLOR1_SHADE, back3, back3, ()->{
+				ToolMenu.processWizard.launch(file);
+			});
+			runComp.setBounds(getWidth(), 0, 20, 20);
+			runComp.setVisible(false);
+			runComp.setShowHandCursorOnMouseHover(true);
+			add(runComp);
+			
+			renameComp = new TextComp(IconManager.fluentrenameImage, 15, 15, TOOLMENU_COLOR1_SHADE, back3, back3, ()->{
+				renameView();
+			});
+			renameComp.setBounds(getWidth() + 21, 0, 20, 20);
+			renameComp.setVisible(false);
+			renameComp.setShowHandCursorOnMouseHover(true);
+			add(renameComp);
+			
+			setSize(getWidth() + 42, 25);
+		}
 		
 		setPreferredSize(getSize());
 
@@ -147,6 +168,10 @@ public class FileTreeBranch extends JComponent {
 				if(file.isDirectory()){
 					createComp.setVisible(true);
 				}
+				else{
+					runComp.setVisible(true);
+					renameComp.setVisible(true);
+				}
 				repaint();
 			}
 			@Override
@@ -154,17 +179,21 @@ public class FileTreeBranch extends JComponent {
 				if(mode == EDIT_FILE_NAME_MODE)
 					return;
 				enter = false;
-				if(file.isDirectory()){
-					new Thread(()->{
-						try{
-							Thread.sleep(1000);
+				new Thread(()->{
+					try{
+						Thread.sleep(1500);
+						if(file.isDirectory()){
 							createComp.setVisible(false);
 						}
-						catch(Exception ex){
-							ex.printStackTrace();
+						else{
+							renameComp.setVisible(false);
+							runComp.setVisible(false);
 						}
-					}).start();
-				}
+					}
+					catch(Exception ex){
+						ex.printStackTrace();
+					}
+				}).start();
 				repaint();
 			}
 			@Override
