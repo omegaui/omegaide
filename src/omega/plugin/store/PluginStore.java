@@ -94,7 +94,7 @@ public class PluginStore extends JDialog{
 		this.pluginManager = pluginManager;
 		setTitle("Plugin Store");
 		setUndecorated(true);
-		setSize(550, 450);
+		setSize(560, 450);
 		setLocationRelativeTo(null);
 		JPanel panel = new JPanel(null);
 		panel.setBackground(back1);
@@ -166,7 +166,7 @@ public class PluginStore extends JDialog{
 				}
 			}
 		});
-		contentScrollPane.setBounds(5, 5, contentPanel.getWidth() - 10, contentPanel.getHeight() - 10);
+		contentScrollPane.setBounds(5, 5, contentPanel.getWidth(), contentPanel.getHeight() - 10);
 		contentScrollPane.setBackground(back1);
 		contentScrollPane.setBorder(null);
 		panel.setBackground(back2);
@@ -220,7 +220,7 @@ public class PluginStore extends JDialog{
 			block += 60;
 		}
 		
-		panel.setPreferredSize(new Dimension(contentScrollPane.getWidth(), block));
+		panel.setPreferredSize(new Dimension(contentScrollPane.getWidth() - 10, block));
 		contentScrollPane.getVerticalScrollBar().setVisible(true);
 		contentScrollPane.getVerticalScrollBar().setValue(0);
 		layout();

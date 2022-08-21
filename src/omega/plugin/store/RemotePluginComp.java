@@ -64,14 +64,6 @@ public class RemotePluginComp extends FlexPanel{
 		setSize(width, height);
 		addMouseListener(new MouseAdapter(){
 			@Override
-			public void mouseEntered(MouseEvent e){
-				setEnter(true);
-			}
-			@Override
-			public void mouseExited(MouseEvent e){
-				setEnter(false);
-			}
-			@Override
 			public void mousePressed(MouseEvent e){
 				if(remotePluginView == null)
 					remotePluginView = new RemotePluginView(RemotePluginComp.this);
@@ -144,12 +136,6 @@ public class RemotePluginComp extends FlexPanel{
 		else {
 			pluginStore.downloadPlugin(remotePluginInfo);
 		}
-	}
-
-	public void setEnter(boolean enter){
-		this.enter = enter;
-		setPaintBorder(enter);
-		repaint();
 	}
 
 	public void loadIcon(){
