@@ -51,7 +51,7 @@ public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 		returnKeyForeColor = TOOLMENU_COLOR3;
 
 		javaConstantForeColor = TOOLMENU_COLOR1;
-
+		
 		if(isDarkMode()){
 			classColor = Color.decode("#B9B9B6");
 			methColor = Color.decode("#FFC66D");

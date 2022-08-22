@@ -6,12 +6,24 @@
 -0
 >Opened Editors on Main Tab Panel
 -project-root$/src/omega/instant/support/FileWizard.java
+-project-root$/src/omega/instant/support/java/highlighter/BasicCodeHighlighter.java
+-project-root$/src/omega/instant/support/java/assist/ContentWindow.java
+-project-root$/src/omega/io/IconManager.java
 >Caret Positions
 -project-root$/src/omega/instant/support/FileWizard.java
-|2583
-|2510
+|1829
+|2466
+-project-root$/src/omega/instant/support/java/highlighter/BasicCodeHighlighter.java
+|756
+|1738
+-project-root$/src/omega/instant/support/java/assist/ContentWindow.java
+|3191
+|4531
+-project-root$/src/omega/io/IconManager.java
+|2095
+|6738
 >Last Active Editor
--project-root$/src/omega/instant/support/FileWizard.java
+-project-root$/src/omega/instant/support/java/highlighter/BasicCodeHighlighter.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar

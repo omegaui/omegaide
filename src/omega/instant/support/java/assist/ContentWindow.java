@@ -17,6 +17,8 @@
  */
 
 package omega.instant.support.java.assist;
+import omega.instant.support.java.highlighter.BasicCodeHighlighter;
+
 
 import omega.ui.component.Editor;
 
@@ -101,7 +103,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			iconComp.setClickable(false);
 			add(iconComp);
 
-			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_COLOR5_SHADE, getBackground(), glow, null);
+			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_COLOR6_SHADE, getBackground(), BasicCodeHighlighter.classColor, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
@@ -115,6 +117,12 @@ public class ContentWindow extends JPanel implements KeyListener{
 		}
 
 		public void setEnter(boolean value){
+			if(value){
+				nameComp.setFont(DataManager.getHintFont().deriveFont(Font.BOLD));
+			}
+			else{
+				nameComp.setFont(DataManager.getHintFont());
+			}
 			nameComp.setEnter(value);
 		}
 
@@ -299,7 +307,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			if(e.getKeyCode() == KeyEvent.VK_DOWN){
 				if(index < hints.size() - 1){
 					hints.get(index).setEnter(false);
-					hints.get(index).setColor3(glow);
+					hints.get(index).setColor3(BasicCodeHighlighter.classColor);
 					hints.get(++index).setEnter(true);
 					hints.get(index).setColor3(highlightColor);
 					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
@@ -308,7 +316,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			else if(e.getKeyCode() == KeyEvent.VK_UP){
 				if(index > 0){
 					hints.get(index).setEnter(false);
-					hints.get(index).setColor3(glow);
+					hints.get(index).setColor3(BasicCodeHighlighter.classColor);
 					hints.get(--index).setEnter(true);
 					hints.get(index).setColor3(highlightColor);
 					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
