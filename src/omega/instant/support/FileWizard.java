@@ -17,6 +17,8 @@
  */
 
 package omega.instant.support;
+import omegaui.listener.KeyStrokeListener;
+
 import omega.Screen;
 
 import omega.io.IconManager;
@@ -43,8 +45,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
+import static java.awt.event.KeyEvent.*;
+
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
+
 public class FileWizard extends JDialog{
 
 	private TextComp iconComp;
@@ -111,6 +116,34 @@ public class FileWizard extends JDialog{
 		nameField.setBounds(65, 5, getWidth() - 100, 30);
 		nameField.setFont(PX14);
 		nameField.addActionListener((e) -> createComp.runnable.run());
+		KeyStrokeListener typeNavigationListener = new KeyStrokeListener(nameField);
+		typeNavigationListener.putKeyStroke((e)->{
+			String currentType = typeBtn.getText();
+			currentType = switch(currentType) {
+				case "directory" -> "class";
+				case "class" -> "record";
+				case "record" -> "interface";
+				case "interface" -> "@interface";
+				case "@interface" -> "enum";
+				case "enum" -> "Custom File";
+				default -> "directory";
+			};
+			typeBtn.setText(currentType);
+		}, VK_DOWN);
+		typeNavigationListener.putKeyStroke((e)->{
+			String currentType = typeBtn.getText();
+			currentType = switch(currentType) {
+				case "class" -> "directory";
+				case "record" -> "class";
+				case "interface" -> "record";
+				case "@interface" -> "interface";
+				case "enum" -> "@interface";
+				case "Custom File" -> "enum";
+				default -> "Custom File";
+			};
+			typeBtn.setText(currentType);
+		}, VK_UP);
+		nameField.addKeyListener(typeNavigationListener);
 		add(nameField);
 
 		typeLabel = new EdgeComp("Type", back2, TOOLMENU_GRADIENT, glow, null);
