@@ -40,6 +40,7 @@ import omegaui.component.EdgeComp;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 import static omega.io.UIManager.*;
@@ -48,7 +49,7 @@ public class FileWizard extends JDialog{
 
 	private TextComp iconComp;
 
-	private NoCaretField nameField;
+	private JTextField nameField;
 	private TextComp typeComp;
 	private EdgeComp typeLabel;
 
@@ -103,11 +104,14 @@ public class FileWizard extends JDialog{
 		parentRoot.setArc(5, 5);
 		add(parentRoot);
 
-		nameField = new NoCaretField("", "Start Typing", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+		nameField = new JTextField();
+		nameField.setBackground(c2);
+		nameField.setCaretColor(TOOLMENU_COLOR2);
+		nameField.setForeground(TOOLMENU_COLOR3);
 		nameField.setBounds(65, 5, getWidth() - 100, 30);
 		nameField.setFont(PX14);
+		nameField.addActionListener((e) -> createComp.runnable.run());
 		add(nameField);
-		addKeyListener(nameField);
 
 		typeLabel = new EdgeComp("Type", back2, TOOLMENU_GRADIENT, glow, null);
 		typeLabel.setBounds(65, 45, 80, 25);
@@ -118,7 +122,6 @@ public class FileWizard extends JDialog{
 		createComp = new TextComp(IconManager.fluentnewfileImage, 25, 25, "Create", TOOLMENU_COLOR3_SHADE, back2, c2, this::create);
 		createComp.setBounds(getWidth() - 35, getHeight() - 35, 30, 30);
 		createComp.setArc(5, 5);
-		nameField.setOnAction(createComp.runnable);
 		add(createComp);
 
 		closeComp = new TextComp(IconManager.fluentcloseImage, 20, 20, back2, back2, c2, this::dispose);
@@ -275,4 +278,3 @@ public class FileWizard extends JDialog{
 		typeBtn.repaint();
 	}
 }
-
