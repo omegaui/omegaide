@@ -59,23 +59,24 @@ public class BasicCodeHighlighter extends AbstractCodeHighlighter{
 			packageColor = Color.decode("#ca5805");
 		}
 		else{
-			classColor = Color.BLACK;
+			classColor = Color.decode("#343434");
 			methColor = Color.decode("#00425A");
+			
 		}
 	}
 
 	@Override
 	public synchronized boolean canComputeForeground(RSyntaxTextArea textArea, Token t){
 		return textArea.getSyntaxEditingStyle() == textArea.SYNTAX_STYLE_JAVA
-		&& switch(t.getType()){
-			case Token.RESERVED_WORD:
-			case Token.RESERVED_WORD_2:
-			case Token.LITERAL_BOOLEAN:
-			case Token.IDENTIFIER:
-			case Token.FUNCTION:
-			yield true;
-			default:
-			yield false;
+			&& switch(t.getType()){
+				case Token.RESERVED_WORD:
+				case Token.RESERVED_WORD_2:
+				case Token.LITERAL_BOOLEAN:
+				case Token.IDENTIFIER:
+				case Token.FUNCTION:
+					yield true;
+				default:
+					yield false;
 		};
 	}
 

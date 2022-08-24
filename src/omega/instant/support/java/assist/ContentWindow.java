@@ -75,6 +75,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 	private volatile boolean ignoreGenViewOnce = false;
 
 	public static Color highlightColor = glow;
+	
+	public Color hintHoverColor = TOOLMENU_GRADIENT;
 
 	private class HintComp extends JPanel{
 		private DataMember d;
@@ -103,7 +105,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 			iconComp.setClickable(false);
 			add(iconComp);
 
-			nameComp = new TextComp(d.getRepresentableValue(), TOOLMENU_COLOR6_SHADE, getBackground(), BasicCodeHighlighter.classColor, null);
+			nameComp = new TextComp(d.getRepresentableValue(), hintHoverColor, getBackground(), BasicCodeHighlighter.classColor, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
 			nameComp.setFont(DataManager.getHintFont());
 			nameComp.setArc(0, 0);
@@ -151,10 +153,10 @@ public class ContentWindow extends JPanel implements KeyListener{
 	public ContentWindow(Editor editor){
 		this.editor = editor;
 		setVisible(false);
-		setBackground(ALPHA);
+		setBackground(TOOLMENU_GRADIENT);
 		setLayout(null);
 
-		flexPanel = new FlexPanel(null, back2, null);
+		flexPanel = new FlexPanel(null, TOOLMENU_GRADIENT, null);
 		flexPanel.setArc(10, 0);
 		add(flexPanel);
 
@@ -164,6 +166,8 @@ public class ContentWindow extends JPanel implements KeyListener{
 		scrollPane.setBackground(c2);
 
 		panel.setBackground(c2);
+
+		hintHoverColor = new Color(hintHoverColor.getRed(), hintHoverColor.getGreen(), hintHoverColor.getBlue(), 20);
 	}
 
 	public boolean isIgnoreGenViewOnce() {
