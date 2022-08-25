@@ -17,6 +17,8 @@
  */
 
 package omega.instant.support;
+import omega.instant.support.universal.TemplateManager;
+
 import omegaui.listener.KeyStrokeListener;
 
 import omega.Screen;
@@ -79,10 +81,10 @@ public class FileWizard extends JDialog{
 		setSize(400, 120);
 		setLocationRelativeTo(null);
 		JPanel panel = new JPanel(null);
-		panel.setBackground(c2);
+		panel.setBackground(back2);
 		setContentPane(panel);
 		setLayout(null);
-		setBackground(c2);
+		setBackground(back2);
 		setResizable(false);
 		init();
 	}
@@ -162,7 +164,7 @@ public class FileWizard extends JDialog{
 		closeComp.setArc(5, 5);
 		add(closeComp);
 
-		typeBtn = new TextComp("class", c2, c2, TOOLMENU_COLOR1, null){
+		typeBtn = new TextComp("class", back2, back2, TOOLMENU_COLOR1, null){
 			@Override
 			public void draw(Graphics2D g){
 				g.drawImage(IconManager.fluentcategoryImage, 0, 0, 25, 25, null);
@@ -263,6 +265,11 @@ public class FileWizard extends JDialog{
 			if(!file.exists()){
 				try{
 					file.createNewFile();
+					if(TemplateManager.isTemplateAvailable(nameField.getText())){
+						if(!TemplateManager.writeTemplateTo(file)){
+							System.err.println("Failed to write Template to " + file);
+						}
+					}
 				}
 				catch(Exception ex){
 					nameField.setText("Access Denied");

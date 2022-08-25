@@ -147,6 +147,7 @@ public class IconManager {
 	public static BufferedImage fluentaddlinkImage = getFluentIcon("add-link-48.png");
 	public static BufferedImage fluentremovelinkImage = getFluentIcon("delete-link-48.png");
 	public static BufferedImage fluentmanaImage = getFluentIcon("mana-48.png");
+	public static BufferedImage fluenttemplateImage = getFluentIcon("template-62.png");
 	public static BufferedImage fluentrocketImage = getFluentIcon("rocket-64.png");
 	public static BufferedImage fluentrocketbuildImage = getFluentIcon("rocket-build-64.png");
 	public static BufferedImage fluentlightningboltImage = getFluentIcon("lightning-bolt-48.png");

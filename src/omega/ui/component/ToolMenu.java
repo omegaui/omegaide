@@ -36,6 +36,7 @@ import omega.io.IconManager;
 import omega.instant.support.java.framework.CodeFramework;
 
 import omega.instant.support.LanguageTagView;
+import omega.instant.support.TemplateWizard;
 
 import omega.instant.support.build.gradle.GradleModuleWizard;
 import omega.instant.support.build.gradle.GradleBuildScriptManager;
@@ -190,6 +191,7 @@ public class ToolMenu extends JPanel {
 	public static DonationWindow donationWindow;
 	public static MainWindowSizeController mainWindowSizeController;
 	public static GitProjectWizard gitProjectWizard;
+	public static TemplateWizard templateWizard;
 
 	public static NotificationPopup projectTypeNotificationPopup = null;
 
@@ -237,6 +239,7 @@ public class ToolMenu extends JPanel {
 			donationWindow = new DonationWindow(screen);
 			mainWindowSizeController = new MainWindowSizeController(screen);
 			gitProjectWizard = new GitProjectWizard(screen);
+			templateWizard = new TemplateWizard(screen);
 			
 			projectTypeNotificationPopup = NotificationPopup.create(screen)
 			.title("Project Type Management")
@@ -916,7 +919,8 @@ public class ToolMenu extends JPanel {
 		.createItem("Open Project", "Ctrl + O", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
 		.createItem("New Project (Git)", "Ctrl + G", IconManager.fluentgithubIcon, ()->gitProjectWizard.setVisible(true))
 		.createItem("New Project (Java)", "Ctrl + N", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
-		.createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, ()->universalProjectWizard.setVisible(true));
+		.createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, ()->universalProjectWizard.setVisible(true))
+		.createItem("New Template File", "", IconManager.fluenttemplateImage, ()->templateWizard.setVisible(true));
 		
 		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", "Ctrl + SHIFT + M", IconManager.fluentsearchImage, ()->{
 			recentsDialog.setVisible(true);

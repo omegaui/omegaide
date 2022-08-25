@@ -273,6 +273,7 @@ public class Startup extends JDialog {
 		if(!f.exists()){
 			System.out.println("Writing Shell Scripts ...");
 			f.mkdir();
+			
 			System.out.println("> For Windows");
 			writeGitShellScript("windows", "git_add.bat");
 			writeGitShellScript("windows", "git_commit.bat");
@@ -281,6 +282,7 @@ public class Startup extends JDialog {
 			writeGitShellScript("windows", "git_push.bat");
 			writeGitShellScript("windows", "git_setup_remote.bat");
 			writeGitShellScript("windows", "git_switch_branch.bat");
+			
 			System.out.println("> For Unix");
 			writeGitShellScript("unix", "git_add.sh");
 			writeGitShellScript("unix", "git_commit.sh");
@@ -289,10 +291,19 @@ public class Startup extends JDialog {
 			writeGitShellScript("unix", "git_push.sh");
 			writeGitShellScript("unix", "git_setup_remote.sh");
 			writeGitShellScript("unix", "git_switch_branch.sh");
+			
 			System.out.println("Writing Shell Scripts ... Done!");
 			if(!Screen.onWindows())
 				System.out.println("Note: You must make the scripts located in .omega-ide/git-scripts/unix executable before using GitHubClientWindow.");
 		}
+		
+		f = new File(".omega-ide", "file-templates");
+		if(!f.exists()){
+			System.out.println("Creating File Template Storage Directory ...");
+			f.mkdir();
+			System.out.println("Creating File Template Storage Directory ... Done!");
+		}
+		
 		System.out.println("Launching Omega IDE ...");
 	}
 
