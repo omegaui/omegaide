@@ -89,8 +89,9 @@ public class TabComp extends JComponent implements FocusListener{
 		keyStrokelistener.putKeyStroke((e)->showTab(6), VK_ALT, VK_7).useAutoReset();
 		keyStrokelistener.putKeyStroke((e)->showTab(7), VK_ALT, VK_8).useAutoReset();
 		keyStrokelistener.putKeyStroke((e)->showTab(8), VK_ALT, VK_9).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showNextTab(e), VK_F10).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showPreviousTab(e), VK_F9).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showNextTab(e), VK_ALT, VK_RIGHT).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->showPreviousTab(e), VK_ALT, VK_LEFT).useAutoReset();
+		keyStrokelistener.putKeyStroke((e)->closeTab(), VK_CONTROL, VK_F4).useAutoReset();
 		addKeyListener(keyStrokelistener);
 		
 		tabData.getComponent().addFocusListener(this);
@@ -159,7 +160,9 @@ public class TabComp extends JComponent implements FocusListener{
 			tabIndex = 0;
 		}
 		showTab(tabIndex);
-		e.consume();
+		if(e != null){
+			e.consume();
+		}
 	}
 
 	public void showPreviousTab(KeyEvent e){
@@ -168,13 +171,16 @@ public class TabComp extends JComponent implements FocusListener{
 			tabIndex = tabPanel.getTabs().size() - 1;
 		}
 		showTab(tabIndex);
-		e.consume();
+		if(e != null){
+			e.consume();
+		}
 	}
 
 	public void showTab(int index){
 		TabData tabData = tabPanel.getTabDataAt(index);
-		if(tabData == null)
+		if(tabData == null){
 			return;
+		}
 		tabData.getTabComp().showTab();
 	}
 
@@ -185,19 +191,13 @@ public class TabComp extends JComponent implements FocusListener{
 		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
 			try{
 				((JComponent)scrollPane.getViewport().getView()).grabFocus();
-			}
-			catch(Exception e){
-
-			}
+			} catch(Exception e){ }
 		}
 
 		else if(tabData.getComponent() instanceof JScrollPane scrollPane){
 			try{
 				((JComponent)scrollPane.getViewport().getView()).grabFocus();
-			}
-			catch(Exception e){
-
-			}
+			} catch(Exception e){ }
 		}
 
 		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
@@ -213,6 +213,12 @@ public class TabComp extends JComponent implements FocusListener{
 		tabData.getOnClose().run();
 		tabPanel.removeTab(tabData);
 		removeAction.run();
+		if(!tabPanel.getTabHistory().getActivatedTabs().isEmpty()){
+			TabData nextTabData = (TabData) tabPanel.getTabHistory().getActivatedTabs().getLast();
+			if(nextTabData != null){
+				showTab(tabPanel.getIndexOf(nextTabData.getComponent()));
+			}
+		}
 	}
 
 	@Override
