@@ -54,6 +54,7 @@ import static omegaui.component.animation.Animations.*;
 
 public class RecentsDialog extends JDialog{
 
+	private TextComp iconComp;
 	private TextComp titleComp;
 	private TextComp filesComp;
 	private TextComp projectsComp;
@@ -157,8 +158,15 @@ public class RecentsDialog extends JDialog{
 		infoComp.alignX = 10;
 		add(infoComp);
 
+		iconComp = new TextComp(IconManager.fluentrecentImage, 20, 20, back2, back2, glow, field::grabFocus);
+		iconComp.setBounds(0, 0, 30, 30);
+		iconComp.setClickable(false);
+		iconComp.setArc(0, 0);
+		iconComp.attachDragger(this);
+		add(iconComp);
+		
 		titleComp = new TextComp("Quick Open Recents Files / Projects", c2, c2, glow, null);
-		titleComp.setBounds(0, 0, getWidth() - 90, 30);
+		titleComp.setBounds(30, 0, getWidth() - 120, 30);
 		titleComp.setFont(PX14);
 		titleComp.setArc(0, 0);
 		titleComp.setClickable(false);
@@ -298,11 +306,5 @@ public class RecentsDialog extends JDialog{
 				genView(field.getText());
 		}
 		super.setVisible(value);
-	}
-
-	@Override
-	public void setSize(int width, int height){
-		super.setSize(width, height);
-		setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
 	}
 }

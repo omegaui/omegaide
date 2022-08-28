@@ -96,7 +96,6 @@ public class SearchWindow extends JDialog{
 		setIconImage(f.getIconImage());
 		setSize(435, 400);
 		setLocationRelativeTo(null);
-		setShape(new RoundRectangle2D.Float(0, 0, getWidth(), getHeight(), 20, 20));
 		setResizable(false);
 
 		JPanel panelX = new JPanel(null);
@@ -195,17 +194,23 @@ public class SearchWindow extends JDialog{
 		infoComp.alignX = 10;
 		add(infoComp);
 
+		TextComp iconComp = new TextComp(IconManager.fluentsearchImage, 20, 20, back2, back2, glow, field::grabFocus);
+		iconComp.setBounds(0, 0, 30, 30);
+		iconComp.setClickable(false);
+		iconComp.setArc(0, 0);
+		iconComp.attachDragger(this);
+		add(iconComp);
+		
 		TextComp titleComp = new TextComp(getTitle(), back2, back2, glow, field::grabFocus);
-		titleComp.setBounds(0, 0, getWidth() - 60, 30);
+		titleComp.setBounds(30, 0, getWidth() - 90, 30);
 		titleComp.setClickable(false);
 		titleComp.setFont(PX14);
 		titleComp.setArc(0, 0);
 		titleComp.attachDragger(this);
 		add(titleComp);
 
-		TextComp closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
+		TextComp closeComp = new TextComp(IconManager.fluentcloseImage, 20, 20, TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, this::dispose);
 		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
-		closeComp.setFont(PX14);
 		closeComp.setArc(0, 0);
 		add(closeComp);
 
@@ -215,6 +220,8 @@ public class SearchWindow extends JDialog{
 		reloadComp.setFont(PX14);
 		reloadComp.setShowHandCursorOnMouseHover(true);
 		add(reloadComp);
+
+		putAnimationLayer(closeComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
 	}
 
 	public void initView(){

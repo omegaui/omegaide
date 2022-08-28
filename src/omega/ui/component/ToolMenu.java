@@ -921,18 +921,18 @@ public class ToolMenu extends JPanel {
 		.createItem("New Project (Java)", "Ctrl + N", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
 		.createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, ()->universalProjectWizard.setVisible(true))
 		.createItem("New Template File", "", IconManager.fluenttemplateImage, ()->templateWizard.setVisible(true));
-		
-		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", "Ctrl + SHIFT + M", IconManager.fluentsearchImage, ()->{
+
+		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", "Ctrl + SHIFT + M", IconManager.fluentrecentImage, ()->{
 			recentsDialog.setVisible(true);
 		});
 		filePopup.addItem(recentsMenu);
-		
+
 		allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(350).height(250);
 		allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, ()->{
 			allProjectsPopup.setLocationRelativeTo(null);
 			allProjectsPopup.setVisible(true);
 		});
-		
+
 		File home = new File(DataManager.getWorkspace());
 		if(home.exists()){
 			allProjectsPopup.trash();
@@ -946,7 +946,7 @@ public class ToolMenu extends JPanel {
 					}
 				}
 			}
-			
+
 			for(File fileZ : files){
 				if(fileZ.isDirectory()){
 					allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, ()->{
@@ -956,7 +956,7 @@ public class ToolMenu extends JPanel {
 				}
 			}
 		}
-		
+
 		filePopup.addItem(allMenu);
 		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
 		.createItem("Save All Editors", "Ctrl + SHIFT + S", IconManager.fluentsaveImage, ()->screen.saveAllEditors())

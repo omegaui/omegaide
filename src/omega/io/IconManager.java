@@ -55,7 +55,9 @@ public class IconManager {
 	public static BufferedImage fluentbuildImage = getFluentIcon("hammer-50.png");
 	public static BufferedImage fluentpackageImage = getFluentIcon("box-64.png");
 	public static BufferedImage fluentstructureImage = getFluentIcon("structure-96.png");
-	public static BufferedImage fluentsearchImage = getFluentIcon("inspect-code-50.png");
+	public static BufferedImage fluentinspectcodeImage = getFluentIcon("inspect-code-50.png");
+	public static BufferedImage fluentsearchImage = getFluentIcon("search-50.png");
+	public static BufferedImage fluentrecentImage = getFluentIcon("recent-50.png");
 	public static BufferedImage fluentprojectstructureImage = getFluentIcon("file-explorer-96.png");
 	public static BufferedImage fluentcloseImage = getFluentIcon("close-window-50.png");
 	public static BufferedImage fluentclearSymbolImage = getFluentIcon("clear-symbol-48.png");
@@ -170,7 +172,7 @@ public class IconManager {
 	public static BufferedImage fluentrecordFileImage = getFluentIcon("burn-cd-48.png");
 	public static BufferedImage fluentcategoryImage = getFluentIcon("categorize-48.png");
 	public static BufferedImage fluentdesktopImage = getFluentIcon("imac-48.png");
-	public static BufferedImage fluentcopyImage = getFluentIcon("copy-to-clipboard-48.png");
+	public static BufferedImage fluentcopyImage = getFluentIcon("copy-to-clipboard-62.png");
 	public static BufferedImage fluenteditFileImage = getFluentIcon("edit-file-48.png");
 	public static BufferedImage fluentrenameImage = getFluentIcon("rename-48.png");
 	
