@@ -17,6 +17,8 @@
  */
 
 package omega.instant.support.java.assist;
+import java.io.File;
+
 import omega.instant.support.java.highlighter.BasicCodeHighlighter;
 
 import omega.instant.support.AbstractContentTokenizer;
@@ -34,6 +36,7 @@ import omega.instant.support.java.framework.ImportFramework;
 
 import omega.io.SnippetBase;
 import omega.io.DataManager;
+import omega.io.FileOperationManager;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
@@ -94,7 +97,14 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 			e.contentWindow.setVisible(false);
 			return;
 		}
-		StringTokenizer tok = new StringTokenizer(e.getText(), "`-=[\\;,.\"\'/]~!@#%^&*()+{}|:<>?)\n ");
+
+		String code = e.getText() + "\n";
+		
+		for(Editor ex : Screen.getScreen().getTabPanel().getEditors()){
+			code += ex.getText() + "\n"; 
+		}
+
+		StringTokenizer tok = new StringTokenizer(code, "`-=[\\;,.\"\'/]~!@#%^&*()+{}|:<>?)\n ");
 
 		LinkedList<DataMember> dataMembers = new LinkedList<>();
 		LinkedList<DataMember> tokens = new LinkedList<>();

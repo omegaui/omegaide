@@ -1146,5 +1146,10 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		tabHolderPanel = panel;
 		tabHolderPanel.add(getFAndR(), BorderLayout.NORTH);
 	}
+
+	public synchronized boolean isSaved(){
+		return savedText.equals(getText());
+	}
+	
 }
 

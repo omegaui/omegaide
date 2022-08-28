@@ -127,6 +127,20 @@ public class FileOperationManager {
 			}
 		}
 	}
+
+	public synchronized static void loadAll(LinkedList<File> files, File dir, String ext){
+		File[] F = dir.listFiles();
+		if(F == null || F.length == 0)
+			return;
+		for(File fx : F){
+			if(fx.isDirectory()){
+				loadAll(files, fx, ext);
+			}
+			else if(fx.getName().endsWith(ext)){
+				files.add(fx);
+			}
+		}
+	}
 	
 }
 

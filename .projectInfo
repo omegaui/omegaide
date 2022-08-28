@@ -5,13 +5,17 @@
 >Language Tag
 -0
 >Opened Editors on Main Tab Panel
--project-root$/src/omega/ui/dialog/RecentsDialog.java
+-project-root$/src/omega/ui/dialog/InfoScreen.java
+-project-root$/src/omega/ui/dialog/MadeWithScreen.java
 >Caret Positions
--project-root$/src/omega/ui/dialog/RecentsDialog.java
-|5313
-|7974
+-project-root$/src/omega/ui/dialog/InfoScreen.java
+|840
+|2167
+-project-root$/src/omega/ui/dialog/MadeWithScreen.java
+|3619
+|7667
 >Last Active Editor
--project-root$/src/omega/ui/dialog/RecentsDialog.java
+-project-root$/src/omega/ui/dialog/InfoScreen.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar
