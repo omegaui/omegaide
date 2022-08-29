@@ -205,7 +205,7 @@ public class UIManager extends DataBase {
 			highlight = Color.decode("#FFC66D");
 		}
 		else {
-			glow = Color.BLACK;
+			glow = Color.decode("#343434");
 			highlight = Color.decode("#0000ff");
 		}
 	}

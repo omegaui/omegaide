@@ -21,10 +21,8 @@ import omega.Screen;
 
 import javax.imageio.ImageIO;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import omega.io.DataManager;
+import omega.io.IconManager;
 
 import java.awt.geom.RoundRectangle2D;
 
@@ -49,13 +47,13 @@ public class ThemePicker extends JDialog {
 	private Color b1 = Color.decode("#132162");
 	private Color b2 = Color.decode("#1e1e1e");
 	private Color b3 = Color.decode("#3CE5DD");
-	private int pressX;
-	private int pressY;
+
 	private BufferedImage image;
 	
 	//Components
 	private JPanel panel;
 	private TextComp applyComp;
+	private TextComp iconComp;
 	private TextComp titleComp;
 	private TextComp lightComp;
 	private TextComp darkComp;
@@ -82,17 +80,16 @@ public class ThemePicker extends JDialog {
 					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
 				}
 				else{
-					g.drawImage(image, 5, 30, getWidth() - 10, 415, null);
+					g.drawImage(image, getWidth()/2 - 960/2, getHeight()/2 + 3 - 540/2, 960, 540, null);
 				}
 			}
 		};
 		panel.setBackground(c2);
 		setUndecorated(true);
 		setLayout(null);
-		setSize(720, 455);
+		setSize(980, 640);
 		setLocationRelativeTo(null);
 		setContentPane(panel);
-		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 15, 15));
 		init();
 	}
 	public void init(){
@@ -105,28 +102,22 @@ public class ThemePicker extends JDialog {
 		applyComp.setFont(PX16);
 		applyComp.setArc(0, 0);
 		add(applyComp);
+
+		iconComp = new TextComp(IconManager.fluentchangethemeImage, 24, 24, back2, back2, back2, null);
+		iconComp.setBounds(0, 0, 30, 30);
+		iconComp.setClickable(false);
+		iconComp.setArc(0, 0);
+		add(iconComp);
 		
-		titleComp = new TextComp("Choose IDE Theme", c1, c2, c3, null);
-		titleComp.setBounds(0, 0, getWidth() - 80 - 240, 30);
-		titleComp.setFont(PX16);
+		titleComp = new TextComp("Choose IDE Theme", back2, back2, glow, null);
+		titleComp.setBounds(30, 0, getWidth() - 110 - 240, 30);
+		titleComp.setFont(PX14);
 		titleComp.setClickable(false);
 		titleComp.setArc(0, 0);
-		titleComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				pressX = e.getX();
-				pressY = e.getY();
-			}
-		});
-		titleComp.addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e){
-				setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
-			}
-		});
+		titleComp.attachDragger(this);
 		add(titleComp);
 		
-		lightComp = new TextComp("<light>", c1, c2, c3, ()->{
+		lightComp = new TextComp("<light>", c1, back3, c3, ()->{
 			lightMode = true;
 			manageTheme();
 			loadImage("light.png");
@@ -144,7 +135,7 @@ public class ThemePicker extends JDialog {
 		lightComp.setFont(PX20);
 		add(lightComp);
 		
-		darkComp = new TextComp("<dark>", c1, c2, c3, ()->{
+		darkComp = new TextComp("<dark>", c1, back3, c3, ()->{
 			lightMode = false;
 			manageTheme();
 			loadImage("dark.png");
@@ -167,11 +158,15 @@ public class ThemePicker extends JDialog {
 		Color c1 = lightMode ? this.c1 : b1;
 		Color c2 = lightMode ? this.c2 : b2;
 		Color c3 = lightMode ? this.c3 : b3;
+		Color back2 = lightMode ? Color.decode("#fcfcfc") : Color.decode("#262626");
+		Color back3 = lightMode ? Color.decode("#eaeaea") : Color.decode("#303030");
+		Color glow = lightMode ? Color.BLACK : Color.WHITE;
 		panel.setBackground(c2);
-		applyComp.setColors(c1, c2, c3);
-		titleComp.setColors(c1, c2, c3);
-		lightComp.setColors(c1, c2, c3);
-		darkComp.setColors(c1, c2, c3);
+		applyComp.setColors(c1, c2, TOOLMENU_COLOR2);
+		iconComp.setColors(back2, back2, back2);
+		titleComp.setColors(back2, back2, glow);
+		lightComp.setColors(c1, back3, c3);
+		darkComp.setColors(c1, back3, c3);
 		repaint();
 	}
 	
