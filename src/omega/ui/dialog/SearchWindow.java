@@ -167,7 +167,7 @@ public class SearchWindow extends JDialog{
 					g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 					g.setColor(back2);
 					g.fillRect(0, 0, getWidth(), getHeight());
-					g.drawImage(IconManager.fluentsearchFolderGif, getWidth()/2 - 86/2, getHeight()/2 - 86/2, 86, 86, this);
+					g.drawImage(IconManager.fluentsearchFolderIcon, getWidth()/2 - 86, getHeight()/2 - 86, 192, 192, this);
 				}
 				else
 					super.paint(graphics);

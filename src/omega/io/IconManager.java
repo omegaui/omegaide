@@ -179,13 +179,13 @@ public class IconManager {
 	public static BufferedImage fluentrightArrowImage = getFluentIcon("chevron-right-48.png");
 	public static BufferedImage fluentdownArrowImage = getFluentIcon("chevron-down-48.png");
 	public static BufferedImage fluentupArrowImage = getFluentIcon("chevron-up-48.png");
+	public static Image fluentsearchFolderIcon = getFluentIcon("search-folder-192.png");
 
 	//Fluent GIFs
 	public static Image fluentneutralemojiGif = getFluentGif("neutral.gif");
 	public static Image fluentdeveloperGif = getFluentGif("developer.gif");
 	public static Image fluentwinkemojiGif = getFluentGif("wink.gif");
 	public static Image fluentloadinginfinityGif = getFluentGif("loading-infinity.gif");
-	public static Image fluentsearchFolderGif = getFluentGif("search-folder.gif");
 
 	//The Default Icon Pack -- mixed
 	public static BufferedImage newImage = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
