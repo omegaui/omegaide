@@ -376,7 +376,7 @@ public class TabPanel extends JPanel{
 			g.setColor(materialTabHolderColor1);
 			g.fillRect(0, 0, getWidth(), getHeight());
 			if(illustration != null)
-				g.drawImage(illustration, getWidth()/2 - 456/2, getHeight()/2 - 456/2, 456, 456, this);
+				g.drawImage(illustration, getWidth()/2 - illustration.getWidth(this)/2, getHeight()/2 - illustration.getHeight(this)/2, this);
 			g.dispose();
 		}
 		else{
