@@ -4,6 +4,42 @@
 -omega.IDE
 >Language Tag
 -0
+>Opened Editors on Main Tab Panel
+-project-root$/src/omega/Screen.java
+-project-root$/src/omega/plugin/store/RemotePluginView.java
+-project-root$/src/omega/plugin/management/PluginManager.java
+-project-root$/src/omega/plugin/management/PluginLoader.java
+-project-root$/src/omega/plugin/store/PluginStore.java
+-project-root$/src/omega/plugin/store/RemotePluginInfoLoader.java
+-project-root$/src/omega/ui/component/ToolMenu.java
+-project-root$/src/omega/ui/panel/SideMenu.java
+>Caret Positions
+-project-root$/src/omega/Screen.java
+|10042
+|17384
+-project-root$/src/omega/plugin/store/RemotePluginView.java
+|2697
+|6312
+-project-root$/src/omega/plugin/management/PluginManager.java
+|1354
+|3229
+-project-root$/src/omega/plugin/management/PluginLoader.java
+|0
+|742
+-project-root$/src/omega/plugin/store/PluginStore.java
+|4167
+|8067
+-project-root$/src/omega/plugin/store/RemotePluginInfoLoader.java
+|0
+|63
+-project-root$/src/omega/ui/component/ToolMenu.java
+|12822
+|23616
+-project-root$/src/omega/ui/panel/SideMenu.java
+|1922
+|3668
+>Last Active Editor
+-project-root$/src/omega/ui/panel/SideMenu.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar

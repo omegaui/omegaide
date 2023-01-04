@@ -42,7 +42,6 @@ public class SideMenu extends JPanel {
 	public TextComp sep;
 	public TextComp projectTabComp;
 	public TextComp shellComp;
-	public TextComp structureComp;
 	public TextComp searchComp;
 
 	public TextComp buildPathComp;
@@ -74,14 +73,8 @@ public class SideMenu extends JPanel {
 		shellComp.setArc(2, 2);
 		add(shellComp);
 
-		structureComp = new TextComp(fluentstructureImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->screen.getToolMenu().structureView.setVisible(true));
-		structureComp.setBounds(0, 50, 30, 25);
-		structureComp.setFont(PX18);
-		structureComp.setArc(2, 2);
-		add(structureComp);
-
 		searchComp = new TextComp(fluentsearchImage, 20, 20, back2, back2, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
-		searchComp.setBounds(0, 75, 30, 25);
+		searchComp.setBounds(0, 50, 30, 25);
 		searchComp.setArc(2, 2);
 		add(searchComp);
 
@@ -98,7 +91,6 @@ public class SideMenu extends JPanel {
 		putAnimationLayer(projectTabComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(structureComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(buildPathComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(settingsComp, getImageSizeAnimationLayer(25, 5, true), ACTION_MOUSE_ENTERED);
 	}
@@ -117,14 +109,11 @@ public class SideMenu extends JPanel {
 		if(non_java){
 			searchComp.setBounds(0, 50, 30, 25);
 
-			structureComp.setVisible(false);
 			buildPathComp.setVisible(false);
 		}
 		else{
-			structureComp.setBounds(0, 75, 30, 25);
 			searchComp.setBounds(0, 50, 30, 25);
 
-			structureComp.setVisible(true);
 			buildPathComp.setVisible(true);
 		}
 		buildPathComp.setBounds(0, getHeight() - 50, 30, 25);

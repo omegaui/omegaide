@@ -512,7 +512,6 @@ public class Screen extends UBRFrame {
 		toolMenu.projectPopup.setEnabled("Add Additional Flags", !manager.isLanguageTagNonJava());
 		toolMenu.toolsPopup.setEnabled("Generate Getter/Setter", !manager.isLanguageTagNonJava());
 		toolMenu.toolsPopup.setEnabled("Override/Implement Methods", !manager.isLanguageTagNonJava());
-		sideMenu.structureComp.setVisible(!manager.isLanguageTagNonJava());
 		toolMenu.changeLocations(manager.isLanguageTagNonJava());
 		sideMenu.resize(manager.isLanguageTagNonJava());
 	}

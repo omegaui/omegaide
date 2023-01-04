@@ -1,20 +1,20 @@
 /**
-  * PluginStore
-  * Copyright (C) 2021 Omega UI
+ * PluginStore
+ * Copyright (C) 2021 Omega UI
 
-  * This program is free software: you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-  * the Free Software Foundation, either version 3 of the License, or
-  * (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
 
-  * This program is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-  * You should have received a copy of the GNU General Public License
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package omega.plugin.store;
 import omega.io.IconManager;
@@ -58,7 +58,7 @@ import static omegaui.component.animation.Animations.*;
 public class PluginStore extends JDialog{
 	public PluginManager pluginManager;
 	public PluginCategory pluginCategory;
-	
+
 	public TextComp iconComp;
 	public TextComp titleComp;
 	public TextComp closeComp;
@@ -81,13 +81,13 @@ public class PluginStore extends JDialog{
 	public LinkedList<RemotePluginComp> remotePluginComps = new LinkedList<>();
 
 	public static NotificationPopup restartPopup =  NotificationPopup.create(Screen.getScreen())
-													.size(500, 120)
-													.title("Plugin Management", TOOLMENU_COLOR4)
-													.message("A Restart is Required to Add the Newly Installed Plugin!", TOOLMENU_COLOR2)
-													.shortMessage("OR You can Continue Downloading Some More!", TOOLMENU_COLOR1)
-													.dialogIcon(IconManager.ideImage64)
-													.build()
-													.locateOnBottomLeft();
+	.size(500, 120)
+	.title("Plugin Management", TOOLMENU_COLOR4)
+	.message("A Restart is Required to Add the Newly Installed Plugin!", TOOLMENU_COLOR2)
+	.shortMessage("OR You can Continue Downloading Some More!", TOOLMENU_COLOR1)
+	.dialogIcon(IconManager.ideImage64)
+	.build()
+	.locateOnBottomLeft();
 
 	public PluginStore(Screen screen, PluginManager pluginManager){
 		super(screen, false);
@@ -106,13 +106,13 @@ public class PluginStore extends JDialog{
 
 	public void init(){
 		pluginCategory = new PluginCategory(this);
-		
+
 		iconComp = new TextComp(IconManager.ideImage64, 25, 25, back2, back2, back2, null);
 		iconComp.setBounds(0, 0, 30, 30);
 		iconComp.setClickable(false);
 		iconComp.setArc(0, 0);
 		add(iconComp);
-		
+
 		titleComp = new TextComp("Plugin Store", back2, back2, glow, null);
 		titleComp.setBounds(30, 0, getWidth() - 60, 30);
 		titleComp.setFont(PX14);
@@ -184,9 +184,9 @@ public class PluginStore extends JDialog{
 				currentCategory = category;
 				genView(currentCategory, "");
 				searchField.setText("");
-				
+
 				categoryComp.setGradientColor(PluginCategory.getSuitableColor(currentCategory));
-				
+
 				if(currentCategory.equals(PluginCategory.ANY_CATEGORY))
 					categoryComp.setText("All");
 				else
@@ -204,14 +204,14 @@ public class PluginStore extends JDialog{
 	public void genView(String category, String text){
 		remotePluginComps.forEach(panel::remove);
 		remotePluginComps.clear();
-		
+
 		int block = 0;
 		for(RemotePluginInfo info : remotePluginInfoLoader.remotePluginInfos){
 			if(!category.equals(PluginCategory.ANY_CATEGORY) && !info.category.equalsIgnoreCase(category))
 				continue;
 			if(!info.name.contains(text) && !info.description.contains(text))
 				continue;
-			
+
 			RemotePluginComp comp = new RemotePluginComp(this, info, contentScrollPane.getWidth(), 60);
 			comp.setLocation(0, block);
 			panel.add(comp);
@@ -219,13 +219,13 @@ public class PluginStore extends JDialog{
 
 			block += 60;
 		}
-		
+
 		panel.setPreferredSize(new Dimension(contentScrollPane.getWidth() - 10, block));
 		contentScrollPane.getVerticalScrollBar().setVisible(true);
 		contentScrollPane.getVerticalScrollBar().setValue(0);
 		layout();
 		repaint();
-		
+
 		new Thread(()->{
 			setStatus("Loading Plugin Icons ...");
 			remotePluginComps.forEach(comp->{
@@ -259,24 +259,24 @@ public class PluginStore extends JDialog{
 		int choice = ChoiceDialog.makeChoice("Do You Want to Download This Plugin?", "Yes", "No");
 		if(choice != ChoiceDialog.CHOICE1)
 			return;
-		
+
 		new Thread(()->{
 			try{
 				setStatus("Downloading " + info.name + " ... ");
 				BufferedInputStream in = new BufferedInputStream(Downloader.openStream(info.pluginFileURL.toString()));
 				File localPluginFile = new File(PluginManager.PLUGINS_DIRECTORY.getAbsolutePath(), info.fileName);
 				FileOutputStream out = new FileOutputStream(localPluginFile);
-				
+
 				byte dataBuffer[] = new byte[1024];
 				int bytesRead;
 				while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 					out.write(dataBuffer, 0, bytesRead);
 					out.flush();
-					
+
 					double currentLength = localPluginFile.length() / 1000;
 					double length = Double.parseDouble(info.size.substring(0, info.size.indexOf("MB")).trim()) * 1000;
-	                    int percentage = (int)((currentLength * 100) / length);
-	                    setStatus("Downloading " + info.name + " " + percentage + "%");
+					int percentage = (int)((currentLength * 100) / length);
+					setStatus("Downloading " + info.name + " " + percentage + "%");
 				}
 				in.close();
 				out.close();
@@ -305,9 +305,9 @@ public class PluginStore extends JDialog{
 
 	@Override
 	public void setVisible(boolean value){
-	     super.setVisible(value);
+		super.setVisible(value);
 		if(value){
-	          doPostInit();
+			doPostInit();
 		}
 	}
 }

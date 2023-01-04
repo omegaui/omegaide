@@ -49,7 +49,6 @@ import omega.instant.support.java.JavaProjectWizard;
 
 import omega.ui.dialog.InfoScreen;
 import omega.ui.dialog.SourceDefender;
-import omega.ui.dialog.StructureView;
 import omega.ui.dialog.MadeWithScreen;
 import omega.ui.dialog.ProjectDistructionWizard;
 import omega.ui.dialog.ConsoleSelector;
@@ -161,10 +160,6 @@ public class ToolMenu extends JPanel {
 	
 	public TextComp instantRunComp;
 	public TextComp instantBuildComp;
-	
-	public TextComp sep3;
-	
-	public TextComp structureViewComp;
 
 	public TextComp memoryComp;
 	
@@ -176,7 +171,6 @@ public class ToolMenu extends JPanel {
 	public static SourceDefender sourceDefender;
 	public static JavaProjectWizard javaProjectWizard;
 	public static ProcessWizard processWizard;
-	public static StructureView structureView;
 	public static MadeWithScreen madeWithScreen;
 	public static GradleModuleWizard gradleModuleWizard;
 	public static UniversalProjectWizard universalProjectWizard;
@@ -224,7 +218,6 @@ public class ToolMenu extends JPanel {
 			sourceDefender = new SourceDefender(screen);
 			javaProjectWizard = new JavaProjectWizard(screen);
 			processWizard = new ProcessWizard(screen);
-			structureView = new StructureView(screen);
 			madeWithScreen = new MadeWithScreen(screen);
 			gradleModuleWizard = new GradleModuleWizard(screen);
 			universalProjectWizard = new UniversalProjectWizard(screen);
@@ -572,14 +565,6 @@ public class ToolMenu extends JPanel {
 		instantBuildComp.setArcVisible(true, false, true, false);
 		add(instantBuildComp);
 
-		sep3 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep3.setBounds(314, 31, 2, 28);
-		addComp(sep3);
-		
-		structureViewComp = new TextComp(fluentstructureImage, 20, 20, "Class Disassembler(integrated)", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->structureView.setVisible(true));
-		structureViewComp.setBounds(320, 33, 24, 24);
-		addComp(structureViewComp);
-		
 		pathBox = new ToolMenuPathBox();
 		add(pathBox);
 		
@@ -599,8 +584,6 @@ public class ToolMenu extends JPanel {
 		
 		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
 		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		
-		putAnimationLayer(structureViewComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
 		
 		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
 		
@@ -683,9 +666,6 @@ public class ToolMenu extends JPanel {
 		sep2.setVisible(!non_java);
 		instantRunComp.setVisible(!non_java);
 		instantBuildComp.setVisible(!non_java);
-		sep3.setVisible(!non_java);
-		structureViewComp.setVisible(!non_java);
-		
 		if(Screen.getProjectFile().getJDKManager() != null)
 			jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
 		else
