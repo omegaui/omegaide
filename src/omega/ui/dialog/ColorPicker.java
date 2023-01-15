@@ -336,7 +336,7 @@ public class ColorPicker extends JDialog{
 			addMouseListener(new MouseAdapter(){
 				@Override
 				public void mousePressed(MouseEvent e){
-					pointer = e.getY() < 0 ? 0 : e.getY();
+					pointer = Math.max(e.getY(), 0);
 					if(pointer > 255)
 						pointer = 255;
 					repaint();
@@ -346,7 +346,7 @@ public class ColorPicker extends JDialog{
 			addMouseMotionListener(new MouseAdapter(){
 				@Override
 				public void mouseDragged(MouseEvent e){
-					pointer = e.getY() < 0 ? 0 : e.getY();
+					pointer = Math.max(e.getY(), 0);
 					if(pointer > 255)
 						pointer = 255;
 					repaint();

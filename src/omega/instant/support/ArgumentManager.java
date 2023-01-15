@@ -99,7 +99,7 @@ public class ArgumentManager extends DataBase{
 
 	public void writeList(String name, LinkedList<File> files, boolean sur){
 		try{
-			PrintWriter writer = new PrintWriter(new File(Screen.getProjectFile().getProjectPath() + File.separator + name));
+			PrintWriter writer = new PrintWriter(Screen.getProjectFile().getProjectPath() + File.separator + name);
 			files.forEach(file->{
 				if(sur)
 					writer.println("\"" + file.getAbsolutePath() + "\"");

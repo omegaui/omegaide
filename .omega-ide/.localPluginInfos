@@ -1,0 +1,71 @@
+>Jar Packager
+-v2.2
+-The Default Jar Packager Plugin.
+-Omega UI
+-GNU GPL v3
+-0.76 MB
+-UTILITY
+-omega.jarpackager.JarPackagerPlugin.jar
+-https://raw.githubusercontent.com/omegaui/jar-packager/main/out/omega.jarpackager.JarPackagerPlugin.jar
+-https://raw.githubusercontent.com/omegaui/omegaide/main/res/fluent-icons/icons8-wind-rose-96.png
+-https://raw.githubusercontent.com/omegaui/jar-packager/main/images/screenshot0.png
+>Terminal Window
+-v2.2
+-The Terminals in Window.
+-Omega UI
+-GNU GPL v3
+-0.20 MB
+-UTILITY
+-omega.terminaldialog.TerminalDialogPlugin.jar
+-https://raw.githubusercontent.com/omegaui/terminal-dialog/main/out/omega.terminaldialog.TerminalDialogPlugin.jar
+-https://raw.githubusercontent.com/omegaui/omegaide/main/res/fluent-icons/icons8-console-50.png
+>Auto-Indent(C, C++ & C#)
+-v2.2
+-Can Auto-Indent *.c, *.cpp & *.cs files.
+-Omega UI
+-GNU GPL v3
+-0.045 MB
+-EDITING
+-omega.instant.support.misc.AllCIndentationPlugin.jar
+-https://raw.githubusercontent.com/omegaui/all-c-indentation-framework/main/out/omega.instant.support.misc.AllCIndentationPlugin.jar
+-https://raw.githubusercontent.com/omegaui/omegaide/main/res/fluent-icons/icons8-c-programming-48.png
+>Python Basic Assist
+-v2.2
+-Gives Python Keywords as suggestions.
+-Omega UI
+-GNU GPL v3
+-0.01 MB
+-EDITING
+-omega.instant.support.python.assist.PythonAssistPlugin.jar
+-https://raw.githubusercontent.com/omegaui/python-assist-plugin/main/out/omega.instant.support.python.assist.PythonAssistPlugin.jar
+-https://raw.githubusercontent.com/omegaui/omegaide/main/res/fluent-icons/icons8-python-48.png
+>Vibe n Code
+-v2.2
+-Vibe n Code!
+-Omega UI
+-GNU GPL v3
+-5.6 MB
+-UTILITY
+-omega.vibencode.MusicPlayerPlugin.jar
+-https://raw.githubusercontent.com/omegaui/vibencode/main/out/omega.vibencode.MusicPlayerPlugin.jar
+-https://raw.githubusercontent.com/omegaui/vibencode/main/res/fluent-icons/icons8-play-100.png
+>Kotlin
+-v2.2
+-Kotlin plugin for Omega IDE, currenlty supports Basic Code Highlights.
+-Omega UI
+-GNU GPL v3
+-0.061 MB
+-LANGUAGE-SUPPORT
+-omega.instant.support.kotlin.KotlinPlugin.jar
+-https://raw.githubusercontent.com/omegaui/kotlin-plugin/main/out/omega.instant.support.kotlin.KotlinPlugin.jar
+-https://raw.githubusercontent.com/omegaui/omegaide/main/res/fluent-icons/icons8-kotlin-48.png
+>Sticky Terminal
+-v2.2
+-Sticky Terminals
+-Omega UI
+-GNU GPL v3
+-0.010 MB
+-UTILITY
+-omega.ui.window.StickyTerminalPlugin.jar
+-https://raw.githubusercontent.com/omegaui/sticky-terminal-plugin/main/out/omega.ui.window.StickyTerminalPlugin.jar
+-https://raw.githubusercontent.com/omegaui/omegaide/main/res/fluent-icons/icons8-console-50.png

@@ -466,16 +466,16 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			theme = Theme.load(Editor.class.getResourceAsStream("/" + name + ".xml"));
 			theme.apply(this);
 		}
-		catch (Exception e) {
+		catch (Exception ignored) {
 
 		}
 		try {
-			screen.getUIManager().loadData();
+			Screen.getUIManager().loadData();
 			setFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
 			UIManager.setData(screen.getTabPanel());
 			getAttachment().getGutter().iconArea.width = UIManager.fontSize;
 		}
-		catch(Exception e) {
+		catch(Exception ignored) {
 
 		}
 	}
@@ -564,7 +564,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		String path = fileSaveDialog.saveFile();
 		if(path != null) {
 			try {
-				PrintWriter writer = new PrintWriter(new File(path), StandardCharsets.UTF_8);
+				PrintWriter writer = new PrintWriter(path, StandardCharsets.UTF_8);
 				writer.println(getText());
 				writer.close();
 				Screen.getProjectFile().getFileTreePanel().refresh();
@@ -723,7 +723,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public void increaseFont(KeyEvent e){
 		UIManager.fontSize++;
-		screen.getUIManager().save();
+		Screen.getUIManager().save();
 		screen.loadThemes();
 
 		e.consume();

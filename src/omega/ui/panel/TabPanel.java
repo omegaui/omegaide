@@ -169,7 +169,7 @@ public class TabPanel extends JPanel{
 	}
 
 	public boolean isTabDataAlreadyPresent(TabData tabData){
-		if(tabs.size() <= 0)
+		if(tabs.size() == 0)
 			return false;
 		for(TabData dx : tabs){
 			if(dx.equals(tabData))

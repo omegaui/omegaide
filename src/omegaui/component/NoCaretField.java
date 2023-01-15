@@ -176,7 +176,7 @@ public class NoCaretField extends JComponent implements KeyListener, FocusListen
 			if(obj != null){
 				try{
 					if(!(obj.getTransferData(DataFlavor.stringFlavor) instanceof InputStream))
-						setText(text + obj.getTransferData(DataFlavor.stringFlavor).toString());
+						setText(text + obj.getTransferData(DataFlavor.stringFlavor));
 				}
 				catch(Exception ex){
 					ex.printStackTrace();

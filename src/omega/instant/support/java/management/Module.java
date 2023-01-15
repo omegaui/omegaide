@@ -93,7 +93,7 @@ public class Module {
 		while(tok.hasMoreTokens())
 			sourcePath += tok.nextToken() + ".";
 		sourcePath = sourcePath.substring(0, sourcePath.length() - 1);
-		return (sourcePath.equals("") || !sourcePath.contains(".")) ? null : sourcePath;
+		return (!sourcePath.contains(".")) ? null : sourcePath;
 	}
 
 	@Override

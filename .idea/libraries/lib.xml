@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jediterm-typeahead-2.67-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-20.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pty4j-0.12.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/purejavacomm-0.0.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/terminal-2.67.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/flatlaf-0.46.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-5.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-jdk14-1.7.32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commonmark-0.18.2-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.32.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jna-platform-5.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jediterm-pty-2.67-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

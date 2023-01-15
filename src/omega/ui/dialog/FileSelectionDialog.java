@@ -48,6 +48,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -378,10 +379,10 @@ public class FileSelectionDialog extends JDialog{
 					c1 = TOOLMENU_COLOR2_SHADE;
 					c3 = TOOLMENU_COLOR2;
 				}
-				String meta = (file.listFiles() != null && file.listFiles().length != 0) ? "" : " - Empty";
+				String meta = (file.listFiles() != null && Objects.requireNonNull(file.listFiles()).length != 0) ? "" : " - Empty";
 				if(!file.isDirectory())
 					meta = "";
-				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file.toString() + meta, c1, c2, c3, false);
+				ToggleComp comp = new ToggleComp(FileTreeBranch.getPreferredImageForFile(file), 25, 25, file + meta, c1, c2, c3, false);
 				if(!file.isDirectory()){
 					comp.setOnToggle((value)->{
 						comp.state = value;

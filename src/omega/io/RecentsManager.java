@@ -68,7 +68,7 @@ public class RecentsManager {
 	}
 	
 	public static synchronized void add(String path) {
-		if(RECENTS.indexOf(path) < 0) {
+		if(!RECENTS.contains(path)) {
 			RECENTS.add(path);
 			File file = new File(path);
 			if(RECENTS.size() > 20) {

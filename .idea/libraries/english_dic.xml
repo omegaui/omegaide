@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="english_dic">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/res/.omega-ide/dictionary/english_dic.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

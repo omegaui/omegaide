@@ -45,7 +45,7 @@ public class RemotePluginInfoLoader {
 	
 	public void loadRemotePluginInfos(){
 		pluginStore.setStatus("Reading Plugin List ... ");
-		try(Scanner reader = new Scanner(Downloader.openStream(REMOTE_PLUGIN_INFOS_URL)); PrintWriter writer = new PrintWriter(new File(LOCAL_PLUGIN_INFOS_PATH))){
+		try(Scanner reader = new Scanner(Downloader.openStream(REMOTE_PLUGIN_INFOS_URL)); PrintWriter writer = new PrintWriter(LOCAL_PLUGIN_INFOS_PATH)){
 
 			while(reader.hasNextLine()){
 				writer.println(reader.nextLine());

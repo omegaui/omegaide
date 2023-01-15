@@ -35,7 +35,7 @@ public class PluginManager extends DataBase{
 
 	public PluginLoader pluginLoader;
 	public LinkedList<Plugin> plugins = new LinkedList<>();
-	public HashMap<String, Boolean> initMap = new HashMap();
+	public HashMap<String, Boolean> initMap = new HashMap<>();
 	
 	public PluginManager(){
 		super(PLUGINS_DATA_BASE);

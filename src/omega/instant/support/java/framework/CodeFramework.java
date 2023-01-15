@@ -1255,7 +1255,7 @@ public class CodeFramework extends AbstractCodeFramework{
 		if(text.contains(" "))
 			text = text.substring(text.lastIndexOf(' ') + 1).trim();
 		if(text.contains("."))
-			text = text.substring(text.lastIndexOf('.') + 1).trim();;
+			text = text.substring(text.lastIndexOf('.') + 1).trim();
 		return text;
 	}
 

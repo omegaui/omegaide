@@ -6,3 +6,8 @@ out/win/
 out/freebsd/
 .sources
 push-to-remote
+.omega-ide/
+linux/
+darwin/
+win/
+freebsd/

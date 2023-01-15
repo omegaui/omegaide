@@ -17,95 +17,41 @@
  */
 
 package omega;
-import omegaui.component.UBRFrame;
-
-import omega.ui.component.jediterm.JetTerminal;
-
-import omegaui.listener.KeyStrokeListener;
-
-import javax.swing.filechooser.FileView;
-
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-
-import java.awt.image.BufferedImage;
-
-import omega.instant.support.LanguageTagView;
-
-import omega.instant.support.build.gradle.GradleProcessManager;
-
-import omegaui.component.animation.Animations;
-
-import java.io.File;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
-
-import omega.instant.support.java.generator.Generator;
-
-import javax.swing.plaf.ColorUIResource;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-
-import javax.imageio.ImageIO;
-
-import omega.plugin.event.PluginReactionManager;
+import omega.instant.support.LanguageTagView;
+import omega.instant.support.build.gradle.GradleProcessManager;
+import omega.instant.support.java.generator.Generator;
+import omega.instant.support.java.highlighter.ErrorHighlighter;
+import omega.instant.support.universal.UniversalSettingsWizard;
+import omega.io.UIManager;
+import omega.io.*;
 import omega.plugin.event.PluginReactionEvent;
-
-import omega.plugin.store.PluginStore;
-
+import omega.plugin.event.PluginReactionManager;
 import omega.plugin.management.PluginManager;
 import omega.plugin.management.PluginsView;
-
-import omega.instant.support.universal.UniversalSettingsWizard;
-
-import omega.instant.support.java.highlighter.ErrorHighlighter;
-
-import omega.io.DataManager;
-import omega.io.RecentsManager;
-import omega.io.SnippetBase;
-import omega.io.ProjectDataBase;
-import omega.io.PopupManager;
-import omega.io.UIManager;
-import omega.io.Startup;
-import omega.io.IconManager;
-import omega.io.ProjectFile;
-import omega.io.ProjectRunner;
-import omega.io.ProjectBuilder;
-import omega.io.BookmarksManager;
-
-import java.awt.Robot;
-import java.awt.Color;
-import java.awt.GraphicsEnvironment;
-import java.awt.Font;
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Component;
-import java.awt.Desktop;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
-
-import omega.ui.component.ToolMenu;
-import omega.ui.component.TerminalComp;
-import omega.ui.component.FileTreeBranch;
+import omega.plugin.store.PluginStore;
 import omega.ui.component.Editor;
+import omega.ui.component.FileTreeBranch;
+import omega.ui.component.TerminalComp;
+import omega.ui.component.ToolMenu;
+import omega.ui.dialog.*;
+import omega.ui.panel.*;
+import omegaui.component.UBRFrame;
+import omegaui.listener.KeyStrokeListener;
 
-import omega.ui.dialog.Launcher;
-import omega.ui.dialog.SnippetView;
-import omega.ui.dialog.ThemePicker;
-import omega.ui.dialog.AnimationsDialog;
-import omega.ui.dialog.WorkspaceSelector;
-
-import omega.ui.panel.SplitPanel;
-import omega.ui.panel.OperationPane;
-import omega.ui.panel.TabPanel;
-import omega.ui.panel.SideMenu;
-import omega.ui.panel.BottomPane;
-
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.StringTokenizer;
 
 import static java.awt.event.KeyEvent.*;
 public class Screen extends UBRFrame {
@@ -129,7 +75,7 @@ public class Screen extends UBRFrame {
 	public volatile boolean active = true;
 	public volatile boolean focusMode = false;
 
-	private SplashScreen splash;
+	private final SplashScreen splash;
 	private OperationPane operationPane;
 	private TabPanel tabPanel;
 	private TabPanel rightTabPanel;
@@ -157,14 +103,14 @@ public class Screen extends UBRFrame {
 
 	public Screen() {
 		try {
-			setIconImage(javax.imageio.ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon500.png")));
+			setIconImage(javax.imageio.ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/omega_ide_icon500.png"))));
 
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
 				PATH_SEPARATOR = ";";
 			dataManager = new DataManager(this);
-			Color x = null;
-			Color y = null;
+			Color x;
+			Color y;
 			if(UIManager.isDarkMode()) {
 				FlatDarkLaf.install();
 				x = Color.decode("#24d673");
@@ -189,10 +135,10 @@ public class Screen extends UBRFrame {
 			}
 			
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/Ubuntu-Bold.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/UbuntuMono-Bold.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/JetBrainsMono-Regular.ttf")));
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/JetBrainsMono-Bold.ttf")));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/Ubuntu-Bold.ttf"))));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/UbuntuMono-Bold.ttf"))));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/JetBrainsMono-Regular.ttf"))));
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(getClass().getResourceAsStream("/JetBrainsMono-Bold.ttf"))));
 
 			javax.swing.UIManager.put("ToolTip.font", omega.io.UIManager.PX14);
 			javax.swing.UIManager.put("Button.font", omega.io.UIManager.PX14);
@@ -237,20 +183,17 @@ public class Screen extends UBRFrame {
 
 		ideWideKeyListener = new KeyStrokeListener(this);
 		
-		KeyEventDispatcher dispatcher = new KeyEventDispatcher(){
-			@Override
-	        public boolean dispatchKeyEvent(KeyEvent e) {
-	        	if (e.getID() == KeyEvent.KEY_PRESSED) {
-                	ideWideKeyListener.keyPressed(e);
-	            } 
-	            else if (e.getID() == KeyEvent.KEY_RELEASED) {
-	                ideWideKeyListener.keyReleased(e);
-	            }
-	            else if (e.getID() == KeyEvent.KEY_TYPED) {
-	                ideWideKeyListener.keyTyped(e);
-	            }
-	            return false;
-	        }
+		KeyEventDispatcher dispatcher = e -> {
+			if (e.getID() == KeyEvent.KEY_PRESSED) {
+				ideWideKeyListener.keyPressed(e);
+			}
+			else if (e.getID() == KeyEvent.KEY_RELEASED) {
+				ideWideKeyListener.keyReleased(e);
+			}
+			else if (e.getID() == KeyEvent.KEY_TYPED) {
+				ideWideKeyListener.keyTyped(e);
+			}
+			return false;
 		};
 		
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -261,21 +204,21 @@ public class Screen extends UBRFrame {
 	}
 
 	public void initKeyStrokes(){
-		ideWideKeyListener.putKeyStroke((e)->showFileWizard(e), VK_CONTROL, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->triggerBuild(e), VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
-		ideWideKeyListener.putKeyStroke((e)->triggerRun(e), VK_CONTROL, VK_SHIFT, VK_R);
-		ideWideKeyListener.putKeyStroke((e)->triggerInstantRun(e), VK_CONTROL, VK_SHIFT, VK_F1);
-		ideWideKeyListener.putKeyStroke((e)->showSearchDialog(e), VK_CONTROL, VK_SHIFT, VK_P).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showFileWizard, VK_CONTROL, VK_T).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::triggerBuild, VK_CONTROL, VK_B).setStopKeys(VK_SHIFT);
+		ideWideKeyListener.putKeyStroke(this::triggerRun, VK_CONTROL, VK_SHIFT, VK_R);
+		ideWideKeyListener.putKeyStroke(this::triggerInstantRun, VK_CONTROL, VK_SHIFT, VK_F1);
+		ideWideKeyListener.putKeyStroke(this::showSearchDialog, VK_CONTROL, VK_SHIFT, VK_P).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->ToolMenu.recentsDialog.setVisible(true), VK_CONTROL, VK_SHIFT, VK_M).setStopKeys(VK_ALT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showOpenProjectDialog(e), VK_CONTROL, VK_O).setStopKeys(VK_SHIFT, VK_ALT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showOpenGitProjectDialog(e), VK_CONTROL, VK_G).setStopKeys(VK_SHIFT, VK_ALT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showOpenFileDialog(e), VK_CONTROL, VK_ALT, VK_O).setStopKeys(VK_SHIFT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showNewProjectDialog(e), VK_CONTROL, VK_N).setStopKeys(VK_SHIFT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showNewUniversalProjectDialog(e), VK_CONTROL, VK_SHIFT, VK_N).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showNewTerminal(e), VK_ALT, VK_SHIFT, VK_T).setStopKeys(VK_CONTROL).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->toggleProcessPanel(e), VK_ALT, VK_P).setStopKeys(VK_SHIFT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->refreshFileTree(e), VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
-		ideWideKeyListener.putKeyStroke((e)->showSettings(e), VK_CONTROL, VK_ALT, VK_S).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showOpenProjectDialog, VK_CONTROL, VK_O).setStopKeys(VK_SHIFT, VK_ALT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showOpenGitProjectDialog, VK_CONTROL, VK_G).setStopKeys(VK_SHIFT, VK_ALT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showOpenFileDialog, VK_CONTROL, VK_ALT, VK_O).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showNewProjectDialog, VK_CONTROL, VK_N).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showNewUniversalProjectDialog, VK_CONTROL, VK_SHIFT, VK_N).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showNewTerminal, VK_ALT, VK_SHIFT, VK_T).setStopKeys(VK_CONTROL).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::toggleProcessPanel, VK_ALT, VK_P).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::refreshFileTree, VK_ALT, VK_R).setStopKeys(VK_SHIFT).useAutoReset();
+		ideWideKeyListener.putKeyStroke(this::showSettings, VK_CONTROL, VK_ALT, VK_S).setStopKeys(VK_SHIFT).useAutoReset();
 		ideWideKeyListener.putKeyStroke((e)->saveAllEditors(), VK_CONTROL, VK_SHIFT, VK_S).setStopKeys(VK_ALT).useAutoReset();
 
 		// Binding Alt + <Context Menu Character>
@@ -536,7 +479,7 @@ public class Screen extends UBRFrame {
 		try{
 			Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_DO_LAYOUT, this, getContentPane()));
 		}
-		catch(Exception e){
+		catch(Exception ignored){
 
 		}
 	}
@@ -565,11 +508,6 @@ public class Screen extends UBRFrame {
 //		g.dispose();
 //	}
 
-	public static void reverseColors(Component c) {
-		Color l = c.getBackground();
-		c.setBackground(c.getForeground());
-		c.setForeground(l);
-	}
 
 	public void loadTitle(String projectName) {
 		setTitle(projectName + " -Omega IDE " + VERSION);
@@ -727,21 +665,21 @@ public class Screen extends UBRFrame {
 	}
 
 	public static String getPackName(File file) {
-		String res = "";
+		StringBuilder res = new StringBuilder();
 		boolean canRecord = false;
 		StringTokenizer tokenizer = new StringTokenizer(file.getAbsolutePath(), File.separator);
 		while(tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
 			if(canRecord)
-				res += token + File.separator;
+				res.append(token).append(File.separator);
 			else if(token.equals(projectFile.getProjectName()))
 				canRecord = true;
 		}
 		if(!canRecord)
 			return file.getAbsolutePath();
-		else if(!res.trim().equals(""))
-			res = res.substring(0, res.length() - 1);
-		return res;
+		else if(!res.toString().trim().equals(""))
+			res = new StringBuilder(res.substring(0, res.length() - 1));
+		return res.toString();
 	}
 
 	public void justDispose(){
@@ -757,7 +695,7 @@ public class Screen extends UBRFrame {
 					p.destroyForcibly();
 			}
 		}
-		catch(Exception e) {
+		catch(Exception ignored) {
 
 		}
 		saveAllBookmarks();
@@ -784,7 +722,7 @@ public class Screen extends UBRFrame {
 		System.exit(0);
 	}
 
-	public static final Screen getScreen() {
+	public static Screen getScreen() {
 		return Screen.getProjectFile().getScreen();
 	}
 
@@ -849,7 +787,7 @@ public class Screen extends UBRFrame {
 				robot = new Robot();
 			robot.keyPress(code);
 		}
-		catch(Exception e) {
+		catch(Exception ignored) {
 
 		}
 	}
@@ -860,7 +798,7 @@ public class Screen extends UBRFrame {
 				robot = new Robot();
 			robot.mouseMove(x, y);
 		}
-		catch(Exception e) {
+		catch(Exception ignored) {
 
 		}
 	}
@@ -893,22 +831,22 @@ public class Screen extends UBRFrame {
 	public void saveAllEditors() {
 		if(DataManager.isSourceDefenderEnabled())
 			ToolMenu.sourceDefender.backupData();
-		tabPanel.getEditors().forEach(w->w.saveCurrentFile());
-		rightTabPanel.getEditors().forEach(w->w.saveCurrentFile());
-		bottomTabPanel.getEditors().forEach(w->w.saveCurrentFile());
+		tabPanel.getEditors().forEach(Editor::saveCurrentFile);
+		rightTabPanel.getEditors().forEach(Editor::saveCurrentFile);
+		bottomTabPanel.getEditors().forEach(Editor::saveCurrentFile);
 	}
 
 	public void loadThemes(){
-		tabPanel.getEditors().forEach(w->w.loadTheme());
-		rightTabPanel.getEditors().forEach(w->w.loadTheme());
-		bottomTabPanel.getEditors().forEach(w->w.loadTheme());
+		tabPanel.getEditors().forEach(Editor::loadTheme);
+		rightTabPanel.getEditors().forEach(Editor::loadTheme);
+		bottomTabPanel.getEditors().forEach(Editor::loadTheme);
 	}
 
 	public LinkedList<Editor> getAllEditors(){
 		LinkedList<Editor> editors = new LinkedList<>();
-		tabPanel.getEditors().forEach(editors::add);
-		rightTabPanel.getEditors().forEach(editors::add);
-		bottomTabPanel.getEditors().forEach(editors::add);
+		editors.addAll(tabPanel.getEditors());
+		editors.addAll(rightTabPanel.getEditors());
+		editors.addAll(bottomTabPanel.getEditors());
 		return editors;
 	}
 
@@ -966,14 +904,12 @@ public class Screen extends UBRFrame {
 			if(focusMode){
 				setVisible(false);
 				remove(toolMenu);
-				layout();
 				doLayout();
 				setVisible(true);
 			}
 			else{
 				setVisible(false);
 				add(toolMenu, BorderLayout.NORTH);
-				layout();
 				doLayout();
 				setVisible(true);
 			}

@@ -1,0 +1,32 @@
+>Default Project
+-/home/omegaui/Documents/Omega Projects/JavaFX Notepad
+>Content Assist Real-Time
+-true
+>Content Mode Java
+-true
+>Use Star Imports
+-false
+>Folder Containing Java Development Kits and Environments
+-
+>Projects Home
+-/home/omegaui/Documents/Omega Projects
+>Theme
+-dark
+>Source Defender Enabled
+-true
+>System Console Launch Command
+-gnome-terminal
+>Gradle Build Script
+-gradle
+>Instant Mode
+-instant-mode-speed
+>Hint Font
+-JetBrains Mono
+-1
+-12
+>Parsing Enabled
+-false
+>Tab Size
+-4
+>Background Illustration Path
+-/fluent-illustrations/3d-flame-255.png

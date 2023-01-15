@@ -17,9 +17,7 @@
  */
 
 package omega;
-import omega.plugin.event.PluginReactionEvent;
 
-import omega.io.SnippetBase;
 public class IDE {
 
 	//The Object of the Main Window

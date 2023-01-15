@@ -158,7 +158,7 @@ public class SourceDefender extends JDialog {
 	}
 
 	public void backupData(){
-		String backupTime = "backup " + (new Date().toString());
+		String backupTime = "backup " + (new Date());
 		if(Screen.onWindows()){
 			backupTime = backupTime.replaceAll(":", ",");
 		}

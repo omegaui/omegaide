@@ -658,11 +658,11 @@ public class TextComp extends JComponent{
 		return extras;
 	}
 
-	public Object put(Object key, Object value){
+	public Object put(String key, omega.ui.popup.OPopupWindow value){
 		return map.put(key, value);
 	}
 
-	public Object getValue(Object key){
+	public Object getValue(String key){
 		return map.get(key);
 	}
 

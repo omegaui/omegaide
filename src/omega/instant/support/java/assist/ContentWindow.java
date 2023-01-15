@@ -264,10 +264,10 @@ public class ContentWindow extends JPanel implements KeyListener{
 		doLayout();
 
 		width += optimalHintHeight;
-		height = (block > 200 ? 200 : block) + 8;
+		height = (Math.min(block, 200)) + 8;
 
 		setVisible(false);
-		setSize((width > 700 ? 700 : width), height);
+		setSize((Math.min(width, 700)), height);
 		setMinimumSize(getSize());
 		setPreferredSize(getSize());
 		flexPanel.setBounds(0, 0, getWidth(), getHeight());

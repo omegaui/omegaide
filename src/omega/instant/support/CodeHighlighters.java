@@ -37,8 +37,7 @@ public final class CodeHighlighters {
 	}
 
 	public synchronized static void remove(AbstractCodeHighlighter abstractCodeHighlighter){
-		if(codeHighlighters.contains(abstractCodeHighlighter))
-			codeHighlighters.remove(abstractCodeHighlighter);
+		codeHighlighters.remove(abstractCodeHighlighter);
 	}
 
 	public synchronized static boolean canComputeForeground(RSyntaxTextArea textArea, Token token){
