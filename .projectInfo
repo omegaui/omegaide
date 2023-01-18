@@ -10,6 +10,10 @@
 -project-root$/src/omega/io/FileCreator.java
 -project-root$/src/omega/instant/support/FileWizard.java
 -project-root$/src/omega/instant/support/universal/TemplateManager.java
+-project-root$/src/omega/ui/panel/TabPanel.java
+-project-root$/src/omega/ui/panel/TabHolder.java
+-project-root$/src/omega/ui/panel/TabsHolderPanel.java
+-project-root$/src/omega/ui/panel/TabCompHolderPanel.java
 >Caret Positions
 -project-root$/src/omega/ui/panel/SideMenu.java
 |0
@@ -22,12 +26,24 @@
 |867
 -project-root$/src/omega/instant/support/FileWizard.java
 |2640
-|4217
+|4143
 -project-root$/src/omega/instant/support/universal/TemplateManager.java
 |493
-|1555
+|953
+-project-root$/src/omega/ui/panel/TabPanel.java
+|3480
+|5726
+-project-root$/src/omega/ui/panel/TabHolder.java
+|273
+|0
+-project-root$/src/omega/ui/panel/TabsHolderPanel.java
+|4393
+|5678
+-project-root$/src/omega/ui/panel/TabCompHolderPanel.java
+|0
+|691
 >Last Active Editor
--project-root$/src/omega/instant/support/FileWizard.java
+-project-root$/src/omega/ui/panel/TabCompHolderPanel.java
 >Project Classpath : Required Jars
 -project-root$/lib/annotations-20.1.0.jar
 -project-root$/lib/commonmark-0.18.2-SNAPSHOT.jar
