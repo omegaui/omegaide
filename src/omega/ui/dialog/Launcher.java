@@ -37,9 +37,7 @@ public class Launcher extends JFrame{
 	private TextComp titleComp;
 	private TextComp iconComp;
 	private TextComp gifComp;
-	
 	private TextComp cloneComp;
-
 	private TextComp openProjectComp;
 	private TextComp createNewJavaProjectComp;
 	private TextComp createNewProjectComp;
@@ -63,7 +61,7 @@ public class Launcher extends JFrame{
 
 	public void init(){
 		iconComp = new TextComp(IconManager.ideImage64, 64, 64, c2, TOOLMENU_GRADIENT, c2, null);
-		iconComp.setBounds(getWidth()/2 - 40, 5, 80, 80);
+		iconComp.setBounds(getWidth()/2 - 40, 10, 80, 80);
 		iconComp.setClickable(false);
 		iconComp.setArc(10, 10);
 		iconComp.attachDragger(this);
@@ -76,7 +74,7 @@ public class Launcher extends JFrame{
 		titleComp = new TextComp("Omega IDE " + Screen.VERSION, c2, c2, TOOLMENU_COLOR2, null);
 		titleComp.setFont(PX16);
 		titleComp.setSize(computeWidth(titleComp.getText(), titleComp.getFont()) + 20, 30);
-		titleComp.setLocation(getWidth()/2 - titleComp.getWidth()/2, 90);
+		titleComp.setLocation(getWidth()/2 - titleComp.getWidth()/2, 95);
 		titleComp.setArc(0, 0);
 		titleComp.setClickable(false);
 		titleComp.setPaintTextGradientEnabled(true);
@@ -164,9 +162,5 @@ public class Launcher extends JFrame{
 	public void setSize(int width, int height){
 		super.setSize(width, height);
 		setShape(new RoundRectangle2D.Double(0, 0, width, height, 20, 20));
-	}
-
-	public static void main(String[] args){
-		new Launcher().setVisible(true);
 	}
 }
