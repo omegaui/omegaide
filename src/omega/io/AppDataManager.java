@@ -25,8 +25,7 @@ import java.awt.Font;
 import java.io.File;
 
 import omega.Screen;
-public class DataManager extends DataBase {
-
+public class AppDataManager extends DataBase {
 	public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
 	public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
 	public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/3d-flame-255.png";
@@ -51,7 +50,7 @@ public class DataManager extends DataBase {
 	private static int languageTag = -1;
 	private static int tabSize = 5;
 
-	public DataManager(Screen screen) {
+	public AppDataManager(Screen screen) {
 		super(".omega-ide" + File.separator + ".preferences");
 		loadData();
 	}
@@ -120,7 +119,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setDefaultProjectPath(String defaultProjectPath) {
-		DataManager.defaultProjectPath = defaultProjectPath;
+		AppDataManager.defaultProjectPath = defaultProjectPath;
 	}
 
 	public static void setContentAssistRealTime(boolean value) {
@@ -160,7 +159,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setContentModeJava(boolean contentModeJava) {
-		DataManager.contentModeJava = contentModeJava;
+		AppDataManager.contentModeJava = contentModeJava;
 	}
 
 	public static boolean isSourceDefenderEnabled() {
@@ -168,7 +167,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setSourceDefenderEnabled(boolean sourceDefenderEnabled) {
-		DataManager.sourceDefenderEnabled = sourceDefenderEnabled;
+		AppDataManager.sourceDefenderEnabled = sourceDefenderEnabled;
 	}
 
 	public static java.lang.String getConsoleCommand() {
@@ -176,7 +175,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setConsoleCommand(java.lang.String consoleCommand) {
-		DataManager.consoleCommand = consoleCommand;
+		AppDataManager.consoleCommand = consoleCommand;
 	}
 
 	public static java.lang.String getGradleCommand() {
@@ -184,7 +183,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setGradleCommand(java.lang.String gradleCommand) {
-		DataManager.gradleCommand = gradleCommand;
+		AppDataManager.gradleCommand = gradleCommand;
 	}
 
 	public static java.lang.String getInstantMode() {
@@ -192,7 +191,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setInstantMode(java.lang.String instantMode) {
-		DataManager.instantMode = instantMode;
+		AppDataManager.instantMode = instantMode;
 	}
 
 	public static java.awt.Font getHintFont() {
@@ -204,7 +203,7 @@ public class DataManager extends DataBase {
 			System.err.println("Hint Font cannot be null!");
 			return;
 		}
-		DataManager.hintFont = hintFont;
+		AppDataManager.hintFont = hintFont;
 	}
 
 	public static synchronized boolean isParsingEnabled() {
@@ -212,7 +211,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setParsingEnabled(boolean parsingEnabled) {
-		DataManager.parsingEnabled = parsingEnabled;
+		AppDataManager.parsingEnabled = parsingEnabled;
 	}
 
 	public static int getTabSize() {
@@ -220,7 +219,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setTabSize(int tabSize) {
-		DataManager.tabSize = tabSize;
+		AppDataManager.tabSize = tabSize;
 	}
 
 	public static java.lang.String getBackgroundIllustrationPath() {
@@ -228,7 +227,7 @@ public class DataManager extends DataBase {
 	}
 
 	public static void setBackgroundIllustrationPath(java.lang.String backgroundIllustrationPath) {
-		DataManager.backgroundIllustrationPath = backgroundIllustrationPath;
+		AppDataManager.backgroundIllustrationPath = backgroundIllustrationPath;
 	}
 
 }

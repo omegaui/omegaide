@@ -19,7 +19,7 @@
 package omega.instant.support.build.gradle;
 import omega.Screen;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 
 import omegaui.component.TextComp;
 import omegaui.component.NoCaretField;
@@ -87,14 +87,14 @@ public class GradleBuildScriptManager extends JDialog{
 		}
 		titleComp.setColors(TOOLMENU_COLOR3, c2, c2);
 		titleComp.setText("Specify Gradle Build Script Name");
-		DataManager.setGradleCommand(text);
+		AppDataManager.setGradleCommand(text);
 		setVisible(false);
 	}
 
 	@Override
 	public void setVisible(boolean value){
 		if(value){
-			nameField.setText(DataManager.getGradleCommand());
+			nameField.setText(AppDataManager.getGradleCommand());
 		}
 		super.setVisible(value);
 	}

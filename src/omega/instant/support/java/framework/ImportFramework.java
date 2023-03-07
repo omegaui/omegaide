@@ -18,7 +18,7 @@
 package omega.instant.support.java.framework;
 import omega.ui.component.Editor;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.IconManager;
 
 import omega.instant.support.java.management.JDKManager;
@@ -28,8 +28,6 @@ import omega.instant.support.java.assist.CodeTokenizer;
 import omega.instant.support.java.assist.SourceReader;
 
 import omega.ui.dialog.ImportResolver;
-
-import java.io.PrintWriter;
 
 import omega.Screen;
 
@@ -332,7 +330,7 @@ public class ImportFramework {
 				var info = getInsertIndex(editor, pack, className);
 				int start = info.index;
 				String insertedText = "";
-				if(DataManager.isUsingStarImports())
+				if(AppDataManager.isUsingStarImports())
 					d.insertString(start, insertedText = (!info.startChar.equals("") ? info.startChar : "") + "import " + pack + ".*;" + (!info.endChar.equals("") ? info.endChar : ""), null);
 				else
 					d.insertString(start, insertedText = (!info.startChar.equals("") ? info.startChar : "") + "import " + pack + "." + className + ";" + (!info.endChar.equals("") ? info.endChar : ""), null);
@@ -340,7 +338,7 @@ public class ImportFramework {
 			}
 			else {
 				Document d = editor.getDocument();
-				if(DataManager.isUsingStarImports())
+				if(AppDataManager.isUsingStarImports())
 					d.insertString(0, "import " + pack + ".*;\n", null);
 				else
 					d.insertString(0, "import " + pack + "." + className + ";\n", null);

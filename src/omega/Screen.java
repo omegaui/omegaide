@@ -86,7 +86,7 @@ public class Screen extends UBRFrame {
 
 	private static Robot robot;
 	private static UIManager uiManager;
-	private static DataManager dataManager;
+	private static AppDataManager dataManager;
 	private static ProjectFile projectFile;
 	private static ProjectRunner projectRunner;
 	private static ProjectBuilder projectBuilder;
@@ -108,7 +108,7 @@ public class Screen extends UBRFrame {
 			Startup.writeUIFiles();
 			if(!File.separator.equals("/"))
 				PATH_SEPARATOR = ";";
-			dataManager = new DataManager(this);
+			dataManager = new AppDataManager(this);
 			Color x;
 			Color y;
 			if(UIManager.isDarkMode()) {
@@ -403,9 +403,9 @@ public class Screen extends UBRFrame {
 
 		splash.setProgress(100, "");
 
-		File file = new File(DataManager.getDefaultProjectPath());
+		File file = new File(AppDataManager.getDefaultProjectPath());
 
-		if(DataManager.getWorkspace().equals("") || !new File(DataManager.getWorkspace()).exists())
+		if(AppDataManager.getWorkspace().equals("") || !new File(AppDataManager.getWorkspace()).exists())
 			new WorkspaceSelector(this).setVisible(true);
 
 		if(file.exists() && file.isDirectory()) {
@@ -818,7 +818,7 @@ public class Screen extends UBRFrame {
 		return uiManager;
 	}
 
-	public static DataManager getDataManager(){
+	public static AppDataManager getDataManager(){
 		return dataManager;
 	}
 
@@ -829,7 +829,7 @@ public class Screen extends UBRFrame {
 	}
 
 	public void saveAllEditors() {
-		if(DataManager.isSourceDefenderEnabled())
+		if(AppDataManager.isSourceDefenderEnabled())
 			ToolMenu.sourceDefender.backupData();
 		tabPanel.getEditors().forEach(Editor::saveCurrentFile);
 		rightTabPanel.getEditors().forEach(Editor::saveCurrentFile);

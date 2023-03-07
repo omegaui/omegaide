@@ -18,7 +18,7 @@
 
 package omega.instant.support.universal;
 import omega.io.ProjectDataBase;
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 
 import omega.ui.dialog.WorkspaceSelector;
 
@@ -29,15 +29,11 @@ import omega.Screen;
 
 import java.io.File;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
 
 public class UniversalProjectWizard extends JDialog{
 	
@@ -144,7 +140,7 @@ public class UniversalProjectWizard extends JDialog{
 	}
 
 	public void load(){
-		String workspace = DataManager.getWorkspace();
+		String workspace = AppDataManager.getWorkspace();
 		File file = new File(workspace);
 		if(workspace != null && file.exists()){
 			projectWorkspaceComp.setText(file.getName());

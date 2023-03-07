@@ -44,7 +44,6 @@ import java.util.LinkedList;
 
 import java.io.File;
 
-import java.awt.FlowLayout;
 public class ProjectFile {
 
 	private Screen screen;
@@ -138,7 +137,7 @@ public class ProjectFile {
 		if(Screen.launcher != null)
 			Screen.launcher.dispose();
 
-		DataManager.setDefaultProjectPath(projectPath);
+		AppDataManager.setDefaultProjectPath(projectPath);
 		getScreen().setProject(getProjectName());
 
 		getScreen().getTabPanel().closeAllTabs();
@@ -219,7 +218,7 @@ public class ProjectFile {
 		saveAll();
 		getScreen().setVisible(false);
 		projectPath = null;
-		DataManager.setDefaultProjectPath("");
+		AppDataManager.setDefaultProjectPath("");
 		if(Screen.launcher == null)
 			Screen.launcher = new Launcher();
 		getScreen().saveEssential();

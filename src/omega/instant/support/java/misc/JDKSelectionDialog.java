@@ -19,7 +19,7 @@
 package omega.instant.support.java.misc;
 import omega.Screen;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.IconManager;
 
 import omega.instant.support.java.management.JDKManager;
@@ -38,7 +38,6 @@ import java.io.File;
 
 import omegaui.component.TextComp;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JDialog;
@@ -123,7 +122,7 @@ public class JDKSelectionDialog extends JDialog{
 
 		selection = null;
 
-		File jdkRootDir = new File(DataManager.getPathToJava());
+		File jdkRootDir = new File(AppDataManager.getPathToJava());
 
 		File[] F = jdkRootDir.listFiles();
 		if(F == null || F.length == 0){

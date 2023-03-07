@@ -17,9 +17,6 @@
  */
 
 package omega.instant.support.java.assist;
-import java.io.File;
-
-import omega.instant.support.java.highlighter.BasicCodeHighlighter;
 
 import omega.instant.support.AbstractContentTokenizer;
 import omega.instant.support.CodeFrameworks;
@@ -35,16 +32,11 @@ import omega.instant.support.java.framework.CodeFramework;
 import omega.instant.support.java.framework.ImportFramework;
 
 import omega.io.SnippetBase;
-import omega.io.DataManager;
-import omega.io.FileOperationManager;
+import omega.io.AppDataManager;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rsyntaxtextarea.TokenTypes;
-
-import static omega.io.UIManager.*;
 public class ContentTokenizer extends AbstractContentTokenizer{
 
 	public static boolean isConditionalCode(String code){
@@ -143,7 +135,7 @@ public class ContentTokenizer extends AbstractContentTokenizer{
 
 	@Override
 	public void arrangeTokens(Editor e) {
-		if(!e.currentFile.getName().endsWith(".java") || Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || !DataManager.isContentModeJava()){
+		if(!e.currentFile.getName().endsWith(".java") || Screen.getProjectFile().getProjectManager().isLanguageTagNonJava() || !AppDataManager.isContentModeJava()){
 			arrangeTokens(e, CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition()));
 			return;
 		}

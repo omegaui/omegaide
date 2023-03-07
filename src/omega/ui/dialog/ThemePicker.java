@@ -21,10 +21,8 @@ import omega.Screen;
 
 import javax.imageio.ImageIO;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.IconManager;
-
-import java.awt.geom.RoundRectangle2D;
 
 import omegaui.component.TextComp;
 
@@ -39,7 +37,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+
 public class ThemePicker extends JDialog {
 	private Color c1 = new Color(126, 20, 219, 40);
 	private Color c2 = Color.WHITE;
@@ -95,7 +93,7 @@ public class ThemePicker extends JDialog {
 	public void init(){
 		applyComp = new TextComp("Apply", c1, c2, TOOLMENU_COLOR2, ()->{
 			dispose();
-			DataManager.setTheme(lightMode ? "light" : "dark");
+			AppDataManager.setTheme(lightMode ? "light" : "dark");
 			Screen.getDataManager().save();
 		});
 		applyComp.setBounds(getWidth() - 80, 0, 80, 30);

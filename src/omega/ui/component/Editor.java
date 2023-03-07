@@ -27,10 +27,7 @@ import omega.ui.panel.ColorPreview;
 
 import omega.instant.support.java.generator.Generator;
 
-import omega.instant.support.java.framework.CodeFramework;
 import omega.instant.support.java.framework.ImportFramework;
-
-import omega.instant.support.build.gradle.GradleProcessManager;
 
 import omega.instant.support.SyntaxParsers;
 import omega.instant.support.CodeFrameworks;
@@ -39,7 +36,7 @@ import omega.instant.support.IndentationFrameworks;
 import omega.instant.support.AbstractJumpToDefinitionPanel;
 import omega.instant.support.JumpToDefinitionPanels;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.RustTokenMaker;
 import omega.io.SnippetBase;
 import omega.io.UIManager;
@@ -47,7 +44,6 @@ import omega.io.BookmarksManager;
 import omega.io.IconManager;
 import omega.io.EditorAddon;
 
-import omega.instant.support.java.misc.JavaJumpToDefinitionPanel;
 import omega.instant.support.java.misc.JavaCodeNavigator;
 import omega.instant.support.java.misc.JavaCommentMarker;
 
@@ -74,13 +70,10 @@ import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
 
 import javax.swing.DropMode;
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JPanel;
 
 import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 
-import java.awt.Image;
 import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -91,7 +84,6 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
@@ -102,7 +94,6 @@ import org.fife.rsta.ui.search.SearchEvent;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusEvent;
@@ -113,7 +104,6 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 
 import java.nio.charset.StandardCharsets;
 
-import static omega.instant.support.java.assist.Assembly.*;
 import static java.awt.event.KeyEvent.*;
 
 public class Editor extends RSyntaxTextArea implements KeyListener, MouseListener, SearchListener, FocusListener {
@@ -235,7 +225,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 		setHighlightSecondaryLanguages(true);
 		setDragEnabled(true);
 		setDropMode(DropMode.USE_SELECTION);
-		setTabSize(DataManager.getTabSize());
+		setTabSize(AppDataManager.getTabSize());
 		UIManager.setData(this);
 
 		getAttachment().getGutter().setIconRowHeaderEnabled(true);
@@ -297,7 +287,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	}
 
 	public void launchContentAssist() {
-		if(launched || !DataManager.isContentAssistRealTime())
+		if(launched || !AppDataManager.isContentAssistRealTime())
 			return;
 		launched = true;
 		new Thread(()->{
@@ -315,7 +305,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				lastTime = now;
 				if(delta >= 1){
 					try {
-						if(screen.getCurrentEditor() != null && DataManager.isContentAssistRealTime()){
+						if(screen.getCurrentEditor() != null && AppDataManager.isContentAssistRealTime()){
 							screen.getCurrentEditor().readCode();
 						}
 					}
@@ -328,7 +318,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				if(System.currentTimeMillis() - timer > 1000){
 					timer += 1000;
 
-					if(DataManager.isParsingEnabled()) {
+					if(AppDataManager.isParsingEnabled()) {
 						SyntaxParsers.parse();
 					}
 				}
@@ -346,7 +336,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 			e.printStackTrace();
 		}
 
-		if(DataManager.isParsingEnabled()) {
+		if(AppDataManager.isParsingEnabled()) {
 			SyntaxParsers.parse();
 		}
 	}
@@ -741,7 +731,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 
 	public void increaseTabSize(KeyEvent e){
 		setTabSize(getTabSize() + 1);
-		DataManager.setTabSize(getTabSize());
+		AppDataManager.setTabSize(getTabSize());
 
 		e.consume();
 	}
@@ -749,7 +739,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 	public void decreaseTabSize(KeyEvent e){
 		if(getTabSize() > 1){
 			setTabSize(getTabSize() - 1);
-			DataManager.setTabSize(getTabSize());
+			AppDataManager.setTabSize(getTabSize());
 
 			e.consume();
 		}
@@ -897,7 +887,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 						return;
 					}
 					if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-						if(DataManager.isContentAssistRealTime())
+						if(AppDataManager.isContentAssistRealTime())
 							call = true;
 						return;
 					}
@@ -946,7 +936,7 @@ public class Editor extends RSyntaxTextArea implements KeyListener, MouseListene
 				//Code Assist
 				char c = e.getKeyChar();
 				if(Character.isLetterOrDigit(c) || c == '.' || c == '_' || c == '$' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-					if(DataManager.isContentAssistRealTime()){
+					if(AppDataManager.isContentAssistRealTime()){
 						contentWindow.setIgnoreGenViewOnce(keyCache != 0);
 						call = true;
 					}

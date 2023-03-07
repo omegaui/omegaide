@@ -17,7 +17,6 @@
  */
 
 package omega.io;
-import omega.ui.github.GitHubClientWindow;
 
 import java.awt.Font;
 import java.awt.Color;
@@ -52,7 +51,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+
 public class Startup extends JDialog {
 	private static BufferedImage image;
 	private TextComp closeBtn;
@@ -165,7 +164,7 @@ public class Startup extends JDialog {
 
 	public static void checkStartup(Screen screen) {
 		if(!new File(".omega-ide" + File.separator + ".firststartup").exists()){
-			Screen.pickTheme(DataManager.getTheme());
+			Screen.pickTheme(AppDataManager.getTheme());
 			Screen.getUIManager().loadData();
 			try{
 				if(UIManager.isDarkMode())

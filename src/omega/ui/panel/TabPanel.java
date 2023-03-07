@@ -27,9 +27,7 @@ import omega.ui.listener.TabPanelListener;
 
 import omega.io.TabHistory;
 import omega.io.TabData;
-import omega.io.UIManager;
-import omega.io.IconManager;
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 
 import org.fife.ui.rtextarea.RTextScrollPane;
 
@@ -48,15 +46,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.FontMetrics;
 import java.awt.Image;
 
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JComponent;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
 
 public class TabPanel extends JPanel{
 
@@ -93,17 +88,17 @@ public class TabPanel extends JPanel{
 		BufferedImage image = null;
 
 		try{
-			image = ImageIO.read(getClass().getResourceAsStream(DataManager.getBackgroundIllustrationPath()));
+			image = ImageIO.read(getClass().getResourceAsStream(AppDataManager.getBackgroundIllustrationPath()));
 		}
 		catch(Exception e){
 			try{
-				image = ImageIO.read(new File(DataManager.getBackgroundIllustrationPath()));
+				image = ImageIO.read(new File(AppDataManager.getBackgroundIllustrationPath()));
 			}
 			catch(Exception e1){
-				System.err.println("Cannot find Image file : " + DataManager.getBackgroundIllustrationPath());
+				System.err.println("Cannot find Image file : " + AppDataManager.getBackgroundIllustrationPath());
 				e1.printStackTrace();
 				try{
-					image = ImageIO.read(getClass().getResourceAsStream(DataManager.DEFAULT_ILLUSTRATION_PATH));
+					image = ImageIO.read(getClass().getResourceAsStream(AppDataManager.DEFAULT_ILLUSTRATION_PATH));
 				}
 				catch(Exception e2){
 					e2.printStackTrace();

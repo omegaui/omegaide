@@ -29,7 +29,7 @@ import omega.instant.support.java.management.JDKManager;
 import java.io.File;
 
 import omega.io.IconManager;
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.ProjectDataBase;
 
 import omegaui.component.TextComp;
@@ -226,8 +226,8 @@ public class JavaProjectWizard extends JDialog {
 		LinkedList c;
 		LinkedList<File> selections = fileSelectionDialog.selectDirectories();
 		if(!selections.isEmpty()){
-			DataManager.setPathToJava(selections.get(0).getAbsolutePath());
-			jdkRootComp.setText(DataManager.getPathToJava());
+			AppDataManager.setPathToJava(selections.get(0).getAbsolutePath());
+			jdkRootComp.setText(AppDataManager.getPathToJava());
 		}
 	}
 
@@ -312,7 +312,7 @@ public class JavaProjectWizard extends JDialog {
 		}
 
 		if(path != null){
-			DataManager.setPathToJava(path);
+			AppDataManager.setPathToJava(path);
 			jdkRootComp.setText(path);
 			setStatus("Saved " + path + " as JDK Root", false, path);
 		}
@@ -332,7 +332,7 @@ public class JavaProjectWizard extends JDialog {
 	public void load(){
 		setStatus("", true, "");
 
-		String workspace = DataManager.getWorkspace();
+		String workspace = AppDataManager.getWorkspace();
 		File file = new File(workspace);
 		if(workspace != null && file.exists()){
 			workspaceComp.setText(file.getName());
@@ -341,7 +341,7 @@ public class JavaProjectWizard extends JDialog {
 		else
 			workspaceComp.setText("Specify Workspace");
 
-		String jdkRoot = DataManager.getPathToJava();
+		String jdkRoot = AppDataManager.getPathToJava();
 		file = new File(jdkRoot);
 
 		if(jdkRoot != null && file.exists())

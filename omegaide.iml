@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="out" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="json" level="project" />
   </component>
 </module>

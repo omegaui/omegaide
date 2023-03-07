@@ -20,7 +20,7 @@ import omega.ui.component.Editor;
 
 import omega.ui.panel.RunPanel;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.IconManager;
 
 import omegaui.component.TextComp;
@@ -48,7 +48,6 @@ import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
 
 /*
  * When Enabled from Tools Section, 
@@ -125,15 +124,15 @@ public class SourceDefender extends JDialog {
 		add(closeComp);
 
 		TextComp label0 = new TextComp("", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, null);
-		label0.setText("Automatic Backup - " + (DataManager.isSourceDefenderEnabled() ? "On" : "Off"));
+		label0.setText("Automatic Backup - " + (AppDataManager.isSourceDefenderEnabled() ? "On" : "Off"));
 		label0.setBounds(10, 40, 300, 30);
 		label0.setClickable(false);
 		label0.setFont(PX14);
 		add(label0);
 
-		sourceDefenceComp = new SwitchComp(DataManager.isSourceDefenderEnabled(), TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE, (value)->{
+		sourceDefenceComp = new SwitchComp(AppDataManager.isSourceDefenderEnabled(), TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE, (value)->{
 			label0.setText("Automatic Backup - " + (value ? "On" : "Off"));
-			DataManager.setSourceDefenderEnabled(value);
+			AppDataManager.setSourceDefenderEnabled(value);
 		});
 		sourceDefenceComp.setBounds(320, 40, 70, 30);
 		sourceDefenceComp.setInBallColor(glow);
@@ -162,7 +161,7 @@ public class SourceDefender extends JDialog {
 		if(Screen.onWindows()){
 			backupTime = backupTime.replaceAll(":", ",");
 		}
-		final String backupTitle = new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTime;
+		final String backupTitle = new File(AppDataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTime;
 		LinkedList<Editor> editors = Screen.getScreen().getAllEditors();
 		editors.forEach(editor->{
 			addToBackup(backupTitle, editor.currentFile);
@@ -204,7 +203,7 @@ public class SourceDefender extends JDialog {
 			printArea.clearTerminal();
 			printArea.print("Restoring from backup ... \"" + backupTitle + "\"");
 			LinkedList<File> files = new LinkedList<>();
-			File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTitle);
+			File backupChannel = new File(BACKUP_DIR, new File(AppDataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTitle);
 			loadAllFiles(files, backupChannel);
 			printArea.print(files.size() + " files(s) will be restored!");
 			for(File file : files){
@@ -281,13 +280,13 @@ public class SourceDefender extends JDialog {
 
 		block = 0;
 
-		File[] backups = new File(BACKUP_DIR + File.separator + new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName()).listFiles();
+		File[] backups = new File(BACKUP_DIR + File.separator + new File(AppDataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName()).listFiles();
 		if(backups == null || backups.length == 0)
 			return;
 
 		for(File backup : backups){
 			TextComp comp = new TextComp(backup.getName(), "Click to Restore From Backup", TOOLMENU_COLOR2_SHADE, back2, TOOLMENU_COLOR2, ()->{
-				File backupChannel = new File(BACKUP_DIR, new File(DataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backup.getName());
+				File backupChannel = new File(BACKUP_DIR, new File(AppDataManager.getWorkspace()).getName() + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backup.getName());
 				LinkedList<File> files = new LinkedList<>();
 				loadAllFiles(files, backupChannel);
 				backupView.showView(backup.getName(), files);
@@ -384,7 +383,7 @@ public class SourceDefender extends JDialog {
 			fileComps.forEach(panel::remove);
 			fileComps.clear();
 			block = 0;
-			final String workspace = new File(DataManager.getWorkspace()).getName();
+			final String workspace = new File(AppDataManager.getWorkspace()).getName();
 			final String name = BACKUP_DIR + File.separator + workspace + File.separator + Screen.getProjectFile().getProjectName() + File.separator + backupTitle;
 			files.forEach(file->{
 				String path = file.getAbsolutePath();

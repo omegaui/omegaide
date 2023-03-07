@@ -22,7 +22,7 @@ import java.io.File;
 import omega.ui.component.jediterm.JetTerminal;
 
 import omega.io.IconManager;
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 
 import omegaui.component.TextComp;
 import omegaui.component.EdgeComp;
@@ -148,7 +148,7 @@ public class GitProjectWizard extends JDialog{
 					"git", "clone", urlField.getText()
 				};
 			}
-			terminal = new JetTerminal(cloneCommand, DataManager.getWorkspace());
+			terminal = new JetTerminal(cloneCommand, AppDataManager.getWorkspace());
 			terminal.setBounds(20, 150, getWidth() - 40, getHeight() - 160);
 			add(terminal);
 
@@ -159,7 +159,7 @@ public class GitProjectWizard extends JDialog{
 					projectName = projectName.substring(projectName.lastIndexOf('/') + 1);
 					if(projectName.endsWith(".git"))
 						projectName = projectName.substring(0, projectName.lastIndexOf(".git")).trim();
-					String path = DataManager.getWorkspace() + File.separator + projectName;
+					String path = AppDataManager.getWorkspace() + File.separator + projectName;
 					File dir = new File(path);
 					if(dir.exists()){
 						dispose();

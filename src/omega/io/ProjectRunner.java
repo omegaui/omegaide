@@ -34,44 +34,20 @@ import omega.ui.panel.JetRunPanel;
 import omega.ui.panel.OperationPane;
 import omega.ui.panel.FileTreePanel;
 
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import omega.Screen;
-
-import java.awt.event.MouseListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-import org.fife.ui.rsyntaxtextarea.modes.MarkdownTokenMaker;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FlowLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
-
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.tools.DiagnosticCollector;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic;
 
-import javax.swing.Icon;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JComponent;
-
 import java.io.File;
-import java.io.PrintWriter;
 
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Scanner;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+
 public class ProjectRunner {
 
 	private Screen screen;
@@ -566,9 +542,9 @@ public class ProjectRunner {
 				getScreen().getOperationPanel().removeTab("Compilation");
 				Screen.getErrorHighlighter().removeAllHighlights();
 
-				String text = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? "instant-mode-speed" : "instant-mode-accuracy";
+				String text = AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED) ? "instant-mode-speed" : "instant-mode-accuracy";
 				Screen.setStatus("Building Project -- Instant Run : " + text, 0, IconManager.fluentrocketImage, "Building Project");
-				DiagnosticCollector<JavaFileObject> diagnostics = DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
+				DiagnosticCollector<JavaFileObject> diagnostics = AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED) ? SyntaxParsers.javaSyntaxParser.compileAndSaveToProjectBin() : SyntaxParsers.javaSyntaxParser.compileFullProject();
 
 				if(diagnostics == null){
 					if(!isRunCapable(new File(Screen.getProjectFile().getProjectPath() + File.separator + "bin"))) {

@@ -23,7 +23,7 @@ import java.io.File;
 
 import java.util.LinkedList;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 
 import omegaui.component.TextComp;
 
@@ -34,7 +34,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
 
 public class WorkspaceSelector extends JDialog{
      public WorkspaceSelector(Screen screen){
@@ -71,7 +70,7 @@ public class WorkspaceSelector extends JDialog{
           titleComp.attachDragger(this);
           add(titleComp);
           
-          JTextField textField = new JTextField(DataManager.getWorkspace().equals("") ? "e.g : Documents/Omega Projects" : DataManager.getWorkspace());
+          JTextField textField = new JTextField(AppDataManager.getWorkspace().equals("") ? "e.g : Documents/Omega Projects" : AppDataManager.getWorkspace());
           textField.setBounds(20, 50, getWidth() - 30, 30);
           textField.setFont(PX14);
           textField.setBackground(c2);
@@ -86,8 +85,8 @@ public class WorkspaceSelector extends JDialog{
                LinkedList<File> files = fs.selectDirectories();
                new Thread(()->{
 	               if(!files.isEmpty()){
-	                    DataManager.setWorkspace(files.get(0).getAbsolutePath());
-	                    textField.setText(DataManager.getWorkspace());
+	                    AppDataManager.setWorkspace(files.get(0).getAbsolutePath());
+	                    textField.setText(AppDataManager.getWorkspace());
 	                    setTitle("Lets Proceed Forward");
 	                    titleComp.color1 = TOOLMENU_COLOR1_SHADE;
 	                    titleComp.setClickable(true);

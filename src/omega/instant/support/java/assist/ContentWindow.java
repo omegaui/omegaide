@@ -24,7 +24,7 @@ import omega.ui.component.Editor;
 
 import omega.instant.support.java.framework.CodeFramework;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.IconManager;
 
 import omegaui.component.TextComp;
@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 
 import java.awt.Font;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
@@ -42,15 +41,12 @@ import java.util.LinkedList;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+
 public class ContentWindow extends JPanel implements KeyListener{
 
 	public LinkedList<HintComp> hints = new LinkedList<>();
@@ -107,7 +103,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 
 			nameComp = new TextComp(d.getRepresentableValue(), hintHoverColor, getBackground(), BasicCodeHighlighter.classColor, null);
 			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
-			nameComp.setFont(DataManager.getHintFont());
+			nameComp.setFont(AppDataManager.getHintFont());
 			nameComp.setArc(0, 0);
 			nameComp.alignX = 2;
 			nameComp.setUseSpeedMode(true);
@@ -120,10 +116,10 @@ public class ContentWindow extends JPanel implements KeyListener{
 
 		public void setEnter(boolean value){
 			if(value){
-				nameComp.setFont(DataManager.getHintFont().deriveFont(Font.BOLD));
+				nameComp.setFont(AppDataManager.getHintFont().deriveFont(Font.BOLD));
 			}
 			else{
-				nameComp.setFont(DataManager.getHintFont());
+				nameComp.setFont(AppDataManager.getHintFont());
 			}
 			nameComp.setEnter(value);
 		}
@@ -192,7 +188,7 @@ public class ContentWindow extends JPanel implements KeyListener{
 		block = gap;
 		width = 0;
 
-		Font hintFont = DataManager.getHintFont();
+		Font hintFont = AppDataManager.getHintFont();
 
 		optimalHintHeight = computeHeight(hintFont) + 6;
 		optimalHintHeight = optimalHintHeight <  20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;

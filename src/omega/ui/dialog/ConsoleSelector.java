@@ -16,7 +16,7 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package omega.ui.dialog;
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 
 import omegaui.component.TextComp;
 import omegaui.component.NoCaretField;
@@ -29,7 +29,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+
 public class ConsoleSelector extends JDialog{
 	private TextComp titleComp;
 	private TextComp applyComp;
@@ -82,7 +82,7 @@ public class ConsoleSelector extends JDialog{
 
 	public void apply(){
 		dispose();
-		DataManager.setConsoleCommand(nameField.getText() != null ? nameField.getText() : getPlatformTerminal());
+		AppDataManager.setConsoleCommand(nameField.getText() != null ? nameField.getText() : getPlatformTerminal());
 	}
 
 	public String getPlatformTerminal(){
@@ -90,12 +90,12 @@ public class ConsoleSelector extends JDialog{
 	}
 
 	public void launchTerminal(){
-		if(DataManager.getConsoleCommand() == null || DataManager.getConsoleCommand().equals(""))
+		if(AppDataManager.getConsoleCommand() == null || AppDataManager.getConsoleCommand().equals(""))
 			setVisible(true);
 		
 		new Thread(()->{
 			try{
-				Runtime.getRuntime().exec(DataManager.getConsoleCommand());
+				Runtime.getRuntime().exec(AppDataManager.getConsoleCommand());
 			}
 			catch(Exception e){
 				e.printStackTrace();
@@ -107,7 +107,7 @@ public class ConsoleSelector extends JDialog{
 	@Override
 	public void setVisible(boolean value){
 		if(value){
-	          nameField.setText(DataManager.getConsoleCommand());
+	          nameField.setText(AppDataManager.getConsoleCommand());
 		}
 	     super.setVisible(value);
 	}

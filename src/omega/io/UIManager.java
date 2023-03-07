@@ -22,7 +22,6 @@ import omega.ui.component.Editor;
 import omegaui.component.animation.Animations;
 
 import omegaui.dynamic.database.DataBase;
-import omegaui.dynamic.database.DataEntry;
 
 import java.awt.image.BufferedImage;
 
@@ -359,7 +358,7 @@ public class UIManager extends DataBase {
 	}
 
 	public static boolean isDarkMode() {
-		return DataManager.getTheme().equals("dark");
+		return AppDataManager.getTheme().equals("dark");
 	}
 
 	public static void setFontName(String fontName) {

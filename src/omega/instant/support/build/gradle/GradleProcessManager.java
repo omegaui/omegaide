@@ -17,12 +17,10 @@
  */
 
 package omega.instant.support.build.gradle;
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.IconManager;
 
 import omega.ui.panel.JetRunPanel;
-
-import java.util.Scanner;
 
 import omega.Screen;
 
@@ -72,10 +70,10 @@ public class GradleProcessManager {
 				}
 
 
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "run"}, Screen.getProjectFile().getProjectPath());
-				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, DataManager.getGradleCommand() + " run");
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{AppDataManager.getGradleCommand() + ext, "run"}, Screen.getProjectFile().getProjectPath());
+				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, AppDataManager.getGradleCommand() + " run");
 
-				printArea.print("# Executing : " + DataManager.getGradleCommand() +" run");
+				printArea.print("# Executing : " + AppDataManager.getGradleCommand() +" run");
 				printArea.print("--------------------------------------------------");
 
 				printArea.start();
@@ -104,9 +102,9 @@ public class GradleProcessManager {
 					Screen.getProjectFile().getProjectManager().save();
 				}
 
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{DataManager.getGradleCommand() + ext, "build"}, Screen.getProjectFile().getProjectPath());
+				JetRunPanel printArea = new JetRunPanel(false, new String[]{AppDataManager.getGradleCommand() + ext, "build"}, Screen.getProjectFile().getProjectPath());
 				printArea.setLogMode(true);
-				printArea.print("# Executing : " + DataManager.getGradleCommand() +" build");
+				printArea.print("# Executing : " + AppDataManager.getGradleCommand() +" build");
 				printArea.print("--------------------------------------------------");
 
 				printArea.start();

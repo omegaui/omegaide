@@ -29,11 +29,9 @@ import omega.instant.support.java.parser.JavaSyntaxParser;
 
 import omegaui.component.animation.ImageSizeTransitionAnimationLayer;
 
-import omega.io.DataManager;
+import omega.io.AppDataManager;
 import omega.io.UIManager;
 import omega.io.IconManager;
-
-import omega.instant.support.java.framework.CodeFramework;
 
 import omega.instant.support.LanguageTagView;
 import omega.instant.support.TemplateWizard;
@@ -73,8 +71,6 @@ import omega.IDE;
 import omega.Screen;
 import omega.IDEUpdater;
 
-import java.net.URL;
-
 import java.io.File;
 
 import java.util.LinkedList;
@@ -89,15 +85,11 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Menu;
 import java.awt.Font;
-import java.awt.Desktop;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.RenderingHints;
-import java.awt.GradientPaint;
 import java.awt.Point;
-import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
@@ -484,8 +476,8 @@ public class ToolMenu extends JPanel {
 		
 		themeComp = new TextComp(IconManager.fluentchangethemeImage, 20, 20, "Change Theme", TOOLMENU_COLOR6_SHADE, back3, TOOLMENU_COLOR6,
 		()->{
-			Screen.pickTheme(DataManager.getTheme());
-			if(!themeComp.getName().equals(DataManager.getTheme())){
+			Screen.pickTheme(AppDataManager.getTheme());
+			if(!themeComp.getName().equals(AppDataManager.getTheme())){
 				NotificationPopup.create(screen)
 				.size(300, 120)
 				.title("Theme Manager")
@@ -497,9 +489,9 @@ public class ToolMenu extends JPanel {
 				.locateOnBottomLeft()
 				.showIt();
 			}
-			themeComp.setName(DataManager.getTheme());
+			themeComp.setName(AppDataManager.getTheme());
 		});
-		themeComp.setName(DataManager.getTheme());
+		themeComp.setName(AppDataManager.getTheme());
 		themeComp.setBounds(140, 33, 24, 24);
 		add(themeComp);
 
@@ -658,7 +650,7 @@ public class ToolMenu extends JPanel {
 	
 	public void reloadItems(boolean non_java){
 		jdkItem.setEnabled(!non_java);
-		jdkRootItem.setToolTipText(DataManager.getPathToJava());
+		jdkRootItem.setToolTipText(AppDataManager.getPathToJava());
 		allSettingsItem.setEnabled(non_java);
 		instantModeItem.setEnabled(!non_java);
 		parsingEnabledItem.setEnabled(!non_java);
@@ -671,12 +663,12 @@ public class ToolMenu extends JPanel {
 		else
 			jdkItem.setName("Project JDK : None");
 		
-		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
+		if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
 			instantModeItem.setName("Instant Mode : Speed");
-		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+		else if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
 			instantModeItem.setName("Instant Mode : Accuracy");
 		
-		parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
+		parsingEnabledItem.setName("Parsing Enabled : " + AppDataManager.isParsingEnabled());
 	}
 	
 	public void changeLang(){
@@ -741,8 +733,8 @@ public class ToolMenu extends JPanel {
 			screen.getUIManager().save();
 		})
 		.createItem("Change Content Assist Font", IconManager.settingsImage, ()->{
-			Font font = fontC.chooseFont(DataManager.getHintFont());
-			DataManager.setHintFont(font);
+			Font font = fontC.chooseFont(AppDataManager.getHintFont());
+			AppDataManager.setHintFont(font);
 		})
 		.createItem("Change Workspace", IconManager.settingsImage, ()->new WorkspaceSelector(screen).setVisible(true))
 		.createItem("Animations", IconManager.settingsImage, ()->{
@@ -764,7 +756,7 @@ public class ToolMenu extends JPanel {
 			fs.setFileExtensions(".png", ".jpg");
 			LinkedList<File> files = fs.selectFiles();
 			if(!files.isEmpty()){
-				DataManager.setBackgroundIllustrationPath(files.get(0).getAbsolutePath());
+				AppDataManager.setBackgroundIllustrationPath(files.get(0).getAbsolutePath());
 				Screen.getScreen().getTabPanel().loadIllustration();
 			}
 		});
@@ -782,30 +774,30 @@ public class ToolMenu extends JPanel {
 			fs.setTitle("Select JDK Root");
 			LinkedList<File> files = fs.selectDirectories();
 			if(!files.isEmpty()){
-				DataManager.setPathToJava(files.get(0).getAbsolutePath());
-				jdkRootItem.setToolTipText(DataManager.getPathToJava());
+				AppDataManager.setPathToJava(files.get(0).getAbsolutePath());
+				jdkRootItem.setToolTipText(AppDataManager.getPathToJava());
 			}
 		});
 		
 		String text = "";
-		if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
+		if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
 			text = "Instant Mode : Speed";
-		else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+		else if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
 			text = "Instant Mode : Accuracy";
 		
 		instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, ()->{
-			DataManager.setInstantMode((DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED)) ? DataManager.INSTANT_MODE_ACCURACY : DataManager.INSTANT_MODE_SPEED);
+			AppDataManager.setInstantMode((AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED)) ? AppDataManager.INSTANT_MODE_ACCURACY : AppDataManager.INSTANT_MODE_SPEED);
 			
-			if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_SPEED))
+			if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
 				instantModeItem.setName("Instant Mode : Speed");
-			else if(DataManager.getInstantMode().equals(DataManager.INSTANT_MODE_ACCURACY))
+			else if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
 				instantModeItem.setName("Instant Mode : Accuracy");
 		});
 		
-		parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + DataManager.isParsingEnabled(), IconManager.fluentsourceImage, ()->{
-			DataManager.setParsingEnabled(!DataManager.isParsingEnabled());
-			parsingEnabledItem.setName("Parsing Enabled : " + DataManager.isParsingEnabled());
-			if(!DataManager.isParsingEnabled()){
+		parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + AppDataManager.isParsingEnabled(), IconManager.fluentsourceImage, ()->{
+			AppDataManager.setParsingEnabled(!AppDataManager.isParsingEnabled());
+			parsingEnabledItem.setName("Parsing Enabled : " + AppDataManager.isParsingEnabled());
+			if(!AppDataManager.isParsingEnabled()){
 				JavaSyntaxParser.resetHighlights();
 			}
 		});
@@ -857,19 +849,19 @@ public class ToolMenu extends JPanel {
 	}
 
 	private void initCodePopup(){
-		contentAssistOnItem = new OPopupItem(codePopup, DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped", IconManager.fluentsourceImage, ()->{
-			DataManager.setContentAssistRealTime(!DataManager.isContentAssistRealTime());
-			contentAssistOnItem.setName(DataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
+		contentAssistOnItem = new OPopupItem(codePopup, AppDataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped", IconManager.fluentsourceImage, ()->{
+			AppDataManager.setContentAssistRealTime(!AppDataManager.isContentAssistRealTime());
+			contentAssistOnItem.setName(AppDataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
 		});
 		
-		contentAssistModeItem = new OPopupItem(codePopup, DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer", IconManager.fluentsourceImage, ()->{
-			DataManager.setContentModeJava(!DataManager.isContentModeJava());
-			contentAssistModeItem.setName(DataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
+		contentAssistModeItem = new OPopupItem(codePopup, AppDataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer", IconManager.fluentsourceImage, ()->{
+			AppDataManager.setContentModeJava(!AppDataManager.isContentModeJava());
+			contentAssistModeItem.setName(AppDataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
 		});
 		
-		autoImportModeItem = new OPopupItem(codePopup, DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports", IconManager.fluentsourceImage, ()->{
-			DataManager.setUseStarImports(!DataManager.isUsingStarImports());
-			autoImportModeItem.setName(DataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
+		autoImportModeItem = new OPopupItem(codePopup, AppDataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports", IconManager.fluentsourceImage, ()->{
+			AppDataManager.setUseStarImports(!AppDataManager.isUsingStarImports());
+			autoImportModeItem.setName(AppDataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
 		});
 
 		codePopup.addItem(contentAssistOnItem);
@@ -913,7 +905,7 @@ public class ToolMenu extends JPanel {
 			allProjectsPopup.setVisible(true);
 		});
 
-		File home = new File(DataManager.getWorkspace());
+		File home = new File(AppDataManager.getWorkspace());
 		if(home.exists()){
 			allProjectsPopup.trash();
 			File[] files = home.listFiles();
