@@ -17,58 +17,59 @@
  */
 
 package omega.instant.support;
-import java.awt.Color;
 
+import omega.instant.support.java.highlighter.BasicCodeHighlighter;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Token;
 
-import omega.instant.support.java.highlighter.BasicCodeHighlighter;
-
+import java.awt.*;
 import java.util.LinkedList;
+
 public final class CodeHighlighters {
-	public static LinkedList<AbstractCodeHighlighter> codeHighlighters = new LinkedList<>();
-	static{
-		add(new BasicCodeHighlighter());
-	}
+    public static LinkedList<AbstractCodeHighlighter> codeHighlighters = new LinkedList<>();
 
-	public synchronized static void add(AbstractCodeHighlighter abstractCodeHighlighter){
-		if(!codeHighlighters.contains(abstractCodeHighlighter))
-			codeHighlighters.add(abstractCodeHighlighter);
-	}
+    static {
+        add(new BasicCodeHighlighter());
+    }
 
-	public synchronized static void remove(AbstractCodeHighlighter abstractCodeHighlighter){
-		codeHighlighters.remove(abstractCodeHighlighter);
-	}
+    public synchronized static void add(AbstractCodeHighlighter abstractCodeHighlighter) {
+        if (!codeHighlighters.contains(abstractCodeHighlighter))
+            codeHighlighters.add(abstractCodeHighlighter);
+    }
 
-	public synchronized static boolean canComputeForeground(RSyntaxTextArea textArea, Token token){
-		for(AbstractCodeHighlighter highlighter : codeHighlighters){
-			if(highlighter.canComputeForeground(textArea, token))
-				return true;
-		}
-		return false;
-	}
+    public synchronized static void remove(AbstractCodeHighlighter abstractCodeHighlighter) {
+        codeHighlighters.remove(abstractCodeHighlighter);
+    }
 
-	public synchronized static Color computeForegroundColor(RSyntaxTextArea textArea, Token token){
-		for(AbstractCodeHighlighter highlighter : codeHighlighters){
-			if(highlighter.canComputeForeground(textArea, token))
-				return highlighter.computeForegroundColor(textArea, token);
-		}
-		return null;
-	}
+    public synchronized static boolean canComputeForeground(RSyntaxTextArea textArea, Token token) {
+        for (AbstractCodeHighlighter highlighter : codeHighlighters) {
+            if (highlighter.canComputeForeground(textArea, token))
+                return true;
+        }
+        return false;
+    }
 
-	public synchronized static boolean canComputeBackground(RSyntaxTextArea textArea, Token token){
-		for(AbstractCodeHighlighter highlighter : codeHighlighters){
-			if(highlighter.canComputeBackground(textArea, token))
-				return true;
-		}
-		return false;
-	}
+    public synchronized static Color computeForegroundColor(RSyntaxTextArea textArea, Token token) {
+        for (AbstractCodeHighlighter highlighter : codeHighlighters) {
+            if (highlighter.canComputeForeground(textArea, token))
+                return highlighter.computeForegroundColor(textArea, token);
+        }
+        return null;
+    }
 
-	public synchronized static Color computeBackgroundColor(RSyntaxTextArea textArea, Token token){
-		for(AbstractCodeHighlighter highlighter : codeHighlighters){
-			if(highlighter.canComputeBackground(textArea, token))
-				return highlighter.computeBackgroundColor(textArea, token);
-		}
-		return null;
-	}
+    public synchronized static boolean canComputeBackground(RSyntaxTextArea textArea, Token token) {
+        for (AbstractCodeHighlighter highlighter : codeHighlighters) {
+            if (highlighter.canComputeBackground(textArea, token))
+                return true;
+        }
+        return false;
+    }
+
+    public synchronized static Color computeBackgroundColor(RSyntaxTextArea textArea, Token token) {
+        for (AbstractCodeHighlighter highlighter : codeHighlighters) {
+            if (highlighter.canComputeBackground(textArea, token))
+                return highlighter.computeBackgroundColor(textArea, token);
+        }
+        return null;
+    }
 }

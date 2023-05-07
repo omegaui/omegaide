@@ -17,158 +17,149 @@
  */
 
 package omega.ui.panel;
-import java.awt.Color;
-import java.awt.Rectangle;
-
-import omegaui.component.FlexPanel;
-import omegaui.component.TextComp;
-
-import org.fife.ui.rsyntaxtextarea.Token;
-
-import javax.swing.JPanel;
-
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseMotionListener;
-
-import omega.ui.component.Editor;
-import omega.ui.component.ToolMenu;
 
 import omega.io.EditorAddon;
+import omega.ui.component.Editor;
+import omega.ui.component.ToolMenu;
+import omegaui.component.FlexPanel;
+import omegaui.component.TextComp;
+import org.fife.ui.rsyntaxtextarea.Token;
 
-import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
-public class ColorPreview extends FlexPanel implements EditorAddon, KeyListener, MouseMotionListener{
+import static omega.io.UIManager.TOOLMENU_GRADIENT;
+import static omega.io.UIManager.c2;
 
-	public Editor editor;
+public class ColorPreview extends FlexPanel implements EditorAddon, KeyListener, MouseMotionListener {
 
-	public TextComp colorComp;
+    public Editor editor;
 
-	public volatile boolean ctrl = false;
+    public TextComp colorComp;
 
-	public ColorPreview(){
-		super(null, TOOLMENU_GRADIENT, null);
-		setArc(10, 10);
-		setVisible(false);
-		init();
-	}
+    public volatile boolean ctrl = false;
 
-	public void init(){
-		colorComp = new TextComp("", c2, c2, c2, this::triggerColorPicker);
-		colorComp.setArc(10, 10);
-		colorComp.setShowHandCursorOnMouseHover(true);
-		add(colorComp);
-	}
+    public ColorPreview() {
+        super(null, TOOLMENU_GRADIENT, null);
+        setArc(10, 10);
+        setVisible(false);
+        init();
+    }
 
-	public void triggerColorPicker(){
-		ToolMenu.colorPicker.pickColor(colorComp.color2);
-	}
+    public void init() {
+        colorComp = new TextComp("", c2, c2, c2, this::triggerColorPicker);
+        colorComp.setArc(10, 10);
+        colorComp.setShowHandCursorOnMouseHover(true);
+        add(colorComp);
+    }
 
-	public synchronized void triggerPreview(MouseEvent e){
-		Token token = editor.viewToToken(e.getPoint());
-		if(token == null)
-			return;
-		if(isHexColorText(token.getLexeme())){
-			String hexCode = "#" + convertStringToHex(token.getLexeme());
-			Color color = Color.decode(hexCode);
-			colorComp.setColors(color, color, color);
-			if(!isVisible())
-				setVisible(true);
-			relocate();
-		}
-	}
+    public void triggerColorPicker() {
+        ToolMenu.colorPicker.pickColor(colorComp.color2);
+    }
 
-	public synchronized static String convertStringToHex(String hexString){
-		if(hexString.startsWith("\"") && hexString.endsWith("\""))
-			hexString = hexString.substring(1, hexString.length() - 1).trim();
-		if(hexString.startsWith("#"))
-			hexString = hexString.substring(1);
-		return hexString;
-	}
+    public synchronized void triggerPreview(MouseEvent e) {
+        Token token = editor.viewToToken(e.getPoint());
+        if (token == null)
+            return;
+        if (isHexColorText(token.getLexeme())) {
+            String hexCode = "#" + convertStringToHex(token.getLexeme());
+            Color color = Color.decode(hexCode);
+            colorComp.setColors(color, color, color);
+            if (!isVisible())
+                setVisible(true);
+            relocate();
+        }
+    }
 
-	public synchronized static boolean isHexColorText(String text){
-		text = convertStringToHex(text);
-		if(text.length() != 6)
-			return false;
-		for(int i = 0; i < text.length(); i++){
-			if(!isHex(text.charAt(i)))
-				return false;
-		}
-		return true;
-	}
+    public synchronized static String convertStringToHex(String hexString) {
+        if (hexString.startsWith("\"") && hexString.endsWith("\""))
+            hexString = hexString.substring(1, hexString.length() - 1).trim();
+        if (hexString.startsWith("#"))
+            hexString = hexString.substring(1);
+        return hexString;
+    }
 
-	public synchronized static boolean isHex(char ch){
-		return ((ch >= '0' && ch <= '9')
-		|| ((ch >= 'A' && ch <= 'F')
-		|| (ch >= 'a' && ch <= 'f')));
-	}
+    public synchronized static boolean isHexColorText(String text) {
+        text = convertStringToHex(text);
+        if (text.length() != 6)
+            return false;
+        for (int i = 0; i < text.length(); i++) {
+            if (!isHex(text.charAt(i)))
+                return false;
+        }
+        return true;
+    }
 
-	@Override
-	public void install(Editor editor) {
-		this.editor = editor;
-		editor.add(this);
-		editor.addMouseMotionListener(this);
-		editor.addKeyListener(this);
-		editor.getAttachment().getViewport().addChangeListener((e)->relocate());
-	}
+    public synchronized static boolean isHex(char ch) {
+        return ((ch >= '0' && ch <= '9')
+                || ((ch >= 'A' && ch <= 'F')
+                || (ch >= 'a' && ch <= 'f')));
+    }
 
-	@Override
-	public void keyTyped(KeyEvent keyEvent) {
+    @Override
+    public void install(Editor editor) {
+        this.editor = editor;
+        editor.add(this);
+        editor.addMouseMotionListener(this);
+        editor.addKeyListener(this);
+        editor.getAttachment().getViewport().addChangeListener((e) -> relocate());
+    }
 
-	}
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
 
-	@Override
-	public void keyPressed(KeyEvent keyEvent) {
-		synchronized(editor){
-			if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
-				ctrl = true;
-		}
-	}
+    }
 
-	@Override
-	public void keyReleased(KeyEvent keyEvent) {
-		synchronized(editor){
-			if(keyEvent.getKeyCode() == KeyEvent.VK_CONTROL){
-				ctrl = false;
-				setVisible(false);
-			}
-		}
-	}
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        synchronized (editor) {
+            if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL)
+                ctrl = true;
+        }
+    }
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		//Invoking Code Navigation
-		if(ctrl){
-			try{
-				triggerPreview(e);
-			}
-			catch(Exception ex){
-				//This small code works perfectly.
-				//Nothing needs to be debugged.
-			}
-		}
-	}
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+        synchronized (editor) {
+            if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
+                ctrl = false;
+                setVisible(false);
+            }
+        }
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent e) {
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        //Invoking Code Navigation
+        if (ctrl) {
+            try {
+                triggerPreview(e);
+            } catch (Exception ex) {
+                //This small code works perfectly.
+                //Nothing needs to be debugged.
+            }
+        }
+    }
 
-	}
+    @Override
+    public void mouseDragged(MouseEvent e) {
 
-	public void relocate(){
-		Rectangle rect = editor.getAttachment().getViewport().getViewRect();
-		setBounds((rect.x + rect.width) - 65, rect.y + 10, 60, 60);
-		colorComp.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
-	}
+    }
 
-	@Override
-	public void setVisible(boolean value){
-		if(value){
-			relocate();
-		}
-		super.setVisible(value);
-	}
+    public void relocate() {
+        Rectangle rect = editor.getAttachment().getViewport().getViewRect();
+        setBounds((rect.x + rect.width) - 65, rect.y + 10, 60, 60);
+        colorComp.setBounds(10, 10, getWidth() - 20, getHeight() - 20);
+    }
+
+    @Override
+    public void setVisible(boolean value) {
+        if (value) {
+            relocate();
+        }
+        super.setVisible(value);
+    }
 }

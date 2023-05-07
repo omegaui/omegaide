@@ -17,18 +17,21 @@
  */
 
 package omega.instant.support.universal;
-import java.util.LinkedList;
-public class ProcessData {
-	public String fileExt;
-	public LinkedList<String> executionCommand;
-	public ProcessData(String ext, LinkedList<String> cmd){
-		this.fileExt = ext;
-		this.executionCommand = cmd;
-	}
 
-	@Override
-	public String toString(){
-		return "*" + fileExt + "* -> **" + executionCommand + "**";
-	}
+import java.util.LinkedList;
+
+public class ProcessData {
+    public String fileExt;
+    public LinkedList<String> executionCommand;
+
+    public ProcessData(String ext, LinkedList<String> cmd) {
+        this.fileExt = ext;
+        this.executionCommand = cmd;
+    }
+
+    @Override
+    public String toString() {
+        return "*" + fileExt + "* -> **" + executionCommand + "**";
+    }
 }
 

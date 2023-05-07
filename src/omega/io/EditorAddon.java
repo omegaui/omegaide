@@ -17,11 +17,13 @@
  */
 
 package omega.io;
+
 import omega.ui.component.Editor;
+
 public interface EditorAddon {
-	/*
-	 * Installs the Addon to the Editor
-	 * >Add your addon to the Editor by calling Editor.addAddon(new CustomAddon())
-	 */
-	void install(Editor editor);
+    /*
+     * Installs the Addon to the Editor
+     * >Add your addon to the Editor by calling Editor.addAddon(new CustomAddon())
+     */
+    void install(Editor editor);
 }

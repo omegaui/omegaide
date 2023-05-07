@@ -17,134 +17,126 @@
  */
 
 package omega.instant.support.universal;
-import omega.ui.component.ToolMenu;
-
-import omega.io.IconManager;
 
 import omega.Screen;
+import omega.ui.dialog.FileSelectionDialog;
+import omegaui.component.NoCaretField;
+import omegaui.component.SwitchComp;
+import omegaui.component.TextComp;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.LinkedList;
 
-import java.io.File;
-
-import omega.ui.dialog.FileSelectionDialog;
-
-import omegaui.component.NoCaretField;
-import omegaui.component.TextComp;
-import omegaui.component.SwitchComp;
-
-import javax.swing.JPanel;
-
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
 
-public class DynamicListPanel extends JPanel{
-	
-	public NoCaretField extField;
-	public NoCaretField containerField;
-	
-	public TextComp dirComp;
-	
-	public SwitchComp quoteComp;
-	public SwitchComp dynamicListComp;
-	
-	public DynamicListPanel(String ext, String container, String dir, boolean quoted, boolean dynamicMode){
-		this();
-		extField.setText(ext);
-		containerField.setText(container);
-		dirComp.setToolTipText(dir);
-		dirComp.setText(new File(dir).getName());
-		quoteComp.setOn(quoted);
-		dynamicListComp.setOn(dynamicMode);
-		quoteComp.setToolTipText("Surround file paths within double quotes : " + (quoted ? "ON" : "OFF"));
-		dynamicListComp.setToolTipText("Create List from ONLY Active Editors : " + (dynamicMode ? "ON" : "OFF"));
-	}
-	
-	public DynamicListPanel(){
-		super(null);
-		setBackground(back2);
-		init();
-	}
+public class DynamicListPanel extends JPanel {
 
-	public void init(){
-		FileSelectionDialog fc = new FileSelectionDialog(Screen.getUniversalSettingsView());
-		fc.setTitle("Select Working Directory");
+    public NoCaretField extField;
+    public NoCaretField containerField;
 
-		extField = new NoCaretField("", "File Extension", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
-		extField.setBounds(10, 20, 150, 30);
-		extField.setFont(PX14);
-		add(extField);
+    public TextComp dirComp;
 
-		containerField = new NoCaretField("", "Container Name", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
-		containerField.setBounds(10, 60, 150, 30);
-		containerField.setFont(PX14);
-		add(containerField);
+    public SwitchComp quoteComp;
+    public SwitchComp dynamicListComp;
 
-		quoteComp = new SwitchComp(TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE,  (value)->{
-			quoteComp.setToolTipText("Surround file paths within double quotes : " + (value ? "ON" : "OFF"));
-		});
-		quoteComp.setBounds(200, 20, 70, 30);
-		quoteComp.setInBallColor(glow);
-		quoteComp.setToolTipText("Surround file paths within double quotes : OFF");
-		add(quoteComp);
+    public DynamicListPanel(String ext, String container, String dir, boolean quoted, boolean dynamicMode) {
+        this();
+        extField.setText(ext);
+        containerField.setText(container);
+        dirComp.setToolTipText(dir);
+        dirComp.setText(new File(dir).getName());
+        quoteComp.setOn(quoted);
+        dynamicListComp.setOn(dynamicMode);
+        quoteComp.setToolTipText("Surround file paths within double quotes : " + (quoted ? "ON" : "OFF"));
+        dynamicListComp.setToolTipText("Create List from ONLY Active Editors : " + (dynamicMode ? "ON" : "OFF"));
+    }
 
-		dynamicListComp = new SwitchComp(TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE,  (value)->{
-			dynamicListComp.setToolTipText("Create List from ONLY Active Editors : " + (value ? "ON" : "OFF"));
-		});
-		dynamicListComp.setBounds(200, 60, 70, 30);
-		dynamicListComp.setInBallColor(glow);
-		dynamicListComp.setToolTipText("Create List from ONLY Active Editors : OFF");
-		add(dynamicListComp);
+    public DynamicListPanel() {
+        super(null);
+        setBackground(back2);
+        init();
+    }
 
-		dirComp = new TextComp(Screen.getProjectFile().getProjectName(), "Directory to be searched recursively for files of provided extension!", TOOLMENU_COLOR6_SHADE, c2, TOOLMENU_COLOR6, ()->{
-			fc.setCurrentDirectory(new File(Screen.getProjectFile().getProjectPath()));
-			LinkedList<File> selections = fc.selectDirectories();
-			if(!selections.isEmpty()){
-				dirComp.setToolTipText(selections.get(0).getAbsolutePath());
-				dirComp.setText(dirComp.getToolTipText().substring(dirComp.getToolTipText().lastIndexOf(File.separator) + 1));
-			}
-		});
-		dirComp.setBounds(10, 100, 270, 30);
-		dirComp.setFont(PX14);
-		dirComp.setToolTipText(Screen.getProjectFile().getProjectPath());
-		dirComp.setArc(0, 0);
-		add(dirComp);
-	}
-	
-	public boolean validateListPanel(){
-		boolean passed = true;
-		if(getFileExtension().equals("")){
-			extField.notify("File Extension Required!");
-			passed = false;
-		}
-		if(getContainerName().equals("")){
-			containerField.notify("Container Required!");
-			passed = false;
-		}
-		if(getWorkingDirectory().equals("")){
-			dirComp.setText("Directory Required");
-			passed = false;
-		}
-		return passed && isEnabled();
-	}
+    public void init() {
+        FileSelectionDialog fc = new FileSelectionDialog(Screen.getUniversalSettingsView());
+        fc.setTitle("Select Working Directory");
 
-	public String getFileExtension(){
-		return extField.getText();
-	}
+        extField = new NoCaretField("", "File Extension", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR3);
+        extField.setBounds(10, 20, 150, 30);
+        extField.setFont(PX14);
+        add(extField);
 
-	public String getContainerName(){
-		return containerField.getText();
-	}
+        containerField = new NoCaretField("", "Container Name", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+        containerField.setBounds(10, 60, 150, 30);
+        containerField.setFont(PX14);
+        add(containerField);
 
-	public boolean isQuoted(){
-		return quoteComp.isOn();
-	}
+        quoteComp = new SwitchComp(TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE, (value) -> {
+            quoteComp.setToolTipText("Surround file paths within double quotes : " + (value ? "ON" : "OFF"));
+        });
+        quoteComp.setBounds(200, 20, 70, 30);
+        quoteComp.setInBallColor(glow);
+        quoteComp.setToolTipText("Surround file paths within double quotes : OFF");
+        add(quoteComp);
 
-	public boolean isDynamic(){
-		return dynamicListComp.isOn();
-	}
+        dynamicListComp = new SwitchComp(TOOLMENU_COLOR1, TOOLMENU_COLOR3, TOOLMENU_COLOR2_SHADE, (value) -> {
+            dynamicListComp.setToolTipText("Create List from ONLY Active Editors : " + (value ? "ON" : "OFF"));
+        });
+        dynamicListComp.setBounds(200, 60, 70, 30);
+        dynamicListComp.setInBallColor(glow);
+        dynamicListComp.setToolTipText("Create List from ONLY Active Editors : OFF");
+        add(dynamicListComp);
 
-	public String getWorkingDirectory(){
-		return dirComp.getToolTipText();
-	}
+        dirComp = new TextComp(Screen.getProjectFile().getProjectName(), "Directory to be searched recursively for files of provided extension!", TOOLMENU_COLOR6_SHADE, c2, TOOLMENU_COLOR6, () -> {
+            fc.setCurrentDirectory(new File(Screen.getProjectFile().getProjectPath()));
+            LinkedList<File> selections = fc.selectDirectories();
+            if (!selections.isEmpty()) {
+                dirComp.setToolTipText(selections.get(0).getAbsolutePath());
+                dirComp.setText(dirComp.getToolTipText().substring(dirComp.getToolTipText().lastIndexOf(File.separator) + 1));
+            }
+        });
+        dirComp.setBounds(10, 100, 270, 30);
+        dirComp.setFont(PX14);
+        dirComp.setToolTipText(Screen.getProjectFile().getProjectPath());
+        dirComp.setArc(0, 0);
+        add(dirComp);
+    }
+
+    public boolean validateListPanel() {
+        boolean passed = true;
+        if (getFileExtension().equals("")) {
+            extField.notify("File Extension Required!");
+            passed = false;
+        }
+        if (getContainerName().equals("")) {
+            containerField.notify("Container Required!");
+            passed = false;
+        }
+        if (getWorkingDirectory().equals("")) {
+            dirComp.setText("Directory Required");
+            passed = false;
+        }
+        return passed && isEnabled();
+    }
+
+    public String getFileExtension() {
+        return extField.getText();
+    }
+
+    public String getContainerName() {
+        return containerField.getText();
+    }
+
+    public boolean isQuoted() {
+        return quoteComp.isOn();
+    }
+
+    public boolean isDynamic() {
+        return dynamicListComp.isOn();
+    }
+
+    public String getWorkingDirectory() {
+        return dirComp.getToolTipText();
+    }
 }

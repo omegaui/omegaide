@@ -17,109 +17,103 @@
  */
 
 package omega.instant.support.universal;
-import omega.instant.support.ErrorHighlighters;
-
-import omega.io.IconManager;
-import omega.io.TabData;
-
-import omega.ui.panel.JetRunPanel;
-import omega.ui.panel.OperationPane;
-
-import omegaui.dynamic.database.DataBase;
 
 import omega.Screen;
+import omega.instant.support.ErrorHighlighters;
+import omega.io.IconManager;
+import omega.io.TabData;
+import omega.ui.panel.JetRunPanel;
+import omega.ui.panel.OperationPane;
+import omegaui.dynamic.database.DataBase;
 
 import java.io.File;
-import java.io.PrintWriter;
-
 import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.Arrays;
-public class ProcessManager extends DataBase{
-	public static LinkedList<ProcessData> dataSet = new LinkedList<>();
-	public ProcessManager(){
-		super(".omega-ide" + File.separator + ".processExecutionData");
-		load();
-	}
 
-	public void load(){
-		getDataSetNames().forEach(set->{
-			LinkedList<String> cmds = new LinkedList<>();
-			getEntries(set).forEach(entry->cmds.add(entry.getValue()));
-			dataSet.add(new ProcessData(set, cmds));
-		});
-	}
+public class ProcessManager extends DataBase {
+    public static LinkedList<ProcessData> dataSet = new LinkedList<>();
 
-	@Override
-	public void save(){
-		clear();
-		dataSet.forEach(data->{
-			data.executionCommand.forEach(cmd->addEntry(data.fileExt, cmd));
-		});
-		super.save();
-	}
+    public ProcessManager() {
+        super(".omega-ide" + File.separator + ".processExecutionData");
+        load();
+    }
 
-	public void add(String ext, LinkedList<String> cmd){
-		dataSet.add(new ProcessData(ext, cmd));
-	}
+    public void load() {
+        getDataSetNames().forEach(set -> {
+            LinkedList<String> cmds = new LinkedList<>();
+            getEntries(set).forEach(entry -> cmds.add(entry.getValue()));
+            dataSet.add(new ProcessData(set, cmds));
+        });
+    }
 
-	public LinkedList<String> getExecutionCommand(File file){
-		String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-		for(ProcessData data : dataSet){
-			if(data.fileExt.equals(ext))
-				return data.executionCommand;
-		}
-		return new LinkedList<String>();
-	}
+    @Override
+    public void save() {
+        clear();
+        dataSet.forEach(data -> {
+            data.executionCommand.forEach(cmd -> addEntry(data.fileExt, cmd));
+        });
+        super.save();
+    }
 
-	public synchronized void launch(File file){
-		new Thread(()->{
-			try{
-				Screen.getScreen().saveAllEditors();
-				LinkedList<String> cmd = (LinkedList<String>)getExecutionCommand(file).clone();
+    public void add(String ext, LinkedList<String> cmd) {
+        dataSet.add(new ProcessData(ext, cmd));
+    }
 
-				cmd.add(file.getName());
+    public LinkedList<String> getExecutionCommand(File file) {
+        String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+        for (ProcessData data : dataSet) {
+            if (data.fileExt.equals(ext))
+                return data.executionCommand;
+        }
+        return new LinkedList<String>();
+    }
 
-				String command = "";
+    public synchronized void launch(File file) {
+        new Thread(() -> {
+            try {
+                Screen.getScreen().saveAllEditors();
+                LinkedList<String> cmd = (LinkedList<String>) getExecutionCommand(file).clone();
 
-				String[] commandsAsArray = new String[cmd.size()];
-				for(int i = 0; i < cmd.size(); i++){
-					commandsAsArray[i] = cmd.get(i);
-					command += cmd.get(i) + " ";
-				}
+                cmd.add(file.getName());
 
-				JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, file.getParentFile().getAbsolutePath());
-				printArea.launchAsTerminal(()->launch(file), IconManager.fluentlaunchImage, "Re-launch");
-				printArea.print("File Launched!");
-				printArea.print("Execution Command : " + command);
-				printArea.print("..................................................");
+                String command = "";
 
-				String name = "Launch (" + file.getName();
-				int count = OperationPane.count(name);
-				if(count > -1)
-					name += " " + count;
-				name =  name + ")";
+                String[] commandsAsArray = new String[cmd.size()];
+                for (int i = 0; i < cmd.size(); i++) {
+                    commandsAsArray[i] = cmd.get(i);
+                    command += cmd.get(i) + " ";
+                }
 
-				Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+                JetRunPanel printArea = new JetRunPanel(false, commandsAsArray, file.getParentFile().getAbsolutePath());
+                printArea.launchAsTerminal(() -> launch(file), IconManager.fluentlaunchImage, "Re-launch");
+                printArea.print("File Launched!");
+                printArea.print("Execution Command : " + command);
+                printArea.print("..................................................");
 
-				TabData currentTabData = Screen.getScreen().getOperationPanel().getTabData(printArea);
-				currentTabData.getTabIconComp().setImage(null);
-				currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
+                String name = "Launch (" + file.getName();
+                int count = OperationPane.count(name);
+                if (count > -1)
+                    name += " " + count;
+                name = name + ")";
 
-				printArea.terminalPanel.setOnProcessExited(()->{
-					currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
-					currentTabData.getTabIconComp().setGifImage(null);
+                Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
 
-					ErrorHighlighters.showErrors(printArea.getText(), file.getParentFile().getAbsolutePath());
-				});
+                TabData currentTabData = Screen.getScreen().getOperationPanel().getTabData(printArea);
+                currentTabData.getTabIconComp().setImage(null);
+                currentTabData.getTabIconComp().setGifImage(IconManager.fluentloadinginfinityGif);
 
-				printArea.start();
+                printArea.terminalPanel.setOnProcessExited(() -> {
+                    currentTabData.getTabIconComp().setImage(IconManager.fluentquickmodeonImage);
+                    currentTabData.getTabIconComp().setGifImage(null);
 
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-		}).start();
-	}
+                    ErrorHighlighters.showErrors(printArea.getText(), file.getParentFile().getAbsolutePath());
+                });
+
+                printArea.start();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 }
 

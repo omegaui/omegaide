@@ -17,202 +17,195 @@
  */
 
 package omega.instant.support;
-import omega.io.IconManager;
-
-import omegaui.component.TextComp;
-import omegaui.component.FlexPanel;
-import omegaui.component.RTextField;
 
 import omega.Screen;
+import omega.io.IconManager;
+import omegaui.component.FlexPanel;
+import omegaui.component.RTextField;
+import omegaui.component.TextComp;
 
-import java.awt.Dimension;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.util.LinkedList;
 
-import java.awt.geom.RoundRectangle2D;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JDialog;
-
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
-public class ArgumentWindow extends JDialog{
 
-	private TextComp titleComp;
-	private TextComp infoComp;
+public class ArgumentWindow extends JDialog {
 
-	private FlexPanel argContainerPanel;
-	private JScrollPane scrollPane;
-	private JPanel mainPanel;
+    private TextComp titleComp;
+    private TextComp infoComp;
 
-	private TextComp cancelComp;
-	private TextComp addComp;
-	private TextComp saveComp;
+    private FlexPanel argContainerPanel;
+    private JScrollPane scrollPane;
+    private JPanel mainPanel;
 
-	private LinkedList<RTextField> fields = new LinkedList<>();
+    private TextComp cancelComp;
+    private TextComp addComp;
+    private TextComp saveComp;
 
-	private LinkedList<String> savedCommand = new LinkedList<>();
+    private LinkedList<RTextField> fields = new LinkedList<>();
 
-	private int blockX = 5;
-	private int blockY = 5;
+    private LinkedList<String> savedCommand = new LinkedList<>();
 
-	private volatile boolean canceled = false;
+    private int blockX = 5;
+    private int blockY = 5;
 
-	public ArgumentWindow(Screen screen){
-		super(screen, true);
-		setTitle("Argument Window");
-		setUndecorated(true);
-		JPanel panel = new JPanel(null);
-		panel.setBackground(c2);
-		setContentPane(panel);
-		setResizable(false);
-		setLayout(null);
-		setSize(400, 350);
-		setLocationRelativeTo(null);
-		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
-		init();
-	}
+    private volatile boolean canceled = false;
 
-	public void init(){
-		titleComp = new TextComp("Specify Arguments", back3, back3, glow, null);
-		titleComp.setBounds(0, 0, getWidth() - 30, 30);
-		titleComp.setFont(PX14);
-		titleComp.setClickable(false);
-		titleComp.setArc(0, 0);
-		titleComp.attachDragger(this);
-		add(titleComp);
+    public ArgumentWindow(Screen screen) {
+        super(screen, true);
+        setTitle("Argument Window");
+        setUndecorated(true);
+        JPanel panel = new JPanel(null);
+        panel.setBackground(c2);
+        setContentPane(panel);
+        setResizable(false);
+        setLayout(null);
+        setSize(400, 350);
+        setLocationRelativeTo(null);
+        setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+        init();
+    }
 
-		infoComp = new TextComp(IconManager.fluentinfoImage, 25, 25, "Enter One Argument per Field", back3, back3, TOOLMENU_COLOR3, null);
-		infoComp.setBounds(getWidth() - 30, 0, 30, 30);
-		infoComp.setArc(0, 0);
-		infoComp.setClickable(false);
-		add(infoComp);
+    public void init() {
+        titleComp = new TextComp("Specify Arguments", back3, back3, glow, null);
+        titleComp.setBounds(0, 0, getWidth() - 30, 30);
+        titleComp.setFont(PX14);
+        titleComp.setClickable(false);
+        titleComp.setArc(0, 0);
+        titleComp.attachDragger(this);
+        add(titleComp);
 
-		argContainerPanel = new FlexPanel(null, back1, null);
-		argContainerPanel.setBounds(5, 35, getWidth() - 10, getHeight() - 70);
-		argContainerPanel.setArc(10, 10);
-		add(argContainerPanel);
+        infoComp = new TextComp(IconManager.fluentinfoImage, 25, 25, "Enter One Argument per Field", back3, back3, TOOLMENU_COLOR3, null);
+        infoComp.setBounds(getWidth() - 30, 0, 30, 30);
+        infoComp.setArc(0, 0);
+        infoComp.setClickable(false);
+        add(infoComp);
 
-		scrollPane = new JScrollPane(mainPanel = new JPanel(null));
-		scrollPane.setBounds(5, 5, argContainerPanel.getWidth() - 10, argContainerPanel.getHeight() - 10);
-		scrollPane.setBorder(null);
-		mainPanel.setBackground(c2);
-		argContainerPanel.add(scrollPane);
+        argContainerPanel = new FlexPanel(null, back1, null);
+        argContainerPanel.setBounds(5, 35, getWidth() - 10, getHeight() - 70);
+        argContainerPanel.setArc(10, 10);
+        add(argContainerPanel);
 
-		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, this::cancel);
-		cancelComp.setBounds(5, getHeight() - 30, 100, 25);
-		cancelComp.setFont(PX14);
-		cancelComp.setArc(5, 5);
-		add(cancelComp);
+        scrollPane = new JScrollPane(mainPanel = new JPanel(null));
+        scrollPane.setBounds(5, 5, argContainerPanel.getWidth() - 10, argContainerPanel.getHeight() - 10);
+        scrollPane.setBorder(null);
+        mainPanel.setBackground(c2);
+        argContainerPanel.add(scrollPane);
 
-		addComp = new TextComp("Add Field", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, this::addField);
-		addComp.setBounds(getWidth()/2 - 50, getHeight() - 30, 100, 25);
-		addComp.setFont(PX14);
-		addComp.setArc(5, 5);
-		add(addComp);
+        cancelComp = new TextComp("Cancel", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, this::cancel);
+        cancelComp.setBounds(5, getHeight() - 30, 100, 25);
+        cancelComp.setFont(PX14);
+        cancelComp.setArc(5, 5);
+        add(cancelComp);
 
-		saveComp = new TextComp("Save", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, this::save);
-		saveComp.setBounds(getWidth() - 105, getHeight() - 30, 100, 25);
-		saveComp.setFont(PX14);
-		saveComp.setArc(5, 5);
-		add(saveComp);
+        addComp = new TextComp("Add Field", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, this::addField);
+        addComp.setBounds(getWidth() / 2 - 50, getHeight() - 30, 100, 25);
+        addComp.setFont(PX14);
+        addComp.setArc(5, 5);
+        add(addComp);
 
-		RTextField field = new RTextField("Command Name", "", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR1);
-		field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
-		field.setFont(PX14);
-		field.setArc(0, 0);
-		mainPanel.add(field);
-		fields.add(field);
+        saveComp = new TextComp("Save", TOOLMENU_COLOR2_SHADE, back3, TOOLMENU_COLOR2, this::save);
+        saveComp.setBounds(getWidth() - 105, getHeight() - 30, 100, 25);
+        saveComp.setFont(PX14);
+        saveComp.setArc(5, 5);
+        add(saveComp);
 
-		mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), 25));
-	}
+        RTextField field = new RTextField("Command Name", "", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR1);
+        field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
+        field.setFont(PX14);
+        field.setArc(0, 0);
+        mainPanel.add(field);
+        fields.add(field);
 
-	public void loadView(LinkedList<String> commands){
-		savedCommand = commands;
-		if(commands.isEmpty())
-			return;
-		resetView();
+        mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), 25));
+    }
 
-		RTextField mfield = new RTextField("Command Name", "", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR1);
-		mfield.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
-		mfield.setFont(PX14);
-		mfield.setArc(0, 0);
-		mainPanel.add(mfield);
-		fields.add(mfield);
+    public void loadView(LinkedList<String> commands) {
+        savedCommand = commands;
+        if (commands.isEmpty())
+            return;
+        resetView();
 
-		fields.get(0).setText(commands.get(0));
-		for(int i = 1; i < commands.size(); i++){
-			blockY += 25;
+        RTextField mfield = new RTextField("Command Name", "", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR1);
+        mfield.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
+        mfield.setFont(PX14);
+        mfield.setArc(0, 0);
+        mainPanel.add(mfield);
+        fields.add(mfield);
 
-			RTextField field = new RTextField("Option/Argument", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR2);
-			field.setText(commands.get(i));
-			field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
-			field.setFont(PX14);
-			field.setArc(0, 0);
-			mainPanel.add(field);
-			fields.add(field);
-		}
+        fields.get(0).setText(commands.get(0));
+        for (int i = 1; i < commands.size(); i++) {
+            blockY += 25;
 
-		mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), blockY + 25));
+            RTextField field = new RTextField("Option/Argument", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR2);
+            field.setText(commands.get(i));
+            field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
+            field.setFont(PX14);
+            field.setArc(0, 0);
+            mainPanel.add(field);
+            fields.add(field);
+        }
 
-		repaint();
+        mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), blockY + 25));
 
-		scrollPane.getVerticalScrollBar().setVisible(true);
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-	}
+        repaint();
 
-	public void resetView(){
-		fields.forEach(mainPanel::remove);
-		fields.clear();
-		blockY = 5;
-	}
+        scrollPane.getVerticalScrollBar().setVisible(true);
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+    }
 
-	public void cancel(){
-		canceled = true;
-		dispose();
-	}
+    public void resetView() {
+        fields.forEach(mainPanel::remove);
+        fields.clear();
+        blockY = 5;
+    }
 
-	public void addField(){
-		blockY += 25;
+    public void cancel() {
+        canceled = true;
+        dispose();
+    }
 
-		RTextField field = new RTextField("Option/Argument", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR1);
-		field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
-		field.setFont(PX14);
-		field.setArc(0, 0);
-		mainPanel.add(field);
-		fields.add(field);
+    public void addField() {
+        blockY += 25;
 
-		mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), blockY + 25));
+        RTextField field = new RTextField("Option/Argument", "", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR1);
+        field.setBounds(blockX, blockY, scrollPane.getWidth() - 10, 25);
+        field.setFont(PX14);
+        field.setArc(0, 0);
+        mainPanel.add(field);
+        fields.add(field);
 
-		repaint();
+        mainPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), blockY + 25));
 
-		scrollPane.getVerticalScrollBar().setVisible(true);
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-	}
+        repaint();
 
-	public void save(){
-		//Save Operations
-		canceled = false;
-		dispose();
-	}
+        scrollPane.getVerticalScrollBar().setVisible(true);
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+    }
 
-	public LinkedList<String> showArgumentWindow(){
-		setVisible(true);
-		return getCommand();
-	}
+    public void save() {
+        //Save Operations
+        canceled = false;
+        dispose();
+    }
 
-	public LinkedList<String> getCommand(){
-		LinkedList<String> commands = new LinkedList<>();
-		fields.forEach(field->{
-			if(field.hasText())
-				commands.add(field.getText());
-		});
-		return isSaved() ? commands : savedCommand;
-	}
+    public LinkedList<String> showArgumentWindow() {
+        setVisible(true);
+        return getCommand();
+    }
 
-	public boolean isSaved(){
-		return !canceled;
-	}
+    public LinkedList<String> getCommand() {
+        LinkedList<String> commands = new LinkedList<>();
+        fields.forEach(field -> {
+            if (field.hasText())
+                commands.add(field.getText());
+        });
+        return isSaved() ? commands : savedCommand;
+    }
+
+    public boolean isSaved() {
+        return !canceled;
+    }
 }

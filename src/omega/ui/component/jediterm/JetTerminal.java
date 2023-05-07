@@ -17,167 +17,152 @@
  */
 
 package omega.ui.component.jediterm;
-import com.jediterm.terminal.ui.settings.SettingsProvider;
-
-import omegaui.component.FlexPanel;
-
-import java.awt.event.FocusListener;
-
-import java.awt.Color;
-
-import java.nio.charset.Charset;
 
 import com.jediterm.pty.PtyProcessTtyConnector;
-
+import com.jediterm.terminal.TtyConnector;
+import com.jediterm.terminal.ui.JediTermWidget;
+import com.jediterm.terminal.ui.settings.SettingsProvider;
 import com.pty4j.PtyProcess;
 import com.pty4j.PtyProcessBuilder;
-
-import com.jediterm.terminal.TtyConnector;
-
 import omega.Screen;
 
+import javax.swing.*;
+import java.awt.event.FocusListener;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jediterm.terminal.ui.JediTermWidget;
+public class JetTerminal extends JPanel {
 
-import javax.swing.JPanel;
+    public JediTermWidget widget;
 
-import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
-public class JetTerminal extends JPanel{
+    public PtyProcess process;
 
-	public JediTermWidget widget;
+    public String[] command;
 
-	public PtyProcess process;
+    public String directory;
 
-	public String[] command;
+    private Runnable onProcessExited;
 
-	public String directory;
+    public JetTerminal() {
+        super(null);
+        this.directory = Screen.getProjectFile().getProjectPath();
+        init();
+    }
 
-	private Runnable onProcessExited;
+    public JetTerminal(SettingsProvider settingsProvider) {
+        super(null);
+        this.directory = Screen.getProjectFile().getProjectPath();
+        init(settingsProvider);
+    }
 
-	public JetTerminal(){
-		super(null);
-		this.directory = Screen.getProjectFile().getProjectPath();
-		init();
-	}
+    public JetTerminal(String[] command, String directory, SettingsProvider settingsProvider) {
+        super(null);
+        this.command = command;
+        this.directory = directory;
+        init(settingsProvider);
+    }
 
-	public JetTerminal(SettingsProvider settingsProvider){
-		super(null);
-		this.directory = Screen.getProjectFile().getProjectPath();
-		init(settingsProvider);
-	}
+    public JetTerminal(String[] command, String directory) {
+        super(null);
+        this.command = command;
+        this.directory = directory;
+        init();
+    }
 
-	public JetTerminal(String[] command, String directory, SettingsProvider settingsProvider){
-		super(null);
-		this.command = command;
-		this.directory = directory;
-		init(settingsProvider);
-	}
+    public void init() {
+        setBackground(JetTermSettingsProvider.colors[15]);
 
-	public JetTerminal(String[] command, String directory){
-		super(null);
-		this.command = command;
-		this.directory = directory;
-		init();
-	}
+        JetTermSettingsProvider jtsp = new JetTermSettingsProvider();
+        widget = new JediTermWidget(jtsp);
 
-	public void init(){
-		setBackground(JetTermSettingsProvider.colors[15]);
+        if (command == null)
+            widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
+        else
+            widget.setTtyConnector(getConnector(command));
 
-		JetTermSettingsProvider jtsp = new JetTermSettingsProvider();
-		widget = new JediTermWidget(jtsp);
+        add(widget);
+    }
 
-		if(command == null)
-			widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
-		else
-			widget.setTtyConnector(getConnector(command));
-		
-		add(widget);
-	}
+    public void init(SettingsProvider jtsp) {
+        widget = new JediTermWidget(jtsp);
 
-	public void init(SettingsProvider jtsp){
-		widget = new JediTermWidget(jtsp);
+        if (command == null)
+            widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
+        else
+            widget.setTtyConnector(getConnector(command));
 
-		if(command == null)
-			widget.setTtyConnector(getConnector(Screen.onWindows() ? "cmd.exe" : "/bin/bash"));
-		else
-			widget.setTtyConnector(getConnector(command));
+        add(widget);
+    }
 
-		add(widget);
-	}
+    public TtyConnector getConnector(String... command) {
+        try {
+            this.command = command;
 
-	public TtyConnector getConnector(String... command){
-		try{
-			this.command = command;
+            Map<String, String> envsX = System.getenv();
+            HashMap<String, String> envs = new HashMap<>();
+            for (String x : envsX.keySet())
+                envs.put(x, envsX.get(x));
 
-			Map<String, String> envsX = System.getenv();
-			HashMap<String, String> envs = new HashMap<>();
-			for(String x : envsX.keySet())
-				envs.put(x, envsX.get(x));
+            if (!Screen.onWindows())
+                envs.put("TERM", "xterm-256color");
 
-			if(!Screen.onWindows())
-				envs.put("TERM", "xterm-256color");
-			
-			process = new PtyProcessBuilder()
-	            .setCommand(command)
-	            .setEnvironment(envs)
-	            .setDirectory(directory)
-	            .setConsole(false)
-	            .setUseWinConPty(true)
-	            .start();
-			return new PtyProcessTtyConnector(process, Charset.forName("UTF-8"));
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
+            process = new PtyProcessBuilder()
+                    .setCommand(command)
+                    .setEnvironment(envs)
+                    .setDirectory(directory)
+                    .setConsole(false)
+                    .setUseWinConPty(true)
+                    .start();
+            return new PtyProcessTtyConnector(process, Charset.forName("UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public void start(){
-		widget.start();
-		if(onProcessExited != null){
-			new Thread(()->{
-				while(process.isAlive());
-				try{
-					Thread.sleep(100);
-				}
-				catch(Exception e){
-					
-				}
-				onProcessExited.run();
-			}).start();
-		}
-	}
+    public void start() {
+        widget.start();
+        if (onProcessExited != null) {
+            new Thread(() -> {
+                while (process.isAlive()) ;
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
 
-	public void exit(){
-		if(process != null && process.isAlive())
-			process.destroyForcibly();
-	}
+                }
+                onProcessExited.run();
+            }).start();
+        }
+    }
 
-	public void relocate(){
-		widget.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
-	}
+    public void exit() {
+        if (process != null && process.isAlive())
+            process.destroyForcibly();
+    }
 
-	@Override
-	public void addFocusListener(FocusListener focusListener){
-		super.addFocusListener(focusListener);
-		widget.getTerminalPanel().addFocusListener(focusListener);
-	}
+    public void relocate() {
+        widget.setBounds(5, 5, getWidth() - 10, getHeight() - 10);
+    }
 
-	@Override
-	public void layout(){
-		relocate();
-		super.layout();
-	}
+    @Override
+    public void addFocusListener(FocusListener focusListener) {
+        super.addFocusListener(focusListener);
+        widget.getTerminalPanel().addFocusListener(focusListener);
+    }
 
-	public java.lang.Runnable getOnProcessExited() {
-		return onProcessExited;
-	}
+    @Override
+    public void layout() {
+        relocate();
+        super.layout();
+    }
 
-	public void setOnProcessExited(java.lang.Runnable onProcessExited) {
-		this.onProcessExited = onProcessExited;
-	}
+    public java.lang.Runnable getOnProcessExited() {
+        return onProcessExited;
+    }
+
+    public void setOnProcessExited(java.lang.Runnable onProcessExited) {
+        this.onProcessExited = onProcessExited;
+    }
 
 }

@@ -17,53 +17,51 @@
  */
 
 package omega.instant.support.universal;
-import java.util.Scanner;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class TemplateManager {
 
-	public synchronized static String getTemplateFilePath(String fileName){
-		if(fileName.contains(".")){
-			fileName = fileName.substring(fileName.lastIndexOf('.'));
-		}
-		return ".omega-ide" + File.separator + "file-templates" + File.separator + "template" + fileName;
-	}
+    public synchronized static String getTemplateFilePath(String fileName) {
+        if (fileName.contains(".")) {
+            fileName = fileName.substring(fileName.lastIndexOf('.'));
+        }
+        return ".omega-ide" + File.separator + "file-templates" + File.separator + "template" + fileName;
+    }
 
-	public synchronized static boolean isTemplateAvailable(String fileName){
-		if(!fileName.contains(".")){
-			return false;
-		}
-		fileName = fileName.substring(fileName.lastIndexOf('.'));
-		return new File(getTemplateFilePath(fileName)).exists();
-	}
+    public synchronized static boolean isTemplateAvailable(String fileName) {
+        if (!fileName.contains(".")) {
+            return false;
+        }
+        fileName = fileName.substring(fileName.lastIndexOf('.'));
+        return new File(getTemplateFilePath(fileName)).exists();
+    }
 
-	public synchronized static String getTemplateText(String fileName){
-		if(fileName.contains(".")){
-			fileName = fileName.substring(fileName.lastIndexOf('.'));
-		}
-		String text = "";
-		try(Scanner reader = new Scanner(new File(getTemplateFilePath(fileName)))){
-			while(reader.hasNextLine()){
-				text += reader.nextLine() + "\n";
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return text;
-	}
+    public synchronized static String getTemplateText(String fileName) {
+        if (fileName.contains(".")) {
+            fileName = fileName.substring(fileName.lastIndexOf('.'));
+        }
+        String text = "";
+        try (Scanner reader = new Scanner(new File(getTemplateFilePath(fileName)))) {
+            while (reader.hasNextLine()) {
+                text += reader.nextLine() + "\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return text;
+    }
 
-	public synchronized static boolean writeTemplateTo(File file){
-		try(PrintWriter writer = new PrintWriter(file)){
-			writer.print(getTemplateText(file.getName()));
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-	
+    public synchronized static boolean writeTemplateTo(File file) {
+        try (PrintWriter writer = new PrintWriter(file)) {
+            writer.print(getTemplateText(file.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 }

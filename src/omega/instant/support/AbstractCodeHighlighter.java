@@ -17,22 +17,23 @@
  */
 
 package omega.instant.support;
-import java.awt.Color;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Token;
 
+import java.awt.*;
+
 public abstract class AbstractCodeHighlighter {
-	
-	public abstract boolean canComputeForeground(RSyntaxTextArea textArea, Token t);
-	
-	public abstract Color computeForegroundColor(RSyntaxTextArea textArea, Token t);
-	
-	public synchronized boolean canComputeBackground(RSyntaxTextArea textArea, Token t){
-		return false;
-	}
-	
-	public synchronized Color computeBackgroundColor(RSyntaxTextArea textArea, Token t){
-		return null;
-	}
+
+    public abstract boolean canComputeForeground(RSyntaxTextArea textArea, Token t);
+
+    public abstract Color computeForegroundColor(RSyntaxTextArea textArea, Token t);
+
+    public synchronized boolean canComputeBackground(RSyntaxTextArea textArea, Token t) {
+        return false;
+    }
+
+    public synchronized Color computeBackgroundColor(RSyntaxTextArea textArea, Token t) {
+        return null;
+    }
 }

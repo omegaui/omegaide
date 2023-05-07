@@ -17,85 +17,84 @@
  */
 
 package omega.instant.support.build.gradle;
+
 import omega.Screen;
-
 import omega.io.AppDataManager;
-
-import omegaui.component.TextComp;
 import omegaui.component.NoCaretField;
+import omegaui.component.TextComp;
 
-import javax.swing.JDialog;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import static omega.io.UIManager.*;
-public class GradleBuildScriptManager extends JDialog{
-	private TextComp titleComp;
-	private TextComp cancelComp;
-	private NoCaretField nameField;
-	private TextComp applyComp;
 
-	public GradleBuildScriptManager(Screen screen){
-		super(screen, true);
-		setUndecorated(true);
-		setTitle("Set Gradle Build and Run Script");
-		setSize(400, 70);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		JPanel panel = new JPanel(null);
-		panel.setBackground(c2);
-		setContentPane(panel);
-		setBackground(c2);
-		init();
-	}
+public class GradleBuildScriptManager extends JDialog {
+    private TextComp titleComp;
+    private TextComp cancelComp;
+    private NoCaretField nameField;
+    private TextComp applyComp;
 
-	public void init(){
-		titleComp = new TextComp("Specify Gradle Build Script Name", c2, TOOLMENU_GRADIENT, glow, null);
-		titleComp.setBounds(0, 0, getWidth() - 120, 30);
-		titleComp.setClickable(false);
-		titleComp.setFont(PX14);
-		titleComp.setArc(0, 0);
-		titleComp.attachDragger(this);
-		add(titleComp);
+    public GradleBuildScriptManager(Screen screen) {
+        super(screen, true);
+        setUndecorated(true);
+        setTitle("Set Gradle Build and Run Script");
+        setSize(400, 70);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        JPanel panel = new JPanel(null);
+        panel.setBackground(c2);
+        setContentPane(panel);
+        setBackground(c2);
+        init();
+    }
 
-		cancelComp = new TextComp("Cancel", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::dispose);
-		cancelComp.setBounds(getWidth() - 120, 0, 60, 30);
-		cancelComp.setFont(PX14);
-		cancelComp.setArc(0, 0);
-		add(cancelComp);
+    public void init() {
+        titleComp = new TextComp("Specify Gradle Build Script Name", c2, TOOLMENU_GRADIENT, glow, null);
+        titleComp.setBounds(0, 0, getWidth() - 120, 30);
+        titleComp.setClickable(false);
+        titleComp.setFont(PX14);
+        titleComp.setArc(0, 0);
+        titleComp.attachDragger(this);
+        add(titleComp);
 
-		applyComp = new TextComp("Apply", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::apply);
-		applyComp.setBounds(getWidth() - 60, 0, 60, 30);
-		applyComp.setFont(PX14);
-		applyComp.setArc(0, 0);
-		add(applyComp);
+        cancelComp = new TextComp("Cancel", TOOLMENU_COLOR1_SHADE, c2, TOOLMENU_COLOR1, this::dispose);
+        cancelComp.setBounds(getWidth() - 120, 0, 60, 30);
+        cancelComp.setFont(PX14);
+        cancelComp.setArc(0, 0);
+        add(cancelComp);
 
-		nameField = new NoCaretField("", "Start Typing", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
-		nameField.setBounds(10, 40, getWidth() - 20, 30);
-		nameField.setFont(PX14);
-		nameField.setOnAction(this::apply);
-		nameField.setToolTipText("Do not include file extension");
-		add(nameField);
-		addKeyListener(nameField);
-	}
+        applyComp = new TextComp("Apply", TOOLMENU_COLOR2_SHADE, c2, TOOLMENU_COLOR2, this::apply);
+        applyComp.setBounds(getWidth() - 60, 0, 60, 30);
+        applyComp.setFont(PX14);
+        applyComp.setArc(0, 0);
+        add(applyComp);
 
-	public void apply(){
-		String text = nameField.getText();
-		if(text.equals("")){
-			titleComp.setColors(TOOLMENU_COLOR2, c2, c2);
-			titleComp.setText("Cannot be empty!");
-			return;
-		}
-		titleComp.setColors(TOOLMENU_COLOR3, c2, c2);
-		titleComp.setText("Specify Gradle Build Script Name");
-		AppDataManager.setGradleCommand(text);
-		setVisible(false);
-	}
+        nameField = new NoCaretField("", "Start Typing", TOOLMENU_COLOR3, c2, TOOLMENU_COLOR2);
+        nameField.setBounds(10, 40, getWidth() - 20, 30);
+        nameField.setFont(PX14);
+        nameField.setOnAction(this::apply);
+        nameField.setToolTipText("Do not include file extension");
+        add(nameField);
+        addKeyListener(nameField);
+    }
 
-	@Override
-	public void setVisible(boolean value){
-		if(value){
-			nameField.setText(AppDataManager.getGradleCommand());
-		}
-		super.setVisible(value);
-	}
+    public void apply() {
+        String text = nameField.getText();
+        if (text.equals("")) {
+            titleComp.setColors(TOOLMENU_COLOR2, c2, c2);
+            titleComp.setText("Cannot be empty!");
+            return;
+        }
+        titleComp.setColors(TOOLMENU_COLOR3, c2, c2);
+        titleComp.setText("Specify Gradle Build Script Name");
+        AppDataManager.setGradleCommand(text);
+        setVisible(false);
+    }
+
+    @Override
+    public void setVisible(boolean value) {
+        if (value) {
+            nameField.setText(AppDataManager.getGradleCommand());
+        }
+        super.setVisible(value);
+    }
 }

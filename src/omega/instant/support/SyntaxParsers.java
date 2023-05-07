@@ -17,34 +17,33 @@
  */
 
 package omega.instant.support;
-import omega.Screen;
 
-import omega.ui.component.Editor;
+import omega.Screen;
+import omega.instant.support.java.parser.JavaSyntaxParser;
 
 import java.util.LinkedList;
 
-import omega.instant.support.java.parser.JavaSyntaxParser;
 public final class SyntaxParsers {
-	public static JavaSyntaxParser javaSyntaxParser = new JavaSyntaxParser();
+    public static JavaSyntaxParser javaSyntaxParser = new JavaSyntaxParser();
 
-	public static LinkedList<AbstractSyntaxParser> syntaxParsers = new LinkedList<>();
+    public static LinkedList<AbstractSyntaxParser> syntaxParsers = new LinkedList<>();
 
-	public synchronized static void parse(){
-		int langTag = Screen.getProjectFile().getProjectManager().getLanguageTag();
-		if(langTag == LanguageTagView.LANGUAGE_TAG_JAVA)
-			javaSyntaxParser.parse();
-		else{
-			for(AbstractSyntaxParser syntaxParser : syntaxParsers){
-				if(syntaxParser.getLanguageTag() == langTag){
-					syntaxParser.parse();
-					break;
-				}
-			}
-		}
-	}
+    public synchronized static void parse() {
+        int langTag = Screen.getProjectFile().getProjectManager().getLanguageTag();
+        if (langTag == LanguageTagView.LANGUAGE_TAG_JAVA)
+            javaSyntaxParser.parse();
+        else {
+            for (AbstractSyntaxParser syntaxParser : syntaxParsers) {
+                if (syntaxParser.getLanguageTag() == langTag) {
+                    syntaxParser.parse();
+                    break;
+                }
+            }
+        }
+    }
 
-	public static void addSyntaxParser(AbstractSyntaxParser syntaxParser){
-		syntaxParsers.add(syntaxParser);
-	}
+    public static void addSyntaxParser(AbstractSyntaxParser syntaxParser) {
+        syntaxParsers.add(syntaxParser);
+    }
 }
 

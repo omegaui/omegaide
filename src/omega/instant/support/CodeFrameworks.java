@@ -17,38 +17,39 @@
  */
 
 package omega.instant.support;
+
+import omega.instant.support.java.framework.CodeFramework;
 import omega.ui.component.Editor;
 
 import java.util.LinkedList;
 
-import omega.instant.support.java.framework.CodeFramework;
 public final class CodeFrameworks {
-	public static CodeFramework javaCodeFramework = new CodeFramework();
+    public static CodeFramework javaCodeFramework = new CodeFramework();
 
-	public static LinkedList<AbstractCodeFramework> codeFrameworks = new LinkedList<>();
+    public static LinkedList<AbstractCodeFramework> codeFrameworks = new LinkedList<>();
 
-	static{
-		add(javaCodeFramework);
-	}
+    static {
+        add(javaCodeFramework);
+    }
 
-	public static boolean isResolving(){
-		for(AbstractCodeFramework codeFramework : codeFrameworks){
-			if(codeFramework.isResolving())
-				return true;
-		}
-		return false;
-	}
+    public static boolean isResolving() {
+        for (AbstractCodeFramework codeFramework : codeFrameworks) {
+            if (codeFramework.isResolving())
+                return true;
+        }
+        return false;
+    }
 
-	public static boolean think(Editor editor, String text, int caret){
-		for(AbstractCodeFramework codeFramework : codeFrameworks){
-			if(codeFramework.canThink(editor))
-				return codeFramework.think(editor, text, caret);
-		}
-		return false;
-	}
+    public static boolean think(Editor editor, String text, int caret) {
+        for (AbstractCodeFramework codeFramework : codeFrameworks) {
+            if (codeFramework.canThink(editor))
+                return codeFramework.think(editor, text, caret);
+        }
+        return false;
+    }
 
-	public static synchronized void add(AbstractCodeFramework codeFramework){
-		if(!codeFrameworks.contains(codeFramework))
-			codeFrameworks.add(codeFramework);
-	}
+    public static synchronized void add(AbstractCodeFramework codeFramework) {
+        if (!codeFrameworks.contains(codeFramework))
+            codeFrameworks.add(codeFramework);
+    }
 }

@@ -16,32 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package omega.instant.support.java.highlighter;
-import omega.ui.component.Editor;
 
 import omega.instant.support.Highlight;
+import omega.ui.component.Editor;
+
 public class JavaErrorData {
-	public Editor editor;
-	public int errorCount;
-	public int warningCount;
+    public Editor editor;
+    public int errorCount;
+    public int warningCount;
 
-	public void add(Highlight h){
-		if(h.editor == editor){
-			if(h.warning)
-				warningCount++;
-			else
-				errorCount++;
-		}
-	}
+    public void add(Highlight h) {
+        if (h.editor == editor) {
+            if (h.warning)
+                warningCount++;
+            else
+                errorCount++;
+        }
+    }
 
-	public void setData(){
-		if(editor != null){
-			editor.javaErrorPanel.setDiagnosticData(errorCount, warningCount);
-		}
-	}
+    public void setData() {
+        if (editor != null) {
+            editor.javaErrorPanel.setDiagnosticData(errorCount, warningCount);
+        }
+    }
 
-	public void resetData(){
-		if(editor != null){
-			editor.javaErrorPanel.setDiagnosticData(0, 0);
-		}
-	}
+    public void resetData() {
+        if (editor != null) {
+            editor.javaErrorPanel.setDiagnosticData(0, 0);
+        }
+    }
 }

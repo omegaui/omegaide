@@ -17,294 +17,277 @@
  */
 
 package omega.ui.dialog;
-import omega.instant.support.java.framework.CodeFramework;
-
-import java.awt.Dimension;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-
-import java.io.File;
-
-import omega.ui.component.SearchComp;
-
-import java.util.LinkedList;
 
 import omega.Screen;
-
+import omega.instant.support.java.framework.CodeFramework;
 import omega.io.IconManager;
 import omega.io.RecentsManager;
-
-import omegaui.component.TextComp;
-import omegaui.component.NoCaretField;
+import omega.ui.component.SearchComp;
 import omegaui.component.FlexPanel;
+import omegaui.component.NoCaretField;
+import omegaui.component.TextComp;
 
-import java.awt.geom.RoundRectangle2D;
-
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.LinkedList;
 
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
-public class RecentsDialog extends JDialog{
+public class RecentsDialog extends JDialog {
 
-	private TextComp iconComp;
-	private TextComp titleComp;
-	private TextComp filesComp;
-	private TextComp projectsComp;
-	private TextComp closeComp;
+    private TextComp iconComp;
+    private TextComp titleComp;
+    private TextComp filesComp;
+    private TextComp projectsComp;
+    private TextComp closeComp;
 
-	private LinkedList<SearchComp> searchComps = new LinkedList<>();
-	private LinkedList<SearchComp> currentComps = new LinkedList<>();
+    private LinkedList<SearchComp> searchComps = new LinkedList<>();
+    private LinkedList<SearchComp> currentComps = new LinkedList<>();
 
-	private FlexPanel containerPanel;
+    private FlexPanel containerPanel;
 
-	private JPanel panel;
+    private JPanel panel;
 
-	private JScrollPane scrollPane;
+    private JScrollPane scrollPane;
 
-	private NoCaretField field;
+    private NoCaretField field;
 
-	private TextComp infoComp;
+    private TextComp infoComp;
 
-	private int blockY;
+    private int blockY;
 
-	private int pointer;
+    private int pointer;
 
-	public RecentsDialog(Screen screen){
-		super(screen, true);
-		setTitle("Recents Dialog");
-		setUndecorated(true);
-		setSize(500, 400);
-		setLocationRelativeTo(null);
-		setAlwaysOnTop(true);
-		setResizable(false);
-		JPanel panel = new JPanel(null);
-		panel.setBackground(c2);
-		setContentPane(panel);
-		init();
-	}
+    public RecentsDialog(Screen screen) {
+        super(screen, true);
+        setTitle("Recents Dialog");
+        setUndecorated(true);
+        setSize(500, 400);
+        setLocationRelativeTo(null);
+        setAlwaysOnTop(true);
+        setResizable(false);
+        JPanel panel = new JPanel(null);
+        panel.setBackground(c2);
+        setContentPane(panel);
+        init();
+    }
 
-	public void init(){
-		field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
-		field.setBounds(0, 25, getWidth(), 30);
-		field.setFont(PX16);
-		field.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(!currentComps.isEmpty()) {
-					if(e.getKeyCode() == KeyEvent.VK_UP && pointer > 0) {
-						currentComps.get(pointer).set(false);
-						currentComps.get(--pointer).set(true);
-						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 50);
-					}
-					else if(e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1 < currentComps.size()) {
-						currentComps.get(pointer).set(false);
-						currentComps.get(++pointer).set(true);
-						scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 50);
-					}
-					else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						dispose();
-						currentComps.get(pointer).getClickAction().run();
-					}
-				}
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if(e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN && e.getKeyCode() != KeyEvent.VK_ENTER)
-					genView(field.getText());
-			}
-		});
-		add(field);
-		addKeyListener(field);
+    public void init() {
+        field = new NoCaretField("", "Type File Name", TOOLMENU_COLOR2, c2, TOOLMENU_COLOR6);
+        field.setBounds(0, 25, getWidth(), 30);
+        field.setFont(PX16);
+        field.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (!currentComps.isEmpty()) {
+                    if (e.getKeyCode() == KeyEvent.VK_UP && pointer > 0) {
+                        currentComps.get(pointer).set(false);
+                        currentComps.get(--pointer).set(true);
+                        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 50);
+                    } else if (e.getKeyCode() == KeyEvent.VK_DOWN && pointer + 1 < currentComps.size()) {
+                        currentComps.get(pointer).set(false);
+                        currentComps.get(++pointer).set(true);
+                        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + 50);
+                    } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        dispose();
+                        currentComps.get(pointer).getClickAction().run();
+                    }
+                }
+            }
 
-		addFocusListener(new FocusAdapter(){
-			@Override
-			public void focusGained(FocusEvent e){
-				field.grabFocus();
-			}
-		});
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() != KeyEvent.VK_UP && e.getKeyCode() != KeyEvent.VK_DOWN && e.getKeyCode() != KeyEvent.VK_ENTER)
+                    genView(field.getText());
+            }
+        });
+        add(field);
+        addKeyListener(field);
 
-		containerPanel = new FlexPanel(null, back1, null);
-		containerPanel.setBounds(5, 60, getWidth() - 10, getHeight() - 70 - 30);
-		containerPanel.setArc(10, 10);
-		add(containerPanel);
+        addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                field.grabFocus();
+            }
+        });
 
-		scrollPane = new JScrollPane(panel = new JPanel(null));
-		scrollPane.setBackground(back2);
-		scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
-		scrollPane.setBorder(null);
-		panel.setBackground(c2);
-		panel.setSize(scrollPane.getWidth() - 5, 100);
-		scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL){
-			@Override
-			public void setVisible(boolean value){
-				super.setVisible(false);
-			}
-		});
-		containerPanel.add(scrollPane);
+        containerPanel = new FlexPanel(null, back1, null);
+        containerPanel.setBounds(5, 60, getWidth() - 10, getHeight() - 70 - 30);
+        containerPanel.setArc(10, 10);
+        add(containerPanel);
 
-		infoComp = new TextComp("", c2, c2, glow, null);
-		infoComp.setBounds(0, getHeight() - 25, getWidth(), 25);
-		infoComp.setFont(PX14);
-		infoComp.setArc(0, 0);
-		infoComp.setClickable(false);
-		infoComp.alignX = 10;
-		add(infoComp);
+        scrollPane = new JScrollPane(panel = new JPanel(null));
+        scrollPane.setBackground(back2);
+        scrollPane.setBounds(5, 5, containerPanel.getWidth() - 10, containerPanel.getHeight() - 10);
+        scrollPane.setBorder(null);
+        panel.setBackground(c2);
+        panel.setSize(scrollPane.getWidth() - 5, 100);
+        scrollPane.setHorizontalScrollBar(new JScrollBar(JScrollBar.HORIZONTAL) {
+            @Override
+            public void setVisible(boolean value) {
+                super.setVisible(false);
+            }
+        });
+        containerPanel.add(scrollPane);
 
-		iconComp = new TextComp(IconManager.fluentrecentImage, 20, 20, back2, back2, glow, field::grabFocus);
-		iconComp.setBounds(0, 0, 30, 30);
-		iconComp.setClickable(false);
-		iconComp.setArc(0, 0);
-		iconComp.attachDragger(this);
-		add(iconComp);
-		
-		titleComp = new TextComp("Quick Open Recents Files / Projects", c2, c2, glow, null);
-		titleComp.setBounds(30, 0, getWidth() - 120, 30);
-		titleComp.setFont(PX14);
-		titleComp.setArc(0, 0);
-		titleComp.setClickable(false);
-		titleComp.attachDragger(this);
-		add(titleComp);
+        infoComp = new TextComp("", c2, c2, glow, null);
+        infoComp.setBounds(0, getHeight() - 25, getWidth(), 25);
+        infoComp.setFont(PX14);
+        infoComp.setArc(0, 0);
+        infoComp.setClickable(false);
+        infoComp.alignX = 10;
+        add(infoComp);
 
-		filesComp = new TextComp(IconManager.fluentfileImage, 20, 20, "Clear File List!",TOOLMENU_COLOR3_SHADE, c2, c2, ()->{
-			RecentsManager.removeAllFiles();
-			initView();
-		});
-		filesComp.setBounds(getWidth() - 90, 0, 30, 30);
-		filesComp.setArc(0, 0);
-		add(filesComp);
+        iconComp = new TextComp(IconManager.fluentrecentImage, 20, 20, back2, back2, glow, field::grabFocus);
+        iconComp.setBounds(0, 0, 30, 30);
+        iconComp.setClickable(false);
+        iconComp.setArc(0, 0);
+        iconComp.attachDragger(this);
+        add(iconComp);
 
-		projectsComp = new TextComp(IconManager.fluentfolderImage, 20, 20, "Clear Project List!", TOOLMENU_COLOR1_SHADE, c2, c2, ()->{
-			RecentsManager.removeAllProjects();
-			initView();
-		});
-		projectsComp.setBounds(getWidth() - 60, 0, 30, 30);
-		projectsComp.setArc(0, 0);
-		add(projectsComp);
+        titleComp = new TextComp("Quick Open Recents Files / Projects", c2, c2, glow, null);
+        titleComp.setBounds(30, 0, getWidth() - 120, 30);
+        titleComp.setFont(PX14);
+        titleComp.setArc(0, 0);
+        titleComp.setClickable(false);
+        titleComp.attachDragger(this);
+        add(titleComp);
 
-		closeComp = new TextComp(IconManager.fluentcloseImage, 20, 20, TOOLMENU_COLOR2_SHADE, c2, c2, this::dispose);
-		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
-		closeComp.setArc(0, 0);
-		add(closeComp);
+        filesComp = new TextComp(IconManager.fluentfileImage, 20, 20, "Clear File List!", TOOLMENU_COLOR3_SHADE, c2, c2, () -> {
+            RecentsManager.removeAllFiles();
+            initView();
+        });
+        filesComp.setBounds(getWidth() - 90, 0, 30, 30);
+        filesComp.setArc(0, 0);
+        add(filesComp);
 
-		putAnimationLayer(filesComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(projectsComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(closeComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
-	}
+        projectsComp = new TextComp(IconManager.fluentfolderImage, 20, 20, "Clear Project List!", TOOLMENU_COLOR1_SHADE, c2, c2, () -> {
+            RecentsManager.removeAllProjects();
+            initView();
+        });
+        projectsComp.setBounds(getWidth() - 60, 0, 30, 30);
+        projectsComp.setArc(0, 0);
+        add(projectsComp);
 
-	public void initView(){
-		try{
-			currentComps.forEach(panel::remove);
-			currentComps.clear();
-			searchComps.clear();
+        closeComp = new TextComp(IconManager.fluentcloseImage, 20, 20, TOOLMENU_COLOR2_SHADE, c2, c2, this::dispose);
+        closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+        closeComp.setArc(0, 0);
+        add(closeComp);
 
-			blockY = 0;
-			File file;
-			//Creating Directory Comps
-			for(String path : RecentsManager.RECENTS){
-				file = new File(path);
-				if(!file.exists() || !file.isDirectory())
-					continue;
+        putAnimationLayer(filesComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(projectsComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(closeComp, getImageSizeAnimationLayer(20, +5, true), ACTION_MOUSE_ENTERED);
+    }
 
-				SearchComp comp = new SearchComp(this, file){
-					@Override
-					public String getExtension(){
-						return "Project";
-					}
-				};
-				comp.setBounds(0, blockY, panel.getWidth(), 50);
-				comp.initUI();
-				comp.setClickAction(()->Screen.getScreen().loadProject(comp.getFile()));
-				panel.add(comp);
-				searchComps.add(comp);
-				currentComps.add(comp);
+    public void initView() {
+        try {
+            currentComps.forEach(panel::remove);
+            currentComps.clear();
+            searchComps.clear();
 
-				blockY += 50;
-			}
+            blockY = 0;
+            File file;
+            //Creating Directory Comps
+            for (String path : RecentsManager.RECENTS) {
+                file = new File(path);
+                if (!file.exists() || !file.isDirectory())
+                    continue;
 
-			//Creating Files Comps
-			for(String path : RecentsManager.RECENTS){
-				file = new File(path);
-				if(!file.exists() || file.isDirectory())
-					continue;
+                SearchComp comp = new SearchComp(this, file) {
+                    @Override
+                    public String getExtension() {
+                        return "Project";
+                    }
+                };
+                comp.setBounds(0, blockY, panel.getWidth(), 50);
+                comp.initUI();
+                comp.setClickAction(() -> Screen.getScreen().loadProject(comp.getFile()));
+                panel.add(comp);
+                searchComps.add(comp);
+                currentComps.add(comp);
 
-				SearchComp comp = new SearchComp(this, file);
-				comp.setBounds(0, blockY, panel.getWidth(), 50);
-				comp.initUI();
-				panel.add(comp);
-				searchComps.add(comp);
-				currentComps.add(comp);
+                blockY += 50;
+            }
 
-				blockY += 50;
-			}
+            //Creating Files Comps
+            for (String path : RecentsManager.RECENTS) {
+                file = new File(path);
+                if (!file.exists() || file.isDirectory())
+                    continue;
 
-			panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
-			scrollPane.repaint();
-			scrollPane.getVerticalScrollBar().setVisible(true);
-			scrollPane.getVerticalScrollBar().setValue(0);
-			repaint();
+                SearchComp comp = new SearchComp(this, file);
+                comp.setBounds(0, blockY, panel.getWidth(), 50);
+                comp.initUI();
+                panel.add(comp);
+                searchComps.add(comp);
+                currentComps.add(comp);
 
-			if(!currentComps.isEmpty()) {
-				currentComps.get(pointer = 0).set(true);
-				infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
-			}
-			else{
-				infoComp.setText("Not at least One File Found!");
-			}
-			doLayout();
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+                blockY += 50;
+            }
 
-	public void genView(String match){
-		currentComps.forEach(panel::remove);
-		currentComps.clear();
+            panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
+            scrollPane.repaint();
+            scrollPane.getVerticalScrollBar().setVisible(true);
+            scrollPane.getVerticalScrollBar().setValue(0);
+            repaint();
 
-		blockY = 0;
+            if (!currentComps.isEmpty()) {
+                currentComps.get(pointer = 0).set(true);
+                infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
+            } else {
+                infoComp.setText("Not at least One File Found!");
+            }
+            doLayout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-		for(SearchComp comp : searchComps){
-			if(comp.getName().contains(match) || CodeFramework.isUpperCaseHintType(comp.getName(), match)){
+    public void genView(String match) {
+        currentComps.forEach(panel::remove);
+        currentComps.clear();
 
-				comp.setLocation(0, blockY);
-				panel.add(comp);
-				currentComps.add(comp);
+        blockY = 0;
 
-				blockY += 50;
-			}
-		}
+        for (SearchComp comp : searchComps) {
+            if (comp.getName().contains(match) || CodeFramework.isUpperCaseHintType(comp.getName(), match)) {
 
-		panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
-		scrollPane.repaint();
-		scrollPane.getVerticalScrollBar().setVisible(true);
-		scrollPane.getVerticalScrollBar().setValue(0);
-		repaint();
+                comp.setLocation(0, blockY);
+                panel.add(comp);
+                currentComps.add(comp);
 
-		if(!currentComps.isEmpty()) {
-			currentComps.get(pointer = 0).set(true);
-			infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
-		}
-		else{
-			infoComp.setText("Not at least One File Found!");
-		}
-		doLayout();
-	}
+                blockY += 50;
+            }
+        }
 
-	@Override
-	public void setVisible(boolean value){
-		if(value){
-			initView();
-			if(Screen.isNotNull(field.getText()))
-				genView(field.getText());
-		}
-		super.setVisible(value);
-	}
+        panel.setPreferredSize(new Dimension(scrollPane.getWidth() - 5, blockY));
+        scrollPane.repaint();
+        scrollPane.getVerticalScrollBar().setVisible(true);
+        scrollPane.getVerticalScrollBar().setValue(0);
+        repaint();
+
+        if (!currentComps.isEmpty()) {
+            currentComps.get(pointer = 0).set(true);
+            infoComp.setText(currentComps.size() + " File" + (currentComps.size() > 1 ? "s" : "") + " Found!");
+        } else {
+            infoComp.setText("Not at least One File Found!");
+        }
+        doLayout();
+    }
+
+    @Override
+    public void setVisible(boolean value) {
+        if (value) {
+            initView();
+            if (Screen.isNotNull(field.getText()))
+                genView(field.getText());
+        }
+        super.setVisible(value);
+    }
 }

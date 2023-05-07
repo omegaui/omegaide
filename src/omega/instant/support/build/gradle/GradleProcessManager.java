@@ -17,111 +17,108 @@
  */
 
 package omega.instant.support.build.gradle;
-import omega.io.AppDataManager;
-import omega.io.IconManager;
-
-import omega.ui.panel.JetRunPanel;
 
 import omega.Screen;
+import omega.io.AppDataManager;
+import omega.io.IconManager;
+import omega.ui.panel.JetRunPanel;
 
 import java.io.File;
+
 public class GradleProcessManager {
 
-	private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";
+    private static String ext = File.pathSeparator.equals(":") ? "" : ".bat";
 
-	public static boolean isGradleProject(){
-		File settings = new File(Screen.getProjectFile().getProjectPath(), "settings.gradle");
-		return settings.exists() || new File(Screen.getProjectFile().getProjectPath(), "settings.gradle.kts").exists();
-	}
+    public static boolean isGradleProject() {
+        File settings = new File(Screen.getProjectFile().getProjectPath(), "settings.gradle");
+        return settings.exists() || new File(Screen.getProjectFile().getProjectPath(), "settings.gradle.kts").exists();
+    }
 
-	public static void init(){
-		new Thread(()->{
-			try{
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{"gradle" + ext, "init"}, Screen.getProjectFile().getProjectPath());
-				printArea.print("# Executing : gradle init");
-				printArea.print("--------------------------------------------------");
-				printArea.start();
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
-				if(!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
-					Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
-					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
-					Screen.getProjectFile().getProjectManager().save();
-				}
-				while(printArea.terminalPanel.process.isAlive());
-					printArea.print("--------------------------------------------------");
-				printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-			Screen.getProjectFile().getFileTreePanel().refresh();
-		}).start();
-	}
+    public static void init() {
+        new Thread(() -> {
+            try {
+                JetRunPanel printArea = new JetRunPanel(false, new String[]{"gradle" + ext, "init"}, Screen.getProjectFile().getProjectPath());
+                printArea.print("# Executing : gradle init");
+                printArea.print("--------------------------------------------------");
+                printArea.start();
+                Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+                if (!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()) {
+                    Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
+                    Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+                    Screen.getProjectFile().getProjectManager().save();
+                }
+                while (printArea.terminalPanel.process.isAlive()) ;
+                printArea.print("--------------------------------------------------");
+                printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Screen.getProjectFile().getFileTreePanel().refresh();
+        }).start();
+    }
 
-	public static void run(){
-		new Thread(()->{
-			try{
-				Screen.getScreen().saveAllEditors();
+    public static void run() {
+        new Thread(() -> {
+            try {
+                Screen.getScreen().saveAllEditors();
 
-				if(!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
-					Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
-					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
-					Screen.getProjectFile().getProjectManager().save();
-				}
+                if (!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()) {
+                    Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
+                    Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+                    Screen.getProjectFile().getProjectManager().save();
+                }
 
 
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{AppDataManager.getGradleCommand() + ext, "run"}, Screen.getProjectFile().getProjectPath());
-				printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, AppDataManager.getGradleCommand() + " run");
+                JetRunPanel printArea = new JetRunPanel(false, new String[]{AppDataManager.getGradleCommand() + ext, "run"}, Screen.getProjectFile().getProjectPath());
+                printArea.launchAsTerminal(GradleProcessManager::run, IconManager.fluentgradleImage, AppDataManager.getGradleCommand() + " run");
 
-				printArea.print("# Executing : " + AppDataManager.getGradleCommand() +" run");
-				printArea.print("--------------------------------------------------");
+                printArea.print("# Executing : " + AppDataManager.getGradleCommand() + " run");
+                printArea.print("--------------------------------------------------");
 
-				printArea.start();
+                printArea.start();
 
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+                Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
 
-				while(printArea.terminalPanel.process.isAlive());
-					printArea.print("--------------------------------------------------");
-				printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+                while (printArea.terminalPanel.process.isAlive()) ;
+                printArea.print("--------------------------------------------------");
+                printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
 
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-			Screen.getProjectFile().getFileTreePanel().refresh();
-		}).start();
-	}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Screen.getProjectFile().getFileTreePanel().refresh();
+        }).start();
+    }
 
-	public static void build(){
-		new Thread(()->{
-			try{
-				Screen.getScreen().saveAllEditors();
-				if(!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()){
-					Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
-					Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
-					Screen.getProjectFile().getProjectManager().save();
-				}
+    public static void build() {
+        new Thread(() -> {
+            try {
+                Screen.getScreen().saveAllEditors();
+                if (!Screen.getProjectFile().getProjectManager().isLanguageTagNonJava()) {
+                    Screen.getProjectFile().getProjectManager().setLanguageTag(-1);
+                    Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+                    Screen.getProjectFile().getProjectManager().save();
+                }
 
-				JetRunPanel printArea = new JetRunPanel(false, new String[]{AppDataManager.getGradleCommand() + ext, "build"}, Screen.getProjectFile().getProjectPath());
-				printArea.setLogMode(true);
-				printArea.print("# Executing : " + AppDataManager.getGradleCommand() +" build");
-				printArea.print("--------------------------------------------------");
+                JetRunPanel printArea = new JetRunPanel(false, new String[]{AppDataManager.getGradleCommand() + ext, "build"}, Screen.getProjectFile().getProjectPath());
+                printArea.setLogMode(true);
+                printArea.print("# Executing : " + AppDataManager.getGradleCommand() + " build");
+                printArea.print("--------------------------------------------------");
 
-				printArea.start();
+                printArea.start();
 
-				Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
+                Screen.getScreen().getOperationPanel().addTab("Gradle Task", IconManager.fluentquickmodeonImage, printArea, printArea::killProcess);
 
-				while(printArea.terminalPanel.process.isAlive());
+                while (printArea.terminalPanel.process.isAlive()) ;
 
-					printArea.print("--------------------------------------------------");
-				printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
-			}
-			catch(Exception e){
-				e.printStackTrace();
-			}
-			Screen.getProjectFile().getFileTreePanel().refresh();
-		}).start();
-	}
+                printArea.print("--------------------------------------------------");
+                printArea.print("Finished with Exit Code " + printArea.terminalPanel.process.exitValue());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Screen.getProjectFile().getFileTreePanel().refresh();
+        }).start();
+    }
 
 }
 

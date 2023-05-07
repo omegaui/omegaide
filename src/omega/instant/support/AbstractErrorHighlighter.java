@@ -17,7 +17,9 @@
  */
 
 package omega.instant.support;
+
 public interface AbstractErrorHighlighter {
-	void loadErrors(String errorLog, String workingDir);
-	void removeAllHighlights();
+    void loadErrors(String errorLog, String workingDir);
+
+    void removeAllHighlights();
 }

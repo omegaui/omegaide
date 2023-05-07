@@ -17,86 +17,45 @@
  */
 
 package omega.ui.component;
-import omega.ui.window.donation.DonationWindow;
-
-import omega.ui.github.GitHubClientWindow;
-
-import omega.instant.support.java.misc.JDKSelectionDialog;
-
-import omega.instant.support.java.generator.Generator;
-
-import omega.instant.support.java.parser.JavaSyntaxParser;
-
-import omegaui.component.animation.ImageSizeTransitionAnimationLayer;
-
-import omega.io.AppDataManager;
-import omega.io.UIManager;
-import omega.io.IconManager;
-
-import omega.instant.support.LanguageTagView;
-import omega.instant.support.TemplateWizard;
-
-import omega.instant.support.build.gradle.GradleModuleWizard;
-import omega.instant.support.build.gradle.GradleBuildScriptManager;
-import omega.instant.support.build.gradle.GradleProcessManager;
-
-import omega.instant.support.universal.ProcessWizard;
-import omega.instant.support.universal.UniversalProjectWizard;
-
-import omega.instant.support.java.JavaProjectWizard;
-
-import omega.ui.dialog.InfoScreen;
-import omega.ui.dialog.SourceDefender;
-import omega.ui.dialog.MadeWithScreen;
-import omega.ui.dialog.ProjectDistructionWizard;
-import omega.ui.dialog.ConsoleSelector;
-import omega.ui.dialog.InstructionWindow;
-import omega.ui.dialog.ColorPicker;
-import omega.ui.dialog.FontChooser;
-import omega.ui.dialog.WorkspaceSelector;
-import omega.ui.dialog.FileSelectionDialog;
-import omega.ui.dialog.RecentsDialog;
-import omega.ui.dialog.MainWindowSizeController;
-import omega.ui.dialog.GitProjectWizard;
-
-import omegaui.component.TextComp;
-
-import omega.ui.popup.OPopupWindow;
-import omega.ui.popup.OPopupItem;
-import omega.ui.popup.NotificationPopup;
-
-import omega.plugin.event.PluginReactionEvent;
 
 import omega.IDE;
-import omega.Screen;
 import omega.IDEUpdater;
-
-import java.io.File;
-
-import java.util.LinkedList;
+import omega.Screen;
+import omega.instant.support.LanguageTagView;
+import omega.instant.support.TemplateWizard;
+import omega.instant.support.build.gradle.GradleBuildScriptManager;
+import omega.instant.support.build.gradle.GradleModuleWizard;
+import omega.instant.support.build.gradle.GradleProcessManager;
+import omega.instant.support.java.JavaProjectWizard;
+import omega.instant.support.java.generator.Generator;
+import omega.instant.support.java.misc.JDKSelectionDialog;
+import omega.instant.support.java.parser.JavaSyntaxParser;
+import omega.instant.support.universal.ProcessWizard;
+import omega.instant.support.universal.UniversalProjectWizard;
+import omega.io.AppDataManager;
+import omega.io.IconManager;
+import omega.io.UIManager;
+import omega.plugin.event.PluginReactionEvent;
+import omega.ui.dialog.*;
+import omega.ui.github.GitHubClientWindow;
+import omega.ui.popup.NotificationPopup;
+import omega.ui.popup.OPopupItem;
+import omega.ui.popup.OPopupWindow;
+import omega.ui.window.donation.DonationWindow;
+import omegaui.component.TextComp;
+import omegaui.component.animation.ImageSizeTransitionAnimationLayer;
 
 import javax.imageio.ImageIO;
-
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.LinkedList;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Font;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.RenderingHints;
-import java.awt.Point;
-
-import javax.swing.JPanel;
-import javax.swing.JFileChooser;
-import javax.swing.JComponent;
-
-import static omega.io.UIManager.*;
 import static omega.io.IconManager.*;
+import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
 
 /*
@@ -104,936 +63,932 @@ import static omegaui.component.animation.Animations.*;
  */
 
 public class ToolMenu extends JPanel {
-	private Screen screen;
+    private Screen screen;
 
-	public Menu fileMenu;
-	public Menu projectMenu;
-	public Menu codeMenu;
-	public Menu toolsMenu;
-	public Menu setMenu;
-	public Menu helpMenu;
-	
-	public OPopupWindow filePopup;
-	public OPopupWindow projectPopup;
-	public OPopupWindow codePopup;
-	public OPopupWindow toolsPopup;
-	public OPopupWindow setPopup;
-	public OPopupWindow helpPopup;
-	
-	public static OPopupItem recentsMenu;
-	public static OPopupWindow allProjectsPopup;
-	public static OPopupItem contentAssistOnItem;
-	public static OPopupItem contentAssistModeItem;
-	public static OPopupItem autoImportModeItem;
-	public static OPopupItem allMenu;
-	public static OPopupItem allSettingsItem;
-	public static OPopupItem jdkItem;
-	public static OPopupItem jdkRootItem;
-	public static OPopupItem instantModeItem;
-	public static OPopupItem parsingEnabledItem;
-	
-	public TextComp openProjectComp;
-	public TextComp openFileComp;
-	public TextComp newProjectComp;
-	public TextComp newFileComp;
-	
-	public TextComp sep0;
-	
-	public TextComp shellComp;
-	public TextComp themeComp;
-	public TextComp searchComp;
-	
-	public TextComp sep1;
-	
-	public TextComp runComp;
-	public TextComp buildComp;
-	
-	public TextComp sep2;
-	
-	public TextComp instantRunComp;
-	public TextComp instantBuildComp;
+    public Menu fileMenu;
+    public Menu projectMenu;
+    public Menu codeMenu;
+    public Menu toolsMenu;
+    public Menu setMenu;
+    public Menu helpMenu;
 
-	public TextComp memoryComp;
-	
-	public TextComp taskComp;
+    public OPopupWindow filePopup;
+    public OPopupWindow projectPopup;
+    public OPopupWindow codePopup;
+    public OPopupWindow toolsPopup;
+    public OPopupWindow setPopup;
+    public OPopupWindow helpPopup;
 
-	//IDE Dialogs
-	public static InfoScreen infoScreen;
-	public static ToolMenuPathBox pathBox;
-	public static SourceDefender sourceDefender;
-	public static JavaProjectWizard javaProjectWizard;
-	public static ProcessWizard processWizard;
-	public static MadeWithScreen madeWithScreen;
-	public static GradleModuleWizard gradleModuleWizard;
-	public static UniversalProjectWizard universalProjectWizard;
-	public static ProjectDistructionWizard projectDistructionWizard;
-	public static ConsoleSelector consoleSelector;
-	public static GradleBuildScriptManager gradleBuildScriptManager;
-	public static InstructionWindow instructionWindow;
-	public static ColorPicker colorPicker;
-	public static LanguageTagView languageTagView;
-	public static RecentsDialog recentsDialog;
-	public static GitHubClientWindow githubClientWindow;
-	public static DonationWindow donationWindow;
-	public static MainWindowSizeController mainWindowSizeController;
-	public static GitProjectWizard gitProjectWizard;
-	public static TemplateWizard templateWizard;
+    public static OPopupItem recentsMenu;
+    public static OPopupWindow allProjectsPopup;
+    public static OPopupItem contentAssistOnItem;
+    public static OPopupItem contentAssistModeItem;
+    public static OPopupItem autoImportModeItem;
+    public static OPopupItem allMenu;
+    public static OPopupItem allSettingsItem;
+    public static OPopupItem jdkItem;
+    public static OPopupItem jdkRootItem;
+    public static OPopupItem instantModeItem;
+    public static OPopupItem parsingEnabledItem;
 
-	public static NotificationPopup projectTypeNotificationPopup = null;
+    public TextComp openProjectComp;
+    public TextComp openFileComp;
+    public TextComp newProjectComp;
+    public TextComp newFileComp;
 
-	private volatile boolean dragStarted = false;
-	private volatile boolean mousePressed = false;
-	private int pressX;
-	private int pressY;
-	
-	//The window decoration objects
-	public static Color closeWinColor = TOOLMENU_COLOR2;
-	public static Color maximizeWinColor = TOOLMENU_COLOR4;
-	public static Color minimizeWinColor = TOOLMENU_COLOR3;
-	
-	public TextComp iconComp;
-	public TextComp langComp;
-	public TextComp minimizeComp;
-	public TextComp maximizeComp;
-	public TextComp closeComp;
-	
-	private BufferedImage image;
-	
-	private Point lastLocation;
-	
-	private Dimension lastSize;
-	
-	public ToolMenu(Screen screen) {
-		this.screen = screen;
-		if(javaProjectWizard == null){
-			infoScreen = new InfoScreen(screen);
-			sourceDefender = new SourceDefender(screen);
-			javaProjectWizard = new JavaProjectWizard(screen);
-			processWizard = new ProcessWizard(screen);
-			madeWithScreen = new MadeWithScreen(screen);
-			gradleModuleWizard = new GradleModuleWizard(screen);
-			universalProjectWizard = new UniversalProjectWizard(screen);
-			consoleSelector = new ConsoleSelector(screen);
-			gradleBuildScriptManager = new GradleBuildScriptManager(screen);
-			projectDistructionWizard = new ProjectDistructionWizard(screen);
-			instructionWindow = new InstructionWindow(screen);
-			colorPicker = new ColorPicker(screen);
-			languageTagView = new LanguageTagView(screen);
-			recentsDialog = new RecentsDialog(screen);
-			githubClientWindow = new GitHubClientWindow(screen);
-			donationWindow = new DonationWindow(screen);
-			mainWindowSizeController = new MainWindowSizeController(screen);
-			gitProjectWizard = new GitProjectWizard(screen);
-			templateWizard = new TemplateWizard(screen);
-			
-			projectTypeNotificationPopup = NotificationPopup.create(screen)
-			.title("Project Type Management")
-			.dialogIcon(IconManager.fluentfolderImage)
-			.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
-			.shortMessage("Click this to Exit", TOOLMENU_COLOR2)
-			.iconButton(IconManager.fluentcloseImage, ()->{
-				try{
-					for(Process p : Screen.getProjectRunner().runningApps) {
-						if(p.isAlive())
-							p.destroyForcibly();
-					}
-				}
-				catch(Exception e2) {
-					
-				}
-				Screen.getPluginManager().save();
-				Screen.getUIManager().save();
-				Screen.getDataManager().saveData();
-				Screen.getScreen().saveAllEditors();
-				try{
-					Screen.getProjectFile().getProjectManager().save();
-				}
-				catch(Exception e2) {
-					
-				}
-				System.exit(0);
-			}, "You need to manually start the IDE again!")
-			.build();
-		}
-		setLayout(null);
-		setSize(screen.getWidth(), 90);
-		setPreferredSize(getSize());
-		UIManager.setData(this);
-		setBackground(back2);
-		addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(e.getButton() == 1 && e.getClickCount() == 2){
-					maximize();
-					return;
-				}
-				pressX = e.getX();
-				pressY = e.getY();
-				dragStarted = true;
-				mousePressed = true;
-			}
+    public TextComp sep0;
 
-			@Override
-			public void mouseReleased(MouseEvent e){
-				mousePressed = false;
-				dragStarted = false;
-			}
+    public TextComp shellComp;
+    public TextComp themeComp;
+    public TextComp searchComp;
 
-			@Override
-			public void mouseExited(MouseEvent e){
-				if(!mousePressed)
-					dragStarted = false;
-			}
-		});
-		addMouseMotionListener(new MouseAdapter(){
-			@Override
-			public void mouseDragged(MouseEvent e){
-				if(!dragStarted)
-					return;
-				if(screen.getExtendedState() == Screen.NORMAL)
-					screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
-			}
-		});
-		init();
-	}
-	
-	private void init() {
-		try{
-			image = ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon128" + (UIManager.isDarkMode() ? "_dark.png" : ".png")));
-		}
-		catch(Exception e){
-			System.err.println(e);
-		}
-		iconComp = new TextComp(image, 30, 30, back2, back2, back2, null);
-		iconComp.setBounds(0, 0, 30, 30);
-		iconComp.setClickable(false);
-		iconComp.setArc(0, 0);
-		add(iconComp);
-		
-		langComp = new TextComp(IconManager.fluentjavaImage, 25, 25, back3, back2, back2, this::changeLang);
-		langComp.setBounds(30, 0, 30, 30);
-		langComp.setArc(0, 0);
-		add(langComp);
-		
-		closeComp = new TextComp("", c1, back2, c3, this::disposeAll){
-			@Override
-			public void draw(Graphics2D g){
-				g.setColor(back2);
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.setColor(closeWinColor);
-				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
-				if(isMouseEntered()){
-					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
-					g.setFont(PX14);
-					g.setColor(back2);
-					g.drawString("x", getWidth()/2 - g.getFontMetrics().stringWidth("x")/2,
-					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
-				}
-			}
-		};
-		add(closeComp);
-		
-		maximizeComp = new TextComp("", c1, back2, c3, this::maximize){
-			@Override
-			public void draw(Graphics2D g){
-				g.setColor(back2);
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.setColor(maximizeWinColor);
-				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
-				if(isMouseEntered()){
-					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
-					g.setFont(PX14);
-					g.setColor(back2);
-					g.drawString((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? "><" : "<>", getWidth()/2 - g.getFontMetrics().stringWidth("<>")/2,
-					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
-				}
-			}
-		};
-		add(maximizeComp);
-		
-		minimizeComp = new TextComp("", c1, back2, c3, this::minimize){
-			@Override
-			public void draw(Graphics2D g){
-				g.setColor(back2);
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.setColor(minimizeWinColor);
-				g.fillRoundRect(getWidth()/2 - 10, getHeight()/2 - 10, 20, 20, 10, 10);
-				if(isMouseEntered()){
-					g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
-					g.setFont(PX14);
-					g.setColor(back2);
-					g.drawString("-", getWidth()/2 - g.getFontMetrics().stringWidth("-")/2,
-					getHeight()/2 - g.getFontMetrics().getHeight()/2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
-				}
-			}
-		};
-		minimizeComp.setArc(0, 0);
-		add(minimizeComp);
+    public TextComp sep1;
 
-		memoryComp = new TextComp("", "Memory Usage (Excluding JVM). Click to Run GC.", TOOLMENU_COLOR6_SHADE, TOOLMENU_GRADIENT, glow, ()->{
-			System.gc();
-			computeMemoryUsage();
-		});
-		memoryComp.setOnMouseEntered(this::computeMemoryUsage);
-		memoryComp.setArc(0, 0);
-		memoryComp.setFont(PX14);
-		add(memoryComp);
-		
-		taskComp = new TextComp("", back2, back2, TOOLMENU_COLOR1, null);
-		taskComp.setOnMouseEntered(this::computeMemoryUsage);
-		taskComp.setArc(0, 0);
-		taskComp.setFont(PX14);
-		taskComp.setHighlightColor(TOOLMENU_COLOR5);
-		taskComp.setTextAlignment(TextComp.TEXT_ALIGNMENT_RIGHT);
-		taskComp.setClickable(false);
-		add(taskComp);
+    public TextComp runComp;
+    public TextComp buildComp;
 
-		computeMemoryUsage();
-		
-		filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(510);
-		initFilePopup();
-		fileMenu = new Menu(filePopup, "File");
-		fileMenu.setBounds(60, 5, 40, 20);
-		addComp(fileMenu);
-		
-		projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
-		initProjectPopup();
-		projectMenu = new Menu(projectPopup, "Project");
-		projectMenu.setBounds(100, 5, 60, 20);
-		addComp(projectMenu);
-		
-		codePopup = OPopupWindow.gen("Code Menu", screen, 0, false).width(350);
-		initCodePopup();
-		codeMenu = new Menu(codePopup, "Code");
-		codeMenu.setBounds(165, 5, 35, 20);
-		addComp(codeMenu);
-		
-		toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
-		initToolsPopup();
-		toolsMenu = new Menu(toolsPopup, "Tools");
-		toolsMenu.setBounds(200, 5, 50, 20);
-		addComp(toolsMenu);
-		
-		setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(270);
-		initSetMenu();
-		setMenu = new Menu(setPopup, "Settings");
-		setMenu.setBounds(252, 5, 60, 20);
-		addComp(setMenu);
-		
-		helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
-		initHelpMenu();
-		helpMenu = new Menu(helpPopup, "Help");
-		helpMenu.setBounds(314, 5, 40, 20);
-		addComp(helpMenu);
-		
-		openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().open("Project"));
-		openProjectComp.setBounds(2, 33, 24, 24);
-		openProjectComp.setFont(PX14);
-		openProjectComp.setArcVisible(true, false, true, false);
-		addComp(openProjectComp);
-		
-		openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().open("File"));
-		openFileComp.setBounds(28, 33, 24, 24);
-		openFileComp.setFont(PX14);
-		openFileComp.setArcVisible(true, false, true, false);
-		addComp(openFileComp);
-		
-		newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Java Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->javaProjectWizard.setVisible(true));
-		newProjectComp.setBounds(54, 33, 24, 24);
-		newProjectComp.setFont(PX14);
-		newProjectComp.setArcVisible(true, false, true, false);
-		addComp(newProjectComp);
-		
-		newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getFileCreator().show("Custom File"));
-		newFileComp.setBounds(80, 33, 24, 24);
-		newFileComp.setFont(PX14);
-		newFileComp.setArcVisible(true, false, true, false);
-		addComp(newFileComp);
-		
-		sep0 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep0.setBounds(108, 31, 2, 28);
-		addComp(sep0);
-		
-		OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(270);
-		consoleItemWindow
-		.createItem("New System Terminal", IconManager.fluentconsoleImage, consoleSelector::launchTerminal)
-		.createItem("Faster Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal)
-		.createItem("Full-Fledge Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showJetTerminal);
-		
-		shellComp = new TextComp(fluentconsoleImage, 20, 20, "Launch a terminal", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, null);
-		shellComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				consoleItemWindow.setLocation(e.getXOnScreen(), e.getYOnScreen() + 10 + OPopupWindow.HEIGHT);
-				consoleItemWindow.setVisible(true);
-			}
-		});
-		shellComp.put("Popup", consoleItemWindow);
-		shellComp.setFont(PX16);
-		shellComp.setBounds(114, 33, 24, 24);
-		shellComp.setArcVisible(false, true, false, true);
-		add(shellComp);
-		
-		themeComp = new TextComp(IconManager.fluentchangethemeImage, 20, 20, "Change Theme", TOOLMENU_COLOR6_SHADE, back3, TOOLMENU_COLOR6,
-		()->{
-			Screen.pickTheme(AppDataManager.getTheme());
-			if(!themeComp.getName().equals(AppDataManager.getTheme())){
-				NotificationPopup.create(screen)
-				.size(300, 120)
-				.title("Theme Manager")
-				.dialogIcon(IconManager.fluentupdateImage)
-				.message("IDE's Restart is Required!", TOOLMENU_COLOR4)
-				.shortMessage("Click this to Restart", TOOLMENU_COLOR2)
-				.iconButton(IconManager.fluentcloseImage, IDE::restart, "")
-				.build()
-				.locateOnBottomLeft()
-				.showIt();
-			}
-			themeComp.setName(AppDataManager.getTheme());
-		});
-		themeComp.setName(AppDataManager.getTheme());
-		themeComp.setBounds(140, 33, 24, 24);
-		add(themeComp);
+    public TextComp sep2;
 
-		searchComp = new TextComp(fluentsearchImage, 20, 20, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->Screen.getProjectFile().getSearchWindow().setVisible(true));
-		searchComp.setBounds(166, 33, 24, 24);
-		searchComp.setArcVisible(true, false, true, false);
-		addComp(searchComp);
+    public TextComp instantRunComp;
+    public TextComp instantBuildComp;
 
-		sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep1.setBounds(194, 31, 2, 28);
-		addComp(sep1);
-		
-		runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
-			if(runComp.isClickable() && buildComp.isClickable()){
-				if(GradleProcessManager.isGradleProject())
-					GradleProcessManager.run();
-				else
-					Screen.getProjectRunner().run();
-			}
-		});
-		runComp.setBounds(200, 33, 24, 24);
-		runComp.addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(e.getButton() == 3){
-					if(GradleProcessManager.isGradleProject())
-						return;
-					if(runComp.isClickable() && buildComp.isClickable())
-						Screen.getProjectRunner().justRun();
-				}
-			}
-		});
-		runComp.setArcVisible(false, true, false, true);
-		add(runComp);
-		
-		buildComp = new TextComp(fluentbuildImage, 20, 20, "Build Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
-			if(runComp.isClickable() && buildComp.isClickable()){
-				if(GradleProcessManager.isGradleProject())
-					GradleProcessManager.build();
-				else
-					Screen.getProjectBuilder().compileProject();
-			}
-		});
-		buildComp.setBounds(226, 33, 24, 24);
-		buildComp.setArcVisible(true, false, true, false);
-		add(buildComp);
-		
-		sep2 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
-		sep2.setBounds(254, 31, 2, 28);
-		addComp(sep2);
-		
-		instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
-			Screen.getProjectRunner().instantRun();
-		});
-		instantRunComp.setBounds(260, 33, 24, 24);
-		instantRunComp.setArcVisible(false, true, false, true);
-		add(instantRunComp);
-		
-		instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, ()->{
-			Screen.getProjectRunner().instantBuild();
-		});
-		instantBuildComp.setBounds(286, 33, 24, 24);
-		instantBuildComp.setArcVisible(true, false, true, false);
-		add(instantBuildComp);
+    public TextComp memoryComp;
 
-		pathBox = new ToolMenuPathBox();
-		add(pathBox);
-		
-		reshapeComp();
-		
-		putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		
-		putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(themeComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		
-		putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		
-		putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
-		
-		putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
-		
-		ImageSizeTransitionAnimationLayer layer = (ImageSizeTransitionAnimationLayer)getImageSizeAnimationLayer(25, -5, true);
-		languageTagView.prepareLayer(layer, iconComp, -5, true);
-		
-		putAnimationLayer(iconComp, layer, ACTION_MOUSE_ENTERED);
-		
-		putComp(iconComp, layer);
-	}
-	
-	public void minimize(){
-		screen.setState(Screen.ICONIFIED);
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_MINIMIZED, this, true));
-	}
-	
-	public void maximize(){
-		screen.setExtendedState((screen.getExtendedState() == Screen.NORMAL) ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? PluginReactionEvent.EVENT_TYPE_IDE_MAXIMIZED : PluginReactionEvent.EVENT_TYPE_IDE_RESTORED, this, ((screen.getExtendedState() == Screen.MAXIMIZED_BOTH))));
-	}
-	
-	public void disposeAll(){
-		screen.dispose();
-	}
-	 
-	public void computeMemoryUsage(){
-		long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-		ram = (long)(ram / 1000000);
-		memoryComp.setText(ram + " MB");
-	}
-	
-	public void setTask(String task) {
-		setMsg(task);
-	}
-	
-	public void setTask(String task, String... highlights) {
-		taskComp.addHighlightText(highlights);
-		setMsg(task);
-	}
-	
-	public static ToolMenuPathBox getPathBox() {
-		return pathBox;
-	}
-	
-	public void setMsg(String msg) {
-		if(Screen.isNotNull(msg))
-			taskComp.setText(msg);
-		else
-			taskComp.setText("");
-	}
-	
-	public void reshapeComp() {
-		//Resizing PathBox
-		pathBox.setBounds(0, 60, getWidth(), 25);
+    public TextComp taskComp;
 
-		//Resizing Memory Comp
-		memoryComp.setBounds(getWidth() - 60 - (30 * 3), 0, 60, 30);
-		
-		//Resizing Task Comp
-		taskComp.setBounds(getWidth() - 400, 33, 400, 24);
-		
-		//Window Decorations
-		closeComp.setBounds(getWidth() - 30, 0, 30, 30);
-		maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
-		minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
-	}
-	
-	public void changeLocations(boolean non_java){
-		reloadItems(non_java);
-		repaint();
-	}
-	
-	public void reloadItems(boolean non_java){
-		jdkItem.setEnabled(!non_java);
-		jdkRootItem.setToolTipText(AppDataManager.getPathToJava());
-		allSettingsItem.setEnabled(non_java);
-		instantModeItem.setEnabled(!non_java);
-		parsingEnabledItem.setEnabled(!non_java);
-		contentAssistModeItem.setEnabled(!non_java);
-		sep2.setVisible(!non_java);
-		instantRunComp.setVisible(!non_java);
-		instantBuildComp.setVisible(!non_java);
-		if(Screen.getProjectFile().getJDKManager() != null)
-			jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
-		else
-			jdkItem.setName("Project JDK : None");
-		
-		if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
-			instantModeItem.setName("Instant Mode : Speed");
-		else if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
-			instantModeItem.setName("Instant Mode : Accuracy");
-		
-		parsingEnabledItem.setName("Parsing Enabled : " + AppDataManager.isParsingEnabled());
-	}
-	
-	public void changeLang(){
-		languageTagView.setVisible(true);
-		langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getProjectFile().getProjectManager().getLanguageTag());
-		langComp.repaint();
-	}
-	
-	public void setProjectType(boolean non_java){
-		Screen.getProjectFile().getProjectManager().setLanguageTag(LanguageTagView.LANGUAGE_TAG_ANY);
-		Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
-		Screen.getProjectFile().getProjectManager().save();
-		projectTypeNotificationPopup.
-		locateOnBottomLeft()
-		.showIt();
-	}
+    //IDE Dialogs
+    public static InfoScreen infoScreen;
+    public static ToolMenuPathBox pathBox;
+    public static SourceDefender sourceDefender;
+    public static JavaProjectWizard javaProjectWizard;
+    public static ProcessWizard processWizard;
+    public static MadeWithScreen madeWithScreen;
+    public static GradleModuleWizard gradleModuleWizard;
+    public static UniversalProjectWizard universalProjectWizard;
+    public static ProjectDistructionWizard projectDistructionWizard;
+    public static ConsoleSelector consoleSelector;
+    public static GradleBuildScriptManager gradleBuildScriptManager;
+    public static InstructionWindow instructionWindow;
+    public static ColorPicker colorPicker;
+    public static LanguageTagView languageTagView;
+    public static RecentsDialog recentsDialog;
+    public static GitHubClientWindow githubClientWindow;
+    public static DonationWindow donationWindow;
+    public static MainWindowSizeController mainWindowSizeController;
+    public static GitProjectWizard gitProjectWizard;
+    public static TemplateWizard templateWizard;
 
-	public static void showNonJavaSettings(){
-		if(GradleProcessManager.isGradleProject()) {
-			Screen.getScreen().loadFile(new File(Screen.getProjectFile().getProjectPath(), "settings.gradle"));
-			return;
-		}
-		if(Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
-			Screen.getUniversalSettingsView().setVisible(true);
-	}
+    public static NotificationPopup projectTypeNotificationPopup = null;
 
-	public void showFilePopup(){
-		fileMenu.showPopup();
-	}
+    private volatile boolean dragStarted = false;
+    private volatile boolean mousePressed = false;
+    private int pressX;
+    private int pressY;
 
-	public void showProjectPopup(){
-		projectMenu.showPopup();
-	}
+    //The window decoration objects
+    public static Color closeWinColor = TOOLMENU_COLOR2;
+    public static Color maximizeWinColor = TOOLMENU_COLOR4;
+    public static Color minimizeWinColor = TOOLMENU_COLOR3;
 
-	public void showCodePopup(){
-		codeMenu.showPopup();
-	}
+    public TextComp iconComp;
+    public TextComp langComp;
+    public TextComp minimizeComp;
+    public TextComp maximizeComp;
+    public TextComp closeComp;
 
-	public void showToolsPopup(){
-		toolsMenu.showPopup();
-	}
+    private BufferedImage image;
 
-	public void showSettingsPopup(){
-		setMenu.showPopup();
-	}
+    private Point lastLocation;
 
-	public void showHelpPopup(){
-		helpMenu.showPopup();
-	}
+    private Dimension lastSize;
 
-	private void initSetMenu() {
-		FontChooser fontC = new FontChooser(screen);
-		setPopup.createItem("Change Editor Font", IconManager.settingsImage, ()->{
-			Font font = fontC.chooseFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
-			UIManager.setEditorFontData(font.getSize(), font.getName(), font.getStyle());
-			screen.getUIManager().save();
-			screen.loadThemes();
-		})
-		.createItem("Change Terminal Font", IconManager.settingsImage, ()->{
-			Font font = fontC.chooseFont(new Font(UIManager.terminalFontName, UIManager.terminalFontState, UIManager.terminalFontSize));
-			UIManager.setTerminalFontData(font.getSize(), font.getName(), font.getStyle());
-			screen.getUIManager().save();
-		})
-		.createItem("Change Content Assist Font", IconManager.settingsImage, ()->{
-			Font font = fontC.chooseFont(AppDataManager.getHintFont());
-			AppDataManager.setHintFont(font);
-		})
-		.createItem("Change Workspace", IconManager.settingsImage, ()->new WorkspaceSelector(screen).setVisible(true))
-		.createItem("Animations", IconManager.settingsImage, ()->{
-			Screen.showAnimationsDialog();
-		})
-		.createItem("Set System Terminal", IconManager.fluentconsoleImage, ()->{
-			consoleSelector.setVisible(true);
-		})
-		.createItem("Set Gradle Script", IconManager.fluentgradleImage, ()->{
-			gradleBuildScriptManager.setVisible(true);
-		})
-		.createItem("Set Main Window Size", IconManager.fluenttesttubeImage, ()->{
-			mainWindowSizeController.setVisible(true);
-		});
-		FileSelectionDialog fs = new FileSelectionDialog(screen);
-		
-		setPopup.createItem("Set Background Illustration", IconManager.fluenticons8Logo, ()->{
-			fs.setTitle("Select an image(Should be 456x456 px)");
-			fs.setFileExtensions(".png", ".jpg");
-			LinkedList<File> files = fs.selectFiles();
-			if(!files.isEmpty()){
-				AppDataManager.setBackgroundIllustrationPath(files.get(0).getAbsolutePath());
-				Screen.getScreen().getTabPanel().loadIllustration();
-			}
-		});
-		
-		JDKSelectionDialog jdkSelectionDialog = new JDKSelectionDialog(screen);
-		
-		jdkItem = new OPopupItem(setPopup, "Project JDK : None", IconManager.fluentsourceImage, ()->{
-			String sel = jdkSelectionDialog.makeChoice();
-			if(Screen.isNotNull(sel)) {
-				Screen.getProjectFile().getProjectManager().setJDKPath(sel);
-			}
-		});
-		
-		jdkRootItem = new OPopupItem(setPopup, "Set JDK Root", IconManager.fluentsourceImage, ()->{
-			fs.setTitle("Select JDK Root");
-			LinkedList<File> files = fs.selectDirectories();
-			if(!files.isEmpty()){
-				AppDataManager.setPathToJava(files.get(0).getAbsolutePath());
-				jdkRootItem.setToolTipText(AppDataManager.getPathToJava());
-			}
-		});
-		
-		String text = "";
-		if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
-			text = "Instant Mode : Speed";
-		else if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
-			text = "Instant Mode : Accuracy";
-		
-		instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, ()->{
-			AppDataManager.setInstantMode((AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED)) ? AppDataManager.INSTANT_MODE_ACCURACY : AppDataManager.INSTANT_MODE_SPEED);
-			
-			if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
-				instantModeItem.setName("Instant Mode : Speed");
-			else if(AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
-				instantModeItem.setName("Instant Mode : Accuracy");
-		});
-		
-		parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + AppDataManager.isParsingEnabled(), IconManager.fluentsourceImage, ()->{
-			AppDataManager.setParsingEnabled(!AppDataManager.isParsingEnabled());
-			parsingEnabledItem.setName("Parsing Enabled : " + AppDataManager.isParsingEnabled());
-			if(!AppDataManager.isParsingEnabled()){
-				JavaSyntaxParser.resetHighlights();
-			}
-		});
-		
-		allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", "Ctrl + ALT + S", IconManager.settingsImage, ()->showNonJavaSettings());
-		
-		setPopup.addItem(jdkItem);
-		setPopup.addItem(jdkRootItem);
-		setPopup.addItem(parsingEnabledItem);
-		setPopup.addItem(instantModeItem);
-		setPopup.addItem(allSettingsItem);
-	}
-	
-	private void initHelpMenu() {
-		helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.fluentyoutubeImage, ()->{
-			try{
-				java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
-			}
-			catch(Exception e){
-				System.err.println(e);
-			}
-		})
-		.createItem("Plugin Store", IconManager.fluentpluginImage, ()->Screen.getPluginStore().setVisible(true))
-		.createItem("Plugin Manager", IconManager.fluentmanageImage, ()->Screen.getPluginsView().setVisible(true))
-		.createItem("Check for Update", IconManager.ideImage64, ()->{
-			new Thread(IDEUpdater::checkForUpdate).start();
-		})
-		.createItem("Donate", IconManager.ideImage64, ()->{
-			donationWindow.setVisible(true);
-		})
-		.createItem("Instructions", IconManager.fluentinfoImage, ()->{
-			instructionWindow.setVisible(true);
-		})
-		.createItem("Made With", IconManager.fluentinfoImage, ()->{
-			madeWithScreen.setVisible(true);
-		})
-		.createItem("About", IconManager.fluentinfoImage, ()->{
-			infoScreen.setVisible(true);
-		});
-	}
-	
-	private void initToolsPopup() {
-		toolsPopup
-		.createItem("GitHub Client", IconManager.fluentgithubIcon, ()->githubClientWindow.setDirectory(new File(Screen.getProjectFile().getProjectPath())))
-		.createItem("Source Defender", IconManager.fluentsourceImage, ()->sourceDefender.setVisible(true))
-		.createItem("Process Wizard", IconManager.fluentbuildImage, ()->processWizard.setVisible(true))
-		.createItem("Snippet Manager", IconManager.buildImage, ()->Screen.snippetView.setVisible(true))
-		.createItem("Color Picker", IconManager.fluentcolorwheelImage, ()->colorPicker.pickColor());
-	}
+    public ToolMenu(Screen screen) {
+        this.screen = screen;
+        if (javaProjectWizard == null) {
+            infoScreen = new InfoScreen(screen);
+            sourceDefender = new SourceDefender(screen);
+            javaProjectWizard = new JavaProjectWizard(screen);
+            processWizard = new ProcessWizard(screen);
+            madeWithScreen = new MadeWithScreen(screen);
+            gradleModuleWizard = new GradleModuleWizard(screen);
+            universalProjectWizard = new UniversalProjectWizard(screen);
+            consoleSelector = new ConsoleSelector(screen);
+            gradleBuildScriptManager = new GradleBuildScriptManager(screen);
+            projectDistructionWizard = new ProjectDistructionWizard(screen);
+            instructionWindow = new InstructionWindow(screen);
+            colorPicker = new ColorPicker(screen);
+            languageTagView = new LanguageTagView(screen);
+            recentsDialog = new RecentsDialog(screen);
+            githubClientWindow = new GitHubClientWindow(screen);
+            donationWindow = new DonationWindow(screen);
+            mainWindowSizeController = new MainWindowSizeController(screen);
+            gitProjectWizard = new GitProjectWizard(screen);
+            templateWizard = new TemplateWizard(screen);
 
-	private void initCodePopup(){
-		contentAssistOnItem = new OPopupItem(codePopup, AppDataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped", IconManager.fluentsourceImage, ()->{
-			AppDataManager.setContentAssistRealTime(!AppDataManager.isContentAssistRealTime());
-			contentAssistOnItem.setName(AppDataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
-		});
-		
-		contentAssistModeItem = new OPopupItem(codePopup, AppDataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer", IconManager.fluentsourceImage, ()->{
-			AppDataManager.setContentModeJava(!AppDataManager.isContentModeJava());
-			contentAssistModeItem.setName(AppDataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
-		});
-		
-		autoImportModeItem = new OPopupItem(codePopup, AppDataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports", IconManager.fluentsourceImage, ()->{
-			AppDataManager.setUseStarImports(!AppDataManager.isUsingStarImports());
-			autoImportModeItem.setName(AppDataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
-		});
+            projectTypeNotificationPopup = NotificationPopup.create(screen)
+                    .title("Project Type Management")
+                    .dialogIcon(IconManager.fluentfolderImage)
+                    .message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+                    .shortMessage("Click this to Exit", TOOLMENU_COLOR2)
+                    .iconButton(IconManager.fluentcloseImage, () -> {
+                        try {
+                            for (Process p : Screen.getProjectRunner().runningApps) {
+                                if (p.isAlive())
+                                    p.destroyForcibly();
+                            }
+                        } catch (Exception e2) {
 
-		codePopup.addItem(contentAssistOnItem);
-		codePopup.addItem(contentAssistModeItem);
-		codePopup.addItem(autoImportModeItem);
-		
-		codePopup
-		.createItem("Generate Getter/Setter", "Ctrl + SHIFT + G", IconManager.buildImage, ()->Generator.gsView.genView(screen.getCurrentEditor()))
-		.createItem("Override/Implement Methods", "Ctrl + SHIFT + I", IconManager.buildImage, ()->Generator.overView.genView(screen.getCurrentEditor()));
-	}
-	
-	private void initProjectPopup() {
-		JFileChooser fileC = new JFileChooser();
-		projectPopup.createItem("Manage Build-Path", IconManager.fluentbuildpathIcon, ()->Screen.getProjectFile().getDependencyView().setVisible(true))
-		.createItem("Add Additional Flags", IconManager.fluentbuildpathIcon, ()->{
-			Screen.getProjectFile().getExtendedDependencyView().setVisible(true);
-		})
-		.createItem("Refresh", IconManager.fluentrefreshIcon, ()->Screen.getProjectFile().getFileTreePanel().refresh())
-		.createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
-		.createItem("Create Gradle Module", IconManager.fluentgradleImage, ()->ToolMenu.gradleModuleWizard.setVisible(true))
-		.createItem("Delete Project", IconManager.fluentdemonImage, ()->projectDistructionWizard.setVisible(true));
-	}
-	
-	private void initFilePopup() {
-		//New Menu Items
-		filePopup.createItem("Open File", "Ctrl + ALT + O", IconManager.fileImage, ()->Screen.getProjectFile().open("File"))
-		.createItem("Open Project", "Ctrl + O", IconManager.projectImage, ()->Screen.getProjectFile().open("Project"))
-		.createItem("New Project (Git)", "Ctrl + G", IconManager.fluentgithubIcon, ()->gitProjectWizard.setVisible(true))
-		.createItem("New Project (Java)", "Ctrl + N", IconManager.projectImage, ()->javaProjectWizard.setVisible(true))
-		.createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, ()->universalProjectWizard.setVisible(true))
-		.createItem("New Template File", "", IconManager.fluenttemplateImage, ()->templateWizard.setVisible(true));
+                        }
+                        Screen.getPluginManager().save();
+                        Screen.getUIManager().save();
+                        Screen.getDataManager().saveData();
+                        Screen.getScreen().saveAllEditors();
+                        try {
+                            Screen.getProjectFile().getProjectManager().save();
+                        } catch (Exception e2) {
 
-		recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", "Ctrl + SHIFT + M", IconManager.fluentrecentImage, ()->{
-			recentsDialog.setVisible(true);
-		});
-		filePopup.addItem(recentsMenu);
+                        }
+                        System.exit(0);
+                    }, "You need to manually start the IDE again!")
+                    .build();
+        }
+        setLayout(null);
+        setSize(screen.getWidth(), 90);
+        setPreferredSize(getSize());
+        UIManager.setData(this);
+        setBackground(back2);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == 1 && e.getClickCount() == 2) {
+                    maximize();
+                    return;
+                }
+                pressX = e.getX();
+                pressY = e.getY();
+                dragStarted = true;
+                mousePressed = true;
+            }
 
-		allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(350).height(250);
-		allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, ()->{
-			allProjectsPopup.setLocationRelativeTo(null);
-			allProjectsPopup.setVisible(true);
-		});
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                mousePressed = false;
+                dragStarted = false;
+            }
 
-		File home = new File(AppDataManager.getWorkspace());
-		if(home.exists()){
-			allProjectsPopup.trash();
-			File[] files = home.listFiles();
-			for(int i = 0; i < files.length; i++){
-				for(int j = 0; j < files.length - i - 1; j++){
-					if(files[j].getName().compareTo(files[j + 1].getName()) > 0){
-						File f = files[j];
-						files[j] = files[j + 1];
-						files[j + 1] = f;
-					}
-				}
-			}
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!mousePressed)
+                    dragStarted = false;
+            }
+        });
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (!dragStarted)
+                    return;
+                if (screen.getExtendedState() == Screen.NORMAL)
+                    screen.setLocation(e.getXOnScreen() - pressX, e.getYOnScreen() - pressY);
+            }
+        });
+        init();
+    }
 
-			for(File fileZ : files){
-				if(fileZ.isDirectory()){
-					allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, ()->{
-						Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
-						screen.loadProject(fileZ);
-					});
-				}
-			}
-		}
+    private void init() {
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/omega_ide_icon128" + (UIManager.isDarkMode() ? "_dark.png" : ".png")));
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        iconComp = new TextComp(image, 30, 30, back2, back2, back2, null);
+        iconComp.setBounds(0, 0, 30, 30);
+        iconComp.setClickable(false);
+        iconComp.setArc(0, 0);
+        add(iconComp);
 
-		filePopup.addItem(allMenu);
-		filePopup.createItem("Close Project", IconManager.projectImage, ()->Screen.getProjectFile().closeProject())
-		.createItem("Save All Editors", "Ctrl + SHIFT + S", IconManager.fluentsaveImage, ()->screen.saveAllEditors())
-		.createItem("Restart", IconManager.fluentcloseImage, IDE::restart)
-		.createItem("Exit", IconManager.closeImage, IDE::exit);
-	}
-	
-	private void addComp(Component c) {
-		add(c);
-	}
-	
-	public void deleteDir(File file) throws Exception {
-		if (file.isDirectory()) {
-			if (file.list().length == 0){
-				deleteEmptyDir(file);
-			}
-			else{
-				File files[] = file.listFiles();
-				for (File fileDelete : files)
-					deleteDir(fileDelete);
-				
-				if (file.list().length == 0)
-					deleteEmptyDir(file);
-			}
-		}
-		else
-			deleteEmptyDir(file);
-	}
-	
-	private void deleteEmptyDir(File file) {
-		file.delete();
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		reshapeComp();
-	}
-	
-	public class Menu extends JComponent {
-		
-		private String text;
+        langComp = new TextComp(IconManager.fluentjavaImage, 25, 25, back3, back2, back2, this::changeLang);
+        langComp.setBounds(30, 0, 30, 30);
+        langComp.setArc(0, 0);
+        add(langComp);
 
-		private OPopupWindow popup;
-		
-		private volatile boolean enter;
-		
-		public Menu(OPopupWindow popup, String text) {
-			this.text = text;
-			this.popup = popup;
-			UIManager.setData(this);
-			addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					enter = true;
-					repaint();
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					enter = false;
-					repaint();
-				}
-				@Override
-				public void mousePressed(MouseEvent e) {
-					showPopup();
-				}
-			});
-		}
+        closeComp = new TextComp("", c1, back2, c3, this::disposeAll) {
+            @Override
+            public void draw(Graphics2D g) {
+                g.setColor(back2);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(closeWinColor);
+                g.fillRoundRect(getWidth() / 2 - 10, getHeight() / 2 - 10, 20, 20, 10, 10);
+                if (isMouseEntered()) {
+                    g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
+                    g.setFont(PX14);
+                    g.setColor(back2);
+                    g.drawString("x", getWidth() / 2 - g.getFontMetrics().stringWidth("x") / 2,
+                            getHeight() / 2 - g.getFontMetrics().getHeight() / 2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+                }
+            }
+        };
+        add(closeComp);
 
-		public void showPopup(){
-			if(popup.isVisible()){
-				popup.setVisible(false);
-				return;
-			}
-			popup.setLocation(getX() + screen.getX(), getY() + getHeight() + 15 + getHeight() + screen.getY());
-			popup.setVisible(true);
-		}
-		
-		@Override
-		public void setFont(Font f) {
-			super.setFont(PX14);
-			setSize(100, ToolMenu.this.getHeight());
-			setPreferredSize(getSize());
-		}
-		
-		@Override
-		public void paint(Graphics g2D) {
-			Graphics2D g = (Graphics2D)g2D;
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g.setColor(back2);
-			g.fillRect(0, 0, getWidth(), getHeight());
-			g.setColor(TOOLMENU_COLOR2);
-			g.setFont(getFont());
-			int x = g.getFontMetrics().stringWidth(text);
-			int cx = x;
-			x = getWidth()/2 - x/2;
-			if(enter) {
-				g.setColor(TOOLMENU_COLOR6);
-				g.fillRect(x, getHeight() - 3, cx, 2);
-			}
-			g.setFont(getFont());
-			g.drawString(text, x, getFont().getSize());
-		}
-	}
+        maximizeComp = new TextComp("", c1, back2, c3, this::maximize) {
+            @Override
+            public void draw(Graphics2D g) {
+                g.setColor(back2);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(maximizeWinColor);
+                g.fillRoundRect(getWidth() / 2 - 10, getHeight() / 2 - 10, 20, 20, 10, 10);
+                if (isMouseEntered()) {
+                    g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
+                    g.setFont(PX14);
+                    g.setColor(back2);
+                    g.drawString((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? "><" : "<>", getWidth() / 2 - g.getFontMetrics().stringWidth("<>") / 2,
+                            getHeight() / 2 - g.getFontMetrics().getHeight() / 2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+                }
+            }
+        };
+        add(maximizeComp);
+
+        minimizeComp = new TextComp("", c1, back2, c3, this::minimize) {
+            @Override
+            public void draw(Graphics2D g) {
+                g.setColor(back2);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(minimizeWinColor);
+                g.fillRoundRect(getWidth() / 2 - 10, getHeight() / 2 - 10, 20, 20, 10, 10);
+                if (isMouseEntered()) {
+                    g.fillRoundRect(2, getHeight() - 4, getWidth() - 4, 4, 5, 5);
+                    g.setFont(PX14);
+                    g.setColor(back2);
+                    g.drawString("-", getWidth() / 2 - g.getFontMetrics().stringWidth("-") / 2,
+                            getHeight() / 2 - g.getFontMetrics().getHeight() / 2 + g.getFontMetrics().getAscent() - g.getFontMetrics().getDescent() + 1);
+                }
+            }
+        };
+        minimizeComp.setArc(0, 0);
+        add(minimizeComp);
+
+        memoryComp = new TextComp("", "Memory Usage (Excluding JVM). Click to Run GC.", TOOLMENU_COLOR6_SHADE, TOOLMENU_GRADIENT, glow, () -> {
+            System.gc();
+            computeMemoryUsage();
+        });
+        memoryComp.setOnMouseEntered(this::computeMemoryUsage);
+        memoryComp.setArc(0, 0);
+        memoryComp.setFont(PX14);
+        add(memoryComp);
+
+        taskComp = new TextComp("", back2, back2, TOOLMENU_COLOR1, null);
+        taskComp.setOnMouseEntered(this::computeMemoryUsage);
+        taskComp.setArc(0, 0);
+        taskComp.setFont(PX14);
+        taskComp.setHighlightColor(TOOLMENU_COLOR5);
+        taskComp.setTextAlignment(TextComp.TEXT_ALIGNMENT_RIGHT);
+        taskComp.setClickable(false);
+        add(taskComp);
+
+        computeMemoryUsage();
+
+        filePopup = OPopupWindow.gen("File Menu", screen, 0, false).width(510);
+        initFilePopup();
+        fileMenu = new Menu(filePopup, "File");
+        fileMenu.setBounds(60, 5, 40, 20);
+        addComp(fileMenu);
+
+        projectPopup = OPopupWindow.gen("Project Menu", screen, 0, false).width(250);
+        initProjectPopup();
+        projectMenu = new Menu(projectPopup, "Project");
+        projectMenu.setBounds(100, 5, 60, 20);
+        addComp(projectMenu);
+
+        codePopup = OPopupWindow.gen("Code Menu", screen, 0, false).width(350);
+        initCodePopup();
+        codeMenu = new Menu(codePopup, "Code");
+        codeMenu.setBounds(165, 5, 35, 20);
+        addComp(codeMenu);
+
+        toolsPopup = OPopupWindow.gen("Tools Menu", screen, 0, false).width(300);
+        initToolsPopup();
+        toolsMenu = new Menu(toolsPopup, "Tools");
+        toolsMenu.setBounds(200, 5, 50, 20);
+        addComp(toolsMenu);
+
+        setPopup = OPopupWindow.gen("Settings Menu", screen, 0, false).width(270);
+        initSetMenu();
+        setMenu = new Menu(setPopup, "Settings");
+        setMenu.setBounds(252, 5, 60, 20);
+        addComp(setMenu);
+
+        helpPopup = OPopupWindow.gen("Help Menu", screen, 0, false).width(300);
+        initHelpMenu();
+        helpMenu = new Menu(helpPopup, "Help");
+        helpMenu.setBounds(314, 5, 40, 20);
+        addComp(helpMenu);
+
+        openProjectComp = new TextComp(fluentfolderImage, 20, 20, "Open Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> Screen.getProjectFile().open("Project"));
+        openProjectComp.setBounds(2, 33, 24, 24);
+        openProjectComp.setFont(PX14);
+        openProjectComp.setArcVisible(true, false, true, false);
+        addComp(openProjectComp);
+
+        openFileComp = new TextComp(fluentfileImage, 20, 20, "Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> Screen.getProjectFile().open("File"));
+        openFileComp.setBounds(28, 33, 24, 24);
+        openFileComp.setFont(PX14);
+        openFileComp.setArcVisible(true, false, true, false);
+        addComp(openFileComp);
+
+        newProjectComp = new TextComp(fluentnewfolderImage, 20, 20, "Create New Java Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> javaProjectWizard.setVisible(true));
+        newProjectComp.setBounds(54, 33, 24, 24);
+        newProjectComp.setFont(PX14);
+        newProjectComp.setArcVisible(true, false, true, false);
+        addComp(newProjectComp);
+
+        newFileComp = new TextComp(fluentnewfileImage, 20, 20, "Create New File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> Screen.getProjectFile().getFileCreator().show("Custom File"));
+        newFileComp.setBounds(80, 33, 24, 24);
+        newFileComp.setFont(PX14);
+        newFileComp.setArcVisible(true, false, true, false);
+        addComp(newFileComp);
+
+        sep0 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
+        sep0.setBounds(108, 31, 2, 28);
+        addComp(sep0);
+
+        OPopupWindow consoleItemWindow = new OPopupWindow("Select Console Type", screen, 0, false).width(270);
+        consoleItemWindow
+                .createItem("New System Terminal", IconManager.fluentconsoleImage, consoleSelector::launchTerminal)
+                .createItem("Faster Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showTerminal)
+                .createItem("Full-Fledge Terminal", IconManager.fluentconsoleImage, Screen.getTerminalComp()::showJetTerminal);
+
+        shellComp = new TextComp(fluentconsoleImage, 20, 20, "Launch a terminal", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, null);
+        shellComp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                consoleItemWindow.setLocation(e.getXOnScreen(), e.getYOnScreen() + 10 + OPopupWindow.HEIGHT);
+                consoleItemWindow.setVisible(true);
+            }
+        });
+        shellComp.put("Popup", consoleItemWindow);
+        shellComp.setFont(PX16);
+        shellComp.setBounds(114, 33, 24, 24);
+        shellComp.setArcVisible(false, true, false, true);
+        add(shellComp);
+
+        themeComp = new TextComp(IconManager.fluentchangethemeImage, 20, 20, "Change Theme", TOOLMENU_COLOR6_SHADE, back3, TOOLMENU_COLOR6,
+                () -> {
+                    Screen.pickTheme(AppDataManager.getTheme());
+                    if (!themeComp.getName().equals(AppDataManager.getTheme())) {
+                        NotificationPopup.create(screen)
+                                .size(300, 120)
+                                .title("Theme Manager")
+                                .dialogIcon(IconManager.fluentupdateImage)
+                                .message("IDE's Restart is Required!", TOOLMENU_COLOR4)
+                                .shortMessage("Click this to Restart", TOOLMENU_COLOR2)
+                                .iconButton(IconManager.fluentcloseImage, IDE::restart, "")
+                                .build()
+                                .locateOnBottomLeft()
+                                .showIt();
+                    }
+                    themeComp.setName(AppDataManager.getTheme());
+                });
+        themeComp.setName(AppDataManager.getTheme());
+        themeComp.setBounds(140, 33, 24, 24);
+        add(themeComp);
+
+        searchComp = new TextComp(fluentsearchImage, 20, 20, "Search and Open File", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> Screen.getProjectFile().getSearchWindow().setVisible(true));
+        searchComp.setBounds(166, 33, 24, 24);
+        searchComp.setArcVisible(true, false, true, false);
+        addComp(searchComp);
+
+        sep1 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
+        sep1.setBounds(194, 31, 2, 28);
+        addComp(sep1);
+
+        runComp = new TextComp(fluentrunImage, 20, 20, "Run Project, Right Click to launch without build! (Not for Gradle)", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> {
+            if (runComp.isClickable() && buildComp.isClickable()) {
+                if (GradleProcessManager.isGradleProject())
+                    GradleProcessManager.run();
+                else
+                    Screen.getProjectRunner().run();
+            }
+        });
+        runComp.setBounds(200, 33, 24, 24);
+        runComp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == 3) {
+                    if (GradleProcessManager.isGradleProject())
+                        return;
+                    if (runComp.isClickable() && buildComp.isClickable())
+                        Screen.getProjectRunner().justRun();
+                }
+            }
+        });
+        runComp.setArcVisible(false, true, false, true);
+        add(runComp);
+
+        buildComp = new TextComp(fluentbuildImage, 20, 20, "Build Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> {
+            if (runComp.isClickable() && buildComp.isClickable()) {
+                if (GradleProcessManager.isGradleProject())
+                    GradleProcessManager.build();
+                else
+                    Screen.getProjectBuilder().compileProject();
+            }
+        });
+        buildComp.setBounds(226, 33, 24, 24);
+        buildComp.setArcVisible(true, false, true, false);
+        add(buildComp);
+
+        sep2 = new TextComp("", TOOLMENU_COLOR3_SHADE, TOOLMENU_COLOR3, TOOLMENU_COLOR3, null);
+        sep2.setBounds(254, 31, 2, 28);
+        addComp(sep2);
+
+        instantRunComp = new TextComp(fluentrocketImage, 20, 20, "Instant Run(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> {
+            Screen.getProjectRunner().instantRun();
+        });
+        instantRunComp.setBounds(260, 33, 24, 24);
+        instantRunComp.setArcVisible(false, true, false, true);
+        add(instantRunComp);
+
+        instantBuildComp = new TextComp(fluentrocketbuildImage, 20, 20, "Instant Build(Java Only), Uses System Default JDK for Building Project", TOOLMENU_COLOR1_SHADE, back3, TOOLMENU_COLOR1, () -> {
+            Screen.getProjectRunner().instantBuild();
+        });
+        instantBuildComp.setBounds(286, 33, 24, 24);
+        instantBuildComp.setArcVisible(true, false, true, false);
+        add(instantBuildComp);
+
+        pathBox = new ToolMenuPathBox();
+        add(pathBox);
+
+        reshapeComp();
+
+        putAnimationLayer(openProjectComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(openFileComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(newProjectComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(newFileComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+
+        putAnimationLayer(shellComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(themeComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(searchComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+
+        putAnimationLayer(runComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(buildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+
+        putAnimationLayer(instantRunComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+        putAnimationLayer(instantBuildComp, getImageSizeAnimationLayer(25, 3, true), ACTION_MOUSE_ENTERED);
+
+        putAnimationLayer(langComp, getImageSizeAnimationLayer(25, -5, true), ACTION_MOUSE_ENTERED);
+
+        ImageSizeTransitionAnimationLayer layer = (ImageSizeTransitionAnimationLayer) getImageSizeAnimationLayer(25, -5, true);
+        languageTagView.prepareLayer(layer, iconComp, -5, true);
+
+        putAnimationLayer(iconComp, layer, ACTION_MOUSE_ENTERED);
+
+        putComp(iconComp, layer);
+    }
+
+    public void minimize() {
+        screen.setState(Screen.ICONIFIED);
+        Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_IDE_MINIMIZED, this, true));
+    }
+
+    public void maximize() {
+        screen.setExtendedState((screen.getExtendedState() == Screen.NORMAL) ? Screen.MAXIMIZED_BOTH : Screen.NORMAL);
+        Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance((screen.getExtendedState() == Screen.MAXIMIZED_BOTH) ? PluginReactionEvent.EVENT_TYPE_IDE_MAXIMIZED : PluginReactionEvent.EVENT_TYPE_IDE_RESTORED, this, ((screen.getExtendedState() == Screen.MAXIMIZED_BOTH))));
+    }
+
+    public void disposeAll() {
+        screen.dispose();
+    }
+
+    public void computeMemoryUsage() {
+        long ram = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        ram = (long) (ram / 1000000);
+        memoryComp.setText(ram + " MB");
+    }
+
+    public void setTask(String task) {
+        setMsg(task);
+    }
+
+    public void setTask(String task, String... highlights) {
+        taskComp.addHighlightText(highlights);
+        setMsg(task);
+    }
+
+    public static ToolMenuPathBox getPathBox() {
+        return pathBox;
+    }
+
+    public void setMsg(String msg) {
+        if (Screen.isNotNull(msg))
+            taskComp.setText(msg);
+        else
+            taskComp.setText("");
+    }
+
+    public void reshapeComp() {
+        //Resizing PathBox
+        pathBox.setBounds(0, 60, getWidth(), 25);
+
+        //Resizing Memory Comp
+        memoryComp.setBounds(getWidth() - 60 - (30 * 3), 0, 60, 30);
+
+        //Resizing Task Comp
+        taskComp.setBounds(getWidth() - 400, 33, 400, 24);
+
+        //Window Decorations
+        closeComp.setBounds(getWidth() - 30, 0, 30, 30);
+        maximizeComp.setBounds(getWidth() - (30 * 2), 0, 30, 30);
+        minimizeComp.setBounds(getWidth() - (30 * 3), 0, 30, 30);
+    }
+
+    public void changeLocations(boolean non_java) {
+        reloadItems(non_java);
+        repaint();
+    }
+
+    public void reloadItems(boolean non_java) {
+        jdkItem.setEnabled(!non_java);
+        jdkRootItem.setToolTipText(AppDataManager.getPathToJava());
+        allSettingsItem.setEnabled(non_java);
+        instantModeItem.setEnabled(!non_java);
+        parsingEnabledItem.setEnabled(!non_java);
+        contentAssistModeItem.setEnabled(!non_java);
+        sep2.setVisible(!non_java);
+        instantRunComp.setVisible(!non_java);
+        instantBuildComp.setVisible(!non_java);
+        if (Screen.getProjectFile().getJDKManager() != null)
+            jdkItem.setName("Project JDK : Java " + Screen.getProjectFile().getJDKManager().getVersionAsInt());
+        else
+            jdkItem.setName("Project JDK : None");
+
+        if (AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
+            instantModeItem.setName("Instant Mode : Speed");
+        else if (AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
+            instantModeItem.setName("Instant Mode : Accuracy");
+
+        parsingEnabledItem.setName("Parsing Enabled : " + AppDataManager.isParsingEnabled());
+    }
+
+    public void changeLang() {
+        languageTagView.setVisible(true);
+        langComp.image = LanguageTagView.getRespectiveTagImage(Screen.getProjectFile().getProjectManager().getLanguageTag());
+        langComp.repaint();
+    }
+
+    public void setProjectType(boolean non_java) {
+        Screen.getProjectFile().getProjectManager().setLanguageTag(LanguageTagView.LANGUAGE_TAG_ANY);
+        Screen.getScreen().manageTools(Screen.getProjectFile().getProjectManager());
+        Screen.getProjectFile().getProjectManager().save();
+        projectTypeNotificationPopup.
+                locateOnBottomLeft()
+                .showIt();
+    }
+
+    public static void showNonJavaSettings() {
+        if (GradleProcessManager.isGradleProject()) {
+            Screen.getScreen().loadFile(new File(Screen.getProjectFile().getProjectPath(), "settings.gradle"));
+            return;
+        }
+        if (Screen.getProjectFile().getProjectManager().isLanguageTagNonJava())
+            Screen.getUniversalSettingsView().setVisible(true);
+    }
+
+    public void showFilePopup() {
+        fileMenu.showPopup();
+    }
+
+    public void showProjectPopup() {
+        projectMenu.showPopup();
+    }
+
+    public void showCodePopup() {
+        codeMenu.showPopup();
+    }
+
+    public void showToolsPopup() {
+        toolsMenu.showPopup();
+    }
+
+    public void showSettingsPopup() {
+        setMenu.showPopup();
+    }
+
+    public void showHelpPopup() {
+        helpMenu.showPopup();
+    }
+
+    private void initSetMenu() {
+        FontChooser fontC = new FontChooser(screen);
+        setPopup.createItem("Change Editor Font", IconManager.settingsImage, () -> {
+                    Font font = fontC.chooseFont(new Font(UIManager.fontName, UIManager.fontState, UIManager.fontSize));
+                    UIManager.setEditorFontData(font.getSize(), font.getName(), font.getStyle());
+                    screen.getUIManager().save();
+                    screen.loadThemes();
+                })
+                .createItem("Change Terminal Font", IconManager.settingsImage, () -> {
+                    Font font = fontC.chooseFont(new Font(UIManager.terminalFontName, UIManager.terminalFontState, UIManager.terminalFontSize));
+                    UIManager.setTerminalFontData(font.getSize(), font.getName(), font.getStyle());
+                    screen.getUIManager().save();
+                })
+                .createItem("Change Content Assist Font", IconManager.settingsImage, () -> {
+                    Font font = fontC.chooseFont(AppDataManager.getHintFont());
+                    AppDataManager.setHintFont(font);
+                })
+                .createItem("Change Workspace", IconManager.settingsImage, () -> new WorkspaceSelector(screen).setVisible(true))
+                .createItem("Animations", IconManager.settingsImage, () -> {
+                    Screen.showAnimationsDialog();
+                })
+                .createItem("Set System Terminal", IconManager.fluentconsoleImage, () -> {
+                    consoleSelector.setVisible(true);
+                })
+                .createItem("Set Gradle Script", IconManager.fluentgradleImage, () -> {
+                    gradleBuildScriptManager.setVisible(true);
+                })
+                .createItem("Set Main Window Size", IconManager.fluenttesttubeImage, () -> {
+                    mainWindowSizeController.setVisible(true);
+                });
+        FileSelectionDialog fs = new FileSelectionDialog(screen);
+
+        setPopup.createItem("Set Background Illustration", IconManager.fluenticons8Logo, () -> {
+            fs.setTitle("Select an image(Should be 456x456 px)");
+            fs.setFileExtensions(".png", ".jpg");
+            LinkedList<File> files = fs.selectFiles();
+            if (!files.isEmpty()) {
+                AppDataManager.setBackgroundIllustrationPath(files.get(0).getAbsolutePath());
+                Screen.getScreen().getTabPanel().loadIllustration();
+            }
+        });
+
+        JDKSelectionDialog jdkSelectionDialog = new JDKSelectionDialog(screen);
+
+        jdkItem = new OPopupItem(setPopup, "Project JDK : None", IconManager.fluentsourceImage, () -> {
+            String sel = jdkSelectionDialog.makeChoice();
+            if (Screen.isNotNull(sel)) {
+                Screen.getProjectFile().getProjectManager().setJDKPath(sel);
+            }
+        });
+
+        jdkRootItem = new OPopupItem(setPopup, "Set JDK Root", IconManager.fluentsourceImage, () -> {
+            fs.setTitle("Select JDK Root");
+            LinkedList<File> files = fs.selectDirectories();
+            if (!files.isEmpty()) {
+                AppDataManager.setPathToJava(files.get(0).getAbsolutePath());
+                jdkRootItem.setToolTipText(AppDataManager.getPathToJava());
+            }
+        });
+
+        String text = "";
+        if (AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
+            text = "Instant Mode : Speed";
+        else if (AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
+            text = "Instant Mode : Accuracy";
+
+        instantModeItem = new OPopupItem(setPopup, text, IconManager.fluentrocketImage, () -> {
+            AppDataManager.setInstantMode((AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED)) ? AppDataManager.INSTANT_MODE_ACCURACY : AppDataManager.INSTANT_MODE_SPEED);
+
+            if (AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_SPEED))
+                instantModeItem.setName("Instant Mode : Speed");
+            else if (AppDataManager.getInstantMode().equals(AppDataManager.INSTANT_MODE_ACCURACY))
+                instantModeItem.setName("Instant Mode : Accuracy");
+        });
+
+        parsingEnabledItem = new OPopupItem(setPopup, "Parsing Enabled : " + AppDataManager.isParsingEnabled(), IconManager.fluentsourceImage, () -> {
+            AppDataManager.setParsingEnabled(!AppDataManager.isParsingEnabled());
+            parsingEnabledItem.setName("Parsing Enabled : " + AppDataManager.isParsingEnabled());
+            if (!AppDataManager.isParsingEnabled()) {
+                JavaSyntaxParser.resetHighlights();
+            }
+        });
+
+        allSettingsItem = new OPopupItem(setPopup, "Settings (Non-Java)", "Ctrl + ALT + S", IconManager.settingsImage, () -> showNonJavaSettings());
+
+        setPopup.addItem(jdkItem);
+        setPopup.addItem(jdkRootItem);
+        setPopup.addItem(parsingEnabledItem);
+        setPopup.addItem(instantModeItem);
+        setPopup.addItem(allSettingsItem);
+    }
+
+    private void initHelpMenu() {
+        helpPopup.createItem("Stucked? See Tutorial Videos", IconManager.fluentyoutubeImage, () -> {
+                    try {
+                        java.awt.Desktop.getDesktop().browse(new java.net.URL("https://www.youtube.com/channel/UCpuQLV8MfuHaWHYSq-PRFXg").toURI());
+                    } catch (Exception e) {
+                        System.err.println(e);
+                    }
+                })
+                .createItem("Plugin Store", IconManager.fluentpluginImage, () -> Screen.getPluginStore().setVisible(true))
+                .createItem("Plugin Manager", IconManager.fluentmanageImage, () -> Screen.getPluginsView().setVisible(true))
+                .createItem("Check for Update", IconManager.ideImage64, () -> {
+                    new Thread(IDEUpdater::checkForUpdate).start();
+                })
+                .createItem("Donate", IconManager.ideImage64, () -> {
+                    donationWindow.setVisible(true);
+                })
+                .createItem("Instructions", IconManager.fluentinfoImage, () -> {
+                    instructionWindow.setVisible(true);
+                })
+                .createItem("Made With", IconManager.fluentinfoImage, () -> {
+                    madeWithScreen.setVisible(true);
+                })
+                .createItem("About", IconManager.fluentinfoImage, () -> {
+                    infoScreen.setVisible(true);
+                });
+    }
+
+    private void initToolsPopup() {
+        toolsPopup
+                .createItem("GitHub Client", IconManager.fluentgithubIcon, () -> githubClientWindow.setDirectory(new File(Screen.getProjectFile().getProjectPath())))
+                .createItem("Source Defender", IconManager.fluentsourceImage, () -> sourceDefender.setVisible(true))
+                .createItem("Process Wizard", IconManager.fluentbuildImage, () -> processWizard.setVisible(true))
+                .createItem("Snippet Manager", IconManager.buildImage, () -> Screen.snippetView.setVisible(true))
+                .createItem("Color Picker", IconManager.fluentcolorwheelImage, () -> colorPicker.pickColor());
+    }
+
+    private void initCodePopup() {
+        contentAssistOnItem = new OPopupItem(codePopup, AppDataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped", IconManager.fluentsourceImage, () -> {
+            AppDataManager.setContentAssistRealTime(!AppDataManager.isContentAssistRealTime());
+            contentAssistOnItem.setName(AppDataManager.isContentAssistRealTime() ? "Content Assist is ON" : "Content Assist is Stopped");
+        });
+
+        contentAssistModeItem = new OPopupItem(codePopup, AppDataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer", IconManager.fluentsourceImage, () -> {
+            AppDataManager.setContentModeJava(!AppDataManager.isContentModeJava());
+            contentAssistModeItem.setName(AppDataManager.isContentModeJava() ? "Content Assist Mode : Java" : "Content Assist Mode : Tokenizer");
+        });
+
+        autoImportModeItem = new OPopupItem(codePopup, AppDataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports", IconManager.fluentsourceImage, () -> {
+            AppDataManager.setUseStarImports(!AppDataManager.isUsingStarImports());
+            autoImportModeItem.setName(AppDataManager.isUsingStarImports() ? "Using Asterisk Imports" : "Using Named Imports");
+        });
+
+        codePopup.addItem(contentAssistOnItem);
+        codePopup.addItem(contentAssistModeItem);
+        codePopup.addItem(autoImportModeItem);
+
+        codePopup
+                .createItem("Generate Getter/Setter", "Ctrl + SHIFT + G", IconManager.buildImage, () -> Generator.gsView.genView(screen.getCurrentEditor()))
+                .createItem("Override/Implement Methods", "Ctrl + SHIFT + I", IconManager.buildImage, () -> Generator.overView.genView(screen.getCurrentEditor()));
+    }
+
+    private void initProjectPopup() {
+        JFileChooser fileC = new JFileChooser();
+        projectPopup.createItem("Manage Build-Path", IconManager.fluentbuildpathIcon, () -> Screen.getProjectFile().getDependencyView().setVisible(true))
+                .createItem("Add Additional Flags", IconManager.fluentbuildpathIcon, () -> {
+                    Screen.getProjectFile().getExtendedDependencyView().setVisible(true);
+                })
+                .createItem("Refresh", IconManager.fluentrefreshIcon, () -> Screen.getProjectFile().getFileTreePanel().refresh())
+                .createItem("Initialize Gradle", IconManager.fluentgradleImage, GradleProcessManager::init)
+                .createItem("Create Gradle Module", IconManager.fluentgradleImage, () -> ToolMenu.gradleModuleWizard.setVisible(true))
+                .createItem("Delete Project", IconManager.fluentdemonImage, () -> projectDistructionWizard.setVisible(true));
+    }
+
+    private void initFilePopup() {
+        //New Menu Items
+        filePopup.createItem("Open File", "Ctrl + ALT + O", IconManager.fileImage, () -> Screen.getProjectFile().open("File"))
+                .createItem("Open Project", "Ctrl + O", IconManager.projectImage, () -> Screen.getProjectFile().open("Project"))
+                .createItem("New Project (Git)", "Ctrl + G", IconManager.fluentgithubIcon, () -> gitProjectWizard.setVisible(true))
+                .createItem("New Project (Java)", "Ctrl + N", IconManager.projectImage, () -> javaProjectWizard.setVisible(true))
+                .createItem("New Project (non-java project)", "Ctrl + SHIFT + N", IconManager.projectImage, () -> universalProjectWizard.setVisible(true))
+                .createItem("New Template File", "", IconManager.fluenttemplateImage, () -> templateWizard.setVisible(true));
+
+        recentsMenu = new OPopupItem(filePopup, "Recent Files / Projects", "Ctrl + SHIFT + M", IconManager.fluentrecentImage, () -> {
+            recentsDialog.setVisible(true);
+        });
+        filePopup.addItem(recentsMenu);
+
+        allProjectsPopup = OPopupWindow.gen("All Projects Menu", screen, 0, true).width(350).height(250);
+        allMenu = new OPopupItem(allProjectsPopup, "All Projects", IconManager.projectImage, () -> {
+            allProjectsPopup.setLocationRelativeTo(null);
+            allProjectsPopup.setVisible(true);
+        });
+
+        File home = new File(AppDataManager.getWorkspace());
+        if (home.exists()) {
+            allProjectsPopup.trash();
+            File[] files = home.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                for (int j = 0; j < files.length - i - 1; j++) {
+                    if (files[j].getName().compareTo(files[j + 1].getName()) > 0) {
+                        File f = files[j];
+                        files[j] = files[j + 1];
+                        files[j + 1] = f;
+                    }
+                }
+            }
+
+            for (File fileZ : files) {
+                if (fileZ.isDirectory()) {
+                    allProjectsPopup.createItem(fileZ.getName(), IconManager.projectImage, () -> {
+                        Screen.getScreen().getToolMenu().projectPopup.setVisible(false);
+                        screen.loadProject(fileZ);
+                    });
+                }
+            }
+        }
+
+        filePopup.addItem(allMenu);
+        filePopup.createItem("Close Project", IconManager.projectImage, () -> Screen.getProjectFile().closeProject())
+                .createItem("Save All Editors", "Ctrl + SHIFT + S", IconManager.fluentsaveImage, () -> screen.saveAllEditors())
+                .createItem("Restart", IconManager.fluentcloseImage, IDE::restart)
+                .createItem("Exit", IconManager.closeImage, IDE::exit);
+    }
+
+    private void addComp(Component c) {
+        add(c);
+    }
+
+    public void deleteDir(File file) throws Exception {
+        if (file.isDirectory()) {
+            if (file.list().length == 0) {
+                deleteEmptyDir(file);
+            } else {
+                File files[] = file.listFiles();
+                for (File fileDelete : files)
+                    deleteDir(fileDelete);
+
+                if (file.list().length == 0)
+                    deleteEmptyDir(file);
+            }
+        } else
+            deleteEmptyDir(file);
+    }
+
+    private void deleteEmptyDir(File file) {
+        file.delete();
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        reshapeComp();
+    }
+
+    public class Menu extends JComponent {
+
+        private String text;
+
+        private OPopupWindow popup;
+
+        private volatile boolean enter;
+
+        public Menu(OPopupWindow popup, String text) {
+            this.text = text;
+            this.popup = popup;
+            UIManager.setData(this);
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    enter = true;
+                    repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    enter = false;
+                    repaint();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    showPopup();
+                }
+            });
+        }
+
+        public void showPopup() {
+            if (popup.isVisible()) {
+                popup.setVisible(false);
+                return;
+            }
+            popup.setLocation(getX() + screen.getX(), getY() + getHeight() + 15 + getHeight() + screen.getY());
+            popup.setVisible(true);
+        }
+
+        @Override
+        public void setFont(Font f) {
+            super.setFont(PX14);
+            setSize(100, ToolMenu.this.getHeight());
+            setPreferredSize(getSize());
+        }
+
+        @Override
+        public void paint(Graphics g2D) {
+            Graphics2D g = (Graphics2D) g2D;
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setColor(back2);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(TOOLMENU_COLOR2);
+            g.setFont(getFont());
+            int x = g.getFontMetrics().stringWidth(text);
+            int cx = x;
+            x = getWidth() / 2 - x / 2;
+            if (enter) {
+                g.setColor(TOOLMENU_COLOR6);
+                g.fillRect(x, getHeight() - 3, cx, 2);
+            }
+            g.setFont(getFont());
+            g.drawString(text, x, getFont().getSize());
+        }
+    }
 }
 

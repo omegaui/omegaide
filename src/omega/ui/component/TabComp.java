@@ -17,267 +17,242 @@
  */
 
 package omega.ui.component;
-import omegaui.listener.KeyStrokeListener;
-
-import java.io.File;
 
 import omega.Screen;
-
-import omegaui.component.TextComp;
-
 import omega.io.TabData;
-
-import omega.ui.panel.TabPanel;
 import omega.ui.panel.JetRunPanel;
 import omega.ui.panel.RunPanel;
-
+import omega.ui.panel.TabPanel;
+import omegaui.component.TextComp;
+import omegaui.listener.KeyStrokeListener;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.GradientPaint;
-
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
-import java.awt.event.FocusListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
 
 import static java.awt.event.KeyEvent.*;
 import static omega.io.UIManager.*;
 import static omegaui.component.animation.Animations.*;
-public class TabComp extends JComponent implements FocusListener{
-	public TabPanel tabPanel;
-	public TabData tabData;
 
-	public TextComp iconComp;
-	public TextComp nameComp;
-	public TextComp closeComp;
+public class TabComp extends JComponent implements FocusListener {
+    public TabPanel tabPanel;
+    public TabData tabData;
 
-	public Runnable removeAction;
+    public TextComp iconComp;
+    public TextComp nameComp;
+    public TextComp closeComp;
 
-	public volatile boolean focussed = false;
-	public volatile boolean inList = false;
+    public Runnable removeAction;
 
-	public static int tabIndex = 0;
+    public volatile boolean focussed = false;
+    public volatile boolean inList = false;
 
-	public TabComp(TabPanel tabPanel, TabData tabData, Runnable removeAction){
-		this.tabData = tabData;
-		this.tabPanel = tabPanel;
-		this.removeAction = removeAction;
+    public static int tabIndex = 0;
 
-		setSize(27 + computeWidth(tabData.getName(), UBUNTU_PX14) + 4 + 18, tabHeight);
-		setBackground(back1);
+    public TabComp(TabPanel tabPanel, TabData tabData, Runnable removeAction) {
+        this.tabData = tabData;
+        this.tabPanel = tabPanel;
+        this.removeAction = removeAction;
 
-		registerListeners();
+        setSize(27 + computeWidth(tabData.getName(), UBUNTU_PX14) + 4 + 18, tabHeight);
+        setBackground(back1);
 
-		init();
-	}
+        registerListeners();
 
-	public void registerListeners(){
-		KeyStrokeListener keyStrokelistener = new KeyStrokeListener(this);
-		keyStrokelistener.putKeyStroke((e)->showTab(0), VK_ALT, VK_1).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(1), VK_ALT, VK_2).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(2), VK_ALT, VK_3).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(3), VK_ALT, VK_4).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(4), VK_ALT, VK_5).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(5), VK_ALT, VK_6).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(6), VK_ALT, VK_7).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(7), VK_ALT, VK_8).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showTab(8), VK_ALT, VK_9).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showNextTab(e), VK_ALT, VK_RIGHT).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->showPreviousTab(e), VK_ALT, VK_LEFT).useAutoReset();
-		keyStrokelistener.putKeyStroke((e)->closeTab(), VK_CONTROL, VK_F4).useAutoReset();
-		addKeyListener(keyStrokelistener);
-		
-		tabData.getComponent().addFocusListener(this);
-		tabData.getComponent().addKeyListener(keyStrokelistener);
+        init();
+    }
 
-		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
-			scrollPane.getViewport().getView().addFocusListener(this);
-			scrollPane.getViewport().getView().addKeyListener(keyStrokelistener);
-		}
+    public void registerListeners() {
+        KeyStrokeListener keyStrokelistener = new KeyStrokeListener(this);
+        keyStrokelistener.putKeyStroke((e) -> showTab(0), VK_ALT, VK_1).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(1), VK_ALT, VK_2).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(2), VK_ALT, VK_3).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(3), VK_ALT, VK_4).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(4), VK_ALT, VK_5).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(5), VK_ALT, VK_6).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(6), VK_ALT, VK_7).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(7), VK_ALT, VK_8).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showTab(8), VK_ALT, VK_9).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showNextTab(e), VK_ALT, VK_RIGHT).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> showPreviousTab(e), VK_ALT, VK_LEFT).useAutoReset();
+        keyStrokelistener.putKeyStroke((e) -> closeTab(), VK_CONTROL, VK_F4).useAutoReset();
+        addKeyListener(keyStrokelistener);
 
-		else if(tabData.getComponent() instanceof JScrollPane scrollPane){
-			scrollPane.getViewport().getView().addFocusListener(this);
-			scrollPane.getViewport().getView().addKeyListener(keyStrokelistener);
-		}
+        tabData.getComponent().addFocusListener(this);
+        tabData.getComponent().addKeyListener(keyStrokelistener);
 
-		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
-			runPanel.terminalPanel.addFocusListener(this);
-			runPanel.terminalPanel.addKeyListener(keyStrokelistener);
-		}
+        if (tabData.getComponent() instanceof RTextScrollPane scrollPane) {
+            scrollPane.getViewport().getView().addFocusListener(this);
+            scrollPane.getViewport().getView().addKeyListener(keyStrokelistener);
+        } else if (tabData.getComponent() instanceof JScrollPane scrollPane) {
+            scrollPane.getViewport().getView().addFocusListener(this);
+            scrollPane.getViewport().getView().addKeyListener(keyStrokelistener);
+        } else if (tabData.getComponent() instanceof JetRunPanel runPanel) {
+            runPanel.terminalPanel.addFocusListener(this);
+            runPanel.terminalPanel.addKeyListener(keyStrokelistener);
+        } else if (tabData.getComponent() instanceof RunPanel runPanel) {
+            runPanel.runTextArea.addFocusListener(this);
+            runPanel.runTextArea.addKeyListener(keyStrokelistener);
+        }
 
-		else if(tabData.getComponent() instanceof RunPanel runPanel){
-			runPanel.runTextArea.addFocusListener(this);
-			runPanel.runTextArea.addKeyListener(keyStrokelistener);
-		}
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                showTab();
+            }
+        });
+    }
 
-		addMouseListener(new MouseAdapter(){
-			@Override
-			public void mousePressed(MouseEvent e){
-				showTab();
-			}
-		});
-	}
+    public void init() {
+        iconComp = new TextComp(tabData.getImage(), 20, 20, getBackground(), getBackground(), getBackground(), null);
+        iconComp.setBounds(2, getHeight() / 2 - 25 / 2, 25, 25);
+        iconComp.setArc(0, 0);
+        iconComp.setShowHandCursorOnMouseHover(true);
+        add(iconComp);
 
-	public void init(){
-		iconComp = new TextComp(tabData.getImage(), 20, 20, getBackground(), getBackground(), getBackground(), null);
-		iconComp.setBounds(2, getHeight()/2 - 25/2, 25, 25);
-		iconComp.setArc(0, 0);
-		iconComp.setShowHandCursorOnMouseHover(true);
-		add(iconComp);
+        if (tabData.getPopup() != null) {
+            tabData.getPopup().invokeOnMouseLeftPress(iconComp, () -> {
+            });
+            putAnimationLayer(iconComp, getImageSizeAnimationLayer(20, 5, true), ACTION_MOUSE_ENTERED);
+        }
 
-		if(tabData.getPopup() != null){
-			tabData.getPopup().invokeOnMouseLeftPress(iconComp, ()->{});
-			putAnimationLayer(iconComp, getImageSizeAnimationLayer(20, 5, true), ACTION_MOUSE_ENTERED);
-		}
+        nameComp = new TextComp(tabData.getName(), tabData.getTooltip(), getBackground(), getBackground(), tabData.getTabTextColor(), this::showTab);
+        nameComp.setBounds(27, getHeight() / 2 - 25 / 2, computeWidth(tabData.getName(), UBUNTU_PX14) + 4, 25);
+        nameComp.setFont(UBUNTU_PX14);
+        nameComp.setArc(5, 5);
+        add(nameComp);
 
-		nameComp = new TextComp(tabData.getName(), tabData.getTooltip(), getBackground(), getBackground(), tabData.getTabTextColor(), this::showTab);
-		nameComp.setBounds(27, getHeight()/2 - 25/2, computeWidth(tabData.getName(), UBUNTU_PX14) + 4, 25);
-		nameComp.setFont(UBUNTU_PX14);
-		nameComp.setArc(5, 5);
-		add(nameComp);
+        closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR4, this::closeTab);
+        closeComp.setBounds(getWidth() - 17, getHeight() / 2 - 15 / 2, 15, 15);
+        closeComp.setFont(PX12);
+        closeComp.setArc(4, 4);
+        closeComp.setShowHandCursorOnMouseHover(true);
+        add(closeComp);
 
-		closeComp = new TextComp("x", TOOLMENU_COLOR2_SHADE, TOOLMENU_COLOR4_SHADE, TOOLMENU_COLOR4, this::closeTab);
-		closeComp.setBounds(getWidth() - 17, getHeight()/2 - 15/2, 15, 15);
-		closeComp.setFont(PX12);
-		closeComp.setArc(4, 4);
-		closeComp.setShowHandCursorOnMouseHover(true);
-		add(closeComp);
+        setSize(iconComp.getWidth() + nameComp.getWidth() + 2 + iconComp.getWidth(), tabHeight);
+        setPreferredSize(getSize());
+    }
 
-		setSize(iconComp.getWidth() + nameComp.getWidth() + 2 + iconComp.getWidth(), tabHeight);
-		setPreferredSize(getSize());
-	}
+    public void showNextTab(KeyEvent e) {
+        tabIndex++;
+        if (tabIndex >= tabPanel.getTabs().size()) {
+            tabIndex = 0;
+        }
+        showTab(tabIndex);
+        if (e != null) {
+            e.consume();
+        }
+    }
 
-	public void showNextTab(KeyEvent e){
-		tabIndex++;
-		if(tabIndex >= tabPanel.getTabs().size()){
-			tabIndex = 0;
-		}
-		showTab(tabIndex);
-		if(e != null){
-			e.consume();
-		}
-	}
+    public void showPreviousTab(KeyEvent e) {
+        tabIndex--;
+        if (tabIndex < 0) {
+            tabIndex = tabPanel.getTabs().size() - 1;
+        }
+        showTab(tabIndex);
+        if (e != null) {
+            e.consume();
+        }
+    }
 
-	public void showPreviousTab(KeyEvent e){
-		tabIndex--;
-		if(tabIndex < 0){
-			tabIndex = tabPanel.getTabs().size() - 1;
-		}
-		showTab(tabIndex);
-		if(e != null){
-			e.consume();
-		}
-	}
+    public void showTab(int index) {
+        TabData tabData = tabPanel.getTabDataAt(index);
+        if (tabData == null) {
+            return;
+        }
+        tabData.getTabComp().showTab();
+    }
 
-	public void showTab(int index){
-		TabData tabData = tabPanel.getTabDataAt(index);
-		if(tabData == null){
-			return;
-		}
-		tabData.getTabComp().showTab();
-	}
+    public void showTab() {
+        tabPanel.setActiveTab(tabData);
+        tabData.getComponent().grabFocus();
 
-	public void showTab(){
-		tabPanel.setActiveTab(tabData);
-		tabData.getComponent().grabFocus();
+        if (tabData.getComponent() instanceof RTextScrollPane scrollPane) {
+            try {
+                ((JComponent) scrollPane.getViewport().getView()).grabFocus();
+            } catch (Exception e) {
+            }
+        } else if (tabData.getComponent() instanceof JScrollPane scrollPane) {
+            try {
+                ((JComponent) scrollPane.getViewport().getView()).grabFocus();
+            } catch (Exception e) {
+            }
+        } else if (tabData.getComponent() instanceof JetRunPanel runPanel) {
+            runPanel.terminalPanel.grabFocus();
+        } else if (tabData.getComponent() instanceof RunPanel runPanel) {
+            runPanel.runTextArea.grabFocus();
+        }
+    }
 
-		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
-			try{
-				((JComponent)scrollPane.getViewport().getView()).grabFocus();
-			} catch(Exception e){ }
-		}
+    public void closeTab() {
+        tabData.getOnClose().run();
+        tabPanel.removeTab(tabData);
+        removeAction.run();
+        if (!tabPanel.getTabHistory().getActivatedTabs().isEmpty()) {
+            TabData nextTabData = (TabData) tabPanel.getTabHistory().getActivatedTabs().getLast();
+            if (nextTabData != null) {
+                showTab(tabPanel.getIndexOf(nextTabData.getComponent()));
+            }
+        }
+    }
 
-		else if(tabData.getComponent() instanceof JScrollPane scrollPane){
-			try{
-				((JComponent)scrollPane.getViewport().getView()).grabFocus();
-			} catch(Exception e){ }
-		}
+    @Override
+    public void paint(Graphics graphics) {
+        Graphics2D g = (Graphics2D) graphics;
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setColor(getBackground());
+        g.fillRect(0, 0, getWidth(), getHeight());
+        if (focussed)
+            g.setPaint(new GradientPaint(0, 0, isDarkMode() ? TOOLMENU_COLOR6 : TOOLMENU_COLOR1, getWidth(), getHeight(), isDarkMode() ? TOOLMENU_COLOR5 : TOOLMENU_COLOR2));
+        else
+            g.setPaint(new GradientPaint(0, 0, back3, getWidth(), getHeight(), back1));
+        g.fillRect(0, getHeight() - 2, getWidth(), 2);
+        g.fillRect(0, 0, 2, getHeight());
+        g.fillRect(getWidth() - 2, 0, 2, getHeight());
+        g.fillRect(0, 0, getWidth(), 2);
+        super.paint(g);
+    }
 
-		else if(tabData.getComponent() instanceof JetRunPanel runPanel){
-			runPanel.terminalPanel.grabFocus();
-		}
+    @Override
+    public void focusLost(FocusEvent e) {
+        focussed = false;
+        ToolMenu.pathBox.setPath(null);
+        repaint();
+    }
 
-		else if(tabData.getComponent() instanceof RunPanel runPanel){
-			runPanel.runTextArea.grabFocus();
-		}
-	}
+    @Override
+    public void focusGained(FocusEvent e) {
+        focussed = true;
 
-	public void closeTab(){
-		tabData.getOnClose().run();
-		tabPanel.removeTab(tabData);
-		removeAction.run();
-		if(!tabPanel.getTabHistory().getActivatedTabs().isEmpty()){
-			TabData nextTabData = (TabData) tabPanel.getTabHistory().getActivatedTabs().getLast();
-			if(nextTabData != null){
-				showTab(tabPanel.getIndexOf(nextTabData.getComponent()));
-			}
-		}
-	}
+        String path = Screen.getProjectFile().getProjectPath() + File.separator;
 
-	@Override
-	public void paint(Graphics graphics){
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
-		if(focussed)
-			g.setPaint(new GradientPaint(0, 0, isDarkMode() ? TOOLMENU_COLOR6 : TOOLMENU_COLOR1, getWidth(), getHeight(), isDarkMode() ? TOOLMENU_COLOR5 : TOOLMENU_COLOR2));
-		else
-			g.setPaint(new GradientPaint(0, 0, back3, getWidth(), getHeight(), back1));
-		g.fillRect(0, getHeight() - 2, getWidth(), 2);
-		g.fillRect(0, 0, 2, getHeight());
-		g.fillRect(getWidth() - 2, 0, 2, getHeight());
-		g.fillRect(0, 0, getWidth(), 2);
-		super.paint(g);
-	}
+        if (tabData.getComponent() instanceof RTextScrollPane scrollPane) {
+            if (scrollPane.getViewport().getView() instanceof Editor) {
+                path = ((Editor) scrollPane.getViewport().getView()).currentFile.getPath();
+            }
+        } else {
+            path += tabData.getName();
+        }
 
-	@Override
-	public void focusLost(FocusEvent e){
-		focussed = false;
-		ToolMenu.pathBox.setPath(null);
-		repaint();
-	}
+        ToolMenu.pathBox.setPath(path);
+        repaint();
+    }
 
-	@Override
-	public void focusGained(FocusEvent e){
-		focussed = true;
+    public boolean isInList() {
+        return inList;
+    }
 
-		String path = Screen.getProjectFile().getProjectPath() + File.separator;
+    public void setInList(boolean inList) {
+        this.inList = inList;
+    }
 
-		if(tabData.getComponent() instanceof RTextScrollPane scrollPane){
-			if(scrollPane.getViewport().getView() instanceof Editor){
-				path = ((Editor)scrollPane.getViewport().getView()).currentFile.getPath();
-			}
-		}
-
-		else {
-			path += tabData.getName();
-		}
-
-		ToolMenu.pathBox.setPath(path);
-		repaint();
-	}
-
-	public boolean isInList() {
-		return inList;
-	}
-
-	public void setInList(boolean inList) {
-		this.inList = inList;
-	}
-
-	public TabData getTabData() {
-		return tabData;
-	}
+    public TabData getTabData() {
+        return tabData;
+    }
 
 
 }

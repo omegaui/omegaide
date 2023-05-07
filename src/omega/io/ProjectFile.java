@@ -17,265 +17,250 @@
  */
 
 package omega.io;
-import omega.ui.component.Editor;
-import omega.ui.component.ToolMenu;
 
 import omega.Screen;
-
-import omega.plugin.event.PluginReactionEvent;
-
-import omega.instant.support.java.parser.JavaSyntaxParser;
-
-import omega.instant.support.java.assist.Assembly;
-
-import omega.instant.support.java.management.JDKManager;
-
-import omega.ui.dialog.BuildPathManager;
-import omega.ui.dialog.ExtendedBuildPathManager;
-import omega.ui.dialog.SearchWindow;
-import omega.ui.dialog.FileSelectionDialog;
-import omega.ui.dialog.Launcher;
-
 import omega.instant.support.ArgumentManager;
-
+import omega.instant.support.java.assist.Assembly;
+import omega.instant.support.java.management.JDKManager;
+import omega.instant.support.java.parser.JavaSyntaxParser;
+import omega.plugin.event.PluginReactionEvent;
+import omega.ui.component.Editor;
+import omega.ui.component.ToolMenu;
+import omega.ui.dialog.*;
 import omega.ui.panel.FileTreePanel;
 
-import java.util.LinkedList;
-
 import java.io.File;
+import java.util.LinkedList;
 
 public class ProjectFile {
 
-	private Screen screen;
+    private Screen screen;
 
-	private static String projectPath = null;
+    private static String projectPath = null;
 
-	private FileTreePanel fileTreePanel;
+    private FileTreePanel fileTreePanel;
 
-	private ProjectDataBase projectManager;
-	private ArgumentManager argumentManager;
-	private FileCreator fileCreator;
-	private BuildPathManager dependencyView;
-	private ExtendedBuildPathManager extendedDependencyView;
-	private SearchWindow searchWindow;
-	private JDKManager jdkManager;
+    private ProjectDataBase projectManager;
+    private ArgumentManager argumentManager;
+    private FileCreator fileCreator;
+    private BuildPathManager dependencyView;
+    private ExtendedBuildPathManager extendedDependencyView;
+    private SearchWindow searchWindow;
+    private JDKManager jdkManager;
 
-	public ProjectFile(Screen window) {
-		this.screen = window;
+    public ProjectFile(Screen window) {
+        this.screen = window;
 
-		init();
-	}
+        init();
+    }
 
-	private void init() {
-		fileTreePanel = new FileTreePanel();
+    private void init() {
+        fileTreePanel = new FileTreePanel();
 
-		dependencyView = new BuildPathManager(getScreen());
-		extendedDependencyView = new ExtendedBuildPathManager(getScreen());
-		searchWindow = new SearchWindow(getScreen());
-		fileCreator = new FileCreator(getScreen());
-	}
+        dependencyView = new BuildPathManager(getScreen());
+        extendedDependencyView = new ExtendedBuildPathManager(getScreen());
+        searchWindow = new SearchWindow(getScreen());
+        fileCreator = new FileCreator(getScreen());
+    }
 
-	public void readJDK(){
-		if(projectManager.isLanguageTagNonJava() && !Screen.isNotNull(projectManager.jdkPath))
-			return;
+    public void readJDK() {
+        if (projectManager.isLanguageTagNonJava() && !Screen.isNotNull(projectManager.jdkPath))
+            return;
 
-		new Thread(()->{
-			int version = 0;
-			if(jdkManager != null)
-				version = jdkManager.getVersionAsInt();
+        new Thread(() -> {
+            int version = 0;
+            if (jdkManager != null)
+                version = jdkManager.getVersionAsInt();
 
-			int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
-			if(version != versionThis)
-				Assembly.deassemble();
+            int versionThis = JDKManager.calculateVersion(new File(projectManager.jdkPath));
+            if (version != versionThis)
+                Assembly.deassemble();
 
-			if(jdkManager != null)
-				jdkManager.clear();
+            if (jdkManager != null)
+                jdkManager.clear();
 
-			Screen.setStatus("Indexing Sources and Resources ... Don't Just Wait For Me to Finish!", 10, IconManager.fluentjavaImage, "Indexing Sources and Resources");
+            Screen.setStatus("Indexing Sources and Resources ... Don't Just Wait For Me to Finish!", 10, IconManager.fluentjavaImage, "Indexing Sources and Resources");
 
-			jdkManager = new JDKManager(new File(projectManager.jdkPath));
-			jdkManager.readSources(projectPath);
-			readDependencies();
+            jdkManager = new JDKManager(new File(projectManager.jdkPath));
+            jdkManager.readSources(projectPath);
+            readDependencies();
 
-			ToolMenu.jdkItem.setName("Project JDK : Java " + jdkManager.getVersionAsInt());
-		}).start();
-	}
+            ToolMenu.jdkItem.setName("Project JDK : Java " + jdkManager.getVersionAsInt());
+        }).start();
+    }
 
-	public void readDependencies(){
-		if(jdkManager == null)
-			return;
-		LinkedList<String> paths = new LinkedList<>();
-		projectManager.jars.forEach(path->{
-			jdkManager.readJar(path, false);
-			paths.add(path);
-		});
-		projectManager.modules.forEach(path->{
-			jdkManager.readJar(path, true);
-			paths.add(path);
-		});
-		jdkManager.prepareDependencyLoader(paths);
-		jdkManager.readResources(projectPath, projectManager.resourceRoots);
-		paths.clear();
-	}
+    public void readDependencies() {
+        if (jdkManager == null)
+            return;
+        LinkedList<String> paths = new LinkedList<>();
+        projectManager.jars.forEach(path -> {
+            jdkManager.readJar(path, false);
+            paths.add(path);
+        });
+        projectManager.modules.forEach(path -> {
+            jdkManager.readJar(path, true);
+            paths.add(path);
+        });
+        jdkManager.prepareDependencyLoader(paths);
+        jdkManager.readResources(projectPath, projectManager.resourceRoots);
+        paths.clear();
+    }
 
-	public void setProjectPath(String path) {
-		File projectDir = null;
-		if(!(projectDir = new File(path)).exists())
-			return;
+    public void setProjectPath(String path) {
+        File projectDir = null;
+        if (!(projectDir = new File(path)).exists())
+            return;
 
-		if(projectPath != null && projectPath.equals(path))
-			return;
+        if (projectPath != null && projectPath.equals(path))
+            return;
 
-		getScreen().getToolMenu().setTask("Opening: " + projectDir.getName(), projectDir.getName());
-		
-		projectPath = path;
+        getScreen().getToolMenu().setTask("Opening: " + projectDir.getName(), projectDir.getName());
 
-		fileTreePanel.init(new File(path));
-		Screen.addAndSaveRecents(path);
-		searchWindow.cleanAndLoad(new File(projectPath));
+        projectPath = path;
 
-		if(Screen.launcher != null)
-			Screen.launcher.dispose();
+        fileTreePanel.init(new File(path));
+        Screen.addAndSaveRecents(path);
+        searchWindow.cleanAndLoad(new File(projectPath));
 
-		AppDataManager.setDefaultProjectPath(projectPath);
-		getScreen().setProject(getProjectName());
+        if (Screen.launcher != null)
+            Screen.launcher.dispose();
 
-		getScreen().getTabPanel().closeAllTabs();
+        AppDataManager.setDefaultProjectPath(projectPath);
+        getScreen().setProject(getProjectName());
 
-		projectManager = new ProjectDataBase();
+        getScreen().getTabPanel().closeAllTabs();
 
-		getScreen().manageTools(projectManager);
+        projectManager = new ProjectDataBase();
 
-		if(projectManager.isLanguageTagNonJava())
-			argumentManager = new ArgumentManager();
+        getScreen().manageTools(projectManager);
 
-		if(!projectManager.isLanguageTagNonJava()) {
-			if(projectManager.jdkPath != null && new File(projectManager.jdkPath).exists())
-				readJDK();
-			else
-				Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage, "JDK");
+        if (projectManager.isLanguageTagNonJava())
+            argumentManager = new ArgumentManager();
 
-			try {
-				new Thread(()->{
-					try{
-						Editor.deleteDir(JavaSyntaxParser.BUILDSPACE_DIR);
-					}
-					catch(Exception e){
-						e.printStackTrace();
-					}
-				}).start();
-			}
-			catch(Exception e) {
+        if (!projectManager.isLanguageTagNonJava()) {
+            if (projectManager.jdkPath != null && new File(projectManager.jdkPath).exists())
+                readJDK();
+            else
+                Screen.setStatus("Please first select a valid JDK for the project", 10, IconManager.fluentbrokenbotImage, "JDK");
 
-			}
-		}
-		getScreen().getToolMenu().reloadItems(projectManager.isLanguageTagNonJava());
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CHANGED, this, projectPath));
-		getScreen().getToolMenu().setTask(null);
-	}
+            try {
+                new Thread(() -> {
+                    try {
+                        Editor.deleteDir(JavaSyntaxParser.BUILDSPACE_DIR);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            } catch (Exception e) {
 
-	public String getProjectPath() {
-		return projectPath;
-	}
+            }
+        }
+        getScreen().getToolMenu().reloadItems(projectManager.isLanguageTagNonJava());
+        Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CHANGED, this, projectPath));
+        getScreen().getToolMenu().setTask(null);
+    }
 
-	public void saveAll() {
-		if(projectManager != null) {
-			projectManager.save();
-			if(projectManager.isLanguageTagNonJava()){
-				argumentManager.save();
-			}
-		}
-	}
+    public String getProjectPath() {
+        return projectPath;
+    }
 
-	public boolean open(String type) {
-		FileSelectionDialog fs = new FileSelectionDialog(getScreen());
-		if(type.equals("Project")) {
-			fs.setTitle("Select a project directory and click Done");
-			LinkedList<File> files = fs.selectDirectories();
-			if(!files.isEmpty()) {
-				if(Screen.launcher != null)
-					Screen.launcher.dispose();
-				Screen.getScreen().setVisible(true);
-				saveAll();
-				getScreen().closeCurrentProject();
-				setProjectPath(files.get(0).getAbsolutePath());
-				return true;
-			}
-		}
-		else {
-			fs.setTitle("Open File");
-			fs.setCurrentDirectory(new File(projectPath));
-			LinkedList<File> files = fs.selectFiles();
-			if(!files.isEmpty()) {
-				for(File file : files)
-					getScreen().loadFile(file);
-			}
-		}
-		return false;
-	}
+    public void saveAll() {
+        if (projectManager != null) {
+            projectManager.save();
+            if (projectManager.isLanguageTagNonJava()) {
+                argumentManager.save();
+            }
+        }
+    }
 
-	public void closeProject() {
-		saveAll();
-		getScreen().setVisible(false);
-		projectPath = null;
-		AppDataManager.setDefaultProjectPath("");
-		if(Screen.launcher == null)
-			Screen.launcher = new Launcher();
-		getScreen().saveEssential();
-		Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CLOSED, this, projectPath));
-		Screen.launcher.setVisible(true);
-	}
+    public boolean open(String type) {
+        FileSelectionDialog fs = new FileSelectionDialog(getScreen());
+        if (type.equals("Project")) {
+            fs.setTitle("Select a project directory and click Done");
+            LinkedList<File> files = fs.selectDirectories();
+            if (!files.isEmpty()) {
+                if (Screen.launcher != null)
+                    Screen.launcher.dispose();
+                Screen.getScreen().setVisible(true);
+                saveAll();
+                getScreen().closeCurrentProject();
+                setProjectPath(files.get(0).getAbsolutePath());
+                return true;
+            }
+        } else {
+            fs.setTitle("Open File");
+            fs.setCurrentDirectory(new File(projectPath));
+            LinkedList<File> files = fs.selectFiles();
+            if (!files.isEmpty()) {
+                for (File file : files)
+                    getScreen().loadFile(file);
+            }
+        }
+        return false;
+    }
 
-	public void setFileTreePanel(omega.ui.panel.FileTreePanel fileTreePanel) {
-		this.fileTreePanel = fileTreePanel;
-		screen.setLeftComponentDoNotTouchVisibility(this.fileTreePanel);
-	}
-	
-	public FileTreePanel getFileTreePanel() {
-		return fileTreePanel;
-	}
+    public void closeProject() {
+        saveAll();
+        getScreen().setVisible(false);
+        projectPath = null;
+        AppDataManager.setDefaultProjectPath("");
+        if (Screen.launcher == null)
+            Screen.launcher = new Launcher();
+        getScreen().saveEssential();
+        Screen.getPluginReactionManager().triggerReaction(PluginReactionEvent.genNewInstance(PluginReactionEvent.EVENT_TYPE_PROJECT_CLOSED, this, projectPath));
+        Screen.launcher.setVisible(true);
+    }
 
-	public SearchWindow getSearchWindow() {
-		return searchWindow;
-	}
+    public void setFileTreePanel(omega.ui.panel.FileTreePanel fileTreePanel) {
+        this.fileTreePanel = fileTreePanel;
+        screen.setLeftComponentDoNotTouchVisibility(this.fileTreePanel);
+    }
 
-	public FileCreator getFileCreator() {
-		return fileCreator;
-	}
+    public FileTreePanel getFileTreePanel() {
+        return fileTreePanel;
+    }
 
-	public ProjectDataBase getProjectManager(){
-		return projectManager;
-	}
+    public SearchWindow getSearchWindow() {
+        return searchWindow;
+    }
 
-	public BuildPathManager getDependencyView() {
-		return dependencyView;
-	}
+    public FileCreator getFileCreator() {
+        return fileCreator;
+    }
 
-	public ExtendedBuildPathManager getExtendedDependencyView() {
-		return extendedDependencyView;
-	}
+    public ProjectDataBase getProjectManager() {
+        return projectManager;
+    }
 
-	public ArgumentManager getArgumentManager() {
-		return argumentManager;
-	}
+    public BuildPathManager getDependencyView() {
+        return dependencyView;
+    }
 
-	public JDKManager getJDKManager() {
-		return jdkManager;
-	}
+    public ExtendedBuildPathManager getExtendedDependencyView() {
+        return extendedDependencyView;
+    }
 
-	public String getProjectName() {
-		if(projectPath == null)
-			return "";
-		return projectPath.substring(projectPath.lastIndexOf(File.separatorChar) + 1);
-	}
+    public ArgumentManager getArgumentManager() {
+        return argumentManager;
+    }
 
-	public static void checkDir(File file) {
-		if(!file.exists())
-			file.mkdir();
-	}
+    public JDKManager getJDKManager() {
+        return jdkManager;
+    }
 
-	public Screen getScreen(){
-		return screen;
-	}
+    public String getProjectName() {
+        if (projectPath == null)
+            return "";
+        return projectPath.substring(projectPath.lastIndexOf(File.separatorChar) + 1);
+    }
+
+    public static void checkDir(File file) {
+        if (!file.exists())
+            file.mkdir();
+    }
+
+    public Screen getScreen() {
+        return screen;
+    }
 }
 

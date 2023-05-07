@@ -17,372 +17,355 @@
  */
 
 package omega.instant.support.java.assist;
-import omega.instant.support.java.highlighter.BasicCodeHighlighter;
-
-
-import omega.ui.component.Editor;
 
 import omega.instant.support.java.framework.CodeFramework;
-
+import omega.instant.support.java.highlighter.BasicCodeHighlighter;
 import omega.io.AppDataManager;
 import omega.io.IconManager;
-
-import omegaui.component.TextComp;
+import omega.ui.component.Editor;
 import omegaui.component.FlexPanel;
+import omegaui.component.TextComp;
 
-import java.awt.image.BufferedImage;
-
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-
-import java.util.LinkedList;
-
-import java.awt.event.KeyListener;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import static omega.io.UIManager.*;
 
-public class ContentWindow extends JPanel implements KeyListener{
+public class ContentWindow extends JPanel implements KeyListener {
 
-	public LinkedList<HintComp> hints = new LinkedList<>();
+    public LinkedList<HintComp> hints = new LinkedList<>();
 
-	private Editor editor;
+    private Editor editor;
 
-	private FlexPanel flexPanel;
-	private JScrollPane scrollPane;
-	private JPanel panel;
+    private FlexPanel flexPanel;
+    private JScrollPane scrollPane;
+    private JPanel panel;
 
-	private int block;
-	private int gap = 3;
-	private int width;
-	private int height;
+    private int block;
+    private int gap = 3;
+    private int width;
+    private int height;
 
-	public int index;
+    public int index;
 
-	public static final int MINIMUM_HINT_HEIGHT = 30;
+    public static final int MINIMUM_HINT_HEIGHT = 30;
 
-	public int optimalHintHeight = MINIMUM_HINT_HEIGHT;
+    public int optimalHintHeight = MINIMUM_HINT_HEIGHT;
 
-	private volatile boolean ignoreGenViewOnce = false;
+    private volatile boolean ignoreGenViewOnce = false;
 
-	public static Color highlightColor = glow;
-	
-	public Color hintHoverColor = TOOLMENU_GRADIENT;
+    public static Color highlightColor = glow;
 
-	private class HintComp extends JPanel{
-		private DataMember d;
-		private String match;
+    public Color hintHoverColor = TOOLMENU_GRADIENT;
 
-		private TextComp iconComp;
-		private TextComp nameComp;
+    private class HintComp extends JPanel {
+        private DataMember d;
+        private String match;
 
-		public HintComp(DataMember d, String match, Runnable action){
-			super(null);
+        private TextComp iconComp;
+        private TextComp nameComp;
 
-			this.d = d;
-			this.match = match;
+        public HintComp(DataMember d, String match, Runnable action) {
+            super(null);
 
-			init();
-			nameComp.setRunnable(action);
-		}
+            this.d = d;
+            this.match = match;
 
-		public void init(){
-			setBackground(c2);
-			setBorder(null);
+            init();
+            nameComp.setRunnable(action);
+        }
 
-			iconComp = new TextComp(getIcon(), optimalHintHeight - 5, optimalHintHeight - 5, getBackground(), getBackground(), getBackground(), null);
-			iconComp.setBounds(0, 0, optimalHintHeight, optimalHintHeight);
-			iconComp.setArc(0, 0);
-			iconComp.setClickable(false);
-			add(iconComp);
+        public void init() {
+            setBackground(c2);
+            setBorder(null);
 
-			nameComp = new TextComp(d.getRepresentableValue(), hintHoverColor, getBackground(), BasicCodeHighlighter.classColor, null);
-			nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
-			nameComp.setFont(AppDataManager.getHintFont());
-			nameComp.setArc(0, 0);
-			nameComp.alignX = 2;
-			nameComp.setUseSpeedMode(true);
-			nameComp.addHighlightText(new String[]{ match });
-			nameComp.setHighlightColor(highlight);
-			nameComp.setPaintEnterFirst(isDarkMode());
-			nameComp.setShouldRepaintForegroundOnHighlights(isDarkMode());
-			add(nameComp);
-		}
+            iconComp = new TextComp(getIcon(), optimalHintHeight - 5, optimalHintHeight - 5, getBackground(), getBackground(), getBackground(), null);
+            iconComp.setBounds(0, 0, optimalHintHeight, optimalHintHeight);
+            iconComp.setArc(0, 0);
+            iconComp.setClickable(false);
+            add(iconComp);
 
-		public void setEnter(boolean value){
-			if(value){
-				nameComp.setFont(AppDataManager.getHintFont().deriveFont(Font.BOLD));
-			}
-			else{
-				nameComp.setFont(AppDataManager.getHintFont());
-			}
-			nameComp.setEnter(value);
-		}
+            nameComp = new TextComp(d.getRepresentableValue(), hintHoverColor, getBackground(), BasicCodeHighlighter.classColor, null);
+            nameComp.setBounds(optimalHintHeight, 0, width, optimalHintHeight);
+            nameComp.setFont(AppDataManager.getHintFont());
+            nameComp.setArc(0, 0);
+            nameComp.alignX = 2;
+            nameComp.setUseSpeedMode(true);
+            nameComp.addHighlightText(new String[]{match});
+            nameComp.setHighlightColor(highlight);
+            nameComp.setPaintEnterFirst(isDarkMode());
+            nameComp.setShouldRepaintForegroundOnHighlights(isDarkMode());
+            add(nameComp);
+        }
 
-		public void setColor3(Color color){
-			nameComp.color3 = color;
-			nameComp.repaint();
-		}
+        public void setEnter(boolean value) {
+            if (value) {
+                nameComp.setFont(AppDataManager.getHintFont().deriveFont(Font.BOLD));
+            } else {
+                nameComp.setFont(AppDataManager.getHintFont());
+            }
+            nameComp.setEnter(value);
+        }
 
-		public void run(){
-			nameComp.runnable.run();
-		}
+        public void setColor3(Color color) {
+            nameComp.color3 = color;
+            nameComp.repaint();
+        }
 
-		public BufferedImage getIcon(){
-			if(d.modifier.contains("synchronized"))
-				return IconManager.fluentsyncImage;
-			if(d.modifier.contains("final"))
-				return IconManager.fluentconstantImage;
-			if(d.modifier.contains("volatile"))
-				return IconManager.fluentvolatileImage;
-			if(d.modifier.contains("class"))
-				return IconManager.fluentclassFileImage;
-			return d.isMethod() ? IconManager.fluentmethodImage : IconManager.fluentvariableImage;
-		}
-	}
+        public void run() {
+            nameComp.runnable.run();
+        }
 
-	public ContentWindow(Editor editor){
-		this.editor = editor;
-		setVisible(false);
-		setBackground(TOOLMENU_GRADIENT);
-		setLayout(null);
+        public BufferedImage getIcon() {
+            if (d.modifier.contains("synchronized"))
+                return IconManager.fluentsyncImage;
+            if (d.modifier.contains("final"))
+                return IconManager.fluentconstantImage;
+            if (d.modifier.contains("volatile"))
+                return IconManager.fluentvolatileImage;
+            if (d.modifier.contains("class"))
+                return IconManager.fluentclassFileImage;
+            return d.isMethod() ? IconManager.fluentmethodImage : IconManager.fluentvariableImage;
+        }
+    }
 
-		flexPanel = new FlexPanel(null, TOOLMENU_GRADIENT, null);
-		flexPanel.setArc(10, 0);
-		add(flexPanel);
+    public ContentWindow(Editor editor) {
+        this.editor = editor;
+        setVisible(false);
+        setBackground(TOOLMENU_GRADIENT);
+        setLayout(null);
 
-		flexPanel.add(scrollPane = new JScrollPane(panel = new JPanel(null)));
+        flexPanel = new FlexPanel(null, TOOLMENU_GRADIENT, null);
+        flexPanel.setArc(10, 0);
+        add(flexPanel);
 
-		scrollPane.setBorder(null);
-		scrollPane.setBackground(c2);
+        flexPanel.add(scrollPane = new JScrollPane(panel = new JPanel(null)));
 
-		panel.setBackground(c2);
+        scrollPane.setBorder(null);
+        scrollPane.setBackground(c2);
 
-		hintHoverColor = new Color(hintHoverColor.getRed(), hintHoverColor.getGreen(), hintHoverColor.getBlue(), 20);
-	}
+        panel.setBackground(c2);
 
-	public boolean isIgnoreGenViewOnce() {
-		return ignoreGenViewOnce;
-	}
+        hintHoverColor = new Color(hintHoverColor.getRed(), hintHoverColor.getGreen(), hintHoverColor.getBlue(), 20);
+    }
 
-	public void setIgnoreGenViewOnce(boolean ignoreGenViewOnce) {
-		this.ignoreGenViewOnce = ignoreGenViewOnce;
-	}
+    public boolean isIgnoreGenViewOnce() {
+        return ignoreGenViewOnce;
+    }
 
-	public synchronized void genView(LinkedList<DataMember> dataMembers){
-		if(dataMembers.isEmpty()){
-			setVisible(false);
-			return;
-		}
+    public void setIgnoreGenViewOnce(boolean ignoreGenViewOnce) {
+        this.ignoreGenViewOnce = ignoreGenViewOnce;
+    }
 
-		hints.forEach(panel::remove);
-		hints.clear();
+    public synchronized void genView(LinkedList<DataMember> dataMembers) {
+        if (dataMembers.isEmpty()) {
+            setVisible(false);
+            return;
+        }
 
-		sort(dataMembers);
+        hints.forEach(panel::remove);
+        hints.clear();
 
-		block = gap;
-		width = 0;
+        sort(dataMembers);
 
-		Font hintFont = AppDataManager.getHintFont();
+        block = gap;
+        width = 0;
 
-		optimalHintHeight = computeHeight(hintFont) + 6;
-		optimalHintHeight = optimalHintHeight <  20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;
-	
-		dataMembers.forEach(data->{
-			String text = data.getRepresentableValue();
-			if(text != null){
-				int w = computeWidth(text, hintFont);
-				if(w > width)
-					width = w;
-			}
-		});
+        Font hintFont = AppDataManager.getHintFont();
 
-		width += optimalHintHeight/2;
+        optimalHintHeight = computeHeight(hintFont) + 6;
+        optimalHintHeight = optimalHintHeight < 20 ? MINIMUM_HINT_HEIGHT : optimalHintHeight;
 
-		final Editor e = editor;
-		final String match = CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition());
+        dataMembers.forEach(data -> {
+            String text = data.getRepresentableValue();
+            if (text != null) {
+                int w = computeWidth(text, hintFont);
+                if (w > width)
+                    width = w;
+            }
+        });
 
-		if(isIgnoreGenViewOnce()){
-			setIgnoreGenViewOnce(false);
-			return;
-		}
+        width += optimalHintHeight / 2;
 
-		dataMembers.forEach(d->{
-			if(d.getRepresentableValue() != null){
-				HintComp hintComp = new HintComp(d, match, ()->{
-					ContentWindow.this.setVisible(false);
-					String lCode = CodeFramework.getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
-					try {
-						e.getDocument().remove(e.getCaretPosition() - match.length(), match.length());
+        final Editor e = editor;
+        final String match = CodeFramework.getCodeIgnoreDot(e.getText(), e.getCaretPosition());
 
-						e.insert(d.name, e.getCaretPosition());
+        if (isIgnoreGenViewOnce()) {
+            setIgnoreGenViewOnce(false);
+            return;
+        }
 
-						if(d.parameterCount > 0)
-							e.setCaretPosition(e.getCaretPosition() - 1);
+        dataMembers.forEach(d -> {
+            if (d.getRepresentableValue() != null) {
+                HintComp hintComp = new HintComp(d, match, () -> {
+                    ContentWindow.this.setVisible(false);
+                    String lCode = CodeFramework.getCodeIgnoreDot(editor.getText(), editor.getCaretPosition());
+                    try {
+                        e.getDocument().remove(e.getCaretPosition() - match.length(), match.length());
 
-						d.getExtendedInsertion().run();
-					}
-					catch(Exception es) {
-						es.printStackTrace();
-					}
-				});
-				hintComp.setName(String.valueOf(d.isMethod()));
-				hintComp.setBounds(0, block, width + optimalHintHeight, optimalHintHeight);
-				panel.add(hintComp);
-				hints.add(hintComp);
+                        e.insert(d.name, e.getCaretPosition());
 
-				block += gap + optimalHintHeight;
-			}
-		});
+                        if (d.parameterCount > 0)
+                            e.setCaretPosition(e.getCaretPosition() - 1);
 
-		if(block == 0)
-			return;
+                        d.getExtendedInsertion().run();
+                    } catch (Exception es) {
+                        es.printStackTrace();
+                    }
+                });
+                hintComp.setName(String.valueOf(d.isMethod()));
+                hintComp.setBounds(0, block, width + optimalHintHeight, optimalHintHeight);
+                panel.add(hintComp);
+                hints.add(hintComp);
 
-		if(isIgnoreGenViewOnce()){
-			setIgnoreGenViewOnce(false);
-			return;
-		}
+                block += gap + optimalHintHeight;
+            }
+        });
 
-		hints.getFirst().setEnter(true);
-		hints.getFirst().setColor3(highlightColor);
-		scrollPane.getVerticalScrollBar().setValue(0);
+        if (block == 0)
+            return;
 
-		index = 0;
+        if (isIgnoreGenViewOnce()) {
+            setIgnoreGenViewOnce(false);
+            return;
+        }
 
-		width += optimalHintHeight;
-		panel.setPreferredSize(new Dimension(width, block));
-		scrollPane.setPreferredSize(panel.getPreferredSize());
-		doLayout();
+        hints.getFirst().setEnter(true);
+        hints.getFirst().setColor3(highlightColor);
+        scrollPane.getVerticalScrollBar().setValue(0);
 
-		width += optimalHintHeight;
-		height = (Math.min(block, 200)) + 8;
+        index = 0;
 
-		setVisible(false);
-		setSize((Math.min(width, 700)), height);
-		setMinimumSize(getSize());
-		setPreferredSize(getSize());
-		flexPanel.setBounds(0, 0, getWidth(), getHeight());
-		scrollPane.setBounds(5, 5, getWidth() - 10, flexPanel.getHeight() - 10);
-		decideLocation();
-		setVisible(true);
-		repaint();
+        width += optimalHintHeight;
+        panel.setPreferredSize(new Dimension(width, block));
+        scrollPane.setPreferredSize(panel.getPreferredSize());
+        doLayout();
 
-		dataMembers.clear();
-	}
+        width += optimalHintHeight;
+        height = (Math.min(block, 200)) + 8;
 
-	public void decideLocation(){
-		final Editor e = editor;
-		Rectangle vRect = e.getAttachment().getVisibleRect();
-		if(e.getCaret().getMagicCaretPosition() == null)
-			return;
-		int x = e.getCaret().getMagicCaretPosition().x;
-		int y = e.getCaret().getMagicCaretPosition().y + e.getFont().getSize();
-		int xSep = (x + getWidth()) - (int)(vRect.x + vRect.getWidth());
-		int ySep = (y + getHeight()) - (int)(vRect.y + vRect.getHeight());
-		if(xSep > 0){
-			x -= xSep;
-			if(x < vRect.x)
-				x = vRect.x;
-		}
-		if(ySep > 0)
-			y = e.getCaret().getMagicCaretPosition().y - getHeight();
-		setLocation(x, y);
-	}
+        setVisible(false);
+        setSize((Math.min(width, 700)), height);
+        setMinimumSize(getSize());
+        setPreferredSize(getSize());
+        flexPanel.setBounds(0, 0, getWidth(), getHeight());
+        scrollPane.setBounds(5, 5, getWidth() - 10, flexPanel.getHeight() - 10);
+        decideLocation();
+        setVisible(true);
+        repaint();
 
-	@Override
-	public void keyTyped(KeyEvent keyEvent) {
+        dataMembers.clear();
+    }
 
-	}
+    public void decideLocation() {
+        final Editor e = editor;
+        Rectangle vRect = e.getAttachment().getVisibleRect();
+        if (e.getCaret().getMagicCaretPosition() == null)
+            return;
+        int x = e.getCaret().getMagicCaretPosition().x;
+        int y = e.getCaret().getMagicCaretPosition().y + e.getFont().getSize();
+        int xSep = (x + getWidth()) - (int) (vRect.x + vRect.getWidth());
+        int ySep = (y + getHeight()) - (int) (vRect.y + vRect.getHeight());
+        if (xSep > 0) {
+            x -= xSep;
+            if (x < vRect.x)
+                x = vRect.x;
+        }
+        if (ySep > 0)
+            y = e.getCaret().getMagicCaretPosition().y - getHeight();
+        setLocation(x, y);
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if(!isVisible()) 
-			return;
-		try{
-			if(e.getKeyCode() == KeyEvent.VK_DOWN){
-				if(index < hints.size() - 1){
-					hints.get(index).setEnter(false);
-					hints.get(index).setColor3(BasicCodeHighlighter.classColor);
-					hints.get(++index).setEnter(true);
-					hints.get(index).setColor3(highlightColor);
-					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
-				}
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_UP){
-				if(index > 0){
-					hints.get(index).setEnter(false);
-					hints.get(index).setColor3(BasicCodeHighlighter.classColor);
-					hints.get(--index).setEnter(true);
-					hints.get(index).setColor3(highlightColor);
-					scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
-				}
-			}
-			else if(e.getKeyCode() == KeyEvent.VK_ENTER){
-				hints.get(index).run();
-			}
-		}
-		catch(Exception ex){
-			setVisible(false);
-			ex.printStackTrace();
-		}
-	}
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
 
-	@Override
-	public void keyReleased(KeyEvent keyEvent) {
+    }
 
-	}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (!isVisible())
+            return;
+        try {
+            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                if (index < hints.size() - 1) {
+                    hints.get(index).setEnter(false);
+                    hints.get(index).setColor3(BasicCodeHighlighter.classColor);
+                    hints.get(++index).setEnter(true);
+                    hints.get(index).setColor3(highlightColor);
+                    scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                if (index > 0) {
+                    hints.get(index).setEnter(false);
+                    hints.get(index).setColor3(BasicCodeHighlighter.classColor);
+                    hints.get(--index).setEnter(true);
+                    hints.get(index).setColor3(highlightColor);
+                    scrollPane.getVerticalScrollBar().setValue(index * optimalHintHeight + (index * gap));
+                }
+            } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                hints.get(index).run();
+            }
+        } catch (Exception ex) {
+            setVisible(false);
+            ex.printStackTrace();
+        }
+    }
 
-	public synchronized static void sort(LinkedList<DataMember> dataMembers) {
-		Object[] members = dataMembers.toArray();
-		LinkedList<DataMember> vars = new LinkedList<>();
-		LinkedList<DataMember> meths = new LinkedList<>();
-		for(Object obj : members) {
-			DataMember m = (DataMember)obj;
-			if(m.parameters == null)
-				vars.add(m);
-			else
-				meths.add(m);
-		}
-		dataMembers.clear();
-		Object[] var_ =vars.toArray();
-		Object[] meths_ = meths.toArray();
-		for(int i = 0; i < var_.length; i++) {
-			for(int j = 0; j < var_.length - 1 - i; i++) {
-				DataMember m = (DataMember)var_[j];
-				DataMember n = (DataMember)var_[j + 1];
-				if(m.name.compareTo(n.name) > 0) {
-					Object o = var_[j];
-					var_[j] = var_[j + 1];
-					var_[j + 1] = o;
-				}
-			}
-		}
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
 
-		for(int i = 0; i < meths_.length; i++) {
-			for(int j = 0; j < meths_.length - 1 - i; i++) {
-				DataMember m = (DataMember)meths_[j];
-				DataMember n = (DataMember)meths_[j + 1];
-				if(m.name.compareTo(n.name) > 0) {
-					Object o = meths_[j];
-					meths_[j] = meths_[j + 1];
-					meths_[j + 1] = o;
-				}
-			}
-		}
-		for(Object v : var_) {
-			dataMembers.add((DataMember)v);
-		}
-		for(Object v : meths_) {
-			dataMembers.add((DataMember)v);
-		}
-		var_ = null;
-		meths_ = null;
-		members = null;
-	}
+    }
+
+    public synchronized static void sort(LinkedList<DataMember> dataMembers) {
+        Object[] members = dataMembers.toArray();
+        LinkedList<DataMember> vars = new LinkedList<>();
+        LinkedList<DataMember> meths = new LinkedList<>();
+        for (Object obj : members) {
+            DataMember m = (DataMember) obj;
+            if (m.parameters == null)
+                vars.add(m);
+            else
+                meths.add(m);
+        }
+        dataMembers.clear();
+        Object[] var_ = vars.toArray();
+        Object[] meths_ = meths.toArray();
+        for (int i = 0; i < var_.length; i++) {
+            for (int j = 0; j < var_.length - 1 - i; i++) {
+                DataMember m = (DataMember) var_[j];
+                DataMember n = (DataMember) var_[j + 1];
+                if (m.name.compareTo(n.name) > 0) {
+                    Object o = var_[j];
+                    var_[j] = var_[j + 1];
+                    var_[j + 1] = o;
+                }
+            }
+        }
+
+        for (int i = 0; i < meths_.length; i++) {
+            for (int j = 0; j < meths_.length - 1 - i; i++) {
+                DataMember m = (DataMember) meths_[j];
+                DataMember n = (DataMember) meths_[j + 1];
+                if (m.name.compareTo(n.name) > 0) {
+                    Object o = meths_[j];
+                    meths_[j] = meths_[j + 1];
+                    meths_[j + 1] = o;
+                }
+            }
+        }
+        for (Object v : var_) {
+            dataMembers.add((DataMember) v);
+        }
+        for (Object v : meths_) {
+            dataMembers.add((DataMember) v);
+        }
+        var_ = null;
+        meths_ = null;
+        members = null;
+    }
 }
 

@@ -16,62 +16,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package omega.ui.component;
-import java.io.File;
 
 import omega.Screen;
-
+import omega.io.IconManager;
+import omega.io.ShellTokenMaker;
 import omega.ui.component.jediterm.JetTerminal;
 
-import omega.io.ShellTokenMaker;
-import omega.io.IconManager;
+import java.io.File;
+
 public class TerminalComp {
 
-	public static final String SYSTEM_SHELL = File.pathSeparator.equals(":") ? "/bin/bash" : "cmd.exe";
+    public static final String SYSTEM_SHELL = File.pathSeparator.equals(":") ? "/bin/bash" : "cmd.exe";
 
-	public int count = 1;
-	public String name = "";
+    public int count = 1;
+    public String name = "";
 
-	public void showTerminal(){
-		Terminal terminal = new Terminal();
-		ShellTokenMaker.apply(terminal.getOutputArea());
-		Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ("(" + (count - 1) + ")") : ""), IconManager.fluentconsoleImage, terminal, ()->{
-			count--;
-			terminal.exit();
-		});
-		terminal.launchTerminal();
-		count++;
-	}
+    public void showTerminal() {
+        Terminal terminal = new Terminal();
+        ShellTokenMaker.apply(terminal.getOutputArea());
+        Screen.getScreen().getOperationPanel().addTab("Terminal" + (count > 1 ? ("(" + (count - 1) + ")") : ""), IconManager.fluentconsoleImage, terminal, () -> {
+            count--;
+            terminal.exit();
+        });
+        terminal.launchTerminal();
+        count++;
+    }
 
-	public void showJetTerminal(){
-		JetTerminal jetTerminal = new JetTerminal();
-		final String name = ("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""));
-		jetTerminal.setOnProcessExited(()->{
-			count--;
-			Screen.getScreen().getOperationPanel().removeTab(name);
-		});
-		jetTerminal.start();
-		Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentconsoleImage, jetTerminal, ()->{
-			count--;
-			jetTerminal.exit();
-		});
-		count++;
-	}
+    public void showJetTerminal() {
+        JetTerminal jetTerminal = new JetTerminal();
+        final String name = ("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""));
+        jetTerminal.setOnProcessExited(() -> {
+            count--;
+            Screen.getScreen().getOperationPanel().removeTab(name);
+        });
+        jetTerminal.start();
+        Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentconsoleImage, jetTerminal, () -> {
+            count--;
+            jetTerminal.exit();
+        });
+        count++;
+    }
 
 
-	public void showJetTerminal(File dir){
-		JetTerminal jetTerminal = new JetTerminal(new String[]{ SYSTEM_SHELL }, dir.getAbsolutePath());
-		final String name = ("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""));
-		jetTerminal.setOnProcessExited(()->{
-			count--;
-			Screen.getScreen().getOperationPanel().removeTab(name);
-		});
-		jetTerminal.start();
-		Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentconsoleImage, jetTerminal, ()->{
-			count--;
-			jetTerminal.exit();
-		});
-		count++;
-	}
+    public void showJetTerminal(File dir) {
+        JetTerminal jetTerminal = new JetTerminal(new String[]{SYSTEM_SHELL}, dir.getAbsolutePath());
+        final String name = ("Terminal " + (count > 1 ? ("(" + (count - 1) + ")") : ""));
+        jetTerminal.setOnProcessExited(() -> {
+            count--;
+            Screen.getScreen().getOperationPanel().removeTab(name);
+        });
+        jetTerminal.start();
+        Screen.getScreen().getOperationPanel().addTab(name, IconManager.fluentconsoleImage, jetTerminal, () -> {
+            count--;
+            jetTerminal.exit();
+        });
+        count++;
+    }
 
 }
 

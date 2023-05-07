@@ -17,218 +17,217 @@
  */
 
 package omega.io;
+
+import omega.Screen;
 import omegaui.dynamic.database.DataBase;
 import omegaui.dynamic.database.DataEntry;
 
-import java.awt.Font;
-
+import java.awt.*;
 import java.io.File;
 
-import omega.Screen;
 public class AppDataManager extends DataBase {
-	public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
-	public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
-	public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/3d-flame-255.png";
+    public static final String INSTANT_MODE_SPEED = "instant-mode-speed";
+    public static final String INSTANT_MODE_ACCURACY = "instant-mode-accuracy";
+    public static final String DEFAULT_ILLUSTRATION_PATH = "/fluent-illustrations/3d-flame-255.png";
 
-	private static String defaultProjectPath = "No Default Project set yet.";
-	private static String pathToJava = "";
-	private static String projectsHome = "";
-	private static String theme = "light";
-	private static String consoleCommand = "";
-	private static String gradleCommand = "gradlew";
-	private static String instantMode = "";
-	private static String backgroundIllustrationPath = "";
+    private static String defaultProjectPath = "No Default Project set yet.";
+    private static String pathToJava = "";
+    private static String projectsHome = "";
+    private static String theme = "light";
+    private static String consoleCommand = "";
+    private static String gradleCommand = "gradlew";
+    private static String instantMode = "";
+    private static String backgroundIllustrationPath = "";
 
-	private static Font hintFont = new Font("Ubuntu", Font.BOLD, 12);
+    private static Font hintFont = new Font("Ubuntu", Font.BOLD, 12);
 
-	private volatile static boolean realTimeContentAssist = false;
-	private volatile static boolean contentModeJava = true;
-	private volatile static boolean useStarImports = false;
-	private volatile static boolean sourceDefenderEnabled;
-	private volatile static boolean parsingEnabled = true;
+    private volatile static boolean realTimeContentAssist = false;
+    private volatile static boolean contentModeJava = true;
+    private volatile static boolean useStarImports = false;
+    private volatile static boolean sourceDefenderEnabled;
+    private volatile static boolean parsingEnabled = true;
 
-	private static int languageTag = -1;
-	private static int tabSize = 5;
+    private static int languageTag = -1;
+    private static int tabSize = 5;
 
-	public AppDataManager(Screen screen) {
-		super(".omega-ide" + File.separator + ".preferences");
-		loadData();
-	}
+    public AppDataManager(Screen screen) {
+        super(".omega-ide" + File.separator + ".preferences");
+        loadData();
+    }
 
-	private void loadData() {
-		try {
-			DataEntry e = getEntryAt("Default Project", 0);
-			if(e == null) return;
-			if(new File(e.getValue()).exists())
-				setDefaultProjectPath(e.getValue());
-			setContentAssistRealTime(getEntryAt("Content Assist Real-Time", 0).getValueAsBoolean());
-			setUseStarImports(getEntryAt("Use Star Imports", 0).getValueAsBoolean());
-			setPathToJava(getEntryAt("Folder Containing Java Development Kits and Environments", 0).getValue());
-			setWorkspace(getEntryAt("Projects Home", 0).getValue());
-			setTheme(getEntryAt("Theme", 0).getValue());
-			setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
-			setSourceDefenderEnabled(getEntryAt("Source Defender Enabled", 0).getValueAsBoolean());
-			setConsoleCommand(getEntryAt("System Console Launch Command", 0).getValue());
-			setGradleCommand(getEntryAt("Gradle Build Script", 0).getValue());
-			setInstantMode(getEntryAt("Instant Mode", 0).getValue());
-			String fontName = getEntryAt("Hint Font", 0).getValue();
-			int style = getEntryAt("Hint Font", 1).getValueAsInt();
-			int size = getEntryAt("Hint Font", 2).getValueAsInt();
-			setHintFont(new Font(fontName, style, size));
-			setParsingEnabled(getEntryAt("Parsing Enabled", 0).getValueAsBoolean());
-			setTabSize(getEntryAt("Tab Size", 0).getValueAsInt());
-			setBackgroundIllustrationPath(getEntryAt("Background Illustration Path", 0).getValue());
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+    private void loadData() {
+        try {
+            DataEntry e = getEntryAt("Default Project", 0);
+            if (e == null) return;
+            if (new File(e.getValue()).exists())
+                setDefaultProjectPath(e.getValue());
+            setContentAssistRealTime(getEntryAt("Content Assist Real-Time", 0).getValueAsBoolean());
+            setUseStarImports(getEntryAt("Use Star Imports", 0).getValueAsBoolean());
+            setPathToJava(getEntryAt("Folder Containing Java Development Kits and Environments", 0).getValue());
+            setWorkspace(getEntryAt("Projects Home", 0).getValue());
+            setTheme(getEntryAt("Theme", 0).getValue());
+            setContentModeJava(getEntryAt("Content Mode Java", 0).getValueAsBoolean());
+            setSourceDefenderEnabled(getEntryAt("Source Defender Enabled", 0).getValueAsBoolean());
+            setConsoleCommand(getEntryAt("System Console Launch Command", 0).getValue());
+            setGradleCommand(getEntryAt("Gradle Build Script", 0).getValue());
+            setInstantMode(getEntryAt("Instant Mode", 0).getValue());
+            String fontName = getEntryAt("Hint Font", 0).getValue();
+            int style = getEntryAt("Hint Font", 1).getValueAsInt();
+            int size = getEntryAt("Hint Font", 2).getValueAsInt();
+            setHintFont(new Font(fontName, style, size));
+            setParsingEnabled(getEntryAt("Parsing Enabled", 0).getValueAsBoolean());
+            setTabSize(getEntryAt("Tab Size", 0).getValueAsInt());
+            setBackgroundIllustrationPath(getEntryAt("Background Illustration Path", 0).getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public void saveData() {
-		clear();
-		addEntry("Default Project", defaultProjectPath);
-		addEntry("Content Assist Real-Time", isContentAssistRealTime() + "");
-		addEntry("Content Mode Java", isContentModeJava() + "");
-		addEntry("Use Star Imports", isUsingStarImports() + "");
-		addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
-		addEntry("Projects Home", getWorkspace());
-		addEntry("Theme", getTheme());
-		addEntry("Source Defender Enabled", isSourceDefenderEnabled() + "");
-		addEntry("System Console Launch Command", getConsoleCommand());
-		addEntry("Gradle Build Script", getGradleCommand());
-		addEntry("Instant Mode", getInstantMode());
-		addEntry("Hint Font", getHintFont().getName());
-		addEntry("Hint Font", getHintFont().getStyle() + "");
-		addEntry("Hint Font", getHintFont().getSize() + "");
-		addEntry("Parsing Enabled", isParsingEnabled() + "");
-		addEntry("Tab Size", getTabSize() + "");
-		addEntry("Background Illustration Path", getBackgroundIllustrationPath());
-		save();
-	}
+    public void saveData() {
+        clear();
+        addEntry("Default Project", defaultProjectPath);
+        addEntry("Content Assist Real-Time", isContentAssistRealTime() + "");
+        addEntry("Content Mode Java", isContentModeJava() + "");
+        addEntry("Use Star Imports", isUsingStarImports() + "");
+        addEntry("Folder Containing Java Development Kits and Environments", getPathToJava());
+        addEntry("Projects Home", getWorkspace());
+        addEntry("Theme", getTheme());
+        addEntry("Source Defender Enabled", isSourceDefenderEnabled() + "");
+        addEntry("System Console Launch Command", getConsoleCommand());
+        addEntry("Gradle Build Script", getGradleCommand());
+        addEntry("Instant Mode", getInstantMode());
+        addEntry("Hint Font", getHintFont().getName());
+        addEntry("Hint Font", getHintFont().getStyle() + "");
+        addEntry("Hint Font", getHintFont().getSize() + "");
+        addEntry("Parsing Enabled", isParsingEnabled() + "");
+        addEntry("Tab Size", getTabSize() + "");
+        addEntry("Background Illustration Path", getBackgroundIllustrationPath());
+        save();
+    }
 
-	public static String getPathToJava() {
-		return pathToJava;
-	}
+    public static String getPathToJava() {
+        return pathToJava;
+    }
 
-	public static void setPathToJava(String path) {
-		pathToJava = path;
-	}
+    public static void setPathToJava(String path) {
+        pathToJava = path;
+    }
 
-	public static String getDefaultProjectPath() {
-		return defaultProjectPath;
-	}
+    public static String getDefaultProjectPath() {
+        return defaultProjectPath;
+    }
 
-	public static void setDefaultProjectPath(String defaultProjectPath) {
-		AppDataManager.defaultProjectPath = defaultProjectPath;
-	}
+    public static void setDefaultProjectPath(String defaultProjectPath) {
+        AppDataManager.defaultProjectPath = defaultProjectPath;
+    }
 
-	public static void setContentAssistRealTime(boolean value) {
-		realTimeContentAssist = value;
-	}
+    public static void setContentAssistRealTime(boolean value) {
+        realTimeContentAssist = value;
+    }
 
-	public static boolean isContentAssistRealTime() {
-		return realTimeContentAssist;
-	}
+    public static boolean isContentAssistRealTime() {
+        return realTimeContentAssist;
+    }
 
-	public static void setUseStarImports(boolean value) {
-		useStarImports = value;
-	}
+    public static void setUseStarImports(boolean value) {
+        useStarImports = value;
+    }
 
-	public static boolean isUsingStarImports() {
-		return useStarImports;
-	}
+    public static boolean isUsingStarImports() {
+        return useStarImports;
+    }
 
-	public static void setWorkspace(String home){
-		projectsHome = home;
-	}
+    public static void setWorkspace(String home) {
+        projectsHome = home;
+    }
 
-	public static String getWorkspace(){
-		return projectsHome;
-	}
+    public static String getWorkspace() {
+        return projectsHome;
+    }
 
-	public static void setTheme(String t){
-		theme = t;
-	}
+    public static void setTheme(String t) {
+        theme = t;
+    }
 
-	public static String getTheme(){
-		return theme;
-	}
+    public static String getTheme() {
+        return theme;
+    }
 
-	public static boolean isContentModeJava() {
-		return contentModeJava;
-	}
+    public static boolean isContentModeJava() {
+        return contentModeJava;
+    }
 
-	public static void setContentModeJava(boolean contentModeJava) {
-		AppDataManager.contentModeJava = contentModeJava;
-	}
+    public static void setContentModeJava(boolean contentModeJava) {
+        AppDataManager.contentModeJava = contentModeJava;
+    }
 
-	public static boolean isSourceDefenderEnabled() {
-		return sourceDefenderEnabled;
-	}
+    public static boolean isSourceDefenderEnabled() {
+        return sourceDefenderEnabled;
+    }
 
-	public static void setSourceDefenderEnabled(boolean sourceDefenderEnabled) {
-		AppDataManager.sourceDefenderEnabled = sourceDefenderEnabled;
-	}
+    public static void setSourceDefenderEnabled(boolean sourceDefenderEnabled) {
+        AppDataManager.sourceDefenderEnabled = sourceDefenderEnabled;
+    }
 
-	public static java.lang.String getConsoleCommand() {
-		return consoleCommand;
-	}
+    public static java.lang.String getConsoleCommand() {
+        return consoleCommand;
+    }
 
-	public static void setConsoleCommand(java.lang.String consoleCommand) {
-		AppDataManager.consoleCommand = consoleCommand;
-	}
+    public static void setConsoleCommand(java.lang.String consoleCommand) {
+        AppDataManager.consoleCommand = consoleCommand;
+    }
 
-	public static java.lang.String getGradleCommand() {
-		return gradleCommand;
-	}
+    public static java.lang.String getGradleCommand() {
+        return gradleCommand;
+    }
 
-	public static void setGradleCommand(java.lang.String gradleCommand) {
-		AppDataManager.gradleCommand = gradleCommand;
-	}
+    public static void setGradleCommand(java.lang.String gradleCommand) {
+        AppDataManager.gradleCommand = gradleCommand;
+    }
 
-	public static java.lang.String getInstantMode() {
-		return instantMode;
-	}
+    public static java.lang.String getInstantMode() {
+        return instantMode;
+    }
 
-	public static void setInstantMode(java.lang.String instantMode) {
-		AppDataManager.instantMode = instantMode;
-	}
+    public static void setInstantMode(java.lang.String instantMode) {
+        AppDataManager.instantMode = instantMode;
+    }
 
-	public static java.awt.Font getHintFont() {
-		return hintFont;
-	}
+    public static java.awt.Font getHintFont() {
+        return hintFont;
+    }
 
-	public static void setHintFont(java.awt.Font hintFont) {
-		if(hintFont == null){
-			System.err.println("Hint Font cannot be null!");
-			return;
-		}
-		AppDataManager.hintFont = hintFont;
-	}
+    public static void setHintFont(java.awt.Font hintFont) {
+        if (hintFont == null) {
+            System.err.println("Hint Font cannot be null!");
+            return;
+        }
+        AppDataManager.hintFont = hintFont;
+    }
 
-	public static synchronized boolean isParsingEnabled() {
-		return parsingEnabled;
-	}
+    public static synchronized boolean isParsingEnabled() {
+        return parsingEnabled;
+    }
 
-	public static void setParsingEnabled(boolean parsingEnabled) {
-		AppDataManager.parsingEnabled = parsingEnabled;
-	}
+    public static void setParsingEnabled(boolean parsingEnabled) {
+        AppDataManager.parsingEnabled = parsingEnabled;
+    }
 
-	public static int getTabSize() {
-		return tabSize;
-	}
+    public static int getTabSize() {
+        return tabSize;
+    }
 
-	public static void setTabSize(int tabSize) {
-		AppDataManager.tabSize = tabSize;
-	}
+    public static void setTabSize(int tabSize) {
+        AppDataManager.tabSize = tabSize;
+    }
 
-	public static java.lang.String getBackgroundIllustrationPath() {
-		return Screen.isNotNull(backgroundIllustrationPath) ? backgroundIllustrationPath : DEFAULT_ILLUSTRATION_PATH;
-	}
+    public static java.lang.String getBackgroundIllustrationPath() {
+        return Screen.isNotNull(backgroundIllustrationPath) ? backgroundIllustrationPath : DEFAULT_ILLUSTRATION_PATH;
+    }
 
-	public static void setBackgroundIllustrationPath(java.lang.String backgroundIllustrationPath) {
-		AppDataManager.backgroundIllustrationPath = backgroundIllustrationPath;
-	}
+    public static void setBackgroundIllustrationPath(java.lang.String backgroundIllustrationPath) {
+        AppDataManager.backgroundIllustrationPath = backgroundIllustrationPath;
+    }
 
 }
 

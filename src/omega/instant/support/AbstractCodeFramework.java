@@ -17,6 +17,7 @@
  */
 
 package omega.instant.support;
+
 import omega.ui.component.Editor;
 
 /*
@@ -28,18 +29,18 @@ import omega.ui.component.Editor;
  */
 
 public abstract class AbstractCodeFramework {
-	/*
-	 * Returns Whether the Hints can be made, depending on the editor data!
-	 */
-	public abstract boolean canThink(Editor e);
+    /*
+     * Returns Whether the Hints can be made, depending on the editor data!
+     */
+    public abstract boolean canThink(Editor e);
 
-	/*
-	 * Creates Hints and Show Them using the CodeFramework.gen() method.
-	 */
-	public abstract boolean think(Editor e, String text, int caret);
+    /*
+     * Creates Hints and Show Them using the CodeFramework.gen() method.
+     */
+    public abstract boolean think(Editor e, String text, int caret);
 
-	/*
-	 * Returns Whether CodeFramework is currently making hints or not
-	 */
-	public abstract boolean isResolving();
+    /*
+     * Returns Whether CodeFramework is currently making hints or not
+     */
+    public abstract boolean isResolving();
 }

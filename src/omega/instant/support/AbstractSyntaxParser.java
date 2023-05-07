@@ -17,8 +17,9 @@
  */
 
 package omega.instant.support;
-import omega.ui.component.Editor;
+
 public abstract class AbstractSyntaxParser {
-	public abstract int getLanguageTag();
-	public abstract void parse();
+    public abstract int getLanguageTag();
+
+    public abstract void parse();
 }

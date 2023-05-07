@@ -17,6 +17,7 @@
  */
 
 package omega.instant.support;
+
 import omega.ui.component.Editor;
 
 /*
@@ -26,13 +27,13 @@ import omega.ui.component.Editor;
  */
 
 public abstract class AbstractContentTokenizer {
-	/*
-	 * Returns Whether the Hints can be made, depending on the editor data!
-	 */
-	public abstract boolean canArrangeTokens(Editor editor);
+    /*
+     * Returns Whether the Hints can be made, depending on the editor data!
+     */
+    public abstract boolean canArrangeTokens(Editor editor);
 
-	/*
-	 * Creates Hints and Show Them using the CodeFramework.gen() method.
-	 */
-	public abstract void arrangeTokens(Editor editor);
+    /*
+     * Creates Hints and Show Them using the CodeFramework.gen() method.
+     */
+    public abstract void arrangeTokens(Editor editor);
 }

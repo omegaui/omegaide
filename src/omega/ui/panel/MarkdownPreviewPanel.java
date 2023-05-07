@@ -17,123 +17,106 @@
  */
 
 package omega.ui.panel;
-import java.util.Scanner;
-
-import omega.ui.component.Editor;
-
-import omega.ui.window.EditorPreviewWindow;
-
-import omega.io.IconManager;
 
 import omega.Screen;
-
+import omega.io.IconManager;
+import omega.ui.component.Editor;
+import omega.ui.window.EditorPreviewWindow;
 import org.commonmark.node.Node;
-
 import org.commonmark.parser.Parser;
-
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import javax.swing.*;
 import javax.swing.text.html.HTMLEditorKit;
-
+import java.awt.*;
 import java.io.File;
+import java.util.Scanner;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import static omega.io.UIManager.c2;
+import static omega.io.UIManager.isDarkMode;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+public class MarkdownPreviewPanel extends AbstractPreviewPanel {
+    public JEditorPane textArea;
+    public JScrollPane scrollPane;
 
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
+    public static String GITHUB_MARKDOWN_CSS;
 
-import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
+    public String lastText = "";
+    public String lastParsedText = "";
 
-public class MarkdownPreviewPanel extends AbstractPreviewPanel{
-	public JEditorPane textArea;
-	public JScrollPane scrollPane;
+    static {
+        String text = "";
+        try {
+            Scanner reader = new Scanner(MarkdownPreviewPanel.class.getResourceAsStream("/github-markdown-" + (isDarkMode() ? "dark" : "light") + ".css"));
+            while (reader.hasNextLine())
+                text += reader.nextLine() + "\n";
+            reader.close();
+            GITHUB_MARKDOWN_CSS = "<style>\n" + text + "</style>";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static String GITHUB_MARKDOWN_CSS;
+    public MarkdownPreviewPanel() {
+        setLayout(new BorderLayout());
+        setBackground(c2);
+        init();
+    }
 
-	public String lastText = "";
-	public String lastParsedText = "";
+    @Override
+    public boolean canCreatePreview(File file) {
+        return file.getName().endsWith(".md");
+    }
 
-	static{
-		String text = "";
-		try{
-			Scanner reader = new Scanner(MarkdownPreviewPanel.class.getResourceAsStream("/github-markdown-" + (isDarkMode() ? "dark" : "light") + ".css"));
-			while(reader.hasNextLine())
-				text += reader.nextLine() + "\n";
-			reader.close();
-			GITHUB_MARKDOWN_CSS = "<style>\n" + text + "</style>";
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void genPreview(Editor editor, EditorPreviewWindow previewWindow) {
+        new Thread(() -> {
+            File file = editor.currentFile;
+            try {
+                Screen.setStatus("Generating Preview for Markdown File " + file.getName(), 10, IconManager.fluentbookmarkImage);
 
-	public MarkdownPreviewPanel(){
-		setLayout(new BorderLayout());
-		setBackground(c2);
-		init();
-	}
+                String text = editor.getText();
+                String parsedText = lastParsedText;
 
-	@Override
-	public boolean canCreatePreview(File file){
-		return file.getName().endsWith(".md");
-	}
+                if (!lastText.equals(text)) {
+                    lastText = text;
+                    Parser parser = Parser.builder().build();
+                    Node document = parser.parse(text);
+                    HtmlRenderer renderer = HtmlRenderer.builder().build();
+                    parsedText = renderer.render(document);
+                    parsedText = GITHUB_MARKDOWN_CSS + "\n" + parsedText;
+                    textArea.setText(parsedText);
+                }
 
-	@Override
-	public void genPreview(Editor editor, EditorPreviewWindow previewWindow){
-		new Thread(()->{
-			File file = editor.currentFile;
-			try{
-				Screen.setStatus("Generating Preview for Markdown File " + file.getName(), 10, IconManager.fluentbookmarkImage);
-				
-				String text = editor.getText();
-				String parsedText = lastParsedText;
-				
-				if(!lastText.equals(text)){
-					lastText = text;
-					Parser parser = Parser.builder().build();
-					Node document = parser.parse(text);
-					HtmlRenderer renderer = HtmlRenderer.builder().build();
-					parsedText = renderer.render(document);
-					parsedText = GITHUB_MARKDOWN_CSS + "\n" + parsedText;
-					textArea.setText(parsedText);
-				}
-				
-				scrollPane.getVerticalScrollBar().setValue(0);
+                scrollPane.getVerticalScrollBar().setValue(0);
 
-				previewWindow.setTitle("Viewing " + file.getName());
+                previewWindow.setTitle("Viewing " + file.getName());
 
-				Screen.setStatus(null, 100, null);
-			}
-			catch(Exception e){
-				Screen.setStatus("An Error Occured while generating preview for " + file.getName(), 10, IconManager.fluenterrorImage);
-				e.printStackTrace();
-			}
-		}).start();
-	}
+                Screen.setStatus(null, 100, null);
+            } catch (Exception e) {
+                Screen.setStatus("An Error Occured while generating preview for " + file.getName(), 10, IconManager.fluenterrorImage);
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
-	public void init(){
-		textArea = new JEditorPane(){
-			@Override
-			public void paint(Graphics graphics){
-				Graphics2D g = (Graphics2D)graphics;
-				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				super.paint(g);
-			}
-		};
-		textArea.setBackground(c2);
-		textArea.setEditorKit(new HTMLEditorKit());
-		textArea.setEditable(false);
+    public void init() {
+        textArea = new JEditorPane() {
+            @Override
+            public void paint(Graphics graphics) {
+                Graphics2D g = (Graphics2D) graphics;
+                g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                super.paint(g);
+            }
+        };
+        textArea.setBackground(c2);
+        textArea.setEditorKit(new HTMLEditorKit());
+        textArea.setEditable(false);
 
-		add(scrollPane = new JScrollPane(textArea), BorderLayout.CENTER);
+        add(scrollPane = new JScrollPane(textArea), BorderLayout.CENTER);
 
-		scrollPane.setBorder(null);
-	}
+        scrollPane.setBorder(null);
+    }
 }

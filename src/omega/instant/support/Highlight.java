@@ -17,105 +17,101 @@
  */
 
 package omega.instant.support;
+
 import omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo;
-
-import javax.tools.Diagnostic;
-
-import java.awt.Color;
-
 import omega.ui.component.Editor;
-
 
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
+import javax.tools.Diagnostic;
+import java.awt.*;
+
 public class Highlight {
 
-	public Editor editor;
-	public HighlightPainter highlightPainter;
-	public int start;
-	public int end;
-	public boolean warning = false;
-	public Diagnostic diagnosticData;
-	public JavaSyntaxParserGutterIconInfo gutterIconInfo;
-	public Object tag;
+    public Editor editor;
+    public HighlightPainter highlightPainter;
+    public int start;
+    public int end;
+    public boolean warning = false;
+    public Diagnostic diagnosticData;
+    public JavaSyntaxParserGutterIconInfo gutterIconInfo;
+    public Object tag;
 
-	public volatile boolean applied = false;
-	public volatile boolean appliedLineColor = false;
+    public volatile boolean applied = false;
+    public volatile boolean appliedLineColor = false;
 
-	public Highlight(Editor e, HighlightPainter h, int start, int end, boolean warning) {
-		this.editor = e;
-		this.highlightPainter = h;
-		this.start = start;
-		this.end = end;
-		this.warning = warning;
-	}
+    public Highlight(Editor e, HighlightPainter h, int start, int end, boolean warning) {
+        this.editor = e;
+        this.highlightPainter = h;
+        this.start = start;
+        this.end = end;
+        this.warning = warning;
+    }
 
-	public void apply(){
-		if(applied)
-			return;
-		applied = true;
-		try{
-			editor.getHighlighter().addHighlight(start, end, highlightPainter);
-			if(gutterIconInfo != null)
-				gutterIconInfo.apply();
-		}
-		catch(Exception e){
+    public void apply() {
+        if (applied)
+            return;
+        applied = true;
+        try {
+            editor.getHighlighter().addHighlight(start, end, highlightPainter);
+            if (gutterIconInfo != null)
+                gutterIconInfo.apply();
+        } catch (Exception e) {
 
-		}
-	}
+        }
+    }
 
-	public void applyLineColor(int line, Color c){
-		if(appliedLineColor)
-			return;
-		appliedLineColor = true;
-		try{
-			tag = editor.addLineHighlight(line, c);
-		}
-		catch(Exception e){
-			//e.printStackTrace();
-		}
-	}
+    public void applyLineColor(int line, Color c) {
+        if (appliedLineColor)
+            return;
+        appliedLineColor = true;
+        try {
+            tag = editor.addLineHighlight(line, c);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+    }
 
-	public javax.tools.Diagnostic getDiagnosticData() {
-		return diagnosticData;
-	}
+    public javax.tools.Diagnostic getDiagnosticData() {
+        return diagnosticData;
+    }
 
-	public void setDiagnosticData(javax.tools.Diagnostic diagnosticData) {
-		this.diagnosticData = diagnosticData;
-	}
+    public void setDiagnosticData(javax.tools.Diagnostic diagnosticData) {
+        this.diagnosticData = diagnosticData;
+    }
 
-	public omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo getGutterIconInfo() {
-		return gutterIconInfo;
-	}
+    public omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo getGutterIconInfo() {
+        return gutterIconInfo;
+    }
 
-	public void setGutterIconInfo(omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo gutterIconInfo) {
-		this.gutterIconInfo = gutterIconInfo;
-	}
+    public void setGutterIconInfo(omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo gutterIconInfo) {
+        this.gutterIconInfo = gutterIconInfo;
+    }
 
 
-	public void remove() {
-		if(tag != null)
-			editor.removeLineHighlight(tag);
-		if(gutterIconInfo != null)
-			gutterIconInfo.remove();
-		Highlighter h = editor.getHighlighter();
-		Highlighter.Highlight hs[] = h.getHighlights();
-		for(int i = 0; i < hs.length; i++) {
-			if(hs[i].getPainter() == highlightPainter)
-				h.removeHighlight(hs[i]);
-		}
-	}
+    public void remove() {
+        if (tag != null)
+            editor.removeLineHighlight(tag);
+        if (gutterIconInfo != null)
+            gutterIconInfo.remove();
+        Highlighter h = editor.getHighlighter();
+        Highlighter.Highlight hs[] = h.getHighlights();
+        for (int i = 0; i < hs.length; i++) {
+            if (hs[i].getPainter() == highlightPainter)
+                h.removeHighlight(hs[i]);
+        }
+    }
 
-	public boolean equals(int start, int end){
-		return start == start && end == end;
-	}
+    public boolean equals(int start, int end) {
+        return start == start && end == end;
+    }
 
-	@Override
-	public boolean equals(Object obj){
-		if(obj instanceof Highlight hx){
-			return hx.editor.currentFile.equals(editor.currentFile) && hx.start == start && hx.end == end && hx.diagnosticData.getLineNumber() == diagnosticData.getLineNumber();
-		}
-		return super.equals(obj);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Highlight hx) {
+            return hx.editor.currentFile.equals(editor.currentFile) && hx.start == start && hx.end == end && hx.diagnosticData.getLineNumber() == diagnosticData.getLineNumber();
+        }
+        return super.equals(obj);
+    }
 }
 

@@ -16,154 +16,141 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package omega.instant.support.c;
-import javax.swing.text.Highlighter;
-
-import omega.io.IconManager;
-
-import omega.ui.component.Editor;
 
 import omega.Screen;
-
-import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
-
-import java.awt.Image;
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import java.io.File;
-
-import omega.instant.support.java.framework.CodeFramework;
-
-import omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo;
-
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-
 import omega.instant.support.AbstractErrorHighlighter;
 import omega.instant.support.Highlight;
+import omega.instant.support.java.framework.CodeFramework;
+import omega.instant.support.java.parser.JavaSyntaxParserGutterIconInfo;
+import omega.io.IconManager;
+import omega.ui.component.Editor;
+import org.fife.ui.rsyntaxtextarea.SquiggleUnderlineHighlightPainter;
+
+import javax.swing.*;
+import javax.swing.text.Highlighter;
+import java.awt.*;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 
 public class CErrorHighlighter implements AbstractErrorHighlighter {
 
-	private LinkedList<Highlight> highlights;
-	private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
+    private LinkedList<Highlight> highlights;
+    private LinkedList<JavaSyntaxParserGutterIconInfo> gutterIconInfos;
 
-	public CErrorHighlighter() {
-		highlights = new LinkedList<>();
-		gutterIconInfos = new LinkedList<>();
-	}
+    public CErrorHighlighter() {
+        highlights = new LinkedList<>();
+        gutterIconInfos = new LinkedList<>();
+    }
 
-	/*
-	c_test.c: In function ‘main’:
-	c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
-	6 |  return 2;
-	|  ^~~~~~
-	main.c:3:10: fatal error: utils.c: No such file or directory
-	3 | #include <utils.c>
-	|          ^~~~~~~~~
-	 */
-	@Override
-	public void loadErrors(String errorLog, String workingDir) {
-		System.out.println("Working Dir : " + workingDir);
-		removeAllHighlights();
-		StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
-		boolean canRecord = false;
-		String path = "";
-		String code = "";
-		String message = "";
-		int line = 0;
-		try {
-			while(tokenizer.hasMoreTokens()) {
-				String token = tokenizer.nextToken();
-				if(!canRecord && CodeFramework.count(token, ':') >= 4 && !token.startsWith(" ")){
-					int index;
-					path = token.substring(0, index = token.indexOf(':')).trim();
-					line = Integer.parseInt(token.substring(index + 1, index = token.indexOf(':', index + 1)).trim());
-					index = token.indexOf(':', index + 1);
-					message = token.substring(index + 1).trim();
-					canRecord = true;
-				}
-				else if(canRecord && token.contains("|")){
-					code = token.substring(token.indexOf('|') + 1).trim();
+    /*
+    c_test.c: In function ‘main’:
+    c_test.c:6:2: error: expected ‘,’ or ‘;’ before ‘return’
+    6 |  return 2;
+    |  ^~~~~~
+    main.c:3:10: fatal error: utils.c: No such file or directory
+    3 | #include <utils.c>
+    |          ^~~~~~~~~
+     */
+    @Override
+    public void loadErrors(String errorLog, String workingDir) {
+        System.out.println("Working Dir : " + workingDir);
+        removeAllHighlights();
+        StringTokenizer tokenizer = new StringTokenizer(errorLog, "\n");
+        boolean canRecord = false;
+        String path = "";
+        String code = "";
+        String message = "";
+        int line = 0;
+        try {
+            while (tokenizer.hasMoreTokens()) {
+                String token = tokenizer.nextToken();
+                if (!canRecord && CodeFramework.count(token, ':') >= 4 && !token.startsWith(" ")) {
+                    int index;
+                    path = token.substring(0, index = token.indexOf(':')).trim();
+                    line = Integer.parseInt(token.substring(index + 1, index = token.indexOf(':', index + 1)).trim());
+                    index = token.indexOf(':', index + 1);
+                    message = token.substring(index + 1).trim();
+                    canRecord = true;
+                } else if (canRecord && token.contains("|")) {
+                    code = token.substring(token.indexOf('|') + 1).trim();
 
-					if(!path.contains(File.separator)){
-						path = workingDir + File.separator + path;
-					}
+                    if (!path.contains(File.separator)) {
+                        path = workingDir + File.separator + path;
+                    }
 
-					File file = new File(path);
-					if(file.exists()){
-						Editor e = Screen.getProjectFile().getScreen().loadFile(file);
-						try{
-							ImageIcon icon = new ImageIcon(message.startsWith("warning") ? IconManager.fluentwarningImage : IconManager.fluenterrorImage);
-							int size = e.getGraphics().getFontMetrics().getHeight();
-							icon = new ImageIcon(icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH));
-							gutterIconInfos.add(new JavaSyntaxParserGutterIconInfo(e.getAttachment().getGutter().addLineTrackingIcon(line - 1, icon, message), e));
-						}
-						catch(Exception ex){
-							ex.printStackTrace();
-						}
-						Highlighter h = e.getHighlighter();
-						SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(message.startsWith("warning") ? Color.YELLOW : Color.RED);
-						String text = e.getText();
-						int index = 0;
-						int times = 0;
-						for(int i = 0; i < text.length(); i++) {
-							if(text.charAt(i) == '\n' && times < line-1) {
-								index = i;
-								times++;
-							}
-						}
-						int start = text.indexOf(code, line == 1 ? 0 : index+1);
-						int end = start + code.length();
-						h.addHighlight(start, end, painter);
-						highlights.add(new Highlight(e, painter, start, end, message.startsWith("warning")));
-					}
-					canRecord = false;
-				}
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		int warningCount = 0;
-		int errorCount = 0;
-		for(Highlight h : highlights){
-			warningCount = 0;
-			errorCount = 0;
-			for(Highlight hx : highlights){
-				if(h.editor.equals(hx.editor)){
-					if(hx.warning)
-						warningCount++;
-					else
-						errorCount++;
-				}
-			}
-			h.editor.javaErrorPanel.setDiagnosticData(errorCount, warningCount);
-		}
-	}
+                    File file = new File(path);
+                    if (file.exists()) {
+                        Editor e = Screen.getProjectFile().getScreen().loadFile(file);
+                        try {
+                            ImageIcon icon = new ImageIcon(message.startsWith("warning") ? IconManager.fluentwarningImage : IconManager.fluenterrorImage);
+                            int size = e.getGraphics().getFontMetrics().getHeight();
+                            icon = new ImageIcon(icon.getImage().getScaledInstance(size, size, Image.SCALE_SMOOTH));
+                            gutterIconInfos.add(new JavaSyntaxParserGutterIconInfo(e.getAttachment().getGutter().addLineTrackingIcon(line - 1, icon, message), e));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        Highlighter h = e.getHighlighter();
+                        SquiggleUnderlineHighlightPainter painter = new SquiggleUnderlineHighlightPainter(message.startsWith("warning") ? Color.YELLOW : Color.RED);
+                        String text = e.getText();
+                        int index = 0;
+                        int times = 0;
+                        for (int i = 0; i < text.length(); i++) {
+                            if (text.charAt(i) == '\n' && times < line - 1) {
+                                index = i;
+                                times++;
+                            }
+                        }
+                        int start = text.indexOf(code, line == 1 ? 0 : index + 1);
+                        int end = start + code.length();
+                        h.addHighlight(start, end, painter);
+                        highlights.add(new Highlight(e, painter, start, end, message.startsWith("warning")));
+                    }
+                    canRecord = false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int warningCount = 0;
+        int errorCount = 0;
+        for (Highlight h : highlights) {
+            warningCount = 0;
+            errorCount = 0;
+            for (Highlight hx : highlights) {
+                if (h.editor.equals(hx.editor)) {
+                    if (hx.warning)
+                        warningCount++;
+                    else
+                        errorCount++;
+                }
+            }
+            h.editor.javaErrorPanel.setDiagnosticData(errorCount, warningCount);
+        }
+    }
 
-	@Override
-	public void removeAllHighlights() {
-		highlights.forEach(h->{
-			h.editor.javaErrorPanel.setDiagnosticData(0, 0);
-			h.remove();
-		});
-		highlights.clear();
-		gutterIconInfos.forEach(info->info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
-		gutterIconInfos.clear();
-	}
+    @Override
+    public void removeAllHighlights() {
+        highlights.forEach(h -> {
+            h.editor.javaErrorPanel.setDiagnosticData(0, 0);
+            h.remove();
+        });
+        highlights.clear();
+        gutterIconInfos.forEach(info -> info.editor.getAttachment().getGutter().removeTrackingIcon(info.gutterIconInfo));
+        gutterIconInfos.clear();
+    }
 
-	public void remove(Editor e) {
-		highlights.forEach(h->{
-			if(h.editor == e) h.remove();
-		});
-	}
+    public void remove(Editor e) {
+        highlights.forEach(h -> {
+            if (h.editor == e) h.remove();
+        });
+    }
 
-	public void remove(Editor e, int caretPosition) {
-		highlights.forEach(h->{
-			if(h.editor == e && caretPosition >= h.start && caretPosition <= h.end) h.remove();
-		});
-	}
+    public void remove(Editor e, int caretPosition) {
+        highlights.forEach(h -> {
+            if (h.editor == e && caretPosition >= h.start && caretPosition <= h.end) h.remove();
+        });
+    }
 }
 

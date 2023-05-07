@@ -17,233 +17,220 @@
  */
 
 package omega.ui.popup;
-import omegaui.listener.KeyStrokeListener;
 
 import omega.Screen;
-
 import omegaui.component.animation.Animations;
 
-import java.util.LinkedList;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.GradientPaint;
-import java.awt.Image;
-
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import java.awt.image.BufferedImage;
-
-import javax.swing.JComponent;
+import java.util.LinkedList;
 
 import static omega.io.UIManager.*;
-import static omegaui.component.animation.Animations.*;
 
 
-public class OPopupItem extends JComponent{
-	private String name;
-	private String hotkey = "";
-	private Runnable run;
-	private Runnable enterRun;
-	private Runnable exitRun;
+public class OPopupItem extends JComponent {
+    private String name;
+    private String hotkey = "";
+    private Runnable run;
+    private Runnable enterRun;
+    private Runnable exitRun;
 
-	private BufferedImage image;
-	private LinkedList<BufferedImage> images = new LinkedList<>();
+    private BufferedImage image;
+    private LinkedList<BufferedImage> images = new LinkedList<>();
 
-	private OPopupWindow popup;
-	private volatile boolean enter;
-	private volatile boolean clickable = true;
+    private OPopupWindow popup;
+    private volatile boolean enter;
+    private volatile boolean clickable = true;
 
-	public OPopupItem(OPopupWindow popup, String name, BufferedImage image, Runnable run){
-		this.popup = popup;
-		this.name = name;
-		this.image = image;
-		this.run = run;
-		setFont(PX14);
-		setBackground(popup.getBackground());
-		setForeground(popup.getForeground());
-		addMouseListener(new MouseAdapter(){
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				if(!isEnabled())
-					return;
+    public OPopupItem(OPopupWindow popup, String name, BufferedImage image, Runnable run) {
+        this.popup = popup;
+        this.name = name;
+        this.image = image;
+        this.run = run;
+        setFont(PX14);
+        setBackground(popup.getBackground());
+        setForeground(popup.getForeground());
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if (!isEnabled())
+                    return;
 
-				markFocussed();
-			}
+                markFocussed();
+            }
 
-			@Override
-			public void mouseExited(MouseEvent e){
-				if(!isEnabled())
-					return;
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!isEnabled())
+                    return;
 
-				markNonFocussed();
-			}
+                markNonFocussed();
+            }
 
-			@Override
-			public void mousePressed(MouseEvent e){
-				if(!isEnabled() || e.getButton() == 3)
-					return;
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!isEnabled() || e.getButton() == 3)
+                    return;
 
-				triggerClick();
-			}
-		});
-	}
+                triggerClick();
+            }
+        });
+    }
 
-	public OPopupItem(OPopupWindow popup, String name, String hotkey, BufferedImage image, Runnable run){
-		this(popup, name, image, run);
-		this.hotkey = hotkey;
-	}
+    public OPopupItem(OPopupWindow popup, String name, String hotkey, BufferedImage image, Runnable run) {
+        this(popup, name, image, run);
+        this.hotkey = hotkey;
+    }
 
-	public void playEnterAnimation(){
-		if(image == null|| !Animations.isAnimationsOn())
-			return;
-		new Thread(()->{
-			if(images.isEmpty())
-				prepareImages();
+    public void playEnterAnimation() {
+        if (image == null || !Animations.isAnimationsOn())
+            return;
+        new Thread(() -> {
+            if (images.isEmpty())
+                prepareImages();
 
-			Graphics2D g = (Graphics2D)getGraphics();
-			if(g == null)
-				return;
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            Graphics2D g = (Graphics2D) getGraphics();
+            if (g == null)
+                return;
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-			for(BufferedImage image : images){
-				if(!enter){
-					repaint();
-					return;
-				}
-				g.drawImage(image, 0, getHeight()/2 - image.getHeight()/2, null);
+            for (BufferedImage image : images) {
+                if (!enter) {
+                    repaint();
+                    return;
+                }
+                g.drawImage(image, 0, getHeight() / 2 - image.getHeight() / 2, null);
 
-				try{
-					Thread.sleep(20);
-				}
-				catch(Exception e){
-					e.printStackTrace();
-				}
-			}
+                try {
+                    Thread.sleep(20);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-			g.dispose();
-		}).start();
-	}
+            g.dispose();
+        }).start();
+    }
 
-	public synchronized void prepareImages(){
-		int distance = 9;
+    public synchronized void prepareImages() {
+        int distance = 9;
 
-		int size = 16;
+        int size = 16;
 
-		while(distance >= 0){
-			BufferedImage image = new BufferedImage(getHeight(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D)image.getGraphics();
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getHeight(), getHeight());
-			g.drawImage(this.image.getScaledInstance(size, size, Image.SCALE_SMOOTH), getHeight()/2 - size/2, getHeight()/2 - size/2, size, size, null);
-			g.dispose();
+        while (distance >= 0) {
+            BufferedImage image = new BufferedImage(getHeight(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = (Graphics2D) image.getGraphics();
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getHeight(), getHeight());
+            g.drawImage(this.image.getScaledInstance(size, size, Image.SCALE_SMOOTH), getHeight() / 2 - size / 2, getHeight() / 2 - size / 2, size, size, null);
+            g.dispose();
 
-			images.add(image);
+            images.add(image);
 
-			size++;
-			distance--;
-		}
-	}
+            size++;
+            distance--;
+        }
+    }
 
-	public void setName(String name){
-		this.name = name;
-		repaint();
-	}
+    public void setName(String name) {
+        this.name = name;
+        repaint();
+    }
 
-	public String getName(){
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setImage(BufferedImage image){
-		this.image = image;
-		repaint();
-	}
+    public void setImage(BufferedImage image) {
+        this.image = image;
+        repaint();
+    }
 
-	public BufferedImage getImage(){
-		return image;
-	}
+    public BufferedImage getImage() {
+        return image;
+    }
 
-	public void setAction(Runnable run){
-		this.run = run;
-	}
+    public void setAction(Runnable run) {
+        this.run = run;
+    }
 
-	public Runnable getAction(){
-		return run;
-	}
+    public Runnable getAction() {
+        return run;
+    }
 
-	public void setOnEnter(Runnable r){
-		this.enterRun = r;
-	}
+    public void setOnEnter(Runnable r) {
+        this.enterRun = r;
+    }
 
-	public void setOnExit(Runnable r){
-		this.exitRun = r;
-	}
+    public void setOnExit(Runnable r) {
+        this.exitRun = r;
+    }
 
-	public void setEnter(boolean enter){
-		this.enter = enter;
-		repaint();
-	}
+    public void setEnter(boolean enter) {
+        this.enter = enter;
+        repaint();
+    }
 
-	@Override
-	public void setEnabled(boolean value){
-		super.setEnabled(value);
-		enter = !value;
-		repaint();
-	}
+    @Override
+    public void setEnabled(boolean value) {
+        super.setEnabled(value);
+        enter = !value;
+        repaint();
+    }
 
-	public void markFocussed(){
-		enter = true;
-		repaint();
-		if(OPopupItem.this.enterRun != null)
-			OPopupItem.this.enterRun.run();
+    public void markFocussed() {
+        enter = true;
+        repaint();
+        if (OPopupItem.this.enterRun != null)
+            OPopupItem.this.enterRun.run();
 
-		playEnterAnimation();
-	}
+        playEnterAnimation();
+    }
 
-	public void markNonFocussed(){
-		enter = false;
-		repaint();
-		if(OPopupItem.this.exitRun != null)
-			OPopupItem.this.exitRun.run();
-	}
+    public void markNonFocussed() {
+        enter = false;
+        repaint();
+        if (OPopupItem.this.exitRun != null)
+            OPopupItem.this.exitRun.run();
+    }
 
-	public void triggerClick(){
+    public void triggerClick() {
 
-		popup.dispose();
-		if(OPopupItem.this.run != null)
-			OPopupItem.this.run.run();
-	}
+        popup.dispose();
+        if (OPopupItem.this.run != null)
+            OPopupItem.this.run.run();
+    }
 
-	@Override
-	public void paint(Graphics graphics){
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		if(enter){
-			g.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), TOOLMENU_GRADIENT));
-		}
-		else {
-			g.setColor(getBackground());
-		}
-		g.fillRect((enter && image != null) ? 32 : 0, 0, getWidth(), getHeight());
-		if(image != null)
-			g.drawImage(image, 8, 8, 16, 16, null);
-		g.setFont(getFont());
-		g.setColor(glow);
-		int y = (getHeight() - g.getFontMetrics().getHeight())/2 + g.getFontMetrics().getAscent() + g.getFontMetrics().getDescent();
-		g.drawString(name, 42, y);
-		if(Screen.isNotNull(hotkey)){
-			g.setFont(UBUNTU_PX12);
-			g.setColor(glow);
-			g.drawString(hotkey, getWidth() - g.getFontMetrics().stringWidth(hotkey) - 5, y + 5);
-		}
-	}
+    @Override
+    public void paint(Graphics graphics) {
+        Graphics2D g = (Graphics2D) graphics;
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        if (enter) {
+            g.setPaint(new GradientPaint(0, 0, getBackground(), getWidth(), getHeight(), TOOLMENU_GRADIENT));
+        } else {
+            g.setColor(getBackground());
+        }
+        g.fillRect((enter && image != null) ? 32 : 0, 0, getWidth(), getHeight());
+        if (image != null)
+            g.drawImage(image, 8, 8, 16, 16, null);
+        g.setFont(getFont());
+        g.setColor(glow);
+        int y = (getHeight() - g.getFontMetrics().getHeight()) / 2 + g.getFontMetrics().getAscent() + g.getFontMetrics().getDescent();
+        g.drawString(name, 42, y);
+        if (Screen.isNotNull(hotkey)) {
+            g.setFont(UBUNTU_PX12);
+            g.setColor(glow);
+            g.drawString(hotkey, getWidth() - g.getFontMetrics().stringWidth(hotkey) - 5, y + 5);
+        }
+    }
 }
 

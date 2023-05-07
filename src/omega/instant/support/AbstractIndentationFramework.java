@@ -17,6 +17,7 @@
  */
 
 package omega.instant.support;
+
 import omega.ui.component.Editor;
 
 /*
@@ -24,13 +25,13 @@ import omega.ui.component.Editor;
  */
 
 public abstract class AbstractIndentationFramework {
-	/*
-	 * Returns true if the opened editor can be indented.
-	 */
-	public abstract boolean canIndent(Editor editor);
+    /*
+     * Returns true if the opened editor can be indented.
+     */
+    public abstract boolean canIndent(Editor editor);
 
-	/*
-	 * Does the actual indentation.
-	 */
-	public abstract void indent(Editor editor);
+    /*
+     * Does the actual indentation.
+     */
+    public abstract void indent(Editor editor);
 }

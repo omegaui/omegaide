@@ -17,52 +17,53 @@
  */
 
 package omega.io;
+
+import omega.Screen;
 import omega.instant.support.FileWizard;
 
 import java.io.File;
 
-import omega.Screen;
 public class FileCreator {
 
-	private Screen screen;
-	private FileWizard fileWizard;
-	private String lastType = "Custom File";
+    private Screen screen;
+    private FileWizard fileWizard;
+    private String lastType = "Custom File";
 
-	public FileCreator(Screen screen) {
-		this.screen = screen;
-		fileWizard = new FileWizard(screen);
-	}
+    public FileCreator(Screen screen) {
+        this.screen = screen;
+        fileWizard = new FileWizard(screen);
+    }
 
-	public void show() {
-		fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
-		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
-			fileWizard.show(lastType);
-		this.lastType = fileWizard.typeBtn.getText();
-	}
+    public void show() {
+        fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
+        if (Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
+            fileWizard.show(lastType);
+        this.lastType = fileWizard.typeBtn.getText();
+    }
 
-	public void show(String type) {
-		fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
-		if(Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
-			fileWizard.show(type);
-		this.lastType = fileWizard.typeBtn.getText();
-	}
+    public void show(String type) {
+        fileWizard.parentRoot.setToolTipText(Screen.getProjectFile().getProjectPath() + File.separator + "src");
+        if (Screen.getProjectFile().getProjectPath() != null && new File(Screen.getProjectFile().getProjectPath()).exists())
+            fileWizard.show(type);
+        this.lastType = fileWizard.typeBtn.getText();
+    }
 
-	public void showDirView(String path){
-		fileWizard.parentRoot.setToolTipText(path);
-		fileWizard.typeBtn.setText("directory");
-		fileWizard.setVisible(true);
-	}
+    public void showDirView(String path) {
+        fileWizard.parentRoot.setToolTipText(path);
+        fileWizard.typeBtn.setText("directory");
+        fileWizard.setVisible(true);
+    }
 
-	public void showFileView(String path){
-		fileWizard.parentRoot.setToolTipText(path);
-		fileWizard.typeBtn.setText("Custom File");
-		fileWizard.setVisible(true);
-	}
+    public void showFileView(String path) {
+        fileWizard.parentRoot.setToolTipText(path);
+        fileWizard.typeBtn.setText("Custom File");
+        fileWizard.setVisible(true);
+    }
 
-	public void showFileView(String type, String path){
-		fileWizard.parentRoot.setToolTipText(path);
-		fileWizard.typeBtn.setText(type);
-		fileWizard.setVisible(true);
-	}
+    public void showFileView(String type, String path) {
+        fileWizard.parentRoot.setToolTipText(path);
+        fileWizard.typeBtn.setText(type);
+        fileWizard.setVisible(true);
+    }
 }
 

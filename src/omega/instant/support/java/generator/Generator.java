@@ -17,121 +17,121 @@
  */
 
 package omega.instant.support.java.generator;
-import omega.instant.support.java.assist.ByteReader;
-import omega.instant.support.java.assist.DataMember;
-import omega.instant.support.java.assist.Assembly;
-
-import omega.instant.support.java.generator.dialog.GSView;
-import omega.instant.support.java.generator.dialog.OverView;
 
 import omega.Screen;
+import omega.instant.support.java.assist.Assembly;
+import omega.instant.support.java.assist.ByteReader;
+import omega.instant.support.java.assist.DataMember;
+import omega.instant.support.java.generator.dialog.GSView;
+import omega.instant.support.java.generator.dialog.OverView;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import java.util.StringTokenizer;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 public class Generator {
-	public static GSView gsView;
-	public static OverView overView;
-	public static ByteReader reader;
+    public static GSView gsView;
+    public static OverView overView;
+    public static ByteReader reader;
 
-	public static void init(Screen screen){
-		gsView = new GSView(screen);
-		overView = new OverView(screen);
-	}
+    public static void init(Screen screen) {
+        gsView = new GSView(screen);
+        overView = new OverView(screen);
+    }
 
-	public static String getTabs(RSyntaxTextArea textArea, int caret){
-		String text = textArea.getText().substring(0, caret);
-		text = text.substring(text.lastIndexOf('\n') + 1);
-		return text;
-	}
+    public static String getTabs(RSyntaxTextArea textArea, int caret) {
+        String text = textArea.getText().substring(0, caret);
+        text = text.substring(text.lastIndexOf('\n') + 1);
+        return text;
+    }
 
-	public static String getSuitableName(String name){
-		if(Character.isLowerCase(name.charAt(0)))
-			return name.charAt(0) + "";
-		if(name.contains("<"))
-			return name.substring(0, 1).toLowerCase() + name.substring(1, name.indexOf("<"));
-		if(name.contains("["))
-			return name.substring(0, 1).toLowerCase() + name.substring(1, name.indexOf("[")) + "Array";
-		return name.substring(0, 1).toLowerCase() + name.substring(1);
-	}
+    public static String getSuitableName(String name) {
+        if (Character.isLowerCase(name.charAt(0)))
+            return name.charAt(0) + "";
+        if (name.contains("<"))
+            return name.substring(0, 1).toLowerCase() + name.substring(1, name.indexOf("<"));
+        if (name.contains("["))
+            return name.substring(0, 1).toLowerCase() + name.substring(1, name.indexOf("[")) + "Array";
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
+    }
 
-	public static String toUpperCase(String name){
-		return name.substring(0, 1).toUpperCase() + name.substring(1);
-	}
+    public static String toUpperCase(String name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    }
 
-	public static boolean isMemberOfObject(DataMember d){
-		if(reader == null){
-			if(Assembly.has("java.lang.Object"))
-				reader = Assembly.getReader("java.lang.Object");
-			else
-				reader = omega.Screen.getProjectFile().getJDKManager().prepareReader("java.lang.Object");
-		}
-		for(DataMember dx : reader.dataMembers){
-			if(dx.toString().equals(d.toString()))
-				return true;
-		}
-		return false;
-	}
+    public static boolean isMemberOfObject(DataMember d) {
+        if (reader == null) {
+            if (Assembly.has("java.lang.Object"))
+                reader = Assembly.getReader("java.lang.Object");
+            else
+                reader = omega.Screen.getProjectFile().getJDKManager().prepareReader("java.lang.Object");
+        }
+        for (DataMember dx : reader.dataMembers) {
+            if (dx.toString().equals(d.toString()))
+                return true;
+        }
+        return false;
+    }
 
-	public static void implement(DataMember d, RSyntaxTextArea textArea){
-		int caret = textArea.getCaretPosition();
-		String tabs = getTabs(textArea, caret);
-		String meth = "@Override\n" + tabs + "public";
-		if(d.parameters == null) return;
-		String rep = "";
-		String name = d.name.substring(0, d.name.indexOf('('));
-		rep += name + "(";
-		String parameters = d.parameters;
-		StringTokenizer tok = new StringTokenizer(parameters, ", ");
-		while(tok.hasMoreTokens()){
-			String token = tok.nextToken();
-			if(token.contains("."))
-				token = token.substring(token.lastIndexOf('.') + 1).trim();
-			String data = getSuitableName(token);
-			try{
-				if(Character.isLetter(parameters.substring(parameters.indexOf(token) + token.length()).trim().charAt(0)))
-					data = tok.nextToken();
-		}catch(Exception ex){}
-			rep += token + " " + data + ", ";
-		}
-		if(rep.contains(","))
-			rep = rep.substring(0, rep.lastIndexOf(','));
-		rep += ")";
-		String type = d.type;
-		if(type.contains("."))
-			type = type.substring(type.lastIndexOf('.') + 1);
-		meth = meth.trim() + " " + type + " " + rep + " {";
-		boolean hasReturn = !type.equals("void");
-		String content = "\n" + tabs + tabs;
-		if(hasReturn){
-			content  += "return null;";
-		}
-		content += "\n" + tabs + "}\n" + tabs;
-		meth = meth.trim() + content;
-		textArea.insert(meth, caret);
-	}
+    public static void implement(DataMember d, RSyntaxTextArea textArea) {
+        int caret = textArea.getCaretPosition();
+        String tabs = getTabs(textArea, caret);
+        String meth = "@Override\n" + tabs + "public";
+        if (d.parameters == null) return;
+        String rep = "";
+        String name = d.name.substring(0, d.name.indexOf('('));
+        rep += name + "(";
+        String parameters = d.parameters;
+        StringTokenizer tok = new StringTokenizer(parameters, ", ");
+        while (tok.hasMoreTokens()) {
+            String token = tok.nextToken();
+            if (token.contains("."))
+                token = token.substring(token.lastIndexOf('.') + 1).trim();
+            String data = getSuitableName(token);
+            try {
+                if (Character.isLetter(parameters.substring(parameters.indexOf(token) + token.length()).trim().charAt(0)))
+                    data = tok.nextToken();
+            } catch (Exception ex) {
+            }
+            rep += token + " " + data + ", ";
+        }
+        if (rep.contains(","))
+            rep = rep.substring(0, rep.lastIndexOf(','));
+        rep += ")";
+        String type = d.type;
+        if (type.contains("."))
+            type = type.substring(type.lastIndexOf('.') + 1);
+        meth = meth.trim() + " " + type + " " + rep + " {";
+        boolean hasReturn = !type.equals("void");
+        String content = "\n" + tabs + tabs;
+        if (hasReturn) {
+            content += "return null;";
+        }
+        content += "\n" + tabs + "}\n" + tabs;
+        meth = meth.trim() + content;
+        textArea.insert(meth, caret);
+    }
 
-	public static void genGetter(DataMember d, RSyntaxTextArea textArea, String access){
-		int caret = textArea.getCaretPosition();
-		String tabs = getTabs(textArea, caret);
-		String meth = access + (d.modifier.contains("volatile") ? "" : (" " + d.modifier));
-		meth = meth.trim() + " " + d.type;
-		String name = (d.type.equals("boolean") ? "is" : "get") + toUpperCase(d.name) + "() {";
-		meth = meth.trim() + " " + name;
-		meth += "\n" + tabs + tabs + "return " + d.name + ";\n" + tabs + "}\n" + tabs;
-		textArea.insert(meth, caret);
-	}
+    public static void genGetter(DataMember d, RSyntaxTextArea textArea, String access) {
+        int caret = textArea.getCaretPosition();
+        String tabs = getTabs(textArea, caret);
+        String meth = access + (d.modifier.contains("volatile") ? "" : (" " + d.modifier));
+        meth = meth.trim() + " " + d.type;
+        String name = (d.type.equals("boolean") ? "is" : "get") + toUpperCase(d.name) + "() {";
+        meth = meth.trim() + " " + name;
+        meth += "\n" + tabs + tabs + "return " + d.name + ";\n" + tabs + "}\n" + tabs;
+        textArea.insert(meth, caret);
+    }
 
-	public static void genSetter(DataMember d, RSyntaxTextArea textArea, String access, String className){
-		int caret = textArea.getCaretPosition();
-		String tabs = getTabs(textArea, caret);
-		String meth = access + (d.modifier.contains("volatile") ? "" : (" " + d.modifier));
-		meth = meth.trim() + " void";
-		String name = "set" + toUpperCase(d.name) + "(" + d.type + " " + d.name + ") {";
-		meth = meth.trim() + " " + name;
-		String s = d.modifier.contains("static") ? className : "this";
-		meth += "\n" + tabs + tabs + s + "." + d.name + " = " + d.name + ";\n" + tabs +"}\n" + tabs;
-		textArea.insert(meth, caret);
-	}
+    public static void genSetter(DataMember d, RSyntaxTextArea textArea, String access, String className) {
+        int caret = textArea.getCaretPosition();
+        String tabs = getTabs(textArea, caret);
+        String meth = access + (d.modifier.contains("volatile") ? "" : (" " + d.modifier));
+        meth = meth.trim() + " void";
+        String name = "set" + toUpperCase(d.name) + "(" + d.type + " " + d.name + ") {";
+        meth = meth.trim() + " " + name;
+        String s = d.modifier.contains("static") ? className : "this";
+        meth += "\n" + tabs + tabs + s + "." + d.name + " = " + d.name + ";\n" + tabs + "}\n" + tabs;
+        textArea.insert(meth, caret);
+    }
 }
 
